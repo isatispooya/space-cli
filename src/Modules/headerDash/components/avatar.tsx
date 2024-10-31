@@ -1,0 +1,73 @@
+import React, { useState } from "react";
+
+import { CgProfile } from "react-icons/cg";
+import { motion, AnimatePresence } from "framer-motion";
+
+const Avatar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  return (
+    <div className="relative">
+      <CgProfile
+        className="text-4xl cursor-pointer text-white"
+        onClick={toggleDropdown}
+      />
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id="userDropdown"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute z-10 mt-2 left-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          >
+            <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+              <div>Bonnie Green</div>
+              <div className="font-medium truncate">name@flowbite.com</div>
+            </div>
+            <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  داشبورد
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  تنظیمات
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  درآمد
+                </a>
+              </li>
+            </ul>
+            <div className="py-1">
+              <a
+                href="#"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              >
+                خروج
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default Avatar;
