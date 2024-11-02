@@ -93,14 +93,16 @@ const Login = () => {
                         transition={{ duration: 0.5, delay: 1.6 }}
                         className="mb-6 text-center"
                       >
-                        <button
-                          className="inline-block w-full mt-5 rounded px-4 py-2 bg-gradient-to-r from-[#295270] to-[#524175] text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out"
-                          type="button"
-                          data-twe-ripple-init
-                          data-twe-ripple-color="light"
-                        >
-                          ورود
-                        </button>
+                        <a href="/dashboard">
+                          <button
+                            className="inline-block w-full mt-5 rounded px-4 py-2 bg-gradient-to-r from-[#295270] to-[#524175] text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out"
+                            type="button"
+                            data-twe-ripple-init
+                            data-twe-ripple-color="light"
+                          >
+                            ورود
+                          </button>
+                        </a>
 
                         <a
                           href="#!"

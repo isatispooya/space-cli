@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -8,12 +7,17 @@ const Avatar = () => {
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
+  const tools = ["داشبورد", "تنظیمات", "درآمد"];
   return (
     <div className="relative">
-      <CgProfile
-        className="text-4xl cursor-pointer text-white"
+      <motion.div
         onClick={toggleDropdown}
-      />
+        whileHover={{ scale: 1.1, rotate: 5, color: "#1DA1F2" }}
+        whileTap={{ scale: 0.9 }}
+        className="text-4xl cursor-pointer text-white"
+      >
+        <CgProfile />
+      </motion.div>
 
       <AnimatePresence>
         {isOpen && (
@@ -26,38 +30,26 @@ const Avatar = () => {
             className="absolute z-10 mt-2 left-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
           >
             <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-              <div>Bonnie Green</div>
-              <div className="font-medium truncate">name@flowbite.com</div>
+              <div>محمد علی سادات</div>
+              <div className="font-medium truncate">09140707704</div>
             </div>
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  داشبورد
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  تنظیمات
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  درآمد
-                </a>
-              </li>
+              {tools.map((item, index) => (
+                <li>
+                  <a
+                    key={index}
+                    href="#"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
             </ul>
+
             <div className="py-1">
               <a
-                href="#"
+                href="/login"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
               >
                 خروج

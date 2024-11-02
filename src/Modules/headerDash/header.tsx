@@ -21,7 +21,7 @@ const Header = () => {
     <header>
       <nav
         dir="rtl"
-        className="relative flex w-full items-center justify-between bg-gradient-to-r from-[#295270] to-[#524175] py-2 shadow-dark-mild dark:bg-body-dark lg:flex-wrap lg:justify-start lg:py-4"
+        className="relative  shadow-2xl flex w-full items-center justify-between bg-gradient-to-r from-[#295270] to-[#524175] py-2  dark:bg-body-dark lg:flex-wrap lg:justify-start lg:py-4"
         data-twe-navbar-ref
       >
         <div className="flex w-full flex-wrap items-center justify-between px-3">
