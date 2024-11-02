@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
+import { FaChevronDown } from "react-icons/fa";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -8,6 +9,12 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <motion.div
       dir="rtl"
@@ -39,13 +46,51 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             صفحه اصلی
           </a>
         </motion.li>
-        <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-          <a
-            href="#"
-            className="text-gray-800 text-lg font-medium hover:text-gray-600"
+        <motion.li>
+          <button
+            onClick={toggleDropdown}
+            className="flex items-center text-gray-800 text-lg font-medium hover:text-gray-600 focus:outline-none"
           >
             درباره ما
-          </a>
+            <FaChevronDown
+              className={`ml-2 transition-transform duration-300 ${
+                isDropdownOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {isDropdownOpen && (
+            <motion.ul
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              className="mt-2 ml-4 space-y-4"
+            >
+              <li>
+                <a
+                  href="#"
+                  className="text-gray-700 text-md hover:text-gray-500"
+                >
+                  تاریخچه ما
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="text-gray-700 text-md hover:text-gray-500"
+                >
+                  تیم ما
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="text-gray-700 text-md hover:text-gray-500"
+                >
+                  چشم‌انداز ما
+                </a>
+              </li>
+            </motion.ul>
+          )}
         </motion.li>
         <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
           <a
