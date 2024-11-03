@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import { FaChevronDown } from "react-icons/fa";
+import ArrivalAndDeparture from "../Arrival&departure/Arrival&departure";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -47,50 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           </a>
         </motion.li>
         <motion.li>
-          <button
-            onClick={toggleDropdown}
-            className="flex items-center text-gray-800 text-lg font-medium hover:text-gray-600 focus:outline-none"
-          >
-            درباره ما
-            <FaChevronDown
-              className={`ml-2 transition-transform duration-300 ${
-                isDropdownOpen ? "rotate-180" : ""
-              }`}
-            />
-          </button>
-          {isDropdownOpen && (
-            <motion.ul
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="mt-2 ml-4 space-y-4"
-            >
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-700 text-md hover:text-gray-500"
-                >
-                  تاریخچه ما
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-700 text-md hover:text-gray-500"
-                >
-                  تیم ما
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-700 text-md hover:text-gray-500"
-                >
-                  چشم‌انداز ما
-                </a>
-              </li>
-            </motion.ul>
-          )}
+          <ArrivalAndDeparture />
         </motion.li>
         <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
           <a
