@@ -1,26 +1,21 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import useProfile from "./hooks/useProfile";
+import { useAccess } from "../../hooks/Auth/useAccess";
+import ProfileField from "./fields";
 
-const ProfileField = ({ label, value }) => (
-  <div>
-    <label className="block text-gray-700 text-sm font-semibold mb-2">
-      {label}:
-    </label>
-    <input
-      type="text"
-      value={value || ""}
-      readOnly
-      className="peer bg-white w-full placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-    />
-  </div>
-);
 
-ProfileField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};
+const PersonProfile: React.FC = () => {
+  const { accessToken, refetchAccessToken, error: accessError } = useAccess();
+  const { data: profile, error: profileError } = useProfile(accessToken);
 
-const PersonProfile = () => {
+  useEffect(() => {
+    if (!accessToken) {
+      refetchAccessToken();
+    }
+  }, [accessToken, refetchAccessToken]);
+
+
+
   return (
     <div
       dir="rtl"
@@ -31,8 +26,11 @@ const PersonProfile = () => {
       </div>
 
       <Section title="اطلاعات فردی">
-        <ProfileField label="نام" value={"محمدعلی"} />
-        <ProfileField label="نام خانوادگی" value={"سادات"} />
+        <ProfileField label="نام" value={profile?.firstName || "نامشخص"} />
+        <ProfileField
+          label="نام خانوادگی"
+          value={profile?.lastName || "نامشخص"}
+        />
         <ProfileField label="نام پدر" />
         <ProfileField label="جنسیت" />
         <ProfileField label="کد ملی" />
@@ -43,34 +41,16 @@ const PersonProfile = () => {
         <ProfileField label="فکس" />
         <ProfileField label="شماره موبایل" />
       </Section>
-
-      <Section title="حساب‌های بانکی">
-        <ProfileField label="بانک" />
-        <ProfileField label="شعبه بانک" />
-        <ProfileField label="شماره شبا" />
-      </Section>
-
-      <Section title="اطلاعات شغلی">
-        <ProfileField label="شغل" />
-        <ProfileField label="نوع شغل" />
-        <ProfileField label="محل کار" />
-        <ProfileField label="شماره تلفن محل کار" />
-        <ProfileField label="ایمیل محل کار" />
-        <ProfileField label="کدپستی محل کار" />
-      </Section>
-
-      <Section title="آدرس‌ها">
-        <ProfileField label="استان" />
-        <ProfileField label="شهر" />
-        <ProfileField label="خیابان" />
-        <ProfileField label="کوچه" />
-        <ProfileField label="کدپستی" />
-      </Section>
     </div>
   );
 };
 
-const Section = ({ title, children }) => (
+interface SectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+const Section: React.FC<SectionProps> = ({ title, children }) => (
   <section className="mb-12">
     <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 pb-2 border-gray-300">
       {title}
@@ -81,10 +61,4 @@ const Section = ({ title, children }) => (
   </section>
 );
 
-Section.propTypes = {
-  title: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-};
-
 export default PersonProfile;
-export { ProfileField };

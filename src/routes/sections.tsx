@@ -2,12 +2,12 @@ import React, { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 import LoaderLg from "../components/loader-lg";
 
-// Lazy load pages
+
 const LoginPage = lazy(() => import("../pages/loginPage"));
 const DashboardPage = lazy(() => import("../pages/dashboardPage"));
 const ProfilePage = lazy(() => import("../Modules/profile/profile"));
 
-// Fallback component
+
 const Loader = () => <LoaderLg />;
 
 export default function Router() {

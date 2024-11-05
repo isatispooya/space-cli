@@ -6,40 +6,73 @@ import { fadeIn } from "./animations/fadeIn";
 import InputLogin from "./components/InputLogin";
 import CaptchaImg from "./components/chaptchaImg";
 import useApplyNationalCode from "./hooks/useOtp";
+import useLogin from "./hooks/useLogin";
 import { useLoginStore } from "./store/loginStore";
+import { MdError } from "react-icons/md";
+import { useToastStore } from "../../store/toastStore";
+
+
 
 initTWE({ Input, Ripple });
 
 const Login: React.FC = () => {
+  const [activeTab, setActiveTab] = React.useState<"login" | "signup">("login");
   const {
     nationalCode,
     captchaInput,
     encryptedResponse,
+    password,
     setNationalCode,
     setCaptchaInput,
     setEncryptedResponse,
+    setPassword,
   } = useLoginStore();
 
-  const { mutate } = useApplyNationalCode();
+  
+
+
+  
+    
+  const { mutate: signupMutate, isError: signupError } = useApplyNationalCode();
+  const { mutate: loginMutate, isError: loginError } = useLogin();
+  const showToast = useToastStore((state) => state.showToast);
+
+
+  React.useEffect(() => {
+    if (signupError) {
+      showToast("خطا در برقراری ارتباط (ثبت نام)", <MdError />);
+    }
+    if (loginError) {
+      showToast("خطا در برقراری ارتباط (ورود)", <MdError />);
+    }
+  }, [signupError, loginError, showToast]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("National Code:", nationalCode);
-    console.log("Captcha Input:", captchaInput);
-    console.log("Encrypted Response:", encryptedResponse);
-
-    if (!nationalCode || !captchaInput || !encryptedResponse) {
-      alert("Please fill all fields and ensure CAPTCHA is loaded.");
-      return;
+    if (activeTab === "signup") {
+      if (!nationalCode || !captchaInput || !encryptedResponse) {
+        alert("Please fill all fields and ensure CAPTCHA is loaded.");
+        return;
+      }
+      signupMutate({
+        nationalCode,
+        captchaInput,
+        encryptedResponse,
+      });
+    } else {
+      if (!nationalCode || !password) {
+        alert("Please fill in all fields.");
+        return;
+      }
+      loginMutate({
+        nationalCode,
+        password,
+      });
     }
-
-    mutate({
-      nationalCode,
-      captchaInput,
-      encryptedResponse,
-    });
   };
+
+ 
 
   return (
     <section
@@ -74,6 +107,30 @@ const Login: React.FC = () => {
                       </motion.h4>
                     </div>
 
+              
+                    <div className="flex justify-center space-x-4 my-4">
+                      <button
+                        className={`py-2 px-4 ${
+                          activeTab === "login"
+                            ? "font-semibold border-b-2 border-blue-500"
+                            : ""
+                        }`}
+                        onClick={() => setActiveTab("login")}
+                      >
+                        ورود
+                      </button>
+                      <button
+                        className={`py-2 px-4 ${
+                          activeTab === "signup"
+                            ? "font-semibold border-b-2 border-blue-500"
+                            : ""
+                        }`}
+                        onClick={() => setActiveTab("signup")}
+                      >
+                        ثبت نام
+                      </button>
+                    </div>
+
                     <form onSubmit={handleSubmit}>
                       <InputLogin
                         type="text"
@@ -82,15 +139,31 @@ const Login: React.FC = () => {
                         value={nationalCode}
                         onChange={(e) => setNationalCode(e.target.value)}
                       />
-                      <InputLogin
-                        type="text"
-                        label="کپچا"
-                        placeholder="کپچا"
-                        value={captchaInput}
-                        onChange={(e) => setCaptchaInput(e.target.value)}
-                      />
 
-                      <CaptchaImg setEncryptedResponse={setEncryptedResponse} />
+                      {activeTab === "signup" && (
+                        <>
+                          <InputLogin
+                            type="text"
+                            label="کپچا"
+                            placeholder="کپچا"
+                            value={captchaInput}
+                            onChange={(e) => setCaptchaInput(e.target.value)}
+                          />
+                          <CaptchaImg
+                            setEncryptedResponse={setEncryptedResponse}
+                          />
+                        </>
+                      )}
+
+                      {activeTab === "login" && (
+                        <InputLogin
+                          type="password"
+                          label="رمز عبور"
+                          placeholder="رمز عبور"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      )}
 
                       <motion.div
                         {...fadeIn(1.6, 20)}
@@ -102,7 +175,7 @@ const Login: React.FC = () => {
                           data-twe-ripple-init
                           data-twe-ripple-color="light"
                         >
-                          {"ورود"}
+                          {activeTab === "login" ? "ورود" : "ثبت نام"}
                         </button>
                         <a
                           href="#!"
@@ -112,20 +185,23 @@ const Login: React.FC = () => {
                         </a>
                       </motion.div>
 
-                      <motion.div
-                        {...fadeIn(1.8, 20)}
-                        className="flex items-center justify-between pb-4"
-                      >
-                        <p className="mb-0 text-xs">حساب کاربری ندارید؟</p>
-                        <button
-                          type="button"
-                          className="inline-block text-xs text-blue-500"
-                          data-twe-ripple-init
-                          data-twe-ripple-color="light"
+                      {activeTab === "login" && (
+                        <motion.div
+                          {...fadeIn(1.8, 20)}
+                          className="flex items-center justify-between pb-4"
                         >
-                          ثبت نام
-                        </button>
-                      </motion.div>
+                          <p className="mb-0 text-xs">حساب کاربری ندارید؟</p>
+                          <button
+                            type="button"
+                            className="inline-block text-xs text-blue-500"
+                            data-twe-ripple-init
+                            data-twe-ripple-color="light"
+                            onClick={() => setActiveTab("signup")}
+                          >
+                            ثبت نام
+                          </button>
+                        </motion.div>
+                      )}
                     </form>
                   </motion.div>
                 </div>

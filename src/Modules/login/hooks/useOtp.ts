@@ -1,36 +1,17 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
-
 import api from "../../../api/api";
 import { server } from "../../../api/server";
-
-interface ApplyNationalCodeParams {
-  nationalCode: string;
-  captchaInput: string;
-  encryptedResponse: string;
-}
-
-interface ApplyNationalCodeResponse {
-  message: string;
-}
-
-interface ApiError {
-  response?: {
-    data?: {
-      message?: string;
-      error?: string;
-    };
-  };
-  message: string;
-}
+import { AxiosError } from "axios";
+import { ApplyNationalCodeParams, ApplyNationalCodeResponse } from "../types";
 
 const useApplyNationalCode = (): UseMutationResult<
   ApplyNationalCodeResponse,
-  ApiError,
+  AxiosError,
   ApplyNationalCodeParams
 > => {
   return useMutation<
     ApplyNationalCodeResponse,
-    ApiError,
+    AxiosError,
     ApplyNationalCodeParams
   >({
     mutationKey: ["applyNationalCode"],
@@ -50,13 +31,7 @@ const useApplyNationalCode = (): UseMutationResult<
       return data;
     },
     onError: (error) => {
-      if (error.response?.data?.error) {
-        console.error("خطا بدون پاسخ:", error.response?.data?.error);
-      } else if (error.response?.data?.message) {
-        console.error("خطا بدون پاسخ:", error.response?.data?.message);
-      } else {
-        console.error("خطا بدون پاسخ:", error.message);
-      }
+      return error;
     },
   });
 };

@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import api from "../../../api/api";
 import { server } from "../../../api/server";
-import { CaptchaData } from "../types/captchaData";
+import { CaptchaData } from "../types";
 
 const getCaptcha = async (): Promise<CaptchaData> => {
   const response = await api.get<CaptchaData>(`${server}/captcha/`);
