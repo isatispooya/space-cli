@@ -1,18 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useProfile from "./hooks/useProfile";
-import { useAccess } from "../../hooks/Auth/useAccess";
-import ProfileField from "./fields";
-
+import ProfileField from "./components/fields";
+import ProfileSection from "./components/profileSection";
 
 const PersonProfile: React.FC = () => {
-  const { accessToken, refetchAccessToken, error: accessError } = useAccess();
-  const { data: profile, error: profileError } = useProfile(accessToken);
-
-  useEffect(() => {
-    if (!accessToken) {
-      refetchAccessToken();
-    }
-  }, [accessToken, refetchAccessToken]);
+  const { data: profile } = useProfile();
 
 
 
@@ -25,40 +17,55 @@ const PersonProfile: React.FC = () => {
         <h1 className="text-3xl font-extrabold text-gray-900">پروفایل کاربر</h1>
       </div>
 
-      <Section title="اطلاعات فردی">
-        <ProfileField label="نام" value={profile?.firstName || "نامشخص"} />
+      <ProfileSection title="اطلاعات فردی">
+        <ProfileField label="نام" value={profile?.first_name || "نامشخص"} />
         <ProfileField
           label="نام خانوادگی"
-          value={profile?.lastName || "نامشخص"}
+          value={profile?.last_name || "نامشخص"}
         />
-        <ProfileField label="نام پدر" />
-        <ProfileField label="جنسیت" />
-        <ProfileField label="کد ملی" />
-        <ProfileField label="سریال شناسنامه" />
-        <ProfileField label="محل تولد" />
-        <ProfileField label="محل صدور" />
-        <ProfileField label="ایمیل" />
-        <ProfileField label="فکس" />
-        <ProfileField label="شماره موبایل" />
-      </Section>
+        <ProfileField
+          label="نام پدر"
+          value={profile?.father_name || "نامشخص"}
+        />
+        <ProfileField
+          label="جنسیت"
+          value={
+            profile?.gender === "F"
+              ? "زن"
+              : profile?.gender === "M"
+              ? "مرد"
+              : "نامشخص"
+          }
+        />
+        <ProfileField
+          label="کد ملی"
+          value={profile?.uniqueIdentifier || "نامشخص"}
+        />
+        <ProfileField
+          label="سریال شناسنامه"
+          value={profile?.serial_shenasname || "نامشخص"}
+        />
+        <ProfileField
+          label="محل تولد"
+          value={profile?.place_of_birth || "نامشخص"}
+        />
+        <ProfileField
+          label="محل صدور"
+          value={profile?.place_of_issue || "نامشخص"}
+        />
+        <ProfileField label="ایمیل" value={profile?.email || "نامشخص"} />
+        <ProfileField
+          label="شماره موبایل"
+          value={profile?.mobile || "نامشخص"}
+        />
+        <ProfileField label="آدرس" value={profile?.address || "نامشخص"} />
+        <ProfileField
+          label="تاریخ تولد"
+          value={profile?.birth_date || "نامشخص"}
+        />
+      </ProfileSection>
     </div>
   );
 };
-
-interface SectionProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-const Section: React.FC<SectionProps> = ({ title, children }) => (
-  <section className="mb-12">
-    <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 pb-2 border-gray-300">
-      {title}
-    </h2>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {children}
-    </div>
-  </section>
-);
 
 export default PersonProfile;

@@ -5,7 +5,7 @@ export function setCookie(
   isHostPrefix: boolean = false
 ): void {
   const d = new Date();
-  d.setTime(d.getTime() + exMinutes * 60 * 1000);
+  d.setTime(d.getTime() + exMinutes * 60 * 60 * 1000);
   const expires = `expires=${d.toUTCString()}`;
 
   let cookieName = cname;
