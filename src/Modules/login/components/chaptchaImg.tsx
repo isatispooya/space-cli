@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { fadeIn } from "../animations/fadeIn";
 import useCaptcha from "../hooks/UseCaptcha";
-import { FiRefreshCw } from "react-icons/fi";
 
 interface CaptchaImgProps {
   setEncryptedResponse: (response: string | null) => void;
@@ -10,13 +9,25 @@ interface CaptchaImgProps {
 
 const CaptchaImg: React.FC<CaptchaImgProps> = ({ setEncryptedResponse }) => {
   const { data, refetch } = useCaptcha();
+  const initialized = useRef(false);
 
+  useEffect(() => {
+    if (!initialized.current) {
+      refetch();
+      initialized.current = true;
+    }
+  }, [refetch]);
 
   useEffect(() => {
     if (data?.captcha?.encrypted_response) {
       setEncryptedResponse(data.captcha.encrypted_response);
     }
   }, [data, setEncryptedResponse]);
+
+  const handleRefetch = () => {
+    setEncryptedResponse(null); // Clear previous response
+    refetch(); // Trigger a new captcha fetch
+  };
 
   return (
     <motion.div
@@ -29,18 +40,9 @@ const CaptchaImg: React.FC<CaptchaImgProps> = ({ setEncryptedResponse }) => {
             <img
               src={`data:image/png;base64,${data.captcha.image}`}
               alt="CAPTCHA"
-              className="w-full max-w-[280px] h-16 rounded shadow-md border border-gray-300 dark:border-gray-600"
+              onClick={handleRefetch} // Handle refresh on image click
+              className="w-full max-w-[280px] h-16 rounded shadow-md border border-gray-300 dark:border-gray-600 cursor-pointer"
             />
-            <motion.button
-              whileHover={{ scale: 1.1, rotate: 20 }}
-              whileTap={{ scale: 0.9, rotate: -20 }}
-              onClick={() => refetch()}
-              className="mr-3 text-blue-500 dark:text-blue-300"
-              title="Refresh CAPTCHA"
-              type="button"
-            >
-              <FiRefreshCw size={24} />
-            </motion.button>
           </div>
         </div>
       ) : (

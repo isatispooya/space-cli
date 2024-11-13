@@ -12,7 +12,6 @@ interface InputLoginProps extends HTMLMotionProps<"div"> {
 
 const InputLogin: React.FC<InputLoginProps> = ({
   type = "text",
-  placeholder,
   label,
   value,
   onChange,
@@ -21,7 +20,7 @@ const InputLogin: React.FC<InputLoginProps> = ({
   return (
     <motion.div
       {...fadeIn(1.4, -20)}
-      className="relative mb-3"
+      className="relative mb-6"
       data-twe-input-wrapper-init
       {...motionProps}
     >
@@ -29,15 +28,22 @@ const InputLogin: React.FC<InputLoginProps> = ({
         type={type}
         value={value}
         onChange={onChange}
-        className="peer block w-full border-b-2 bg-transparent px-2 py-1.5 leading-6 outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 dark:text-white dark:placeholder:text-neutral-300 [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
-        placeholder={placeholder}
+        className="peer block w-full border-b-2 bg-transparent px-4 py-2 leading-7 outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 dark:text-white dark:placeholder:text-neutral-300 [&:not(:placeholder-shown)]:placeholder:opacity-0"
+        placeholder=" "
         aria-label={label}
       />
-      <label className="pointer-events-none absolute right-3 top-1 text-sm text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.8rem] peer-focus:scale-[0.8] peer-focus:text-primary dark:text-neutral-400">
+      <label
+        className={`pointer-events-none absolute right-4 top-2 text-base text-neutral-500 transition-all duration-200 ease-out transform
+          ${
+            value
+              ? "-translate-y-[1.5rem] scale-90 text-primary"
+              : "translate-y-0 scale-100 text-neutral-500"
+          }`}
+      >
         {label}
       </label>
     </motion.div>
   );
 };
 
-export default InputLogin;
+export default InputLogin;  

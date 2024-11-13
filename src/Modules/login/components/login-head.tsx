@@ -9,10 +9,7 @@ const LoginHead = () => {
       <motion.div {...fadeIn(0.6, 0, 0.5)} className="mx-auto w-20 md:w-36">
         <Logo positionSize={null} />
       </motion.div>
-      <motion.h4
-        {...fadeIn(0.8, -20)}
-        className="mb-3 mt-1 text-lg font-semibold"
-      >
+      <motion.h4 {...fadeIn(0.8, -20)} className="mb-2  text-lg font-semibold">
         ایساتیس پویا
       </motion.h4>
     </div>
@@ -20,5 +17,3 @@ const LoginHead = () => {
 };
 
 export default LoginHead;
-
-

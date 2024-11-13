@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
-import { FaChevronDown } from "react-icons/fa";
+
 import ArrivalAndDeparture from "../Arrival&departure/Arrival&departure";
 
 interface SidebarProps {
@@ -12,6 +12,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -44,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             href="/profile"
             className="text-gray-800 text-lg font-medium hover:text-gray-600"
           >
-            صفحه اصلی
+            پروفایل
           </a>
         </motion.li>
         <motion.li>

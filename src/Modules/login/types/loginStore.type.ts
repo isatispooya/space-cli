@@ -5,6 +5,8 @@ export interface LoginStore {
   password: string;
   otp: string;
   openOtp: boolean;
+  activeTab: "login" | "signup";
+  setActiveTab: (tab: "login" | "signup") => void;
   setOtp: (value: string) => void;
   setPassword: (pass: string) => void;
   setNationalCode: (code: string) => void;

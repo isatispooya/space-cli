@@ -9,10 +9,9 @@ import { fadeIn } from "../animations/fadeIn";
 import toast, { Toaster } from "react-hot-toast";
 
 const SignupForm = () => {
-  const [showOtpInput, setShowOtpInput] = useState(false); // State to control OTP input visibility
+  const [showOtpInput, setShowOtpInput] = useState(false);
   const { mutate: signupMutate, isError: signupError } = useApplyNationalCode();
   const { mutate: register } = useRegister();
-
   const {
     nationalCode,
     captchaInput,
@@ -34,7 +33,7 @@ const SignupForm = () => {
   const handleCaptchaSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (!nationalCode || !captchaInput || !encryptedResponse) {
-      alert("Please fill all fields and ensure CAPTCHA is loaded.");
+      toast.error("لطفا همه فیلد ها را پر کنید");
       return;
     }
     signupMutate(
@@ -46,7 +45,7 @@ const SignupForm = () => {
       {
         onSuccess: () => {
           setShowOtpInput(true);
-          toast.success("CAPTCHA verified successfully!");
+          toast.success("کد تایید با موفقیت ارسال شد");
         },
       }
     );
@@ -58,7 +57,7 @@ const SignupForm = () => {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="bottom-left" reverseOrder={false} />
       <form>
         <InputLogin
           type="text"
@@ -109,7 +108,7 @@ const SignupForm = () => {
               data-twe-ripple-init
               data-twe-ripple-color="light"
             >
-              تایید و ثبت نام نهایی
+              تایید و ثبت نام
             </button>
           </motion.div>
         )}

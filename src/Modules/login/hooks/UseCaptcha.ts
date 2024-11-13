@@ -2,6 +2,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import api from "../../../api/api";
 import { server } from "../../../api/server";
 import { CaptchaData } from "../types";
+import axios from "axios";
 
 const getCaptcha = async (): Promise<CaptchaData> => {
   const response = await api.get<CaptchaData>(`${server}/captcha/`);
