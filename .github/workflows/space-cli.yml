@@ -20,9 +20,8 @@ jobs:
         port: 2233
         script: |
           cd /var/www/space/cli/
-          git clone https://github.com/isatispooya/space-cli.git .
-          git pull origin main
-
-          npm install
-          npm run build
-          pm2 update
+          if [ ! -d ".git" ]; then
+            git clone https://github.com/isatispooya/space-cli.git .
+          else
+            git pull origin main
+          fi
