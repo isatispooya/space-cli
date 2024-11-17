@@ -13,8 +13,9 @@ const ArrivalAndDeparture = () => {
         onClick={toggleParentDropdown}
         className="w-full bg-gray-700 text-white font-semibold py-2 px-4 text-left rounded-md hover:bg-gray-800 transition duration-300 ease-in-out flex items-center justify-between"
       >
-        <span>ورود و خروج</span>
+        <span>ورود و FFGH</span>
         <motion.span
+
           initial={{ rotate: 0 }}
           animate={{ rotate: isParentOpen ? 180 : 0 }}
           transition={{ duration: 0.3 }}
