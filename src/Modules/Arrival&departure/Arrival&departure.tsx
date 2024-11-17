@@ -1,4 +1,4 @@
-// ArrivalAndDeparture.js
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import DropdownButton from "../../components/dropdown";
