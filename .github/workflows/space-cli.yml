@@ -14,10 +14,10 @@ jobs:
     - name: SSH and Deploy
       uses: appleboy/ssh-action@master
       with:
-        host: "31.40.4.92"
-        username: "root"
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 2233
+        port: ${{ secrets.SSH_PORT }}
         script: |
           cd /var/www/space/cli/
           if [ -d ".git" ]; then
@@ -27,5 +27,8 @@ jobs:
             rm -rf * .[^.]*
             git clone https://github.com/isatispooya/space-cli.git .
           fi
-          npm install
+          # Ensure correct permissions
+          chown -R $USER:$USER .
+          # Install dependencies with proper permissions
+          npm install --unsafe-perm
           npm run build
