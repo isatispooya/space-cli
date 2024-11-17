@@ -20,12 +20,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /var/www/space/cli/
-          if [ -d ".git" ]; then
-            git reset --hard HEAD
-            git pull origin main
-          else
-            rm -rf * .[^.]*
-            git clone https://github.com/isatispooya/space-cli.git .
+
+          rm -rf * .[^.]*
+          git clone https://github.com/isatispooya/space-cli.git .
           fi
           # Ensure correct permissions
           chown -R $USER:$USER .
