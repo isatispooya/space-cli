@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ProfileField = ({ label, value }) => (
+interface ProfileFieldProps {
+  label: string;
+  value: string | number;
+}
+
+const ProfileField: React.FC<ProfileFieldProps> = ({ label, value }) => (
   <div>
     <label htmlFor="label" className="block text-gray-700 text-sm font-semibold mb-2">
       {label}:
@@ -17,7 +22,7 @@ const ProfileField = ({ label, value }) => (
 
 ProfileField.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.number]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 export default ProfileField;

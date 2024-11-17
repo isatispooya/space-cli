@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
 
@@ -10,12 +9,6 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
 
   return (
     <motion.div

@@ -5,7 +5,7 @@ import { AxiosError } from "axios";
 import { ResetPassParams } from "../types/forgetPass.type";
 
 const useChangePass = (
-  uuid
+  uuid: string
 ): UseMutationResult<
   { message: string },
   AxiosError,
