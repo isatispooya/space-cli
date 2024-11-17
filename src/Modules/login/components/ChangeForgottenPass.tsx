@@ -8,7 +8,7 @@ const ChangeForgottenPass: React.FC = () => {
   const [newPass, setNewPass] = useState<string>("");
   const [confirmNewPass, setConfirmNewPass] = useState<string>("");
 
-  const { uuid } = useParams();
+  const { uuid = '' } = useParams();
   const { mutate: changePassMutate } = useChangePass(uuid);
 
   const handleChangePass = (e: React.FormEvent<HTMLFormElement>) => {

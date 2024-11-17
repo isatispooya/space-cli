@@ -1,8 +1,13 @@
-// DropdownButton.js
-import React, { useState } from "react";
+
+import React, { useState, FC } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const DropdownButton = ({ label, items }) => {
+interface DropdownProps {
+  label: string;
+  items: string[];
+}
+
+const DropdownButton: FC<DropdownProps> = ({ label, items }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
