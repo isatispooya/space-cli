@@ -1,7 +1,10 @@
-import React from "react";
 import LOGO from "./logo.png";
 
-const Logo = ({ positionSize }) => {
+interface LogoProps {
+  positionSize: string;
+}
+
+const Logo = ({ positionSize }: LogoProps) => {
   return <img src={LOGO} className={positionSize} />;
 };
 

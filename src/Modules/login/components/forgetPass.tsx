@@ -1,5 +1,5 @@
 import React from "react";
-import InputLogin from "./InputLogin";
+import InputLogin from "./inputLogin";
 import useResetPass from "../hooks/useResetPass";
 import { useLoginStore } from "../store/loginStore";
 
@@ -8,7 +8,7 @@ const ForgetPass = () => {
 
   const { nationalCode, setNationalCode } = useLoginStore();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutate({ nationalCode });
   };

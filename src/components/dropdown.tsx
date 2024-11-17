@@ -1,10 +1,17 @@
-
-import React, { useState, FC } from "react";
+import { useState, FC } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// First define an interface for individual items if needed
+interface DropdownItem {
+  id?: string | number;
+  label: string;
+  value: string | number;
+}
+
+// Then define the props interface
 interface DropdownProps {
   label: string;
-  items: string[];
+  items: DropdownItem[];  // Array of dropdown items
 }
 
 const DropdownButton: FC<DropdownProps> = ({ label, items }) => {
@@ -38,12 +45,10 @@ const DropdownButton: FC<DropdownProps> = ({ label, items }) => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="ml-4 mt-2 bg-gray-500 rounded-md p-2 shadow-md"
           >
-            {items.map((item, index) => (
-              <div
-                key={index}
-                className="dropdown-item py-1 px-2 text-white hover:bg-gray-400 rounded-md transition duration-200 ease-in-out"
-              >
-                {item}
+            {/* Add your dropdown items here */}
+            {items.map((item: DropdownItem) => (
+              <div key={item.id || item.value}>
+                {item.label}
               </div>
             ))}
           </motion.div>

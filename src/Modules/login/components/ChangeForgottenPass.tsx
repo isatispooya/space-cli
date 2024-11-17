@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import InputLogin from "./InputLogin";
+import InputLogin from "./inputLogin";
 import useChangePass from "../hooks/useChangePass";
 import { ResetPassParams } from "../types/forgetPass.type";
 
@@ -8,13 +8,18 @@ const ChangeForgottenPass: React.FC = () => {
   const [newPass, setNewPass] = useState<string>("");
   const [confirmNewPass, setConfirmNewPass] = useState<string>("");
 
-  const { uuid = '' } = useParams();
+  const { uuid = "" } = useParams();
   const { mutate: changePassMutate } = useChangePass(uuid);
 
   const handleChangePass = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const resetPassData: ResetPassParams = { newPass, confirmNewPass };
     changePassMutate(resetPassData);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // your change handler code
   };
 
   return (

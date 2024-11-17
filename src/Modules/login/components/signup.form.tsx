@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import InputLogin from "./InputLogin";
+import InputLogin from "./inputLogin";
 import CaptchaImg from "./chaptchaImg";
 import { useLoginStore } from "../store/loginStore";
 import { motion } from "framer-motion";
@@ -51,6 +51,11 @@ const SignupForm = () => {
     );
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // rest of the submit handler code
+  };
+
   if (signupError) {
     toast.error("خطا در برقراری ارتباط");
   }
@@ -58,13 +63,13 @@ const SignupForm = () => {
   return (
     <>
       <Toaster position="bottom-left" reverseOrder={false} />
-      <form>
+      <form onSubmit={handleSubmit}>
         <InputLogin
           type="text"
           label="کدملی"
           placeholder="کدملی"
           value={nationalCode}
-          onChange={(e) => setNationalCode(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNationalCode(e.target.value)}
         />
 
         {!showOtpInput && (
@@ -74,7 +79,7 @@ const SignupForm = () => {
               label="کپچا"
               placeholder="کپچا"
               value={captchaInput}
-              onChange={(e) => setCaptchaInput(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCaptchaInput(e.target.value)}
             />
             <CaptchaImg setEncryptedResponse={setEncryptedResponse} />
             <button
@@ -95,7 +100,7 @@ const SignupForm = () => {
             label="کد تایید"
             placeholder="کد تایید را وارد کنید"
             value={otp}
-            onChange={(e) => setOtp(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOtp(e.target.value)}
           />
         )}
 

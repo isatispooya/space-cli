@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Collapse, Ripple, initTWE } from "tw-elements";
 import { RiMenuLine } from "react-icons/ri";
 import Avatar from "./components/avatar";
@@ -6,6 +5,7 @@ import { motion } from "framer-motion";
 import LogoWhite from "./logoWhite.png";
 import Sidebar from "../sidebarMenu/sidebar";
 import PositionBtn from "./components/positionSec";
+import { useState } from 'react'
 
 initTWE({ Collapse, Ripple });
 

@@ -1,6 +1,5 @@
 // src/components/Layout.tsx
-import React, { ReactNode } from "react";
-import Sidebar from "../../Modules/sidebarMenu/sidebar";
+import  { ReactNode } from "react";
 import Header from "../../Modules/headerDash/header";
 
 interface LayoutProps {
@@ -8,9 +7,6 @@ interface LayoutProps {
 }
 
 const MainLayout = ({ children }: LayoutProps) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const toggleSidebar = () => setIsOpen(!isOpen);
-
   return (
     <div style={{ display: "flex" }}>
         <Header/>

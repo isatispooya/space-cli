@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react'
 import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
 
