@@ -28,5 +28,14 @@ jobs:
             git clone https://github.com/isatispooya/space-cli.git .
           fi
           npm install
-          npm run build
-          pm2 update
+          npm run build || exit 1
+          
+          if [ ! -d "dist" ] || [ ! -f "dist/index.html" ]; then
+            echo "Error: dist folder or index.html not found"
+            exit 1
+          fi
+          
+          ls -la dist/
+          pm2 delete space-client || true
+          pm2 start http-server --name space-client -- /var/www/space/cli/dist -p 2084 --cors
+          pm2 save
