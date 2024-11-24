@@ -23,8 +23,6 @@ const Login: React.FC = () => {
     setActiveComponent("forgotPassSms");
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const number : string =  "112345678766554324567897654324567876543224567865433245678976543245678798765432456789765432456789"
   return (
     <section
       dir="rtl"

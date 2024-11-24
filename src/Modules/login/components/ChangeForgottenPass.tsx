@@ -17,10 +17,7 @@ const ChangeForgottenPass: React.FC = () => {
     changePassMutate(resetPassData);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // your change handler code
-  };
+
 
   return (
     <form onSubmit={handleChangePass}>
