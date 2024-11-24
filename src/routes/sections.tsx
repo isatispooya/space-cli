@@ -13,7 +13,7 @@ const Loader = () => <LoaderLg />;
 export default function Router() {
   const routes = useRoutes([
     {
-      path: "/login",
+      path: "/",
       element: (
         <Suspense fallback={<Loader />}>
           <LoginPage />
