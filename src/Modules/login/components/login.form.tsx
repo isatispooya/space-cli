@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEventHandler } from "react";
 import InputLogin from "./inputLogin"; 
 import useLogin from "../hooks/useLogin";
 
@@ -7,7 +7,7 @@ const LoginForm = () => {
   const [password, setPassword] = React.useState("");
   const [nationalCode, setNationalCode] = React.useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (!nationalCode.trim() || !password.trim()) {
       alert("لطفا تمام فیلدها را پر کنید");
@@ -52,7 +52,6 @@ const LoginForm = () => {
         type="submit"
         data-twe-ripple-init
         data-twe-ripple-color="light"
-        onClick={handleSubmit}
       >
         ورود
       </button>

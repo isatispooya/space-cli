@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
 
-import ArrivalAndDeparture from "../Arrival&departure/Arrival&departure";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -40,9 +39,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           >
             پروفایل
           </a>
-        </motion.li>
-        <motion.li>
-          <ArrivalAndDeparture />
         </motion.li>
         <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
           <a
