@@ -1,13 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "../../../api/api";
-import { server } from "../../../api/server";
+import { getProfile } from "../service";
 
-const getProfile = async () => {
-  const response = await api.get(
-    `${server}/user/profile/`
-  );
-  return response.data;
-};
 export const useProfile = () => {
 
   return useQuery({

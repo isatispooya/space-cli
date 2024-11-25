@@ -1,21 +1,17 @@
 import { Collapse, Ripple, initTWE } from "tw-elements";
 import { RiMenuLine } from "react-icons/ri";
-import Avatar from "./components/avatar";
+import { Avatar } from "../avatar";
 import { motion } from "framer-motion";
-import LogoWhite from "./logoWhite.png";
-import Sidebar from "../sidebarMenu/sidebar";
-import PositionBtn from "./components/positionSec";
+// import LogoWhite from "../../assets/logoWhite.png";
+import { Position } from "../positions";
 import { useState } from 'react'
-
+import { useSidebarStore } from "../sidebar/sidebar.store";
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
+  const { toggleSidebar } = useSidebarStore();
 
   return (
     <header>
@@ -55,7 +51,7 @@ const Header = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <img src={LogoWhite} className="h-12 w-12" />
+                  <img  className="h-12 w-12" />
                 </motion.div>
               )}
             </div>
@@ -68,13 +64,12 @@ const Header = () => {
           ></div>
 
           <div className="flex items-center space-x-4">
-            <PositionBtn />
+            <Position />
             <Avatar />
           </div>
         </div>
       </nav>
 
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
     </header>
   );
 };

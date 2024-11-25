@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
+import { useSidebarStore } from "./sidebar.store";
 
 
-interface SidebarProps {
-  isOpen: boolean;
-  toggleSidebar: () => void;
-}
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+
+const Sidebar: React.FC = () => {
+
+  const { isOpen, toggleSidebar } = useSidebarStore();
 
   return (
     <motion.div

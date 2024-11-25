@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
-import useProfile from '../../profile/hooks/useProfile';
+import useProfile from '../../Modules/profile/hooks/useProfile';
 
 
 

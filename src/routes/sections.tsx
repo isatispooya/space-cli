@@ -1,12 +1,11 @@
 import { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 import LoaderLg from "../components/loader-lg";
-import NotFoundPage from "../pages/notFound";
+import NotFoundPage from "../pages/not_found.page";
 import NewPass from "../Modules/newPassword/pages/newPass.page";
 
-const LoginPage = lazy(() => import("../pages/loginPage"));
-const DashboardPage = lazy(() => import("../pages/dashboardPage"));
-const ProfilePage = lazy(() => import("../Modules/profile/profile"));
+const LoginPage = lazy(() => import("../pages/login.page"));
+const ProfilePage = lazy(() => import("../Modules/profile").then(module => ({ default: module.ProfilePage })));
 
 const Loader = () => <LoaderLg />;
 
@@ -22,14 +21,6 @@ export default function Router() {
     },
     {
       path: "/",
-      element: (
-        <Suspense fallback={<Loader />}>
-          <DashboardPage />
-        </Suspense>
-      ),
-    },
-    {
-      path: "/profile",
       element: (
         <Suspense fallback={<Loader />}>
           <ProfilePage />

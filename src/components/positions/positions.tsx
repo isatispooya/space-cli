@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
-const PositionBtn = () => {
+const Position = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -70,4 +70,4 @@ const PositionBtn = () => {
   );
 };
 
-export default PositionBtn;
+export default Position;

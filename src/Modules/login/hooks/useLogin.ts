@@ -23,7 +23,7 @@ const useLogin = (): UseMutationResult<token, AxiosError, LoginParams> => {
     onSuccess: (data) => {
       setCookie("access_token", data.access, 1);
       setCookie("refresh_token", data.refresh, 1);
-      navigate("/dashboard");
+      navigate("/");
     },
   });
 };
