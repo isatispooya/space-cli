@@ -9,7 +9,7 @@ import { fadeIn } from "../animations/fadeIn";
 import toast, { Toaster } from "react-hot-toast";
 
 const SignupForm = () => {
-  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [showOtpInput, setShowOtpInput] = useState<boolean>(false);
   const { mutate: signupMutate, isError: signupError } = useApplyNationalCode();
   const { mutate: register } = useRegister();
   const {
@@ -53,7 +53,7 @@ const SignupForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // rest of the submit handler code
+   
   };
 
   if (signupError) {
@@ -69,6 +69,7 @@ const SignupForm = () => {
           label="کدملی"
           placeholder="کدملی"
           value={nationalCode}
+          disabled={showOtpInput}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNationalCode(e.target.value)}
         />
 
@@ -80,6 +81,7 @@ const SignupForm = () => {
               placeholder="کپچا"
               value={captchaInput}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCaptchaInput(e.target.value)}
+             
             />
             <CaptchaImg setEncryptedResponse={setEncryptedResponse} />
             <button
@@ -105,7 +107,7 @@ const SignupForm = () => {
         )}
 
         {showOtpInput && (
-          <motion.div {...fadeIn(1.6, 20)} className="mb-6 text-center">
+          <motion.div {...fadeIn(0.4,  0, 0.4)} className="mb-6 text-center">
             <button
               type="button"
               className="inline-block w-full mt-5 rounded px-4 py-2 bg-gradient-to-r from-[#295270] to-[#524175] text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out"

@@ -1,11 +1,24 @@
 import { useState } from 'react'
 import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
+import useProfile from '../../profile/hooks/useProfile';
+
+
 
 const Avatar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  const { data } = useProfile();
+  
+
+
+
+  const profileInfo = data ? {
+    first_name: data.first_name || '',
+    mobile: data.mobile || ''
+  } : null;
 
   const tools = ["داشبورد", "تنظیمات", "درآمد"];
   return (
@@ -29,15 +42,16 @@ const Avatar = () => {
             transition={{ duration: 0.2 }}
             className="absolute z-10 mt-2 left-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
           >
-            <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-              <div>محمد علی سادات</div>
-              <div className="font-medium truncate">09140707704</div>
-            </div>
+            {profileInfo && (
+              <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                <div>{profileInfo.first_name}</div>
+                <div className="font-medium truncate">{profileInfo.mobile}</div>
+              </div>
+            )}
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
               {tools.map((item, index) => (
-                <li>
+                <li key={index}>
                   <a
-                    key={index}
                     href="#"
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >

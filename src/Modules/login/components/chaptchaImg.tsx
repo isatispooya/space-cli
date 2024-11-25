@@ -25,8 +25,8 @@ const CaptchaImg: React.FC<CaptchaImgProps> = ({ setEncryptedResponse }) => {
   }, [data, setEncryptedResponse]);
 
   const handleRefetch = () => {
-    setEncryptedResponse(null); // Clear previous response
-    refetch(); // Trigger a new captcha fetch
+    setEncryptedResponse(null);
+    refetch();
   };
 
   return (
@@ -40,7 +40,7 @@ const CaptchaImg: React.FC<CaptchaImgProps> = ({ setEncryptedResponse }) => {
             <img
               src={`data:image/png;base64,${data.captcha.image}`}
               alt="CAPTCHA"
-              onClick={handleRefetch} // Handle refresh on image click
+              onClick={handleRefetch}
               className="w-full max-w-[280px] h-16 rounded shadow-md border border-gray-300 dark:border-gray-600 cursor-pointer"
             />
           </div>

@@ -29,7 +29,7 @@ const Login: React.FC = () => {
       className="flex min-h-screen items-center justify-center bg-neutral-200 dark:bg-neutral-700"
     >
       <motion.div
-        {...fadeIn(0.2, 0, 0.8)}
+        {...fadeIn(0.05, 0, 0.4)}
         className="container mx-auto p-4 md:p-8 max-w-md"
       >
         <div className="flex flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200 ">
@@ -38,7 +38,7 @@ const Login: React.FC = () => {
               <div className="lg:flex lg:flex-wrap ">
                 <div className="px-4 md:px-5 lg:w-full p-8 ">
                   <motion.div
-                    {...fadeIn(0.4, 20)}
+                    {...fadeIn(0.05, 10)}
                     className="mx-auto p-4 md:p-8  border-2 border-gray-300 rounded-xl"
                   >
                     <TabButton

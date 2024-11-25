@@ -1,8 +1,8 @@
 import React from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
-import { fadeIn } from "../animations/fadeIn";
+import { fadeIn } from "../Modules/login/animations/fadeIn";
 
-interface InputLoginProps extends HTMLMotionProps<"div"> {
+interface InputLineProps extends HTMLMotionProps<"div"> {
   type?: string;
   placeholder?: string;
   label: string;
@@ -11,7 +11,7 @@ interface InputLoginProps extends HTMLMotionProps<"div"> {
   disabled?: boolean;
 }
 
-const InputLogin: React.FC<InputLoginProps> = ({
+const InputLine: React.FC<InputLineProps> = ({
   type = "text",
   label,
   value,
@@ -49,4 +49,4 @@ const InputLogin: React.FC<InputLoginProps> = ({
   );
 };
 
-export default InputLogin;  
+export default InputLine;
