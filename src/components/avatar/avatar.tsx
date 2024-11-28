@@ -20,7 +20,7 @@ const Avatar = () => {
 
   const tools = [
     {
-      label: "تنظیمات",
+      label: "sتنظیمات",
       href: "/settings",
       // render: <LoginForm />,
 
