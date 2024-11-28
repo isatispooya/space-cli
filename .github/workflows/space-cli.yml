@@ -19,39 +19,27 @@ jobs:
         key: ${{secrets.SSH_PRIVATE_KEY}}
         port: ${{secrets.SSH_PORT}}
         script: |
-          echo "Starting deployment..."
           cd /var/www/space/cli/
-          
           if [ -d ".git" ]; then
-            echo "Git repository exists, updating..."
             git fetch origin
             git clean -fd
             git reset --hard origin/main
-            git pull origin main || { echo "Git pull failed"; exit 1; }
+            git pull origin main
           else
-            echo "Cloning repository..."
             rm -rf * .[^.]*
-            git clone https://github.com/isatispooya/space-cli.git . || { echo "Git clone failed"; exit 1; }
+            git clone https://github.com/isatispooya/space-cli.git .
           fi
           
-          echo "Installing dependencies..."
           rm -rf node_modules
-          npm install || { echo "npm install failed"; exit 1; }
-          
-          echo "Building project..."
-          npm run build || { echo "Build failed"; exit 1; }
+          npm install
+          npm run build || exit 1
           
           if [ ! -d "dist" ] || [ ! -f "dist/index.html" ]; then
             echo "Error: dist folder or index.html not found"
             exit 1
           fi
           
-          echo "Checking dist directory contents:"
           ls -la dist/
-          
-          echo "Restarting PM2 service..."
-          pm2 delete space-client || echo "No existing PM2 process found"
-          NODE_NO_WARNINGS=1 pm2 start http-server --name space-client -- /var/www/space/cli/dist -p 2084 --cors || { echo "PM2 start failed"; exit 1; }
-          pm2 save || { echo "PM2 save failed"; exit 1; }
-          
-          echo "Deployment completed successfully"
+          pm2 delete space-client || true
+          NODE_NO_WARNINGS=1 pm2 start http-server --name space-client -- /var/www/space/cli/dist -p 2084 --cors
+          pm2 save
