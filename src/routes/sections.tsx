@@ -2,10 +2,14 @@ import { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
-import NewPass from "../Modules/newPassword/pages/newPass.page";
 
 const LoginPage = lazy(() => import("../pages/login.page"));
-const ProfilePage = lazy(() => import("../Modules/profile").then(module => ({ default: module.ProfilePage })));
+const ProfilePage = lazy(() =>
+  import("../Modules/profile").then((module) => ({
+    default: module.ProfilePage,
+  }))
+);
+const Settings = lazy(() => import("../Modules/settings/components/settings"));
 
 const Loader = () => <LoaderLg />;
 
@@ -27,6 +31,7 @@ export default function Router() {
         </Suspense>
       ),
     },
+
     {
       path: "*",
       element: (
@@ -35,11 +40,11 @@ export default function Router() {
         </Suspense>
       ),
     },
-     {
-      path: "/reset-password",
-      element: (  
+    {
+      path: "/settings",
+      element: (
         <Suspense fallback={<Loader />}>
-          <NewPass />
+          <Settings />
         </Suspense>
       ),
     },

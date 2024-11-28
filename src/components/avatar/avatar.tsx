@@ -1,8 +1,7 @@
-import { useState } from 'react'
+import { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
-import useProfile from '../../Modules/profile/hooks/useProfile';
-
+import useProfile from "../../Modules/profile/hooks/useProfile";
 
 
 const Avatar = () => {
@@ -11,16 +10,32 @@ const Avatar = () => {
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const { data } = useProfile();
-  
 
+  const profileInfo = data
+    ? {
+        first_name: data.first_name || "",
+        mobile: data.mobile || "",
+      }
+    : null;
 
+  const tools = [
+    {
+      label: "تنظیمات",
+      href: "/settings",
+      // render: <LoginForm />,
 
-  const profileInfo = data ? {
-    first_name: data.first_name || '',
-    mobile: data.mobile || ''
-  } : null;
-
-  const tools = ["داشبورد", "تنظیمات", "درآمد"];
+    },
+    {
+      label: "خروج",
+      href: "/login",
+      // render: <UserLogout />,
+    },
+    {
+      label: "درآمد",
+      href: "/income",
+      // render: <UserIncome />,
+    },
+  ];
   return (
     <div className="relative">
       <motion.div
@@ -52,10 +67,10 @@ const Avatar = () => {
               {tools.map((item, index) => (
                 <li key={index}>
                   <a
-                    href="#"
+                    href={item.href}
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
-                    {item}
+                    {item.label}
                   </a>
                 </li>
               ))}

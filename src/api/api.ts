@@ -6,8 +6,8 @@ const api = axios.create({
   baseURL: server,
 });
 
-let isRefreshing = false; // Track if token refresh is in progress
-let refreshSubscribers: ((token: string) => void)[] = []; // Store requests while refresh is in progress
+let isRefreshing = false;
+let refreshSubscribers: ((token: string) => void)[] = [];
 
 function onRefreshed(token: string) {
   refreshSubscribers.forEach((callback) => callback(token));
