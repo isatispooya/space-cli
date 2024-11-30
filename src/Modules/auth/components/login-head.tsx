@@ -2,6 +2,7 @@
 import Logo from "../../../components/logo";
 import { fadeIn } from "../animations/fadeIn";
 import { motion } from "framer-motion";
+import typo from "./گروه مالی@2x.png"
 
 const LoginHead = () => {
   return (
@@ -10,7 +11,7 @@ const LoginHead = () => {
         <Logo positionSize="" />
       </motion.div>
       <motion.h4 {...fadeIn(0.8, -20)} className="mb-2  text-lg font-semibold">
-        ایساتیس پویا
+        <img src={typo} alt="typo" />
       </motion.h4>
     </div>
   );

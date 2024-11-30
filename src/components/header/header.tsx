@@ -2,7 +2,7 @@ import { Collapse, Ripple, initTWE } from "tw-elements";
 import { RiMenuLine } from "react-icons/ri";
 import { Avatar } from "../avatar";
 import { motion } from "framer-motion";
-// import LogoWhite from "../../assets/logoWhite.png";
+import LogoWhite from "./Artboard 1 copy 17.png";
 import { Position } from "../positions";
 import { useState } from 'react'
 import { useSidebarStore } from "../sidebar/sidebar.store";
@@ -51,7 +51,7 @@ const Header = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <img  className="h-12 w-12" />
+                  <img src={LogoWhite}  className="h-12 w-12" />
                 </motion.div>
               )}
             </div>

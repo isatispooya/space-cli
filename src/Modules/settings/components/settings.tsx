@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { Tab, initTWE } from "tw-elements";
+import ChangePasswordForm from "../feature/changeOldPass.form";
 
 const Settings: React.FC = () => {
-
-  
   useEffect(() => {
     initTWE({ Tab });
   }, []);
@@ -77,7 +76,7 @@ const Settings: React.FC = () => {
           aria-labelledby="tabs-home-tab02"
           data-twe-tab-active
         >
-          Tab 1 content
+          <ChangePasswordForm />
         </div>
         <div
           className="hidden opacity-0 transition-opacity duration-150 ease-linear data-[twe-tab-active]:block"

@@ -10,6 +10,7 @@ interface InputLineProps extends HTMLMotionProps<"div"> {
   name?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   disabled?: boolean;
 }
 
@@ -17,8 +18,9 @@ const PassInput: React.FC<InputLineProps> = ({
   label,
   value,
   onChange,
+  onBlur,
   disabled,
-
+  name,
   ...motionProps
 }) => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -41,6 +43,8 @@ const PassInput: React.FC<InputLineProps> = ({
         type={showPassword ? "text" : "password"}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
+        name={name}
         className="peer px-7 pl-9 w-full bg-gray-100 placeholder:text-slate-400 text-slate-700 text-sm rounded-lg transition duration-300 ease focus:outline-none py-4 focus:border-slate-400 hover:border-slate-300 shadow-inner focus:shadow"
         placeholder=" "
         aria-label={label}

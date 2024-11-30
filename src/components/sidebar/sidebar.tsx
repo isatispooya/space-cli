@@ -2,11 +2,7 @@ import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import { useSidebarStore } from "./sidebar.store";
 
-
-
-
 const Sidebar: React.FC = () => {
-
   const { isOpen, toggleSidebar } = useSidebarStore();
 
   return (
@@ -42,10 +38,10 @@ const Sidebar: React.FC = () => {
         </motion.li>
         <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
           <a
-            href="#"
+            href="/companies"
             className="text-gray-800 text-lg font-medium hover:text-gray-600"
           >
-            خدمات
+            مدیریت شرکت ها
           </a>
         </motion.li>
         <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>

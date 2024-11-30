@@ -4,6 +4,7 @@ import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../components/dashboard";
 
+
 const LoginPage = lazy(() => import("../pages/login.page"));
 const ProfilePage = lazy(() =>
   import("../Modules/profile").then((module) => ({
@@ -13,6 +14,12 @@ const ProfilePage = lazy(() =>
 const SettingsPage = lazy(() =>
   import("../Modules/settings").then((module) => ({
     default: module.SettingsPage,
+  }))
+);
+
+const CompanyPage = lazy(() =>
+  import("../Modules/companies").then((module) => ({
+    default: module.CompanyPage,
   }))
 );
 
@@ -57,6 +64,14 @@ export default function Router() {
       element: (
         <Suspense fallback={<Loader />}>
           <SettingsPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/companies",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <CompanyPage />
         </Suspense>
       ),
     },
