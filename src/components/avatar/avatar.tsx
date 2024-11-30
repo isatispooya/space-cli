@@ -28,7 +28,7 @@ const Avatar = () => {
     {
       label: "خروج",
       href: "/login",
-      // render: <UserLogout />,
+      
     },
     {
       label: "درآمد",
@@ -36,6 +36,7 @@ const Avatar = () => {
       // render: <UserIncome />,
     },
   ];
+
   return (
     <div className="relative">
       <motion.div

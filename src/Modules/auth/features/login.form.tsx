@@ -4,8 +4,12 @@ import toast, { Toaster } from "react-hot-toast";
 import PassInput from "../components/passInput";
 import InputBase from "../../../components/inputBase";
 
-const LoginForm = ({ handleComponentChange }: { handleComponentChange: (component: "login" | "signup" | "forgetpass") => void }) => {
-  const { mutate, isError } = useLogin();
+const LoginForm = ({
+  handleComponentChange,
+}: {
+  handleComponentChange: (component: "login" | "signup" | "forgetpass") => void;
+}) => {
+  const { mutate } = useLogin();
   const [password, setPassword] = React.useState("");
   const [nationalCode, setNationalCode] = React.useState("");
 
@@ -13,11 +17,6 @@ const LoginForm = ({ handleComponentChange }: { handleComponentChange: (componen
     e.preventDefault();
     if (!nationalCode.trim() || !password.trim()) {
       toast.error("لطفا تمام فیلدها را پر کنید");
-      return;
-    }
-
-    if (nationalCode.length !== 10) {
-      alert("کد ملی باید ۱۰ رقم باشد");
       return;
     }
 
@@ -36,12 +35,6 @@ const LoginForm = ({ handleComponentChange }: { handleComponentChange: (componen
       }
     );
   };
-
-  React.useEffect(() => {
-    if (isError) {
-      alert("نام کاربری یا رمز عبور اشتباه است");
-    }
-  }, [isError]);
 
   return (
     <>

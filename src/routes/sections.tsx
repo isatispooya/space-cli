@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
+import Dashboard from "../components/dashboard";
 
 const LoginPage = lazy(() => import("../pages/login.page"));
 const ProfilePage = lazy(() =>
@@ -9,7 +10,11 @@ const ProfilePage = lazy(() =>
     default: module.ProfilePage,
   }))
 );
-const Settings = lazy(() => import("../Modules/settings/components/settings"));
+const SettingsPage = lazy(() =>
+  import("../Modules/settings").then((module) => ({
+    default: module.SettingsPage,
+  }))
+);
 
 const Loader = () => <LoaderLg />;
 
@@ -24,14 +29,21 @@ export default function Router() {
       ),
     },
     {
-      path: "/",
+      path: "/profile",
       element: (
         <Suspense fallback={<Loader />}>
           <ProfilePage />
         </Suspense>
       ),
     },
-
+    {
+      path: "/",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Dashboard />
+        </Suspense>
+      ),
+    },
     {
       path: "*",
       element: (
@@ -44,11 +56,10 @@ export default function Router() {
       path: "/settings",
       element: (
         <Suspense fallback={<Loader />}>
-          <Settings />
+          <SettingsPage />
         </Suspense>
       ),
     },
   ]);
-
   return routes;
 }
