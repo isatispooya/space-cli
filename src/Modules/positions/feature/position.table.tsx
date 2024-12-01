@@ -8,6 +8,7 @@ import { FaPlus } from "react-icons/fa";
 import ModalLayout from "../../../layouts/modal.layout.";
 import PositionCreate from "./position.create";
 
+
 const PositionsTable = () => {
   const { data: positions } = usePositionData();
   const [selectedRow, setSelectedRow] = useState<PositionData | null>(null);

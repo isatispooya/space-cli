@@ -8,8 +8,8 @@ import { CompanyData } from "../types";
 import ModalLayout from "../../../layouts/modal.layout.";
 import toast, { Toaster } from "react-hot-toast";
 import SeeCompany from "../components/seeCompany";
-
 import DeleteCompany from "../components/deleteCompany";
+
 
 const CompanyTable = () => {
   const { data } = useCompaniesData();
