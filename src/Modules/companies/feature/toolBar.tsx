@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CreateCompanyForm from "./createCompany.form";
-import EditCompany from "../components/editCompany";
 import ModalLayout from "../../../layouts/modal.layout.";
+
 const CompanyToolBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<"create" | "edit" | null>(
@@ -14,12 +14,6 @@ const CompanyToolBar = () => {
         return (
           <ModalLayout isOpen={isOpen} onClose={() => setIsOpen(false)}>
             <CreateCompanyForm />
-          </ModalLayout>
-        );
-      case "edit":
-        return (
-          <ModalLayout isOpen={isOpen} onClose={() => setIsOpen(false)}>
-            <EditCompany />
           </ModalLayout>
         );
       default:
@@ -64,17 +58,6 @@ const CompanyToolBar = () => {
                 className="block py-2 px-3 text-gray-700 bg-gray-200 rounded md:bg-transparent md:text-gray-700 md:p-0 dark:text-white"
               >
                 ایجاد
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  setSelectedTool("edit");
-                  setIsOpen(true);
-                }}
-                className="block py-2 px-3 mr-10 text-gray-700 bg-gray-200 rounded md:bg-transparent md:text-gray-700 md:p-0 dark:text-white"
-              >
-                ویرایش
               </button>
             </li>
           </ul>

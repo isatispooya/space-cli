@@ -1,13 +1,47 @@
 import { DataGrid } from "@mui/x-data-grid";
 import useCompaniesData from "../hooks/useCompaniesData";
-
 import CustomDataGridToolbar from "../utils/tableToolbar";
 import { localeText } from "../utils/localtext";
+import { useCallback, useState } from "react";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { CompanyData } from "../types";
+import ModalLayout from "../../../layouts/modal.layout.";
+import toast, { Toaster } from "react-hot-toast";
+import SeeCompany from "../components/seeCompany";
 
+import DeleteCompany from "../components/deleteCompany";
 
 const CompanyTable = () => {
   const { data } = useCompaniesData();
+  
   const rows = data?.results || [];
+  const [selectedRow, setSelectedRow] = useState<CompanyData | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const handleEdit = useCallback(() => {
+    if (!selectedRow) {
+      toast.error("لطفا یک شرکت را انتخاب کنید");
+      return;
+    }
+    setIsOpen(true);
+  }, [selectedRow]);
+
+  const handleView = useCallback(() => {
+    if (!selectedRow) {
+      toast.error("لطفا یک شرکت را انتخاب کنید");
+      return;
+    }
+    setIsOpen(true);
+  }, [selectedRow]);
+
+  const handleDelete = useCallback(() => {
+    if (!selectedRow) {
+      toast.error("لطفا یک شرکت را انتخاب کنید");
+      return;
+    }
+    setIsDeleteOpen(true);
+  }, [selectedRow]);
 
   const columns = [
     { field: "name", headerName: "نام شرکت", width: 130 },
@@ -32,35 +66,99 @@ const CompanyTable = () => {
   ];
 
   return (
-    <DataGrid
-      rows={rows}
-      columns={columns}
-      initialState={{
-        pagination: {
-          paginationModel: { pageSize: 10, page: 0 },
-        },
-      }}
-      pageSizeOptions={[10]}
-      disableRowSelectionOnClick
-      disableColumnMenu
-      filterMode="client"
-      localeText={localeText}
-      slots={{
-        toolbar: (props) => (
-          <CustomDataGridToolbar
-            {...props}
-            data={data}
-            fileName="گزارش-پرداخت"
-          />
-        ),
-      }}
-      slotProps={{
-        toolbar: {
-          showQuickFilter: true,
-          quickFilterProps: { debounceMs: 500 },
-        },
-      }}
-    />
+    <>
+      <Toaster />
+      <div className="w-full bg-gray-100 shadow-md relative">
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          onRowClick={(params) => setSelectedRow(params.row)}
+          onRowSelectionModelChange={(newSelectionModel) => {
+            if (newSelectionModel.length > 0) {
+              const selectedId = newSelectionModel[0];
+              const selectedRow = rows.find(
+                (row: CompanyData) => row.id === selectedId
+              );
+              if (selectedRow) {
+                setSelectedRow(selectedRow);
+              }
+            } else {
+              setSelectedRow(null);
+            }
+          }}
+          checkboxSelection
+          rowSelectionModel={selectedRow ? [selectedRow.id] : []}
+          disableMultipleRowSelection
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 10, page: 0 },
+            },
+          }}
+          pageSizeOptions={[10]}
+          disableColumnMenu
+          filterMode="client"
+          localeText={localeText}
+          sx={{
+            "& .Mui-selected": {
+              backgroundColor: "rgba(25, 118, 210, 0.08) !important",
+            },
+          }}
+          slots={{
+            toolbar: (props) => (
+              <CustomDataGridToolbar
+                {...props}
+                data={data}
+                fileName="گزارش-پرداخت"
+                showExcelExport={true}
+                actions={{
+                  edit: {
+                    label: "ویرایش",
+                    show: true,
+                    onClick: handleEdit,
+                    icon: <FaEdit />,
+                  },
+                  view: {
+                    label: "مشاهده",
+                    show: true,
+                    onClick: handleView,
+                    icon: <FaEye />,
+                  },
+                  delete: {
+                    label: "حذف",
+                    show: true,
+                    onClick: handleDelete,
+                    icon: <FaTrash />,
+                  },
+                }}
+              />
+            ),
+          }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 500 },
+            },
+          }}
+        />
+
+        <ModalLayout
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+            setSelectedRow(null);
+          }}
+        >
+          {selectedRow && <SeeCompany data={selectedRow} />}
+        </ModalLayout>
+
+        <ModalLayout
+          isOpen={isDeleteOpen}
+          onClose={() => setIsDeleteOpen(false)}
+        >
+          {selectedRow && <DeleteCompany data={selectedRow} />}
+        </ModalLayout>
+      </div>
+    </>
   );
 };
 

@@ -1,11 +1,6 @@
-export * from "./create_company.type";
-
 export interface CompanyData {
   id: number;
   name: string;
-  address: string;
-  employees: number;
-  email: string;
   company_type: string;
   year_of_establishment: number;
   phone: string;

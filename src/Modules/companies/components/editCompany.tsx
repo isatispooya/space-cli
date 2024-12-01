@@ -1,7 +1,12 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { motion } from "framer-motion";
-import { CompanyFormValues, CompanyType, FormField } from "../types";
+import {
+  CompanyFormValues,
+  CompanyType,
+  FormField,
+  CompanyData,
+} from "../types";
 import useUpdateCompany from "../hooks/useUpdateCompany";
 
 const validationSchema = Yup.object().shape({
@@ -59,15 +64,31 @@ const formFields: FormField[] = [
   { name: "employees", label: "تعداد کارمندان", type: "number" },
 ];
 
-const EditCompanyForm = () => {
-  const { mutate: updateCompany } = useUpdateCompany();
-  const initialValues: CompanyFormValues = formFields.reduce(
-    (acc, field) => ({
-      ...acc,
-      [field.name]: "",
-    }),
-    {} as CompanyFormValues
-  );
+interface EditCompanyFormProps {
+  data: CompanyData | null;
+}
+
+const EditCompanyForm = ({ data }: EditCompanyFormProps) => {
+  const { mutate: updateCompany } = useUpdateCompany(data?.id as number);
+  if (!data) return null;
+
+  const initialValues: CompanyFormValues = {
+    id: data.id,
+    name: data.name || '',
+    company_type: data.company_type || '',
+    year_of_establishment: data.year_of_establishment?.toString() || '',
+    phone: data.phone || '',
+    postal_code: data.postal_code || '',
+    national_id: data.national_id || '',
+    description: data.description || '',
+    registered_capital: data.registered_capital?.toString() || '',
+    registration_number: data.registration_number || '',
+    type_of_activity: data.type_of_activity || '',
+    website: data.website || '',
+    email: data.email || '',
+    address: data.address || '',
+    employees: data.employees || 0,
+  };
 
   return (
     <motion.div
@@ -76,7 +97,7 @@ const EditCompanyForm = () => {
       dir="rtl"
       className="max-w-7xl mx-auto mt-10 p-10 bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] backdrop-blur-sm"
     >
-      <motion.h2 
+      <motion.h2
         initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
         className="text-4xl font-extrabold mb-10 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 text-center"
@@ -89,9 +110,9 @@ const EditCompanyForm = () => {
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            await updateCompany(values);
+            await updateCompany({ id: data.id, ...values });
           } catch (error) {
-            console.error("Error creating company:", error);
+            console.error("Error updating company:", error);
           } finally {
             setSubmitting(false);
           }
@@ -147,7 +168,10 @@ const EditCompanyForm = () => {
 
             <div className="col-span-full mt-8">
               <motion.button
-                whileHover={{ scale: 1.02, boxShadow: "0 5px 15px rgba(0,0,0,0.1)" }}
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+                }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={isSubmitting}
@@ -157,7 +181,11 @@ const EditCompanyForm = () => {
                   <div className="flex items-center justify-center space-x-2 space-x-reverse">
                     <motion.span
                       animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
                       className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                     />
                     <span>در حال ارسال...</span>

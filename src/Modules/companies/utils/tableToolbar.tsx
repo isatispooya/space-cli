@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useCallback } from "react";
-import { Button } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
 import {
   GridToolbarContainer,
   GridToolbarColumnsButton,
@@ -10,24 +10,34 @@ import {
 } from "@mui/x-data-grid";
 
 import { exportToExcel } from "../../../utils/exel";
-import { FaFileArrowDown } from "react-icons/fa6";
+import { FaDownload, FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { CompanyData } from "../types";
 
-interface CompanyData {
-  id: number;
-  name: string;
-  [key: string]: string | number | boolean | null;
+interface ActionButton {
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+  show?: boolean;
 }
 
 interface CustomDataGridToolbarProps {
   data: CompanyData[];
   fileName?: string;
   customExcelData?: (data: CompanyData[]) => CompanyData[];
+  showExcelExport?: boolean;
+  actions?: {
+    edit?: ActionButton;
+    view?: ActionButton;
+    delete?: ActionButton;
+  };
 }
 
 const CustomDataGridToolbar = ({
   data,
   fileName = "export",
   customExcelData,
+  showExcelExport = true,
+  actions,
 }: CustomDataGridToolbarProps) => {
   const handleExport = useCallback(() => {
     try {
@@ -48,7 +58,6 @@ const CustomDataGridToolbar = ({
         display: "flex",
         gap: 1,
         p: 1,
-        borderBottom: "1px solid #e0e0e0",
         justifyContent: "space-between",
         flexWrap: "wrap",
       }}
@@ -57,22 +66,69 @@ const CustomDataGridToolbar = ({
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<FaFileArrowDown />}
-          onClick={handleExport}
-          size="small"
-          sx={{
-            minWidth: "120px",
-            "&:hover": {
-              backgroundColor: "primary.main",
-              color: "white",
-            },
-          }}
-        >
-          دانلود اکسل
-        </Button>
+
+        {/* Action Buttons */}
+        {actions?.edit?.show && (
+          <Tooltip title={actions.edit.label}>
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (actions?.edit?.onClick) {
+                  actions.edit.onClick();
+                }
+              }}
+              color="primary"
+            >
+              {actions?.edit?.icon || <FaEdit />}
+            </IconButton>
+          </Tooltip>
+        )}
+
+        {actions?.view?.show && (
+          <Tooltip title={actions.view.label}>
+            <IconButton
+              size="small"
+              onClick={() => actions?.view?.onClick?.()}
+              color="info"
+            >
+              {actions.view.icon || <FaEye />}
+            </IconButton>
+          </Tooltip>
+        )}
+
+        {actions?.delete?.show && (
+          <Tooltip title={actions.delete.label}>
+            <IconButton
+              size="small"
+              onClick={() => actions?.delete?.onClick?.()}
+              color="error"
+            >
+              {actions.delete.icon || <FaTrash />}
+            </IconButton>
+          </Tooltip>
+        )}
+
+        {showExcelExport && (
+          <Button
+            variant="outlined"
+            color="primary"
+            startIcon={<FaDownload />}
+            onClick={handleExport}
+            size="small"
+            sx={{
+              minWidth: "120px",
+              "&:hover": {
+                backgroundColor: "primary.main",
+                color: "white",
+              },
+            }}
+          >
+            دانلود اکسل
+          </Button>
+        )}
       </div>
       <GridToolbarQuickFilter
         sx={{
@@ -90,6 +146,8 @@ CustomDataGridToolbar.propTypes = {
   data: PropTypes.array.isRequired,
   fileName: PropTypes.string,
   customExcelData: PropTypes.func,
+  showExcelExport: PropTypes.bool,
+  actions: PropTypes.object,
 };
 
 export default CustomDataGridToolbar;
