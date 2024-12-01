@@ -1,0 +1,1 @@
+export {default as CreateCorrespondenceForm } from './createCorrespondence.form';

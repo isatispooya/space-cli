@@ -23,6 +23,23 @@ const CompanyPage = lazy(() =>
   }))
 );
 
+const CorrespondencePage = lazy(() =>
+  import("../Modules/correspondence").then((module) => ({
+    default: module.CorrespondencePage,
+  }))
+);
+
+const CorrespondenceCreatePage = lazy(() =>
+  import("../Modules/correspondence").then((module) => ({
+    default: module.CorrespondenceCreatePage,
+  }))
+);
+const CorrespondenceTablePage = lazy(() =>
+  import("../Modules/correspondence").then((module) => ({
+    default: module.CorrespondenceTablePage,
+  }))
+);
+
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -74,6 +91,32 @@ export default function Router() {
           <CompanyPage />
         </Suspense>
       ),
+    },
+    {
+      path: "/correspondence",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <CorrespondencePage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CorrespondenceTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CorrespondenceCreatePage />
+            </Suspense>
+          ),
+        },
+      ],
     },
   ]);
   return routes;
