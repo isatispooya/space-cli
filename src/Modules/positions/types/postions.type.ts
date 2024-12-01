@@ -14,10 +14,16 @@ export interface PositionData {
 export interface PositionFormValues {
   name: string;
   company: string;
+  user: number;
   parent: string;
   type_of_employment: string;
   description: string;
   start_date: string;
   end_date: string;
-  created_at: string;
+
+}
+
+export interface PatchPositionParams {
+  id: number;
+  data: PositionData;
 }

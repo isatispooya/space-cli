@@ -1,22 +1,32 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { usePositionData } from "../hooks";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { FaEdit } from "react-icons/fa";
 import CustomDataGridToolbar from "../../companies/utils/tableToolbar";
 import { localeText } from "../../companies/utils/localtext";
 import { PositionData } from "../types";
 import { FaPlus } from "react-icons/fa";
 import ModalLayout from "../../../layouts/modal.layout.";
-import PositionCreate from "./position.create";
+import { PositionCreate, PositionUpdate } from "./";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const PositionsTable = () => {
   const { data: positions } = usePositionData();
   const [selectedRow, setSelectedRow] = useState<PositionData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const handleCreate = () => {
     setIsOpen(true);
   };
+
+  const handleEdit = useCallback(() => {
+    if (!selectedRow) {
+      toast.error("لطفا یک نقش را انتخاب کنید");
+      return;
+    }
+    setIsUpdateOpen(true);
+  }, [selectedRow]);
 
   const rows = positions?.results || [];
   const columns = [
@@ -33,6 +43,7 @@ const PositionsTable = () => {
 
   return (
     <>
+      <Toaster />
       <DataGrid
         rows={rows}
         columns={columns}
@@ -81,6 +92,12 @@ const PositionsTable = () => {
                   onClick: handleCreate,
                   icon: <FaPlus />,
                 },
+                edit: {
+                  show: true,
+                  label: "ویرایش",
+                  onClick: handleEdit,
+                  icon: <FaEdit />,
+                },
               }}
             />
           ),
@@ -95,6 +112,12 @@ const PositionsTable = () => {
 
       <ModalLayout isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <PositionCreate />
+      </ModalLayout>
+      <ModalLayout isOpen={isUpdateOpen} onClose={() => {
+        setIsUpdateOpen(false);
+        setSelectedRow(null);
+      }}>
+        {selectedRow && <PositionUpdate data={selectedRow} />}
       </ModalLayout>
     </>
   );

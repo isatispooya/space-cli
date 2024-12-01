@@ -1,28 +1,42 @@
-import useCreatePos from "../hooks/useCreatePos";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { motion } from "framer-motion";
-import { PositionFormValues } from "../types";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 import moment from "moment-jalaali";
-import { useCompaniesData } from "../../companies/hooks";
 import { useUserData } from "../../users/hooks";
+import { useCompaniesData } from "../../companies/hooks";
+import { useUpdatePosition } from "../hooks";
+import { PositionData, PositionFormValues } from "../types";
 
 interface FormField {
   name: keyof PositionFormValues;
   label: string;
   type?: string;
   options?: { value: string; label: string }[];
-  headerClassName?: string;
-  headerAlign?: string;
 }
 
-const PositionCreate = () => {
+interface PositionUpdateProps {
+  data: PositionData | null;
+}
+
+interface Company {
+  id: number;
+  name: string;
+}
+
+interface User {
+  id: number;
+  first_name?: string;
+  last_name?: string;
+}
+
+const PositionUpdate = ({ data }: PositionUpdateProps) => {
+  const { mutate: updatePosition } = useUpdatePosition(data?.id as number);
   const { data: companies } = useCompaniesData();
+  console.log(companies);
   const { data: users } = useUserData();
-  const { mutate: createPosition } = useCreatePos();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("نام نقش الزامی است"),
@@ -36,6 +50,22 @@ const PositionCreate = () => {
     user: Yup.number().required("کاربر الزامی است"),
   });
 
+  const typeOfEmploymentOptions = [
+    "full_time",
+    "part_time",
+    "contract",
+    "freelance",
+    "internship",
+  ];
+
+  const typeOfEmploymentTranslations: Record<string, string> = {
+    full_time: "تمام وقت",
+    part_time: "پاره وقت",
+    contract: "قراردادی",
+    freelance: "فریلنسر",
+    internship: "کارآموزی",
+  };
+
   const formFields: FormField[] = [
     { name: "name", label: "نام نقش", type: "text" },
     {
@@ -43,7 +73,7 @@ const PositionCreate = () => {
       label: "شرکت",
       type: "select",
       options:
-        companies?.results?.map((company) => ({
+        companies?.results?.map((company: Company) => ({
           value: company.id,
           label: company.name,
         })) || [],
@@ -53,28 +83,36 @@ const PositionCreate = () => {
       label: "کاربر",
       type: "select",
       options:
-        users?.map((user) => ({
+        users?.map((user: User) => ({
           value: user.id,
           label: user.first_name || user.last_name,
         })) || [],
     },
     { name: "start_date", label: "تاریخ شروع", type: "date" },
     { name: "end_date", label: "تاریخ پایان", type: "date" },
-
     { name: "description", label: "توضیحات", type: "text" },
     { name: "parent", label: "نقش پدر", type: "text" },
-    { name: "type_of_employment", label: "نوع استخدام" },
+    {
+      name: "type_of_employment",
+      label: "نوع استخدام",
+      type: "select",
+      options: typeOfEmploymentOptions.map((type) => ({
+        value: type,
+        label: typeOfEmploymentTranslations[type],
+      })),
+    },
+    
   ];
 
   const initialValues: PositionFormValues = {
-    name: "",
-    company: companies?.results?.[0]?.id || "",
-    user: 0,
-    parent: "",
-    type_of_employment: "",
-    description: "",
-    start_date: "",
-    end_date: "",
+    name: data?.name || "",
+    company: String(data?.company || companies?.results?.[0]?.id || ""),
+    user: Number(data?.user || 0),
+    parent: String(data?.parent || ""),
+    type_of_employment: String(data?.type_of_employment || ""),
+    description: data?.description || "",
+    start_date: data?.start_date || "",
+    end_date: data?.end_date || "",
   };
 
   return (
@@ -85,22 +123,33 @@ const PositionCreate = () => {
       className=" max-w-6xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg"
     >
       <LocalizationProvider dateAdapter={AdapterMomentJalaali}>
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">ایجاد نقش</h2>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">بروزرسانی نقش</h2>
 
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
+          enableReinitialize={true}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-              await createPosition(values);
+              await updatePosition({
+                id: data?.id as number,
+                data: values,
+              });
             } catch (error) {
-              console.error("Error creating company:", error);
+              console.error("Error updating position:", error);
             } finally {
               setSubmitting(false);
             }
           }}
         >
-          {({ errors, touched, isSubmitting, setFieldValue, values }) => (
+          {({
+            errors,
+            touched,
+            isSubmitting,
+            setFieldValue,
+            values,
+            setFieldTouched,
+          }) => (
             <Form className="grid grid-cols-2 gap-4">
               {formFields.map((field) => (
                 <div key={field.name}>
@@ -128,6 +177,9 @@ const PositionCreate = () => {
                             touched[field.name] && Boolean(errors[field.name]),
                           helperText: touched[field.name] && errors[field.name],
                           className: "w-full",
+                          onBlur: () => {
+                            setFieldTouched(field.name, true);
+                          },
                         },
                       }}
                     />
@@ -136,6 +188,13 @@ const PositionCreate = () => {
                       as="select"
                       name={field.name}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        const value =
+                          field.name === "user"
+                            ? Number(e.target.value)
+                            : e.target.value;
+                        setFieldValue(field.name, value);
+                      }}
                     >
                       <option value="">انتخاب کنید</option>
                       {field.options?.map((option) => (
@@ -149,6 +208,9 @@ const PositionCreate = () => {
                       name={field.name}
                       type={field.type}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setFieldValue(field.name, e.target.value);
+                      }}
                     />
                   )}
                   {errors[field.name] && touched[field.name] && (
@@ -182,4 +244,4 @@ const PositionCreate = () => {
   );
 };
 
-export default PositionCreate;
+export default PositionUpdate;
