@@ -22,6 +22,11 @@ const CompanyPage = lazy(() =>
     default: module.CompanyPage,
   }))
 );
+const PositionsPage = lazy(() =>
+  import("../Modules/positions").then((module) => ({
+    default: module.PositionsPage,
+  }))
+);
 
 const Loader = () => <LoaderLg />;
 
@@ -72,6 +77,14 @@ export default function Router() {
       element: (
         <Suspense fallback={<Loader />}>
           <CompanyPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/positions",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <PositionsPage />
         </Suspense>
       ),
     },

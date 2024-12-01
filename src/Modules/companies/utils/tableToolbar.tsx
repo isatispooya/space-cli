@@ -10,7 +10,7 @@ import {
 } from "@mui/x-data-grid";
 
 import { exportToExcel } from "../../../utils/exel";
-import { FaDownload, FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { FaDownload, FaEdit, FaEye, FaPlus, FaTrash } from "react-icons/fa";
 import { CompanyData } from "../types";
 
 interface ActionButton {
@@ -29,6 +29,7 @@ interface CustomDataGridToolbarProps {
     edit?: ActionButton;
     view?: ActionButton;
     delete?: ActionButton;
+    create?: ActionButton;
   };
 }
 
@@ -107,6 +108,14 @@ const CustomDataGridToolbar = ({
               color="error"
             >
               {actions.delete.icon || <FaTrash />}
+            </IconButton>
+          </Tooltip>
+        )}
+
+        {actions?.create?.show && (
+          <Tooltip title={actions.create.label}>
+            <IconButton size="small" onClick={actions.create.onClick}>
+              {actions.create.icon || <FaPlus />}
             </IconButton>
           </Tooltip>
         )}

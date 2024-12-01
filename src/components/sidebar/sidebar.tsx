@@ -46,6 +46,14 @@ const Sidebar: React.FC = () => {
         </motion.li>
         <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
           <a
+            href="/positions"
+            className="text-gray-800 text-lg font-medium hover:text-gray-600"
+          >
+            مدیریت نقش ها
+          </a>
+        </motion.li>
+        <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+          <a
             href="#"
             className="text-gray-800 text-lg font-medium hover:text-gray-600"
           >
