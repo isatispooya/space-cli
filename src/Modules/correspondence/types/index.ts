@@ -1,5 +1,7 @@
 export * from './correspondence_data.type';
 export * from './create_correspondence.type';
+export * from './deleteCorrenpondence.delete.type';
+export * from './UpdateCorrespondenceResponse.update';
 
 export interface ICorrespondence {
   sender: number;

@@ -4,7 +4,6 @@ import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../components/dashboard";
 
-
 const LoginPage = lazy(() => import("../pages/login.page"));
 const ProfilePage = lazy(() =>
   import("../Modules/profile").then((module) => ({
@@ -17,23 +16,26 @@ const SettingsPage = lazy(() =>
   }))
 );
 
-const CompanyPage = lazy(() =>
+const CompanyMainPage = lazy(() =>
   import("../Modules/companies").then((module) => ({
-    default: module.CompanyPage,
+    default: module.CompanyMainPage,
   }))
 );
-const PositionsPage = lazy(() =>
-  import("../Modules/positions").then((module) => ({
-    default: module.PositionsPage,
+const CompanyTablePage = lazy(() =>
+  import("../Modules/companies").then((module) => ({
+    default: module.CompanyTablePage,
   }))
 );
-
+const CompanyCreatePage = lazy(() =>
+  import("../Modules/companies").then((module) => ({
+    default: module.CompanyCreatePage,
+  }))
+);
 const CorrespondencePage = lazy(() =>
   import("../Modules/correspondence").then((module) => ({
     default: module.CorrespondencePage,
   }))
 );
-
 const CorrespondenceCreatePage = lazy(() =>
   import("../Modules/correspondence").then((module) => ({
     default: module.CorrespondenceCreatePage,
@@ -42,6 +44,21 @@ const CorrespondenceCreatePage = lazy(() =>
 const CorrespondenceTablePage = lazy(() =>
   import("../Modules/correspondence").then((module) => ({
     default: module.CorrespondenceTablePage,
+  }))
+);
+const PositionCreatePage = lazy(() =>
+  import("../Modules/positions").then((module) => ({
+    default: module.PositionCreatePage,
+  }))
+);
+const PositionMainPage = lazy(() =>
+  import("../Modules/positions").then((module) => ({
+    default: module.PositionMainPage,
+  }))
+);
+const PositionsTablePage = lazy(() =>
+  import("../Modules/positions").then((module) => ({
+    default: module.PositionsTablePage,
   }))
 );
 
@@ -93,17 +110,54 @@ export default function Router() {
       path: "/companies",
       element: (
         <Suspense fallback={<Loader />}>
-          <CompanyPage />
+          <CompanyMainPage />
         </Suspense>
       ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CompanyTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CompanyCreatePage />
+            </Suspense>
+          ),
+        },
+      ],
     },
+
     {
       path: "/positions",
       element: (
         <Suspense fallback={<Loader />}>
-          <PositionsPage />
+          <PositionMainPage />
         </Suspense>
       ),
+      children: [
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PositionCreatePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PositionsTablePage />
+            </Suspense>
+          ),
+        },
+      ],
     },
     {
       path: "/correspondence",

@@ -158,7 +158,7 @@ const EditCorrespondence = ({ data, onClose }: EditCorrespondenceProps) => {
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">پیوست‌های فعلی:</p>
                         <div className="flex flex-wrap gap-2 mt-1">
-                          {data.attachments.map((attachment, index) => (
+                          {data.attachments.map(( index) => (
                             <span
                               key={index}
                               className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"

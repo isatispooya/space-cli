@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useDeleteCorrespondence } from "../hooks/useDeleteCorrespondence";
+import { useDeleteCorrespondence } from "../hooks"; 
 import toast from "react-hot-toast";
 import { CorrespondenceData } from "../types";
 interface DeleteCorrespondenceProps {

@@ -8,7 +8,9 @@ interface CorrespondencesResponse {
   results: CorrespondenceData[];
 }
 
-export const getCorrespondences = async (): Promise<CorrespondencesResponse> => {
-  const response = await api.get('/correspondence/');
+const getCorrespondences = async (): Promise<CorrespondencesResponse> => {
+  const response = await api.get("/correspondence/");
   return response.data;
-}; 
+};
+
+export default getCorrespondences;

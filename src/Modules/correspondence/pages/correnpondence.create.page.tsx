@@ -8,4 +8,4 @@ const CorrespondenceCreatePage = () => {
   );
 };
 
-export default CorrespondenceCreatePage;        
+export default CorrespondenceCreatePage;

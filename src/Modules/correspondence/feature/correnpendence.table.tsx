@@ -1,14 +1,14 @@
 import { DataGrid, GridRenderCellParams } from "@mui/x-data-grid";
-import { useCorrespondencesData } from "../hooks/useCorrespondencesData";
-import CustomDataGridToolbar from "../utils/tableToolbar";
-import { localeText } from "../utils/localtext";
+import { useCorrespondencesData } from "../hooks"; 
+import CustomDataGridToolbar from "../utils/tableToolbar"; 
+import { localeText } from "../utils/localtext"; 
 import { useCallback, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { CorrespondenceData } from "../types";
-import ModalLayout from "../../../layouts/modal.layout.";
+import { ModalLayout } from "../../../layouts"; 
 import toast, { Toaster } from "react-hot-toast";
-import SeeCorrespondence from "../components/seeCorrespondence";
-import DeleteCorrespondence from "../components/deleteCorrespondence";
+import {SeeCorrespondence} from "./"; 
+import {DeleteCorrespondence} from "./"; 
 
 const CorrespondenceTable = () => {
   const { data } = useCorrespondencesData();

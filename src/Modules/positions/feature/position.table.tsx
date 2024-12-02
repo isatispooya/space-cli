@@ -6,7 +6,7 @@ import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { PositionData } from "../types";
 import { FaPlus } from "react-icons/fa";
 import { ModalLayout } from "../../../layouts";
-import { PositionCreate, PositionUpdate } from ".";
+import { CreatePositionForm,  PositionUpdate } from "./";
 import toast, { Toaster } from "react-hot-toast";
 import { deletePosition } from "../services";
 
@@ -15,6 +15,8 @@ const PositionsTable = () => {
   const [selectedRow, setSelectedRow] = useState<PositionData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+
+  
   const handleCreate = () => {
     setIsOpen(true);
   };
@@ -124,7 +126,7 @@ const PositionsTable = () => {
       />
 
       <ModalLayout isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <PositionCreate />
+        <CreatePositionForm />
       </ModalLayout>
       <ModalLayout
         isOpen={isUpdateOpen}

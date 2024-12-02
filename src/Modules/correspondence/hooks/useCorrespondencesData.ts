@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { getCorrespondences } from '../services/correspondence.get';
-import { CorrespondenceData } from '../types';
+import { useQuery } from "@tanstack/react-query";
+import { getCorrespondence } from "../services";
+import { CorrespondenceData } from "../types";
 
 interface CorrespondencesResponse {
   count: number;
@@ -9,9 +9,11 @@ interface CorrespondencesResponse {
   results: CorrespondenceData[];
 }
 
-export const useCorrespondencesData = () => {
+const useCorrespondencesData = () => {
   return useQuery<CorrespondencesResponse>({
-    queryKey: ['correspondences'],
-    queryFn: getCorrespondences
+    queryKey: ["correspondences"],
+    queryFn: getCorrespondence,
   });
-}; 
+};
+
+export default useCorrespondencesData;

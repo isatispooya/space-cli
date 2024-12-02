@@ -2,7 +2,6 @@ import { Form, Input, Select, Switch, Button, Upload } from 'antd';
 import { CreateCorrespondenceDTO } from '../types';
 import styled from 'styled-components';
 
-
 interface CreateCorrespondenceFormProps {
   onSubmit: (values: CreateCorrespondenceDTO) => void;
   loading?: boolean;

@@ -1,13 +1,15 @@
-import { useMutation } from '@tanstack/react-query';
-import { message } from 'antd';
-import createCorrespondencePost from '../services/createcorrespondence.post';
-import { CreateCorrespondenceDTO } from '../types';
+import { useMutation } from "@tanstack/react-query";
+import { message } from "antd";
+import { createCorrespondence } from "../services";
+import { CreateCorrespondenceDTO } from "../types";
 
-export const useCreateCorrespondence = () => {
+const useCreateCorrespondence = () => {
   return useMutation({
-    mutationFn: (data: CreateCorrespondenceDTO) => createCorrespondencePost(data),
+    mutationFn: (data: CreateCorrespondenceDTO) => createCorrespondence(data),
     onSuccess: () => {
-      message.success('مکاتبه با موفقیت ایجاد شد');
+      message.success("مکاتبه با موفقیت ایجاد شد");
     },
   });
-}; 
+};
+
+export default useCreateCorrespondence;
