@@ -6,7 +6,7 @@ const DeleteCompany = ({ data }: { data: CompanyData }) => {
   return (
     <div>
       <h2>آیا از حذف شرکت {data.name} مطمئن هستید؟</h2>
-      <button onClick={() => deleteCompany(data.id)}>حذف</button>
+      {/* <button onClick={() => deleteCompany(data.id)}>حذف</button> */}
     </div>
   );
 };
