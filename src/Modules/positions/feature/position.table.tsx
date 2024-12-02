@@ -1,15 +1,14 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { usePositionData } from "../hooks";
 import { useState, useCallback } from "react";
-import { FaEdit } from "react-icons/fa";
-import CustomDataGridToolbar from "../../companies/utils/tableToolbar";
-import { localeText } from "../../companies/utils/localtext";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { PositionData } from "../types";
 import { FaPlus } from "react-icons/fa";
-import ModalLayout from "../../../layouts/modal.layout.";
-import { PositionCreate, PositionUpdate } from "./";
+import { ModalLayout } from "../../../layouts";
+import { PositionCreate, PositionUpdate } from ".";
 import toast, { Toaster } from "react-hot-toast";
-
+import { deletePosition } from "../services";
 
 const PositionsTable = () => {
   const { data: positions } = usePositionData();
@@ -26,6 +25,14 @@ const PositionsTable = () => {
       return;
     }
     setIsUpdateOpen(true);
+  }, [selectedRow]);
+
+  const handleDelete = useCallback(() => {
+    if (!selectedRow) {
+      toast.error("لطفا یک نقش را انتخاب کنید");
+      return;
+    }
+    deletePosition(selectedRow.id);
   }, [selectedRow]);
 
   const rows = positions?.results || [];
@@ -98,6 +105,12 @@ const PositionsTable = () => {
                   onClick: handleEdit,
                   icon: <FaEdit />,
                 },
+                delete: {
+                  show: true,
+                  label: "حذف",
+                  onClick: handleDelete,
+                  icon: <FaTrash />,
+                },
               }}
             />
           ),
@@ -113,10 +126,13 @@ const PositionsTable = () => {
       <ModalLayout isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <PositionCreate />
       </ModalLayout>
-      <ModalLayout isOpen={isUpdateOpen} onClose={() => {
-        setIsUpdateOpen(false);
-        setSelectedRow(null);
-      }}>
+      <ModalLayout
+        isOpen={isUpdateOpen}
+        onClose={() => {
+          setIsUpdateOpen(false);
+          setSelectedRow(null);
+        }}
+      >
         {selectedRow && <PositionUpdate data={selectedRow} />}
       </ModalLayout>
     </>

@@ -8,5 +8,5 @@ const PositionsPage = () => {
     </MainLayout>
   );
 };
- 
+
 export default PositionsPage;

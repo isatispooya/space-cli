@@ -7,7 +7,7 @@ import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 import moment from "moment-jalaali";
 import { useUserData } from "../../users/hooks";
 import { useCompaniesData } from "../../companies/hooks";
-import { useUpdatePosition } from "../hooks";
+import { usePositionData, useUpdatePosition } from "../hooks";
 import { PositionData, PositionFormValues } from "../types";
 
 interface FormField {
@@ -35,8 +35,8 @@ interface User {
 const PositionUpdate = ({ data }: PositionUpdateProps) => {
   const { mutate: updatePosition } = useUpdatePosition(data?.id as number);
   const { data: companies } = useCompaniesData();
-  console.log(companies);
   const { data: users } = useUserData();
+  const { data: positions } = usePositionData();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("نام نقش الزامی است"),
@@ -91,7 +91,16 @@ const PositionUpdate = ({ data }: PositionUpdateProps) => {
     { name: "start_date", label: "تاریخ شروع", type: "date" },
     { name: "end_date", label: "تاریخ پایان", type: "date" },
     { name: "description", label: "توضیحات", type: "text" },
-    { name: "parent", label: "نقش پدر", type: "text" },
+    {
+      name: "parent",
+      label: "نقش پدر",
+      type: "select",
+      options:
+        positions?.results?.map((position: PositionData) => ({
+          value: position.id,
+          label: position.name,
+        })) || [],
+    },
     {
       name: "type_of_employment",
       label: "نوع استخدام",
@@ -101,7 +110,6 @@ const PositionUpdate = ({ data }: PositionUpdateProps) => {
         label: typeOfEmploymentTranslations[type],
       })),
     },
-    
   ];
 
   const initialValues: PositionFormValues = {

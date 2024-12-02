@@ -1,4 +1,4 @@
-export const localeText = {
+export  const localeText = {
     toolbarFilters: 'فیلترها',
     toolbarExport: 'دریافت خروجی',
     toolbarExportCSV: 'دانلود CSV',

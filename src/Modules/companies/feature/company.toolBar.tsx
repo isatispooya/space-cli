@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CreateCompanyForm from "./createCompany.form";
+import CreateCompanyForm from "./company.create.form";
 import ModalLayout from "../../../layouts/modal.layout.";
 
 const CompanyToolBar = () => {

@@ -9,9 +9,9 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 
-import { exportToExcel } from "../../../utils/exel";
+import { exportToExcel } from "./exel";
 import { FaDownload, FaEdit, FaEye, FaPlus, FaTrash } from "react-icons/fa";
-import { CompanyData } from "../types";
+import { CompanyData } from "../Modules/companies/types";
 
 interface ActionButton {
   label: string;

@@ -15,15 +15,14 @@ export interface PositionFormValues {
   name: string;
   company: string;
   user: number;
-  parent: string;
-  type_of_employment: string;
+  parent: string | null;
+  type_of_employment: string | null;
   description: string;
   start_date: string;
   end_date: string;
-
 }
 
 export interface PatchPositionParams {
   id: number;
-  data: PositionData;
+  data: PositionFormValues;
 }

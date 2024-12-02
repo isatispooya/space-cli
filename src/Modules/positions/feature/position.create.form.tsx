@@ -9,6 +9,8 @@ import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 import moment from "moment-jalaali";
 import { useCompaniesData } from "../../companies/hooks";
 import { useUserData } from "../../users/hooks";
+import { usePositionData } from "../hooks";
+
 
 interface FormField {
   name: keyof PositionFormValues;
@@ -19,9 +21,26 @@ interface FormField {
   headerAlign?: string;
 }
 
+interface Company {
+  id: number;
+  name: string;
+}
+
+interface User {
+  id: number;
+  first_name?: string;
+  last_name?: string;
+}
+
+interface Position {
+  id: number;
+  name: string;
+}
+
 const PositionCreate = () => {
   const { data: companies } = useCompaniesData();
   const { data: users } = useUserData();
+  const { data: positions } = usePositionData();
   const { mutate: createPosition } = useCreatePos();
 
   const validationSchema = Yup.object().shape({
@@ -36,6 +55,22 @@ const PositionCreate = () => {
     user: Yup.number().required("کاربر الزامی است"),
   });
 
+  const typeOfEmploymentOptions = [
+    "full_time",
+    "part_time",
+    "contract",
+    "freelance",
+    "internship",
+  ];
+
+  const typeOfEmploymentTranslations: Record<string, string> = {
+    full_time: "تمام وقت",
+    part_time: "پاره وقت",
+    contract: "قراردادی",
+    freelance: "فریلنسر",
+    internship: "کارآموزی",
+  };
+
   const formFields: FormField[] = [
     { name: "name", label: "نام نقش", type: "text" },
     {
@@ -43,7 +78,7 @@ const PositionCreate = () => {
       label: "شرکت",
       type: "select",
       options:
-        companies?.results?.map((company) => ({
+        companies?.results?.map((company: Company) => ({
           value: company.id,
           label: company.name,
         })) || [],
@@ -53,24 +88,39 @@ const PositionCreate = () => {
       label: "کاربر",
       type: "select",
       options:
-        users?.map((user) => ({
+        users?.map((user: User) => ({
           value: user.id,
           label: user.first_name || user.last_name,
         })) || [],
     },
     { name: "start_date", label: "تاریخ شروع", type: "date" },
     { name: "end_date", label: "تاریخ پایان", type: "date" },
-
     { name: "description", label: "توضیحات", type: "text" },
-    { name: "parent", label: "نقش پدر", type: "text" },
-    { name: "type_of_employment", label: "نوع استخدام" },
+    {
+      name: "parent",
+      label: "ارشد",
+      type: "select",
+      options: positions?.results?.map((position: Position) => ({
+        value: position.id,
+        label: position.name,
+      })),
+    },
+    {
+      name: "type_of_employment",
+      label: "نوع استخدام",
+      type: "select",
+      options: typeOfEmploymentOptions.map(type => ({
+        value: type,
+        label: typeOfEmploymentTranslations[type]
+      })),
+    },
   ];
 
   const initialValues: PositionFormValues = {
     name: "",
-    company: companies?.results?.[0]?.id || "",
+    company: "",
     user: 0,
-    parent: "",
+    parent: null,
     type_of_employment: "",
     description: "",
     start_date: "",
@@ -92,9 +142,16 @@ const PositionCreate = () => {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-              await createPosition(values);
+              console.log('Form Values:', values);
+              const formData = {
+                ...values,
+                parent: values.parent || null,
+                type_of_employment: values.type_of_employment || null,
+              };
+              console.log('FormData to submit:', formData);
+              await createPosition(formData);
             } catch (error) {
-              console.error("Error creating company:", error);
+              console.error("Error creating position:", error);
             } finally {
               setSubmitting(false);
             }
@@ -136,6 +193,10 @@ const PositionCreate = () => {
                       as="select"
                       name={field.name}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        setFieldValue(field.name, e.target.value);
+                      }}
+                      value={values[field.name]}
                     >
                       <option value="">انتخاب کنید</option>
                       {field.options?.map((option) => (

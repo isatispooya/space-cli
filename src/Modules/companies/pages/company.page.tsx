@@ -1,6 +1,6 @@
 import { MainLayout } from "../../../layouts";
-import CompanyTable from "../feature/table";
-import CompanyToolBar from "../feature/toolBar";
+import CompanyTable from "../feature/company.table";
+import CompanyToolBar from "../feature/company.toolBar";
 
 const CompanyPage = () => {
   return (

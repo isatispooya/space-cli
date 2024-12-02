@@ -1,19 +1,18 @@
 import { DataGrid } from "@mui/x-data-grid";
 import useCompaniesData from "../hooks/useCompaniesData";
-import CustomDataGridToolbar from "../utils/tableToolbar";
-import { localeText } from "../utils/localtext";
+import CustomDataGridToolbar from "../../../utils/tableToolbar";
+import { localeText } from "../../../utils/localtext";
 import { useCallback, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { CompanyData } from "../types";
 import ModalLayout from "../../../layouts/modal.layout.";
 import toast, { Toaster } from "react-hot-toast";
-import SeeCompany from "../components/seeCompany";
-import DeleteCompany from "../components/deleteCompany";
-
+import SeeCompany from "./company.see.form"; 
+import DeleteCompany from "./company.delete.form"; 
 
 const CompanyTable = () => {
   const { data } = useCompaniesData();
-  
+
   const rows = data?.results || [];
   const [selectedRow, setSelectedRow] = useState<CompanyData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
