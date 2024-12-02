@@ -1,8 +1,8 @@
-import { useDeleteCompany } from "../hooks/useDeleteCompany";
+// import { useDeleteCompany } from "../hooks/useDeleteCompany";
 import { CompanyData } from "../types";
 
 const DeleteCompany = ({ data }: { data: CompanyData }) => {
-  const { mutate: deleteCompany } = useDeleteCompany();
+  // const { mutate: deleteCompany } = useDeleteCompany();
   return (
     <div>
       <h2>آیا از حذف شرکت {data.name} مطمئن هستید؟</h2>

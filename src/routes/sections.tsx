@@ -104,6 +104,8 @@ export default function Router() {
           <PositionsPage />
         </Suspense>
       ),
+    },
+    {
       path: "/correspondence",
       element: (
         <Suspense fallback={<Loader />}>
