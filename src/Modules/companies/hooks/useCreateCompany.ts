@@ -1,11 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import createCompaniesPost, {
-  ICreateCompaniesPost,
-} from "../services/createcompanies.post";
+import { createCompany } from "../services";
+import { ICreateCompaniesPost } from "../types";
 
 const useCreateCompany = () => {
   return useMutation<void, Error, ICreateCompaniesPost>({
-    mutationFn: createCompaniesPost,
+    mutationFn: createCompany,
   });
 };
 

@@ -1,4 +1,3 @@
-export { default as CompanyToolBar } from "./company.toolBar";
 export { default as CompanyTable } from "./company.table";
 export { default as CreateCompanyForm } from "./company.create.form";
 export { default as CompanySee } from "./company.see.form";

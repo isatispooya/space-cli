@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import deleteCompany from "../services/companies.delete";
+import { deleteCompany } from "../services";
 
 const useDeleteCompany = () => {
   return useMutation({

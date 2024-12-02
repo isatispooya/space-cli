@@ -1,4 +1,5 @@
 export * from "./create_company.type";
+export * from "./ICreateCompaniesPost.type";
 
 export interface CompanyData {
   id: number;
