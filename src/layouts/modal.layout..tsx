@@ -36,7 +36,7 @@ const ModalLayout = ({ children, isOpen, onClose }: ModalLayoutProps) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden  transition-all">
                 <div className="mt-2">{children}</div>
               </Dialog.Panel>
             </Transition.Child>

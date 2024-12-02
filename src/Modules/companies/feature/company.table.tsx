@@ -1,29 +1,33 @@
 import { DataGrid } from "@mui/x-data-grid";
-import useCompaniesData from "../hooks/useCompaniesData";
+import { useCompaniesData } from "../hooks";
 import CustomDataGridToolbar from "../../../utils/tableToolbar";
 import { localeText } from "../../../utils/localtext";
 import { useCallback, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { CompanyData } from "../types";
-import ModalLayout from "../../../layouts/modal.layout.";
+import { ModalLayout } from "../../../layouts";
 import toast, { Toaster } from "react-hot-toast";
-import SeeCompany from "./company.see.form"; 
-import DeleteCompany from "./company.delete.form"; 
+import SeeCompany from "./company.details";
+import Popup from "../../../components/popup";
+import useDeleteCompany from "../hooks/useDeleteCompany";
+import EditCompanyForm from "./company.edit.form";
 
 const CompanyTable = () => {
   const { data } = useCompaniesData();
+  const { mutate: deleteCompanyMutation } = useDeleteCompany();
 
   const rows = data?.results || [];
   const [selectedRow, setSelectedRow] = useState<CompanyData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const handleEdit = useCallback(() => {
     if (!selectedRow) {
       toast.error("لطفا یک شرکت را انتخاب کنید");
       return;
     }
-    setIsOpen(true);
+    setIsEditOpen(true);
   }, [selectedRow]);
 
   const handleView = useCallback(() => {
@@ -39,8 +43,9 @@ const CompanyTable = () => {
       toast.error("لطفا یک شرکت را انتخاب کنید");
       return;
     }
+    deleteCompanyMutation(selectedRow.id);
     setIsDeleteOpen(true);
-  }, [selectedRow]);
+  }, [selectedRow, deleteCompanyMutation]);
 
   const columns = [
     { field: "name", headerName: "نام شرکت", width: 130 },
@@ -151,11 +156,38 @@ const CompanyTable = () => {
         </ModalLayout>
 
         <ModalLayout
-          isOpen={isDeleteOpen}
-          onClose={() => setIsDeleteOpen(false)}
+          isOpen={isEditOpen}
+          onClose={() => {
+            setIsEditOpen(false);
+            setSelectedRow(null);
+          }}
         >
-          {selectedRow && <DeleteCompany data={selectedRow} />}
+          {selectedRow && (
+            <EditCompanyForm
+              data={selectedRow}
+              onClose={() => {
+                setIsEditOpen(false);
+                setSelectedRow(null);
+              }}
+            />
+          )}
         </ModalLayout>
+        {selectedRow && (
+          <Popup
+            isOpen={isDeleteOpen}
+            onClose={() => setIsDeleteOpen(false)}
+            label="حذف شرکت"
+            text="آیا از حذف شرکت مطمئن هستید؟"
+            onConfirm={() => {
+              console.log("Deleting company:", selectedRow);
+              setIsDeleteOpen(false);
+              setSelectedRow(null);
+            }}
+            onCancel={() => {
+              setIsDeleteOpen(false);
+            }}
+          />
+        )}
       </div>
     </>
   );

@@ -1,10 +1,10 @@
-import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { motion } from "framer-motion";
+import Forms from "../../../components/forms";
 import useCreateCompany from "../hooks/useCreateCompany";
 import { CompanyFormValues, CompanyType, FormField } from "../types";
 
 const validationSchema = Yup.object().shape({
+  id: Yup.number().optional(),
   name: Yup.string().required("نام شرکت الزامی است"),
   company_type: Yup.string().required("نوع شرکت الزامی است"),
   year_of_establishment: Yup.string().required("سال تاسیس الزامی است"),
@@ -17,7 +17,13 @@ const validationSchema = Yup.object().shape({
   type_of_activity: Yup.string().required("نوع فعالیت الزامی است"),
   address: Yup.string().required("آدرس الزامی است"),
   website: Yup.string().url("آدرس وبسایت نامعتبر است"),
-  email: Yup.string().email("فرمت ایمیل نامعتبر است").required("ایمیل الزامی است"),
+  email: Yup.string()
+    .email("فرمت ایمیل نامعتبر است")
+    .matches(
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+      "فرمت ایمیل نامعتبر است (مثال: example@gmail.com)"
+    )
+    .required("ایمیل الزامی است"),
   employees: Yup.number()
     .min(1, "تعداد کارمندان باید بیشتر از 0 باشد")
     .required("تعداد کارمندان الزامی است"),
@@ -68,84 +74,27 @@ const CreateCompanyForm = () => {
   );
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      dir="rtl"
-      className=" max-w-6xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg"
-    >
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">ایجاد شرکت</h2>
-
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          try {
-            await createCompany(values);
-          } catch (error) {
-            console.error("Error creating company:", error);
-          } finally {
-            setSubmitting(false);
-          }
-        }}
-      >
-        {({ errors, touched, isSubmitting }) => (
-          <Form className="grid grid-cols-2 gap-4">
-            {formFields.map((field) => (
-              <div key={field.name}>
-                <label
-                  htmlFor={field.name}
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  {field.label}
-                </label>
-                {field.type === "select" ? (
-                  <Field
-                    as="select"
-                    name={field.name}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                  >
-                    <option value="">انتخاب کنید</option>
-                    {field.options?.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </Field>
-                ) : (
-                  <Field
-                    name={field.name}
-                    type={field.type}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                  />
-                )}
-                {errors[field.name] && touched[field.name] && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-red-500 text-sm mt-1"
-                  >
-                    {errors[field.name]}
-                  </motion.div>
-                )}
-              </div>
-            ))}
-
-            <div className="col-span-2">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-              >
-                {isSubmitting ? "در حال ارسال..." : "ایجاد شرکت"}
-              </motion.button>
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </motion.div>
+    <Forms
+      formFields={formFields}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      title="ثبت اطلاعات شرکت"
+      colors="text-[#29D2C7] "
+      buttonColors="bg-[#29D2C7] hover:bg-[#008282]"
+      submitButtonText={{
+        default: "ایجاد شرکت",
+        loading: "در حال ارسال...",
+      }}
+      onSubmit={async (values, { setSubmitting }) => {
+        try {
+          await createCompany(values);
+        } catch (error) {
+          console.error("Error creating company:", error);
+        } finally {
+          setSubmitting(false);
+        }
+      }}
+    />
   );
 };
 

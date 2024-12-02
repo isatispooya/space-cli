@@ -1,4 +1,5 @@
 export interface CompanyFormValues {
+  [key: string]: unknown;
   id?: number;
   name: string;
   company_type: string;

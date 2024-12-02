@@ -34,7 +34,7 @@ const SeeCompany = ({ data }: SeeCompanyProps) => {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg space-y-8"
     >
-      <motion.h2 
+      <motion.h2
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         className="text-2xl font-bold text-gray-800 text-center mb-8"
