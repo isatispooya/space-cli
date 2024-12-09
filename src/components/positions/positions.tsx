@@ -27,7 +27,7 @@ const Position = () => {
     <div className="relative inline-block text-right" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="text-white font-semibold text-sm px-6 py-3 text-center inline-flex items-center transition-transform transform dark:bg-blue-600 dark:hover:bg-purple-700 dark:focus:ring-blue-800"
+        className="text-[#02205F]  font-semibold text-sm px-6 py-3 text-center inline-flex items-center transition-transform transform dark:bg-blue-600 dark:hover:bg-purple-700 dark:focus:ring-blue-800"
         type="button"
         aria-expanded={isOpen}
       >

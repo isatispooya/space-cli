@@ -49,14 +49,27 @@ const CustomDataGridToolbar = ({
 }: CustomDataGridToolbarProps) => {
   const handleExport = useCallback(() => {
     try {
-      const dataToExport = Array.isArray(data) ? data : data.results;
-      if (!dataToExport || dataToExport.length === 0) {
-        console.error("No data available for export");
+      const dataToExport = Array.isArray(data) ? data : data?.results;
+      
+      if (!dataToExport || !Array.isArray(dataToExport) || dataToExport.length === 0) {
+        console.error("No valid data available for export");
         return;
       }
+
+      if (!dataToExport.every(item => item && typeof item === 'object')) {
+        console.error("Invalid data format for export");
+        return;
+      }
+
       const excelData = customExcelData
         ? customExcelData(dataToExport)
         : dataToExport;
+
+      if (!excelData || !Array.isArray(excelData) || excelData.length === 0) {
+        console.error("No valid data after processing");
+        return;
+      }
+
       exportToExcel({ data: excelData, fileName });
     } catch (error) {
       console.error("Error in export:", error);

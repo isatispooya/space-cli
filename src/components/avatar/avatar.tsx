@@ -3,7 +3,6 @@ import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
 import useProfile from "../../Modules/profile/hooks/useProfile";
 
-
 const Avatar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -23,12 +22,10 @@ const Avatar = () => {
       label: "sتنظیمات",
       href: "/settings",
       // render: <LoginForm />,
-
     },
     {
       label: "خروج",
       href: "/login",
-      
     },
     {
       label: "درآمد",
@@ -41,9 +38,9 @@ const Avatar = () => {
     <div className="relative">
       <motion.div
         onClick={toggleDropdown}
-        whileHover={{ scale: 1.1, rotate: 5, color: "#1DA1F2" }}
+        whileHover={{ scale: 1.1, rotate: 5, color: "#5677BC" , borderColor: "#5677BC" }}
         whileTap={{ scale: 0.9 }}
-        className="text-4xl cursor-pointer text-white"
+        className="text-2xl cursor-pointer text-[#5677BC] border-2 border-[#5677BC] rounded-xl p-1"
       >
         <CgProfile />
       </motion.div>
