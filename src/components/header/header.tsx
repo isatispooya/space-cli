@@ -4,14 +4,10 @@ import { Avatar } from "../avatar";
 import { motion } from "framer-motion";
 import LogoWhite from "./Artboard 1 copy 17.png";
 import LogoText from "../textLogo.png";
-
-import { useState } from "react";
 import { useSidebarStore } from "../sidebar/sidebar.store";
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
-
-
   const { toggleSidebar } = useSidebarStore();
 
   return (
@@ -34,9 +30,7 @@ const Header = () => {
               <RiMenuLine className="text-[#02205F] text-3xl" />
             </motion.button>
 
-            <div
-              className="ml-4 max-w-xs h-14 flex items-center"
-            >
+            <div className="ml-4 max-w-xs h-14 flex items-center">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
