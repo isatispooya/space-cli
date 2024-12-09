@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
-import { useSidebarStore } from "./sidebar.store";
+import { useSidebarStore } from "../store/sidebar.store";
 
 const Sidebar: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebarStore();
@@ -44,7 +44,6 @@ const Sidebar: React.FC = () => {
             مدیریت شرکت ها
           </a>
         </motion.li>
-
 
         <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
           <a

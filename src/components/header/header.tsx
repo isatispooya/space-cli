@@ -4,7 +4,7 @@ import { Avatar } from "../avatar";
 import { motion } from "framer-motion";
 import LogoWhite from "./Artboard 1 copy 17.png";
 import LogoText from "../textLogo.png";
-import { useSidebarStore } from "../sidebar/sidebar.store";
+import { useSidebarStore } from "../../Modules/sidebar/store/sidebar.store";
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
