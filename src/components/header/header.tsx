@@ -4,13 +4,13 @@ import { Avatar } from "../avatar";
 import { motion } from "framer-motion";
 import LogoWhite from "./Artboard 1 copy 17.png";
 import LogoText from "../textLogo.png";
-import { Position } from "../positions";
+
 import { useState } from "react";
 import { useSidebarStore } from "../sidebar/sidebar.store";
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
-  const [isHovered, setIsHovered] = useState(false);
+
 
   const { toggleSidebar } = useSidebarStore();
 
@@ -36,8 +36,6 @@ const Header = () => {
 
             <div
               className="ml-4 max-w-xs h-14 flex items-center"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
             >
               <motion.div
                 initial={{ opacity: 0 }}
