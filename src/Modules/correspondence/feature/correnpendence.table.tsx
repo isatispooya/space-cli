@@ -1,36 +1,44 @@
-import { DataGrid, GridRenderCellParams } from "@mui/x-data-grid";
-import { useCorrespondencesData } from "../hooks"; 
-import CustomDataGridToolbar from "../utils/tableToolbar"; 
-import { localeText } from "../utils/localtext"; 
-import { useCallback, useState } from "react";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { useCorrespondencesData } from "../hooks";
+import { CorrespondenceTypes } from "../types";
+import { ModalLayout } from "../../../layouts";
+import CustomDataGridToolbar from "../utils/tableToolbar";
+import { localeText } from "../utils/localtext";
+import { useCorrespondenceTableStore } from "../store/corrrenTable.store";
+import { useCallback } from "react";
+import toast from "react-hot-toast";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
-import { CorrespondenceData } from "../types";
-import { ModalLayout } from "../../../layouts"; 
-import toast, { Toaster } from "react-hot-toast";
-import {SeeCorrespondence} from "./"; 
-import {DeleteCorrespondence} from "./"; 
+import SeeCorrespondence from "./seeCorrespondence";
+import EditCorrespondence from "./editCorrespondence.form";
+import DeleteCorrespondence from "./deleteCorrespondence";
 
 const CorrespondenceTable = () => {
   const { data } = useCorrespondencesData();
-  const rows = data?.results || [];
-  const [selectedRow, setSelectedRow] = useState<CorrespondenceData | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-  const handleEdit = useCallback(() => {
-    if (!selectedRow) {
-      toast.error("لطفا یک مکاتبه را انتخاب کنید");
-      return;
-    }
-    setIsOpen(true);
-  }, [selectedRow]);
+  const {
+    selectedRow,
+    setSelectedRow,
+    isViewOpen,
+    setIsViewOpen,
+    isEditOpen,
+    setIsEditOpen,
+    isDeleteOpen,
+    setIsDeleteOpen,
+  } = useCorrespondenceTableStore();
 
   const handleView = useCallback(() => {
     if (!selectedRow) {
       toast.error("لطفا یک مکاتبه را انتخاب کنید");
       return;
     }
-    setIsOpen(true);
+    setIsViewOpen(true);
+  }, [selectedRow]);
+
+  const handleEdit = useCallback(() => {
+    if (!selectedRow) {
+      toast.error("لطفا یک مکاتبه را انتخاب کنید");
+      return;
+    }
+    setIsEditOpen(true);
   }, [selectedRow]);
 
   const handleDelete = useCallback(() => {
@@ -41,167 +49,140 @@ const CorrespondenceTable = () => {
     setIsDeleteOpen(true);
   }, [selectedRow]);
 
-  const columns = [
-    { field: "title", headerName: "عنوان", width: 200 },
-    { field: "sender", headerName: "فرستنده", width: 150 },
-    { field: "receiver", headerName: "گیرنده", width: 150 },
-    { field: "date", headerName: "تاریخ", width: 120 },
-    { field: "subject", headerName: "موضوع", width: 200 },
-    { 
-      field: "status", 
-      headerName: "وضعیت", 
+  const actions = {
+    view: {
+      label: "مشاهده",
+      show: true,
+      onClick: handleView,
+      icon: <FaEye />,
+    },
+    edit: {
+      label: "ویرایش",
+      show: true,
+      onClick: handleEdit,
+      icon: <FaEdit />,
+    },
+    delete: {
+      label: "حذف",
+      show: true,
+      onClick: handleDelete,
+      icon: <FaTrash />,
+    },
+  };
+
+  const columns: GridColDef<CorrespondenceTypes>[] = [
+    { field: "subject", headerName: "موضوع", width: 150 },
+    { field: "description", headerName: "توضیحات", width: 200 },
+    { field: "kind_of_correspondence", headerName: "نوع مکاتبه", width: 130 },
+    { field: "priority", headerName: "اولویت", width: 100 },
+    { field: "created_at", headerName: "تاریخ ایجاد", width: 150 },
+    {
+      field: "confidentiality_level",
+      headerName: "سطح محرمانگی",
+      width: 130,
+    },
+    {
+      field: "is_internal",
+      headerName: "مکاتبه داخلی",
       width: 120,
-      renderCell: (params: GridRenderCellParams<CorrespondenceData, string>) => {
-        const statusColors = {
-          draft: "bg-gray-200",
-          sent: "bg-green-200",
-          received: "bg-blue-200"
-        };
-        return (
-          <div className={`px-3 py-1 rounded-full ${statusColors[params.value as keyof typeof statusColors]} text-right`}>
-            {params.value === 'draft' ? 'پیش‌نویس' : 
-             params.value === 'sent' ? 'ارسال شده' : 'دریافت شده'}
-          </div>
-        );
-      }
+      valueFormatter: ({ value }) => (value ? "بله" : "خیر"),
     },
-    { 
-      field: "priority", 
-      headerName: "اولویت", 
+    {
+      field: "binding",
+      headerName: "الزام آور",
       width: 100,
-      renderCell: (params: GridRenderCellParams<CorrespondenceData, string>) => {
-        const priorityColors = {
-          low: "bg-green-100 text-green-800",
-          medium: "bg-yellow-100 text-yellow-800",
-          high: "bg-red-100 text-red-800"
-        };
-        return (
-          <div className={`px-3 py-1 rounded-full ${priorityColors[params.value as keyof typeof priorityColors]} text-right`}>
-            {params.value === 'low' ? 'کم' : 
-             params.value === 'medium' ? 'متوسط' : 'زیاد'}
-          </div>
-        );
-      }
+      valueFormatter: ({ value }) => (value ? "بله" : "خیر"),
     },
-    { field: "reference_number", headerName: "شماره مرجع", width: 150 },
-    { field: "category", headerName: "دسته‌بندی", width: 150 },
+    {
+      field: "draft",
+      headerName: "پیش‌نویس",
+      width: 100,
+      valueFormatter: ({ value }) => (value ? "بله" : "خیر"),
+    },
+    {
+      field: "published",
+      headerName: "منتشر شده",
+      width: 100,
+      valueFormatter: ({ value }) => (value ? "بله" : "خیر"),
+    },
   ];
 
+  const rows = data?.results || [];
+
   return (
-    <>
-      <Toaster />
-      <div className="w-full bg-gray-100 shadow-md relative" dir="rtl">
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          onRowClick={(params) => setSelectedRow(params.row)}
-          onRowSelectionModelChange={(newSelectionModel) => {
-            if (newSelectionModel.length > 0) {
-              const selectedId = newSelectionModel[0];
-              const selectedRow = rows.find(
-                (row: CorrespondenceData) => row.id === selectedId
-              );
-              if (selectedRow) {
-                setSelectedRow(selectedRow);
-              }
-            } else {
-              setSelectedRow(null);
+    <div className="w-full bg-gray-100 shadow-md relative" dir="rtl">
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        onRowClick={(params) => setSelectedRow(params.row)}
+        onRowSelectionModelChange={(newSelectionModel) => {
+          if (newSelectionModel.length > 0) {
+            const selectedId = newSelectionModel[0];
+            const selectedRow = rows.find(
+              (row: CorrespondenceTypes) => row.id === selectedId
+            );
+            if (selectedRow) {
+              setSelectedRow(selectedRow);
             }
-          }}
-          checkboxSelection
-          rowSelectionModel={selectedRow ? [selectedRow.id] : []}
-          disableMultipleRowSelection
-          initialState={{
-            pagination: {
-              paginationModel: { pageSize: 10, page: 0 },
-            },
-          }}
-          pageSizeOptions={[10]}
-          disableColumnMenu
-          filterMode="client"
-          localeText={localeText}
-          sx={{
-            "& .Mui-selected": {
-              backgroundColor: "rgba(25, 118, 210, 0.08) !important",
-            },
-            "& .MuiDataGrid-cell": {
-              textAlign: "right",
-            },
-            "& .MuiDataGrid-columnHeader": {
-              textAlign: "right",
-            },
-          }}
-          slots={{
-            toolbar: (props) => (
-              <CustomDataGridToolbar
-                {...props}
-                data={data || { count: 0, next: null, previous: null, results: [] }}
-                fileName="گزارش-مکاتبات"
-                showExcelExport={true}
-                actions={{
-                  edit: {
-                    label: "ویرایش",
-                    show: true,
-                    onClick: handleEdit,
-                    icon: <FaEdit />,
-                  },
-                  view: {
-                    label: "مشاهده",
-                    show: true,
-                    onClick: handleView,
-                    icon: <FaEye />,
-                  },
-                  delete: {
-                    label: "حذف",
-                    show: true,
-                    onClick: handleDelete,
-                    icon: <FaTrash />,
-                  },
-                  import: {
-                    label: "ورود از اکسل",
-                    show: true,
-                    onClick: () => {
-                      // اینجا می‌توانید منطق مربوط به ورود از اکسل را اضافه کنید
-                      toast.success("قابلیت ورود از اکسل در حال توسعه است");
-                    },
-                    icon: (
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                      </svg>
-                    ),
-                  },
-                }}
-              />
-            ),
-          }}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
-        />
+          } else {
+            setSelectedRow({} as CorrespondenceTypes);
+          }
+        }}
+        disableMultipleRowSelection
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 10, page: 0 },
+          },
+        }}
+        pageSizeOptions={[10]}
+        disableColumnMenu
+        filterMode="client"
+        localeText={localeText}
+        sx={{
+          "& .Mui-selected": {
+            backgroundColor: "rgba(25, 118, 210, 0.08) !important",
+          },
+          "& .MuiDataGrid-cell": {
+            textAlign: "right",
+          },
+          "& .MuiDataGrid-columnHeader": {
+            textAlign: "right",
+          },
+        }}
+        slots={{
+          toolbar: (props) => (
+            <CustomDataGridToolbar
+              {...props}
+              data={
+                data || { count: 0, next: null, previous: null, results: [] }
+              }
+              fileName="گزارش-مکاتبات"
+              showExcelExport={true}
+              actions={actions}
+            />
+          ),
+        }}
+        slotProps={{
+          toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: { debounceMs: 500 },
+          },
+        }}
+      />
 
-        <ModalLayout
-          isOpen={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-            setSelectedRow(null);
-          }}
-        >
-          {selectedRow && <SeeCorrespondence data={selectedRow} />}
-        </ModalLayout>
+      <ModalLayout isOpen={isViewOpen} onClose={() => setIsViewOpen(false)}>
+        {selectedRow && <SeeCorrespondence data={selectedRow} />}
+      </ModalLayout>
 
-        <ModalLayout
-          isOpen={isDeleteOpen}
-          onClose={() => setIsDeleteOpen(false)}
-        >
-          {selectedRow && <DeleteCorrespondence data={selectedRow} />}
-        </ModalLayout>
-      </div>
-    </>
+      <ModalLayout isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
+        {selectedRow && <EditCorrespondence data={selectedRow} onClose={() => setIsEditOpen(false)} />}
+      </ModalLayout>
+
+      <ModalLayout isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>
+        {selectedRow && <DeleteCorrespondence data={selectedRow} />}
+      </ModalLayout>
+    </div>
   );
 };
 
-export default CorrespondenceTable; 
+export default CorrespondenceTable;

@@ -4,22 +4,15 @@ import { useState, useCallback } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { PositionData } from "../types";
-import { FaPlus } from "react-icons/fa";
 import { ModalLayout } from "../../../layouts";
-import { CreatePositionForm,  PositionUpdate } from "./";
+import { PositionUpdate } from "./";
 import toast, { Toaster } from "react-hot-toast";
 import { deletePosition } from "../services";
 
 const PositionsTable = () => {
   const { data: positions } = usePositionData();
   const [selectedRow, setSelectedRow] = useState<PositionData | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
-
-  
-  const handleCreate = () => {
-    setIsOpen(true);
-  };
 
   const handleEdit = useCallback(() => {
     if (!selectedRow) {
@@ -95,12 +88,6 @@ const PositionsTable = () => {
               fileName="گزارش-پرداخت"
               showExcelExport={true}
               actions={{
-                create: {
-                  show: true,
-                  label: "ایجاد",
-                  onClick: handleCreate,
-                  icon: <FaPlus />,
-                },
                 edit: {
                   show: true,
                   label: "ویرایش",
@@ -125,9 +112,6 @@ const PositionsTable = () => {
         }}
       />
 
-      <ModalLayout isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <CreatePositionForm />
-      </ModalLayout>
       <ModalLayout
         isOpen={isUpdateOpen}
         onClose={() => {
@@ -135,7 +119,15 @@ const PositionsTable = () => {
           setSelectedRow(null);
         }}
       >
-        {selectedRow && <PositionUpdate data={selectedRow} />}
+        {selectedRow && (
+          <PositionUpdate
+            data={selectedRow}
+            onClose={() => {
+              setIsUpdateOpen(false);
+              setSelectedRow(null);
+            }}
+          />
+        )}
       </ModalLayout>
     </>
   );

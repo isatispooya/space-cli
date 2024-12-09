@@ -7,12 +7,16 @@ import useRegister from "../hooks/useRegister";
 import useApplyNationalCode from "../hooks/useOtp";
 import { fadeIn } from "../animations/fadeIn";
 import toast, { Toaster } from "react-hot-toast";
-
+import Spinner from "../../../components/spinner";
 
 const SignupForm = () => {
   const [showOtpInput, setShowOtpInput] = useState<boolean>(false);
-  const { mutate: signupMutate, isError: signupError } = useApplyNationalCode();
-  const { mutate: register } = useRegister();
+  const {
+    mutate: signupMutate,
+    isError: signupError,
+    isPending: signupPending,
+  } = useApplyNationalCode();
+  const { mutate: register, isPending: registerPending } = useRegister();
   const {
     nationalCode,
     captchaInput,
@@ -104,7 +108,7 @@ const SignupForm = () => {
               }}
               {...fadeIn(0.4, 0, 0.4)}
             >
-              ثبت نام
+              {signupPending ? <Spinner /> : "ثبت نام"}
             </motion.button>
           </>
         )}
@@ -130,7 +134,7 @@ const SignupForm = () => {
               data-twe-ripple-init
               data-twe-ripple-color="light"
             >
-              تایید و ثبت نام
+              {registerPending ? <Spinner /> : "تایید و ثبت نام"}
             </button>
           </motion.div>
         )}

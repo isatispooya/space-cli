@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCorrespondence } from "../services";
-import { CorrespondenceData } from "../types";
+import { CorrespondenceTypes } from "../types";
 
 interface CorrespondencesResponse {
   count: number;
   next: string | null;
   previous: string | null;
-  results: CorrespondenceData[];
+  results: CorrespondenceTypes[];
 }
 
 const useCorrespondencesData = () => {

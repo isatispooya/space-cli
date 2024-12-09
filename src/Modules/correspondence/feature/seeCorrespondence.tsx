@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { CorrespondenceData } from "../types";
+import { CorrespondenceTypes } from "../types";
 
 interface SeeCorrespondenceProps {
-  data: CorrespondenceData;
+  data: CorrespondenceTypes;
 }
 
 const SeeCorrespondence = ({ data }: SeeCorrespondenceProps) => {

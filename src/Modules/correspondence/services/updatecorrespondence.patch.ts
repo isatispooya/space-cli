@@ -1,12 +1,10 @@
-import api from "../../../api/api";
-import {  CorrespondenceFormValues, UpdateCorrespondenceResponse } from "../types";
-
-
+import { api } from "../../../api";
+import { CorrespondenceTypes } from "../types";
 
 const updateCorrespondence = async (
   id: string,
-  data: CorrespondenceFormValues
-): Promise<UpdateCorrespondenceResponse> => {
+  data: CorrespondenceTypes
+): Promise<CorrespondenceTypes> => {
   const formData = new FormData();
 
   Object.entries(data).forEach(([key, value]) => {
@@ -21,7 +19,7 @@ const updateCorrespondence = async (
     });
   }
 
-  const response = await api.patch(`/correspondence/${id}`, formData, {
+  const response = await api.patch(`/correspondence/${id}/`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

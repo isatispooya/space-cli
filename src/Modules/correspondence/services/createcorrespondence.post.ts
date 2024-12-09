@@ -1,7 +1,7 @@
-import api from '../../../api/api';
-import { CreateCorrespondenceDTO } from '../types';
+import { api } from "../../../api";
+import { CorrespondenceTypes } from "../types";
 
-const createCorrespondencePost = async (data: CreateCorrespondenceDTO) => {
+const createCorrespondencePost = async (data: CorrespondenceTypes) => {
   const token = localStorage.getItem('token');
   
   if (!token) {

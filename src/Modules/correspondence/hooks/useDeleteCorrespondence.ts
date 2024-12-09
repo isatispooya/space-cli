@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCorrespondence } from "../services";
-import { DeleteCorrespondenceResponse } from "../types";
+import { CorrespondenceTypes } from "../types";
 
 const useDeleteCorrespondence = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<DeleteCorrespondenceResponse, Error, number>({
+  return useMutation<CorrespondenceTypes, Error, number>({
     mutationFn: deleteCorrespondence,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["correspondences"] });

@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { message } from "antd";
 import { createCorrespondence } from "../services";
-import { CreateCorrespondenceDTO } from "../types";
+import { CorrespondenceTypes } from "../types";
 
 const useCreateCorrespondence = () => {
   return useMutation({
-    mutationFn: (data: CreateCorrespondenceDTO) => createCorrespondence(data),
+    mutationFn: (data: CorrespondenceTypes) => createCorrespondence(data),
     onSuccess: () => {
       message.success("مکاتبه با موفقیت ایجاد شد");
     },

@@ -1,11 +1,11 @@
-import api from "../../../api/api";
-import { DeleteCorrespondenceResponse } from "../types";
+import { api } from "../../../api";
+import { CorrespondenceTypes } from "../types";
 
-
-
- const deleteCorrespondence = async (id: number): Promise<DeleteCorrespondenceResponse> => {
+const deleteCorrespondence = async (
+  id: number
+): Promise<CorrespondenceTypes> => {
   const response = await api.delete(`/correspondence/${id}`);
   return response.data;
-}; 
+};
 
 export default deleteCorrespondence;

@@ -5,6 +5,8 @@ import { useCompaniesData } from "../../companies/hooks";
 import { usePositionData, useUpdatePosition } from "../hooks";
 import { PositionData, PositionFormValues } from "../types";
 import { FormField } from "../../companies/types";
+import { CompanyData } from "../../companies/types";
+import { UserData } from "../../users/types";
 
 interface PositionUpdateProps {
   data: PositionData | null;
@@ -43,7 +45,7 @@ const PositionUpdate = ({ data, onClose }: PositionUpdateProps) => {
       label: "شرکت",
       type: "select",
       options:
-        companies?.results?.map((company) => ({
+        companies?.results?.map((company: CompanyData) => ({
           value: company.id,
           label: company.name,
         })) || [],
@@ -53,7 +55,7 @@ const PositionUpdate = ({ data, onClose }: PositionUpdateProps) => {
       label: "کاربر",
       type: "select",
       options:
-        users?.map((user) => ({
+        users?.map((user: UserData) => ({
           value: user.id,
           label: user.first_name || user.last_name,
         })) || [],
@@ -66,7 +68,7 @@ const PositionUpdate = ({ data, onClose }: PositionUpdateProps) => {
       label: "نقش پدر",
       type: "select",
       options:
-        positions?.results?.map((position) => ({
+        positions?.results?.map((position: PositionData) => ({
           value: position.id,
           label: position.name,
         })) || [],
@@ -99,7 +101,9 @@ const PositionUpdate = ({ data, onClose }: PositionUpdateProps) => {
     <Forms
       formFields={formFields}
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={
+        validationSchema as Yup.ObjectSchema<PositionFormValues>
+      }
       showCloseButton={true}
       onClose={onClose}
       title="بروزرسانی نقش"
@@ -115,6 +119,7 @@ const PositionUpdate = ({ data, onClose }: PositionUpdateProps) => {
             id: data?.id as number,
             data: values,
           });
+          onClose();
         } catch (error) {
           console.error("Error updating position:", error);
         } finally {

@@ -1,11 +1,11 @@
-import api from "../../../api/api";
-import { CorrespondenceData } from "../types";
+import { api } from "../../../api";
+import { CorrespondenceTypes } from "../types";
 
 interface CorrespondencesResponse {
   count: number;
   next: string | null;
   previous: string | null;
-  results: CorrespondenceData[];
+  results: CorrespondenceTypes[];
 }
 
 const getCorrespondences = async (): Promise<CorrespondencesResponse> => {

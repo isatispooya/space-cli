@@ -3,13 +3,13 @@ import useLogin from "../../auth/hooks/useLogin";
 import toast, { Toaster } from "react-hot-toast";
 import PassInput from "../components/passInput";
 import InputBase from "../../../components/inputBase";
-
+import Spinner from "../../../components/spinner";
 const LoginForm = ({
   handleComponentChange,
 }: {
   handleComponentChange: (component: "login" | "signup" | "forgetpass") => void;
 }) => {
-  const { mutate } = useLogin();
+  const { mutate, isPending } = useLogin();
   const [password, setPassword] = React.useState("");
   const [nationalCode, setNationalCode] = React.useState("");
 
@@ -68,7 +68,7 @@ const LoginForm = ({
           data-twe-ripple-init
           data-twe-ripple-color="light"
         >
-          ورود
+          {isPending ? <Spinner /> : "ورود"}
         </button>
       </form>
     </>
