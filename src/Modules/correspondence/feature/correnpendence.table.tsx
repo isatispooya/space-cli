@@ -172,7 +172,9 @@ const CorrespondenceTable = () => {
       />
 
       <ModalLayout isOpen={isViewOpen} onClose={() => setIsViewOpen(false)}>
-        {selectedRow && <SeeCorrespondence data={selectedRow} />}
+        {selectedRow && (
+          <SeeCorrespondence fields={selectedRow} imageFields={[]} />
+        )}
       </ModalLayout>
 
       <ModalLayout isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
