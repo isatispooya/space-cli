@@ -2,7 +2,8 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useCorrespondencesData } from "../hooks";
 import { CorrespondenceTypes } from "../types";
 import { ModalLayout } from "../../../layouts";
-import CustomDataGridToolbar from "../utils/tableToolbar";
+
+import { CustomDataGridToolbar } from "../../../utils";
 import { localeText } from "../utils/localtext";
 import { useCorrespondenceTableStore } from "../store/corrrenTable.store";
 import { useCallback } from "react";
@@ -175,7 +176,12 @@ const CorrespondenceTable = () => {
       </ModalLayout>
 
       <ModalLayout isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
-        {selectedRow && <EditCorrespondence data={selectedRow} onClose={() => setIsEditOpen(false)} />}
+        {selectedRow && (
+          <EditCorrespondence
+            data={selectedRow}
+            onClose={() => setIsEditOpen(false)}
+          />
+        )}
       </ModalLayout>
 
       <ModalLayout isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>

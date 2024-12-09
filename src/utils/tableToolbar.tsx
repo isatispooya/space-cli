@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { useCallback } from "react";
-import { Button, IconButton, Tooltip } from "@mui/material";
 import {
   GridToolbarContainer,
   GridToolbarColumnsButton,
@@ -18,12 +17,20 @@ interface ActionButton {
   icon: React.ReactNode;
   onClick: () => void;
   show?: boolean;
+  className?: string;
 }
 
 interface CustomDataGridToolbarProps {
-  data: CompanyData[];
+  data:
+    | CompanyData[]
+    | {
+        count: number;
+        next: string | null;
+        previous: string | null;
+        results: unknown[];
+      };
   fileName?: string;
-  customExcelData?: (data: CompanyData[]) => CompanyData[];
+  customExcelData?: (data: unknown[]) => unknown[];
   showExcelExport?: boolean;
   actions?: {
     edit?: ActionButton;
@@ -42,11 +49,14 @@ const CustomDataGridToolbar = ({
 }: CustomDataGridToolbarProps) => {
   const handleExport = useCallback(() => {
     try {
-      if (!data || data.length === 0) {
+      const dataToExport = Array.isArray(data) ? data : data.results;
+      if (!dataToExport || dataToExport.length === 0) {
         console.error("No data available for export");
         return;
       }
-      const excelData = customExcelData ? customExcelData(data) : data;
+      const excelData = customExcelData
+        ? customExcelData(dataToExport)
+        : dataToExport;
       exportToExcel({ data: excelData, fileName });
     } catch (error) {
       console.error("Error in export:", error);
@@ -69,74 +79,56 @@ const CustomDataGridToolbar = ({
         <GridToolbarDensitySelector />
 
         {/* Action Buttons */}
-        {actions?.edit?.show && (
-          <Tooltip title={actions.edit.label}>
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                if (actions?.edit?.onClick) {
-                  actions.edit.onClick();
-                }
-              }}
-              color="primary"
-            >
-              {actions?.edit?.icon || <FaEdit />}
-            </IconButton>
-          </Tooltip>
+        {actions?.view?.show && (
+          <button
+            onClick={actions.view.onClick}
+            className={`flex items-center gap-1 px-3 py-1 rounded-lg ${
+              actions.view.className || "text-blue-600 hover:bg-blue-50"
+            }`}
+          >
+            {actions.view.icon || <FaEye />}
+            {actions.view.label}
+          </button>
         )}
 
-        {actions?.view?.show && (
-          <Tooltip title={actions.view.label}>
-            <IconButton
-              size="small"
-              onClick={() => actions?.view?.onClick?.()}
-              color="info"
-            >
-              {actions.view.icon || <FaEye />}
-            </IconButton>
-          </Tooltip>
+        {actions?.edit?.show && (
+          <button
+            onClick={actions.edit.onClick}
+            className="flex items-center gap-1 px-3 py-1 text-[#F7C748] hover:bg-green-50 rounded-lg"
+          >
+            {actions.edit.icon || <FaEdit />}
+            {actions.edit.label}
+          </button>
         )}
 
         {actions?.delete?.show && (
-          <Tooltip title={actions.delete.label}>
-            <IconButton
-              size="small"
-              onClick={() => actions?.delete?.onClick?.()}
-              color="error"
-            >
-              {actions.delete.icon || <FaTrash />}
-            </IconButton>
-          </Tooltip>
+          <button
+            onClick={actions.delete.onClick}
+            className="flex items-center gap-1 px-3 py-1 text-red-600 hover:bg-red-50 rounded-lg"
+          >
+            {actions.delete.icon || <FaTrash />}
+            {actions.delete.label}
+          </button>
         )}
 
         {actions?.create?.show && (
-          <Tooltip title={actions.create.label}>
-            <IconButton size="small" onClick={actions.create.onClick}>
-              {actions.create.icon || <FaPlus />}
-            </IconButton>
-          </Tooltip>
+          <button
+            onClick={actions.create.onClick}
+            className="flex items-center gap-1 px-3 py-1 text-purple-600 hover:bg-purple-50 rounded-lg"
+          >
+            {actions.create.icon || <FaPlus />}
+            {actions.create.label}
+          </button>
         )}
 
         {showExcelExport && (
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<FaDownload />}
+          <button
             onClick={handleExport}
-            size="small"
-            sx={{
-              minWidth: "120px",
-              "&:hover": {
-                backgroundColor: "primary.main",
-                color: "white",
-              },
-            }}
+            className="flex items-center gap-1 px-3 py-1 text-green-600 hover:bg-green-50 rounded-lg "
           >
+            <FaDownload />
             دانلود اکسل
-          </Button>
+          </button>
         )}
       </div>
       <GridToolbarQuickFilter
