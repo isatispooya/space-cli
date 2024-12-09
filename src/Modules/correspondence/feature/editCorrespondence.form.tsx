@@ -4,15 +4,24 @@ import { useUpdateCorrespondence } from "../hooks/useUpdateCorrespondence";
 import { CorrespondenceTypes } from "../types";
 import toast from "react-hot-toast";
 
-const validationSchema = Yup.object()
-  .shape({
-    subject: Yup.string().required("موضوع الزامی است"),
-    description: Yup.string().required("توضیحات الزامی است"),
-    kind_of_correspondence: Yup.string().required("نوع مکاتبه الزامی است"),
-    priority: Yup.string().required("اولویت الزامی است"),
-    confidentiality_level: Yup.string().required("سطح محرمانگی الزامی است"),
-  })
-  .concat(Yup.object<CorrespondenceTypes>().shape({}));
+const validationSchema = Yup.object().shape({
+  subject: Yup.string().required("موضوع الزامی است"),
+  description: Yup.string().required("توضیحات الزامی است"),
+  kind_of_correspondence: Yup.string().required("نوع مکاتبه الزامی است"),
+  priority: Yup.string().required("اولویت الزامی است"),
+  confidentiality_level: Yup.string().required("سطح محرمانگی الزامی است"),
+  id: Yup.number().optional(),
+  uuid: Yup.string().optional(),
+  sender: Yup.mixed().optional(),
+  receiver_internal: Yup.mixed().optional(),
+  text: Yup.string().optional(),
+  postcript: Yup.string().optional(),
+  is_internal: Yup.boolean().optional(),
+  binding: Yup.boolean().optional(),
+  draft: Yup.boolean().optional(),
+  published: Yup.boolean().optional(),
+  attachments: Yup.array().optional(),
+}) as Yup.ObjectSchema<CorrespondenceTypes>;
 
 
 
@@ -116,6 +125,10 @@ const EditCorrespondence = ({ data, onClose }: EditCorrespondenceProps) => {
         formFields={formFields}
         initialValues={initialValues}
         validationSchema={validationSchema}
+        checkboxColors={{
+          borderColor: "border-secondary-500",
+          checkedColor: "checked:border-[#5677BC] checked:bg-[#5677BC]",
+        }}
         onSubmit={handleSubmit}
         showCloseButton={true}
         onClose={onClose}

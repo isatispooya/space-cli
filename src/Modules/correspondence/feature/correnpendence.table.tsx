@@ -137,6 +137,7 @@ const CorrespondenceTable = () => {
         }}
         pageSizeOptions={[10]}
         disableColumnMenu
+        checkboxSelection
         filterMode="client"
         localeText={localeText}
         sx={{
