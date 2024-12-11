@@ -11,6 +11,7 @@ import SeeCompany from "./company.details";
 import Popup from "../../../components/popup";
 import useDeleteCompany from "../hooks/useDeleteCompany";
 import EditCompanyForm from "./company.edit.form";
+import { tableStyles } from "../../../ui";
 
 const CompanyTable = () => {
   const { data } = useCompaniesData();
@@ -72,7 +73,7 @@ const CompanyTable = () => {
   return (
     <>
       <Toaster />
-      <div className="w-full bg-gray-100 shadow-md relative">
+      <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           rows={rows}
           columns={columns}
@@ -102,11 +103,7 @@ const CompanyTable = () => {
           disableColumnMenu
           filterMode="client"
           localeText={localeText}
-          sx={{
-            "& .Mui-selected": {
-              backgroundColor: "rgba(25, 118, 210, 0.08) !important",
-            },
-          }}
+          sx={tableStyles}
           slots={{
             toolbar: (props) => (
               <CustomDataGridToolbar
@@ -144,7 +141,6 @@ const CompanyTable = () => {
             },
           }}
         />
-
         <ModalLayout
           isOpen={isOpen}
           onClose={() => {
@@ -154,7 +150,6 @@ const CompanyTable = () => {
         >
           {selectedRow && <SeeCompany data={selectedRow} />}
         </ModalLayout>
-
         <ModalLayout
           isOpen={isEditOpen}
           onClose={() => {

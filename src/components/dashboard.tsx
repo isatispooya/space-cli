@@ -1,13 +1,12 @@
-import { Header } from "./header";
-import { Sidebar } from "./sidebar";
+
+import { MainLayout } from "../layouts";
 
 const Dashboard = () => {
   return (
     <>
-      <Header />
-      <Sidebar />
-
-      <div>Dashboard</div>
+      <MainLayout>
+        <div>Dashboard</div>
+      </MainLayout>
     </>
   );
 };

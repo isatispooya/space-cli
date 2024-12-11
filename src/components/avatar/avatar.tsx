@@ -38,9 +38,9 @@ const Avatar = () => {
     <div className="relative">
       <motion.div
         onClick={toggleDropdown}
-        whileHover={{ scale: 1.1, rotate: 5, color: "#5677BC" , borderColor: "#5677BC" }}
+        whileHover={{ scale: 1.1, rotate: 5, color: "#29D2C7" , borderColor: "#29D2C7" }}
         whileTap={{ scale: 0.9 }}
-        className="text-2xl cursor-pointer text-[#5677BC] border-2 border-[#5677BC] rounded-xl p-1"
+        className="text-2xl cursor-pointer text-[#29D2C7] border-2 border-[#29D2C7] rounded-xl p-1"
       >
         <CgProfile />
       </motion.div>

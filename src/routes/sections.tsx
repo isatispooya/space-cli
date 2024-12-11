@@ -62,6 +62,12 @@ const PositionsTablePage = lazy(() =>
   }))
 );
 
+const ShareholdersPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.ShareholdersPage,
+  }))
+);
+
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -184,6 +190,14 @@ export default function Router() {
           ),
         },
       ],
+    },
+    {
+      path: "/shareholders",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ShareholdersPage />
+        </Suspense>
+      ),
     },
   ]);
   return routes;
