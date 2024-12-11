@@ -1,12 +1,13 @@
 import { Menu, SubMenu, MenuItem } from "react-pro-sidebar";
 import { menuItems } from "../data/menuItems";
 import { useNavigate } from "react-router-dom";
+import BothLogo from "../assets/bothLogo.svg"
 
-interface ExpandableMenuProps {
+interface SideMenuProps {
   collapsed: boolean;
 }
 
-const ExpandableMenu = ({ collapsed }: ExpandableMenuProps) => {
+const SideMenu = ({ collapsed }: SideMenuProps) => {
   const navigate = useNavigate();
 
   return (
@@ -27,11 +28,14 @@ const ExpandableMenu = ({ collapsed }: ExpandableMenuProps) => {
             },
           }}
         >
+          <div className="flex items-start justify-start mr-4">
+            <img src={BothLogo} alt="logo" className="w-[12rem] mb-4" />
+          </div>
           <div className="mb-8 mr-2">
             <input
               type="text"
               placeholder="جستجو..."
-              className="bg-white/10 text-white placeholder-white/60 focus:outline-[#7DE7DC] rounded-lg py-1 px-4 text-right"
+              className="bg-white/10 mr-2  text-white placeholder-white/60 focus:outline-[#7DE7DC] rounded-lg py-1 px-4 text-right"
             />
           </div>
 
@@ -55,4 +59,4 @@ const ExpandableMenu = ({ collapsed }: ExpandableMenuProps) => {
   );
 };
 
-export default ExpandableMenu;
+export default SideMenu;

@@ -1,15 +1,15 @@
 import { AiOutlineMore } from "react-icons/ai";
-import homeIcon from "./home.svg";
-import positionIcon from "./position.svg";
-import searchIcon from "./search.svg";
-import profileIcon from "./profile.svg";
-import contactIcon from "./contact.svg";
+import homeIcon from "../assets/home.svg";
+import positionIcon from "../assets/position.svg";
+import searchIcon from "../assets/search.svg";
+import profileIcon from "../assets/profile.svg";
+import contactIcon from "../assets/contact.svg";
 
-interface SidebarIconsProps {
+interface SidePanelProps {
   onToggleCollapse: () => void;
 }
 
-const SidebarIcons = ({ onToggleCollapse }: SidebarIconsProps) => {
+const SidePanel = ({ onToggleCollapse }: SidePanelProps) => {
   const icons = [
     { src: homeIcon, alt: "home", onClick: onToggleCollapse },
     { src: positionIcon, alt: "position" },
@@ -38,4 +38,4 @@ const SidebarIcons = ({ onToggleCollapse }: SidebarIconsProps) => {
   );
 };
 
-export default SidebarIcons; 
+export default SidePanel;
