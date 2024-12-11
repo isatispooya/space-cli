@@ -42,9 +42,13 @@ const SideMenu = ({ collapsed }: SideMenuProps) => {
           {menuItems.map((item, index) => (
             <SubMenu
               key={index}
-              label={item.title}
+              label={
+                <div className="flex items-center gap-2">
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                </div>
+              }
               className="text-white"
-              onClick={() => navigate(item.path)}
             >
               {item.submenu.map((subItem, subIndex) => (
                 <MenuItem key={subIndex} onClick={() => navigate(subItem.path)}>
