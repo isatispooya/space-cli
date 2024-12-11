@@ -6,14 +6,14 @@ import toast, { Toaster } from "react-hot-toast";
 import { tableStyles } from "../../../ui";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { FaEdit } from "react-icons/fa";
-import ModalLayout from "../../../layouts/ModalLayout";  
+import ModalLayout from "../../../layouts/ModalLayout";
 import EditPermissionForm from "./editpermissions.form";
 
 const PermissionsTable: React.FC = () => {
   const { data, isPending, isError } = usePermissionList();
   const [selectedRow, setSelectedRow] = useState<PermissionData | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
-
+  console.log(data);
   const columns = [
     { field: "id", headerName: "شناسه", width: 100 },
     { field: "name", headerName: "نام", width: 100 },

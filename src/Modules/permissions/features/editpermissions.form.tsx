@@ -1,34 +1,59 @@
 import Forms from "../../../components/forms";
 import * as yup from "yup";
 import { PermissionData } from "../types";
+import { useUserData } from "../../users/hooks";
+import { useSetPermission } from "../hooks";
 
 interface FormValues {
-  name: string;
+  user_id: number;
+  permission_id: number[];
 }
 
 const EditPermissionForm: React.FC<{
   data: PermissionData;
   onClose: () => void;
 }> = ({ data, onClose }) => {
+  const { data: users } = useUserData();
+
+  console.log(users);
+
+  const { mutate: setPermission } = useSetPermission();
+
   const formFields = [
     {
-      name: "name",
-      label: "نام",
-      type: "text",
+      name: "user_id",
+      label: "شناسه کاربر ",
+      type: "number",
+    },
+    {
+      name: "permission_id",
+      label: "شناسه دسترسی",
+      type: "number",
+      inputMode: "numeric",
     },
   ];
 
   const initialValues = {
-    name: "",
-    id: 0,
+    user_id: users?.id || 0,
+    permission_id: [data?.id || 0],
   };
 
   const validationSchema = yup.object({
-    name: yup.string().required("نام الزامی است"),
+    user_id: yup.number().required("شناسه کاربر الزامی است"),
+    permission_id: yup
+      .array()
+      .of(yup.number())
+      .required("شناسه دسترسی الزامی است"),
   });
 
   const onSubmit = (values: FormValues) => {
-    console.log(values);
+    const transformedValues = {
+      user_id: values.user_id,
+      permission_id: Array.isArray(values.permission_id)
+        ? values.permission_id
+        : [values.permission_id],
+    };
+    setPermission(transformedValues);
   };
   return (
     <Forms
