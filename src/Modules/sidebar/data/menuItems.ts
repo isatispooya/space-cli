@@ -61,4 +61,13 @@ export const menuItems = [
       { title: "جابجایی سهامدار", path: "/shareholders/transfer" },
     ],
   },
+  {
+    title: "دسترسی ها",
+    path: "/permissions",
+    icon: FaUserTie,
+    submenu: [
+      { title: "لیست دسترسی ها", path: "/permissions/table" },
+      { title: "ایجاد,ویرایش دسترسی ها", path: "/permissions/create" },
+    ],
+  },
 ];

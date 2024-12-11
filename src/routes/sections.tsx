@@ -67,6 +67,34 @@ const ShareholdersPage = lazy(() =>
     default: module.ShareholdersPage,
   }))
 );
+const ShareholdTablePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.ShareholdTablePage,
+  }))
+);
+const ShareholdTransforPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.ShareholdTransforPage,
+  }))
+);
+
+const PermissionsTablePage = lazy(() =>
+  import("../Modules/permissions").then((module) => ({
+    default: module.PermissionsTablePage,
+  }))
+);
+
+const PermissionsCreatePage = lazy(() =>
+  import("../Modules/permissions").then((module) => ({
+    default: module.PermissionsCreatePage,
+  }))
+);
+
+const PermissionMainPage = lazy(() =>
+  import("../Modules/permissions").then((module) => ({
+    default: module.PermissionMainPage,
+  }))
+);
 
 const Loader = () => <LoaderLg />;
 
@@ -138,7 +166,32 @@ export default function Router() {
         },
       ],
     },
-
+    {
+      path: "/permissions",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <PermissionMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PermissionsTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PermissionsCreatePage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
     {
       path: "/positions",
       element: (
@@ -198,6 +251,24 @@ export default function Router() {
           <ShareholdersPage />
         </Suspense>
       ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ShareholdTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "transfer",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ShareholdTransforPage />
+            </Suspense>
+          ),
+        },
+      ],
     },
   ]);
   return routes;

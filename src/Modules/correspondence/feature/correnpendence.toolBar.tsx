@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CreateCorrespondenceForm } from "./correnpondence.create.form";
-import { useCreateCorrespondence } from "../hooks"; 
-import ModalLayout from "../../../layouts/modal.layout.";
+import { useCreateCorrespondence } from "../hooks";
+import ModalLayout from "../../../layouts/modal.layout";
 
 const CorrespondenceToolBar = () => {
   const [isOpen, setIsOpen] = useState(false);
