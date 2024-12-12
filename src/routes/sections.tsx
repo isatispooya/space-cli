@@ -72,11 +72,6 @@ const ShareholdTablePage = lazy(() =>
     default: module.ShareholdTablePage,
   }))
 );
-const ShareholdTransforPage = lazy(() =>
-  import("../Modules/shareholdrs").then((module) => ({
-    default: module.ShareholdTransforPage,
-  }))
-);
 
 const PermissionsTablePage = lazy(() =>
   import("../Modules/permissions").then((module) => ({
@@ -93,6 +88,30 @@ const PermissionsCreatePage = lazy(() =>
 const PermissionMainPage = lazy(() =>
   import("../Modules/permissions").then((module) => ({
     default: module.PermissionMainPage,
+  }))
+);
+
+const StockTransferPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.StockTransferPage,
+  }))
+);
+
+const StockTransferTablePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.StockTransferTablePage,
+  }))
+);
+
+const PrecendenceTablePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.PrecendenceTablePage,
+  }))
+);
+
+const PrecendenceMainPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.PrecendenceMainPage,
   }))
 );
 
@@ -260,11 +279,39 @@ export default function Router() {
             </Suspense>
           ),
         },
+      ],
+    },
+    {
+      path: "/transferstock",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <StockTransferPage />
+        </Suspense>
+      ),
+      children: [
         {
-          path: "transfer",
+          path: "table",
           element: (
             <Suspense fallback={<Loader />}>
-              <ShareholdTransforPage />
+              <StockTransferTablePage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+    {
+      path: "/precendence",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <PrecendenceMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PrecendenceTablePage />
             </Suspense>
           ),
         },

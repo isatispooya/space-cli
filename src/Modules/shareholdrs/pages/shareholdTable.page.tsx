@@ -1,6 +1,6 @@
 import { ShareholdTable } from "../features";
 
-const ShareholdTablePage = () => {
+const ShareholdTablePage: React.FC = () => {
   return <ShareholdTable />;
 };
 

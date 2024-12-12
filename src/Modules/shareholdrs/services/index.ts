@@ -1,0 +1,9 @@
+export { default as getShareholders } from "./shareholders.get";
+export { default as getStockTransfer } from "./stockTransfer.get";
+export { default as getPrecedence } from "./precedence.get";
+export { default as getCapitalIncreasePayment } from "./capitalIncreasePayment.get";
+export { default as getDisplacementPrecendence } from "./displacementPrecendence.get";
+export { default as patchShareholders } from "./shareHolders.patch";
+export { default as deleteShareholders } from "./shareholders.delete";
+export { default as stockTransferPatch } from "./stockTransfer.patch";
+export { default as patchPrecendence } from "./precendence.patch";
