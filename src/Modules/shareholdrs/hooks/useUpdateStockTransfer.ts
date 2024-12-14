@@ -5,7 +5,7 @@ import { StockTransferTypes } from "../types";
 const useUpdateStockTransfer = () => {
   return useMutation({
     mutationKey: ["update-stock-transfer"],
-    mutationFn: ({ id, data }: { id: string; data: StockTransferTypes }) =>
+    mutationFn: ({ id, data }: { id: number; data: StockTransferTypes }) =>
       stockTransferPatch(id, data),
   });
 };

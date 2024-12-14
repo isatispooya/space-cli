@@ -11,9 +11,7 @@ interface propTypes {
 const EditStockTransferForm: React.FC<propTypes> = ({ data, onClose }) => {
   const { mutate } = useUpdateStockTransfer();
 
-
-
-  const validationSchema = yup.object<StockTransferTypes>().shape({
+  const validationSchema = yup.object().shape({
     id: yup.number().required(),
     buyer: yup.number().required("خریدار الزامی است"),
     seller: yup.number().required("فروشنده الزامی است"),
@@ -21,8 +19,11 @@ const EditStockTransferForm: React.FC<propTypes> = ({ data, onClose }) => {
     price: yup.number().required("قیمت الزامی است"),
     created_at: yup.string().required(),
     updated_at: yup.string().required(),
-    document: yup.mixed().nullable().default(null),
-  });
+    document: yup
+      .string()
+      .transform((value) => value || null)
+      .nullable(),
+  }) as yup.ObjectSchema<StockTransferTypes>;
 
   const formFields = [
     {
@@ -99,7 +100,6 @@ const EditStockTransferForm: React.FC<propTypes> = ({ data, onClose }) => {
         showCloseButton={true}
         onClose={onClose}
         onSubmit={onSubmit}
-        
         title="ویرایش جابهجایی سهام"
       />
     </>
