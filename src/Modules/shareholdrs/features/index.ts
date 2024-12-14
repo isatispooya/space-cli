@@ -3,3 +3,7 @@ export { default as EditShareholdForm } from "./editShareholds.form";
 export { default as EditStockTransferForm } from "./editStockTransfer.form";
 export { default as StockTransferTable } from "./stockTransfer.table";
 export { default as PrecendenceTable } from "./precendence.table";
+export { default as CapitalTable } from "./capital.table";
+export { default as EditCapitalForm } from "./editCapital.form";
+export { default as DisplacementTable } from "./displacment.table";
+export { default as EditDisplacmentForm } from "./editDisplacment.form";

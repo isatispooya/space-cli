@@ -4,3 +4,7 @@ export { default as StockTransferPage } from "./stockTransfer.page";
 export { default as StockTransferTablePage } from "./stockTransferTable.page";
 export { default as PrecendenceTablePage } from "./precendenceTable.page";
 export { default as PrecendenceMainPage } from "./precendenceMain.page";
+export { default as CapitalTablePage } from "./capitalTable.page";
+export { default as CapitalMainPage } from "./capitalMain.page";
+export { default as DisplacementMainPage } from "./displacmentMain.page";
+export { default as DisplacementTablePage } from "./displacmentTable.page";

@@ -17,9 +17,10 @@ const EditPrecendenceForm: React.FC<EditPrecendenceFormProps> = ({
 
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
-    name: yup.string().required("نام الزامی است"),
-    number_of_shares: yup.number().required("سهام الزامی است"),
-    company: yup.string().required("شرکت الزامی است"),
+    company: yup.number().required("شرکت الزامی است"),
+    position: yup.number().required("موقعیت الزامی است"),
+    precedence: yup.number().required("حق تقدم الزامی است"),
+    used_precedence: yup.number().required("حق تقدم استفاده شده الزامی است"),
     created_at: yup.string().required(),
     updated_at: yup.string().required(),
   });

@@ -5,7 +5,7 @@ import useUpdateStockTransfer from "../hooks/useUpdateStockTransfer";
 import * as yup from "yup";
 
 interface propTypes {
-  data: StockTransferTypes;
+  data: StockTransferTypes | null;
   onClose: () => void;
 }
 const EditStockTransferForm: React.FC<propTypes> = ({ data, onClose }) => {
@@ -21,7 +21,7 @@ const EditStockTransferForm: React.FC<propTypes> = ({ data, onClose }) => {
     price: yup.number().required("قیمت الزامی است"),
     created_at: yup.string().required(),
     updated_at: yup.string().required(),
-    document: yup.string().nullable().default(null),
+    document: yup.mixed().nullable().default(null),
   });
 
   const formFields = [

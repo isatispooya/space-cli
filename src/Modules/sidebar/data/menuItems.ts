@@ -40,7 +40,7 @@ export const menuItems = [
     icon: FaUserTie,
     submenu: [
       { title: "نقش‌ها", path: "/positions/table" },
-      
+
       { title: "ایجاد نقش", path: "/positions/create" },
     ],
   },
@@ -61,6 +61,8 @@ export const menuItems = [
       { title: "لیست سهامداران", path: "/shareholders/table" },
       { title: "لیست  جابجایی ", path: "/transferstock/table" },
       { title: "لیست حق تقدم", path: "/precendence/table" },
+      { title: "لیست سود پرداختی", path: "/capital/table" },
+      { title: " جابه جایی حق تقدم", path: "/displacement/table" },
     ],
   },
   {

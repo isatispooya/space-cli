@@ -1,10 +1,10 @@
 export interface CapitalIncreasePaymentTypes {
   id: number;
   company: number;
-  document: string;
-  number_of_shares: number;
   position: number;
+  number_of_shares: number;
   price: number;
-  updated_at?: string;
-  created_at?: string;
+ 
+  created_at: string;
+  updated_at: string;
 }

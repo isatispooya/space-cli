@@ -115,6 +115,30 @@ const PrecendenceMainPage = lazy(() =>
   }))
 );
 
+const CapitalMainPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.CapitalMainPage,
+  }))
+);
+
+const CapitalTablePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.CapitalTablePage,
+  }))
+);
+
+const DisplacementMainPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.DisplacementMainPage,
+  }))
+);
+
+const DisplacementTablePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.DisplacementTablePage,
+  }))
+);
+
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -314,6 +338,42 @@ export default function Router() {
               <PrecendenceTablePage />
             </Suspense>
           ),
+        },
+      ],
+    },
+    {
+      path: "/capital",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <CapitalMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CapitalTablePage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+    {
+      path: "/displacement",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <DisplacementMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <DisplacementTablePage />
+            </Suspense>
+          ),  
         },
       ],
     },

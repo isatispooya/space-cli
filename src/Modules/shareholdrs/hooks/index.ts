@@ -6,4 +6,9 @@ export { default as useGetDisplacementPrecendence } from "./useGetDisplacementPr
 export { default as useUpdatePrecendence } from "./useUpdatePrecendence";
 export { default as useUpdateShareholders } from "./useUpdateShareholders";
 export { default as useUpdateStockTransfer } from "./useUpdateStockTransfer";
-
+export { default as useDelPrecendence } from "./useDelPrecendence";
+export { default as useDelStockTransfer } from "./useDelStockTransfer";
+export { default as useUpdateCapital } from "./useUpdateCapital";
+export { default as useDelCapital } from "./useDelCapital";
+export { default as useUpdateDisplacment } from "./useUpdateDisplacment";
+export { default as useDelDisplacment } from "./useDelDisplacment";
