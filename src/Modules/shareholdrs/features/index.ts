@@ -7,3 +7,9 @@ export { default as CapitalTable } from "./capital.table";
 export { default as EditCapitalForm } from "./editCapital.form";
 export { default as DisplacementTable } from "./displacment.table";
 export { default as EditDisplacmentForm } from "./editDisplacment.form";
+export { default as CreateShareholdersPost } from "./createShareholders.post";
+export { default as CreatePrecendenceForm } from "./createPrecendence.form";
+export { default as CreateStocktransferForm } from "./createStocktransfer.form";
+export { default as CreateCapitalIncreaseForm } from "./createCapitalIncrease.form";
+export { default as CreateDisplacementForm } from "./createDisplacement.form";
+

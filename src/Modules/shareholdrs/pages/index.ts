@@ -8,3 +8,8 @@ export { default as CapitalTablePage } from "./capitalTable.page";
 export { default as CapitalMainPage } from "./capitalMain.page";
 export { default as DisplacementMainPage } from "./displacmentMain.page";
 export { default as DisplacementTablePage } from "./displacmentTable.page";
+export { default as ShareholdersFormPage } from "./shareholdersForm.page";
+export { default as PrecendenceFormPage } from "./precendenceForm.page";
+export { default as StockTransferFormPage } from "./stockTransferForm.page";
+export { default as CapitalIncreaseFormPage } from "./CapitalIncreaseForm.page";
+export { default as DisplacementFormPage } from "./displacementForm.page";

@@ -13,3 +13,8 @@ export { default as patchCapitalIncreasePayment } from "./capitalIncreacePayment
 export { default as deleteCapitalIncreasePayment } from "./capitalincreacePayment.delete";
 export { default as displacementPrecendencePatch } from "./displacementPrecendence.patch";
 export { default as displacementPrecendenceDelete } from "./displacementPrecendence.delete";
+export { default as postShareholders } from "./shareholders.post";
+export { default as postStockTransfer } from "./stockTransfer.post";
+export { default as postPrecendence } from "./precedence.post";
+export { default as postCapitalIncreasePayment } from "./capitalincreasePayment.post";
+export { default as postDisplacementPrecendence } from "./displacmentPrecendence.post";

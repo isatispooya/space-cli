@@ -12,3 +12,8 @@ export { default as useUpdateCapital } from "./useUpdateCapital";
 export { default as useDelCapital } from "./useDelCapital";
 export { default as useUpdateDisplacment } from "./useUpdateDisplacment";
 export { default as useDelDisplacment } from "./useDelDisplacment";
+export { default as usePostShareholders } from "./usePostShareholders";
+export { default as usePostStockTransfer } from "./usePostStockTransfer";
+export { default as usePostPrecendence } from "./usePostPrecendence";
+export { default as usePostCapitalIncreasePayment } from "./usePostCapitalIncreasePayment";
+export { default as usePostDisplacementPrecendence } from "./usePostDisplacementPrecendence";

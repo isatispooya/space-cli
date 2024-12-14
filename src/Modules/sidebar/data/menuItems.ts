@@ -59,10 +59,22 @@ export const menuItems = [
     icon: FaUserTie,
     submenu: [
       { title: "لیست سهامداران", path: "/shareholders/table" },
+      { title: "ایجاد سهامدار", path: "/shareholders/create" },
       { title: "لیست  جابجایی ", path: "/transferstock/table" },
-      { title: "لیست حق تقدم", path: "/precendence/table" },
+      { title: "ایجاد جابجایی", path: "/transferstock/create" },
       { title: "لیست سود پرداختی", path: "/capital/table" },
+      { title: "ایجاد سود پرداختی", path: "/capital/create" },
+    ],
+  },
+  {
+    title: "حق تقدم",
+    path: "/precendence",
+    icon: FaUserTie,
+    submenu: [
+      { title: "لیست حق تقدم", path: "/precendence/table" },
+      { title: "ایجاد حق تقدم", path: "/precendence/create" },
       { title: " جابه جایی حق تقدم", path: "/displacement/table" },
+      { title: "ایجاد جابه جایی حق تقدم", path: "/displacement/create" },
     ],
   },
   {

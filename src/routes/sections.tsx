@@ -72,6 +72,11 @@ const ShareholdTablePage = lazy(() =>
     default: module.ShareholdTablePage,
   }))
 );
+const ShareholdersFormPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.ShareholdersFormPage,
+  }))
+);
 
 const PermissionsTablePage = lazy(() =>
   import("../Modules/permissions").then((module) => ({
@@ -103,6 +108,12 @@ const StockTransferTablePage = lazy(() =>
   }))
 );
 
+const StockTransferFormPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.StockTransferFormPage,
+  }))
+);
+
 const PrecendenceTablePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.PrecendenceTablePage,
@@ -112,6 +123,12 @@ const PrecendenceTablePage = lazy(() =>
 const PrecendenceMainPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.PrecendenceMainPage,
+  }))
+);
+
+const PrecendenceFormPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.PrecendenceFormPage,
   }))
 );
 
@@ -127,6 +144,12 @@ const CapitalTablePage = lazy(() =>
   }))
 );
 
+const CapitalIncreaseFormPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.CapitalIncreaseFormPage,
+  }))
+);
+
 const DisplacementMainPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.DisplacementMainPage,
@@ -136,6 +159,12 @@ const DisplacementMainPage = lazy(() =>
 const DisplacementTablePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.DisplacementTablePage,
+  }))
+);
+
+const DisplacementFormPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.DisplacementFormPage,
   }))
 );
 
@@ -303,6 +332,14 @@ export default function Router() {
             </Suspense>
           ),
         },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ShareholdersFormPage />
+            </Suspense>
+          ),
+        },
       ],
     },
     {
@@ -318,6 +355,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <StockTransferTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <StockTransferFormPage />
             </Suspense>
           ),
         },
@@ -339,6 +384,14 @@ export default function Router() {
             </Suspense>
           ),
         },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PrecendenceFormPage />
+            </Suspense>
+          ),
+        },
       ],
     },
     {
@@ -354,6 +407,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <CapitalTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CapitalIncreaseFormPage />
             </Suspense>
           ),
         },
@@ -373,7 +434,15 @@ export default function Router() {
             <Suspense fallback={<Loader />}>
               <DisplacementTablePage />
             </Suspense>
-          ),  
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <DisplacementFormPage />
+            </Suspense>
+          ),
         },
       ],
     },
