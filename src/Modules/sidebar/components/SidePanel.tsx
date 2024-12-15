@@ -10,6 +10,7 @@ interface SidePanelProps {
 }
 
 const SidePanel = ({ onToggleCollapse }: SidePanelProps) => {
+  
   const icons = [
     { src: homeIcon, alt: "home", onClick: onToggleCollapse },
     { src: positionIcon, alt: "position" },

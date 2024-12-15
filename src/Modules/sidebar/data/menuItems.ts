@@ -6,14 +6,57 @@ import {
   FaPhone,
 } from "react-icons/fa";
 
-export const menuItems = [
+export interface MenuItem {
+  title: string;
+  path?: string;
+  icon?: any;
+  submenu?: MenuItem[];
+}
+
+export const menuItems: MenuItem[] = [
   {
     title: "حساب کاربری",
-    path: "/account",
     icon: FaUser,
     submenu: [
       { title: "پروفایل", path: "/profile" },
-      { title: "تنظیمات", path: "/settings" },
+      { 
+        title: "تنظیمات",
+        submenu: [
+          { title: "تنظیمات حساب", path: "/settings/account" },
+          { title: "تنظیمات امنیتی", path: "/settings/security" }
+        ]
+      },
+    ],
+  },
+  {
+    title: "امور سهامدارن",
+    icon: FaUserTie,
+    submenu: [
+      { title: "لیست سهامداران", path: "/shareholders/table" },
+      { 
+        title: "مدیریت سهام",
+        submenu: [
+          { title: "ایجاد سهامدار", path: "/shareholders/create" },
+          { title: "لیست جابجایی", path: "/transferstock/table" },
+          { title: "ایجاد جابجایی", path: "/transferstock/create" },
+        ]
+      },
+      {
+        title: "مدیریت سود",
+        submenu: [
+          { title: "لیست سود پرداختی", path: "/capital/table" },
+          { title: "ایجاد سود پرداختی", path: "/capital/create" },
+        ]
+      },
+      {
+        title: "حق تقدم",
+        submenu: [
+          { title: "لیست حق تقدم", path: "/precendence/table" },
+          { title: "ایجاد حق تقدم", path: "/precendence/create" },
+          { title: "جابه جایی حق تقدم", path: "/displacement/table" },
+          { title: "ایجاد جابه جایی حق تقدم", path: "/displacement/create" },
+        ]
+      }
     ],
   },
   {
@@ -51,30 +94,6 @@ export const menuItems = [
     submenu: [
       { title: "پیام‌ها", path: "/contact/messages" },
       { title: "تماس با ما", path: "/contact/us" },
-    ],
-  },
-  {
-    title: "امور سهامدارن",
-    path: "/shareholders",
-    icon: FaUserTie,
-    submenu: [
-      { title: "لیست سهامداران", path: "/shareholders/table" },
-      { title: "ایجاد سهامدار", path: "/shareholders/create" },
-      { title: "لیست  جابجایی ", path: "/transferstock/table" },
-      { title: "ایجاد جابجایی", path: "/transferstock/create" },
-      { title: "لیست سود پرداختی", path: "/capital/table" },
-      { title: "ایجاد سود پرداختی", path: "/capital/create" },
-    ],
-  },
-  {
-    title: "حق تقدم",
-    path: "/precendence",
-    icon: FaUserTie,
-    submenu: [
-      { title: "لیست حق تقدم", path: "/precendence/table" },
-      { title: "ایجاد حق تقدم", path: "/precendence/create" },
-      { title: " جابه جایی حق تقدم", path: "/displacement/table" },
-      { title: "ایجاد جابه جایی حق تقدم", path: "/displacement/create" },
     ],
   },
   {
