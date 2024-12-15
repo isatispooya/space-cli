@@ -14,9 +14,6 @@ const EditPermissionForm: React.FC<{
   onClose: () => void;
 }> = ({ data, onClose }) => {
   const { data: users } = useUserData();
-
-  console.log(users);
-
   const { mutate: setPermission } = useSetPermission();
 
   const formFields = [
@@ -28,33 +25,31 @@ const EditPermissionForm: React.FC<{
     {
       name: "permission_id",
       label: "شناسه دسترسی",
-      type: "number",
+      type: "select",
+      multiple: true,
       inputMode: "numeric",
     },
   ];
 
   const initialValues = {
     user_id: users?.id || 0,
-    permission_id: [data?.id || 0],
+    permission_id: data?.id ? [data.id] : [],
   };
 
   const validationSchema = yup.object({
     user_id: yup.number().required("شناسه کاربر الزامی است"),
     permission_id: yup
       .array()
-      .of(yup.number())
-      .required("شناسه دسترسی الزامی است"),
+      .of(yup.number().required())
+      .required("شناسه دسترسی الزامی است")
+      .min(1, "حداقل یک دسترسی باید انتخاب شود")
+      .transform((value) => value.filter((v): v is number => typeof v === 'number')),
   });
 
   const onSubmit = (values: FormValues) => {
-    const transformedValues = {
-      user_id: values.user_id,
-      permission_id: Array.isArray(values.permission_id)
-        ? values.permission_id
-        : [values.permission_id],
-    };
-    setPermission(transformedValues);
+    setPermission(values);
   };
+
   return (
     <Forms
       formFields={formFields}
@@ -62,12 +57,13 @@ const EditPermissionForm: React.FC<{
       validationSchema={validationSchema}
       onSubmit={onSubmit}
       submitButtonText={{ default: "ویرایش", loading: "ویرایش" }}
-      title="ویرایش"
+      title="ویرایش دسترسی"
       colors="text-[#5677BC]"
       buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
       showCloseButton={true}
       onClose={onClose}
     />
+    
   );
 };
 

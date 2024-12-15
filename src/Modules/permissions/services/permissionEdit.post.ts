@@ -2,7 +2,7 @@ import { api } from "../../../api";
 
 export interface EditPermissionData {
   user_id: number;
-  permission_id: number;
+  permission_id: number[];
 }
 
 const editPermission = async (data: EditPermissionData) => {

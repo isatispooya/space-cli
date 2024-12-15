@@ -7,13 +7,13 @@ import { tableStyles } from "../../../ui";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { FaEdit } from "react-icons/fa";
 import ModalLayout from "../../../layouts/ModalLayout";
-import EditPermissionForm from "./editpermissions.form";
+import EditPermissionForm from "./editPermissions.form";
 
 const PermissionsTable: React.FC = () => {
-  const { data, isPending, isError } = usePermissionList();
+  const { data } = usePermissionList();
   const [selectedRow, setSelectedRow] = useState<PermissionData | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  console.log(data);
+
   const columns = [
     { field: "id", headerName: "شناسه", width: 100 },
     { field: "name", headerName: "نام", width: 100 },
@@ -82,10 +82,12 @@ const PermissionsTable: React.FC = () => {
       </div>
 
       <ModalLayout open={isEditOpen} onClose={() => setIsEditOpen(false)}>
-        <EditPermissionForm
-          data={selectedRow}
-          onClose={() => setIsEditOpen(false)}
-        />
+        {selectedRow && (
+          <EditPermissionForm
+            data={selectedRow}
+            onClose={() => setIsEditOpen(false)}
+          />
+        )}
       </ModalLayout>
     </>
   );
