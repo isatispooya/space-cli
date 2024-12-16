@@ -70,4 +70,13 @@ export const menuItems = [
       { title: "ایجاد,ویرایش دسترسی ها", path: "/permissions/create" },
     ],
   },
+  {
+    title: "گروه ها",
+    path: "/groups",
+    icon: FaUserTie,
+    submenu: [
+      { title: "لیست گروه ها", path: "/groups/table" },
+      { title: "ایجاد گروه", path: "/groups/create" },
+    ],
+  },
 ];

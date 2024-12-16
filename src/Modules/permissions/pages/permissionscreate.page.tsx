@@ -1,8 +1,11 @@
-import MovableRowsTabulator from "../../../components/tabulator";
-import { PermissionsForm } from "../features";
+import { CreatePermissionGroupForm } from "../features";
+
 
 const PermissionsCreatePage = () => {
-  return <MovableRowsTabulator />;
+
+  return (
+    <CreatePermissionGroupForm />
+  );
 };
 
 export default PermissionsCreatePage;
