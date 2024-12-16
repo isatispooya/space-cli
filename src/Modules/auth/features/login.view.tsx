@@ -7,7 +7,9 @@ import LoginForm from "./login.form";
 import SignupForm from "./signup.form";
 import ForgetPassSms from "./forget_pass_sms.form";
 import ForgetPassForm from "./forget_pass.form";
-import rb from "./rb.png"
+import rb from "./rb.png";
+import { useAnnouncements } from "../hooks";
+import { LoaderLg } from "../../../components";
 
 initTWE({ Input, Ripple });
 
@@ -17,6 +19,23 @@ const Login: React.FC = () => {
   >("login");
 
   const [isSmsVerified, setIsSmsVerified] = React.useState(false);
+  const { data, isLoading } = useAnnouncements();
+  const [currentAnnouncementIndex, setCurrentAnnouncementIndex] =
+    React.useState(0);
+
+  React.useEffect(() => {
+    if (data && data.length > 1) {
+      const timer = setInterval(() => {
+        setCurrentAnnouncementIndex((prev) =>
+          prev === data.length - 1 ? 0 : prev + 1
+        );
+      }, 5000);
+
+      return () => clearInterval(timer);
+    }
+  }, [data]);
+
+  const currentAnnouncement = data?.[currentAnnouncementIndex];
 
   const handleComponentChange = (
     component: "login" | "signup" | "forgetpass"
@@ -25,6 +44,8 @@ const Login: React.FC = () => {
     setIsSmsVerified(false);
   };
 
+  if (isLoading) return <LoaderLg />;
+
   return (
     <section
       dir="rtl"
@@ -32,20 +53,53 @@ const Login: React.FC = () => {
     >
       <div className=" md:flex md:w-6/12 flex-col items-center justify-center space-y-2 order-1">
         <motion.img
+          key={currentAnnouncement?.id}
           {...fadeIn(0.05, 20)}
-          src={rb}
-          alt="Login illustration"
-          className="hidden md:block w-4/5 max-w-lg"
+          src={currentAnnouncement?.picture || rb}
+          alt={currentAnnouncement?.title || "Login illustration"}
+          className="hidden md:block w-4/5 max-w-lg object-contain"
         />
         <motion.div
+          key={`text-${currentAnnouncement?.id}`}
           {...fadeIn(0.05, 40)}
           className="text-center text-neutral-800 dark:text-neutral-200"
         >
-          <h2 className="text-3xl font-bold mb-4">به سامانه خوش آمدید</h2>
-          <p className="text-lg">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-            استفاده از طراحان گرافیک است.
+          <h2 className="text-3xl font-bold mb-4">
+            {currentAnnouncement?.title || "به سامانه خوش آمدید"}
+          </h2>
+          <p className="text-lg mb-6">
+            {currentAnnouncement?.description ||
+              "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است."}
           </p>
+          {currentAnnouncement?.link && (
+            <motion.a
+              href={currentAnnouncement.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-2.5 bg-blue-500 text-white rounded-full
+                        hover:bg-blue-600 transition-all duration-300 transform hover:scale-105
+                        shadow-md hover:shadow-lg mb-6"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              مشاهده بیشتر
+              <span className="mr-2">→</span>
+            </motion.a>
+          )}
+          {data && data.length > 1 && (
+            <div className="flex justify-center gap-2 mt-4">
+              {data.map((_, index) => (
+                <div
+                  key={index}
+                  className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                    index === currentAnnouncementIndex
+                      ? "bg-blue-500 w-4"
+                      : "bg-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
       <motion.div

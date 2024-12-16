@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
-import Dashboard from "../components/dashboard";
+import Dashboard from "../Modules/dashboard/pages/dashboard.page";
 
 const LoginPage = lazy(() => import("../pages/login.page"));
 const ProfilePage = lazy(() =>
@@ -475,7 +475,6 @@ export default function Router() {
           ),
         },
       ],
-
     },
   ]);
   return routes;
