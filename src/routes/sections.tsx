@@ -169,13 +169,13 @@ const DisplacementFormPage = lazy(() =>
 );
 
 const GroupsMainPage = lazy(() =>
-  import("../Modules/groups").then((module) => ({
+  import("../Modules/permissions").then((module) => ({
     default: module.GroupsMainPage,
   }))
 );
 
 const GroupsTablePage = lazy(() =>
-  import("../Modules/groups").then((module) => ({
+  import("../Modules/permissions").then((module) => ({
     default: module.GroupsTablePage,
   }))
 );
