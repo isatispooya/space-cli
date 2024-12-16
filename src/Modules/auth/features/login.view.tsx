@@ -7,6 +7,7 @@ import LoginForm from "./login.form";
 import SignupForm from "./signup.form";
 import ForgetPassSms from "./forget_pass_sms.form";
 import ForgetPassForm from "./forget_pass.form";
+import rb from "./rb.png"
 
 initTWE({ Input, Ripple });
 
@@ -27,11 +28,29 @@ const Login: React.FC = () => {
   return (
     <section
       dir="rtl"
-      className="flex min-h-screen items-center justify-center bg-neutral-200 dark:bg-neutral-700"
+      className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-neutral-200 dark:bg-neutral-700"
     >
+      <div className=" md:flex md:w-6/12 flex-col items-center justify-center space-y-2 order-1">
+        <motion.img
+          {...fadeIn(0.05, 20)}
+          src={rb}
+          alt="Login illustration"
+          className="hidden md:block w-4/5 max-w-lg"
+        />
+        <motion.div
+          {...fadeIn(0.05, 40)}
+          className="text-center text-neutral-800 dark:text-neutral-200"
+        >
+          <h2 className="text-3xl font-bold mb-4">به سامانه خوش آمدید</h2>
+          <p className="text-lg">
+            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+            استفاده از طراحان گرافیک است.
+          </p>
+        </motion.div>
+      </div>
       <motion.div
         {...fadeIn(0.05, 0, 0.4)}
-        className="container mx-auto p-4 md:p-8 max-w-md"
+        className="container mx-auto p-4 md:p-8 max-w-md order-0"
       >
         <div className="flex flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200 ">
           <div className="w-full ">
@@ -82,7 +101,9 @@ const Login: React.FC = () => {
                     {activeComponent === "forgetpass" && (
                       <>
                         {!isSmsVerified ? (
-                          <ForgetPassSms onVerificationSuccess={() => setIsSmsVerified(true)} />
+                          <ForgetPassSms
+                            onVerificationSuccess={() => setIsSmsVerified(true)}
+                          />
                         ) : (
                           <ForgetPassForm />
                         )}
