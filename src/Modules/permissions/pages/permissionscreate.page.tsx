@@ -1,7 +1,11 @@
-import { PermissionsForm } from "../features";
+import { CreatePermissionGroupForm } from "../features";
+
 
 const PermissionsCreatePage = () => {
-  return <PermissionsForm />;
+
+  return (
+    <CreatePermissionGroupForm />
+  );
 };
 
 export default PermissionsCreatePage;

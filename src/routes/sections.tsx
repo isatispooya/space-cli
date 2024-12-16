@@ -168,6 +168,18 @@ const DisplacementFormPage = lazy(() =>
   }))
 );
 
+const GroupsMainPage = lazy(() =>
+  import("../Modules/groups").then((module) => ({
+    default: module.GroupsMainPage,
+  }))
+);
+
+const GroupsTablePage = lazy(() =>
+  import("../Modules/groups").then((module) => ({
+    default: module.GroupsTablePage,
+  }))
+);
+
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -445,6 +457,25 @@ export default function Router() {
           ),
         },
       ],
+    },
+    {
+      path: "/groups",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <GroupsMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <GroupsTablePage />
+            </Suspense>
+          ),
+        },
+      ],
+
     },
   ]);
   return routes;

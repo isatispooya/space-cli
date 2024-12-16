@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { usePermissionList } from "../hooks";
+import { useGroupsList, usePermissionList } from "../hooks";
 import { DataGrid } from "@mui/x-data-grid";
 import { PermissionData } from "../types";
 import toast, { Toaster } from "react-hot-toast";
@@ -9,8 +9,9 @@ import { FaEdit } from "react-icons/fa";
 import ModalLayout from "../../../layouts/ModalLayout";
 import EditPermissionForm from "./editpermissions.form";
 
-const PermissionsTable: React.FC = () => {
-  const { data } = usePermissionList();
+const GroupsTable: React.FC = () => {
+  const { data } = useGroupsList();
+  console.log(data, "data");
   const [selectedRow, setSelectedRow] = useState<PermissionData | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -93,4 +94,4 @@ const PermissionsTable: React.FC = () => {
   );
 };
 
-export default PermissionsTable;
+export default GroupsTable;
