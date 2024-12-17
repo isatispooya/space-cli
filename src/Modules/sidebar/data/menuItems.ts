@@ -5,13 +5,15 @@ import {
   FaUserTie,
   FaPhone,
 } from "react-icons/fa";
+import { useMenu } from "../hooks/useMenu";
 
 export interface MenuItem {
   title: string;
   path?: string;
-  icon?: any;
+  icon?: unknown;
   submenu?: MenuItem[];
 }
+
 
 export const menuItems: MenuItem[] = [
   {
@@ -19,12 +21,12 @@ export const menuItems: MenuItem[] = [
     icon: FaUser,
     submenu: [
       { title: "پروفایل", path: "/profile" },
-      { 
+      {
         title: "تنظیمات",
         submenu: [
           { title: "تنظیمات حساب", path: "/settings/account" },
-          { title: "تنظیمات امنیتی", path: "/settings/security" }
-        ]
+          { title: "تنظیمات امنیتی", path: "/settings/security" },
+        ],
       },
     ],
   },
@@ -33,20 +35,20 @@ export const menuItems: MenuItem[] = [
     icon: FaUserTie,
     submenu: [
       { title: "لیست سهامداران", path: "/shareholders/table" },
-      { 
+      {
         title: "مدیریت سهام",
         submenu: [
           { title: "ایجاد سهامدار", path: "/shareholders/create" },
           { title: "لیست جابجایی", path: "/transferstock/table" },
           { title: "ایجاد جابجایی", path: "/transferstock/create" },
-        ]
+        ],
       },
       {
         title: "مدیریت سود",
         submenu: [
           { title: "لیست سود پرداختی", path: "/capital/table" },
           { title: "ایجاد سود پرداختی", path: "/capital/create" },
-        ]
+        ],
       },
       {
         title: "حق تقدم",
@@ -55,8 +57,15 @@ export const menuItems: MenuItem[] = [
           { title: "ایجاد حق تقدم", path: "/precendence/create" },
           { title: "جابه جایی حق تقدم", path: "/displacement/table" },
           { title: "ایجاد جابه جایی حق تقدم", path: "/displacement/create" },
-        ]
-      }
+        ],
+      },
+      {
+        title: "خرید حق تقدم  ",
+        submenu: [
+          { title: "لیست حق تقدم خرید", path: "/purchacePrecendence/table" },
+          { title: "ایجاد حق تقدم خرید", path: "/purchacePrecendence/create" },
+        ],
+      },
     ],
   },
   {

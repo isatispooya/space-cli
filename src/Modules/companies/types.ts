@@ -1,7 +1,11 @@
 export interface FormField {
   name: string;
   label: string;
+  disabled?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any;
   type: "text" | "email" | "password" | "select" | "checkbox" | "transferList";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options?: { label: string; value: any }[];
   transferListProps?: {
     leftTitle?: React.ReactNode;
@@ -10,6 +14,8 @@ export interface FormField {
     rightItems: TransferListItem[];
     searchPlaceholder?: string;
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onChange?: (value: any) => void;
 }
 
 export interface TransferListItem {

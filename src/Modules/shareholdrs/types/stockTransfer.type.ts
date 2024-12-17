@@ -1,4 +1,4 @@
-export interface StockTransferTypes {
+export interface stockTransferTypes {
   id: number;
   buyer: number;
   seller: number;

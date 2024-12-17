@@ -17,3 +17,6 @@ export { default as usePostStockTransfer } from "./usePostStockTransfer";
 export { default as usePostPrecendence } from "./usePostPrecendence";
 export { default as usePostCapitalIncreasePayment } from "./usePostCapitalIncreasePayment";
 export { default as usePostDisplacementPrecendence } from "./usePostDisplacementPrecendence";
+export { default as usePurchacePrecendence } from "./usePurchacePrecendence";
+export { default as useUnusedPrecedenceProcess } from "./useUnusedPrecedenceProcess";
+export { default as useUnusedPrecedenceProcessPatch } from "./useUnusedPrecedenceProcessPatch";

@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
     .required("تعداد کارمندان الزامی است"),
 });
 
-const COMPANY_TYPES: readonly CompanyType[] = [
+const COMPANY_TYPES = [
   { value: "private_joint_stock", label: "سهامی خاص" },
   { value: "public_joint_stock", label: "سهامی عام" },
   { value: "limited_liability", label: "مسئولیت محدود" },
@@ -38,7 +38,7 @@ const COMPANY_TYPES: readonly CompanyType[] = [
   { value: "stock_mixed", label: "مختلط سهامی" },
   { value: "proportional_liability", label: "نسبی" },
   { value: "cooperative", label: "تعاونی" },
-] as const;
+];
 
 const formFields: FormField[] = [
   { name: "name", label: "نام شرکت", type: "text" },
@@ -50,7 +50,7 @@ const formFields: FormField[] = [
   },
   { name: "address", label: "آدرس", type: "text" },
   { name: "year_of_establishment", label: "سال تاسیس", type: "text" },
-  { name: "phone", label: "تلفن", type: "tel" },
+  { name: "phone", label: "تلفن", type: "text" },
   { name: "postal_code", label: "کد پستی", type: "text" },
   { name: "national_id", label: "کد شناسه", type: "text" },
   { name: "description", label: "توضیحات", type: "text" },
@@ -58,9 +58,9 @@ const formFields: FormField[] = [
   { name: "registration_number", label: "تعداد سرمایه ثبتی", type: "text" },
 
   { name: "type_of_activity", label: "نوع فعالیت", type: "text" },
-  { name: "website", label: "وبسایت", type: "url" },
+  { name: "website", label: "وبسایت", type: "text" },
   { name: "email", label: "ایمیل", type: "email" },
-  { name: "employees", label: "تعداد کارمندان", type: "number" },
+  { name: "employees", label: "تعداد کارمندان", type: "text" },
 ];
 
 const CreateCompanyForm = () => {

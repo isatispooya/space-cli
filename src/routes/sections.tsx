@@ -21,11 +21,19 @@ const CompanyMainPage = lazy(() =>
     default: module.CompanyMainPage,
   }))
 );
+
 const CompanyTablePage = lazy(() =>
   import("../Modules/companies").then((module) => ({
     default: module.CompanyTablePage,
   }))
 );
+
+const PaymentResultPage = lazy(() =>
+  import("../pages/paymentResultPage").then((module) => ({
+    default: module.default,
+  }))
+);
+
 const CompanyCreatePage = lazy(() =>
   import("../Modules/companies").then((module) => ({
     default: module.CompanyCreatePage,
@@ -144,6 +152,12 @@ const CapitalTablePage = lazy(() =>
   }))
 );
 
+const UpdateUnusedPrecedenceProcessPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.UpdateUnusedPrecedenceProcessPage,
+  }))
+);
+
 const CapitalIncreaseFormPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.CapitalIncreaseFormPage,
@@ -180,6 +194,24 @@ const GroupsTablePage = lazy(() =>
   }))
 );
 
+const PurchacePrecendenceTablePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.PurchacePrecendenceTablePage,
+  }))
+);
+
+const PurchacePrecendenceFormPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.PurchacePrecendenceFormPage,
+  }))
+);
+
+const PurchacePrecendenceMainPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.PurchacePrecendenceMainPage,
+  }))
+);
+
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -189,6 +221,14 @@ export default function Router() {
       element: (
         <Suspense fallback={<Loader />}>
           <LoginPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/paymentResult",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <PaymentResultPage />
         </Suspense>
       ),
     },
@@ -476,6 +516,41 @@ export default function Router() {
         },
       ],
     },
+    {
+      path: "/purchacePrecendence",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <PurchacePrecendenceMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PurchacePrecendenceTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PurchacePrecendenceFormPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "update",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <UpdateUnusedPrecedenceProcessPage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+
   ]);
   return routes;
 }

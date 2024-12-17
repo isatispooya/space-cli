@@ -25,6 +25,7 @@ interface FormsProps<T extends Maybe<AnyObject>> {
     borderColor?: string;
     checkedColor?: string;
   };
+  disabledFields?: boolean;
 }
 
 const Forms = <T extends FormikValues>({
@@ -39,8 +40,8 @@ const Forms = <T extends FormikValues>({
   onClose,
   showCloseButton = true,
   checkboxColors = {
-    borderColor: 'border-secondary-500',
-    checkedColor: 'checked:border-[#5677BC] checked:bg-[#5677BC]'
+    borderColor: "border-secondary-500",
+    checkedColor: "checked:border-[#5677BC] checked:bg-[#5677BC]",
   },
 }: FormsProps<T>) => (
   <Formik
@@ -100,7 +101,10 @@ const Forms = <T extends FormikValues>({
                         id={`checkbox-${field.name}`}
                         aria-label={field.label}
                       />
-                      <label htmlFor={`checkbox-${field.name}`} className="ml-2">
+                      <label
+                        htmlFor={`checkbox-${field.name}`}
+                        className="ml-2"
+                      >
                         {field.label}
                       </label>
                     </div>
@@ -114,6 +118,7 @@ const Forms = <T extends FormikValues>({
                       type={field.type}
                       label={field.label}
                       className="h-12"
+                      disabled={field.disabled}
                     />
                   )}
                 </Field>
