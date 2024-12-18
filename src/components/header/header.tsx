@@ -1,9 +1,8 @@
 import { Collapse, Ripple, initTWE } from "tw-elements";
 import { Avatar } from "../avatar";
 import { motion } from "framer-motion";
-import LogoWhite from "./Artboard 1 copy 17.png";
-import LogoText from "../textLogo.png";
-
+import LogoWhite from "../../assets/Artboard 1 copy 17.png";
+import LogoText from "../../assets/textLogo.png";
 
 initTWE({ Collapse, Ripple });
 

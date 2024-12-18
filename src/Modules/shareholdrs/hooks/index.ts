@@ -20,3 +20,4 @@ export { default as usePostDisplacementPrecendence } from "./usePostDisplacement
 export { default as usePurchacePrecendence } from "./usePurchacePrecendence";
 export { default as useUnusedPrecedenceProcess } from "./useUnusedPrecedenceProcess";
 export { default as useUnusedPrecedenceProcessPatch } from "./useUnusedPrecedenceProcessPatch";
+export { default as useDelPurchasePrecendense } from "./useDelPurchasePrecendense";

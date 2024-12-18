@@ -1,5 +1,5 @@
 import { GridColDef, DataGrid } from "@mui/x-data-grid";
-import { useDelPrecendence } from "../hooks";
+import { useDelPrecendence, useDelPurchasePrecendense } from "../hooks";
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
@@ -15,8 +15,8 @@ import { useNavigate } from "react-router-dom";
 const PurchacePrecendenceTable: React.FC = () => {
   const { data } = usePurchacePrecendence();
   const navigate = useNavigate();
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const { mutate: deletePrecendence } = useDelPrecendence();
+
+  const { mutate: deletePurchasePrecendense } = useDelPurchasePrecendense();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedRow, setSelectedRow] =
     useState<purchacePrecendenceTypes | null>(null);
@@ -153,7 +153,7 @@ const PurchacePrecendenceTable: React.FC = () => {
             label="حذف سهم"
             text="آیا از حذف شرکت مطمئن هستید؟"
             onConfirm={() => {
-              deletePrecendence(selectedRow.id);
+              deletePurchasePrecendense(selectedRow.id);
               setIsDeleteOpen(false);
               setSelectedRow(null);
             }}

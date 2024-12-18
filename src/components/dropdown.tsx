@@ -1,17 +1,17 @@
 import { useState, FC } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// First define an interface for individual items if needed
+
 interface DropdownItem {
   id?: string | number;
   label: string;
   value: string | number;
 }
 
-// Then define the props interface
+
 interface DropdownProps {
   label: string;
-  items: DropdownItem[];  // Array of dropdown items
+  items: DropdownItem[];  
 }
 
 const DropdownButton: FC<DropdownProps> = ({ label, items }) => {

@@ -1,58 +1,77 @@
 import React from "react";
 import { Menu, SubMenu, MenuItem } from "react-pro-sidebar";
+import { menuItems, MenuItem as MenuItemType } from "../data/menuItems";
 import { useNavigate } from "react-router-dom";
-import BothLogo from "../assets/bothLogo.svg"
-import { useMenu } from "../hooks/useMenu";
+import BothLogo from "../assets/bothLogo.svg";
+import { useUserPermissions } from "../../permissions";
+import { LoaderLg } from "../../../components";
 
 interface SideMenuProps {
   collapsed: boolean;
 }
 
-interface MenuItem {
-  title: string;
-  path?: string;
-  sub_menu?: MenuItem[];
-}
-
-const SideMenu = ({ collapsed }: SideMenuProps) => {
+const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
   const navigate = useNavigate();
-  const { data } = useMenu();
+  const { checkPermission, isLoading } = useUserPermissions();
 
-  const renderMenuItem = (item: MenuItem) => {
-    if (item.sub_menu) {
+  const filterMenuItems = (items: MenuItemType[]): MenuItemType[] => {
+    return items.filter(item => {
+      if (item.codename && !checkPermission(item.codename)) {
+        return false;
+      }
+
+      if (item.submenu) {
+        const filteredSubmenu = filterMenuItems(item.submenu);
+        if (filteredSubmenu.length === 0) {
+          return false;
+        }
+        item.submenu = filteredSubmenu;
+      }
+
+      return true;
+    });
+  };
+
+  const filteredMenuItems = React.useMemo(() => {
+    return filterMenuItems([...menuItems]);
+  }, [checkPermission]);
+
+
+  const renderMenuItem = (item: MenuItemType) => {
+    if (item.submenu) {
       return (
         <SubMenu
           label={
             <div className="flex items-center gap-2">
+              {item.icon && <item.icon />}
               <span>{item.title}</span>
             </div>
           }
           className="text-white"
         >
-          {item.sub_menu.map((subItem, subIndex) => (
-            subItem.sub_menu ? 
-              renderMenuItem(subItem) : 
-              <MenuItem 
-                key={subIndex} 
-                onClick={() => subItem.path && navigate(subItem.path)}
-              >
-                {subItem.title}
-              </MenuItem>
+          {item.submenu.map((subItem, subIndex) => (
+            <React.Fragment key={subIndex}>
+              {subItem.submenu ? (
+                renderMenuItem(subItem)
+              ) : (
+                <MenuItem
+                  onClick={() => subItem.path && navigate(subItem.path)}
+                >
+                  {subItem.title}
+                </MenuItem>
+              )}
+            </React.Fragment>
           ))}
         </SubMenu>
       );
     }
 
     return (
-      <MenuItem 
-        onClick={() => item.path && navigate(item.path)}
-      >
+      <MenuItem onClick={() => item.path && navigate(item.path)}>
         {item.title}
       </MenuItem>
     );
   };
-
-  console.log(data);
 
   return (
     <div
@@ -72,7 +91,7 @@ const SideMenu = ({ collapsed }: SideMenuProps) => {
             },
             subMenuContent: {
               backgroundColor: "rgba(0, 0, 0, 0.1)",
-            }
+            },
           }}
         >
           <div className="flex items-start justify-start mr-4">
@@ -86,10 +105,8 @@ const SideMenu = ({ collapsed }: SideMenuProps) => {
             />
           </div>
 
-          {data?.map((item, index) => (
-            <React.Fragment key={index}>
-              {renderMenuItem(item)}
-            </React.Fragment>
+          {filteredMenuItems.map((item, index) => (
+            <React.Fragment key={index}>{renderMenuItem(item)}</React.Fragment>
           ))}
         </Menu>
       </div>

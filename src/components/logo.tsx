@@ -1,4 +1,4 @@
-import LOGO from "./logo.png";
+import LOGO from "../assets/logo.png";
 
 interface LogoProps {
   positionSize: string;

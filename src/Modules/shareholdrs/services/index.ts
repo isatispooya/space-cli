@@ -22,3 +22,4 @@ export { default as getPurchacePrecendence } from "./PurchacePrecendence.get";
 export { default as postPurchacePrecendence } from "./purchacePrecendence.post";
 export { default as getUnusedPrecedenceProcess } from "./unusedPrecedenceProcess.get";
 export { default as unusedPrecedenceProcessPatch } from "./unusedPrecedenceProcess.patch";
+export { default as purchasePrecendenseDelete } from "./purchasePrecendense.delete";
