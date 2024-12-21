@@ -3,74 +3,61 @@ import Forms from "../../../components/forms";
 import useUpdateShareholders from "../hooks/useUpdateShareholders";
 import { ShareholdersTypes } from "../types";
 import * as yup from "yup";
+import { useShareHoldersStore } from "../store";
+import { useGetShareholders } from "../hooks";
 
-interface EditShareholdFormProps {
-  data: ShareholdersTypes | null;
-  onClose: () => void;
-}
-
-const EditShareholdForm: React.FC<EditShareholdFormProps> = ({
-  data,
-  onClose,
-}) => {
+const EditShareholdForm: React.FC = () => {
   const { mutate } = useUpdateShareholders();
+  const { id } = useShareHoldersStore();
+
+  const { data: shareholders } = useGetShareholders();
+
+  const shareholder = shareholders?.find(
+    (item: ShareholdersTypes) => item.id === id
+  );
+
+  console.log(shareholder);
 
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
     name: yup.string().required("نام الزامی است"),
     number_of_shares: yup.number().required("سهام الزامی است"),
     company: yup.string().required("شرکت الزامی است"),
-    created_at: yup.string().required(),
-    updated_at: yup.string().required(),
   });
 
   const formFields = [
     {
       name: "name",
       label: "نام",
-      type: "text",
+      type: "text" as const,
     },
     {
       name: "number_of_shares",
       label: "سهام",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "company",
       label: "شرکت",
-      type: "text",
-    },
-    {
-      name: "created_at",
-      label: "تاریخ ایجاد",
-      type: "text",
-      disabled: true,
-    },
-    {
-      name: "updated_at",
-      label: "تاریخ بروزرسانی",
-      type: "text",
-      disabled: true,
+      type: "text" as const,
     },
   ];
 
   const initialValues = {
-    name: data?.name || "",
-    number_of_shares: data?.number_of_shares || 0,
-    company: data?.company || "",
-    created_at: data?.created_at || "",
-    updated_at: data?.updated_at || "",
-    id: data?.id || 0,
+    name: shareholder?.name || "",
+    number_of_shares: shareholder?.number_of_shares || 0,
+    company: shareholder?.company || "",
+
+    id: shareholder?.id || 0,
   };
 
   const onSubmit = (values: ShareholdersTypes) => {
-    if (data?.id) {
+    if (shareholder?.id) {
       mutate(
-        { id: data.id, data: values },
+        { id: shareholder?.id, data: values },
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ویرایش شد");
-            onClose();
           },
           onError: () => {
             toast.error("خطایی رخ داده است");
@@ -90,7 +77,6 @@ const EditShareholdForm: React.FC<EditShareholdFormProps> = ({
         colors="text-[#5677BC]"
         buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
         showCloseButton={true}
-        onClose={onClose}
         onSubmit={onSubmit}
         submitButtonText={{ default: "ثبت", loading: "در حال ثبت..." }}
         title="ویرایش سهامدار"

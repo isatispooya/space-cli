@@ -13,6 +13,10 @@ export interface FormField {
     leftItems: TransferListItem[];
     rightItems: TransferListItem[];
     searchPlaceholder?: string;
+    required?: boolean;
+    disabled?: boolean;
+    error?: string;
+    
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange?: (value: any) => void;

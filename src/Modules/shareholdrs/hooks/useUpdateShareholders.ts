@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { patchShareholders } from "../services";
 import { ShareholdersTypes } from "../types";
+import axios from "axios";
 
 interface UpdateShareholdersTypes {
   id: number;
@@ -8,11 +9,9 @@ interface UpdateShareholdersTypes {
 }
 
 const useUpdateShareholders = () => {
-  return useMutation({
-    mutationKey: ["updateShareholders"],
-    mutationFn: ({ id, data }: UpdateShareholdersTypes) =>
-      patchShareholders(id, data),
-  });
+  return useMutation<any, Error, CreateShareholderDTO>((data) => 
+    axios.post('/api/shareholders/', data)
+  );
 };
 
 export default useUpdateShareholders;

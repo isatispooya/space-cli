@@ -7,9 +7,9 @@ import { FaTrash } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
-import ModalLayout from "../../../layouts/ModalLayout";
-import { EditShareholdForm } from ".";
 import useDelShareholders from "../hooks/useDelShareholders";
+import { useShareHoldersStore } from "../store";
+import { useNavigate } from "react-router-dom";
 
 const ShareholdTable: React.FC = () => {
   const { data: shareholders } = useGetShareholders();
@@ -17,8 +17,11 @@ const ShareholdTable: React.FC = () => {
     null
   );
   const { mutate: deleteShareholder } = useDelShareholders();
-  const [setIsDeleteOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const { setId } = useShareHoldersStore();
+  const navigate = useNavigate();
+
+  console.log('Raw shareholders data:', shareholders);
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
@@ -33,7 +36,8 @@ const ShareholdTable: React.FC = () => {
       toast.error("لطفا یک شرکت را انتخاب کنید");
       return;
     }
-    setIsEditOpen(true);
+    setId(selectedRow.id);
+    navigate("/shareholders/update");
   };
 
   const handleDelete = () => {
@@ -45,9 +49,14 @@ const ShareholdTable: React.FC = () => {
     setIsDeleteOpen(true);
   };
 
-  const shareholdersData = shareholders?.results || [];
+  const shareholdersData = shareholders || [];
 
-  console.log(shareholdersData);
+  const processedData = shareholdersData.map(row => ({
+    ...row,
+    id: row.id || Math.random()
+  }));
+
+  console.log('Processed data:', processedData);
 
   return (
     <>
@@ -55,7 +64,7 @@ const ShareholdTable: React.FC = () => {
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           columns={columns}
-          rows={shareholdersData}
+          rows={processedData}
           localeText={localeText}
           onRowClick={(params) => setSelectedRow(params.row)}
           onRowSelectionModelChange={(newSelectionModel) => {
@@ -115,12 +124,6 @@ const ShareholdTable: React.FC = () => {
           }}
         />
       </div>
-      <ModalLayout open={isEditOpen} onClose={() => setIsEditOpen(false)}>
-        <EditShareholdForm
-          data={selectedRow}
-          onClose={() => setIsEditOpen(false)}
-        />
-      </ModalLayout>
     </>
   );
 };

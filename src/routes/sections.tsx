@@ -85,6 +85,11 @@ const ShareholdersFormPage = lazy(() =>
     default: module.ShareholdersFormPage,
   }))
 );
+const ShareholdersUpdatePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.ShareholdersUpdatePage,
+  }))
+);
 
 const PermissionsTablePage = lazy(() =>
   import("../Modules/permissions").then((module) => ({
@@ -389,6 +394,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <ShareholdersFormPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "update",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ShareholdersUpdatePage />
             </Suspense>
           ),
         },

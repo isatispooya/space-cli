@@ -12,15 +12,9 @@ import {
 import * as Yup from "yup";
 import { useUnusedPrecedenceProcessStore } from "../store";
 
-
 const EditUnusedPrecedenceProcessForm = () => {
   const { data: purchaseData } = usePurchacePrecendence();
   const { id } = useUnusedPrecedenceProcessStore();
-
-
-
-
-
 
   const { data: processData } = useUnusedPrecedenceProcess();
 
@@ -28,12 +22,8 @@ const EditUnusedPrecedenceProcessForm = () => {
     (item: purchacePrecendenceTypes) => item.id === id
   );
 
-  console.log(1,id)
-
   const { mutate: patchUnusedPrecedenceProcess } =
     useUnusedPrecedenceProcessPatch(data?.id);
-
-
 
   const formik = useFormik({
     initialValues: {
