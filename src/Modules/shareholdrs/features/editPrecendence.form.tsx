@@ -29,33 +29,33 @@ const EditPrecendenceForm: React.FC<EditPrecendenceFormProps> = ({
     {
       name: "company",
       label: "شرکت",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "position",
       label: "موقعیت",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "precedence",
       label: "حق تقدم",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "used_precedence",
       label: "حق تقدم استفاده شده",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "created_at",
       label: "تاریخ ایجاد",
-      type: "text",
+      type: "text" as const,
       disabled: true,
     },
     {
       name: "updated_at",
       label: "تاریخ بروزرسانی",
-      type: "text",
+      type: "text" as const,
       disabled: true,
     },
   ];

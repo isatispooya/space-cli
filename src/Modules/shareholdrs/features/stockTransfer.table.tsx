@@ -8,17 +8,21 @@ import { tableStyles } from "../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import ModalLayout from "../../../layouts/ModalLayout";
 import { Button } from "@headlessui/react";
-import { EditStockTransferForm } from "./";
+
 import Popup from "../../../components/popup";
+import { useStockTransferStore } from "../store";
+import { useNavigate } from "react-router-dom";
 
 const StockTransferTable: React.FC = () => {
   const { data: stockTransfer } = useGetStockTransfer();
+  const { setId } = useStockTransferStore();
+
+  const navigate = useNavigate();
   const [selectedRow, setSelectedRow] = useState<StockTransferTypes | null>(
     null
   );
   const { mutate: deleteStockTransfer } = useDelStockTransfer();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
@@ -34,15 +38,14 @@ const StockTransferTable: React.FC = () => {
       width: 100,
     },
   ];
-
   const handleEdit = () => {
     if (!selectedRow) {
       toast.error("لطفا یک سهم را انتخاب کنید");
       return;
     }
-    setIsEditOpen(true);
+    setId(selectedRow.id);
+    navigate("/transferstock/update");
   };
-
   const handleDelete = () => {
     if (!selectedRow) {
       toast.error("لطفا یک سهم را انتخاب کنید");
@@ -51,7 +54,7 @@ const StockTransferTable: React.FC = () => {
     setIsDeleteOpen(true);
   };
 
-  const stockTransferData = stockTransfer?.results || [];
+  const stockTransferData = stockTransfer|| [];
 
   return (
     <>
@@ -126,12 +129,7 @@ const StockTransferTable: React.FC = () => {
           <Button onClick={() => setIsDeleteOpen(false)}>لغو</Button>
         </div>
       </ModalLayout>
-      <ModalLayout open={isEditOpen} onClose={() => setIsEditOpen(false)}>
-        <EditStockTransferForm
-          data={selectedRow}
-          onClose={() => setIsEditOpen(false)}
-        />
-      </ModalLayout>
+
       {selectedRow && (
         <Popup
           isOpen={isDeleteOpen}

@@ -18,3 +18,5 @@ export { default as PurchacePrecendenceTablePage } from "./PurchacePrecendenceTa
 export { default as PurchacePrecendenceMainPage } from "./purchacePrecendenceMain.page";
 export { default as UpdateUnusedPrecedenceProcessPage } from "./updateUnusedPrecedenceProcess.page";
 export { default as ShareholdersUpdatePage } from "./shareholdersUpdate.page";
+export { default as StockTransferUpdatePage } from "./stockTransferUpdate.page";
+export { default as DisplacementUpdatePage } from "./displacementUpdate.page";

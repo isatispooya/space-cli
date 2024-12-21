@@ -1,5 +1,5 @@
 import { GridColDef, DataGrid } from "@mui/x-data-grid";
-import { useDelPrecendence, useDelPurchasePrecendense } from "../hooks";
+import {  useDelPurchasePrecendense } from "../hooks";
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";

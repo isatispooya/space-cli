@@ -3,13 +3,18 @@ import Forms from "../../../components/forms";
 import { StockTransferTypes } from "../types";
 import useUpdateStockTransfer from "../hooks/useUpdateStockTransfer";
 import * as yup from "yup";
+import { useGetStockTransfer } from "../hooks";
+import { useStockTransferStore } from "../store";
 
-interface propTypes {
-  data: StockTransferTypes | null;
-  onClose: () => void;
-}
-const EditStockTransferForm: React.FC<propTypes> = ({ data, onClose }) => {
+const EditStockTransferForm: React.FC = () => {
   const { mutate } = useUpdateStockTransfer();
+  const { data: stockTransferData } = useGetStockTransfer();
+
+  const { id } = useStockTransferStore();
+
+  const stockTransfer = stockTransferData?.find(
+    (item: StockTransferTypes) => item.id === id
+  );
 
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
@@ -17,8 +22,7 @@ const EditStockTransferForm: React.FC<propTypes> = ({ data, onClose }) => {
     seller: yup.number().required("فروشنده الزامی است"),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
     price: yup.number().required("قیمت الزامی است"),
-    created_at: yup.string().required(),
-    updated_at: yup.string().required(),
+
     document: yup
       .string()
       .transform((value) => value || null)
@@ -29,56 +33,44 @@ const EditStockTransferForm: React.FC<propTypes> = ({ data, onClose }) => {
     {
       name: "buyer",
       label: "خریدار",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "seller",
       label: "فروشنده",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "number_of_shares",
       label: "تعداد سهام",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "price",
       label: "قیمت",
-      type: "number",
-    },
-    {
-      name: "created_at",
-      label: "تاریخ ایجاد",
-      type: "text",
-      disabled: true,
-    },
-    {
-      name: "updated_at",
-      label: "تاریخ بروزرسانی",
-      type: "text",
-      disabled: true,
+      type: "text" as const,
     },
   ];
 
   const initialValues = {
-    buyer: data?.buyer || 0,
-    seller: data?.seller || 0,
-    number_of_shares: data?.number_of_shares || 0,
-    price: data?.price || 0,
-    created_at: data?.created_at || "",
-    updated_at: data?.updated_at || "",
-    document: data?.document || null,
-    id: data?.id || 0,
+    buyer: stockTransfer?.buyer || 0,
+    seller: stockTransfer?.seller || 0,
+    number_of_shares: stockTransfer?.number_of_shares || 0,
+    price: stockTransfer?.price || 0,
+
+    document: stockTransfer?.document || null,
+    id: stockTransferData?.id || 0,
+    company: stockTransferData?.company || 0,
+    user: stockTransferData?.user || 0,
   };
 
   const onSubmit = (values: StockTransferTypes) => {
-    if (data?.id) {
+    if (stockTransfer?.id) {
       mutate(
-        { id: data.id, data: values },
+        { id: stockTransfer?.id, data: values },
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ویرایش شد");
-            onClose();
           },
           onError: () => {
             toast.error("خطایی رخ داده است");
@@ -98,7 +90,6 @@ const EditStockTransferForm: React.FC<propTypes> = ({ data, onClose }) => {
         colors="text-[#5677BC]"
         buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
         showCloseButton={true}
-        onClose={onClose}
         onSubmit={onSubmit}
         title="ویرایش جابهجایی سهام"
       />

@@ -2,63 +2,61 @@ import toast, { Toaster } from "react-hot-toast";
 import Forms from "../../../components/forms";
 import { DisplacementPrecendenceTypes } from "../types";
 import * as yup from "yup";
-import { useUpdateDisplacment } from "../hooks";
+import { useGetDisplacementPrecendence, useUpdateDisplacment } from "../hooks";
+import { useDisplacementStore } from "../store";
 
-interface propTypes {
-  data: DisplacementPrecendenceTypes | null;
-  onClose: () => void;
-}
+const EditDisplacmentForm: React.FC = () => {
+  const { mutate } = useUpdateDisplacment();
 
-const EditDisplacmentForm: React.FC<propTypes> = ({ data, onClose }) => {
+  const { data: displacementData } = useGetDisplacementPrecendence();
 
-    const { mutate } = useUpdateDisplacment();
+  const { id } = useDisplacementStore();
 
-    console.log(data);
+  const displacement = displacementData?.find(
+    (item: DisplacementPrecendenceTypes) => item.id === id
+  );
 
   const formFields = [
     {
       name: "buyer",
       label: "خریدار",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "seller",
       label: "فروشنده",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "company",
       label: "شرکت",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "number_of_shares",
       label: "تعداد سهام",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "price",
       label: "قیمت",
-      type: "number",
+      type: "text" as const,
     },
     {
       name: "document",
       label: "سند",
-      type: "file",
+      type: "text" as const,
     },
-
   ];
 
   const initialValues = {
-    id: data?.id || 0,
-    buyer: data?.buyer || 0,
-    seller: data?.seller || 0,
-    company: data?.company || 0,
-    number_of_shares: data?.number_of_shares || 0,
-    price: data?.price || 0,
+    id: displacement?.id || 0,
+    buyer: displacement?.buyer || 0,
+    seller: displacement?.seller || 0,
+    company: displacement?.company || 0,
+    number_of_shares: displacement?.number_of_shares || 0,
+    price: displacement?.price || 0,
     document: undefined,
-    created_at: data?.created_at || "",
-    updated_at: data?.updated_at || "",
   };
 
   const validationSchema = yup.object().shape({
@@ -69,18 +67,18 @@ const EditDisplacmentForm: React.FC<propTypes> = ({ data, onClose }) => {
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
     price: yup.number().required("قیمت الزامی است"),
     document: yup.string().nullable(),
-    created_at: yup.string().required(),
-    updated_at: yup.string().required(),
   }) as yup.ObjectSchema<DisplacementPrecendenceTypes>;
 
   const onSubmit = (values: DisplacementPrecendenceTypes) => {
-    if (data?.id) {
-      mutate({ data: values, id: data.id }, {
-        onSuccess: () => {
-          toast.success("حق تقدم با موفقیت ویرایش شد");
-          onClose();
-        },
-      });
+    if (displacement?.id) {
+      mutate(
+        { data: values, id: displacement?.id },
+        {
+          onSuccess: () => {
+            toast.success("حق تقدم با موفقیت ویرایش شد");
+          },
+        }
+      );
     }
   };
 
@@ -94,7 +92,6 @@ const EditDisplacmentForm: React.FC<propTypes> = ({ data, onClose }) => {
         colors="text-[#5677BC]"
         buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
         showCloseButton={true}
-        onClose={onClose}
         onSubmit={onSubmit}
         submitButtonText={{ default: "ثبت", loading: "در حال ثبت..." }}
         title="ویرایش حق تقدم"

@@ -187,6 +187,12 @@ const DisplacementFormPage = lazy(() =>
   }))
 );
 
+const DisplacementUpdatePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.DisplacementUpdatePage,
+  }))
+);
+
 const GroupsMainPage = lazy(() =>
   import("../Modules/permissions").then((module) => ({
     default: module.GroupsMainPage,
@@ -214,6 +220,12 @@ const PurchacePrecendenceFormPage = lazy(() =>
 const PurchacePrecendenceMainPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.PurchacePrecendenceMainPage,
+  }))
+);
+
+const StockTransferUpdatePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.StockTransferUpdatePage,
   }))
 );
 
@@ -431,6 +443,14 @@ export default function Router() {
             </Suspense>
           ),
         },
+        {
+          path: "update",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <StockTransferUpdatePage />
+            </Suspense>
+          ),
+        },
       ],
     },
     {
@@ -509,6 +529,14 @@ export default function Router() {
             </Suspense>
           ),
         },
+        {
+          path: "update",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <DisplacementUpdatePage />
+            </Suspense>
+          ),
+        },
       ],
     },
     {
@@ -563,7 +591,6 @@ export default function Router() {
         },
       ],
     },
-
   ]);
   return routes;
 }

@@ -51,7 +51,7 @@ const ShareholdTable: React.FC = () => {
 
   const shareholdersData = shareholders || [];
 
-  const processedData = shareholdersData.map(row => ({
+  const processedData = shareholdersData.map((row: ShareholdersTypes) => ({
     ...row,
     id: row.id || Math.random()
   }));

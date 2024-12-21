@@ -17,8 +17,7 @@ export interface StockTransferTypes {
   number_of_shares: number;
   price: number;
   document: string | null;
-  updated_at: string;
-  created_at: string;
+
   company: number;
   user: number;
 }

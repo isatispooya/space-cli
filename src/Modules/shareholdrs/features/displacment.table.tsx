@@ -6,22 +6,19 @@ import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import { DisplacementPrecendenceTypes } from "../types";
 import { tableStyles } from "../../../ui";
-import { ModalLayout } from "../../../layouts";
-
-import EditDisplacmentForm from "./editDisplacment.form";
 import Popup from "../../../components/popup";
+import { useDisplacementStore } from "../store";
+import { useNavigate } from "react-router-dom";
 
 const DisplacementTable = () => {
   const { data, refetch } = useGetDisplacementPrecendence();
   const { mutate: deleteDisplacement } = useDelDisplacment();
-
+  const { setId } = useDisplacementStore();
+  const navigate = useNavigate();
   const [selectedRow, setSelectedRow] =
     useState<DisplacementPrecendenceTypes | null>(null);
-  const [openEdit, setOpenEdit] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-  const rows = data?.results || [];
-
+  const rows = data || [];
   const columns = [
     { field: "id", headerName: "شناسه", width: 70 },
     { field: "buyer", headerName: "خریدار", width: 100 },
@@ -29,8 +26,7 @@ const DisplacementTable = () => {
     { field: "company", headerName: "شرکت", width: 100 },
     { field: "number_of_shares", headerName: "تعداد سهام", width: 120 },
     { field: "price", headerName: "قیمت", width: 100 },
-    { field: "created_at", headerName: "تاریخ ایجاد", width: 150 },
-    { field: "updated_at", headerName: "تاریخ بروزرسانی", width: 150 },
+
     {
       field: "document",
       headerName: "سند",
@@ -43,7 +39,8 @@ const DisplacementTable = () => {
       toast.error("لطفا یک حق تقدم را انتخاب کنید");
       return;
     }
-    setOpenEdit(true);
+    setId(selectedRow.id);
+    navigate("displacement/update");
   };
 
   const handleDelete = () => {
@@ -126,12 +123,6 @@ const DisplacementTable = () => {
             },
           }}
         />
-        <ModalLayout isOpen={openEdit} onClose={() => setOpenEdit(false)}>
-          <EditDisplacmentForm
-            data={selectedRow}
-            onClose={() => setOpenEdit(false)}
-          />
-        </ModalLayout>
         {selectedRow && (
           <Popup
             isOpen={isDeleteOpen}
@@ -153,5 +144,4 @@ const DisplacementTable = () => {
     </>
   );
 };
-
 export default DisplacementTable;

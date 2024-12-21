@@ -11,6 +11,7 @@ import {
 } from "../types";
 import * as Yup from "yup";
 import { useUnusedPrecedenceProcessStore } from "../store";
+import toast, { Toaster } from "react-hot-toast";
 
 const EditUnusedPrecedenceProcessForm = () => {
   const { data: purchaseData } = usePurchacePrecendence();
@@ -57,7 +58,7 @@ const EditUnusedPrecedenceProcessForm = () => {
             console.log("Purchase precedence updated successfully");
           },
           onError: (error) => {
-            console.error("Error updating purchase precedence:", error);
+            toast.error("خطایی رخ داده است");
           },
         });
       } catch (error) {
@@ -102,103 +103,108 @@ const EditUnusedPrecedenceProcessForm = () => {
   const isGatewayType = formik.values.type === "2";
 
   return (
-    <div className="p-6">
-      <h2 className="text-[#29D2C7] text-xl mb-6">ثبت حق تقدم</h2>
-      <form onSubmit={formik.handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="amount">مقدار</label>
-          <input
-            id="amount"
-            name="amount"
-            type="text"
-            onChange={handleAmountChange}
-            value={formik.values.amount}
-            className="w-full p-2 border rounded"
-          />
-          {formik.errors.amount && formik.touched.amount && (
-            <div className="text-red-500 text-sm">{formik.errors.amount}</div>
+    <>
+      <Toaster />
+      <div className="p-6">
+        <h2 className="text-[#29D2C7] text-xl mb-6">ثبت حق تقدم</h2>
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="amount">مقدار</label>
+            <input
+              id="amount"
+              name="amount"
+              type="text"
+              onChange={handleAmountChange}
+              value={formik.values.amount}
+              className="w-full p-2 border rounded"
+            />
+            {formik.errors.amount && formik.touched.amount && (
+              <div className="text-red-500 text-sm">{formik.errors.amount}</div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="company">فرایند</label>
+            <select
+              id="company"
+              name="process"
+              onChange={handleCompanyChange}
+              value={formik.values.process}
+              className="w-full p-2 border rounded"
+            >
+              <option value="">انتخاب کنید</option>
+              {processData?.map((process: unusedPrecedenceProcessTypes) => (
+                <option key={process.id} value={process.id}>
+                  {process.company}
+                </option>
+              ))}
+            </select>
+            {formik.errors.process && formik.touched.process && (
+              <div className="text-red-500 text-sm">
+                {formik.errors.process}
+              </div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="price">قیمت واحد</label>
+            <input
+              id="price"
+              name="price"
+              type="text"
+              disabled
+              value={formik.values.price}
+              className="w-full p-2 border rounded bg-gray-100"
+            />
+          </div>
+          <div>
+            <label htmlFor="total_price">قیمت کل</label>
+            <input
+              id="total_price"
+              name="total_price"
+              type="text"
+              disabled
+              value={formik.values.total_price}
+              className="w-full p-2 border rounded bg-gray-100"
+            />
+          </div>
+          <div>
+            <label htmlFor="status">وضعیت</label>
+            <select
+              id="status"
+              name="status"
+              onChange={formik.handleChange}
+              value={formik.values.status}
+              className="w-full p-2 border rounded"
+            >
+              <option value="pending">در انتظار</option>
+              <option value="approved">تایید شده</option>
+              <option value="rejected">رد شده</option>
+            </select>
+          </div>
+          {!isGatewayType && (
+            <>
+              <div>
+                <label htmlFor="transaction_id">شناسه تراکنش</label>
+                <input
+                  id="transaction_id"
+                  name="transaction_id"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.transaction_id}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+            </>
           )}
-        </div>
-        <div>
-          <label htmlFor="company">فرایند</label>
-          <select
-            id="company"
-            name="process"
-            onChange={handleCompanyChange}
-            value={formik.values.process}
-            className="w-full p-2 border rounded"
+          <button
+            type="submit"
+            disabled={formik.isSubmitting}
+            className="bg-[#29D2C7] hover:bg-[#008282] text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <option value="">انتخاب کنید</option>
-            {processData?.map((process: unusedPrecedenceProcessTypes) => (
-              <option key={process.id} value={process.id}>
-                {process.company}
-              </option>
-            ))}
-          </select>
-          {formik.errors.process && formik.touched.process && (
-            <div className="text-red-500 text-sm">{formik.errors.process}</div>
-          )}
-        </div>
-        <div>
-          <label htmlFor="price">قیمت واحد</label>
-          <input
-            id="price"
-            name="price"
-            type="text"
-            disabled
-            value={formik.values.price}
-            className="w-full p-2 border rounded bg-gray-100"
-          />
-        </div>
-        <div>
-          <label htmlFor="total_price">قیمت کل</label>
-          <input
-            id="total_price"
-            name="total_price"
-            type="text"
-            disabled
-            value={formik.values.total_price}
-            className="w-full p-2 border rounded bg-gray-100"
-          />
-        </div>
-        <div>
-          <label htmlFor="status">وضعیت</label>
-          <select
-            id="status"
-            name="status"
-            onChange={formik.handleChange}
-            value={formik.values.status}
-            className="w-full p-2 border rounded"
-          >
-            <option value="pending">در انتظار</option>
-            <option value="approved">تایید شده</option>
-            <option value="rejected">رد شده</option>
-          </select>
-        </div>
-        {!isGatewayType && (
-          <>
-            <div>
-              <label htmlFor="transaction_id">شناسه تراکنش</label>
-              <input
-                id="transaction_id"
-                name="transaction_id"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.transaction_id}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-          </>
-        )}
-        <button
-          type="submit"
-          disabled={formik.isSubmitting}
-          className="bg-[#29D2C7] hover:bg-[#008282] text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {formik.isSubmitting ? "در حال ارسال..." : "ویرایش حق تقدم"}
-        </button>
-      </form>
-    </div>
+            {formik.isSubmitting ? "در حال ارسال..." : "ویرایش حق تقدم"}
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 

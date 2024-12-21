@@ -3,7 +3,7 @@ import { useDelCapital, useGetCapitalIncreasePayment } from "../hooks";
 import toast, { Toaster } from "react-hot-toast";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useState } from "react";
-import { CapitalIncreasePaymentTypes } from "../types";
+import { CapitalIncreaseTypes } from "../types";
 import { tableStyles } from "../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ModalLayout } from "../../../layouts";
@@ -16,11 +16,11 @@ const CapitalTable: React.FC = () => {
   
   const { mutate: deleteCapital } = useDelCapital();
   const [selectedRow, setSelectedRow] =
-    useState<CapitalIncreasePaymentTypes | null>(null);
+      useState<CapitalIncreaseTypes | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  const rows = data?.results || [];
+  const rows = data || [];
   const columns: GridColDef[] = [
     { field: "id", headerName: "شناسه", width: 70 },
     { field: "company", headerName: "شرکت", width: 100 },
@@ -72,7 +72,7 @@ const CapitalTable: React.FC = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = rows.find(
-                (row: CapitalIncreasePaymentTypes) => row.id === selectedId
+                (row: CapitalIncreaseTypes) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);
