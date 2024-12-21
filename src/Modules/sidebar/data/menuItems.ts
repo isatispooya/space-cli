@@ -35,14 +35,14 @@ export const menuItems: MenuItem[] = [
   {
     title: "امور سهامدارن",
     icon: FaUserTie,
-    codename: "shareholders_affairs",
+    codename: "view_shareholders",
     submenu: [
-      { title: "لیست سهامداران", path: "/shareholders/table", codename: "shareholders_list" },
+      { title: "لیست سهامداران", path: "/shareholders/table", codename: "view_shareholders" },
       {
         title: "مدیریت سهام",
         codename: "stock_management",
         submenu: [
-          { title: "ایجاد سهامدار", path: "/shareholders/create", codename: "create_shareholder" },
+          { title: "ایجاد سهامدار", path: "/shareholders/create", codename: "add_shareholders" },
           { title: "لیست جابجایی", path: "/transferstock/table", codename: "stock_transfer_list" },
           { title: "ایجاد جابجایی", path: "/transferstock/create", codename: "create_stock_transfer" },
         ],
@@ -57,12 +57,12 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "حق تقدم",
-        codename: "precedence_rights",
+        codename: "add_precedence",
         submenu: [
           { title: "لیست حق تقدم", path: "/precendence/table", codename: "precedence_list" },
           { title: "ایجاد حق تقدم", path: "/precendence/create", codename: "create_precedence" },
-          { title: "جابه جایی حق تقدم", path: "/displacement/table", codename: "precedence_transfer_list" },
-          { title: "ایجاد جابه جایی حق تقدم", path: "/displacement/create", codename: "create_precedence_transfer" },
+          { title: "جابه جایی حق تقدم", path: "/displacement/table", codename: "view_displacementprecedence" },
+          { title: "ایجاد جابه جایی حق تقدم", path: "/displacement/create", codename: "add_displacementprecedence" },
         ],
       },
       {

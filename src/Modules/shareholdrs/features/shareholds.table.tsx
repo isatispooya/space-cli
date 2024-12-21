@@ -17,7 +17,7 @@ const ShareholdTable: React.FC = () => {
     null
   );
   const { mutate: deleteShareholder } = useDelShareholders();
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const columns: GridColDef[] = [
@@ -46,6 +46,8 @@ const ShareholdTable: React.FC = () => {
   };
 
   const shareholdersData = shareholders?.results || [];
+
+  console.log(shareholdersData);
 
   return (
     <>

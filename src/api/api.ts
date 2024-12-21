@@ -36,7 +36,7 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry && !originalRequest.url.includes('/token/refresh/')) {
       originalRequest._retry = true;
 
       if (!isRefreshing) {
@@ -50,22 +50,24 @@ api.interceptors.response.use(
 
           const { access } = response.data;
           setCookie("access_token", access, 1);
-          onRefreshed(access); // Resolve queued requests with new token
+          onRefreshed(access);
           isRefreshing = false;
 
-          // Retry original request with new token
           originalRequest.headers.Authorization = `Bearer ${access}`;
           return api(originalRequest);
         } catch (refreshError) {
           isRefreshing = false;
-          refreshSubscribers = []; // Clear queued requests on failure
-
-          // Redirect to login on failure
-          window.location.href = "/login";
+          refreshSubscribers = [];
+          
+          document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          
+          if (!window.location.pathname.includes('/login')) {
+            window.location.href = "/login";
+          }
           return Promise.reject(refreshError);
         }
       } else {
-        // Queue requests while token is refreshing
         return new Promise((resolve) => {
           addRefreshSubscriber((token) => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
