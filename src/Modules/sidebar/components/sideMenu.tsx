@@ -4,7 +4,6 @@ import { menuItems, MenuItem as MenuItemType } from "../data/menuItems";
 import { useNavigate } from "react-router-dom";
 import BothLogo from "../assets/bothLogo.svg";
 import { useUserPermissions } from "../../permissions";
-import { LoaderLg } from "../../../components";
 
 interface SideMenuProps {
   collapsed: boolean;
@@ -12,10 +11,10 @@ interface SideMenuProps {
 
 const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
   const navigate = useNavigate();
-  const { checkPermission, isLoading } = useUserPermissions();
+  const { checkPermission , data } = useUserPermissions();
 
   const filterMenuItems = (items: MenuItemType[]): MenuItemType[] => {
-    return items.filter(item => {
+    return items.filter((item) => {
       if (item.codename && !checkPermission(item.codename)) {
         return false;
       }
@@ -31,11 +30,12 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       return true;
     });
   };
+   
 
+  console.log(data)
   const filteredMenuItems = React.useMemo(() => {
     return filterMenuItems([...menuItems]);
   }, [checkPermission]);
-
 
   const renderMenuItem = (item: MenuItemType) => {
     if (item.submenu) {

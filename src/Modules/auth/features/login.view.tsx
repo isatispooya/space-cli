@@ -88,7 +88,7 @@ const Login: React.FC = () => {
           )}
           {data && data.length > 1 && (
             <div className="flex justify-center gap-2 mt-4">
-              {data.map((_, index) => (
+              {data.map((_ : unknown, index : number) => (
                 <div
                   key={index}
                   className={`h-2 w-2 rounded-full transition-all duration-300 ${
