@@ -95,17 +95,11 @@ export const menuItems: MenuItem[] = [
     title: "مکاتبات",
     path: "/correspondence",
     icon: FaEnvelope,
-    codename: "correspondence",
+    codename: "view_correspondence",
     submenu: [
       {
-        title: "لیست مکاتبات",
-        path: "/correspondence/table",
-        codename: "correspondence_list",
-      },
-      {
-        title: "ایجاد مکاتبه",
-        path: "/correspondence/create",
-        codename: "create_correspondence",
+        title: "مدیریت مکاتبات",
+        path: "/correspondence",
       },
     ],
   },
@@ -113,13 +107,11 @@ export const menuItems: MenuItem[] = [
     title: "مدیریت نقش‌ها",
     path: "/positions",
     icon: FaUserTie,
-    codename: "role_management",
+    codename: "view_position",
     submenu: [
-      { title: "نقش‌ها", path: "/positions/table", codename: "roles_list" },
       {
-        title: "ایجاد نقش",
-        path: "/positions/create",
-        codename: "create_role",
+        title: "مدیریت نقش ها",
+        path: "/positions",
       },
     ],
   },
@@ -127,38 +119,28 @@ export const menuItems: MenuItem[] = [
     title: "تماس",
     path: "/contact",
     icon: FaPhone,
-    codename: "contact",
+    codename: "view_accounts",
     submenu: [
-      { title: "پیام‌ها", path: "/contact/messages", codename: "messages" },
-      { title: "تماس با ما", path: "/contact/us", codename: "contact_us" },
+      { title: "پیام‌ها", path: "/contact/messages"},
+      { title: "تماس با ما", path: "/contact/us"},
     ],
   },
   {
     title: "دسترسی ها",
     path: "/permissions",
     icon: FaUserTie,
-    codename: "permissions",
+    codename: "view_permission",
     submenu: [
-      {
-        title: "لیست دسترسی ها",
-        path: "/permissions/table",
-        codename: "permissions_list",
-      },
-      {
-        title: "ایجاد,ویرایش دسترسی ها",
-        path: "/permissions/create",
-        codename: "manage_permissions",
-      },
+      { title: "مدیریت دسترسی ها", path: "/permissions" },
     ],
   },
   {
     title: "گروه ها",
     path: "/groups",
     icon: FaUserTie,
-    codename: "groups",
+    codename: "view_group",
     submenu: [
-      { title: "لیست گروه ها", path: "/groups/table", codename: "groups_list" },
-      { title: "ایجاد گروه", path: "/groups/create", codename: "create_group" },
+      { title: "مدیریت گروه ها", path: "/groups" },
     ],
   },
 ];

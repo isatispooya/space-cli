@@ -1,19 +1,19 @@
 import { useCallback, useState } from "react";
-import { useGroupsList, usePermissionList } from "../hooks";
+import { useGroupsList, useUserPermissions } from "../hooks";
 import { DataGrid } from "@mui/x-data-grid";
-import { PermissionData } from "../types";
+import { Permission } from "../types";
 import toast, { Toaster } from "react-hot-toast";
 import { tableStyles } from "../../../ui";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { FaEdit } from "react-icons/fa";
-import ModalLayout from "../../../layouts/ModalLayout";
-import EditPermissionForm from "./editpermissions.form";
+import { useNavigate } from "react-router-dom";
 
 const GroupsTable: React.FC = () => {
+  const navigate = useNavigate();
+  const { checkPermission } = useUserPermissions(); 
   const { data } = useGroupsList();
   console.log(data, "data");
-  const [selectedRow, setSelectedRow] = useState<PermissionData | null>(null);
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<Permission | null>(null);
 
   const columns = [
     { field: "id", headerName: "شناسه", width: 100 },
@@ -26,8 +26,8 @@ const GroupsTable: React.FC = () => {
       toast.error("لطفا یک شرکت را انتخاب کنید");
       return;
     }
-    setIsEditOpen(true);
-  }, [selectedRow]);
+    navigate(`/permissions/edit/${selectedRow.id}`);
+  }, [selectedRow, navigate]);
 
   return (
     <>
@@ -41,7 +41,7 @@ const GroupsTable: React.FC = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = data.find(
-                (row: PermissionData) => row.id === selectedId
+                (row: Permission) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);
@@ -65,7 +65,7 @@ const GroupsTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: true,
+                    show: checkPermission("change_permission"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
@@ -81,15 +81,6 @@ const GroupsTable: React.FC = () => {
           }}
         />
       </div>
-
-      <ModalLayout open={isEditOpen} onClose={() => setIsEditOpen(false)}>
-        {selectedRow && (
-          <EditPermissionForm
-            data={selectedRow}
-            onClose={() => setIsEditOpen(false)}
-          />
-        )}
-      </ModalLayout>
     </>
   );
 };

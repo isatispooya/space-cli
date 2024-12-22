@@ -11,8 +11,7 @@ interface FormValues {
 
 const EditPermissionForm: React.FC<{
   data: PermissionData;
-  onClose: () => void;
-}> = ({ data, onClose }) => {
+}> = ({ data }) => {
   const { data: users } = useUserData();
   const { mutate: setPermission } = useSetPermission();
 
@@ -20,12 +19,12 @@ const EditPermissionForm: React.FC<{
     {
       name: "user_id",
       label: "شناسه کاربر ",
-      type: "number",
+      type: "text",
     },
     {
       name: "permission_id",
       label: "شناسه دسترسی",
-      type: "select",
+      type: "select", 
       multiple: true,
       inputMode: "numeric",
     },
@@ -60,10 +59,7 @@ const EditPermissionForm: React.FC<{
       title="ویرایش دسترسی"
       colors="text-[#5677BC]"
       buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
-      showCloseButton={true}
-      onClose={onClose}
     />
-    
   );
 };
 

@@ -12,10 +12,12 @@ import Popup from "../../../components/popup";
 import useDeleteCompany from "../hooks/useDeleteCompany";
 import EditCompanyForm from "./company.edit.form";
 import { tableStyles } from "../../../ui";
+import { useUserPermissions } from "../../permissions";
 
 const CompanyTable = () => {
   const { data } = useCompaniesData();
   const { mutate: deleteCompanyMutation } = useDeleteCompany();
+  const { checkPermission } = useUserPermissions(); 
 
   const rows = data?.results || [];
   const [selectedRow, setSelectedRow] = useState<CompanyData | null>(null);
@@ -114,19 +116,19 @@ const CompanyTable = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: true,
+                    show: checkPermission("change_company"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   view: {
                     label: "مشاهده",
-                    show: true,
+                    show: checkPermission("view_company"),
                     onClick: handleView,
                     icon: <FaEye />,
                   },
                   delete: {
                     label: "حذف",
-                    show: true,
+                    show: checkPermission("delete_company"),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

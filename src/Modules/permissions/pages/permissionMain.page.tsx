@@ -1,8 +1,23 @@
 import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
+import { LuPlusSquare, LuTable } from "react-icons/lu";
 
 const PermissionMainPage = () => {
+  const toolbarButtons = [
+    {
+      icon: LuTable,
+      text: "جدول",
+      permission: "view_permission",
+      path: "table",
+    },
+    {
+      icon: LuPlusSquare,
+      text: "افزودن",
+      permission: "add_permission",
+      path: "create",
+    },
+  ];
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
@@ -16,7 +31,7 @@ const PermissionMainPage = () => {
         </div>
         <div className="flex-grow flex flex-col">
           <div className="px-6 py-3">
-            <Toolbar />
+            <Toolbar buttons={toolbarButtons} />
           </div>
           <div className="flex-grow px-6 bg-white">
             <Outlet />
