@@ -29,14 +29,18 @@ const Avatar = () => {
       href: "/profile",
       // render: <UserIncome />,
     },
-
   ];
 
   return (
     <div className="relative">
       <motion.div
         onClick={toggleDropdown}
-        whileHover={{ scale: 1.1, rotate: 5, color: "#29D2C7" , borderColor: "#29D2C7" }}
+        whileHover={{
+          scale: 1.1,
+          rotate: 5,
+          color: "#29D2C7",
+          borderColor: "#29D2C7",
+        }}
         whileTap={{ scale: 0.9 }}
         className="text-2xl cursor-pointer text-[#29D2C7] border-2 border-[#29D2C7] rounded-xl p-1"
       >
