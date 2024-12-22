@@ -112,6 +112,11 @@ export const menuItems: MenuItem[] = [
             codename: "create_precedence",
           },
           {
+            title: "ویرایش حق تقدم",
+            path: "/precendence/update",
+            codename: "update_precedence",
+          },
+          {
             title: "جابه جایی حق تقدم",
             path: "/displacement/table",
             codename: "view_displacementprecedence",
@@ -121,6 +126,7 @@ export const menuItems: MenuItem[] = [
             path: "/displacement/create",
             codename: "add_displacementprecedence",
           },
+
           {
             title: "ویرایش جابه جایی حق تقدم",
             path: "/displacement/update",

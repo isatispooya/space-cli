@@ -18,7 +18,11 @@ const DisplacementTable = () => {
   const [selectedRow, setSelectedRow] =
     useState<DisplacementPrecendenceTypes | null>(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
   const rows = data || [];
+
+  console.log(data);
+
   const columns = [
     { field: "id", headerName: "شناسه", width: 70 },
     { field: "buyer", headerName: "خریدار", width: 100 },
@@ -26,7 +30,6 @@ const DisplacementTable = () => {
     { field: "company", headerName: "شرکت", width: 100 },
     { field: "number_of_shares", headerName: "تعداد سهام", width: 120 },
     { field: "price", headerName: "قیمت", width: 100 },
-
     {
       field: "document",
       headerName: "سند",

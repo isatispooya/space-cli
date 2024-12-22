@@ -65,11 +65,11 @@ const Login: React.FC = () => {
           className="text-center text-neutral-800 dark:text-neutral-200"
         >
           <h2 className="text-3xl font-bold mb-4">
-            {currentAnnouncement?.title || "به سامانه خوش آمدید"}
+            {currentAnnouncement?.title || "به سامانه ایساتیس پویا آمدید"}
           </h2>
           <p className="text-lg mb-6">
             {currentAnnouncement?.description ||
-              "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است."}
+              "ایساتیس پویا یک سامانه آسان و سریع برای ثبت و مدیریت سهام و سهامداران است."}
           </p>
           {currentAnnouncement?.link && (
             <motion.a

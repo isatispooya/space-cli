@@ -1,19 +1,15 @@
 import toast, { Toaster } from "react-hot-toast";
 import Forms from "../../../components/forms";
-import { useUpdatePrecendence } from "../hooks";
+import { useGetPrecedence, useUpdatePrecendence } from "../hooks";
 import * as yup from "yup";
 import { PrecedenceTypes } from "../types";
+import { usePrecendenceStore } from "../store";
 
-interface EditPrecendenceFormProps {
-  data: PrecedenceTypes | null;
-  onClose: () => void;
-}
-
-const EditPrecendenceForm: React.FC<EditPrecendenceFormProps> = ({
-  data,
-  onClose,
-}) => {
+const EditPrecendenceForm: React.FC = () => {
   const { mutate: updatePrecendence } = useUpdatePrecendence();
+  const { id } = usePrecendenceStore();
+  const { data } = useGetPrecedence();
+  const precedence = data?.find((item: PrecedenceTypes) => item.id === id);
 
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
@@ -21,8 +17,9 @@ const EditPrecendenceForm: React.FC<EditPrecendenceFormProps> = ({
     position: yup.number().required("موقعیت الزامی است"),
     precedence: yup.number().required("حق تقدم الزامی است"),
     used_precedence: yup.number().required("حق تقدم استفاده شده الزامی است"),
-    created_at: yup.string().required(),
-    updated_at: yup.string().required(),
+    created_at: yup.string().optional(),
+    updated_at: yup.string().optional(),
+    user: yup.number().required("کاربر الزامی است"),
   });
 
   const formFields = [
@@ -46,38 +43,26 @@ const EditPrecendenceForm: React.FC<EditPrecendenceFormProps> = ({
       label: "حق تقدم استفاده شده",
       type: "text" as const,
     },
-    {
-      name: "created_at",
-      label: "تاریخ ایجاد",
-      type: "text" as const,
-      disabled: true,
-    },
-    {
-      name: "updated_at",
-      label: "تاریخ بروزرسانی",
-      type: "text" as const,
-      disabled: true,
-    },
   ];
 
   const initialValues = {
-    company: data?.company || 0,
-    position: data?.position || 0,
-    precedence: data?.precedence || 0,
-    used_precedence: data?.used_precedence || 0,
-    created_at: data?.created_at || "",
-    updated_at: data?.updated_at || "",
-    id: data?.id || 0,
+    company: precedence?.company || 0,
+    position: precedence?.position || 0,
+    precedence: precedence?.precedence || 0,
+    used_precedence: precedence?.used_precedence || 0,
+    id: precedence?.id || 0,
+    created_at: precedence?.created_at || "",
+    updated_at: precedence?.updated_at || "",
+    user: precedence?.user || 0,
   };
 
   const onSubmit = (values: PrecedenceTypes) => {
-    if (data?.id) {
+    if (precedence?.id) {
       updatePrecendence(
-        { id: data.id, data: values },
+        { id: precedence?.id, data: values },
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ویرایش شد");
-            onClose();
           },
           onError: () => {
             toast.error("خطایی رخ داده است");
@@ -97,14 +82,11 @@ const EditPrecendenceForm: React.FC<EditPrecendenceFormProps> = ({
         colors="text-[#5677BC]"
         buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
         showCloseButton={true}
-        onClose={onClose}
         onSubmit={onSubmit}
         submitButtonText={{ default: "ثبت", loading: "در حال ثبت..." }}
         title="ویرایش سهامدار"
       />
     </>
   );
-
-
 };
 export default EditPrecendenceForm;

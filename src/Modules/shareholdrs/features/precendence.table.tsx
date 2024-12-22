@@ -6,17 +6,19 @@ import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { PrecedenceTypes } from "../types";
 import { tableStyles } from "../../../ui";
 import { useState } from "react";
-import EditPrecendenceForm from "./editPrecendence.form";
-import ModalLayout from "../../../layouts/ModalLayout";
 import toast, { Toaster } from "react-hot-toast";
 import Popup from "../../../components/popup";
+import { usePrecendenceStore } from "../store";
+import { useNavigate } from "react-router-dom";
 
 const PrecendenceTable: React.FC = () => {
   const { data } = useGetPrecedence();
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const navigate = useNavigate();
+
   const { mutate: deletePrecendence } = useDelPrecendence();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<PrecedenceTypes | null>(null);
+  const { setId } = usePrecendenceStore();
   const columns: GridColDef[] = [
     { field: "id", headerName: "شناسه", width: 100 },
     { field: "name", headerName: "نام", width: 100 },
@@ -41,7 +43,8 @@ const PrecendenceTable: React.FC = () => {
       toast.error("لطفا یک سهم را انتخاب کنید");
       return;
     }
-    setIsEditOpen(true);
+    setId(selectedRow.id);
+    navigate("/precendence/update");
   };
 
   const handleDelete = () => {
@@ -52,7 +55,7 @@ const PrecendenceTable: React.FC = () => {
     setIsDeleteOpen(true);
   };
 
-  const rows = data?.results || [];
+  const rows = data || [];
 
   return (
     <>
@@ -126,12 +129,7 @@ const PrecendenceTable: React.FC = () => {
             },
           }}
         />
-        <ModalLayout open={isEditOpen} onClose={() => setIsEditOpen(false)}>
-          <EditPrecendenceForm
-            data={selectedRow}
-            onClose={() => setIsEditOpen(false)}
-          />
-        </ModalLayout>
+
         {selectedRow && (
           <Popup
             isOpen={isDeleteOpen}

@@ -4,6 +4,5 @@ export interface PrecedenceTypes {
   position: number;
   precedence: number;
   used_precedence: number;
-  created_at: string;
-  updated_at: string;
+  user: number;
 }

@@ -20,3 +20,4 @@ export { default as UpdateUnusedPrecedenceProcessPage } from "./updateUnusedPrec
 export { default as ShareholdersUpdatePage } from "./shareholdersUpdate.page";
 export { default as StockTransferUpdatePage } from "./stockTransferUpdate.page";
 export { default as DisplacementUpdatePage } from "./displacementUpdate.page";
+export { default as PercendenceUpdatePage } from "./percendenceUpdate.page";

@@ -145,6 +145,12 @@ const PrecendenceFormPage = lazy(() =>
   }))
 );
 
+const PercendenceUpdatePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.PercendenceUpdatePage,
+  }))
+);
+
 const CapitalMainPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.CapitalMainPage,
@@ -474,6 +480,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <PrecendenceFormPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "update",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PercendenceUpdatePage />
             </Suspense>
           ),
         },

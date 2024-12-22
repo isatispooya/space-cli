@@ -7,12 +7,14 @@ import { useShareHoldersStore } from "../store";
 import { useGetShareholders } from "../hooks";
 import { useUserData } from "../../users/hooks";
 
+
 const EditShareholdForm: React.FC = () => {
   const { mutate } = useUpdateShareholders();
   const { id } = useShareHoldersStore();
 
   const { data: shareholders } = useGetShareholders();
   const { data: users } = useUserData();
+
 
   const shareholder = shareholders?.find(
     (item: ShareholdersTypes) => item.id === id

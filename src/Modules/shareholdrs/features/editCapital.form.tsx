@@ -1,16 +1,18 @@
 import toast from "react-hot-toast";
 import Forms from "../../../components/forms";
-import { useUpdateCapital } from "../hooks";
-import { CapitalIncreasePaymentTypes } from "../types";
+import { useGetCapitalIncreasePayment, useUpdateCapital } from "../hooks";
+import { CapitalIncreaseTypes } from "../types";
 import * as yup from "yup";
+import { useCapitalStore } from "../store";
+import { FormField } from "../../companies/types";
 
-interface EditCapitalFormTypes {
-  onClose: () => void;
-  data: CapitalIncreasePaymentTypes | null;
-}
 
-const EditCapitalForm: React.FC<EditCapitalFormTypes> = ({ onClose, data }) => {
+
+const EditCapitalForm: React.FC = () => {
   const { mutate } = useUpdateCapital();
+  const { id } = useCapitalStore();
+  const { data } = useGetCapitalIncreasePayment();
+  const capital = data?.find((item: CapitalIncreaseTypes) => item.id === id);
 
   const formFields = [
     {
@@ -42,13 +44,13 @@ const EditCapitalForm: React.FC<EditCapitalFormTypes> = ({ onClose, data }) => {
   ];
 
   const initialValues = {
-    id: data?.id || 0,
-    company: data?.company || 0,
-    number_of_shares: data?.number_of_shares || 0,
-    position: data?.position || 0,
-    price: data?.price || 0,
-    created_at: data?.created_at || "",
-    updated_at: data?.updated_at || "",
+    id: capital?.id || 0,
+    company: capital?.company || 0,
+    number_of_shares: capital?.number_of_shares || 0,
+    position: capital?.position || 0,
+    price: capital?.price || 0,
+    created_at: capital?.created_at || "",
+    updated_at: capital?.updated_at || "",
     document: undefined,
   };
 
@@ -61,14 +63,14 @@ const EditCapitalForm: React.FC<EditCapitalFormTypes> = ({ onClose, data }) => {
     document: yup.string().default("").nullable(),
     created_at: yup.string().required(),
     updated_at: yup.string().required(),
-  }) as yup.ObjectSchema<CapitalIncreasePaymentTypes>;
+  }) as yup.ObjectSchema<CapitalIncreaseTypes>;
 
-  const onSubmit = (values: CapitalIncreasePaymentTypes) => {
-    if (data?.id) {
+  const onSubmit = (values: CapitalIncreaseTypes) => {
+    if (capital?.id) {
       mutate(values, {
         onSuccess: () => {
           toast.success("سود پرداختی با موفقیت ویرایش شد");
-          onClose();
+          
         },
         onError: () => {
           toast.error("خطایی رخ داده است");
@@ -79,13 +81,12 @@ const EditCapitalForm: React.FC<EditCapitalFormTypes> = ({ onClose, data }) => {
 
   return (
     <Forms
-      formFields={formFields}
+      formFields={formFields as FormField[]}
       initialValues={initialValues}
       validationSchema={validationSchema}
       colors="text-[#5677BC]"
       buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
       showCloseButton={true}
-      onClose={onClose}
       onSubmit={onSubmit}
       submitButtonText={{ default: "ثبت", loading: "در حال ثبت..." }}
       title="ویرایش سود پرداختی"

@@ -6,18 +6,21 @@ import { useState } from "react";
 import { CapitalIncreaseTypes } from "../types";
 import { tableStyles } from "../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { ModalLayout } from "../../../layouts";
-import { EditCapitalForm } from ".";
+
 import Popup from "../../../components/popup";
+import { useCapitalStore } from "../store";
+import { useNavigate } from "react-router-dom";
 
 const CapitalTable: React.FC = () => {
   const { data } = useGetCapitalIncreasePayment();
 
-  
+  const { setId } = useCapitalStore();
+
+  const navigate = useNavigate();
   const { mutate: deleteCapital } = useDelCapital();
-  const [selectedRow, setSelectedRow] =
-      useState<CapitalIncreaseTypes | null>(null);
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<CapitalIncreaseTypes | null>(
+    null
+  );
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const rows = data || [];
@@ -41,9 +44,9 @@ const CapitalTable: React.FC = () => {
       toast.error("لطفا یک سود پرداختی را انتخاب کنید");
       return;
     }
-    setIsEditOpen(true);
+    setId(selectedRow.id);
+    navigate("/capital/update");
   };
-
   const handleDelete = () => {
     if (!selectedRow) {
       toast.error("لطفا یک سود پرداختی را انتخاب کنید");
@@ -124,12 +127,6 @@ const CapitalTable: React.FC = () => {
             },
           }}
         />
-        <ModalLayout isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
-          <EditCapitalForm
-            onClose={() => setIsEditOpen(false)}
-            data={selectedRow}
-          />
-        </ModalLayout>
         {selectedRow && (
           <Popup
             isOpen={isDeleteOpen}
