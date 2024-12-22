@@ -52,18 +52,8 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "مدیریت سهام",
-        codename: "stock_management",
+        codename: "view_stocktransfer",
         submenu: [
-          {
-            title: "ایجاد سهامدار",
-            path: "/shareholders/create",
-            codename: "add_shareholders",
-          },
-          {
-            title: "ویرایش سهامدار",
-            path: "/shareholders/update",
-            codename: "update_shareholders",
-          },
           {
             title: "لیست جابجایی",
             path: "/transferstock/table",

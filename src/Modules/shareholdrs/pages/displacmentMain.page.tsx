@@ -1,8 +1,24 @@
 import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../components";
 import { MainLayout } from "../../../layouts";
+import { LuPlusSquare, LuTable } from "react-icons/lu";
 
 const DisplacementMainPage = () => {
+  const toolbarButtons = [
+    {
+      icon: LuTable,
+      text: "جدول",
+      permission: "view_shareholders",
+      path: "table"
+    },
+    {
+      icon: LuPlusSquare,
+      text: "ایجاد",
+      permission: "add_shareholders",
+      path: "create"
+    }
+  ];
+
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
@@ -16,7 +32,7 @@ const DisplacementMainPage = () => {
         </div>
         <div className="flex-grow flex flex-col">
           <div className="px-6 py-3">
-            <Toolbar />
+            <Toolbar buttons={toolbarButtons} />
           </div>
           <div className="flex-grow px-6 bg-white">
             <Outlet />

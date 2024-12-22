@@ -10,6 +10,8 @@ import { useState } from "react";
 import useDelShareholders from "../hooks/useDelShareholders";
 import { useShareHoldersStore } from "../store";
 import { useNavigate } from "react-router-dom";
+import Popup from "../../../components/popup";
+import { useUserPermissions } from "../../../Modules/permissions";
 
 const ShareholdTable: React.FC = () => {
   const { data: shareholders } = useGetShareholders();
@@ -20,16 +22,14 @@ const ShareholdTable: React.FC = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { setId } = useShareHoldersStore();
   const navigate = useNavigate();
-
-  console.log('Raw shareholders data:', shareholders);
+  const { checkPermission } = useUserPermissions();
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
     { field: "company", headerName: "شرکت", width: 100 },
     { field: "name", headerName: "نام", width: 100 },
-    { field: "created_at", headerName: "تاریخ ایجاد", width: 100 },
+
     { field: "number_of_shares", headerName: "تعداد سهام", width: 100 },
-    { field: "updated_at", headerName: "تاریخ بروزرسانی", width: 100 },
   ];
   const handleEdit = () => {
     if (!selectedRow) {
@@ -53,10 +53,10 @@ const ShareholdTable: React.FC = () => {
 
   const processedData = shareholdersData.map((row: ShareholdersTypes) => ({
     ...row,
-    id: row.id || Math.random()
+    id: row.id || Math.random(),
   }));
 
-  console.log('Processed data:', processedData);
+  console.log("Processed data:", processedData);
 
   return (
     <>
@@ -102,13 +102,13 @@ const ShareholdTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: true,
+                    show: checkPermission("change_shareholders"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: true,
+                    show: checkPermission("delete_shareholders"),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },
@@ -122,6 +122,15 @@ const ShareholdTable: React.FC = () => {
               quickFilterProps: { debounceMs: 500 },
             },
           }}
+        />
+
+        <Popup
+          isOpen={isDeleteOpen}
+          onClose={() => setIsDeleteOpen(false)}
+          label="حذف شرکت"
+          text="آیا مطمئن هستید؟"
+          onConfirm={handleDelete}
+          onCancel={() => setIsDeleteOpen(false)}
         />
       </div>
     </>

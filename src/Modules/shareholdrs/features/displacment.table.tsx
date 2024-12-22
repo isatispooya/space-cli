@@ -9,10 +9,12 @@ import { tableStyles } from "../../../ui";
 import Popup from "../../../components/popup";
 import { useDisplacementStore } from "../store";
 import { useNavigate } from "react-router-dom";
+import { useUserPermissions } from "../../permissions";
 
 const DisplacementTable = () => {
   const { data, refetch } = useGetDisplacementPrecendence();
   const { mutate: deleteDisplacement } = useDelDisplacment();
+  const { checkPermission } = useUserPermissions();
   const { setId } = useDisplacementStore();
   const navigate = useNavigate();
   const [selectedRow, setSelectedRow] =
@@ -105,13 +107,14 @@ const DisplacementTable = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: true,
+
                     onClick: handleEdit,
+                    show: checkPermission("change_displacement"),
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: true,
+                    show: checkPermission("delete_displacement"),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

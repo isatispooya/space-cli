@@ -14,7 +14,6 @@ const CreateShareholdersPost = () => {
   const { data: users } = useUserData();
 
   const formFields: FormField[] = [
-    { name: "name", label: "نام", type: "text" as const },
     { name: "number_of_shares", label: "تعداد سهام", type: "text" as const },
     {
       name: "company",
@@ -41,14 +40,13 @@ const CreateShareholdersPost = () => {
   ];
 
   const initialValues: CreateShareholderDTO = {
-    name: "",
     number_of_shares: 0,
     company: 0,
     user: 0,
   };
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("نام الزامی است"),
+    name: Yup.string().optional(),
     number_of_shares: Yup.number()
       .required("تعداد سهام الزامی است")
       .min(1, "تعداد سهام باید بزرگتر از صفر باشد"),

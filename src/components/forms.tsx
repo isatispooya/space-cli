@@ -87,6 +87,7 @@ const Forms = <T extends FormikValues>({
                         setFieldValue(field.name.toString(), newValue)
                       }
                       className="h-5"
+                      placeholder={`جستجو ${field.label}...`}
                     />
                   )}
                 </Field>

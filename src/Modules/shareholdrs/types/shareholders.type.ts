@@ -1,6 +1,6 @@
 export interface ShareholdersTypes {
   id: number;
-  name: string;
+  name?: string;
   number_of_shares: number;
   updated_at?: string;
   created_at?: string;
@@ -8,7 +8,7 @@ export interface ShareholdersTypes {
   user: number;
 }
 
-export type CreateShareholderDTO = Omit<ShareholdersTypes, 'id'>;
+export type CreateShareholderDTO = Omit<ShareholdersTypes, "id">;
 
 export interface StockTransferTypes {
   id: number;
@@ -17,9 +17,11 @@ export interface StockTransferTypes {
   number_of_shares: number;
   price: number;
   document: string | null;
-
   company: number;
   user: number;
 }
 
-export type CreateStockTransferDTO = Omit<StockTransferTypes, 'id' | 'document'>;
+export type CreateStockTransferDTO = Omit<
+  StockTransferTypes,
+  "id" | "document"
+>;

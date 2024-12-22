@@ -1,8 +1,24 @@
 import { MainLayout } from "../../../layouts";
 import { Outlet } from "react-router-dom";
+import { LuTable, LuPlusSquare } from "react-icons/lu";
 import { Toolbar } from "../../../components";
 
 const ShareholdersPage = () => {
+  const toolbarButtons = [
+    {
+      icon: LuTable,
+      text: "جدول",
+      permission: "view_shareholders",
+      path: "table",
+    },
+    {
+      icon: LuPlusSquare,
+      text: "ایجاد",
+      permission: "add_shareholders",
+      path: "create",
+    },
+  ];
+
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
@@ -16,7 +32,7 @@ const ShareholdersPage = () => {
         </div>
         <div className="flex-grow flex flex-col">
           <div className="px-6 py-3">
-            <Toolbar />
+            <Toolbar buttons={toolbarButtons} />
           </div>
           <div className="flex-grow px-6 bg-white">
             <Outlet />

@@ -6,23 +6,28 @@ import * as yup from "yup";
 import { useShareHoldersStore } from "../store";
 import { useGetShareholders } from "../hooks";
 import { useUserData } from "../../users/hooks";
-
+import { useCompaniesData } from "../../companies/hooks";
+import { useNavigate } from "react-router-dom";
 
 const EditShareholdForm: React.FC = () => {
   const { mutate } = useUpdateShareholders();
   const { id } = useShareHoldersStore();
 
+  const navigate = useNavigate();
   const { data: shareholders } = useGetShareholders();
   const { data: users } = useUserData();
-
+  const { data: companies } = useCompaniesData();
 
   const shareholder = shareholders?.find(
     (item: ShareholdersTypes) => item.id === id
   );
 
+  if (!shareholder && !id) {
+    navigate("/shareholders/table");
+  }
+
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
-    name: yup.string().required("نام الزامی است"),
     number_of_shares: yup.number().required("سهام الزامی است"),
     company: yup.number().required("شرکت الزامی است"),
     user: yup.number().required("کاربر الزامی است"),
@@ -30,13 +35,7 @@ const EditShareholdForm: React.FC = () => {
     created_at: yup.string().optional(),
   });
 
-
   const formFields = [
-    {
-      name: "name",
-      label: "نام",
-      type: "text" as const,
-    },
     {
       name: "number_of_shares",
       label: "سهام",
@@ -45,7 +44,12 @@ const EditShareholdForm: React.FC = () => {
     {
       name: "company",
       label: "شرکت",
-      type: "text" as const,
+      type: "select" as const,
+      options:
+        companies?.map((company: { name: string; id: number }) => ({
+          label: company.name,
+          value: company.id.toString(),
+        })) || [],
     },
     {
       name: "user",
@@ -62,9 +66,8 @@ const EditShareholdForm: React.FC = () => {
   ];
 
   const initialValues = {
-    name: shareholder?.name || "",
     number_of_shares: shareholder?.number_of_shares || 0,
-    company: shareholder?.company || "",
+    company: shareholder?.company || 0,
     user: shareholder?.user || 0,
     id: shareholder?.id || 0,
   };
@@ -83,7 +86,8 @@ const EditShareholdForm: React.FC = () => {
         }
       );
     }
-  };  
+  };
+
   return (
     <>
       <Toaster />
