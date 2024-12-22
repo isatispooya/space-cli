@@ -1,9 +1,26 @@
 import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
+import { LuPlusSquare } from "react-icons/lu";
+import { LuTable } from "react-icons/lu";
 
 const PurchacePrecendenceMain = () => {
-    return (
+    const toolbarButtons = [
+        {
+          icon: LuTable,
+          text: "جدول",
+          permission: "view_shareholders",
+          path: "table"
+        },
+        {
+          icon: LuPlusSquare,
+          text: "ایجاد",
+          permission: "add_shareholders",
+          path: "create"
+        } 
+      ];
+
+      return (
         <MainLayout>
         <div className="min-h-screen flex flex-col">
           <div className="bg-white p-3">
@@ -16,7 +33,7 @@ const PurchacePrecendenceMain = () => {
           </div>
           <div className="flex-grow flex flex-col">
             <div className="px-6 py-3">
-              <Toolbar />
+              <Toolbar buttons={toolbarButtons} />
             </div>
             <div className="flex-grow px-6 bg-white">
               <Outlet />

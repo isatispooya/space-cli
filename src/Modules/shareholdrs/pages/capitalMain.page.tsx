@@ -1,8 +1,26 @@
 import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../components";
 import { MainLayout } from "../../../layouts";
+import { LuTable } from "react-icons/lu";
+import { LuPlusSquare } from "react-icons/lu";
 
 const CapitalMainPage: React.FC = () => {
+  const toolbarButtons = [
+    {
+      icon: LuTable,
+      text: "جدول",
+      permission: "view_capitalincreasepayment",
+      path: "table"
+    },
+    {
+      icon: LuPlusSquare,
+      text: "ایجاد",
+      permission: "add_capitalincreasepayment",
+      path: "create"
+    }
+  ];  
+
+
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
@@ -16,7 +34,7 @@ const CapitalMainPage: React.FC = () => {
         </div>
         <div className="flex-grow flex flex-col">
           <div className="px-6 py-3">
-            <Toolbar />
+            <Toolbar buttons={toolbarButtons} />
           </div>
           <div className="flex-grow px-6 bg-white">
             <Outlet />

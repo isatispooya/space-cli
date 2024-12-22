@@ -10,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Popup from "../../../components/popup";
 import { usePrecendenceStore } from "../store";
 import { useNavigate } from "react-router-dom";
+import { useUserPermissions } from "../../permissions";
 
 const PrecendenceTable: React.FC = () => {
   const { data } = useGetPrecedence();
@@ -17,6 +18,7 @@ const PrecendenceTable: React.FC = () => {
 
   const { mutate: deletePrecendence } = useDelPrecendence();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const { checkPermission } = useUserPermissions();
   const [selectedRow, setSelectedRow] = useState<PrecedenceTypes | null>(null);
   const { setId } = usePrecendenceStore();
   const columns: GridColDef[] = [
@@ -108,13 +110,13 @@ const PrecendenceTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: true,
+                    show: checkPermission("change_precedence"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: true,
+                    show: checkPermission("delete_precedence"),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

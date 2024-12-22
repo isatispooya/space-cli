@@ -12,10 +12,12 @@ import { Button } from "@headlessui/react";
 import Popup from "../../../components/popup";
 import { useStockTransferStore } from "../store";
 import { useNavigate } from "react-router-dom";
+import { useUserPermissions } from "../../permissions";
 
 const StockTransferTable: React.FC = () => {
   const { data: stockTransfer } = useGetStockTransfer();
   const { setId } = useStockTransferStore();
+  const { checkPermission } = useUserPermissions();
 
   const navigate = useNavigate();
   const [selectedRow, setSelectedRow] = useState<StockTransferTypes | null>(
@@ -100,13 +102,13 @@ const StockTransferTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: true,
+                    show: checkPermission("change_stocktransfer"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: true,
+                    show: checkPermission("delete_stocktransfer"),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

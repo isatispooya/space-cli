@@ -11,11 +11,14 @@ import Popup from "../../../components/popup";
 import usePurchacePrecendence from "../hooks/usePurchacePrecendence";
 import { useUnusedPrecedenceProcessStore } from "../store";
 import { useNavigate } from "react-router-dom";
+import { useUserPermissions } from "../../permissions";
 
 const PurchacePrecendenceTable: React.FC = () => {
   const { data } = usePurchacePrecendence();
-  const navigate = useNavigate();
+  console.log(data);
 
+  const navigate = useNavigate();
+  const { checkPermission } = useUserPermissions();
   const { mutate: deletePurchasePrecendense } = useDelPurchasePrecendense();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedRow, setSelectedRow] =
@@ -124,13 +127,13 @@ const PurchacePrecendenceTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: true,
+                    show: checkPermission("change_purchaceprecendence"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: true,
+                    show: checkPermission("delete_purchaceprecendence"),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

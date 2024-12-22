@@ -10,13 +10,14 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import Popup from "../../../components/popup";
 import { useCapitalStore } from "../store";
 import { useNavigate } from "react-router-dom";
+import { useUserPermissions } from "../../permissions";
 
 const CapitalTable: React.FC = () => {
   const { data } = useGetCapitalIncreasePayment();
-
+  console.log(data);
   const { setId } = useCapitalStore();
-
   const navigate = useNavigate();
+  const {checkPermission} = useUserPermissions();
   const { mutate: deleteCapital } = useDelCapital();
   const [selectedRow, setSelectedRow] = useState<CapitalIncreaseTypes | null>(
     null
@@ -106,13 +107,13 @@ const CapitalTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: true,
+                    show: checkPermission("change_capitalincreasepayment"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: true,
+                    show: checkPermission("delete_capitalincreasepayment"),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

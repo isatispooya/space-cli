@@ -8,16 +8,17 @@ const DisplacementMainPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_shareholders",
+      permission: "viwe_displacementprecedence",
       path: "table"
     },
     {
       icon: LuPlusSquare,
       text: "ایجاد",
-      permission: "add_shareholders",
+      permission: "add_displacementprecedence",
       path: "create"
     }
   ];
+  
 
   return (
     <MainLayout>

@@ -1,8 +1,24 @@
 import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
+import { LuPlusSquare } from "react-icons/lu";
+import { LuTable } from "react-icons/lu";
 
 const StockTransferPage: React.FC = () => {
+  const toolbarButtons = [
+    {
+      icon: LuTable,
+      text: "جدول",
+      permission: "view_stocktransfer",
+      path: "table"
+    },
+    {
+      icon: LuPlusSquare,
+      text: "ایجاد",
+      permission: "add_stocktransfers",
+      path: "create"
+    } 
+  ];
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
@@ -16,7 +32,7 @@ const StockTransferPage: React.FC = () => {
         </div>
         <div className="flex-grow flex flex-col">
           <div className="px-6 py-3">
-            <Toolbar />
+            <Toolbar buttons={toolbarButtons} />
           </div>
           <div className="flex-grow px-6 bg-white">
             <Outlet />
