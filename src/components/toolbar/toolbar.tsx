@@ -9,7 +9,7 @@ interface ToolbarButton {
 }
 
 interface ToolbarProps {
-  buttons: ToolbarButton[];
+  buttons?: ToolbarButton[];
 }
 
 const Toolbar = ({ buttons }: ToolbarProps) => {
@@ -19,7 +19,7 @@ const Toolbar = ({ buttons }: ToolbarProps) => {
   return (
     <div className="bg-white border border-gray-200 px-4 py-2 rounded-lg flex items-center justify-between shadow-sm">
       <div className="flex items-center gap-2">
-        {buttons.map((button, index) => 
+        {buttons?.map((button, index) => 
           checkPermission(button.permission) && (
             <button
               key={index}
