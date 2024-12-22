@@ -78,22 +78,18 @@ export const menuItems: MenuItem[] = [
   },
   
   {
-    title: "مدیریت شرکت‌ها",
+    title: "امور شرکت‌ها",
     path: "/companies",
     icon: FaBuilding,
-    codename: "company_management",
-    submenu: [
-      {
-        title: "لیست شرکت‌ها",
-        path: "/companies/table",
-        codename: "companies_list",
-      },
-      {
-        title: "افزودن شرکت",
-        path: "/companies/create",
-        codename: "create_company",
-      },
-    ],
+    codename: "view_company",
+      submenu: [
+        {
+          title: "مدیریت شرکت‌ها",
+          path: "/companies",
+        },
+        
+      ],
+    
   },
   {
     title: "مکاتبات",
