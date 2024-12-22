@@ -11,7 +11,7 @@ interface SideMenuProps {
 
 const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
   const navigate = useNavigate();
-  const { checkPermission , data } = useUserPermissions();
+  const { checkPermission, data } = useUserPermissions();
 
   const filterMenuItems = (items: MenuItemType[]): MenuItemType[] => {
     return items.filter((item) => {
@@ -30,9 +30,8 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       return true;
     });
   };
-   
 
-  console.log(data)
+  console.log(data);
   const filteredMenuItems = React.useMemo(() => {
     return filterMenuItems([...menuItems]);
   }, [checkPermission]);

@@ -19,19 +19,17 @@ const Avatar = () => {
 
   const tools = [
     {
-      label: "sتنظیمات",
+      label: "تنظیمات",
       href: "/settings",
       // render: <LoginForm />,
     },
+
     {
-      label: "خروج",
-      href: "/login",
-    },
-    {
-      label: "درآمد",
-      href: "/income",
+      label: "پروفایل",
+      href: "/profile",
       // render: <UserIncome />,
     },
+
   ];
 
   return (
