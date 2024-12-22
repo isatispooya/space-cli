@@ -23,8 +23,8 @@ const DisplacementTable = () => {
 
   const rows = data || [];
 
-  console.log(data);
 
+  
   const columns = [
     { field: "id", headerName: "شناسه", width: 70 },
     { field: "buyer", headerName: "خریدار", width: 100 },
