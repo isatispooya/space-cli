@@ -237,6 +237,12 @@ const StockTransferUpdatePage = lazy(() =>
 
 const Loader = () => <LoaderLg />;
 
+const CorrespondenceEditPage = lazy(() =>
+  import("../Modules/correspondence").then((module) => ({
+    default: module.CorrespondenceEditPage,
+  }))
+);
+
 export default function Router() {
   const routes = useRoutes([
     {
@@ -389,6 +395,14 @@ export default function Router() {
             </Suspense>
           ),
         },
+        {
+          path: "edit/:id",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CorrespondenceEditPage />
+            </Suspense>
+          ),
+        },
       ],
     },
     {
@@ -457,6 +471,8 @@ export default function Router() {
             </Suspense>
           ),
         },
+        
+        
       ],
     },
     {
