@@ -31,7 +31,7 @@ const SelectInput = ({
   // Update filtered options when search term changes
   useEffect(() => {
     const filtered = options.filter((option) =>
-      option.label.toLowerCase().includes(searchTerm.toLowerCase())
+      option?.label?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredOptions(filtered);
   }, [searchTerm, options]);

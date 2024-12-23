@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../permissions";
 
 const PrecendenceTable: React.FC = () => {
-  const { data } = useGetPrecedence();
+  const { data, refetch } = useGetPrecedence();
   const navigate = useNavigate();
 
   const { mutate: deletePrecendence } = useDelPrecendence();
@@ -139,9 +139,18 @@ const PrecendenceTable: React.FC = () => {
             label="حذف سهم"
             text="آیا از حذف شرکت مطمئن هستید؟"
             onConfirm={() => {
-              deletePrecendence(selectedRow.id);
-              setIsDeleteOpen(false);
-              setSelectedRow(null);
+              deletePrecendence(selectedRow.id, {
+                onSuccess: () => {
+                  setIsDeleteOpen(false);
+                  setSelectedRow(null);
+
+                  toast.success("سهم با موفقیت حذف شد");
+                  refetch();
+                },
+                onError: () => {
+                  toast.error("خطایی رخ داده است");
+                },
+              });
             }}
             onCancel={() => {
               setIsDeleteOpen(false);

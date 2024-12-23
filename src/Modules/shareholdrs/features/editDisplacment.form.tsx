@@ -78,6 +78,7 @@ const EditDisplacmentForm: React.FC = () => {
             toast.success("حق تقدم با موفقیت ویرایش شد");
           },
         }
+        
       );
     }
   };

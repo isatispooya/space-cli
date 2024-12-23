@@ -9,7 +9,6 @@ const Avatar = () => {
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const { data } = useProfile();
-
   const profileInfo = data
     ? {
         first_name: data.first_name || "",
@@ -23,7 +22,6 @@ const Avatar = () => {
       href: "/settings",
       // render: <LoginForm />,
     },
-
     {
       label: "پروفایل",
       href: "/profile",
