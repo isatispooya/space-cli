@@ -45,34 +45,35 @@ export const menuItems: MenuItem[] = [
     icon: FaUserTie,
     submenu: [
       {
-        title: "مدیریت سهامداران",
+        title: "مدیریت سهام",
         path: "/shareholders",
         codename: "view_shareholders",
       },
       {
-        title: "مدیریت سهام",
+        title: "نقل و انتقال  سهام",
         codename: "view_stocktransfer",
         path: "/transferstock",
       },
-      {
-        title: "مدیریت سود",
-        codename: "view_capitalincreasepayment",
-        path: "/capital",
-      },
+
       {
         title: "مدیریت حق تقدم",
         codename: "add_precedence",
-        path: "/precedence",
+        path: "/precendence",
       },
       {
         title: "نقل و انتقال حق تقدم",
-        codename: "view_displacement",
+        codename: "view_displacementprecedence",
         path: "/displacement",
       },
        {
         title: "پرداخت حق تقدم",
         codename: "view_paid_precedence",
         path: "/purchacePrecendence",
+      },
+      {
+        title: "تبدیل حق تقدم",
+        codename: "view_capitalincreasepayment",
+        path: "/capital",
       },
     ],
   },

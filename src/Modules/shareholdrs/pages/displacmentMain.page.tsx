@@ -8,7 +8,7 @@ const DisplacementMainPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "viwe_displacementprecedence",
+      permission: "view_displacementprecedence",
       path: "table"
     },
     {

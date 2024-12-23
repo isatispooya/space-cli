@@ -9,7 +9,7 @@ const PrecendenceMainPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "viwe_precedence",
+      permission: "view_precedence",
       path: "table"
     },
     {

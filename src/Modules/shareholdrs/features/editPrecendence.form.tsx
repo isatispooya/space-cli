@@ -4,6 +4,8 @@ import { useGetPrecedence, useUpdatePrecendence } from "../hooks";
 import * as yup from "yup";
 import { PrecedenceTypes } from "../types";
 import { usePrecendenceStore } from "../store";
+import { useCompaniesData } from "../../companies/hooks";
+import { useNavigate } from "react-router-dom";
 
 const EditPrecendenceForm: React.FC = () => {
   const { mutate: updatePrecendence } = useUpdatePrecendence();
@@ -11,12 +13,23 @@ const EditPrecendenceForm: React.FC = () => {
   const { data } = useGetPrecedence();
   const precedence = data?.find((item: PrecedenceTypes) => item.id === id);
 
+  const navigate = useNavigate();
+
+  const { data: companies } = useCompaniesData();
+
+  if (!companies && !id) {
+    navigate("precendence/table");
+  }
+
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
     company: yup.number().required("شرکت الزامی است"),
     position: yup.number().required("موقعیت الزامی است"),
     precedence: yup.number().required("حق تقدم الزامی است"),
-    used_precedence: yup.number().required("حق تقدم استفاده شده الزامی است"),
+    used_precedence: yup
+      .number()
+      .typeError("فقط عدد مجاز است")
+      .required("حق تقدم استفاده شده الزامی است"),
     created_at: yup.string().optional(),
     updated_at: yup.string().optional(),
     user: yup.number().required("کاربر الزامی است"),
@@ -26,7 +39,12 @@ const EditPrecendenceForm: React.FC = () => {
     {
       name: "company",
       label: "شرکت",
-      type: "text" as const,
+      type: "select" as const,
+      options:
+        companies?.map((company: { name: string; id: number }) => ({
+          label: company.name,
+          value: company.id.toString(),
+        })) || [],
     },
     {
       name: "position",
@@ -84,7 +102,7 @@ const EditPrecendenceForm: React.FC = () => {
         showCloseButton={true}
         onSubmit={onSubmit}
         submitButtonText={{ default: "ثبت", loading: "در حال ثبت..." }}
-        title="ویرایش سهامدار"
+        title="ویرایش حق تقدم"
       />
     </>
   );

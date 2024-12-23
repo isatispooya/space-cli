@@ -8,4 +8,5 @@ export interface DisplacementPrecendenceTypes {
   price: number;
   seller: number;
   updated_at?: string;
+  user?: number;
 }

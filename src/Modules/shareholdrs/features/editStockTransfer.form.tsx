@@ -5,17 +5,19 @@ import useUpdateStockTransfer from "../hooks/useUpdateStockTransfer";
 import * as yup from "yup";
 import { useGetStockTransfer } from "../hooks";
 import { useStockTransferStore } from "../store";
+import { useUserData } from "../../users/hooks";
 
 const EditStockTransferForm: React.FC = () => {
   const { mutate } = useUpdateStockTransfer();
   const { data: stockTransferData } = useGetStockTransfer();
-
+  const { data: users } = useUserData();
   const { id } = useStockTransferStore();
 
   const stockTransfer = stockTransferData?.find(
     (item: StockTransferTypes) => item.id === id
   );
 
+  
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
     buyer: yup.number().required("خریدار الزامی است"),
@@ -31,16 +33,6 @@ const EditStockTransferForm: React.FC = () => {
 
   const formFields = [
     {
-      name: "buyer",
-      label: "خریدار",
-      type: "text" as const,
-    },
-    {
-      name: "seller",
-      label: "فروشنده",
-      type: "text" as const,
-    },
-    {
       name: "number_of_shares",
       label: "تعداد سهام",
       type: "text" as const,
@@ -50,14 +42,37 @@ const EditStockTransferForm: React.FC = () => {
       label: "قیمت",
       type: "text" as const,
     },
+    {
+      name: "buyer",
+      label: "خریدار",
+      type: "select" as const,
+      options:
+        users?.map(
+          (user: { first_name: string; last_name: string; id: number }) => ({
+            label: `${user.first_name} ${user.last_name}`,
+            value: user.id.toString(),
+          })
+        ) || [],
+    },
+    {
+      name: "seller",
+      label: "فروشنده",
+      type: "select" as const,
+      options:
+        users?.map(
+          (user: { first_name: string; last_name: string; id: number }) => ({
+            label: `${user.first_name} ${user.last_name}`,
+            value: user.id.toString(),
+          })
+        ) || [],
+    },
   ];
 
   const initialValues = {
-    buyer: stockTransfer?.buyer || 0,
-    seller: stockTransfer?.seller || 0,
+    buyer: stockTransfer?.buyer?.toString() || "", // Convert to string since select values are strings
+    seller: stockTransfer?.seller?.toString() || "",
     number_of_shares: stockTransfer?.number_of_shares || 0,
     price: stockTransfer?.price || 0,
-
     document: stockTransfer?.document || null,
     id: stockTransferData?.id || 0,
     company: stockTransferData?.company || 0,

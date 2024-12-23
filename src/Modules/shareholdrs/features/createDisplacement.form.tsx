@@ -1,68 +1,120 @@
 import Forms from "../../../components/forms";
+import { useCompaniesData } from "../../companies/hooks";
+import { useUserData } from "../../users/hooks";
 import { usePostDisplacementPrecendence } from "../hooks";
 import * as Yup from "yup";
-
-interface FormField {
-  name: string;
-  label: string;
-  type: string;
-}
+import { FormField } from "../../companies/types";
+import toast, { Toaster } from "react-hot-toast";
 
 const CreateDisplacementForm = () => {
   const { mutate: postDisplacement } = usePostDisplacementPrecendence();
+  const { data: users } = useUserData();
+  const { data: companies } = useCompaniesData();
 
   const formFields: FormField[] = [
-    { name: "buyer", label: "خریدار", type: "number" },
-    { name: "seller", label: "فروشنده", type: "number" },
-    { name: "company", label: "شرکت", type: "number" },
-    { name: "number_of_shares", label: "تعداد سهام", type: "number" },
-    { name: "price", label: "قیمت", type: "number" },
+    {
+      name: "buyer",
+      label: "خریدار",
+      type: "select" as const,
+      options:
+        users?.map(
+          (user: { first_name: string; last_name: string; id: number }) => ({
+            label: `${user.first_name} ${user.last_name}`,
+            value: user.id.toString(),
+          })
+        ) || [],
+    },
+    { name: "number_of_shares", label: "تعداد سهام", type: "text" as const },
+    {
+      name: "seller",
+      label: "فروشنده",
+      type: "select" as const,
+      options:
+        users?.map(
+          (user: { first_name: string; last_name: string; id: number }) => ({
+            label: `${user.first_name} ${user.last_name}`,
+            value: user.id.toString(),
+          })
+        ) || [],
+    },
+    { name: "price", label: "قیمت", type: "text" as const },
+    {
+      name: "company",
+      label: "شرکت",
+      type: "select" as const,
+      options:
+        companies?.map((company: { name: string; id: number }) => ({
+          label: company.name || "",
+          value: company.id.toString(),
+        })) || [],
+    },
   ];
 
   const initialValues = {
-    buyer: null,
-    seller: null,
-    company: null,
-    number_of_shares: null,
-    price: null,
+    buyer: "",
+    seller: "",
+    company: "",
+    number_of_shares: "",
+    price: "",
   };
 
   const validationSchema = Yup.object().shape({
-    buyer: Yup.number().required("خریدار الزامی است").nullable(),
-    seller: Yup.number().required("فروشنده الزامی است").nullable(),
-    company: Yup.number().required("شرکت الزامی است").nullable(),
-    number_of_shares: Yup.number()
+    buyer: Yup.string().required("خریدار الزامی است"),
+    seller: Yup.string().required("فروشنده الزامی است"),
+    company: Yup.string().required("شرکت الزامی است"),
+    number_of_shares: Yup.string()
       .required("تعداد سهام الزامی است")
-      .min(1, "تعداد سهام باید بزرگتر از صفر باشد")
-      .nullable(),
-    price: Yup.number()
+      .matches(/^\d+$/, "فقط عدد مجاز است"),
+    price: Yup.string()
       .required("قیمت الزامی است")
-      .min(0, "قیمت نمیتواند منفی باشد")
-      .nullable(),
+      .matches(/^\d+$/, "فقط عدد مجاز است"),
   });
 
   return (
-    <Forms
-      formFields={formFields}
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      title="ثبت حق تقدم"
-      colors="text-[#29D2C7]"
-      buttonColors="bg-[#29D2C7] hover:bg-[#008282]"
-      submitButtonText={{
-        default: "ثبت حق تقدم",
-        loading: "در حال ارسال...",
-      }}
-      onSubmit={async (values, { setSubmitting }) => {
-        try {
-          await postDisplacement(values);
-        } catch (error) {
-          console.error("Error creating shareholder:", error);
-        } finally {
-          setSubmitting(false);
-        }
-      }}
-    />
+    <>
+      <Toaster />
+
+      <Forms
+        formFields={formFields}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        title="ثبت نقل و نتقال حق تقدم"
+        colors="text-[#29D2C7]"
+        buttonColors="bg-[#29D2C7] hover:bg-[#008282]"
+        submitButtonText={{
+          default: "ثبت حق تقدم",
+          loading: "در حال ارسال...",
+        }}
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            await postDisplacement(
+              {
+                ...values,
+                buyer: Number(values.buyer),
+                seller: Number(values.seller),
+                company: Number(values.company),
+                number_of_shares: Number(values.number_of_shares),
+                price: Number(values.price),
+                id: 0,
+                document: null,
+              },
+              {
+                onSuccess: () => {
+                  toast.success("با موفقیت ثبت شد");
+                },
+                onError: (error) => {
+                  toast.error(error.message);
+                },
+              }
+            );
+          } catch (error) {
+            console.error("Error creating shareholder:", error);
+          } finally {
+            setSubmitting(false);
+          }
+        }}
+      />
+    </>
   );
 };
 

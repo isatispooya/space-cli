@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../permissions";
 
 const StockTransferTable: React.FC = () => {
-  const { data: stockTransfer } = useGetStockTransfer();
+  const { data: stockTransfer ,refetch } = useGetStockTransfer();
   const { setId } = useStockTransferStore();
   const { checkPermission } = useUserPermissions();
 
@@ -56,7 +56,7 @@ const StockTransferTable: React.FC = () => {
     setIsDeleteOpen(true);
   };
 
-  const stockTransferData = stockTransfer|| [];
+  const stockTransferData = stockTransfer || [];
 
   return (
     <>
@@ -139,7 +139,15 @@ const StockTransferTable: React.FC = () => {
           label="حذف جابه جایی"
           text="آیا از حذف جابه جایی مطمئن هستید؟"
           onConfirm={() => {
-            deleteStockTransfer(selectedRow.id);
+            deleteStockTransfer(selectedRow.id, {
+              onSuccess: () => {
+                toast.success("جابه جایی سهام با موفقیت حذف شد");
+                refetch();
+              },
+              onError: () => {
+                toast.error("خطا در برقراری ارتباط");
+              },
+            });
             setIsDeleteOpen(false);
             setSelectedRow(null);
           }}

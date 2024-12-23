@@ -15,7 +15,7 @@ const StockTransferPage: React.FC = () => {
     {
       icon: LuPlusSquare,
       text: "ایجاد",
-      permission: "add_stocktransfers",
+      permission: "add_stocktransfer",
       path: "create"
     } 
   ];
