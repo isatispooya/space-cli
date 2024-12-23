@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { CompanyData } from "../types";
 import { ModalLayout } from "../../../layouts";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import SeeCompany from "./company.details";
 import Popup from "../../../components/popup";
 import useDeleteCompany from "../hooks/useDeleteCompany";
@@ -74,7 +74,7 @@ const CompanyTable = () => {
 
   return (
     <>
-      <Toaster />
+
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           rows={rows}

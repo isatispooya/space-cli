@@ -1,3 +1,5 @@
+import "moment/locale/fa";
+import moment from "moment-jalaali";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useGetShareholders } from "../hooks";
 import { ShareholdersTypes } from "../types";
@@ -5,16 +7,17 @@ import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { tableStyles } from "../../../ui";
 import { FaTrash } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useState } from "react";
 import useDelShareholders from "../hooks/useDelShareholders";
 import { useShareHoldersStore } from "../store";
 import { useNavigate } from "react-router-dom";
 import Popup from "../../../components/popup";
 import { useUserPermissions } from "../../../Modules/permissions";
+import { companyTypes } from "../data/companyTypes";
 
 const ShareholdTable: React.FC = () => {
-  const { data: shareholders } = useGetShareholders();
+  const { data: shareholders, refetch } = useGetShareholders();
   const [selectedRow, setSelectedRow] = useState<ShareholdersTypes | null>(
     null
   );
@@ -25,11 +28,71 @@ const ShareholdTable: React.FC = () => {
   const { checkPermission } = useUserPermissions();
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "company", headerName: "شرکت", width: 100 },
-    { field: "name", headerName: "نام", width: 100 },
+    {
+      field: "company",
+      headerName: "شرکت",
+      width: 150,
+      renderCell: (params) => {
+        const company = params.row.company_detail;
+        return company && typeof company === "object" ? company.name : "";
+      },
+    },
+    {
+      field: "company_type",
+      headerName: "نوع شرکت",
+      width: 150,
+      renderCell: (params) => {
+        const company = params.row.company_detail;
+        if (!company || typeof company !== "object") return "";
 
-    { field: "number_of_shares", headerName: "تعداد سهام", width: 100 },
+        const companyType = companyTypes.find(
+          (type) => type.value === company.company_type
+        );
+        return companyType?.label || company.company_type;
+      },
+    },
+    {
+      field: "number_of_shares",
+      headerName: "تعداد سهام",
+      width: 100,
+    },
+    {
+      field: "user",
+      headerName: "نام",
+      width: 150,
+      renderCell: (params) => {
+        const user = params.row.user_detail;
+        return user && typeof user === "object" ? user.first_name : "";
+      },
+    },
+    {
+      field: "last_name",
+      headerName: "نام خانوادگی",
+      width: 150,
+      renderCell: (params) => {
+        const user = params.row.user_detail;
+        return user && typeof user === "object" ? user.last_name : "";
+      },
+    },
+    {
+      field: "uniqueIdentifier",
+      headerName: "کدملی ",
+      width: 150,
+      renderCell: (params) => {
+        const user = params.row.user_detail;
+        return user && typeof user === "object" ? user.uniqueIdentifier : "";
+      },
+    },
+    {
+      field: "updated_at",
+      headerName: "تاریخ ویرایش",
+      width: 150,
+      renderCell: (params) => {
+        return moment(params.row.updated_at)
+          .locale("fa")
+          .format("jYYYY/jMM/jDD");
+      },
+    },
   ];
   const handleEdit = () => {
     if (!selectedRow) {
@@ -45,7 +108,7 @@ const ShareholdTable: React.FC = () => {
       toast.error("لطفا یک شرکت را انتخاب کنید");
       return;
     }
-    deleteShareholder(selectedRow.id);
+
     setIsDeleteOpen(true);
   };
 
@@ -56,11 +119,8 @@ const ShareholdTable: React.FC = () => {
     id: row.id || Math.random(),
   }));
 
-  console.log("Processed data:", processedData);
-
   return (
     <>
-      <Toaster />
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           columns={columns}
@@ -123,16 +183,31 @@ const ShareholdTable: React.FC = () => {
             },
           }}
         />
-
+      </div>
+      {selectedRow && (
         <Popup
           isOpen={isDeleteOpen}
           onClose={() => setIsDeleteOpen(false)}
           label="حذف شرکت"
           text="آیا مطمئن هستید؟"
-          onConfirm={handleDelete}
-          onCancel={() => setIsDeleteOpen(false)}
+          onConfirm={() => {
+            deleteShareholder(selectedRow.id, {
+              onSuccess: () => {
+                toast.success("   با موفقیت حذف شد");
+                refetch();
+              },
+              onError: () => {
+                toast.error("خطا در برقراری ارتباط");
+              },
+            });
+            setIsDeleteOpen(false);
+            setSelectedRow(null);
+          }}
+          onCancel={() => {
+            setIsDeleteOpen(false);
+          }}
         />
-      </div>
+      )}
     </>
   );
 };

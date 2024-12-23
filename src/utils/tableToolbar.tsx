@@ -10,7 +10,13 @@ import {
 
 import { exportToExcel } from "./exel";
 import { FaDownload, FaEdit, FaEye, FaPlus, FaTrash } from "react-icons/fa";
-import { CompanyData } from "../Modules/companies/types";
+
+interface PaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
 
 interface ActionButton {
   label: string;
@@ -20,17 +26,10 @@ interface ActionButton {
   className?: string;
 }
 
-interface CustomDataGridToolbarProps {
-  data:
-    | CompanyData[]
-    | {
-        count: number;
-        next: string | null;
-        previous: string | null;
-        results: unknown[];
-      };
+interface CustomDataGridToolbarProps<T = Record<string, unknown>> {
+  data: T[] | PaginatedResponse<T>;
   fileName?: string;
-  customExcelData?: (data: unknown[]) => unknown[];
+  customExcelData?: (data: T[]) => unknown[];
   showExcelExport?: boolean;
   actions?: {
     edit?: ActionButton;
@@ -40,13 +39,13 @@ interface CustomDataGridToolbarProps {
   };
 }
 
-const CustomDataGridToolbar = ({
+const CustomDataGridToolbar = <T extends Record<string, unknown>>({
   data,
   fileName = "export",
   customExcelData,
   showExcelExport = true,
   actions,
-}: CustomDataGridToolbarProps) => {
+}: CustomDataGridToolbarProps<T>) => {
   const handleExport = useCallback(() => {
     try {
       const dataToExport = Array.isArray(data) ? data : data?.results;
@@ -107,7 +106,7 @@ const CustomDataGridToolbar = ({
         {actions?.edit?.show && (
           <button
             onClick={actions.edit.onClick}
-            className="flex items-center gap-1 px-3 py-1 text-[#F7C748] hover:bg-green-50 rounded-lg"
+            className="flex items-center gap-1 px-3 py-1 font-bold text-[#FCBB01] hover:bg-[#FCBB01]/10 rounded-lg"
           >
             {actions.edit.icon || <FaEdit />}
             {actions.edit.label}
@@ -117,7 +116,7 @@ const CustomDataGridToolbar = ({
         {actions?.delete?.show && (
           <button
             onClick={actions.delete.onClick}
-            className="flex items-center gap-1 px-3 py-1 text-red-600 hover:bg-red-50 rounded-lg"
+            className="flex items-center gap-1 px-3 py-1 font-bold text-red-600 hover:bg-red-50 rounded-lg"
           >
             {actions.delete.icon || <FaTrash />}
             {actions.delete.label}
@@ -127,7 +126,7 @@ const CustomDataGridToolbar = ({
         {actions?.create?.show && (
           <button
             onClick={actions.create.onClick}
-            className="flex items-center gap-1 px-3 py-1 text-purple-600 hover:bg-purple-50 rounded-lg"
+            className="flex items-center gap-1 px-3 py-1 font-bold text-purple-600 hover:bg-purple-50 rounded-lg"
           >
             {actions.create.icon || <FaPlus />}
             {actions.create.label}
@@ -137,7 +136,7 @@ const CustomDataGridToolbar = ({
         {showExcelExport && (
           <button
             onClick={handleExport}
-            className="flex items-center gap-1 px-3 py-1 text-green-600 hover:bg-green-50 rounded-lg "
+            className="flex items-center gap-1 px-3 py-1 font-bold text-green-600 hover:bg-green-50 rounded-lg "
           >
             <FaDownload />
             دانلود اکسل

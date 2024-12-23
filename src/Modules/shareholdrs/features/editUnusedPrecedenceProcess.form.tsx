@@ -11,7 +11,7 @@ import {
 } from "../types";
 import * as Yup from "yup";
 import { useUnusedPrecedenceProcessStore } from "../store";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const EditUnusedPrecedenceProcessForm = () => {
   const { data: purchaseData } = usePurchacePrecendence();
@@ -57,7 +57,7 @@ const EditUnusedPrecedenceProcessForm = () => {
           onSuccess: () => {
             console.log("Purchase precedence updated successfully");
           },
-          onError: (error) => {
+          onError: () => {
             toast.error("خطایی رخ داده است");
           },
         });
@@ -104,7 +104,7 @@ const EditUnusedPrecedenceProcessForm = () => {
 
   return (
     <>
-      <Toaster />
+
       <div className="p-6">
         <h2 className="text-[#29D2C7] text-xl mb-6">ثبت حق تقدم</h2>
         <form onSubmit={formik.handleSubmit} className="space-y-4">

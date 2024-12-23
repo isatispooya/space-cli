@@ -1,6 +1,6 @@
 import React, { FormEventHandler } from "react";
 import useLogin from "../../auth/hooks/useLogin";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import PassInput from "../components/passInput";
 import InputBase from "../../../components/inputBase";
 import Spinner from "../../../components/spinner";
@@ -38,7 +38,7 @@ const LoginForm = ({
 
   return (
     <>
-      <Toaster position="bottom-left" reverseOrder={false} />
+   
       <form onSubmit={handleSubmit}>
         <InputBase
           type="text"

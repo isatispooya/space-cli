@@ -1,4 +1,4 @@
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Forms from "../../../components/forms";
 import useUpdateShareholders from "../hooks/useUpdateShareholders";
 import { ShareholdersTypes } from "../types";
@@ -67,18 +67,26 @@ const EditShareholdForm: React.FC = () => {
 
   const initialValues = {
     number_of_shares: shareholder?.number_of_shares || 0,
-    company: shareholder?.company || 0,
-    user: shareholder?.user || 0,
+    company: shareholder?.company.toString() || "",
+    user: shareholder?.user.toString() || "",
     id: shareholder?.id || 0,
   };
 
   const onSubmit = (values: ShareholdersTypes) => {
     if (shareholder?.id) {
+      const formattedValues = {
+        ...values,
+        company: parseInt(values.company.toString()),
+        user: parseInt(values.user.toString()),
+        number_of_shares: parseInt(values.number_of_shares.toString()),
+      };
+
       mutate(
-        { id: shareholder?.id, data: values },
+        { id: shareholder.id, data: formattedValues },
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ویرایش شد");
+            navigate("/shareholders/table");
           },
           onError: () => {
             toast.error("خطایی رخ داده است");
@@ -90,7 +98,6 @@ const EditShareholdForm: React.FC = () => {
 
   return (
     <>
-      <Toaster />
       <Forms
         formFields={formFields}
         initialValues={initialValues}

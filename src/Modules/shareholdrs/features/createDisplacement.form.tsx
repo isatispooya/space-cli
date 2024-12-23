@@ -4,7 +4,7 @@ import { useUserData } from "../../users/hooks";
 import { usePostDisplacementPrecendence } from "../hooks";
 import * as Yup from "yup";
 import { FormField } from "../../companies/types";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const CreateDisplacementForm = () => {
   const { mutate: postDisplacement } = usePostDisplacementPrecendence();
@@ -24,7 +24,7 @@ const CreateDisplacementForm = () => {
           })
         ) || [],
     },
-    { name: "number_of_shares", label: "تعداد سهام", type: "text" as const },
+    { name: "number_of_shares", label: "تعداد حق تقدم", type: "text" as const },
     {
       name: "seller",
       label: "فروشنده",
@@ -72,8 +72,6 @@ const CreateDisplacementForm = () => {
 
   return (
     <>
-      <Toaster />
-
       <Forms
         formFields={formFields}
         initialValues={initialValues}
@@ -85,7 +83,7 @@ const CreateDisplacementForm = () => {
           default: "ثبت حق تقدم",
           loading: "در حال ارسال...",
         }}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
           try {
             await postDisplacement(
               {
@@ -101,6 +99,7 @@ const CreateDisplacementForm = () => {
               {
                 onSuccess: () => {
                   toast.success("با موفقیت ثبت شد");
+                  resetForm();
                 },
                 onError: (error) => {
                   toast.error(error.message);

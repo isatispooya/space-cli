@@ -7,7 +7,7 @@ import {
 } from "../types";
 import useUpdateCompany from "../hooks/useUpdateCompany";
 import Forms from "../../../components/forms";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
   id: Yup.number().required(),
@@ -93,7 +93,7 @@ const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
 
   return (
     <>
-      <Toaster />
+  
       <Forms
         formFields={formFields}
         initialValues={initialValues}

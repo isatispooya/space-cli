@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import InputLogin from "../../../components/inputBase";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import useForgetPassSms from "../hooks/useForgetPassSms";
 import { useLoginStore } from "../stores/loginStore";
 
@@ -39,7 +39,7 @@ const ForgetPassSmsForm: React.FC<{ onVerificationSuccess: () => void }> = ({
 
   return (
     <>
-      <Toaster position="bottom-left" reverseOrder={false} />
+      
       <form onSubmit={formik.handleSubmit}>
         <InputLogin
           type="text"

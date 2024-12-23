@@ -2,7 +2,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import InputLogin from "../../../components/inputBase";
 import useForgetPass from "../hooks/useForgetPass";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import PassInput from "../components/passInput";
 
 const validationSchema = Yup.object().shape({
@@ -22,7 +22,7 @@ const ForgetPassForm = () => {
 
   return (
     <>
-      <Toaster position="bottom-left" reverseOrder={false} />
+ 
       <Formik
         initialValues={{
           smsCode: "",

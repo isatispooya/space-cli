@@ -1,4 +1,4 @@
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Forms from "../../../components/forms";
 import { StockTransferTypes } from "../types";
 import useUpdateStockTransfer from "../hooks/useUpdateStockTransfer";
@@ -6,29 +6,27 @@ import * as yup from "yup";
 import { useGetStockTransfer } from "../hooks";
 import { useStockTransferStore } from "../store";
 import { useUserData } from "../../users/hooks";
+import { useCompaniesData } from "../../companies/hooks";
+import { useNavigate } from "react-router-dom";
 
 const EditStockTransferForm: React.FC = () => {
   const { mutate } = useUpdateStockTransfer();
   const { data: stockTransferData } = useGetStockTransfer();
   const { data: users } = useUserData();
+  const { data: companies } = useCompaniesData();
+  const navigate = useNavigate();
   const { id } = useStockTransferStore();
 
   const stockTransfer = stockTransferData?.find(
     (item: StockTransferTypes) => item.id === id
   );
 
-  
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
     buyer: yup.number().required("خریدار الزامی است"),
     seller: yup.number().required("فروشنده الزامی است"),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
     price: yup.number().required("قیمت الزامی است"),
-
-    document: yup
-      .string()
-      .transform((value) => value || null)
-      .nullable(),
   }) as yup.ObjectSchema<StockTransferTypes>;
 
   const formFields = [
@@ -36,6 +34,16 @@ const EditStockTransferForm: React.FC = () => {
       name: "number_of_shares",
       label: "تعداد سهام",
       type: "text" as const,
+    },
+    {
+      name: "company",
+      label: "شرکت",
+      type: "select" as const,
+      options:
+        companies?.map((company: { name: string; id: number }) => ({
+          label: company.name,
+          value: company.id.toString(),
+        })) || [],
     },
     {
       name: "price",
@@ -69,16 +77,19 @@ const EditStockTransferForm: React.FC = () => {
   ];
 
   const initialValues = {
-    buyer: stockTransfer?.buyer?.toString() || "", // Convert to string since select values are strings
+    buyer: stockTransfer?.buyer?.toString() || "",
     seller: stockTransfer?.seller?.toString() || "",
     number_of_shares: stockTransfer?.number_of_shares || 0,
+    company: stockTransfer?.company?.toString() || "",
     price: stockTransfer?.price || 0,
     document: stockTransfer?.document || null,
     id: stockTransferData?.id || 0,
-    company: stockTransferData?.company || 0,
     user: stockTransferData?.user || 0,
   };
 
+  if (!stockTransfer && !id) {
+    navigate("/transferstock/table");
+  }
   const onSubmit = (values: StockTransferTypes) => {
     if (stockTransfer?.id) {
       mutate(
@@ -86,6 +97,7 @@ const EditStockTransferForm: React.FC = () => {
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ویرایش شد");
+            navigate("/transferstock/table");
           },
           onError: () => {
             toast.error("خطایی رخ داده است");
@@ -96,7 +108,6 @@ const EditStockTransferForm: React.FC = () => {
   };
   return (
     <>
-      <Toaster />
       <Forms
         formFields={formFields}
         initialValues={initialValues}

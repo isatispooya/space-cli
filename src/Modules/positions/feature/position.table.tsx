@@ -6,7 +6,7 @@ import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { PositionData } from "../types";
 import { ModalLayout } from "../../../layouts";
 import { PositionUpdate } from "./";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { deletePosition } from "../services";
 import { useUserPermissions } from "../../permissions";
 
@@ -47,7 +47,7 @@ const PositionsTable = () => {
 
   return (
     <>
-      <Toaster />
+
       <DataGrid
         rows={rows}
         columns={columns}

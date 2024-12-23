@@ -1,8 +1,10 @@
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridCellParams } from "@mui/x-data-grid";
 import { useDelDisplacment, useGetDisplacementPrecendence } from "../hooks";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
-import toast, { Toaster } from "react-hot-toast";
+import moment from "moment-jalaali";
+import "moment/locale/fa";
+import toast from "react-hot-toast";
 import { useState } from "react";
 import { DisplacementPrecendenceTypes } from "../types";
 import { tableStyles } from "../../../ui";
@@ -23,20 +25,78 @@ const DisplacementTable = () => {
 
   const rows = data || [];
 
-
-  
   const columns = [
-    { field: "id", headerName: "شناسه", width: 70 },
-    { field: "buyer", headerName: "خریدار", width: 100 },
-    { field: "seller", headerName: "فروشنده", width: 100 },
-    { field: "company", headerName: "شرکت", width: 100 },
-    { field: "number_of_shares", headerName: "تعداد سهام", width: 120 },
-    { field: "price", headerName: "قیمت", width: 100 },
     {
-      field: "document",
-      headerName: "سند",
-      width: 200,
+      field: "buyer",
+      headerName: "نام خریدار",
+      width: 100,
+      renderCell: (params: GridCellParams) => {
+        const user = params.row.buyer_detail;
+        return user && typeof user === "object" ? user.first_name : "";
+      },
     },
+    {
+      field: "buyer_last_name",
+      headerName: "نام خانوادگی خریدار",
+      width: 100,
+      renderCell: (params: GridCellParams) => {
+        const user = params.row.buyer_detail;
+        return user && typeof user === "object" ? user.last_name : "";
+      },
+    },
+     {
+      field: "buyer_uniqueIdentifier",
+      headerName: "کدملی خریدار",
+      width: 150,
+      renderCell: (params: GridCellParams) => {
+        const user = params.row.buyer_detail;
+        return user && typeof user === "object" ? user.uniqueIdentifier : "";
+      },
+    },
+    {
+      field: "seller",
+      headerName: "نام فروشنده",
+      width: 100,
+      renderCell: (params: GridCellParams) => {
+        const user = params.row.seller_detail;
+        return user && typeof user === "object" ? user.first_name : "";
+      },
+    },
+    {
+      field: "seller_last_name",
+      headerName: "نام خانوادگی فروشنده",
+      width: 150,
+      renderCell: (params: GridCellParams) => {
+        const user = params.row.seller_detail;
+        return user && typeof user === "object" ? user.last_name : "";
+      },
+    },
+    {
+      field: "seller_uniqueIdentifier",
+      headerName: "کدملی فروشنده",
+      width: 150,
+      renderCell: (params: GridCellParams) => {
+        const user = params.row.seller_detail;
+        return user && typeof user === "object" ? user.uniqueIdentifier : "";
+      },
+    },
+    { field: "company", headerName: "شرکت", width: 100, renderCell: (params: GridCellParams) => {
+      return params.row.company_detail.name;
+    }, },
+    { field: "number_of_shares", headerName: "تعداد حق تقدم", width: 120 },
+    { field: "price", headerName: "قیمت", width: 100 },
+
+    {
+      field: "updated_at",
+      headerName: "تاریخ بروزرسانی",
+      width: 180,
+      renderCell: (params: GridCellParams) => {
+        return moment(params.row.updated_at)
+          .locale("fa")
+          .format("jYYYY/jMM/jDD");
+      },
+    },
+
   ];
 
   const handleEdit = () => {
@@ -45,7 +105,7 @@ const DisplacementTable = () => {
       return;
     }
     setId(selectedRow.id);
-    navigate("displacement/update");
+    navigate("/displacement/update");
   };
 
   const handleDelete = () => {
@@ -58,7 +118,6 @@ const DisplacementTable = () => {
 
   return (
     <>
-      <Toaster />
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           columns={columns}
@@ -130,21 +189,28 @@ const DisplacementTable = () => {
           }}
         />
         {selectedRow && (
-          <Popup
-            isOpen={isDeleteOpen}
-            onClose={() => setIsDeleteOpen(false)}
-            label="حذف حق تقدم"
-            text="آیا از حذف حق تقدم مطمئن هستید؟"
-            onConfirm={() => {
-              deleteDisplacement(selectedRow.id);
-              setIsDeleteOpen(false);
-              setSelectedRow(null);
+        <Popup
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        label="حذف جابه جایی حق تقدم"
+        text="آیا مطمئن هستید؟"
+        onConfirm={() => {
+          deleteDisplacement(selectedRow.id, {
+            onSuccess: () => {
+              toast.success("   با موفقیت حذف شد");
               refetch();
-            }}
-            onCancel={() => {
-              setIsDeleteOpen(false);
-            }}
-          />
+            },
+            onError: () => {
+              toast.error("خطا در برقراری ارتباط");
+            },
+          });
+          setIsDeleteOpen(false);
+          setSelectedRow(null);
+        }}
+        onCancel={() => {
+          setIsDeleteOpen(false);
+        }}
+      />
         )}
       </div>
     </>

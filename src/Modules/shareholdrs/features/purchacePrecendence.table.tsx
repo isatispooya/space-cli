@@ -6,7 +6,7 @@ import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { purchacePrecendenceTypes } from "../types";
 import { tableStyles } from "../../../ui";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Popup from "../../../components/popup";
 import usePurchacePrecendence from "../hooks/usePurchacePrecendence";
 import { useUnusedPrecedenceProcessStore } from "../store";
@@ -78,7 +78,7 @@ const PurchacePrecendenceTable: React.FC = () => {
 
   return (
     <>
-      <Toaster />
+   
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           columns={columns}

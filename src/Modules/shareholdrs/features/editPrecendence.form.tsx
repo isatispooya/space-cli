@@ -1,4 +1,4 @@
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Forms from "../../../components/forms";
 import { useGetPrecedence, useUpdatePrecendence } from "../hooks";
 import * as yup from "yup";
@@ -6,30 +6,26 @@ import { PrecedenceTypes } from "../types";
 import { usePrecendenceStore } from "../store";
 import { useCompaniesData } from "../../companies/hooks";
 import { useNavigate } from "react-router-dom";
+import { useUserData } from "../../users/hooks";
 
 const EditPrecendenceForm: React.FC = () => {
   const { mutate: updatePrecendence } = useUpdatePrecendence();
   const { id } = usePrecendenceStore();
   const { data } = useGetPrecedence();
   const precedence = data?.find((item: PrecedenceTypes) => item.id === id);
+  const { data: users } = useUserData();
 
   const navigate = useNavigate();
-
   const { data: companies } = useCompaniesData();
 
-  if (!companies && !id) {
-    navigate("precendence/table");
+  if (!precedence && !id) {
+    navigate("/precendence/table");
   }
 
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
     company: yup.number().required("شرکت الزامی است"),
-    position: yup.number().required("موقعیت الزامی است"),
     precedence: yup.number().required("حق تقدم الزامی است"),
-    used_precedence: yup
-      .number()
-      .typeError("فقط عدد مجاز است")
-      .required("حق تقدم استفاده شده الزامی است"),
     created_at: yup.string().optional(),
     updated_at: yup.string().optional(),
     user: yup.number().required("کاربر الزامی است"),
@@ -47,31 +43,31 @@ const EditPrecendenceForm: React.FC = () => {
         })) || [],
     },
     {
-      name: "position",
-      label: "موقعیت",
-      type: "text" as const,
-    },
-    {
       name: "precedence",
       label: "حق تقدم",
       type: "text" as const,
     },
     {
-      name: "used_precedence",
-      label: "حق تقدم استفاده شده",
-      type: "text" as const,
+      name: "user",
+      label: "کاربر",
+      type: "select" as const,
+      options:
+        users?.map(
+          (user: { first_name: string; last_name: string; id: number }) => ({
+            label: `${user.first_name} ${user.last_name}`,
+            value: user.id.toString(),
+          })
+        ) || [],
     },
   ];
 
   const initialValues = {
-    company: precedence?.company || 0,
-    position: precedence?.position || 0,
+    company: precedence?.company.toString() || "",
     precedence: precedence?.precedence || 0,
-    used_precedence: precedence?.used_precedence || 0,
     id: precedence?.id || 0,
     created_at: precedence?.created_at || "",
     updated_at: precedence?.updated_at || "",
-    user: precedence?.user || 0,
+    user: precedence?.user.toString() || "",
   };
 
   const onSubmit = (values: PrecedenceTypes) => {
@@ -81,6 +77,7 @@ const EditPrecendenceForm: React.FC = () => {
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ویرایش شد");
+            navigate("/precendence/table");
           },
           onError: () => {
             toast.error("خطایی رخ داده است");
@@ -92,7 +89,6 @@ const EditPrecendenceForm: React.FC = () => {
 
   return (
     <>
-      <Toaster />
       <Forms
         formFields={formFields}
         initialValues={initialValues}
