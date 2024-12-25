@@ -53,7 +53,7 @@ const PurchacePrecendenceForm = () => {
           amount: Number(values.amount),
           price: Number(values.price),
           total_price: Number(values.total_price),
-          type: Number(values.type),
+          type: String(values.type),
           process: Number(values.company),
           transaction_id: values.transaction_id,
           document: values.document,

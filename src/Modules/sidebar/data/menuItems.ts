@@ -74,9 +74,13 @@ export const menuItems: MenuItem[] = [
         codename: "view_capitalincreasepayment",
         path: "/capital/table",
       },
+      {
+        title: "خرید حق تقدم استفاده نشده",
+        codename: "view_unusedprecedenceprocess",
+        path: "/purchacePrecendence/table",
+      },
     ],
   },
-
   {
     title: "امور شرکت‌ها",
     path: "/companies",
