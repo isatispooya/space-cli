@@ -14,10 +14,10 @@ export interface purchacePrecendenceTypes {
 
 export interface PurchacePrecendenceCreate {
   amount: number;
-  price: number;
-  total_price: number;
-  type?: number;
+  price?: number;
+  total_price?: number;
+  type?: string;
   process: number;
-  transaction_id: string;
-  status: string;
+  transaction_id?: string;
+  status?: string;
 }

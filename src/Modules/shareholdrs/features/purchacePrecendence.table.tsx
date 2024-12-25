@@ -174,13 +174,13 @@ const PurchacePrecendenceTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: checkPermission("change_purchaceprecendence"),
+                    show: checkPermission("change_unusedprecedencepurchase"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: checkPermission("delete_purchaceprecendence"),
+                    show: checkPermission("delete_unusedprecedencepurchase"),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },
@@ -195,6 +195,8 @@ const PurchacePrecendenceTable: React.FC = () => {
             },
           }}
         />
+
+
 
         {selectedRow && (
           <Popup
