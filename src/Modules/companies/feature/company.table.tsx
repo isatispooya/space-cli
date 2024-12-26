@@ -4,7 +4,7 @@ import CustomDataGridToolbar from "../../../utils/tableToolbar";
 import { localeText } from "../../../utils/localtext";
 import { useCallback, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
-import { CompanyData } from "../types";
+import { CompanyData } from "../types/companyData.type";
 import { ModalLayout } from "../../../layouts";
 import toast, { Toaster } from "react-hot-toast";
 import SeeCompany from "./company.details";

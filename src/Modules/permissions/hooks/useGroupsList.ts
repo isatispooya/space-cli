@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getGroups } from "../services";
+import {  groupsService } from "../services";
 
 const useGroupsList = () => {
   return useQuery({
     queryKey: ["groups"],
-    queryFn: getGroups,
+    queryFn: groupsService.getList,
   });
 };
 

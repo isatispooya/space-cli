@@ -1,11 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
-import { editPermission } from "../services";
-import { EditPermissionData } from "../services/permissionEdit.post";
+import { permissionService } from "../services";
+import { CreatePermissionData as EditPermissionData } from "../types";
+
+interface UpdatePermissionParams {
+  id: number;
+  data: EditPermissionData;
+}
 
 const useSetPermission = () => {
   return useMutation({
     mutationKey: ["setPermission"],
-    mutationFn: (data: EditPermissionData) => editPermission(data),
+    mutationFn: ({ id, data }: UpdatePermissionParams) =>
+      permissionService.updateUserPermission(id, data),
   });
 };
 

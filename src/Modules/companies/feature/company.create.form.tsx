@@ -1,19 +1,20 @@
 import * as Yup from "yup";
 import Forms from "../../../components/forms";
 import useCreateCompany from "../hooks/useCreateCompany";
-import { CompanyFormValues, CompanyType, FormField } from "../types";
+import { CompanyData } from "../types/companyData.type";
+import { FormField } from "../types";
 
 const validationSchema = Yup.object().shape({
-  id: Yup.number().optional(),
+  id: Yup.number().required(),
   name: Yup.string().required("نام شرکت الزامی است"),
   company_type: Yup.string().required("نوع شرکت الزامی است"),
-  year_of_establishment: Yup.string().required("سال تاسیس الزامی است"),
+  year_of_establishment: Yup.number().required("سال تاسیس الزامی است"),
   phone: Yup.string().required("تلفن الزامی است"),
   postal_code: Yup.string().required("کد پستی الزامی است"),
   national_id: Yup.string().required("کد شناسه الزامی است"),
   description: Yup.string(),
-  registered_capital: Yup.string().required("سرمایه ثبتی الزامی است"),
-  registration_number: Yup.string().required("تعداد سرمایه ثبتی الزامی است"),
+  registered_capital: Yup.number().optional(),
+  registration_number: Yup.number().required("تعداد سرمایه ثبتی الزامی است"),
   type_of_activity: Yup.string().required("نوع فعالیت الزامی است"),
   address: Yup.string().required("آدرس الزامی است"),
   website: Yup.string().url("آدرس وبسایت نامعتبر است"),
@@ -27,6 +28,10 @@ const validationSchema = Yup.object().shape({
   employees: Yup.number()
     .min(1, "تعداد کارمندان باید بیشتر از 0 باشد")
     .required("تعداد کارمندان الزامی است"),
+  logo: Yup.string().optional(),
+  letterhead: Yup.string().optional(),
+  seal: Yup.string().optional(),
+  signature: Yup.string().optional(),
 });
 
 const COMPANY_TYPES = [
@@ -65,12 +70,12 @@ const formFields: FormField[] = [
 
 const CreateCompanyForm = () => {
   const { mutate: createCompany } = useCreateCompany();
-  const initialValues: CompanyFormValues = formFields.reduce(
+  const initialValues: CompanyData = formFields.reduce(
     (acc, field) => ({
       ...acc,
       [field.name]: "",
     }),
-    {} as CompanyFormValues
+    {} as CompanyData
   );
 
   return (

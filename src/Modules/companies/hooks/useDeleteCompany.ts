@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteCompany } from "../services";
+import { companiesService } from "../services";
 
 const useDeleteCompany = () => {
   return useMutation({
     mutationKey: ["deleteCompany"],
-    mutationFn: deleteCompany,
+    mutationFn: companiesService.delete,
   });
 };
 

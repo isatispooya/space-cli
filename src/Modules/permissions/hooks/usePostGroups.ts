@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { createPermissionGroup } from "../services";
+import {  groupsService } from "../services";
 import { CreatePermissionData } from "../types";
 
 const usePostGroups = () => {
   return useMutation({
     mutationKey: ["createPermissionGroup"],
-    mutationFn: (data: CreatePermissionData) => createPermissionGroup(data),
+    mutationFn: (data: CreatePermissionData) => groupsService.create(data),
   });
 };
 
