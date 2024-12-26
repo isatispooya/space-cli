@@ -26,11 +26,11 @@ const CapitalTable: React.FC = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const rows = data || [];
+  
   const columns: GridColDef[] = [
     { field: "company", headerName: "شرکت", width: 100  },
     { field: "number_of_shares", headerName: "تعداد سهام", width: 120 },
     { field: "price", headerName: "قیمت", width: 100 },
-
     {
       field: "updated_at",
       headerName: "تاریخ بروزرسانی",
@@ -41,7 +41,6 @@ const CapitalTable: React.FC = () => {
           .format("jYYYY/jMM/jDD");
       },
     },
-
     {
       field: "document",
       headerName: "سند",

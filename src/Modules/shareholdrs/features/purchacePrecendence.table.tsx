@@ -51,19 +51,28 @@ const PurchacePrecendenceTable: React.FC = () => {
       renderCell: (params) => {
         return params.row.type === "2" ? "درگاه پرداخت" : "فیش بانکی";
       },
+      headerAlign: 'right',
+      align: 'right',
+      flex: 1,
     },
     {
       field: "invoice_unique_id",
       headerName: "شماره فاکتور",
       width: 100,
+      headerAlign: 'right',
+      align: 'right',
+      flex: 1,
     },
     {
       field: "price",
       headerName: "قیمت",
       width: 100,
       renderCell: (params) => formatNumber(params.row.price),
+      headerAlign: 'right',
+      align: 'right',
+      flex: 1,
     },
-    { field: "company", headerName: "شرکت", width: 100 },
+    { field: "company", headerName: "شرکت", width: 100, headerAlign: 'right', align: 'right', flex: 1 },
     {
       field: "status",
       headerName: "وضعیت",
@@ -74,9 +83,12 @@ const PurchacePrecendenceTable: React.FC = () => {
         );
         return statusObj ? statusObj.label : params.row.status;
       },
+      headerAlign: 'right',
+      align: 'right',
+      flex: 1,
     },
-    { field: "track_id", headerName: "شناسه پیگیری", width: 120 },
-    { field: "user", headerName: "کاربر", width: 100 },
+    { field: "track_id", headerName: "شناسه پیگیری", width: 120, headerAlign: 'right', align: 'right', flex: 1 },
+    { field: "user", headerName: "کاربر", width: 100, headerAlign: 'right', align: 'right', flex: 1 },
     {
       field: "document",
       headerName: "سند",
@@ -89,6 +101,9 @@ const PurchacePrecendenceTable: React.FC = () => {
         ) : (
           <span>ناموجود</span>
         ),
+      headerAlign: 'right',
+      align: 'right',
+      flex: 1,
     },
     {
       field: "updated_at",
@@ -99,6 +114,9 @@ const PurchacePrecendenceTable: React.FC = () => {
           .locale("fa")
           .format("jYYYY/jMM/jDD");
       },
+      headerAlign: 'right',
+      align: 'right',
+      flex: 1,
     },
   ];
 
@@ -109,7 +127,6 @@ const PurchacePrecendenceTable: React.FC = () => {
       toast.error("لطفا یک سهم را انتخاب کنید");
       return;
     }
-
     setId(selectedRow.id);
     navigate("/purchacePrecendence/update");
   };
@@ -152,7 +169,15 @@ const PurchacePrecendenceTable: React.FC = () => {
               setSelectedRow(null);
             }
           }}
-          sx={tableStyles}
+          sx={{
+            ...tableStyles,
+            '& .MuiDataGrid-cell': {
+              direction: 'rtl'
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              direction: 'rtl'
+            }
+          }}
           checkboxSelection
           rowSelectionModel={selectedRow ? [selectedRow.id] : []}
           disableMultipleRowSelection
