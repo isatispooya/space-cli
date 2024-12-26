@@ -1,4 +1,4 @@
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { StockTransferTypes } from "../types";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useDelStockTransfer, useGetStockTransfer } from "../hooks";
@@ -8,14 +8,15 @@ import { tableStyles } from "../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import ModalLayout from "../../../layouts/ModalLayout";
 import { Button } from "@headlessui/react";
-
+import "moment/locale/fa";
+import moment from "moment-jalaali";
 import Popup from "../../../components/popup";
 import { useStockTransferStore } from "../store";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../permissions";
 
 const StockTransferTable: React.FC = () => {
-  const { data: stockTransfer ,refetch } = useGetStockTransfer();
+  const { data: stockTransfer, refetch } = useGetStockTransfer();
   const { setId } = useStockTransferStore();
   const { checkPermission } = useUserPermissions();
 
@@ -27,18 +28,73 @@ const StockTransferTable: React.FC = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "buyer", headerName: "خریدار", width: 100 },
-    { field: "seller", headerName: "فروشنده", width: 100 },
+    {
+      field: "buyer",
+      headerName: "نام خریدار",
+      width: 100,
+      renderCell: (params) => {
+        const user = params.row.buyer_detail;
+        return user && typeof user === "object" ? user.first_name : "";
+      },
+    },
+    {
+      field: "buyer_last_name",
+      headerName: "نام خانوادگی خریدار",
+      width: 100,
+      renderCell: (params) => {
+        const user = params.row.buyer_detail;
+        return user && typeof user === "object" ? user.last_name : "";
+      },
+    },
+    {
+      field: "buyer_uniqueIdentifier",
+      headerName: "کدملی خریدار",
+      width: 150,
+      renderCell: (params) => {
+        const user = params.row.buyer_detail;
+        return user && typeof user === "object" ? user.uniqueIdentifier : "";
+      },
+    },
+    {
+      field: "seller",
+      headerName: "نام فروشنده",
+      width: 100,
+      renderCell: (params) => {
+        const user = params.row.seller_detail;
+        return user && typeof user === "object" ? user.first_name : "";
+      },
+    },
+    {
+      field: "seller_last_name",
+      headerName: "نام خانوادگی فروشنده",
+      width: 150,
+      renderCell: (params) => {
+        const user = params.row.seller_detail;
+        return user && typeof user === "object" ? user.last_name : "";
+      },
+    },
+    {
+      field: "seller_uniqueIdentifier",
+      headerName: "کدملی فروشنده",
+      width: 150,
+      renderCell: (params) => {
+        const user = params.row.seller_detail;
+        return user && typeof user === "object" ? user.uniqueIdentifier : "";
+      },
+    },
     { field: "number_of_shares", headerName: "تعداد سهام", width: 100 },
     { field: "price", headerName: "قیمت", width: 100 },
-    { field: "created_at", headerName: "تاریخ ایجاد", width: 150 },
-    { field: "updated_at", headerName: "تاریخ بروزرسانی", width: 150 },
     {
-      field: "document",
-      headerName: "سند",
-      width: 100,
+      field: "updated_at",
+      headerName: "تاریخ بروزرسانی",
+      width: 150,
+      renderCell: (params) => {
+        return moment(params.row.updated_at)
+          .locale("fa")
+          .format("jYYYY/jMM/jDD");
+      },
     },
+
   ];
   const handleEdit = () => {
     if (!selectedRow) {
@@ -60,7 +116,6 @@ const StockTransferTable: React.FC = () => {
 
   return (
     <>
-      <Toaster />
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           columns={columns}

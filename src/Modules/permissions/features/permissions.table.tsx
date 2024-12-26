@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { usePermissionList } from "../hooks";
 import { DataGrid } from "@mui/x-data-grid";
 import { PermissionData } from "../types";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { tableStyles } from "../../../ui";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { FaEdit } from "react-icons/fa";
@@ -30,7 +30,7 @@ const PermissionsTable: React.FC = () => {
 
   return (
     <>
-      <Toaster />
+  
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           rows={data}

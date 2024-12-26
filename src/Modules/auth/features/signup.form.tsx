@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import useRegister from "../hooks/useRegister";
 import useApplyNationalCode from "../hooks/useOtp";
 import { fadeIn } from "../animations/fadeIn";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Spinner from "../../../components/spinner";
 
 const SignupForm = () => {
@@ -66,7 +66,7 @@ const SignupForm = () => {
 
   return (
     <>
-      <Toaster position="bottom-left" reverseOrder={false} />
+  
       <form onSubmit={handleSubmit}>
         <InputLogin
           type="text"

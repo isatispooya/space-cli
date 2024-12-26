@@ -4,32 +4,24 @@ import * as Yup from "yup";
 import { FormField } from "../../companies/types";
 import { useUserData } from "../../users/hooks";
 import { useCompaniesData } from "../../companies/hooks";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const CreatePrecendenceForm = () => {
   const { mutate: postPrecendence } = usePostPrecendence();
 
-  const { data: users, isLoading, error } = useUserData();
-  console.log('Users data:', users);
-  console.log('Users loading:', isLoading);
-  console.log('Users error:', error);
+  const { data: users } = useUserData();
 
   const { data: companies } = useCompaniesData();
 
   const formFields: FormField[] = [
     { name: "precedence", label: "حق تقدم", type: "text" as const },
     {
-      name: "used_precedence",
-      label: "حق تقدم استفاده شده",
-      type: "text" as const,
-    },
-    {
       name: "company",
       label: "شرکت",
       type: "select" as const,
       options:
         companies?.map((company: { name: string; id: number }) => ({
-          label: company.name || '',
+          label: company.name || "",
           value: company.id.toString(),
         })) || [],
     },
@@ -50,7 +42,6 @@ const CreatePrecendenceForm = () => {
   const initialValues = {
     company: "",
     precedence: "",
-    used_precedence: "",
     user: "",
   };
 
@@ -59,15 +50,11 @@ const CreatePrecendenceForm = () => {
     precedence: Yup.string()
       .required("حق تقدم الزامی است")
       .matches(/^\d+$/, "فقط عدد مجاز است"),
-    used_precedence: Yup.string()
-      .required("حق تقدم استفاده شده الزامی است")
-      .matches(/^\d+$/, "فقط عدد مجاز است"),
     user: Yup.string().required("کاربر الزامی است"),
   });
 
   return (
     <>
-      <Toaster />
       <Forms
         formFields={formFields}
         initialValues={initialValues}
@@ -79,20 +66,20 @@ const CreatePrecendenceForm = () => {
           default: "ثبت حق تقدم",
           loading: "در حال ارسال...",
         }}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
           try {
             postPrecendence(
               {
                 ...values,
                 company: Number(values.company),
                 precedence: Number(values.precedence),
-                used_precedence: Number(values.used_precedence),
                 user: Number(values.user),
                 id: 0,
               },
               {
                 onSuccess: () => {
                   toast.success("حق تقدم با موفقیت ثبت شد");
+                  resetForm();
                 },
                 onError: (error) => {
                   toast.error("خطایی رخ داده است");

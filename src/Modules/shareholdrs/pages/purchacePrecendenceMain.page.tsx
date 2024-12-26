@@ -9,15 +9,15 @@ const PurchacePrecendenceMain = () => {
         {
           icon: LuTable,
           text: "جدول",
-          permission: "view_shareholders",
+          permission: "view_unusedprecedencepurchase",
           path: "table"
         },
         {
           icon: LuPlusSquare,
           text: "ایجاد",
-          permission: "add_shareholders",
+          permission: "add_unusedprecedencepurchase",
           path: "create"
-        } 
+        }
       ];
 
       return (

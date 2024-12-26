@@ -8,18 +8,18 @@ import { useState } from "react";
 
 interface SelectOption {
   label: string;
-  value: number;
+  value: string;
 }
 
-const PurchacePrecendenceForm = () => { 
+const PurchacePrecendenceForm = () => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const { mutate: postPrecendence } = usePostPurchacePrecendence();
   const { data: unusedPrecedenceProcess } = useUnusedPrecedenceProcess();
   const [selectedDescription, setSelectedDescription] = useState("");
 
   const typeOptions = [
-    { label: "فیش", value: 1 },
-    { label: "درگاه", value: 2 },
+    { label: "فیش", value: "1" },
+    { label: "درگاه", value: "2" },
   ];
 
   const companyOptions =
@@ -51,17 +51,17 @@ const PurchacePrecendenceForm = () => {
       try {
         const purchaseData: PurchacePrecendenceCreate = {
           amount: Number(values.amount),
-          price: Number(values.price),
-          total_price: Number(values.total_price),
-          type: Number(values.type),
+          type: String(values.type),
           process: Number(values.company),
-          transaction_id: values.transaction_id,
-          document: values.document,
         };
 
         await postPrecendence(purchaseData, {
-          onSuccess: () => {
+          onSuccess: (response) => {
             console.log("Purchase precedence created successfully");
+
+            if (response.redirect_url) {
+              window.open(response.redirect_url, "_blank");
+            }
           },
           onError: (error) => {
             console.error("Error creating purchase precedence:", error);
@@ -76,12 +76,11 @@ const PurchacePrecendenceForm = () => {
   });
 
   const handleCompanyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCompanyId = Number(e.target.value);
+    const selectedCompanyId = e.target.value;
     const selectedCompany = unusedPrecedenceProcess?.find(
       (process: unusedPrecedenceProcessTypes) =>
-        process.id === selectedCompanyId
+        process.id === Number(selectedCompanyId)
     );
-
     formik.setFieldValue("company", selectedCompanyId);
     formik.setFieldValue("price", selectedCompany?.price || "");
     setSelectedDescription(selectedCompany?.description || "");
@@ -92,11 +91,9 @@ const PurchacePrecendenceForm = () => {
       formik.setFieldValue("total_price", totalPrice.toString());
     }
   };
-
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAmount = e.target.value;
     formik.setFieldValue("amount", newAmount);
-
     if (formik.values.company) {
       const selectedCompany = unusedPrecedenceProcess?.find(
         (process: unusedPrecedenceProcessTypes) =>
@@ -110,44 +107,60 @@ const PurchacePrecendenceForm = () => {
   const isGatewayType = formik.values.type === "2";
 
   return (
-    <div className="p-6">
-      <h2 className="text-[#29D2C7] text-xl mb-6">ثبت حق تقدم</h2>
+    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-[24px] shadow-lg">
+      <h2 className="text-[#29D2C7] text-xl font-bold mb-6">ثبت حق تقدم</h2>
       <form onSubmit={formik.handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="amount">مقدار</label>
-          <input
-            id="amount"
-            name="amount"
-            type="text"
-            onChange={handleAmountChange}
-            value={formik.values.amount}
-            className="w-full p-2 border rounded"
-          />
-          {formik.errors.amount && formik.touched.amount && (
-            <div className="text-red-500 text-sm">{formik.errors.amount}</div>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <label
+              htmlFor="amount"
+              className="block text-xs font-medium text-gray-700"
+            >
+              مقدار
+            </label>
+            <input
+              id="amount"
+              name="amount"
+              type="text"
+              onChange={handleAmountChange}
+              value={formik.values.amount}
+              className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-[#29D2C7] focus:border-transparent"
+            />
+            {formik.errors.amount && formik.touched.amount && (
+              <div className="text-red-500 text-xs">{formik.errors.amount}</div>
+            )}
+          </div>
+
+          <div className="space-y-1">
+            <label
+              htmlFor="company"
+              className="block text-xs font-medium text-gray-700"
+            >
+              شرکت
+            </label>
+            <select
+              id="company"
+              name="company"
+              onChange={handleCompanyChange}
+              value={formik.values.company}
+              className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-[#29D2C7] focus:border-transparent"
+            >
+              <option value="">انتخاب کنید</option>
+              {companyOptions.map((option: SelectOption) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            {formik.errors.company && formik.touched.company && (
+              <div className="text-red-500 text-xs">
+                {formik.errors.company}
+              </div>
+            )}
+          </div>
         </div>
-        <div>
-          <label htmlFor="company">شرکت</label>
-          <select
-            id="company"
-            name="company"
-            onChange={handleCompanyChange}
-            value={formik.values.company}
-            className="w-full p-2 border rounded"
-          >
-            <option value="">انتخاب کنید</option>
-            {companyOptions.map((option: SelectOption) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          {formik.errors.company && formik.touched.company && (
-            <div className="text-red-500 text-sm">{formik.errors.company}</div>
-          )}
-        </div>
-        <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
+
+        <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
           <button
             type="button"
             onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
@@ -187,110 +200,147 @@ const PurchacePrecendenceForm = () => {
             </div>
           </div>
         </div>
-        <div>
-          <label htmlFor="price">قیمت واحد</label>
-          <input
-            id="price"
-            name="price"
-            type="text"
-            disabled
-            value={formik.values.price}
-            className="w-full p-2 border rounded bg-gray-100"
-          />
-        </div>
-        <div>
-          <label htmlFor="total_price">قیمت کل</label>
-          <input
-            id="total_price"
-            name="total_price"
-            type="text"
-            disabled
-            value={formik.values.total_price}
-            className="w-full p-2 border rounded bg-gray-100"
-          />
-        </div>
-        <div>
-          <label htmlFor="type">نوع</label>
-          <select
-            id="type"
-            name="type"
-            onChange={formik.handleChange}
-            value={formik.values.type}
-            className="w-full p-2 border rounded"
-          >
-            <option value="">انتخاب کنید</option>
-            {typeOptions.map((option: SelectOption) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          {formik.errors.type && formik.touched.type && (
-            <div className="text-red-500 text-sm">{formik.errors.type}</div>
-          )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <label
+              htmlFor="price"
+              className="block text-xs font-medium text-gray-700"
+            >
+              قیمت واحد
+            </label>
+            <input
+              id="price"
+              name="price"
+              type="text"
+              disabled
+              value={formik.values.price}
+              className="w-full p-2 text-sm border border-gray-300 rounded-md bg-gray-50"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label
+              htmlFor="total_price"
+              className="block text-xs font-medium text-gray-700"
+            >
+              قیمت کل
+            </label>
+            <input
+              id="total_price"
+              name="total_price"
+              type="text"
+              disabled
+              value={formik.values.total_price}
+              className="w-full p-2 text-sm border border-gray-300 rounded-md bg-gray-50"
+            />
+          </div>
         </div>
 
-        {!isGatewayType && (
-          <>
-            <div>
-              <label htmlFor="transaction_id">شناسه تراکنش</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <label
+              htmlFor="type"
+              className="block text-xs font-medium text-gray-700"
+            >
+              نوع
+            </label>
+            <select
+              id="type"
+              name="type"
+              onChange={formik.handleChange}
+              value={formik.values.type}
+              className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-[#29D2C7] focus:border-transparent"
+            >
+              <option value="">انتخاب کنید</option>
+              {typeOptions.map((option: SelectOption) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            {formik.errors.type && formik.touched.type && (
+              <div className="text-red-500 text-xs">{formik.errors.type}</div>
+            )}
+          </div>
+
+          {!isGatewayType && (
+            <div className="space-y-1">
+              <label
+                htmlFor="transaction_id"
+                className="block text-xs font-medium text-gray-700"
+              >
+                شناسه تراکنش
+              </label>
               <input
                 id="transaction_id"
                 name="transaction_id"
                 type="text"
                 onChange={formik.handleChange}
                 value={formik.values.transaction_id}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-[#29D2C7] focus:border-transparent"
               />
             </div>
+          )}
+        </div>
 
-            <div>
-              <label htmlFor="document">سند</label>
-              <input
-                id="document"
-                name="document"
-                type="file"
-                onChange={(e) => {
-                  if (e.currentTarget.files?.[0]) {
-                    formik.setFieldValue("document", e.currentTarget.files[0]);
-                  }
-                }}
-                className="w-full p-2 border rounded"
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-              />
-            </div>
-          </>
+        {!isGatewayType && (
+          <div className="space-y-1">
+            <label
+              htmlFor="document"
+              className="block text-xs font-medium text-gray-700"
+            >
+              سند
+            </label>
+            <input
+              id="document"
+              name="document"
+              type="file"
+              onChange={(e) => {
+                if (e.currentTarget.files?.[0]) {
+                  formik.setFieldValue("document", e.currentTarget.files[0]);
+                }
+              }}
+              className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-[#29D2C7] focus:border-transparent"
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+            />
+          </div>
         )}
 
-        <div className="flex items-start gap-2 my-4">
-          <input
-            type="checkbox"
-            id="agreement"
-            name="agreement"
-            onChange={formik.handleChange}
-            checked={formik.values.agreement}
-            className="mt-1"
-          />
-          <label htmlFor="agreement" className="text-sm text-slate-600">
-            <span>اینجانب </span>
-            <a
-              href="/terms"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#29D2C7] hover:text-[#008282] underline"
-            >
-              قوانین و مقررات
-            </a>
-            <span> را مطالعه کرده و می‌پذیرم</span>
-          </label>
+        <div className="space-y-3">
+          <div className="flex items-start gap-2">
+            <input
+              type="checkbox"
+              id="agreement"
+              name="agreement"
+              onChange={formik.handleChange}
+              checked={formik.values.agreement}
+              className="mt-1"
+            />
+            <label htmlFor="agreement" className="text-xs text-slate-600">
+              <span>اینجانب </span>
+              <a
+                href="/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#29D2C7] hover:text-[#008282] underline"
+              >
+                قوانین و مقررات
+              </a>
+              <span> را مطالعه کرده و می‌پذیرم</span>
+            </label>
+          </div>
+          <p className="text-red-500 text-xs">
+            قبل از اتصال به درگاه بانکی از قطع بودن فیلترشکن اطلاع فرمایید
+          </p>
+          <button
+            type="submit"
+            disabled={formik.isSubmitting || !formik.values.agreement}
+            className="w-full py-3 px-4 mt-20 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#29D2C7] focus:outline-none focus:ring-2 focus:ring-offset-2  disabled:opacity-50"
+          >
+            {formik.isSubmitting ? "در حال ارسال..." : "ثبت حق تقدم"}
+          </button>
         </div>
-        <button
-          type="submit"
-          disabled={formik.isSubmitting || !formik.values.agreement}
-          className="bg-[#29D2C7] hover:bg-[#008282] text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {formik.isSubmitting ? "در حال ارسال..." : "ثبت حق تقدم"}
-        </button>
       </form>
     </div>
   );

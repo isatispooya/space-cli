@@ -254,7 +254,7 @@ export default function Router() {
       ),
     },
     {
-      path: "/paymentResult",
+      path: "/paymentResult/",
       element: (
         <Suspense fallback={<Loader />}>
           <PaymentResultPage />

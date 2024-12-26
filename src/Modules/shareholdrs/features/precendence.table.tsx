@@ -6,10 +6,12 @@ import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { PrecedenceTypes } from "../types";
 import { tableStyles } from "../../../ui";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Popup from "../../../components/popup";
 import { usePrecendenceStore } from "../store";
 import { useNavigate } from "react-router-dom";
+import "moment/locale/fa";
+import moment from "moment-jalaali";
 import { useUserPermissions } from "../../permissions";
 
 const PrecendenceTable: React.FC = () => {
@@ -22,21 +24,54 @@ const PrecendenceTable: React.FC = () => {
   const [selectedRow, setSelectedRow] = useState<PrecedenceTypes | null>(null);
   const { setId } = usePrecendenceStore();
   const columns: GridColDef[] = [
-    { field: "id", headerName: "شناسه", width: 100 },
-    { field: "name", headerName: "نام", width: 100 },
-    { field: "company", headerName: "شرکت", width: 100 },
-    { field: "position", headerName: "موقعیت", width: 100 },
-    { field: "precedence", headerName: "اولویت", width: 100 },
-    { field: "used_precedence", headerName: "اولویت استفاده شده", width: 120 },
     {
-      field: "created_at",
-      headerName: "تاریخ ایجاد",
-      width: 180,
+      field: "name",
+      headerName: "نام",
+      width: 100,
+      renderCell: (params) => {
+        return params.row.user_detail.first_name;
+      },
+    },
+    {
+      field: "last_name",
+      headerName: "نام خانوادگی",
+      width: 100,
+      renderCell: (params) => {
+        return params.row.user_detail.last_name;
+      },
+    },
+    {
+      field: "uniqueIdentifier",
+      headerName: "کدملی",
+      width: 100,
+      renderCell: (params) => {
+        return params.row.user_detail.uniqueIdentifier;
+      },
+    },
+    {
+      field: "company",
+      headerName: "شرکت",
+      width: 100,
+      renderCell: (params) => {
+        return params.row.company_detail.name;
+      },
+    },
+    { field: "precedence", headerName: "حق تقدم", width: 100 },
+
+    {
+      field: "total_precedence",
+      headerName: "حق تقدم استفاده شده",
+      width: 100,
     },
     {
       field: "updated_at",
       headerName: "تاریخ بروزرسانی",
       width: 180,
+      renderCell: (params) => {
+        return moment(params.row.updated_at)
+          .locale("fa")
+          .format("jYYYY/jMM/jDD");
+      },
     },
   ];
 
@@ -61,7 +96,6 @@ const PrecendenceTable: React.FC = () => {
 
   return (
     <>
-      <Toaster />
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           columns={columns}

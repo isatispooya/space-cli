@@ -58,7 +58,7 @@ const CreateShareholdersPost = () => {
 
   const onSubmit = async (
     values: CreateShareholderDTO,
-    { setSubmitting }: FormikHelpers<CreateShareholderDTO>
+    { setSubmitting , resetForm }: FormikHelpers<CreateShareholderDTO>
   ) => {
     try {
       await postShareholders(
@@ -71,6 +71,7 @@ const CreateShareholdersPost = () => {
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ثبت شد");
+            resetForm();
           },
           onError: (error) => {
             toast.error("خطایی رخ داده است");
@@ -86,6 +87,7 @@ const CreateShareholdersPost = () => {
   };
 
   return (
+      
     <Forms
       formFields={formFields}
       initialValues={initialValues}

@@ -99,7 +99,7 @@ const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
 
   return (
     <>
-      <Toaster />
+  
       <Forms
         formFields={formFields}
         initialValues={initialValues}

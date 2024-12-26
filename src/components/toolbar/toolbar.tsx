@@ -16,6 +16,9 @@ const Toolbar = ({ buttons }: ToolbarProps) => {
   const { checkPermission } = useUserPermissions();
   const basePath = window.location.pathname.split("/")[1];
 
+
+  
+
   return (
     <div className="bg-white border border-gray-200 px-4 py-2 rounded-lg flex items-center justify-between shadow-sm">
       <div className="flex items-center gap-2">

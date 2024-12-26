@@ -45,7 +45,7 @@ export  const localeText = {
     // صفحه‌بندی
     MuiTablePagination: {
       labelRowsPerPage: 'تعداد سطر در صفحه:',
-      labelDisplayedRows: ({ from, to, count }) =>
+      labelDisplayedRows: ({ from, to, count }: { from: number; to: number; count: number }) =>
         `${from}-${to} از ${count !== -1 ? count : `بیش از ${to}`}`,
     },
   

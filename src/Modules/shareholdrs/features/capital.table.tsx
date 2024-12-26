@@ -1,12 +1,13 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useDelCapital, useGetCapitalIncreasePayment } from "../hooks";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useState } from "react";
 import { CapitalIncreaseTypes } from "../types";
 import { tableStyles } from "../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
+import "moment/locale/fa";
+import moment from "moment-jalaali";
 import Popup from "../../../components/popup";
 import { useCapitalStore } from "../store";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +18,7 @@ const CapitalTable: React.FC = () => {
   console.log(data);
   const { setId } = useCapitalStore();
   const navigate = useNavigate();
-  const {checkPermission} = useUserPermissions();
+  const { checkPermission } = useUserPermissions();
   const { mutate: deleteCapital } = useDelCapital();
   const [selectedRow, setSelectedRow] = useState<CapitalIncreaseTypes | null>(
     null
@@ -25,14 +26,21 @@ const CapitalTable: React.FC = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const rows = data || [];
+  
   const columns: GridColDef[] = [
-    { field: "id", headerName: "شناسه", width: 70 },
-    { field: "company", headerName: "شرکت", width: 100 },
-    { field: "position", headerName: "موقعیت", width: 100 },
+    { field: "company", headerName: "شرکت", width: 100  },
     { field: "number_of_shares", headerName: "تعداد سهام", width: 120 },
     { field: "price", headerName: "قیمت", width: 100 },
-    { field: "created_at", headerName: "تاریخ ایجاد", width: 150 },
-    { field: "updated_at", headerName: "تاریخ بروزرسانی", width: 150 },
+    {
+      field: "updated_at",
+      headerName: "تاریخ بروزرسانی",
+      width: 150,
+      renderCell: (params) => {
+        return moment(params.row.updated_at)
+          .locale("fa")
+          .format("jYYYY/jMM/jDD");
+      },
+    },
     {
       field: "document",
       headerName: "سند",
@@ -58,7 +66,6 @@ const CapitalTable: React.FC = () => {
 
   return (
     <>
-      <Toaster />
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           columns={columns}

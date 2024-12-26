@@ -46,51 +46,52 @@ export const menuItems: MenuItem[] = [
     submenu: [
       {
         title: "مدیریت سهام",
-        path: "/shareholders",
+        path: "/shareholders/table",
         codename: "view_shareholders",
       },
       {
         title: "نقل و انتقال  سهام",
         codename: "view_stocktransfer",
-        path: "/transferstock",
+        path: "/transferstock/table",
       },
-
       {
         title: "مدیریت حق تقدم",
         codename: "add_precedence",
-        path: "/precendence",
+        path: "/precendence/table",
       },
       {
         title: "نقل و انتقال حق تقدم",
         codename: "view_displacementprecedence",
-        path: "/displacement",
-      },
-       {
-        title: "پرداخت حق تقدم",
-        codename: "view_paid_precedence",
-        path: "/purchacePrecendence",
+        path: "/displacement/table",
       },
       {
-        title: "تبدیل حق تقدم",
+        title: "پرداخت حق تقدم",
+        codename: "view_paid_precedence",
+        path: "/purchacePrecendence/table",
+      },
+      {
+        title: "تبدیل حق تقدم به سهم",
         codename: "view_capitalincreasepayment",
-        path: "/capital",
+        path: "/capital/table",
+      },
+      {
+        title: "خرید حق تقدم استفاده نشده",
+        codename: "view_unusedprecedenceprocess",
+        path: "/purchacePrecendence/table",
       },
     ],
   },
-  
   {
     title: "امور شرکت‌ها",
     path: "/companies",
     icon: FaBuilding,
     codename: "view_company",
-      submenu: [
-        {
-          title: "مدیریت شرکت‌ها",
-          path: "/companies",
-        },
-        
-      ],
-    
+    submenu: [
+      {
+        title: "مدیریت شرکت‌ها",
+        path: "/companies",
+      },
+    ],
   },
   {
     title: "مکاتبات",
@@ -122,8 +123,8 @@ export const menuItems: MenuItem[] = [
     icon: FaPhone,
     codename: "view_accounts",
     submenu: [
-      { title: "پیام‌ها", path: "/contact/messages"},
-      { title: "تماس با ما", path: "/contact/us"},
+      { title: "پیام‌ها", path: "/contact/messages" },
+      { title: "تماس با ما", path: "/contact/us" },
     ],
   },
   {
@@ -131,17 +132,13 @@ export const menuItems: MenuItem[] = [
     path: "/permissions",
     icon: FaUserTie,
     codename: "view_permission",
-    submenu: [
-      { title: "مدیریت دسترسی ها", path: "/permissions" },
-    ],
+    submenu: [{ title: "مدیریت دسترسی ها", path: "/permissions" }],
   },
   {
     title: "گروه ها",
     path: "/groups",
     icon: FaUserTie,
     codename: "view_group",
-    submenu: [
-      { title: "مدیریت گروه ها", path: "/groups" },
-    ],
+    submenu: [{ title: "مدیریت گروه ها", path: "/groups" }],
   },
 ];

@@ -4,6 +4,7 @@ import { useUserData } from "../../users/hooks";
 import { usePostCapitalIncreasePayment } from "../hooks";
 import * as Yup from "yup";
 import { FormField } from "../../companies/types";
+import toast from "react-hot-toast";
 
 const CreateCapitalIncreaseForm = () => {
   const { mutate: postCapitalIncrease } = usePostCapitalIncreasePayment();
@@ -69,9 +70,17 @@ const CreateCapitalIncreaseForm = () => {
         default: "ثبت سود پرداختی",
         loading: "در حال ارسال...",
       }}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
         try {
-          await postCapitalIncrease(values);
+          await postCapitalIncrease(values, {
+            onSuccess: () => {
+              toast.success("سود پرداختی با موفقیت ثبت شد");
+              resetForm();
+            },
+            onError: () => {
+              toast.error("خطایی رخ داده است");
+            },
+          });
         } catch (error) {
           console.error("Error creating shareholder:", error);
         } finally {
