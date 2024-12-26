@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { GetShortcuts } from "../services";
+import { dashboardService } from "../services";
 
- const useShortcuts = () => {
+const useShortcuts = () => {
   return useQuery({
     queryKey: ["shortcuts"],
-    queryFn: GetShortcuts,
+    queryFn: dashboardService.getShortcuts,
   });
 };
 

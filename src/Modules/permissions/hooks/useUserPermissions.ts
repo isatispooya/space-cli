@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getuserPermission } from "../services";
+import {  permissionService } from "../services";
 
 interface Permission {
   codename: string;
@@ -9,7 +9,7 @@ interface Permission {
 const useUserPermissions = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["user-permissions"],
-    queryFn: getuserPermission,
+    queryFn: permissionService.getUserPermission,
   });
 
   const checkPermission = (permission: string) => {

@@ -8,7 +8,7 @@ const createPosition = async (data: PositionFormValues) => {
     parent: Number(data.parent),
     type_of_employment: Number(data.type_of_employment),
   };
-  return api.post('/positions/', apiData);
+  return api.post("/positions/", apiData);
 };
- 
+
 export default createPosition;

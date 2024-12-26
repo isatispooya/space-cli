@@ -1,1 +1,1 @@
-export { default as GetShortcuts } from "./shortcuts.get";
+export { default as dashboardService } from "./dashboardServices";

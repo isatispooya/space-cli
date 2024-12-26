@@ -1,25 +1,27 @@
 import * as Yup from "yup";
-import {
-  CompanyFormValues,
-  CompanyType,
-  FormField,
-  CompanyData,
-} from "../types";
+import { CompanyData } from "../types/companyData.type";
+
 import useUpdateCompany from "../hooks/useUpdateCompany";
 import Forms from "../../../components/forms";
 import toast, { Toaster } from "react-hot-toast";
+import { FormField } from "../types";
+
+interface CompanyTypeOption {
+  value: string;
+  label: string;
+}
 
 const validationSchema = Yup.object().shape({
   id: Yup.number().required(),
   name: Yup.string().required("نام شرکت الزامی است"),
   company_type: Yup.string().required("نوع شرکت الزامی است"),
-  year_of_establishment: Yup.string().required("سال تاسیس الزامی است"),
+  year_of_establishment: Yup.number().required("سال تاسیس الزامی است"),
   phone: Yup.string().required("تلفن الزامی است"),
   postal_code: Yup.string().required("کد پستی الزامی است"),
   national_id: Yup.string().required("کد شناسه الزامی است"),
   description: Yup.string(),
-  registered_capital: Yup.string().required("سرمایه ثبتی الزامی است"),
-  registration_number: Yup.string().required("تعداد سرمایه ثبتی الزامی است"),
+  registered_capital: Yup.number().required("سرمایه ثبتی الزامی است"),
+  registration_number: Yup.number().required("تعداد سرمایه ثبتی الزامی است"),
   type_of_activity: Yup.string().required("نوع فعالیت الزامی است"),
   address: Yup.string().required("آدرس الزامی است"),
   website: Yup.string().url("آدرس وبسایت نامعتبر است"),
@@ -29,9 +31,13 @@ const validationSchema = Yup.object().shape({
   employees: Yup.number()
     .min(1, "تعداد کارمندان باید بیشتر از 0 باشد")
     .required("تعداد کارمندان الزامی است"),
+  logo: Yup.string(),
+  letterhead: Yup.string(),
+  seal: Yup.string(),
+  signature: Yup.string(),
 });
 
-const COMPANY_TYPES: readonly CompanyType[] = [
+const COMPANY_TYPES: CompanyTypeOption[] = [
   { value: "private_joint_stock", label: "سهامی خاص" },
   { value: "public_joint_stock", label: "سهامی عام" },
   { value: "limited_liability", label: "مسئولیت محدود" },
@@ -52,16 +58,16 @@ const formFields: FormField[] = [
   },
   { name: "address", label: "آدرس", type: "text" },
   { name: "year_of_establishment", label: "سال تاسیس", type: "text" },
-  { name: "phone", label: "تلفن", type: "tel" },
+  { name: "phone", label: "تلفن", type: "text" },
   { name: "postal_code", label: "کد پستی", type: "text" },
   { name: "national_id", label: "کد شناسه", type: "text" },
   { name: "description", label: "توضیحات", type: "text" },
   { name: "registered_capital", label: "سرمایه ثبتی", type: "text" },
   { name: "registration_number", label: "تعداد سرمایه ثبتی", type: "text" },
   { name: "type_of_activity", label: "نوع فعالیت", type: "text" },
-  { name: "website", label: "وبسایت", type: "url" },
+  { name: "website", label: "وبسایت", type: "text" },
   { name: "email", label: "ایمیل", type: "email" },
-  { name: "employees", label: "تعداد کارمندان", type: "number" },
+  { name: "employees", label: "تعداد کارمندان", type: "text" },
 ];
 
 interface EditCompanyFormProps {
@@ -73,22 +79,22 @@ const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
   const { mutate: updateCompany } = useUpdateCompany(data?.id as number);
   if (!data) return null;
 
-  const initialValues: CompanyFormValues = {
+  const initialValues: CompanyData = {
     id: data.id,
     name: data.name || "",
     company_type: data.company_type || "",
-    year_of_establishment: data.year_of_establishment?.toString() || "",
+    year_of_establishment: Number(data.year_of_establishment) || 0,
     phone: data.phone || "",
     postal_code: data.postal_code || "",
     national_id: data.national_id || "",
     description: data.description || "",
-    registered_capital: data.registered_capital?.toString() || "",
-    registration_number: data.registration_number || "",
+    registered_capital: Number(data.registered_capital) || 0,
+    registration_number: Number(data.registration_number) || 0,
     type_of_activity: data.type_of_activity || "",
     website: data.website || "",
     email: data.email || "",
     address: data.address || "",
-    employees: data.employees || 0,
+    employees: Number(data.employees) || 0,
   };
 
   return (
@@ -110,7 +116,7 @@ const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             await updateCompany(
-              { id: data.id, ...values },
+              { ...values },
               {
                 onSuccess: () => {
                   toast.success("شرکت با موفقیت ویرایش شد");
