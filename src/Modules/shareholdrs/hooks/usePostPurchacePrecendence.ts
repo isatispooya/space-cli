@@ -1,9 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import { postPurchacePrecendence } from "../services";
-import { PurchacePrecendenceCreate } from "../types/PurchacePrecendence.type";
+import {
+  purchacePrecendenceTypes,
+  PurchacePrecendenceCreate,
+} from "../types/PurchacePrecendence.type";
 
 const usePostPurchacePrecendence = () => {
-  return useMutation<any, Error, PurchacePrecendenceCreate>({
+  return useMutation<
+    purchacePrecendenceTypes,
+    Error,
+    PurchacePrecendenceCreate
+  >({
     mutationKey: ["purchacePrecendence"],
     mutationFn: postPurchacePrecendence,
   });

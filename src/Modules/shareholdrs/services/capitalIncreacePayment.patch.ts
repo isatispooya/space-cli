@@ -1,7 +1,7 @@
 import { api } from "../../../api";
-import { CapitalIncreasePaymentTypes } from "../types";
+import { CapitalIncreaseTypes } from "../types";
 
-const capitalIncreacePaymentPatch = (data: CapitalIncreasePaymentTypes, id: number) => {
+const capitalIncreacePaymentPatch = (data: CapitalIncreaseTypes, id: number) => {
   return api.patch(`/stock_affairs/capital_increase_payment/${id}/`, data);
 };
 

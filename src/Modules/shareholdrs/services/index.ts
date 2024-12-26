@@ -16,9 +16,9 @@ export { default as displacementPrecendenceDelete } from "./displacementPrecende
 export { default as postShareholders } from "./shareholders.post";
 export { default as postStockTransfer } from "./stockTransfer.post";
 export { default as postPrecendence } from "./precedence.post";
-export { default as postCapitalIncreasePayment } from "./capitalincreasePayment.post";
+export { default as postCapitalIncreasePayment } from "./capitalIncreasePayment.post";
 export { default as postDisplacementPrecendence } from "./displacmentPrecendence.post";
-export { default as getPurchacePrecendence } from "./PurchacePrecendence.get";
+export { default as getPurchacePrecendence } from "./purchacePrecendence.get";
 export { default as postPurchacePrecendence } from "./purchacePrecendence.post";
 export { default as getUnusedPrecedenceProcess } from "./unusedPrecedenceProcess.get";
 export { default as unusedPrecedenceProcessPatch } from "./unusedPrecedenceProcess.patch";

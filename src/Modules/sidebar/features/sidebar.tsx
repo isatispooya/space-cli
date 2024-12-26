@@ -5,7 +5,7 @@ import SideMenu from "../components/sideMenu";
 
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(true);
-  
+
   const handleToggleCollapse = () => {
     setCollapsed(!collapsed);
   };

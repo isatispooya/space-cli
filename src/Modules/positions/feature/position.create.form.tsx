@@ -11,7 +11,14 @@ import Forms from "../../../components/forms";
 interface FormField {
   name: keyof PositionFormValues;
   label: string;
-  type: string;
+  type:
+    | "text"
+    | "email"
+    | "password"
+    | "select"
+    | "checkbox"
+    | "transferList"
+    | "date";
   options?: { value: string; label: string }[];
   headerClassName?: string;
   headerAlign?: string;
@@ -67,49 +74,51 @@ const PositionCreate = () => {
   };
 
   const formFields: FormField[] = [
-    { 
-      name: "name", 
-      label: "نام نقش", 
+    {
+      name: "name",
+      label: "نام نقش",
       type: "text",
-      headerClassName: "col-span-2 sm:col-span-1" 
+      headerClassName: "col-span-2 sm:col-span-1",
     },
     {
       name: "company",
       label: "شرکت",
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
-      options: companies?.results?.map((company: Company) => ({
-        value: company.id,
-        label: company.name,
-      })) || [],
+      options:
+        companies?.results?.map((company: Company) => ({
+          value: company.id,
+          label: company.name,
+        })) || [],
     },
     {
       name: "user",
       label: "کاربر",
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
-      options: users?.map((user: User) => ({
-        value: user.id,
-        label: user.first_name || user.last_name,
-      })) || [],
+      options:
+        users?.map((user: User) => ({
+          value: user.id,
+          label: user.first_name || user.last_name,
+        })) || [],
     },
-    { 
-      name: "start_date", 
-      label: "تاریخ شروع", 
+    {
+      name: "start_date",
+      label: "تاریخ شروع",
       type: "date",
-      headerClassName: "col-span-2 sm:col-span-1" 
+      headerClassName: "col-span-2 sm:col-span-1",
     },
-    { 
-      name: "end_date", 
-      label: "تاریخ پایان", 
+    {
+      name: "end_date",
+      label: "تاریخ پایان",
       type: "date",
-      headerClassName: "col-span-2 sm:col-span-1" 
+      headerClassName: "col-span-2 sm:col-span-1",
     },
-    { 
-      name: "description", 
-      label: "توضیحات", 
+    {
+      name: "description",
+      label: "توضیحات",
       type: "text",
-      headerClassName: "col-span-2" 
+      headerClassName: "col-span-2",
     },
     {
       name: "parent",

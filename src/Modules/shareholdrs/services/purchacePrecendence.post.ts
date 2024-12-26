@@ -1,8 +1,13 @@
+import {
+  PurchacePrecendenceCreate,
+  purchacePrecendenceTypes,
+} from "../types/PurchacePrecendence.type";
 import { api } from "../../../api";
-import { purchacePrecendenceTypes } from "../types";
 
-const postPurchacePrecendence = async (data: purchacePrecendenceTypes) => {
-  const response = await api.post("/stock_affairs/create_unused_purchase/", data);
+const postPurchacePrecendence = async (
+  data: PurchacePrecendenceCreate
+): Promise<purchacePrecendenceTypes> => {
+  const response = await api.post("/api/purchase-precedence/", data);
   return response.data;
 };
 

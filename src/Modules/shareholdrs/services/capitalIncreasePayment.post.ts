@@ -1,8 +1,8 @@
 import { api } from "../../../api";
-import { CapitalIncreasePaymentTypes } from "../types";
+import { CapitalIncreaseTypes } from "../types";
 
 const postCapitalIncreasePayment = async (
-  data: CapitalIncreasePaymentTypes
+  data: CapitalIncreaseTypes
 ) => {
   const response = await api.post(
     "/stock_affairs/capital_increase_payment/",

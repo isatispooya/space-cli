@@ -13,8 +13,10 @@ export interface CreatePermissionData {
   groups: Array<{
     id: number;
     name: string;
-    codename: string;
+    codename: string; 
+
   }>;
+  ids: number[];
   user_id: number;
   name: string;
 }

@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { CreatePermissionData } from "../types";
 import { useCreatePermission } from "../hooks/permissionPost";
 import { usePermissionList } from "../hooks";
+import { FormField } from "../../companies/types";
 
 const validationSchema = Yup.object({
   groups: Yup.array().required("گروه الزامی است"),
@@ -12,11 +13,13 @@ const validationSchema = Yup.object({
 const initialValues: CreatePermissionData = {
   groups: [],
   user_id: 0,
+  ids: [],
+  name: "",
 };
 
-const formFields = [
-  { name: "groups", label: "گروه", type: "select" },
-  { name: "user_id", label: "کاربر", type: "text" },
+const formFields: FormField[] = [
+  { name: "groups", label: "گروه", type: "select" as const },
+  { name: "user_id", label: "کاربر", type: "text" as const },
 ];
 
 export const CreatePermissionsForm: React.FC = () => {

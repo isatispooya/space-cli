@@ -8,7 +8,7 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 
-import { exportToExcel } from "./exel";
+
 import { FaDownload, FaEdit, FaEye, FaPlus, FaTrash } from "react-icons/fa";
 
 interface PaginatedResponse<T> {
@@ -69,7 +69,7 @@ const CustomDataGridToolbar = <T extends Record<string, unknown>>({
         return;
       }
 
-      exportToExcel({ data: excelData, fileName });
+     
     } catch (error) {
       console.error("Error in export:", error);
     }

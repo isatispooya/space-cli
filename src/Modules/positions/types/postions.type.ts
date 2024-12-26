@@ -9,6 +9,7 @@ export interface PositionData {
   start_date: string;
   end_date: string;
   created_at: string;
+  sender: string;
 }
 
 export interface PositionFormValues {

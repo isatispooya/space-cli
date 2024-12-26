@@ -7,15 +7,8 @@ export interface unusedPrecedenceProcessTypes {
   transaction_id: string;
   status: string;
   document: string | File;
+  redirect_url: string;
   type: string;
 }
 
-export interface PurchacePrecendenceCreate {
-  amount: number;
-  price: number;
-  total_price: number;
-  process: number;
-  transaction_id: string;
 
-  status: string;
-}

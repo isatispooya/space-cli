@@ -104,7 +104,6 @@ const EditUnusedPrecedenceProcessForm = () => {
 
   return (
     <>
-
       <div className="p-6">
         <h2 className="text-[#29D2C7] text-xl mb-6">ثبت حق تقدم</h2>
         <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -119,8 +118,10 @@ const EditUnusedPrecedenceProcessForm = () => {
               className="w-full p-2 border rounded"
             />
             {formik.errors.amount && formik.touched.amount && (
-              <div className="text-red-500 text-sm">{formik.errors.amount}</div>
-            )}
+              <div className="text-red-500 text-sm">
+                {formik.errors.amount as string}
+              </div>
+            )}  
           </div>
           <div>
             <label htmlFor="company">فرایند</label>
@@ -140,7 +141,7 @@ const EditUnusedPrecedenceProcessForm = () => {
             </select>
             {formik.errors.process && formik.touched.process && (
               <div className="text-red-500 text-sm">
-                {formik.errors.process}
+                {formik.errors.process as string}
               </div>
             )}
           </div>

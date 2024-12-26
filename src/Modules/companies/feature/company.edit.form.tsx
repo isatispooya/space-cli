@@ -3,7 +3,7 @@ import { CompanyData } from "../types/companyData.type";
 
 import useUpdateCompany from "../hooks/useUpdateCompany";
 import Forms from "../../../components/forms";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { FormField } from "../types";
 
 interface CompanyTypeOption {

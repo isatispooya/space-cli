@@ -9,6 +9,7 @@ export interface purchacePrecendenceTypes {
   status: string;
   transaction_id: string;
   updated_at: string;
+  redirect_url: string;
   user: number;
 }
 

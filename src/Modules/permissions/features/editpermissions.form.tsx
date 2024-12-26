@@ -1,6 +1,6 @@
 import Forms from "../../../components/forms";
 import * as yup from "yup";
-import { PermissionData } from "../types";
+import { PermissionData } from "../types/permissionData";
 import { useUserData } from "../../users/hooks";
 import { useSetPermission } from "../hooks";
 
@@ -9,13 +9,30 @@ interface FormValues {
   permission_id: number[];
 }
 
+type FormFieldType =
+  | "text"
+  | "select"
+  | "email"
+  | "password"
+  | "checkbox"
+  | "transferList";
+
+interface FormField {
+  name: string;
+  label: string;
+  type: FormFieldType;
+  multiple?: boolean;
+  inputMode?: string;
+}
+
 const EditPermissionForm: React.FC<{
-  data: PermissionData;
-}> = ({ data }) => {
+  data?: PermissionData;
+  onClose: () => void;
+}> = ({ data, onClose }) => {
   const { data: users } = useUserData();
   const { mutate: setPermission } = useSetPermission();
 
-  const formFields = [
+  const formFields: FormField[] = [
     {
       name: "user_id",
       label: "شناسه کاربر ",
@@ -24,7 +41,7 @@ const EditPermissionForm: React.FC<{
     {
       name: "permission_id",
       label: "شناسه دسترسی",
-      type: "select", 
+      type: "select",
       multiple: true,
       inputMode: "numeric",
     },
@@ -42,11 +59,21 @@ const EditPermissionForm: React.FC<{
       .of(yup.number().required())
       .required("شناسه دسترسی الزامی است")
       .min(1, "حداقل یک دسترسی باید انتخاب شود")
-      .transform((value) => value.filter((v): v is number => typeof v === 'number')),
+      .transform((value) =>
+        value.filter((v: unknown): v is number => typeof v === "number")
+      ),
   });
 
   const onSubmit = (values: FormValues) => {
-    setPermission(values);
+    setPermission({
+      id: values.user_id,
+      data: {
+        groups: [],
+        ids: values.permission_id,
+        user_id: values.user_id,
+        name: "",
+      },
+    });
   };
 
   return (
