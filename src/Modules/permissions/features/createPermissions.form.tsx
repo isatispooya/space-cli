@@ -2,7 +2,6 @@ import Forms from "../../../components/forms";
 import * as Yup from "yup";
 import { CreatePermissionData } from "../types";
 import { useCreatePermission } from "../hooks/permissionPost";
-import { usePermissionList } from "../hooks";
 import { FormField } from "../../companies/types";
 
 const validationSchema = Yup.object({
@@ -24,7 +23,7 @@ const formFields: FormField[] = [
 
 export const CreatePermissionsForm: React.FC = () => {
   const { mutate } = useCreatePermission();
-  const { data } = usePermissionList();
+  
 
   const onSubmit = (values: CreatePermissionData) => {
     mutate(values);

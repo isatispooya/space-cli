@@ -1,6 +1,6 @@
 import { ProSidebarProvider } from "react-pro-sidebar";
 import { useState } from "react";
-import SidebarIcons from "../components/SidePanel";
+import SidePanel from "../components/sidePanel";
 import SideMenu from "../components/sideMenu";
 
 const SideBar = () => {
@@ -13,7 +13,7 @@ const SideBar = () => {
   return (
     <ProSidebarProvider>
       <div>
-        <SidebarIcons onToggleCollapse={handleToggleCollapse} />
+        <SidePanel onToggleCollapse={handleToggleCollapse} />
         <SideMenu collapsed={collapsed} />
       </div>
     </ProSidebarProvider>

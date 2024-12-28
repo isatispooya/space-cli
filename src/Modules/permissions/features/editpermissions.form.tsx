@@ -25,10 +25,12 @@ interface FormField {
   inputMode?: string;
 }
 
-const EditPermissionForm: React.FC<{
+interface EditPermissionFormProps {
   data?: PermissionData;
-  onClose: () => void;
-}> = ({ data, onClose }) => {
+  onClose?: () => void;
+}
+
+const EditPermissionForm: React.FC<EditPermissionFormProps> = ({ data }) => {
   const { data: users } = useUserData();
   const { mutate: setPermission } = useSetPermission();
 

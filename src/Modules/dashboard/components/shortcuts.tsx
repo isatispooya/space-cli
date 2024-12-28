@@ -3,6 +3,13 @@ import { motion } from "framer-motion";
 import { useShortcuts } from "../hooks";
 import { LoaderLg } from "../../../components";
 
+interface Shortcut {
+  id: number;
+  title: string;
+  link: string;
+  picture: string;
+}
+
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -30,7 +37,7 @@ const Shortcuts: FC = () => {
       animate="show"
       className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 p-4 max-w-[1200px] mx-auto"
     >
-      {data?.map((shortcut) => (
+      {data?.map((shortcut: Shortcut) => (
         <motion.div
           key={shortcut.id}
           variants={item}
@@ -38,12 +45,9 @@ const Shortcuts: FC = () => {
           whileTap={{ scale: 0.95 }}
           className="w-full"
         >
-          <a 
-            href={shortcut.link} 
-            target="_blank" 
-            rel="noopener noreferrer"
-          >
-            <div className={`
+          <a href={shortcut.link} target="_blank" rel="noopener noreferrer">
+            <div
+              className={`
               bg-white
               rounded-2xl p-3
               shadow-lg
@@ -59,10 +63,11 @@ const Shortcuts: FC = () => {
               hover:bg-gray-50
               relative
               overflow-hidden
-            `}>
+            `}
+            >
               <div className="mb-2 w-8 h-8">
-                <img 
-                  src={shortcut.picture} 
+                <img
+                  src={shortcut.picture}
                   alt={shortcut.title}
                   className="w-full h-full object-contain"
                 />

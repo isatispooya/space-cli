@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useGroupsList, useUserPermissions } from "../hooks";
 import { DataGrid } from "@mui/x-data-grid";
-import { Permission } from "../types";
+import { PermissionData } from "../types";
 import toast from "react-hot-toast";
 import { tableStyles } from "../../../ui";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
@@ -13,7 +13,7 @@ const GroupsTable: React.FC = () => {
   const { checkPermission } = useUserPermissions(); 
   const { data } = useGroupsList();
   console.log(data, "data");
-  const [selectedRow, setSelectedRow] = useState<Permission | null>(null);
+  const [selectedRow, setSelectedRow] = useState<PermissionData | null>(null);
 
   const columns = [
     { field: "id", headerName: "شناسه", width: 100 },
@@ -41,7 +41,7 @@ const GroupsTable: React.FC = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = data.find(
-                (row: Permission) => row.id === selectedId
+                (row: PermissionData) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);

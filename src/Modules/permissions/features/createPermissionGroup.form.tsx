@@ -4,11 +4,20 @@ import { CreatePermissionData } from "../types";
 import * as Yup from "yup";
 import TransferList from "../../../components/transferList";
 import { useState } from "react";
+import { FormField } from "../../companies/types";
+
+interface Permission {
+  id: number;
+  name: string;
+  codename: string;
+}
 
 const CreatePermissionGroupForm = () => {
   const { data: permissions = [], isLoading } = usePermissionList();
-  const [selectedPermissions, setSelectedPermissions] = useState<any[]>([]);
-  
+  const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>(
+    []
+  );
+
   const validationSchema = Yup.object({
     groups: Yup.array().required("گروه الزامی است"),
     name: Yup.string().required("نام الزامی است"),
@@ -17,22 +26,27 @@ const CreatePermissionGroupForm = () => {
   const initialValues: CreatePermissionData = {
     groups: [],
     name: "",
+    ids: [],
+    user_id: 0,
   };
 
-  const formFields = [{ name: "name", label: "نام", type: "text" }];
+  const formFields: FormField[] = [
+    { name: "name", label: "نام", type: "text" as const },
+  ];
 
   const { mutate: createPermissionGroup } = usePostGroups();
 
-  const handleTransferChange = (_left: any[], right: any[]) => {
+  const handleTransferChange = (_left: Permission[], right: Permission[]) => {
     setSelectedPermissions(right);
   };
 
   const onSubmit = (values: CreatePermissionData) => {
     const submissionData = {
       ...values,
-      groups: selectedPermissions.map(permission => permission.id)
+      groups: selectedPermissions,
+      ids: selectedPermissions.map((permission) => permission.id),
     };
-    
+
     createPermissionGroup(submissionData);
   };
 

@@ -8,6 +8,7 @@ import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { FaEdit } from "react-icons/fa";
 import ModalLayout from "../../../layouts/ModalLayout";
 import EditPermissionForm from "./editpermissions.form";
+import { PaginatedResponse } from "../../../types/paginated";
 
 const PermissionsTable: React.FC = () => {
   const { data } = usePermissionList();
@@ -30,7 +31,6 @@ const PermissionsTable: React.FC = () => {
 
   return (
     <>
-  
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           rows={data}
@@ -39,7 +39,7 @@ const PermissionsTable: React.FC = () => {
           onRowSelectionModelChange={(newSelectionModel) => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
-              const selectedRow = data.find(
+              const selectedRow = data?.find(
                 (row: PermissionData) => row.id === selectedId
               );
               if (selectedRow) {
@@ -58,8 +58,8 @@ const PermissionsTable: React.FC = () => {
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
-                data={data}
-                fileName="گزارش-پرداخت"
+                data={(data || []) as unknown as PaginatedResponse<Record<string, unknown>>}
+                fileName="گزارش-دسترسی‌ها"
                 showExcelExport={true}
                 actions={{
                   edit: {

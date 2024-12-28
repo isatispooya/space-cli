@@ -4,7 +4,7 @@ export interface FormField {
   disabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any;
-  type: "text" | "email" | "password" | "select" | "checkbox" | "transferList" | "date";
+  type: "text" | "email" | "password" | "select" | "checkbox" | "transferList" | "date" | "file";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options?: { label: string; value: any }[];
   transferListProps?: {

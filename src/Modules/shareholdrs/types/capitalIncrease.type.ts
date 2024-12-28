@@ -10,4 +10,4 @@ export interface CapitalIncreaseTypes extends CapitalIncreaseCreate {
   position: string;
   created_at: string;
   updated_at: string;
-} 
+}

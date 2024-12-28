@@ -3,6 +3,7 @@ import Forms from "../../../components/forms";
 import { useUpdateCorrespondence } from "../hooks/useUpdateCorrespondence";
 import { CorrespondenceTypes } from "../types";
 import toast from "react-hot-toast";
+import { FormField } from "../../companies/types";
 
 const validationSchema = Yup.object().shape({
   subject: Yup.string().required("موضوع الزامی است"),
@@ -23,15 +24,11 @@ const validationSchema = Yup.object().shape({
   attachments: Yup.array().optional(),
 }) as Yup.ObjectSchema<CorrespondenceTypes>;
 
-
-
-
-
 const formFields: FormField[] = [
   { name: "subject", label: "موضوع", type: "text" },
-  { name: "description", label: "توضیحات", type: "textarea" },
-  { name: "text", label: "متن مکاتبه", type: "textarea" },
-  { name: "postcript", label: "پی نوشت", type: "textarea" },
+  { name: "description", label: "توضیحات", type: "text" },
+  { name: "text", label: "متن مکاتبه", type: "text" },
+  { name: "postcript", label: "پی نوشت", type: "text" },
 
   {
     name: "is_internal",
@@ -53,7 +50,7 @@ const formFields: FormField[] = [
     label: "منتشر شده",
     type: "checkbox",
   },
-  { name: "attachments", label: "پیوست‌ها", type: "file", multiple: true },
+  { name: "attachments", label: "پیوست‌ها", type: "file" },
 
   {
     name: "kind_of_correspondence",
@@ -92,15 +89,10 @@ interface EditCorrespondenceProps {
   onClose?: () => void;
 }
 
-interface FormField {
-  name: string;
-  label: string;
-  type: string;
-  options?: readonly { value: string; label: string }[];
-}
-
 const EditCorrespondence = ({ data, onClose }: EditCorrespondenceProps) => {
-  const { mutate: updateCorrespondence } = useUpdateCorrespondence(data.id);
+  const { mutate: updateCorrespondence } = useUpdateCorrespondence(
+    data.id?.toString() || ""
+  );
 
   const handleSubmit = (values: CorrespondenceTypes) => {
     updateCorrespondence(values, {

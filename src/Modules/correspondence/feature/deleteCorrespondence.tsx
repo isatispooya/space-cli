@@ -1,16 +1,20 @@
 import { motion } from "framer-motion";
-import { useDeleteCorrespondence } from "../hooks"; 
+import { useDeleteCorrespondence } from "../hooks";
 import toast from "react-hot-toast";
-import { CorrespondenceData } from "../types";
+import { CorrespondenceTypes } from "../types";
 interface DeleteCorrespondenceProps {
-  data: CorrespondenceData;
+  data: CorrespondenceTypes;
   onClose?: () => void;
 }
 
 const DeleteCorrespondence = ({ data, onClose }: DeleteCorrespondenceProps) => {
-  const { mutate: deleteCorrespondence, isLoading } = useDeleteCorrespondence();
+  const { mutate: deleteCorrespondence, isPending } = useDeleteCorrespondence();
 
   const handleDelete = async () => {
+    if (!data.id) {
+      toast.error("شناسه مکاتبه نامعتبر است");
+      return;
+    }
     try {
       await deleteCorrespondence(data.id);
       toast.success("مکاتبه با موفقیت حذف شد");
@@ -67,10 +71,8 @@ const DeleteCorrespondence = ({ data, onClose }: DeleteCorrespondenceProps) => {
           آیا از حذف این مکاتبه اطمینان دارید؟
         </p>
         <div className="bg-gray-50 p-4 rounded-lg">
-          <p className="font-semibold text-gray-900">{data.title}</p>
-          <p className="text-sm text-gray-500 mt-1">
-            شماره مرجع: {data.reference_number}
-          </p>
+          <p className="font-semibold text-gray-900">{data.subject}</p>
+          <p className="text-sm text-gray-500 mt-1">شناسه: {data.id}</p>
         </div>
       </motion.div>
 
@@ -84,10 +86,10 @@ const DeleteCorrespondence = ({ data, onClose }: DeleteCorrespondenceProps) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleDelete}
-          disabled={isLoading}
+          disabled={isPending}
           className="px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
         >
-          {isLoading ? (
+          {isPending ? (
             <div className="flex items-center justify-center space-x-2 space-x-reverse">
               <motion.span
                 animate={{ rotate: 360 }}
@@ -109,7 +111,7 @@ const DeleteCorrespondence = ({ data, onClose }: DeleteCorrespondenceProps) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onClose}
-          disabled={isLoading}
+          disabled={isPending}
           className="px-6 py-3 bg-gray-200 text-gray-800 rounded-xl font-semibold hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 transition-colors duration-200"
         >
           انصراف
@@ -119,4 +121,4 @@ const DeleteCorrespondence = ({ data, onClose }: DeleteCorrespondenceProps) => {
   );
 };
 
-export default DeleteCorrespondence; 
+export default DeleteCorrespondence;
