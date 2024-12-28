@@ -11,14 +11,13 @@ interface SideMenuProps {
 
 const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
   const navigate = useNavigate();
-  const { checkPermission, data } = useUserPermissions();
+  const { checkPermission } = useUserPermissions();
 
   const filterMenuItems = (items: MenuItemType[]): MenuItemType[] => {
     return items.filter((item) => {
       if (item.codename && !checkPermission(item.codename)) {
         return false;
       }
-
       if (item.submenu) {
         const filteredSubmenu = filterMenuItems(item.submenu);
         if (filteredSubmenu.length === 0) {
@@ -30,7 +29,6 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       return true;
     });
   };
-
 
   const filteredMenuItems = React.useMemo(() => {
     return filterMenuItems([...menuItems]);

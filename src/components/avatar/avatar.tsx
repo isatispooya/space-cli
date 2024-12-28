@@ -9,7 +9,7 @@ const Avatar = () => {
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const { data } = useProfile();
-  
+
   const profileInfo = data
     ? {
         first_name: data.first_name || "",
@@ -23,7 +23,7 @@ const Avatar = () => {
       href: "/settings",
     },
     {
-      label: "پروفایل", 
+      label: "پروفایل",
       href: "/profile",
     },
   ];
@@ -35,12 +35,12 @@ const Avatar = () => {
         whileHover={{
           scale: 1.05,
           rotate: 3,
-          color: "#20a69d",
-          borderColor: "#20a69d",
-          boxShadow: "0 4px 12px rgba(41, 210, 199, 0.3)"
+          color: "#5677BC",
+          borderColor: "#5677BC",
+          boxShadow: "0 4px 12px rgba(86, 119, 188, 0.3)",
         }}
         whileTap={{ scale: 0.95 }}
-        className="text-2xl cursor-pointer text-[#29D2C7] border-2 border-[#29D2C7] rounded-xl p-2 transition-all duration-300 hover:bg-[#29D2C7]/10"
+        className="text-2xl cursor-pointer text-[#5677BC] border-2 border-[#5677BC] rounded-xl p-2 transition-all duration-300 hover:bg-[#5677BC]/10"
       >
         <CgProfile />
       </motion.div>
