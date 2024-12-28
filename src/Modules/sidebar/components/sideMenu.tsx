@@ -31,7 +31,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
     });
   };
 
-  console.log(data);
+
   const filteredMenuItems = React.useMemo(() => {
     return filterMenuItems([...menuItems]);
   }, [checkPermission]);
