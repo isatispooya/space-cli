@@ -87,7 +87,7 @@ const PersonProfile: React.FC = () => {
         </div>
 
         {/* ستون سبز اطلاعات فردی */}
-        <div className="w-full md:w-1/3 p-6 bg-gradient-to-br from-[#29D2C7] to-[#20a69d] text-white rounded-xl shadow-lg">
+        <div className="w-full md:w-1/3 p-6 bg-gradient-to-br from-[#5677BC] to-[#02205F] text-white rounded-xl shadow-lg">
           <div className="flex flex-col items-center">
             <div className="relative mb-6">
               <div className="w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-lg">
@@ -106,7 +106,7 @@ const PersonProfile: React.FC = () => {
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-[#29D2C7]"
+                  className="h-6 w-6 text-[#5677BC]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

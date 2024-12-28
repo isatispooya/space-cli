@@ -20,7 +20,7 @@ const SidePanel = ({ onToggleCollapse }: SidePanelProps) => {
   ];
 
   return (
-    <div className="fixed right-0 w-20 h-full bg-gradient-to-b from-[#2DD4BF] to-[#0F766E] rounded-l-3xl shadow-2xl z-20">
+    <div className="fixed right-0 w-20 h-full bg-gradient-to-b from-[#5677BC] to-[#02205F] rounded-l-3xl shadow-2xl z-20">
       <div className="flex flex-col items-center py-8 gap-8">
         {icons.map((icon, index) => (
           <img

@@ -78,7 +78,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
         collapsed ? "w-0" : "w-64"
       }`}
     >
-      <div className="h-full w-64 bg-gradient-to-b from-[#7DE7DC] to-[#0F766E] rounded-l-3xl">
+      <div className="h-full w-64 bg-gradient-to-b from-[#5677BC] to-[#02205F] rounded-l-3xl">
         <Menu
           className="pt-8 px-4 rounded-l-xl"
           menuItemStyles={{
@@ -100,7 +100,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
             <input
               type="text"
               placeholder="جستجو..."
-              className="bg-white/10 mr-2 text-white placeholder-white/60 focus:outline-[#7DE7DC] rounded-lg py-1 px-4 text-right"
+              className="bg-white/10 mr-2 text-white placeholder-white/60 focus:outline-[#5677BC] rounded-lg py-1 px-4 text-right"
             />
           </div>
 
