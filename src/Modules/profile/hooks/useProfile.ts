@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "../services";
+import profileService from "../services/profile.get";
 
 export const useProfile = () => {
-
   return useQuery({
     queryKey: ["profile"],
-    queryFn: getProfile,
+    queryFn: profileService.get,
     staleTime: 5 * 60 * 1000,
     retry: 3,
   });

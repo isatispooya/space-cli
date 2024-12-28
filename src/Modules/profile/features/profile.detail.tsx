@@ -1,19 +1,31 @@
 import React, { useState } from "react";
 import { useProfile } from "../hooks";
 import { motion } from "framer-motion";
+import profileService from "../services/profile.get";
 
 const PersonProfile: React.FC = () => {
-  const { data: profile } = useProfile();
+  const { data: profile, refetch } = useProfile();
   const [avatarUrl, setAvatarUrl] = useState<string>(profile?.avatar || "");
 
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const formData = new FormData();
+        formData.append('avatar', file);
+        
+        // اینجا باید متد update رو به سرویس پروفایل اضافه کنیم
+        await profileService.update(formData);
+        await refetch(); // به‌روزرسانی داده‌ها بعد از آپلود
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setAvatarUrl(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      } catch (error) {
+        console.error('خطا در آپلود تصویر:', error);
+      }
     }
   };
 
