@@ -2,59 +2,80 @@ import { useUnusedProcess } from "../hooks";
 import { motion } from "framer-motion";
 import { FiDownload } from "react-icons/fi";
 
+interface AppendixItem {
+  id: number;
+  file: string;
+  name: string;
+  status: string;
+  created_at: string;
+}
+
+interface ProcessItem {
+  appendices_data: AppendixItem[];
+}
+
 const UnderwritingAttachmentsView = () => {
   const { data } = useUnusedProcess.useGetList();
-  const appendixData = data?.[0]?.appendices_data;
+  const appendixItems = data?.flatMap((item: ProcessItem) => item.appendices_data || []) || [];
 
-  if (!appendixData) return null;
+  if (appendixItems.length === 0) return null;
 
-  const appendixItems = [appendixData];
+  const getFileFormat = (fileUrl: string) => {
+    const format = fileUrl.split('.').pop()?.toUpperCase() || '';
+    return format;
+  };
 
   return (
-    <div className="relative flex w-full max-w-2xl flex-col rounded-lg border border-slate-200 bg-white shadow-lg">
-
-      <nav className="flex min-w-[240px] flex-col gap-2 p-3">
-        {appendixItems.map((item, index) => (
+    <div className="relative w-full  mx-auto flex-col rounded-2xl bg-gradient-to-br from-slate-50/80 to-white/90 p-8 backdrop-blur-sm">
+      <div className="grid grid-cols-3 gap-6">
+        {appendixItems.map((item: AppendixItem, index: number) => (
           <motion.div
             key={item.id}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: index * 0.1,
+              delay: index * 0.15,
               type: "spring",
               stiffness: 100,
             }}
-            role="button"
-            className="group flex w-full items-center rounded-xl p-4 transition-all hover:bg-slate-50 hover:shadow-md"
-            onClick={() => window.open(item.file, "_blank")}
+            className="group flex w-full items-center justify-between rounded-xl bg-white p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-slate-200"
           >
-            <div className="mr-4 grid place-items-center">
-              <div className="relative inline-block h-14 w-14 rounded-xl bg-[#5677BC] text-white grid place-items-center shadow-lg shadow-[#5677BC]/20">
-                <span className="text-xl font-medium">
-                  {item.name.charAt(0)}
-                </span>
+            <div className="flex flex-grow items-center">
+              <div className="ml-5">
+                <div className={`relative inline-flex h-20 w-20 items-center justify-center rounded-3xl shadow-md ${
+                  item.status === 'error' ? 'bg-gradient-to-br from-red-100 via-red-200 to-red-300 text-red-600' : 
+                  item.status === 'success' ? 'bg-gradient-to-br from-emerald-100 via-emerald-200 to-emerald-300 text-emerald-700' : 
+                  'bg-gradient-to-br from-indigo-100 via-indigo-200 to-indigo-300 text-indigo-700'
+                }`}>
+                  <span className="font-extrabold text-xl tracking-wider">
+                    {getFileFormat(item.file)}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <h6 className="text-slate-800 font-bold text-lg mb-2 group-hover:text-indigo-600 transition-colors">
+                  {item.name}
+                </h6>
+                <p className="text-slate-500 text-sm flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-slate-300"></span>
+                  {new Date(item.created_at).toLocaleDateString("fa-IR")}
+                </p>
               </div>
             </div>
-            <div className="flex-grow">
-              <h6 className="text-slate-800 font-medium text-lg mb-1">
-                {item.name}
-              </h6>
-              <p className="text-slate-400 text-sm">
-                {new Date(item.created_at).toLocaleDateString("fa-IR")}
-              </p>
-            </div>
-            <motion.div
-              className="opacity-0 group-hover:opacity-100 transition-opacity"
-              whileHover={{ scale: 1.1 }}
+
+            <a 
+              href={item.file} 
+              download 
+              className="flex items-center gap-2 text-slate-700 bg-slate-100 hover:bg-indigo-500 hover:text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105"
+              onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center gap-2 text-[#5677BC] bg-[#5677BC]/10 px-4 py-2 rounded-lg">
-                <FiDownload className="w-5 h-5" />
-                <span className="text-sm font-medium">دانلود</span>
-              </div>
-            </motion.div>
+              <FiDownload className="w-5 h-5" />
+              <span className="text-sm font-bold">دانلود</span>
+            </a>
           </motion.div>
         ))}
-      </nav>
+      </div>
     </div>
   );
 };
