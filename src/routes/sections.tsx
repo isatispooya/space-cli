@@ -235,6 +235,12 @@ const StockTransferUpdatePage = lazy(() =>
   }))
 );
 
+const DashboardPage = lazy(() =>
+  import("../Modules/dasboard").then((module) => ({
+    default: module.DashboardPage,
+  }))
+);
+
 const Loader = () => <LoaderLg />;
 
 
@@ -254,6 +260,14 @@ export default function Router() {
       element: (
         <Suspense fallback={<Loader />}>
           <PaymentResultPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/profile",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <DashboardPage />
         </Suspense>
       ),
     },
