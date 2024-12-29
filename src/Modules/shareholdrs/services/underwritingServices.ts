@@ -23,6 +23,12 @@ const underwritingServices = {
     );
     return response.data;
   },
+  getDesc: async (id: number) => {
+    const response = await api.get(
+      `/stock_affairs/create_underwriting/${id}/desc/`
+    );
+    return response.data;
+  },
 };
 
 export default underwritingServices;
