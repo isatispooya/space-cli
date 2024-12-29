@@ -1,6 +1,6 @@
 import { ProSidebarProvider } from "react-pro-sidebar";
 import { useState } from "react";
-import SidePanel from "../components/sidePanel";
+import SidePanel from "../components/SidePanel";
 import SideMenu from "../components/sideMenu";
 
 const SideBar = () => {
