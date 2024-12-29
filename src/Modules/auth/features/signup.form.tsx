@@ -52,6 +52,9 @@ const SignupForm = () => {
           setShowOtpInput(true);
           toast.success("کد تایید با موفقیت ارسال شد");
         },
+        onError: () => {
+          toast.error("شما قبلا ثبت نام کرده‌اید");
+        },
       }
     );
   };
@@ -60,13 +63,8 @@ const SignupForm = () => {
     e.preventDefault();
   };
 
-  if (signupError) {
-    toast.error("شما قبلا ثبت نام کرده‌اید");
-  }
-
   return (
     <>
-  
       <form onSubmit={handleSubmit}>
         <InputLogin
           type="text"

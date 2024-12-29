@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
-import useProfile from "../../Modules/profile/hooks/useProfile";
+import { useProfile } from "../../Modules/profile/hooks/useProfile";
 
 const Avatar = () => {
   const [isOpen, setIsOpen] = useState(false);

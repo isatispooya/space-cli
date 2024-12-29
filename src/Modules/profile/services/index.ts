@@ -1,1 +1,1 @@
-export { default as getProfile } from "./profile.get";
+export { default as getProfile } from "./profileServices";

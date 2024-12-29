@@ -6,11 +6,11 @@ const profileService = {
     const response = await api.get(`${server}/user/profile/`);
     return response.data;
   },
-  
-  update: async (data: FormData) => {
-    const response = await api.patch(`${server}/user/profile/`, data, {
+
+  updateImage: async (data: FormData) => {
+    const response = await api.patch(`/user/profile/image/`, data, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;

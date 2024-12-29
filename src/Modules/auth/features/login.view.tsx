@@ -51,69 +51,60 @@ const Login: React.FC = () => {
       dir="rtl"
       className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-neutral-200 dark:bg-neutral-700"
     >
-      <div className=" md:flex md:w-6/12 flex-col items-center justify-center space-y-2 order-1">
+      <div className="hidden md:block md:w-1/2 h-screen fixed left-0">
         <motion.img
           key={currentAnnouncement?.id}
           {...fadeIn(0.05, 20)}
           src={currentAnnouncement?.picture || rb}
           alt={currentAnnouncement?.title || "Login illustration"}
-          className="hidden md:block w-4/5 max-w-lg object-contain"
+          className="w-full h-full object-cover"
         />
-        <motion.div
-          key={`text-${currentAnnouncement?.id}`}
-          {...fadeIn(0.05, 40)}
-          className="text-center text-neutral-800 dark:text-neutral-200"
-        >
-          <h2 className="text-3xl font-bold mb-4">
-            {currentAnnouncement?.title || "به سامانه ایساتیس پویا آمدید"}
-          </h2>
-          <p className="text-lg mb-6">
-            {currentAnnouncement?.description ||
-              "ایساتیس پویا یک سامانه آسان و سریع برای ثبت و مدیریت سهام و سهامداران است."}
-          </p>
-          {currentAnnouncement?.link && (
-            <motion.a
-              href={currentAnnouncement.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-6 py-2.5 bg-blue-500 text-white rounded-full
-                        hover:bg-blue-600 transition-all duration-300 transform hover:scale-105
-                        shadow-md hover:shadow-lg mb-6"
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              مشاهده بیشتر
-              <span className="mr-2">→</span>
-            </motion.a>
-          )}
+
+        <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/40" />
+
+        <div className="absolute bottom-0 left-0 right-0 p-12 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+          <motion.div
+            key={`text-${currentAnnouncement?.id}`}
+            {...fadeIn(0.05, 40)}
+          >
+            <h2 className="text-4xl font-bold mb-4 text-white drop-shadow-lg">
+              {currentAnnouncement?.title || "به سامانه ایساتیس پویا آمدید"}
+            </h2>
+            <p className="text-xl text-white/90 drop-shadow-md">
+              {currentAnnouncement?.description ||
+                "ایساتیس پویا یک سامانه آسان و سریع برای ثبت و مدیریت سهام و سهامداران است."}
+            </p>
+          </motion.div>
+
           {data && data.length > 1 && (
-            <div className="flex justify-center gap-2 mt-4">
-              {data.map((_ : unknown, index : number) => (
-                <div
+            <div className="flex gap-3 mt-8">
+              {data.map((_: unknown, index: number) => (
+                <button
                   key={index}
-                  className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                  onClick={() => setCurrentAnnouncementIndex(index)}
+                  className={`transition-all duration-300 outline-none focus:outline-none ${
                     index === currentAnnouncementIndex
-                      ? "bg-blue-500 w-4"
-                      : "bg-gray-300"
-                  }`}
+                      ? "w-8 bg-white shadow-lg shadow-white/50"
+                      : "w-2 bg-white/50 hover:bg-white/75"
+                  } h-2 rounded-full`}
                 />
               ))}
             </div>
           )}
-        </motion.div>
+        </div>
       </div>
       <motion.div
         {...fadeIn(0.05, 0, 0.4)}
-        className="container mx-auto p-4 md:p-8 max-w-md order-0"
+        className="container mx-auto p-4 md:p-8 max-w-md order-0 md:ml-auto md:mr-8"
       >
-        <div className="flex flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200 ">
-          <div className="w-full ">
-            <div className="rounded-lg bg-white shadow-lg dark:bg-neutral-800 ">
-              <div className="lg:flex lg:flex-wrap ">
-                <div className="px-4 md:px-5 lg:w-full p-8 ">
+        <div className="flex flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
+          <div className="w-full">
+            <div className="rounded-lg bg-white shadow-lg dark:bg-neutral-800 pr-4">
+              <div className="lg:flex lg:flex-wrap">
+                <div className="px-4 md:px-5 lg:w-full p-8 pr-6">
                   <motion.div
                     {...fadeIn(0.05, 10)}
-                    className="mx-auto p-4 md:p-8   "
+                    className="mx-auto p-4 md:p-8"
                   >
                     <div className="mb-10">
                       <LoginHead />

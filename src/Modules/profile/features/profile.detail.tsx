@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { useProfile } from "../hooks";
 import { motion } from "framer-motion";
-import profileService from "../services/profile.get";
+import profileService from "../services/profileServices";
 
 const PersonProfile: React.FC = () => {
   const { data: profile, refetch } = useProfile();
   const [avatarUrl, setAvatarUrl] = useState<string>(profile?.avatar || "");
 
-  const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  console.log(profile);
+
+  const handleAvatarChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
       try {
         const formData = new FormData();
-        formData.append('avatar', file);
-        
-        // اینجا باید متد update رو به سرویس پروفایل اضافه کنیم
-        await profileService.update(formData);
-        await refetch(); // به‌روزرسانی داده‌ها بعد از آپلود
+        formData.append("avatar", file);
+
+        await profileService.updateImage(formData);
+        await refetch();
 
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -24,7 +27,7 @@ const PersonProfile: React.FC = () => {
         };
         reader.readAsDataURL(file);
       } catch (error) {
-        console.error('خطا در آپلود تصویر:', error);
+        console.error("خطا در آپلود تصویر:", error);
       }
     }
   };
@@ -61,11 +64,12 @@ const PersonProfile: React.FC = () => {
     { label: "ایمیل", value: profile?.email || "نامشخص" },
   ];
 
-  const addressInfo = [
-    { label: "آدرس", value: profile?.address || "نامشخص" },
-  ];
+  const addressInfo = [{ label: "آدرس", value: profile?.address || "نامشخص" }];
 
-  const renderInfoBox = (title: string, info: { label: string; value: string }[]) => (
+  const renderInfoBox = (
+    title: string,
+    info: { label: string; value: string }[]
+  ) => (
     <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-200">
       <h3 className="text-[#7a7a7a] text-lg font-bold mb-4">{title}</h3>
       <ul className="space-y-4">
@@ -91,14 +95,12 @@ const PersonProfile: React.FC = () => {
       className="max-w-6xl mx-auto p-8 mt-10 bg-white rounded-2xl shadow-lg"
     >
       <div className="flex flex-col md:flex-row gap-8">
-        {/* ستون اطلاعات بیشتر */}
         <div className="w-full md:w-2/3 flex flex-col gap-6">
           {renderInfoBox("اطلاعات شناسنامه", idInfo)}
           {renderInfoBox("اطلاعات تماس", contactInfo)}
           {renderInfoBox("آدرس", addressInfo)}
         </div>
 
-        {/* ستون سبز اطلاعات فردی */}
         <div className="w-full md:w-1/3 p-6 bg-gradient-to-br from-[#5677BC] to-[#02205F] text-white rounded-xl shadow-lg">
           <div className="flex flex-col items-center">
             <div className="relative mb-6">
