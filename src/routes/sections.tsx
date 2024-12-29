@@ -3,6 +3,7 @@ import { useRoutes } from "react-router-dom";
 import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../Modules/dashboard/pages/dashboard.page";
+import { UpdateUnderWritingPage } from "../Modules/shareholdrs";
 
 const LoginPage = lazy(() => import("../pages/login.page"));
 const ProfilePage = lazy(() =>
@@ -163,11 +164,7 @@ const CapitalTablePage = lazy(() =>
   }))
 );
 
-const UpdateUnusedPrecedenceProcessPage = lazy(() =>
-  import("../Modules/shareholdrs").then((module) => ({
-    default: module.UpdateUnusedPrecedenceProcessPage,
-  }))
-);
+
 
 const CapitalIncreaseFormPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
@@ -211,21 +208,21 @@ const GroupsTablePage = lazy(() =>
   }))
 );
 
-const PurchacePrecendenceTablePage = lazy(() =>
+const UnderWritingTablePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
-    default: module.PurchacePrecendenceTablePage,
+    default: module.UnderWritingTablePage,
   }))
 );
 
-const PurchacePrecendenceFormPage = lazy(() =>
+const UnderWritingFormPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
-    default: module.PurchacePrecendenceFormPage,
+    default: module.UnderWritingFormPage,
   }))
 );
 
-const PurchacePrecendenceMainPage = lazy(() =>
+const UnderWritingMainPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
-    default: module.PurchacePrecendenceMainPage,
+    default: module.UnderWritingMainPage,
   }))
 );
 
@@ -591,10 +588,10 @@ export default function Router() {
       ],
     },
     {
-      path: "/purchacePrecendence",
+      path: "/underwriting",
       element: (
         <Suspense fallback={<Loader />}>
-          <PurchacePrecendenceMainPage />
+          <UnderWritingMainPage />
         </Suspense>
       ),
       children: [
@@ -602,7 +599,7 @@ export default function Router() {
           path: "table",
           element: (
             <Suspense fallback={<Loader />}>
-              <PurchacePrecendenceTablePage />
+              <UnderWritingTablePage />
             </Suspense>
           ),
         },
@@ -610,7 +607,7 @@ export default function Router() {
           path: "create",
           element: (
             <Suspense fallback={<Loader />}>
-              <PurchacePrecendenceFormPage />
+              <UnderWritingFormPage />
             </Suspense>
           ),
         },
@@ -618,7 +615,7 @@ export default function Router() {
           path: "update",
           element: (
             <Suspense fallback={<Loader />}>
-              <UpdateUnusedPrecedenceProcessPage />
+              <UpdateUnderWritingPage />
             </Suspense>
           ),
         },

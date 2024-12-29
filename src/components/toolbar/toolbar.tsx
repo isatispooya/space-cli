@@ -45,13 +45,13 @@ const Toolbar = ({ buttons }: ToolbarProps) => {
                     aria-selected={currentPath === button.path}
                   >
                     <button.icon
-                      className={`w-4 h-4 space-x-4 mr-1.5 ${
+                      className={`w-4 h-4 mr-4 ${
                         currentPath === button.path
                           ? "text-slate-900"
                           : "text-slate-500"
                       }`}
                     />
-                    <span className="ml-1">{button.text}</span>
+                    <span>{button.text}</span>
                   </a>
                 </li>
               )
