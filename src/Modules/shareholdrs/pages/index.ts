@@ -15,7 +15,7 @@ export { default as CapitalIncreaseFormPage } from "./CapitalIncreaseForm.page";
 export { default as DisplacementFormPage } from "./displacementForm.page";
 export { default as PurchacePrecendenceFormPage } from "./PurchacePrecendenceForm.page";
 export { default as PurchacePrecendenceTablePage } from "./PurchacePrecendenceTable.page";
-export { default as PurchacePrecendenceMainPage } from "./purchacePrecendenceMain.page";
+export { default as PurchacePrecendenceMainPage } from "./underwritingMain.page";
 export { default as UpdateUnusedPrecedenceProcessPage } from "./updateUnusedPrecedenceProcess.page";
 export { default as ShareholdersUpdatePage } from "./shareholdersUpdate.page";
 export { default as StockTransferUpdatePage } from "./stockTransferUpdate.page";
