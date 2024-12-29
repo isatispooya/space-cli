@@ -76,8 +76,8 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "پذیره نویسی",
-        codename: "view_unusedprecedenceprocess",
-        path: "/purchacePrecendence/table",
+        codename: "view_underwriting",
+        path: "/underwriting/table",
       },
     ],
   },

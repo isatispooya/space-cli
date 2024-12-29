@@ -164,11 +164,7 @@ const CapitalTablePage = lazy(() =>
   }))
 );
 
-const UpdateUnusedPrecedenceProcessPage = lazy(() =>
-  import("../Modules/shareholdrs").then((module) => ({
-    default: module.UpdateUnusedPrecedenceProcessPage,
-  }))
-);
+
 
 const CapitalIncreaseFormPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
