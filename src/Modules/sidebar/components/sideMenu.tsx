@@ -11,8 +11,9 @@ interface SideMenuProps {
 
 const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
   const navigate = useNavigate();
-  const { checkPermission } = useUserPermissions();
+  const { checkPermission , data} = useUserPermissions();
 
+  console.log(data);
   const filterMenuItems = (items: MenuItemType[]): MenuItemType[] => {
     return items.filter((item) => {
       if (item.codename && !checkPermission(item.codename)) {

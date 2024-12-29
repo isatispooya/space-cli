@@ -18,9 +18,13 @@ import { useUserPermissions } from "../../permissions";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
 import { useUnderwritingStore } from "../store";
+// import ModalLayout from "../../../layouts/ModalLayout";
+// import { Button } from "@headlessui/react";
+import Popup from "../../../components/popup";
 
 const PurchacePrecendenceTable: React.FC = () => {
-  const { data } = useUnderwriting.useGet();
+  const { setId } = useUnderwritingStore();
+  const { data, refetch } = useUnderwriting.useGet();
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
   const { mutate: deletePurchasePrecendense } = useUnderwriting.useDelete();
@@ -48,62 +52,82 @@ const PurchacePrecendenceTable: React.FC = () => {
       field: "type",
       headerName: "نوع",
       width: 100,
+      align: 'center',
+      headerAlign: 'center',
       renderCell: (params) => {
         return params.row.type === "2" ? "درگاه پرداخت" : "فیش بانکی";
       },
     },
     {
       field: "price",
-      headerName: "قیمت",
-      width: 100,
+      headerName: "مبلغ",
+      width: 120,
+      align: 'center',
+      headerAlign: 'center',
       renderCell: (params) => formatNumber(params.row.price),
     },
+    // {
+    //   field: "payment_detail",
+    //   headerName: "وضعیت پرداخت",
+    //   width: 150,
+    //   align: 'center',
+    //   headerAlign: 'center',
+    //   renderCell: (params) => {
+    //     const status = params.row.payment_detail?.status;
+    //     const statusObj = statusNames.find((s) => s.value === status);
+    //     return statusObj ? statusObj.label : status || "نامشخص";
+    //   },
+    // },
     {
-      field: "company",
-      headerName: "شرکت",
-      width: 100,
+      field: "track_id",
+      headerName: "شماره پیگیری",
+      width: 150,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params) => {
+        return params.row.payment_detail?.track_id || "ندارد";
+      },
     },
     {
-      field: "status",
-      headerName: "وضعیت",
-      width: 100,
+      field: "user_detail",
+      headerName: "نام کاربر",
+      width: 200,
+      align: 'center',
+      headerAlign: 'center',
       renderCell: (params) => {
-        const statusObj = statusNames.find(
-          (status) => status.value === params.row.status
-        );
-        return statusObj ? statusObj.label : params.row.status;
+        const user = params.row.user_detail;
+        return user ? `${user.first_name} ${user.last_name}` : "نامشخص";
       },
     },
     {
       field: "requested_amount",
-      headerName: "مقدار درخواستی",
-      width: 150,
+      headerName: "تعداد درخواستی",
+      width: 130,
+      align: 'center',
+      headerAlign: 'center',
     },
     {
-      field: "user",
-      headerName: "کاربر",
-    },
-    {
-      field: "document",
-      headerName: "سند",
+      field: "created_at",
+      headerName: "تاریخ ایجاد",
       width: 150,
-      renderCell: (params) =>
-        params.value ? (
-          <a href={params.value} target="_blank" rel="noopener noreferrer">
-            مشاهده سند
-          </a>
-        ) : (
-          <span>ناموجود</span>
-        ),
-    },
-    {
-      field: "updated_at",
-      headerName: "تاریخ بروزرسانی",
-      width: 150,
+      align: 'center',
+      headerAlign: 'center',
       renderCell: (params) => {
-        return moment(params.row.updated_at)
+        return moment(params.row.created_at)
           .locale("fa")
           .format("jYYYY/jMM/jDD");
+      },
+    },
+    {
+      field: "status",
+      headerName: "وضعیت",
+      width: 130,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params) => {
+        const status = params.row.status;
+        const statusObj = statusNames.find((s) => s.value === status);
+        return statusObj ? statusObj.label : "نامشخص";
       },
     },
   ];
@@ -112,11 +136,113 @@ const PurchacePrecendenceTable: React.FC = () => {
 
   console.log(data);
 
+  const handleEdit = () => {
+    if (!selectedRow) {
+      toast.error("لطفا یک مورد را انتخاب کنید");
+      return;
+    }
+    setId(Number(selectedRow.id));
+    navigate("/underwriting/update");
+  };
+
+  const handleDelete = () => {
+    if (!selectedRow) {
+      toast.error("لطفا یک مورد را انتخاب کنید");
+      return;
+    }
+    setIsDeleteOpen(true);
+  };
+
   return (
     <>
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
-        <DataGrid columns={columns} rows={rows} />
+        <DataGrid
+          columns={columns}
+          rows={rows}
+          localeText={localeText}
+          onRowClick={(params) => setSelectedRow(params.row)}
+          onRowSelectionModelChange={(newSelectionModel) => {
+            if (newSelectionModel.length > 0) {
+              const selectedId = newSelectionModel[0];
+              const selectedRow = rows.find(
+                (row: underwritingTypes) => row.id === selectedId
+              );
+              if (selectedRow) {
+                setSelectedRow(selectedRow);
+              }
+            } else {
+              setSelectedRow(null);
+            }
+          }}
+          sx={tableStyles}
+          checkboxSelection
+          rowSelectionModel={selectedRow ? [selectedRow.id] : []}
+          disableMultipleRowSelection
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 10, page: 0 },
+            },
+          }}
+          pageSizeOptions={[10]}
+          disableColumnMenu
+          filterMode="client"
+          slots={{
+            toolbar: (props) => (
+              <CustomDataGridToolbar
+                {...props}
+                data={rows as unknown as Record<string, unknown>[]}
+                fileName="گزارش-پذیره‌نویسی"
+                showExcelExport={true}
+                actions={{
+                  edit: {
+                    label: "ویرایش",
+                    show: checkPermission("change_underwriting"),
+                    onClick: handleEdit,
+                    icon: <FaEdit />,
+                  },
+                  delete: {
+                    label: "حذف",
+                    show: checkPermission("delete_underwriting"),
+                    onClick: handleDelete,
+                    icon: <FaTrash />,
+                  },
+                }}
+              />
+            ),
+          }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 500 },
+            },
+          }}
+        />
       </div>
+
+      {selectedRow && (
+        <Popup
+          isOpen={isDeleteOpen}
+          onClose={() => setIsDeleteOpen(false)}
+          label="حذف پذیره‌نویسی"
+          text="آیا از حذف پذیره‌نویسی مطمئن هستید؟"
+          onConfirm={() => {
+            deletePurchasePrecendense(Number(selectedRow.id), {
+              onSuccess: () => {
+                toast.success("پذیره‌نویسی با موفقیت حذف شد");
+                refetch();
+              },
+              onError: () => {
+                toast.error("خطا در برقراری ارتباط");
+              },
+            });
+            setIsDeleteOpen(false);
+            setSelectedRow(null);
+          }}
+          onCancel={() => {
+            setIsDeleteOpen(false);
+          }}
+        />
+      )}
     </>
   );
 };
