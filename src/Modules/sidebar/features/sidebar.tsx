@@ -15,6 +15,8 @@ const SideBar = () => {
       <div>
         <SidePanel onToggleCollapse={handleToggleCollapse} />
         <SideMenu collapsed={collapsed} />
+
+        
       </div>
     </ProSidebarProvider>
   );
