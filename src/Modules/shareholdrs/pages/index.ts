@@ -21,3 +21,4 @@ export { default as ShareholdersUpdatePage } from "./shareholdersUpdate.page";
 export { default as StockTransferUpdatePage } from "./stockTransferUpdate.page";
 export { default as DisplacementUpdatePage } from "./displacementUpdate.page";
 export { default as PercendenceUpdatePage } from "./percendenceUpdate.page";
+export { default as UnderwritingDescPage } from "./underwritingdesc.page";

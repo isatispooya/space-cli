@@ -15,4 +15,5 @@ export { default as CreateDisplacementForm } from "./createDisplacement.form";
 export { default as PurchacePrecendenceTable } from "./underwriting.table";
 export { default as PurchacePrecendenceForm } from "./createUnderWriting.form";
 export { default as EditUnusedPrecedenceProcessForm } from "./editUnderwriting.form";
+export { default as UnderwritingDescForm } from "./underwritingdesc.form";
 
