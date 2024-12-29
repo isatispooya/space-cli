@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../components";
 import { MainLayout } from "../../../layouts";
-import { LuPlusSquare, LuTable } from "react-icons/lu";
+import { LuPlus, LuTable } from "react-icons/lu";
 
 const DisplacementMainPage = () => {
   const toolbarButtons = [
@@ -12,7 +12,7 @@ const DisplacementMainPage = () => {
       path: "table"
     },
     {
-      icon: LuPlusSquare,
+      icon: LuPlus,
       text: "ایجاد",
       permission: "add_displacementprecedence",
       path: "create"

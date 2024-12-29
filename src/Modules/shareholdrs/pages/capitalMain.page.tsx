@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../components";
 import { MainLayout } from "../../../layouts";
 import { LuTable } from "react-icons/lu";
-import { LuPlusSquare } from "react-icons/lu";
+import { LuPlus } from "react-icons/lu";
 
 const CapitalMainPage: React.FC = () => {
   const toolbarButtons = [
@@ -13,7 +13,7 @@ const CapitalMainPage: React.FC = () => {
       path: "table"
     },
     {
-      icon: LuPlusSquare,
+      icon: LuPlus,
       text: "ایجاد",
       permission: "add_capitalincreasepayment",
       path: "create"

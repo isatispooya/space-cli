@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
-import { LuPlusSquare, LuTable } from "react-icons/lu";
+import { LuPlus, LuTable } from "react-icons/lu";
 
 const PermissionMainPage = () => {
   const toolbarButtons = [
@@ -12,7 +12,7 @@ const PermissionMainPage = () => {
       path: "table",
     },
     {
-      icon: LuPlusSquare,
+      icon: LuPlus,
       text: "افزودن",
       permission: "add_permission",
       path: "create",

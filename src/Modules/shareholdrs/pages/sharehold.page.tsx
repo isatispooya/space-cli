@@ -1,6 +1,6 @@
 import { MainLayout } from "../../../layouts";
 import { Outlet } from "react-router-dom";
-import { LuTable, LuPlusSquare } from "react-icons/lu";
+import { LuTable, LuPlus } from "react-icons/lu";
 import { Toolbar } from "../../../components";
 
 const ShareholdersPage = () => {
@@ -12,7 +12,7 @@ const ShareholdersPage = () => {
       path: "table",
     },
     {
-      icon: LuPlusSquare,
+      icon: LuPlus,
       text: "ایجاد",
       permission: "add_shareholders",
       path: "create",

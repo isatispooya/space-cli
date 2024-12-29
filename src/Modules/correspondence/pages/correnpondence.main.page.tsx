@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
-import { LuPlusSquare, LuTable } from "react-icons/lu";
+import { LuPlus, LuTable } from "react-icons/lu";
 
 
 const CorrespondencePage = () => {
@@ -13,7 +13,7 @@ const CorrespondencePage = () => {
       path: "table",
     },
     {
-      icon: LuPlusSquare,
+      icon: LuPlus,
       text: "افزودن",
       permission: "add_correspondence",
       path: "create",

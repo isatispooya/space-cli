@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
 import { LuTable } from "react-icons/lu";
-import { LuPlusSquare } from "react-icons/lu";
+import { LuPlus } from "react-icons/lu";
 
 const PrecendenceMainPage = () => {
   const toolbarButtons = [
@@ -13,7 +13,7 @@ const PrecendenceMainPage = () => {
       path: "table"
     },
     {
-      icon: LuPlusSquare,
+      icon: LuPlus,
       text: "ایجاد",
       permission: "add_precedence",
       path: "create"
