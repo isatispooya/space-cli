@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import { stockTransferTypes } from "../types";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import {  useStockTransfer } from "../hooks";
+import { useStockTransfer } from "../hooks";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useState } from "react";
 import { tableStyles } from "../../../ui";
@@ -94,7 +94,6 @@ const StockTransferTable: React.FC = () => {
           .format("jYYYY/jMM/jDD");
       },
     },
-
   ];
   const handleEdit = () => {
     if (!selectedRow) {
