@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useDelCapital, useGetCapitalIncreasePayment } from "../hooks";
+
 import toast from "react-hot-toast";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useState } from "react";
@@ -12,23 +12,23 @@ import Popup from "../../../components/popup";
 import { useCapitalStore } from "../store";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../permissions";
+import { useCapital } from "../hooks";
 
 const CapitalTable: React.FC = () => {
-  const { data } = useGetCapitalIncreasePayment();
-  console.log(data);
+  const { data } = useCapital.useGet();
+  
   const { setId } = useCapitalStore();
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
-  const { mutate: deleteCapital } = useDelCapital();
+  const { mutate: deleteCapital } = useCapital.useDelete();
   const [selectedRow, setSelectedRow] = useState<CapitalIncreaseTypes | null>(
     null
   );
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
   const rows = data || [];
-  
+
   const columns: GridColDef[] = [
-    { field: "company", headerName: "شرکت", width: 100  },
+    { field: "company", headerName: "شرکت", width: 100 },
     { field: "number_of_shares", headerName: "تعداد سهام", width: 120 },
     { field: "price", headerName: "قیمت", width: 100 },
     {
@@ -108,7 +108,7 @@ const CapitalTable: React.FC = () => {
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
-                data={rows}
+                data={rows as unknown as Record<string, unknown>[]}
                 fileName="گزارش-پرداخت"
                 showExcelExport={true}
                 actions={{

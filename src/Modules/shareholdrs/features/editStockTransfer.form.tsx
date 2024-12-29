@@ -1,24 +1,23 @@
 import toast from "react-hot-toast";
 import Forms from "../../../components/forms";
-import { StockTransferTypes } from "../types";
-import useUpdateStockTransfer from "../hooks/useUpdateStockTransfer";
+import { stockTransferTypes } from "../types";
 import * as yup from "yup";
-import { useGetStockTransfer } from "../hooks";
+import { useStockTransfer } from "../hooks";
 import { useStockTransferStore } from "../store";
 import { useUserData } from "../../users/hooks";
-import { useCompaniesData } from "../../companies/hooks";
+import { useCompany } from "../../companies/hooks";
 import { useNavigate } from "react-router-dom";
 
 const EditStockTransferForm: React.FC = () => {
-  const { mutate } = useUpdateStockTransfer();
-  const { data: stockTransferData } = useGetStockTransfer();
+  const { mutate } = useStockTransfer.useUpdate();
+  const { data: stockTransferData } = useStockTransfer.useGet();
   const { data: users } = useUserData();
-  const { data: companies } = useCompaniesData();
+  const { data: companies } = useCompany.useGet();
   const navigate = useNavigate();
   const { id } = useStockTransferStore();
 
   const stockTransfer = stockTransferData?.find(
-    (item: StockTransferTypes) => item.id === id
+    (item: stockTransferTypes) => item.id === id
   );
 
   const validationSchema = yup.object().shape({
@@ -27,7 +26,7 @@ const EditStockTransferForm: React.FC = () => {
     seller: yup.number().required("فروشنده الزامی است"),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
     price: yup.number().required("قیمت الزامی است"),
-  }) as yup.ObjectSchema<StockTransferTypes>;
+  }) as yup.ObjectSchema<stockTransferTypes>;
 
   const formFields = [
     {
@@ -76,24 +75,24 @@ const EditStockTransferForm: React.FC = () => {
     },
   ];
 
-  const initialValues = {
-    buyer: stockTransfer?.buyer?.toString() || "",
-    seller: stockTransfer?.seller?.toString() || "",
+  const initialValues: stockTransferTypes = {
+    buyer: parseInt(stockTransfer?.buyer?.toString() || "0"),
+    seller: parseInt(stockTransfer?.seller?.toString() || "0"),
     number_of_shares: stockTransfer?.number_of_shares || 0,
-    company: stockTransfer?.company?.toString() || "",
+    company: parseInt(stockTransfer?.company?.toString() || "0"),
     price: stockTransfer?.price || 0,
     document: stockTransfer?.document || null,
-    id: stockTransferData?.id || 0,
-    user: stockTransferData?.user || 0,
+    id: stockTransfer?.id || 0,
+    user: stockTransfer?.user || 0,
   };
 
   if (!stockTransfer && !id) {
     navigate("/transferstock/table");
   }
-  const onSubmit = (values: StockTransferTypes) => {
+  const onSubmit = (values: stockTransferTypes) => {
     if (stockTransfer?.id) {
       mutate(
-        { id: stockTransfer?.id, data: values },
+        { id: stockTransfer?.id.toString(), data: values },
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ویرایش شد");

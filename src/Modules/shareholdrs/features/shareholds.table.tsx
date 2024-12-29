@@ -1,7 +1,6 @@
 import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useGetShareholders } from "../hooks";
 import { ShareholdersTypes } from "../types";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { tableStyles } from "../../../ui";
@@ -9,19 +8,19 @@ import { FaTrash } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import useDelShareholders from "../hooks/useDelShareholders";
 import { useShareHoldersStore } from "../store";
 import { useNavigate } from "react-router-dom";
 import Popup from "../../../components/popup";
 import { useUserPermissions } from "../../../Modules/permissions";
 import { companyTypes } from "../data/companyTypes";
+import useShareholders from "../hooks/useShareholders";
 
 const ShareholdTable: React.FC = () => {
-  const { data: shareholders, refetch } = useGetShareholders();
+  const { data: shareholders, refetch } = useShareholders.useGet();
   const [selectedRow, setSelectedRow] = useState<ShareholdersTypes | null>(
     null
   );
-  const { mutate: deleteShareholder } = useDelShareholders();
+  const { mutate: deleteShareholder } = useShareholders.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { setId } = useShareHoldersStore();
   const navigate = useNavigate();
@@ -156,7 +155,7 @@ const ShareholdTable: React.FC = () => {
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
-                data={shareholdersData}
+                data={shareholdersData as unknown as Record<string, unknown>[]}
                 fileName="گزارش-پرداخت"
                 showExcelExport={true}
                 actions={{
@@ -191,7 +190,7 @@ const ShareholdTable: React.FC = () => {
           label="حذف شرکت"
           text="آیا مطمئن هستید؟"
           onConfirm={() => {
-            deleteShareholder(selectedRow.id, {
+            deleteShareholder(selectedRow.id.toString(), {
               onSuccess: () => {
                 toast.success("   با موفقیت حذف شد");
                 refetch();

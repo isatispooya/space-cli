@@ -1,15 +1,15 @@
 import Forms from "../../../components/forms";
-import { useCompaniesData } from "../../companies/hooks";
+import {  useCompany } from "../../companies/hooks";
 import { useUserData } from "../../users/hooks";
-import { usePostDisplacementPrecendence } from "../hooks";
+import { useDisplacement } from "../hooks";
 import * as Yup from "yup";
 import { FormField } from "../../companies/types";
 import toast from "react-hot-toast";
 
 const CreateDisplacementForm = () => {
-  const { mutate: postDisplacement } = usePostDisplacementPrecendence();
+  const { mutate: postDisplacement } = useDisplacement.useCreate();
   const { data: users } = useUserData();
-  const { data: companies } = useCompaniesData();
+  const { data: companies } = useCompany.useGet();
 
   const formFields: FormField[] = [
     {

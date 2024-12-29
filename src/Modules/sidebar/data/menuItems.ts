@@ -75,7 +75,7 @@ export const menuItems: MenuItem[] = [
         path: "/capital/table",
       },
       {
-        title: "خرید حق تقدم استفاده نشده",
+        title: "پذیره نویسی",
         codename: "view_unusedprecedenceprocess",
         path: "/purchacePrecendence/table",
       },

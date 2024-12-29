@@ -24,7 +24,3 @@ const companiesService = {
 };
 
 export default companiesService;
-
-
-
-

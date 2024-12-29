@@ -1,15 +1,15 @@
 import Forms from "../../../components/forms";
-import { usePostStockTransfer } from "../hooks";
+import {  useStockTransfer } from "../hooks";
 import * as Yup from "yup";
 import { FormField } from "../../companies/types";
-import { useCompaniesData } from "../../companies/hooks";
+import {  useCompany } from "../../companies/hooks";
 import { useUserData } from "../../users/hooks";
 import toast from "react-hot-toast";
 
 const CreateStocktransferForm = () => {
-  const { mutate: postStocktransfer } = usePostStockTransfer();
+  const { mutate: postStocktransfer } = useStockTransfer.useCreate();
 
-  const { data: companies } = useCompaniesData();
+  const { data: companies } = useCompany.useGet();
 
   const { data: users } = useUserData();
 

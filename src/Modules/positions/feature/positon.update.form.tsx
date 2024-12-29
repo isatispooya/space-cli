@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import Forms from "../../../components/forms";
 import { useUserData } from "../../users/hooks";
-import { useCompaniesData } from "../../companies/hooks";
+import { useCompany } from "../../companies/hooks";
 import { usePositionData, useUpdatePosition } from "../hooks";
 import { PositionData, PositionFormValues } from "../types";
 import { FormField } from "../../companies/types";
@@ -34,7 +34,7 @@ const typeOfEmploymentTranslations: Record<string, string> = {
 
 const PositionUpdate = ({ data, onClose }: PositionUpdateProps) => {
   const { mutate: updatePosition } = useUpdatePosition(data?.id as number);
-  const { data: companies } = useCompaniesData();
+  const { data: companies } = useCompany.useGet();
   const { data: users } = useUserData();
   const { data: positions } = usePositionData();
 
@@ -45,7 +45,7 @@ const PositionUpdate = ({ data, onClose }: PositionUpdateProps) => {
       label: "شرکت",
       type: "select",
       options:
-        companies?.results?.map((company: CompanyData) => ({
+        companies?.map((company: CompanyData) => ({
           value: company.id,
           label: company.name,
         })) || [],
@@ -87,7 +87,7 @@ const PositionUpdate = ({ data, onClose }: PositionUpdateProps) => {
 
   const initialValues: PositionFormValues = {
     name: data?.name || "",
-    company: String(data?.company || companies?.results?.[0]?.id || ""),
+    company: String(data?.company || companies?.[0]?.id || ""),
     user: Number(data?.user || 0),
     parent: String(data?.parent || ""),
     type_of_employment: String(data?.type_of_employment || ""),

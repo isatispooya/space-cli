@@ -2,17 +2,17 @@ import toast from "react-hot-toast";
 import Forms from "../../../components/forms";
 import { DisplacementPrecendenceTypes } from "../types";
 import * as yup from "yup";
-import { useGetDisplacementPrecendence, useUpdateDisplacment } from "../hooks";
+import { useDisplacement } from "../hooks";
 import { useDisplacementStore } from "../store";
 import { useUserData } from "../../users/hooks";
-import { useCompaniesData } from "../../companies/hooks";
+import {  useCompany } from "../../companies/hooks";
 import { useNavigate } from "react-router-dom";
 
 const EditDisplacmentForm: React.FC = () => {
-  const { mutate } = useUpdateDisplacment();
-  const { data: displacementData } = useGetDisplacementPrecendence();
+  const { mutate } = useDisplacement.useUpdate();
+  const { data: displacementData } = useDisplacement.useGet();
   const { data: users } = useUserData();
-  const { data: companies } = useCompaniesData();
+  const { data: companies } = useCompany.useGet();
   const { id } = useDisplacementStore();
 
   const navigate = useNavigate();
@@ -71,11 +71,11 @@ const EditDisplacmentForm: React.FC = () => {
     },
   ];
 
-  const initialValues = {
+  const initialValues: DisplacementPrecendenceTypes = {
     id: displacement?.id || 0,
-    buyer: displacement?.buyer.toString() || "",
-    seller: displacement?.seller.toString() || "",
-    company: displacement?.company.toString() || "",
+    buyer: parseInt(displacement?.buyer.toString() || "0"),
+    seller: parseInt(displacement?.seller.toString() || "0"),
+    company: parseInt(displacement?.company.toString() || "0"),
     number_of_shares: displacement?.number_of_shares || 0,
     price: displacement?.price || 0,
   };
@@ -92,7 +92,7 @@ const EditDisplacmentForm: React.FC = () => {
   const onSubmit = (values: DisplacementPrecendenceTypes) => {
     if (displacement?.id) {
       mutate(
-        { data: values, id: displacement?.id },
+        { data: values, id: displacement?.id.toString() },
         {
           onSuccess: () => {
             toast.success("حق تقدم با موفقیت ویرایش شد");

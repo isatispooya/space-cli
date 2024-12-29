@@ -3,10 +3,11 @@ import * as Yup from "yup";
 
 import { PositionFormValues } from "../types";
 
-import { useCompaniesData } from "../../companies/hooks";
 import { useUserData } from "../../users/hooks";
 import { usePositionData } from "../hooks";
 import Forms from "../../../components/forms";
+import { useCompany } from "../../companies/feature";
+import { CompanyData } from "../../companies/types/companyData.type";
 
 interface FormField {
   name: keyof PositionFormValues;
@@ -24,11 +25,6 @@ interface FormField {
   headerAlign?: string;
 }
 
-interface Company {
-  id: number;
-  name: string;
-}
-
 interface User {
   id: number;
   first_name?: string;
@@ -41,7 +37,7 @@ interface Position {
 }
 
 const PositionCreate = () => {
-  const { data: companies } = useCompaniesData();
+  const { data: companies } = useCompany.useGet();
   const { data: users } = useUserData();
   const { data: positions } = usePositionData();
   const { mutate: createPosition } = useCreatePos();
@@ -86,8 +82,8 @@ const PositionCreate = () => {
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
       options:
-        companies?.results?.map((company: Company) => ({
-          value: company.id,
+        companies?.map((company: CompanyData) => ({
+          value: company.id.toString(),
           label: company.name,
         })) || [],
     },

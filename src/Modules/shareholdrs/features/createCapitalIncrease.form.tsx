@@ -1,17 +1,18 @@
 import Forms from "../../../components/forms";
-import { useCompaniesData } from "../../companies/hooks";
+import { useCompany } from "../../companies/hooks";
 import { useUserData } from "../../users/hooks";
-import { usePostCapitalIncreasePayment } from "../hooks";
+import { useCapital } from "../hooks";
 import * as Yup from "yup";
 import { FormField } from "../../companies/types";
 import toast from "react-hot-toast";
+import { CapitalIncreaseCreate } from "../types";
 
 const CreateCapitalIncreaseForm = () => {
-  const { mutate: postCapitalIncrease } = usePostCapitalIncreasePayment();
-  const { data: companies } = useCompaniesData();
+  const { mutate: postCapitalIncrease } = useCapital.useCreate();
+  const { data: companies } = useCompany.useGet();
   const { data: users } = useUserData();
 
-  console.log('Users data:', users);
+  console.log("Users data:", users);
 
   const formFields: FormField[] = [
     { name: "number_of_shares", label: "تعداد سهام", type: "text" as const },
@@ -22,7 +23,7 @@ const CreateCapitalIncreaseForm = () => {
       type: "select" as const,
       options:
         companies?.map((company: { name: string; id: number }) => ({
-          label: company.name || '',
+          label: company.name || "",
           value: company.id.toString(),
         })) || [],
     },
@@ -70,7 +71,10 @@ const CreateCapitalIncreaseForm = () => {
         default: "ثبت سود پرداختی",
         loading: "در حال ارسال...",
       }}
-      onSubmit={async (values, { setSubmitting, resetForm }) => {
+      onSubmit={async (
+        values: CapitalIncreaseCreate,
+        { setSubmitting, resetForm }
+      ) => {
         try {
           await postCapitalIncrease(values, {
             onSuccess: () => {

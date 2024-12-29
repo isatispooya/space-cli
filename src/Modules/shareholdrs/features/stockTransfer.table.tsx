@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
-import { StockTransferTypes } from "../types";
+import { stockTransferTypes } from "../types";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useDelStockTransfer, useGetStockTransfer } from "../hooks";
+import {  useStockTransfer } from "../hooks";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useState } from "react";
 import { tableStyles } from "../../../ui";
@@ -16,15 +16,15 @@ import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../permissions";
 
 const StockTransferTable: React.FC = () => {
-  const { data: stockTransfer, refetch } = useGetStockTransfer();
+  const { data: stockTransfer, refetch } = useStockTransfer.useGet();
   const { setId } = useStockTransferStore();
   const { checkPermission } = useUserPermissions();
 
   const navigate = useNavigate();
-  const [selectedRow, setSelectedRow] = useState<StockTransferTypes | null>(
+  const [selectedRow, setSelectedRow] = useState<stockTransferTypes | null>(
     null
   );
-  const { mutate: deleteStockTransfer } = useDelStockTransfer();
+  const { mutate: deleteStockTransfer } = useStockTransfer.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const columns: GridColDef[] = [
@@ -126,7 +126,7 @@ const StockTransferTable: React.FC = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = stockTransferData.find(
-                (row: StockTransferTypes) => row.id === selectedId
+                (row: stockTransferTypes) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);
@@ -151,7 +151,7 @@ const StockTransferTable: React.FC = () => {
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
-                data={stockTransferData}
+                data={stockTransferData as unknown as Record<string, unknown>[]}
                 fileName="گزارش-پرداخت"
                 showExcelExport={true}
                 actions={{
@@ -194,7 +194,7 @@ const StockTransferTable: React.FC = () => {
           label="حذف جابه جایی"
           text="آیا از حذف جابه جایی مطمئن هستید؟"
           onConfirm={() => {
-            deleteStockTransfer(selectedRow.id, {
+            deleteStockTransfer(selectedRow.id.toString(), {
               onSuccess: () => {
                 toast.success("جابه جایی سهام با موفقیت حذف شد");
                 refetch();

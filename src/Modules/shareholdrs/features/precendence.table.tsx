@@ -1,5 +1,5 @@
 import { GridColDef, DataGrid } from "@mui/x-data-grid";
-import { useDelPrecendence, useGetPrecedence } from "../hooks";
+import {  usePrecendence } from "../hooks";
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
@@ -15,10 +15,10 @@ import moment from "moment-jalaali";
 import { useUserPermissions } from "../../permissions";
 
 const PrecendenceTable: React.FC = () => {
-  const { data, refetch } = useGetPrecedence();
+  const { data, refetch } = usePrecendence.useGet();
   const navigate = useNavigate();
 
-  const { mutate: deletePrecendence } = useDelPrecendence();
+  const { mutate: deletePrecendence } = usePrecendence.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { checkPermission } = useUserPermissions();
   const [selectedRow, setSelectedRow] = useState<PrecedenceTypes | null>(null);
@@ -138,7 +138,7 @@ const PrecendenceTable: React.FC = () => {
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
-                data={rows}
+                data={rows as unknown as Record<string, unknown>[]}
                 fileName="گزارش-پرداخت"
                 showExcelExport={true}
                 actions={{
@@ -173,7 +173,7 @@ const PrecendenceTable: React.FC = () => {
             label="حذف سهم"
             text="آیا از حذف شرکت مطمئن هستید؟"
             onConfirm={() => {
-              deletePrecendence(selectedRow.id, {
+              deletePrecendence(selectedRow.id.toString(), {
                 onSuccess: () => {
                   setIsDeleteOpen(false);
                   setSelectedRow(null);

@@ -1,17 +1,17 @@
 import Forms from "../../../components/forms";
-import { usePostPrecendence } from "../hooks";
+import { usePrecendence } from "../hooks";
 import * as Yup from "yup";
 import { FormField } from "../../companies/types";
 import { useUserData } from "../../users/hooks";
-import { useCompaniesData } from "../../companies/hooks";
+import {  useCompany } from "../../companies/hooks";
 import toast from "react-hot-toast";
 
 const CreatePrecendenceForm = () => {
-  const { mutate: postPrecendence } = usePostPrecendence();
+  const { mutate: postPrecendence } = usePrecendence.useCreate();
 
   const { data: users } = useUserData();
 
-  const { data: companies } = useCompaniesData();
+  const { data: companies } = useCompany.useGet();
 
   const formFields: FormField[] = [
     { name: "precedence", label: "حق تقدم", type: "text" as const },

@@ -12,7 +12,7 @@ export { default as CreatePrecendenceForm } from "./createPrecendence.form";
 export { default as CreateStocktransferForm } from "./createStocktransfer.form";
 export { default as CreateCapitalIncreaseForm } from "./createCapitalIncrease.form";
 export { default as CreateDisplacementForm } from "./createDisplacement.form";
-export { default as PurchacePrecendenceTable } from "./purchacePrecendence.table";
-export { default as PurchacePrecendenceForm } from "./PurchacePrecendence.form";
-export { default as EditUnusedPrecedenceProcessForm } from "./editUnusedPrecedenceProcess.form";
+export { default as PurchacePrecendenceTable } from "./underwriting.table";
+export { default as PurchacePrecendenceForm } from "./createUnderWriting.form";
+export { default as EditUnusedPrecedenceProcessForm } from "./editUnderwriting.form";
 
