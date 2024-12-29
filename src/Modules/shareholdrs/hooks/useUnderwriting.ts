@@ -45,6 +45,7 @@ const useUnderwriting = {
       mutationFn: (id: number) => underwritingServices.delete(id),
     });
   },
+  
 };
 
 export default useUnderwriting;

@@ -22,7 +22,7 @@ import { useUnderwritingStore } from "../store";
 // import { Button } from "@headlessui/react";
 import Popup from "../../../components/popup";
 
-const PurchacePrecendenceTable: React.FC = () => {
+const UnderWritingTable: React.FC = () => {
   const { setId } = useUnderwritingStore();
   const { data, refetch } = useUnderwriting.useGet();
   const navigate = useNavigate();
@@ -52,8 +52,8 @@ const PurchacePrecendenceTable: React.FC = () => {
       field: "type",
       headerName: "نوع",
       width: 100,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => {
         return params.row.type === "2" ? "درگاه پرداخت" : "فیش بانکی";
       },
@@ -62,8 +62,8 @@ const PurchacePrecendenceTable: React.FC = () => {
       field: "price",
       headerName: "مبلغ",
       width: 120,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => formatNumber(params.row.price),
     },
     // {
@@ -82,8 +82,8 @@ const PurchacePrecendenceTable: React.FC = () => {
       field: "track_id",
       headerName: "شماره پیگیری",
       width: 150,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => {
         return params.row.payment_detail?.track_id || "ندارد";
       },
@@ -92,8 +92,8 @@ const PurchacePrecendenceTable: React.FC = () => {
       field: "user_detail",
       headerName: "نام کاربر",
       width: 200,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => {
         const user = params.row.user_detail;
         return user ? `${user.first_name} ${user.last_name}` : "نامشخص";
@@ -103,15 +103,15 @@ const PurchacePrecendenceTable: React.FC = () => {
       field: "requested_amount",
       headerName: "تعداد درخواستی",
       width: 130,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "created_at",
       headerName: "تاریخ ایجاد",
       width: 150,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => {
         return moment(params.row.created_at)
           .locale("fa")
@@ -122,8 +122,8 @@ const PurchacePrecendenceTable: React.FC = () => {
       field: "status",
       headerName: "وضعیت",
       width: 130,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => {
         const status = params.row.status;
         const statusObj = statusNames.find((s) => s.value === status);
@@ -246,4 +246,4 @@ const PurchacePrecendenceTable: React.FC = () => {
     </>
   );
 };
-export default PurchacePrecendenceTable;
+export default UnderWritingTable;
