@@ -3,6 +3,7 @@ import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
 import { LuInfo, LuPlusSquare } from "react-icons/lu";
 import { LuTable } from "react-icons/lu";
+import { MdOutlineShoppingBag } from "react-icons/md";
 
 const UnderwritingMain = () => {
   const toolbarButtons = [
@@ -25,7 +26,7 @@ const UnderwritingMain = () => {
       path: "table",
     },
     {
-      icon: LuPlusSquare,
+      icon: MdOutlineShoppingBag,
       text: "سرمایه گذاری ",
       permission: "add_underwriting",
       path: "create",

@@ -16,3 +16,4 @@ export { default as UnderWritingTable } from "./underwriting.table";
 export { default as UnderWritingForm } from "./createUnderWriting.form";
 export { default as EditUnderWritingForm } from "./editUnderwriting.form";
 export { default as UnderwritingDescForm } from "./underwritingdesc.form";
+export { default as UnderwritingAttachmentsView } from "./underwritingAttachments.view";

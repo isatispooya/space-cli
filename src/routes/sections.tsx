@@ -232,6 +232,12 @@ const UnderwritingDescPage = lazy(() =>
   }))
 );
 
+const UnderwritingViewPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.UnderwritingViewPage,
+  }))
+);
+
 const StockTransferUpdatePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.StockTransferUpdatePage,
@@ -626,10 +632,18 @@ export default function Router() {
           ),
         },
         {
-          path: "/underwriting/description",
+          path: "description",
           element: (
             <Suspense fallback={<Loader />}>
               <UnderwritingDescPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "attachments",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <UnderwritingViewPage />
             </Suspense>
           ),
         },

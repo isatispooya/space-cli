@@ -106,7 +106,7 @@ const UnderWritingForm = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-[24px] shadow-lg">
-      <h2 className="text-[#29D2C7] text-xl font-bold mb-6">ثبت حق تقدم</h2>
+      <h2 className="text-[#29D2C7] text-xl font-bold mb-6">ثبت پذیره نویسی</h2>
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
