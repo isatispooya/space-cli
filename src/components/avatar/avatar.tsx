@@ -13,24 +13,18 @@ const Avatar = () => {
   const profileInfo = data
     ? {
         first_name: data.first_name || "",
-        mobile: data.mobile || "",
+        last_name: data.last_name || "",
       }
     : null;
 
   const tools = [
     {
-      label: "sتنظیمات",
+      label: "تغییر رمز عبور",
       href: "/settings",
-      // render: <LoginForm />,
     },
     {
-      label: "خروج",
-      href: "/login",
-    },
-    {
-      label: "درآمد",
-      href: "/income",
-      // render: <UserIncome />,
+      label: "پروفایل",
+      href: "/profile",
     },
   ];
 
@@ -38,9 +32,15 @@ const Avatar = () => {
     <div className="relative">
       <motion.div
         onClick={toggleDropdown}
-        whileHover={{ scale: 1.1, rotate: 5, color: "#5677BC" , borderColor: "#5677BC" }}
-        whileTap={{ scale: 0.9 }}
-        className="text-2xl cursor-pointer text-[#5677BC] border-2 border-[#5677BC] rounded-xl p-1"
+        whileHover={{
+          scale: 1.05,
+          rotate: 3,
+          color: "#5677BC",
+          borderColor: "#5677BC",
+          boxShadow: "0 4px 12px rgba(86, 119, 188, 0.3)",
+        }}
+        whileTap={{ scale: 0.95 }}
+        className="text-2xl cursor-pointer text-[#5677BC] border-2 border-[#5677BC] rounded-xl p-2 transition-all duration-300 hover:bg-[#5677BC]/10"
       >
         <CgProfile />
       </motion.div>
@@ -49,24 +49,23 @@ const Avatar = () => {
         {isOpen && (
           <motion.div
             id="userDropdown"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute z-10 mt-2 left-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute z-10 mt-3 left-0 bg-white divide-y divide-gray-100 rounded-xl shadow-lg w-48 backdrop-blur-sm border border-gray-100 overflow-hidden"
           >
             {profileInfo && (
-              <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                <div>{profileInfo.first_name}</div>
-                <div className="font-medium truncate">{profileInfo.mobile}</div>
+              <div className="px-4 py-3 text-sm bg-gradient-to-r from-[#29D2C7]/10 to-transparent">
+                <div className="font-semibold text-gray-800">{`${profileInfo.first_name} ${profileInfo.last_name}`}</div>
               </div>
             )}
-            <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+            <ul className="py-1 text-sm text-gray-700">
               {tools.map((item, index) => (
                 <li key={index}>
                   <a
                     href={item.href}
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="block px-4 py-2.5 hover:bg-[#29D2C7]/10 transition-colors duration-200 font-medium"
                   >
                     {item.label}
                   </a>
@@ -77,7 +76,7 @@ const Avatar = () => {
             <div className="py-1">
               <a
                 href="/login"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="block px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200 font-medium"
               >
                 خروج
               </a>

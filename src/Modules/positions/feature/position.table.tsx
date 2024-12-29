@@ -6,13 +6,15 @@ import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { PositionData } from "../types";
 import { ModalLayout } from "../../../layouts";
 import { PositionUpdate } from "./";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { deletePosition } from "../services";
+import { useUserPermissions } from "../../permissions";
 
 const PositionsTable = () => {
   const { data: positions } = usePositionData();
   const [selectedRow, setSelectedRow] = useState<PositionData | null>(null);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+  const { checkPermission } = useUserPermissions();   
 
   const handleEdit = useCallback(() => {
     if (!selectedRow) {
@@ -45,7 +47,7 @@ const PositionsTable = () => {
 
   return (
     <>
-      <Toaster />
+
       <DataGrid
         rows={rows}
         columns={columns}
@@ -89,13 +91,13 @@ const PositionsTable = () => {
               showExcelExport={true}
               actions={{
                 edit: {
-                  show: true,
+                  show: checkPermission("change_position"),
                   label: "ویرایش",
                   onClick: handleEdit,
                   icon: <FaEdit />,
                 },
                 delete: {
-                  show: true,
+                  show: checkPermission("delete_position"),
                   label: "حذف",
                   onClick: handleDelete,
                   icon: <FaTrash />,

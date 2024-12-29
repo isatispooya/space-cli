@@ -5,3 +5,4 @@ export { default as useOtp } from "./useOtp";
 export { default as useChangePass } from "./useChangePass";
 export { default as useForgetPassSms } from "./useForgetPassSms";
 export { default as useCaptcha } from "./useCaptcha";
+export { default as useAnnouncements } from "./useAnnouncements";

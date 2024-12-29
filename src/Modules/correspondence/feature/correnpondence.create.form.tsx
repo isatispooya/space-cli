@@ -1,6 +1,7 @@
 import Forms from "../../../components/forms";
 import * as Yup from "yup";
 import { CorrespondenceTypes } from "../types";
+import { FormikHelpers } from "formik";
 
 const validationSchema = Yup.object().shape({
   sender: Yup.object().required("لطفا فرستنده را وارد کنید"),
@@ -58,7 +59,22 @@ const initialValues: CorrespondenceTypes = {
   signature_placement: false,
 };
 
-const formFields = [
+type FormFieldType =
+  | "text"
+  | "select"
+  | "email"
+  | "password"
+  | "checkbox"
+  | "transferList";
+
+interface FormField {
+  name: string;
+  label: string;
+  type: FormFieldType;
+  options?: { value: string; label: string }[];
+}
+
+const formFields: FormField[] = [
   { name: "sender", label: "فرستنده", type: "text" },
   { name: "receiver_internal", label: "گیرنده داخلی", type: "text" },
   { name: "receiver_external", label: "گیرنده خارجی", type: "text" },
@@ -85,10 +101,17 @@ const formFields = [
   },
 ];
 
-export const CreateCorrespondenceForm: React.FC<CorrespondenceTypes> = ({
-  onSubmit,
-  loading,
-}) => {
+interface CreateCorrespondenceFormProps {
+  onSubmit?: (
+    values: CorrespondenceTypes,
+    actions: FormikHelpers<CorrespondenceTypes>
+  ) => void;
+  loading?: boolean;
+}
+
+export const CreateCorrespondenceForm: React.FC<
+  CreateCorrespondenceFormProps
+> = ({ onSubmit = () => {} }) => {
   return (
     <Forms
       formFields={formFields}

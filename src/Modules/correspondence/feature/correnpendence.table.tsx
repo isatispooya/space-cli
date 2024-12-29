@@ -1,6 +1,7 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useCorrespondencesData } from "../hooks";
 import { CorrespondenceTypes } from "../types";
+import { PaginatedResponse } from "../../../types/paginated"; 
 import { ModalLayout } from "../../../layouts";
 
 import { CustomDataGridToolbar } from "../../../utils";
@@ -137,6 +138,7 @@ const CorrespondenceTable = () => {
         }}
         pageSizeOptions={[10]}
         disableColumnMenu
+        checkboxSelection
         filterMode="client"
         localeText={localeText}
         sx={{
@@ -155,7 +157,12 @@ const CorrespondenceTable = () => {
             <CustomDataGridToolbar
               {...props}
               data={
-                data || { count: 0, next: null, previous: null, results: [] }
+                (data || {
+                  count: 0,
+                  next: null,
+                  previous: null,
+                  results: [],
+                }) as unknown as PaginatedResponse<Record<string, unknown>>
               }
               fileName="گزارش-مکاتبات"
               showExcelExport={true}
@@ -172,7 +179,9 @@ const CorrespondenceTable = () => {
       />
 
       <ModalLayout isOpen={isViewOpen} onClose={() => setIsViewOpen(false)}>
-        {selectedRow && <SeeCorrespondence data={selectedRow} />}
+        {selectedRow && (
+          <SeeCorrespondence fields={selectedRow} imageFields={[]} />
+        )}
       </ModalLayout>
 
       <ModalLayout isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>

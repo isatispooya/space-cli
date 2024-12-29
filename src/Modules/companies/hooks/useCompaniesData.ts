@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCompanies } from "../services"; 
+import { companiesService } from "../services";
 
 const useCompaniesData = () => {
   return useQuery({
     queryKey: ["companies"],
-    queryFn: getCompanies,
+    queryFn: companiesService.get,
   });
 };
 

@@ -1,19 +1,20 @@
 import * as Yup from "yup";
 import Forms from "../../../components/forms";
 import useCreateCompany from "../hooks/useCreateCompany";
-import { CompanyFormValues, CompanyType, FormField } from "../types";
+import { CompanyData } from "../types/companyData.type";
+import { FormField } from "../types";
 
 const validationSchema = Yup.object().shape({
-  id: Yup.number().optional(),
+  id: Yup.number().required(),
   name: Yup.string().required("نام شرکت الزامی است"),
   company_type: Yup.string().required("نوع شرکت الزامی است"),
-  year_of_establishment: Yup.string().required("سال تاسیس الزامی است"),
+  year_of_establishment: Yup.number().required("سال تاسیس الزامی است"),
   phone: Yup.string().required("تلفن الزامی است"),
   postal_code: Yup.string().required("کد پستی الزامی است"),
   national_id: Yup.string().required("کد شناسه الزامی است"),
   description: Yup.string(),
-  registered_capital: Yup.string().required("سرمایه ثبتی الزامی است"),
-  registration_number: Yup.string().required("تعداد سرمایه ثبتی الزامی است"),
+  registered_capital: Yup.number().optional(),
+  registration_number: Yup.number().required("تعداد سرمایه ثبتی الزامی است"),
   type_of_activity: Yup.string().required("نوع فعالیت الزامی است"),
   address: Yup.string().required("آدرس الزامی است"),
   website: Yup.string().url("آدرس وبسایت نامعتبر است"),
@@ -27,9 +28,13 @@ const validationSchema = Yup.object().shape({
   employees: Yup.number()
     .min(1, "تعداد کارمندان باید بیشتر از 0 باشد")
     .required("تعداد کارمندان الزامی است"),
+  logo: Yup.string().optional(),
+  letterhead: Yup.string().optional(),
+  seal: Yup.string().optional(),
+  signature: Yup.string().optional(),
 });
 
-const COMPANY_TYPES: readonly CompanyType[] = [
+const COMPANY_TYPES = [
   { value: "private_joint_stock", label: "سهامی خاص" },
   { value: "public_joint_stock", label: "سهامی عام" },
   { value: "limited_liability", label: "مسئولیت محدود" },
@@ -38,7 +43,7 @@ const COMPANY_TYPES: readonly CompanyType[] = [
   { value: "stock_mixed", label: "مختلط سهامی" },
   { value: "proportional_liability", label: "نسبی" },
   { value: "cooperative", label: "تعاونی" },
-] as const;
+];
 
 const formFields: FormField[] = [
   { name: "name", label: "نام شرکت", type: "text" },
@@ -50,7 +55,7 @@ const formFields: FormField[] = [
   },
   { name: "address", label: "آدرس", type: "text" },
   { name: "year_of_establishment", label: "سال تاسیس", type: "text" },
-  { name: "phone", label: "تلفن", type: "tel" },
+  { name: "phone", label: "تلفن", type: "text" },
   { name: "postal_code", label: "کد پستی", type: "text" },
   { name: "national_id", label: "کد شناسه", type: "text" },
   { name: "description", label: "توضیحات", type: "text" },
@@ -58,19 +63,19 @@ const formFields: FormField[] = [
   { name: "registration_number", label: "تعداد سرمایه ثبتی", type: "text" },
 
   { name: "type_of_activity", label: "نوع فعالیت", type: "text" },
-  { name: "website", label: "وبسایت", type: "url" },
+  { name: "website", label: "وبسایت", type: "text" },
   { name: "email", label: "ایمیل", type: "email" },
-  { name: "employees", label: "تعداد کارمندان", type: "number" },
+  { name: "employees", label: "تعداد کارمندان", type: "text" },
 ];
 
 const CreateCompanyForm = () => {
   const { mutate: createCompany } = useCreateCompany();
-  const initialValues: CompanyFormValues = formFields.reduce(
+  const initialValues: CompanyData = formFields.reduce(
     (acc, field) => ({
       ...acc,
       [field.name]: "",
     }),
-    {} as CompanyFormValues
+    {} as CompanyData
   );
 
   return (

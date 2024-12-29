@@ -4,17 +4,20 @@ import CustomDataGridToolbar from "../../../utils/tableToolbar";
 import { localeText } from "../../../utils/localtext";
 import { useCallback, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
-import { CompanyData } from "../types";
+import { CompanyData } from "../types/companyData.type";
 import { ModalLayout } from "../../../layouts";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import SeeCompany from "./company.details";
 import Popup from "../../../components/popup";
 import useDeleteCompany from "../hooks/useDeleteCompany";
 import EditCompanyForm from "./company.edit.form";
+import { tableStyles } from "../../../ui";
+import { useUserPermissions } from "../../permissions";
 
 const CompanyTable = () => {
   const { data } = useCompaniesData();
   const { mutate: deleteCompanyMutation } = useDeleteCompany();
+  const { checkPermission } = useUserPermissions(); 
 
   const rows = data?.results || [];
   const [selectedRow, setSelectedRow] = useState<CompanyData | null>(null);
@@ -71,8 +74,8 @@ const CompanyTable = () => {
 
   return (
     <>
-      <Toaster />
-      <div className="w-full bg-gray-100 shadow-md relative">
+
+      <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           rows={rows}
           columns={columns}
@@ -102,11 +105,7 @@ const CompanyTable = () => {
           disableColumnMenu
           filterMode="client"
           localeText={localeText}
-          sx={{
-            "& .Mui-selected": {
-              backgroundColor: "rgba(25, 118, 210, 0.08) !important",
-            },
-          }}
+          sx={tableStyles}
           slots={{
             toolbar: (props) => (
               <CustomDataGridToolbar
@@ -117,19 +116,19 @@ const CompanyTable = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: true,
+                    show: checkPermission("change_company"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   view: {
                     label: "مشاهده",
-                    show: true,
+                    show: checkPermission("view_company"),
                     onClick: handleView,
                     icon: <FaEye />,
                   },
                   delete: {
                     label: "حذف",
-                    show: true,
+                    show: checkPermission("delete_company"),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },
@@ -144,7 +143,6 @@ const CompanyTable = () => {
             },
           }}
         />
-
         <ModalLayout
           isOpen={isOpen}
           onClose={() => {
@@ -154,7 +152,6 @@ const CompanyTable = () => {
         >
           {selectedRow && <SeeCompany data={selectedRow} />}
         </ModalLayout>
-
         <ModalLayout
           isOpen={isEditOpen}
           onClose={() => {

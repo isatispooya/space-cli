@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CompanyData } from "../types";
+import { CompanyData } from "../types/companyData.type";
 
 interface SeeCompanyProps {
   data: CompanyData;
@@ -20,7 +20,6 @@ const SeeCompany = ({ data }: SeeCompanyProps) => {
     { label: "وبسایت", value: data.website },
     { label: "آدرس", value: data.address },
   ];
-
   const imageFields = [
     { label: "لوگو", value: data.logo },
     { label: "سربرگ", value: data.letterhead },

@@ -3,26 +3,32 @@ import Forms from "../../../components/forms";
 import { useUpdateCorrespondence } from "../hooks/useUpdateCorrespondence";
 import { CorrespondenceTypes } from "../types";
 import toast from "react-hot-toast";
+import { FormField } from "../../companies/types";
 
-const validationSchema = Yup.object()
-  .shape({
-    subject: Yup.string().required("موضوع الزامی است"),
-    description: Yup.string().required("توضیحات الزامی است"),
-    kind_of_correspondence: Yup.string().required("نوع مکاتبه الزامی است"),
-    priority: Yup.string().required("اولویت الزامی است"),
-    confidentiality_level: Yup.string().required("سطح محرمانگی الزامی است"),
-  })
-  .concat(Yup.object<CorrespondenceTypes>().shape({}));
-
-
-
-
+const validationSchema = Yup.object().shape({
+  subject: Yup.string().required("موضوع الزامی است"),
+  description: Yup.string().required("توضیحات الزامی است"),
+  kind_of_correspondence: Yup.string().required("نوع مکاتبه الزامی است"),
+  priority: Yup.string().required("اولویت الزامی است"),
+  confidentiality_level: Yup.string().required("سطح محرمانگی الزامی است"),
+  id: Yup.number().optional(),
+  uuid: Yup.string().optional(),
+  sender: Yup.mixed().optional(),
+  receiver_internal: Yup.mixed().optional(),
+  text: Yup.string().optional(),
+  postcript: Yup.string().optional(),
+  is_internal: Yup.boolean().optional(),
+  binding: Yup.boolean().optional(),
+  draft: Yup.boolean().optional(),
+  published: Yup.boolean().optional(),
+  attachments: Yup.array().optional(),
+}) as Yup.ObjectSchema<CorrespondenceTypes>;
 
 const formFields: FormField[] = [
   { name: "subject", label: "موضوع", type: "text" },
-  { name: "description", label: "توضیحات", type: "textarea" },
-  { name: "text", label: "متن مکاتبه", type: "textarea" },
-  { name: "postcript", label: "پی نوشت", type: "textarea" },
+  { name: "description", label: "توضیحات", type: "text" },
+  { name: "text", label: "متن مکاتبه", type: "text" },
+  { name: "postcript", label: "پی نوشت", type: "text" },
 
   {
     name: "is_internal",
@@ -44,7 +50,7 @@ const formFields: FormField[] = [
     label: "منتشر شده",
     type: "checkbox",
   },
-  { name: "attachments", label: "پیوست‌ها", type: "file", multiple: true },
+  { name: "attachments", label: "پیوست‌ها", type: "file" },
 
   {
     name: "kind_of_correspondence",
@@ -83,15 +89,10 @@ interface EditCorrespondenceProps {
   onClose?: () => void;
 }
 
-interface FormField {
-  name: string;
-  label: string;
-  type: string;
-  options?: readonly { value: string; label: string }[];
-}
-
 const EditCorrespondence = ({ data, onClose }: EditCorrespondenceProps) => {
-  const { mutate: updateCorrespondence } = useUpdateCorrespondence(data.id);
+  const { mutate: updateCorrespondence } = useUpdateCorrespondence(
+    data.id?.toString() || ""
+  );
 
   const handleSubmit = (values: CorrespondenceTypes) => {
     updateCorrespondence(values, {
@@ -116,6 +117,10 @@ const EditCorrespondence = ({ data, onClose }: EditCorrespondenceProps) => {
         formFields={formFields}
         initialValues={initialValues}
         validationSchema={validationSchema}
+        checkboxColors={{
+          borderColor: "border-secondary-500",
+          checkedColor: "checked:border-[#5677BC] checked:bg-[#5677BC]",
+        }}
         onSubmit={handleSubmit}
         showCloseButton={true}
         onClose={onClose}

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { CreateCorrespondenceForm } from "./correnpondence.create.form";
-import { useCreateCorrespondence } from "../hooks"; 
-import ModalLayout from "../../../layouts/modal.layout.";
+import { useCreateCorrespondence } from "../hooks";
+import ModalLayout from "../../../layouts/modal.layout";
+import { FormikHelpers } from "formik";
+import { CorrespondenceTypes } from "../types";
 
 const CorrespondenceToolBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,12 +12,27 @@ const CorrespondenceToolBar = () => {
   );
   const { mutate, isPending } = useCreateCorrespondence();
 
+  const handleSubmit = (
+    values: CorrespondenceTypes,
+    actions: FormikHelpers<CorrespondenceTypes>
+  ) => {
+    mutate(values, {
+      onSuccess: () => {
+        actions.resetForm();
+        setIsOpen(false);
+      },
+    });
+  };
+
   const tools = (tool: string) => {
     switch (tool) {
       case "create":
         return (
           <ModalLayout isOpen={isOpen} onClose={() => setIsOpen(false)}>
-            <CreateCorrespondenceForm onSubmit={mutate} loading={isPending} />
+            <CreateCorrespondenceForm
+              onSubmit={handleSubmit}
+              loading={isPending}
+            />
           </ModalLayout>
         );
       case "import":

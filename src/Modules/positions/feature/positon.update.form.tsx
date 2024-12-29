@@ -5,7 +5,7 @@ import { useCompaniesData } from "../../companies/hooks";
 import { usePositionData, useUpdatePosition } from "../hooks";
 import { PositionData, PositionFormValues } from "../types";
 import { FormField } from "../../companies/types";
-import { CompanyData } from "../../companies/types";
+import { CompanyData } from "../../companies/types/companyData.type";
 import { UserData } from "../../users/types";
 
 interface PositionUpdateProps {
@@ -60,8 +60,7 @@ const PositionUpdate = ({ data, onClose }: PositionUpdateProps) => {
           label: user.first_name || user.last_name,
         })) || [],
     },
-    { name: "start_date", label: "تاریخ شروع", type: "date" },
-    { name: "end_date", label: "تاریخ پایان", type: "date" },
+
     { name: "description", label: "توضیحات", type: "text" },
     {
       name: "parent",

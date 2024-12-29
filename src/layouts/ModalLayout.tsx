@@ -1,4 +1,4 @@
-import  { ReactNode, Fragment } from "react";
+import { ReactNode, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { createPortal } from "react-dom";
 
@@ -45,7 +45,7 @@ const ModalLayout = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-lg bg-white p-6 shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-lg    transition-all">
                 {title && (
                   <Dialog.Title className="text-lg font-medium leading-6 text-gray-900 mb-4">
                     {title}

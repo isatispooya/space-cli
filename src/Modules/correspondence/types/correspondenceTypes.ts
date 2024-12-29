@@ -1,9 +1,8 @@
-import { PositionData } from "../../positions/types/postions.type";
 
 export interface CorrespondenceTypes {
   id?: number;
   uuid?: string;
-  sender: PositionData | null;
+  sender: string | null;
   receiver_internal: string | null;
   receiver_external: string | null;
   subject: string;

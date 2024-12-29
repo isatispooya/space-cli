@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateCompany } from "../services";
-import { CompanyFormValues, CompanyData } from "../types";
+import { companiesService } from "../services";
+import { CompanyData } from "../types/companyData.type";
 
 const useUpdateCompany = (id: number) => {
-  return useMutation<CompanyData, Error, CompanyFormValues>({
+  return useMutation<CompanyData, Error, CompanyData>({
     mutationKey: ["updateCompany", id],
-    mutationFn: (data) => updateCompany(id, data),
+    mutationFn: (data) => companiesService.update(id, data),
   });
 };
 

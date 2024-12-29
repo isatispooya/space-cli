@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCorrespondence } from "../services";
+import { correspondenceService } from "../services";
 import { CorrespondenceTypes } from "../types";
 
 interface CorrespondencesResponse {
@@ -12,7 +12,7 @@ interface CorrespondencesResponse {
 const useCorrespondencesData = () => {
   return useQuery<CorrespondencesResponse>({
     queryKey: ["correspondences"],
-    queryFn: getCorrespondence,
+    queryFn: correspondenceService.get,
   });
 };
 

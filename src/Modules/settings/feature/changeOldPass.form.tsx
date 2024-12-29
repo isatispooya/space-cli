@@ -4,7 +4,7 @@ import { PassInput } from "../../auth/components";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import useChangeOldPass from "../hooks/useChangeOldPass";
 
 const validationSchema = Yup.object().shape({
@@ -22,7 +22,7 @@ const ChangePasswordForm = () => {
 
   return (
     <>
-      <Toaster position="bottom-left" reverseOrder={false} />
+    
       <section dir="rtl" className="flex min-h-screen justify-center">
         <motion.div
           {...fadeIn(0.05, 0, 0.4)}
