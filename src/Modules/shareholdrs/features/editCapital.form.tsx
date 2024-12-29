@@ -1,20 +1,18 @@
 import toast from "react-hot-toast";
 import Forms from "../../../components/forms";
-import { useGetCapitalIncreasePayment, useUpdateCapital } from "../hooks";
+import { useCapital } from "../hooks";
 import { CapitalIncreaseTypes } from "../types";
 import * as yup from "yup";
 import { useCapitalStore } from "../store";
 import { FormField } from "../../companies/types";
 
-
-
 const EditCapitalForm: React.FC = () => {
-  const { mutate } = useUpdateCapital();
+  const { mutate } = useCapital.useUpdate();
   const { id } = useCapitalStore();
-  const { data } = useGetCapitalIncreasePayment();
+  const { data } = useCapital.useGet();
   const capital = data?.find((item: CapitalIncreaseTypes) => item.id === id);
 
-  const formFields = [
+  const formFields: FormField[] = [
     {
       name: "company",
       label: "شرکت",
@@ -23,17 +21,17 @@ const EditCapitalForm: React.FC = () => {
     {
       name: "number_of_shares",
       label: "تعداد سهام",
-      type: "number",
+      type: "text",
     },
     {
       name: "position",
       label: "موقعیت",
-      type: "number",
+      type: "text",
     },
     {
       name: "price",
       label: "قیمت",
-      type: "number",
+      type: "text",
     },
     {
       name: "document",
@@ -67,15 +65,17 @@ const EditCapitalForm: React.FC = () => {
 
   const onSubmit = (values: CapitalIncreaseTypes) => {
     if (capital?.id) {
-      mutate(values, {
-        onSuccess: () => {
-          toast.success("سود پرداختی با موفقیت ویرایش شد");
-          
-        },
-        onError: () => {
-          toast.error("خطایی رخ داده است");
-        },
-      });
+      mutate(
+        { id: capital.id, data: values },
+        {
+          onSuccess: () => {
+            toast.success("سود پرداختی با موفقیت ویرایش شد");
+          },
+          onError: () => {
+            toast.error("خطایی رخ داده است");
+          },
+        }
+      );
     }
   };
 

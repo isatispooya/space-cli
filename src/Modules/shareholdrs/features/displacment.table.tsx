@@ -1,5 +1,5 @@
 import { DataGrid, GridCellParams } from "@mui/x-data-grid";
-import { useDelDisplacment, useGetDisplacementPrecendence } from "../hooks";
+import { useDisplacement } from "../hooks";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import moment from "moment-jalaali";
@@ -14,8 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../permissions";
 
 const DisplacementTable = () => {
-  const { data, refetch } = useGetDisplacementPrecendence();
-  const { mutate: deleteDisplacement } = useDelDisplacment();
+  const { data, refetch } = useDisplacement.useGet();
+  const { mutate: deleteDisplacement } = useDisplacement.useDelete();
   const { checkPermission } = useUserPermissions();
   const { setId } = useDisplacementStore();
   const navigate = useNavigate();
@@ -85,7 +85,6 @@ const DisplacementTable = () => {
     }, },
     { field: "number_of_shares", headerName: "تعداد حق تقدم", width: 120 },
     { field: "price", headerName: "قیمت", width: 100 },
-
     {
       field: "updated_at",
       headerName: "تاریخ بروزرسانی",
@@ -160,7 +159,7 @@ const DisplacementTable = () => {
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
-                data={rows}
+                data={rows as unknown as Record<string, unknown>[]}
                 fileName="گزارش-پرداخت"
                 showExcelExport={true}
                 actions={{
@@ -195,7 +194,7 @@ const DisplacementTable = () => {
         label="حذف جابه جایی حق تقدم"
         text="آیا مطمئن هستید؟"
         onConfirm={() => {
-          deleteDisplacement(selectedRow.id, {
+          deleteDisplacement(selectedRow.id.toString(), {
             onSuccess: () => {
               toast.success("   با موفقیت حذف شد");
               refetch();

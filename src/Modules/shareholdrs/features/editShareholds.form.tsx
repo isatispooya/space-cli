@@ -1,25 +1,25 @@
 import toast from "react-hot-toast";
 import Forms from "../../../components/forms";
-import useUpdateShareholders from "../hooks/useUpdateShareholders";
+
 import { ShareholdersTypes } from "../types";
 import * as yup from "yup";
 import { useShareHoldersStore } from "../store";
-import { useGetShareholders } from "../hooks";
+import { useShareholders } from "../hooks";
 import { useUserData } from "../../users/hooks";
-import { useCompaniesData } from "../../companies/hooks";
+import {  useCompany } from "../../companies/hooks";
 import { useNavigate } from "react-router-dom";
 
 const EditShareholdForm: React.FC = () => {
-  const { mutate } = useUpdateShareholders();
+  const { mutate } = useShareholders.useUpdate();
   const { id } = useShareHoldersStore();
 
   const navigate = useNavigate();
-  const { data: shareholders } = useGetShareholders();
+  const { data: shareholders } = useShareholders.useGet();
   const { data: users } = useUserData();
-  const { data: companies } = useCompaniesData();
+  const { data: companies } = useCompany.useGet();
 
   const shareholder = shareholders?.find(
-    (item: ShareholdersTypes) => item.id === id
+    (item: ShareholdersTypes) => item.id === Number(id)
   );
 
   if (!shareholder && !id) {
@@ -31,9 +31,10 @@ const EditShareholdForm: React.FC = () => {
     number_of_shares: yup.number().required("سهام الزامی است"),
     company: yup.number().required("شرکت الزامی است"),
     user: yup.number().required("کاربر الزامی است"),
+    name: yup.string().required("نام الزامی است"),
     updated_at: yup.string().optional(),
     created_at: yup.string().optional(),
-  });
+  }) as yup.ObjectSchema<ShareholdersTypes>;
 
   const formFields = [
     {
@@ -65,10 +66,10 @@ const EditShareholdForm: React.FC = () => {
     },
   ];
 
-  const initialValues = {
+  const initialValues: ShareholdersTypes = {
     number_of_shares: shareholder?.number_of_shares || 0,
-    company: shareholder?.company.toString() || "",
-    user: shareholder?.user.toString() || "",
+    company: parseInt(shareholder?.company.toString() || "0"),
+    user: parseInt(shareholder?.user.toString() || "0"),
     id: shareholder?.id || 0,
   };
 
@@ -82,7 +83,7 @@ const EditShareholdForm: React.FC = () => {
       };
 
       mutate(
-        { id: shareholder.id, data: formattedValues },
+        { id: shareholder.id.toString(), data: formattedValues },
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ویرایش شد");

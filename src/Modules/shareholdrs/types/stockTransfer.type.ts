@@ -4,7 +4,12 @@ export interface stockTransferTypes {
   seller: number;
   number_of_shares: number;
   price: number;
-  created_at: string;
-  updated_at: string;
   document: string | null;
+  company: number;
+  user: number;
 }
+
+export type CreateStockTransferDTO = Omit<
+  stockTransferTypes,
+  "id" | "document"
+>;

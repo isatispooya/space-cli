@@ -4,4 +4,5 @@ export interface PrecedenceTypes {
   precedence: number;
   used_precedence?: number;
   user: number;
+  updated_at?: string;
 }

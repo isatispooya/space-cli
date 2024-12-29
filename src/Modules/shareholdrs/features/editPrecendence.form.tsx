@@ -1,22 +1,22 @@
 import toast from "react-hot-toast";
 import Forms from "../../../components/forms";
-import { useGetPrecedence, useUpdatePrecendence } from "../hooks";
+import { usePrecendence } from "../hooks";
 import * as yup from "yup";
 import { PrecedenceTypes } from "../types";
 import { usePrecendenceStore } from "../store";
-import { useCompaniesData } from "../../companies/hooks";
+import {  useCompany } from "../../companies/hooks";
 import { useNavigate } from "react-router-dom";
 import { useUserData } from "../../users/hooks";
 
 const EditPrecendenceForm: React.FC = () => {
-  const { mutate: updatePrecendence } = useUpdatePrecendence();
+  const { mutate: updatePrecendence } = usePrecendence.useUpdate();
   const { id } = usePrecendenceStore();
-  const { data } = useGetPrecedence();
+  const { data } = usePrecendence.useGet();
   const precedence = data?.find((item: PrecedenceTypes) => item.id === id);
   const { data: users } = useUserData();
 
   const navigate = useNavigate();
-  const { data: companies } = useCompaniesData();
+  const { data: companies } = useCompany.useGet();
 
   if (!precedence && !id) {
     navigate("/precendence/table");
@@ -29,7 +29,8 @@ const EditPrecendenceForm: React.FC = () => {
     created_at: yup.string().optional(),
     updated_at: yup.string().optional(),
     user: yup.number().required("کاربر الزامی است"),
-  });
+    used_precedence: yup.number().required("حق تقدم استفاده شده الزامی است"),
+  }) as yup.ObjectSchema<PrecedenceTypes>;
 
   const formFields = [
     {
@@ -61,19 +62,19 @@ const EditPrecendenceForm: React.FC = () => {
     },
   ];
 
-  const initialValues = {
-    company: precedence?.company.toString() || "",
+  const initialValues: PrecedenceTypes = {
+    company: parseInt(precedence?.company.toString() || "0"),
     precedence: precedence?.precedence || 0,
     id: precedence?.id || 0,
-    created_at: precedence?.created_at || "",
     updated_at: precedence?.updated_at || "",
-    user: precedence?.user.toString() || "",
+    user: parseInt(precedence?.user.toString() || "0"),
+    used_precedence: precedence?.used_precedence || 0,
   };
 
   const onSubmit = (values: PrecedenceTypes) => {
     if (precedence?.id) {
       updatePrecendence(
-        { id: precedence?.id, data: values },
+        { id: precedence?.id.toString(), data: values },
         {
           onSuccess: () => {
             toast.success("سهامدار با موفقیت ویرایش شد");

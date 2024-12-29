@@ -1,16 +1,17 @@
 import Forms from "../../../components/forms";
-import { usePostShareholders } from "../hooks";
+
 import * as Yup from "yup";
 import { CreateShareholderDTO } from "../types";
 import { FormField } from "../../companies/types";
-import { useCompaniesData } from "../../companies/hooks";
+import {  useCompany } from "../../companies/hooks";
 import { useUserData } from "../../users/hooks";
 import { FormikHelpers } from "formik";
 import toast from "react-hot-toast";
+import { useShareholders } from "../hooks";
 
 const CreateShareholdersPost = () => {
-  const { mutate: postShareholders } = usePostShareholders();
-  const { data } = useCompaniesData();
+  const { mutate: postShareholders } = useShareholders.useCreate();
+  const { data } = useCompany.useGet();
   const { data: users } = useUserData();
 
   const formFields: FormField[] = [

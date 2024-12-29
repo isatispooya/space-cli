@@ -9,19 +9,3 @@ export interface ShareholdersTypes {
 }
 
 export type CreateShareholderDTO = Omit<ShareholdersTypes, "id">;
-
-export interface StockTransferTypes {
-  id: number;
-  buyer: number;
-  seller: number;
-  number_of_shares: number;
-  price: number;
-  document: string | null;
-  company: number;
-  user: number;
-}
-
-export type CreateStockTransferDTO = Omit<
-  StockTransferTypes,
-  "id" | "document"
->;

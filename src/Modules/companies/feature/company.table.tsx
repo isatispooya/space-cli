@@ -1,5 +1,4 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { useCompaniesData } from "../hooks";
 import CustomDataGridToolbar from "../../../utils/tableToolbar";
 import { localeText } from "../../../utils/localtext";
 import { useCallback, useState } from "react";
@@ -9,17 +8,18 @@ import { ModalLayout } from "../../../layouts";
 import toast from "react-hot-toast";
 import SeeCompany from "./company.details";
 import Popup from "../../../components/popup";
-import useDeleteCompany from "../hooks/useDeleteCompany";
+
 import EditCompanyForm from "./company.edit.form";
 import { tableStyles } from "../../../ui";
 import { useUserPermissions } from "../../permissions";
+import useCompany from "../hooks/useCompany";
 
 const CompanyTable = () => {
-  const { data } = useCompaniesData();
-  const { mutate: deleteCompanyMutation } = useDeleteCompany();
+  const { data } = useCompany.useGet();
+  const { mutate: deleteCompanyMutation } = useCompany.useDelete();
   const { checkPermission } = useUserPermissions(); 
 
-  const rows = data?.results || [];
+  const rows = data || [];
   const [selectedRow, setSelectedRow] = useState<CompanyData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -110,7 +110,7 @@ const CompanyTable = () => {
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
-                data={data}
+                data={data as unknown as Record<string, unknown>[]}
                 fileName="گزارش-پرداخت"
                 showExcelExport={true}
                 actions={{

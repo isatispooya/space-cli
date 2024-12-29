@@ -1,8 +1,11 @@
 import * as Yup from "yup";
 import Forms from "../../../components/forms";
-import useCreateCompany from "../hooks/useCreateCompany";
 import { CompanyData } from "../types/companyData.type";
 import { FormField } from "../types";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { FormikHelpers } from "formik";
+import { useCompany } from "../hooks";
 
 const validationSchema = Yup.object().shape({
   id: Yup.number().required(),
@@ -25,9 +28,7 @@ const validationSchema = Yup.object().shape({
       "فرمت ایمیل نامعتبر است (مثال: example@gmail.com)"
     )
     .required("ایمیل الزامی است"),
-  employees: Yup.number()
-    .min(1, "تعداد کارمندان باید بیشتر از 0 باشد")
-    .required("تعداد کارمندان الزامی است"),
+  employees: Yup.number().required(),
   logo: Yup.string().optional(),
   letterhead: Yup.string().optional(),
   seal: Yup.string().optional(),
@@ -65,11 +66,11 @@ const formFields: FormField[] = [
   { name: "type_of_activity", label: "نوع فعالیت", type: "text" },
   { name: "website", label: "وبسایت", type: "text" },
   { name: "email", label: "ایمیل", type: "email" },
-  { name: "employees", label: "تعداد کارمندان", type: "text" },
 ];
 
 const CreateCompanyForm = () => {
-  const { mutate: createCompany } = useCreateCompany();
+  const { mutate: createCompany } = useCompany.useCreate();
+  const navigate = useNavigate();
   const initialValues: CompanyData = formFields.reduce(
     (acc, field) => ({
       ...acc,
@@ -78,27 +79,44 @@ const CreateCompanyForm = () => {
     {} as CompanyData
   );
 
+  const handleSubmit = async (
+    values: CompanyData,
+    { setSubmitting }: FormikHelpers<CompanyData>
+  ) => {
+    const formData = {
+      ...values,
+      id: 0,
+      employees: 0,
+      year_of_establishment: Number(values.year_of_establishment),
+      registered_capital: Number(values.registered_capital),
+      registration_number: Number(values.registration_number),
+    };
+
+    createCompany(formData, {
+      onSuccess: () => {
+        toast.success("شرکت با موفقیت ایجاد شد");
+        navigate("/companies/table");
+      },
+
+      onSettled: () => {
+        setSubmitting(false);
+      },
+    });
+  };
+
   return (
     <Forms
       formFields={formFields}
       initialValues={initialValues}
       validationSchema={validationSchema}
       title="ثبت اطلاعات شرکت"
-      colors="text-[#29D2C7] "
+      colors="text-[#29D2C7]"
       buttonColors="bg-[#29D2C7] hover:bg-[#008282]"
       submitButtonText={{
         default: "ایجاد شرکت",
         loading: "در حال ارسال...",
       }}
-      onSubmit={async (values, { setSubmitting }) => {
-        try {
-          await createCompany(values);
-        } catch (error) {
-          console.error("Error creating company:", error);
-        } finally {
-          setSubmitting(false);
-        }
-      }}
+      onSubmit={handleSubmit}
     />
   );
 };
