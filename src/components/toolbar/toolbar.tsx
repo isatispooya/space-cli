@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 interface ToolbarButton {
   icon: IconType;
   text: string;
-  permission: string ;
+  permission: string;
   path: string;
 }
 

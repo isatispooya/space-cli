@@ -1,0 +1,9 @@
+export { default as UnderWritingFormPage } from "./underwritingForm.page";
+export { default as UnderWritingTablePage } from "./underwritingTable.page";
+export { default as UnderwritingDescPage } from "./underwritingdesc.page";
+export { default as UnderwritingViewPage } from "./underwritingView.page";
+export { default as CreditAnalysisPage } from "./creditAnalysis.page";
+export { default as ProjectProgressPage } from "./projectProgress.page";
+export { default as FinancialStatementPage } from "./financialStatement.page";
+export { default as ImagesPage } from "./images.page";
+export { default as BusinessPlanPage } from "./businessPlan.page";

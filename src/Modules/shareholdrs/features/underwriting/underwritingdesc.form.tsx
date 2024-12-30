@@ -5,7 +5,7 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { IconType } from "react-icons";
-import useUnusedProcess from "../hooks/useUnusedProcess";
+import { useUnusedProcess } from "../../hooks"; 
 
 const UnderwritingDescForm: FC = () => {
   const { data: unusedProcessData } = useUnusedProcess.useGetList();

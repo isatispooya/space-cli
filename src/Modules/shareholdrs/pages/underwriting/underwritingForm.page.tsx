@@ -1,4 +1,4 @@
-import { UnderWritingForm } from "../features";
+import { UnderWritingForm } from "../../features";
 
 const UnderWritingFormPage = () => {
   return <UnderWritingForm />;

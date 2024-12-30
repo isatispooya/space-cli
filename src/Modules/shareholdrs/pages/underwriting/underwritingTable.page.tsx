@@ -1,4 +1,4 @@
-import { UnderWritingTable } from "../features";
+import { UnderWritingTable } from "../../features";
 
 const UnderWritingTablePage = () => {
   return <UnderWritingTable />;
