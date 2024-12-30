@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
-import { LuPlusSquare } from "react-icons/lu";
+import { LuPlus } from "react-icons/lu";
 import { LuTable } from "react-icons/lu";
 
 const StockTransferPage: React.FC = () => {
@@ -13,7 +13,7 @@ const StockTransferPage: React.FC = () => {
       path: "table"
     },
     {
-      icon: LuPlusSquare,
+      icon: LuPlus,
       text: "ایجاد",
       permission: "add_stocktransfer",
       path: "create"
