@@ -1,10 +1,5 @@
 import api from "../../../api/api";
-
-export interface changeOldPassType {
-  last_password: string;
-  new_password: string;
-  new_password_confirm: string;
-}
+import { changeOldPassType } from "../types";
 
 const patchOldPass = async (data: changeOldPassType) => {
   const response = await api.patch("/change-password/", data);

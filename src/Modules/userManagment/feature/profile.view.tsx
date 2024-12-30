@@ -3,11 +3,11 @@ import { useProfile } from "../hooks";
 import { motion } from "framer-motion";
 import profileService from "../services/profileServices";
 
-const PersonProfile: React.FC = () => {
+const ProfileView: React.FC = () => {
   const { data: profile, refetch } = useProfile();
   const [avatarUrl, setAvatarUrl] = useState<string>(profile?.avatar || "");
 
-  console.log(profile);
+  
 
   const handleAvatarChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -159,4 +159,4 @@ const PersonProfile: React.FC = () => {
   );
 };
 
-export default PersonProfile;
+export default ProfileView;

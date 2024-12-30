@@ -6,14 +6,22 @@ import Dashboard from "../Modules/dashboard/pages/dashboard.page";
 import { UpdateUnderWritingPage } from "../Modules/shareholdrs";
 
 const LoginPage = lazy(() => import("../pages/login.page"));
+
+const UserManagementMainPage = lazy(() =>
+  import("../Modules/userManagment").then((module) => ({
+    default: module.UserManagementMainPage,
+  }))
+);
+
 const ProfilePage = lazy(() =>
-  import("../Modules/profile").then((module) => ({
+  import("../Modules/userManagment").then((module) => ({
     default: module.ProfilePage,
   }))
 );
-const SettingsPage = lazy(() =>
-  import("../Modules/settings").then((module) => ({
-    default: module.SettingsPage,
+
+const ChangePassPage = lazy(() =>
+  import("../Modules/userManagment").then((module) => ({
+    default: module.ChangePassPage,
   }))
 );
 
@@ -164,8 +172,6 @@ const CapitalTablePage = lazy(() =>
   }))
 );
 
-
-
 const CapitalIncreaseFormPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.CapitalIncreaseFormPage,
@@ -244,11 +250,7 @@ const StockTransferUpdatePage = lazy(() =>
   }))
 );
 
-
-
 const Loader = () => <LoaderLg />;
-
-
 
 export default function Router() {
   const routes = useRoutes([
@@ -270,14 +272,6 @@ export default function Router() {
     },
 
     {
-      path: "/profile",
-      element: (
-        <Suspense fallback={<Loader />}>
-          <ProfilePage />
-        </Suspense>
-      ),
-    },
-    {
       path: "/",
       element: (
         <Suspense fallback={<Loader />}>
@@ -294,13 +288,32 @@ export default function Router() {
       ),
     },
     {
-      path: "/settings",
+      path: "/userManagement",
       element: (
         <Suspense fallback={<Loader />}>
-          <SettingsPage />
+          <UserManagementMainPage />
         </Suspense>
       ),
+      children: [
+        {
+          path: "profile",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ProfilePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "changePassword",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ChangePassPage />
+            </Suspense>
+          ),
+        },
+      ],
     },
+
     {
       path: "/companies",
       element: (
@@ -403,7 +416,6 @@ export default function Router() {
             </Suspense>
           ),
         },
-   
       ],
     },
     {
@@ -472,8 +484,6 @@ export default function Router() {
             </Suspense>
           ),
         },
-        
-        
       ],
     },
     {

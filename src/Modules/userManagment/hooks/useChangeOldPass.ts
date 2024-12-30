@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import patchOldPass from "../services/changeOldPass.patch";
-import { changeOldPassType } from "../services/changeOldPass.patch";
+import { changeOldPassType } from "../types";
+import { changeOldPass } from "../services";
 
 const useChangeOldPass = () => {
   return useMutation<void, Error, changeOldPassType>({
     mutationKey: ["changeOldPasss"],
-    mutationFn: patchOldPass,
+    mutationFn: changeOldPass,
   });
 };
 

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 interface FieldProps {
   label: string;
@@ -8,7 +8,10 @@ interface FieldProps {
 export const Field: React.FC<FieldProps> = ({ label, value }) => {
   return (
     <div>
-      <label htmlFor="label" className="block text-gray-700 text-sm font-semibold mb-2">
+      <label
+        htmlFor="label"
+        className="block text-gray-700 text-sm font-semibold mb-2"
+      >
         {label}:
       </label>
       <input

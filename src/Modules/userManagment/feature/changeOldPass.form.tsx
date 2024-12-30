@@ -5,7 +5,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import toast from "react-hot-toast";
-import useChangeOldPass from "../hooks/useChangeOldPass";
+import { useChangeOldPass } from "../hooks";
 
 const validationSchema = Yup.object().shape({
   last_password: Yup.string().required("رمز عبور فعلی الزامی است"),
@@ -22,8 +22,7 @@ const ChangePasswordForm = () => {
 
   return (
     <>
-    
-      <section dir="rtl" className="flex min-h-screen justify-center">
+      <section dir="rtl" className="flex justify-center">
         <motion.div
           {...fadeIn(0.05, 0, 0.4)}
           className="container mx-auto p-4 md:p-8 max-w-md"

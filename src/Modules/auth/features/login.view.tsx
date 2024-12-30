@@ -7,9 +7,10 @@ import LoginForm from "./login.form";
 import SignupForm from "./signup.form";
 import ForgetPassSms from "./forget_pass_sms.form";
 import ForgetPassForm from "./forget_pass.form";
-import rb from "./rb.png";
+// import rb from "./rb.png";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
+import underwritingImg from "./photoooo.jpg";
 
 initTWE({ Input, Ripple });
 
@@ -51,11 +52,11 @@ const Login: React.FC = () => {
       dir="rtl"
       className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-neutral-200 dark:bg-neutral-700"
     >
-      <div className="hidden md:block md:w-1/2 h-screen fixed left-0">
+      <div className="hidden md:block md:w-[60%] h-screen fixed left-0">
         <motion.img
           key={currentAnnouncement?.id}
           {...fadeIn(0.05, 20)}
-          src={currentAnnouncement?.picture || rb}
+          src={underwritingImg}
           alt={currentAnnouncement?.title || "Login illustration"}
           className="w-full h-full object-cover"
         />
@@ -95,7 +96,7 @@ const Login: React.FC = () => {
       </div>
       <motion.div
         {...fadeIn(0.05, 0, 0.4)}
-        className="container mx-auto p-4 md:p-8 max-w-md order-0 md:ml-auto md:mr-8"
+        className="container flex mx-auto p-4 md:p-8 max-w-md order-0 md:ml-auto md:mr-40"
       >
         <div className="flex flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="w-full">

@@ -16,6 +16,9 @@ const useUserPermissions = () => {
     if (isLoading || !data) {
       return false;
     }
+    if (permission === "allow_any") {
+      return true;
+    }
     const hasPermission = data.some((item: Permission) => item.codename === permission);
     return hasPermission;
   };
