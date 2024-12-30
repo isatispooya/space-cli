@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
-import { LuInfo, LuPlusSquare } from "react-icons/lu";
+import { LuInfo, LuSquare } from "react-icons/lu";
 import { LuTable } from "react-icons/lu";
 import { MdOutlineShoppingBag } from "react-icons/md";
 
@@ -14,7 +14,7 @@ const UnderwritingMain = () => {
       path: "description",
     },
     {
-      icon: LuPlusSquare,
+      icon: LuSquare,
       text: "ضمایم",
       permission: "unused_precedence_process",
       path: "attachments",
