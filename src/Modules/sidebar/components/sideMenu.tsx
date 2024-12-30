@@ -1,19 +1,20 @@
 import React from "react";
 import { Menu, SubMenu, MenuItem } from "react-pro-sidebar";
-import { menuItems, MenuItem as MenuItemType } from "../data/menuItems";
+import { MenuItem as MenuItemType } from "../data/menuItems";
 import { useNavigate } from "react-router-dom";
 import BothLogo from "../assets/bothLogo.svg";
 import { useUserPermissions } from "../../permissions";
 
 interface SideMenuProps {
   collapsed: boolean;
+  activeSection: MenuItemType | null;
+  onClose: () => void;
 }
 
-const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
+const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection }) => {
   const navigate = useNavigate();
-  const { checkPermission , data} = useUserPermissions();
+  const { checkPermission } = useUserPermissions();
 
-  console.log(data);
   const filterMenuItems = (items: MenuItemType[]): MenuItemType[] => {
     return items.filter((item) => {
       if (item.codename && !checkPermission(item.codename)) {
@@ -26,14 +27,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
         }
         item.submenu = filteredSubmenu;
       }
-
       return true;
     });
   };
-
-  const filteredMenuItems = React.useMemo(() => {
-    return filterMenuItems([...menuItems]);
-  }, [checkPermission]);
 
   const renderMenuItem = (item: MenuItemType) => {
     if (item.submenu) {
@@ -46,6 +42,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
             </div>
           }
           className="text-white"
+          defaultOpen
         >
           {item.submenu.map((subItem, subIndex) => (
             <React.Fragment key={subIndex}>
@@ -70,14 +67,17 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       </MenuItem>
     );
   };
+  if (!activeSection || collapsed) {
+    return null;
+  }
+  const filteredActiveSection = filterMenuItems([activeSection])[0];
+  if (!filteredActiveSection) {
+    return null;
+  }
 
   return (
-    <div
-      className={`fixed right-14 pr-1 h-full overflow-hidden transition-all duration-300 ${
-        collapsed ? "w-0" : "w-64"
-      }`}
-    >
-      <div className="h-full w-64 bg-gradient-to-b from-[#5677BC] to-[#02205F] rounded-l-3xl">
+    <div className="fixed right-14 pr-1 h-full overflow-hidden transition-all duration-300 w-64">
+      <div className="h-full w-64 bg-gradient-to-b from-[#5677BC] to-[#02205F] ">
         <Menu
           className="pt-8 px-4 rounded-l-xl"
           menuItemStyles={{
@@ -92,9 +92,12 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
             },
           }}
         >
-          <div className="flex items-start justify-start mr-4">
-            <img src={BothLogo} alt="logo" className="w-[12rem] mb-4" />
+          <div className="relative mb-4">
+            <div className="flex justify-center ">
+              <img src={BothLogo} alt="logo" className="w-[12rem]" />
+            </div>
           </div>
+
           <div className="mb-8 mr-2">
             <input
               type="text"
@@ -103,9 +106,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
             />
           </div>
 
-          {filteredMenuItems.map((item, index) => (
-            <React.Fragment key={index}>{renderMenuItem(item)}</React.Fragment>
-          ))}
+          {renderMenuItem(filteredActiveSection)}
         </Menu>
       </div>
     </div>

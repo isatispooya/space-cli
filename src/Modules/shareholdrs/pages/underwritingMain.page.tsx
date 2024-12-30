@@ -10,25 +10,25 @@ const UnderwritingMain = () => {
     {
       icon: LuInfo,
       text: "توضیحات",
-      permission: "view_underwriting",
+      permission: "unused_precedence_process",
       path: "description",
     },
     {
       icon: LuPlusSquare,
       text: "ضمایم",
-      permission: "view_underwriting",
+      permission: "unused_precedence_process",
       path: "attachments",
     },
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_underwriting",
+      permission: "unused_precedence_process",
       path: "table",
     },
     {
       icon: MdOutlineShoppingBag,
       text: "سرمایه گذاری ",
-      permission: "add_underwriting",
+      permission: "unused_precedence_process",
       path: "create",
     },
   ];

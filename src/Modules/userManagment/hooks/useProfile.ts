@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import profileService from "../services/profileServices"; 
+import profileService from "../services/profileServices";
 
 export const useProfile = () => {
   return useQuery({
@@ -9,5 +9,4 @@ export const useProfile = () => {
     retry: 3,
   });
 };
-
 export default useProfile;

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useProfile } from "../hooks";
+import { useProfile, useUpdateProfilePicture } from "../hooks";
 import { motion } from "framer-motion";
-import profileService from "../services/profileServices";
 
 const ProfileView: React.FC = () => {
   const { data: profile, refetch } = useProfile();
+  const { mutate: updateProfilePicture } = useUpdateProfilePicture();
   const [avatarUrl, setAvatarUrl] = useState<string>(profile?.avatar || "");
 
-  
+  console.log(avatarUrl, 111111);
 
   const handleAvatarChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -18,7 +18,7 @@ const ProfileView: React.FC = () => {
         const formData = new FormData();
         formData.append("avatar", file);
 
-        await profileService.updateImage(formData);
+        await updateProfilePicture(formData);
         await refetch();
 
         const reader = new FileReader();

@@ -31,55 +31,44 @@ const Shortcuts: FC = () => {
   if (isLoading) return <LoaderLg />;
 
   return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 p-4 max-w-[1200px] mx-auto"
-    >
-      {data?.map((shortcut: Shortcut) => (
-        <motion.div
-          key={shortcut.id}
-          variants={item}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-full"
-        >
-          <a href={shortcut.link} target="_blank" rel="noopener noreferrer">
-            <div
-              className={`
-              bg-white
-              rounded-2xl p-3
-              shadow-lg
-              transition-all duration-300
-              flex flex-col items-center
-              text-center
-              h-[90px]
-              justify-center
-              cursor-pointer
-              w-full
-              max-w-[120px]
-              mx-auto
-              hover:bg-gray-50
-              relative
-              overflow-hidden
-            `}
+    <div className="p-4 max-w-[1200px] mx-auto">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      >
+        {data?.length === 0 ? (
+          <div className="col-span-full text-center text-gray-500 py-8">
+            هیچ لیستی موجود نیست
+          </div>
+        ) : (
+          data?.map((shortcut: Shortcut) => (
+            <motion.div
+              key={shortcut.id}
+              variants={item}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <div className="mb-2 w-8 h-8">
-                <img
-                  src={shortcut.picture}
-                  alt={shortcut.title}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <h3 className="text-[12px] text-gray-700 font-medium leading-tight">
-                {shortcut.title}
-              </h3>
-            </div>
-          </a>
-        </motion.div>
-      ))}
-    </motion.div>
+              <a href={shortcut.link} target="_blank" rel="noopener noreferrer">
+                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center min-h-[200px] cursor-pointer">
+                  <div className="mb-4 w-16 h-16">
+                    <img
+                      src={shortcut.picture}
+                      alt={shortcut.title}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <h3 className="text-lg text-gray-700 font-medium text-center">
+                    {shortcut.title}
+                  </h3>
+                </div>
+              </a>
+            </motion.div>
+          ))
+        )}
+      </motion.div>
+    </div>
   );
 };
 

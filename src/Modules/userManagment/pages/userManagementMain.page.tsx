@@ -13,7 +13,7 @@ const UserManagementMainPage: React.FC = () => {
     },
     {
       icon: LuSettings,
-      text: "تنظیمات",
+      text: "تغییر رمز عبور",
       permission: "allow_any",
       path: "changePassword",
     },

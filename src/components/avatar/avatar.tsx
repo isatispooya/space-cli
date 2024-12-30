@@ -20,7 +20,7 @@ const Avatar = () => {
   const tools = [
     {
       label: "تغییر رمز عبور",
-      href: "/settings",
+      href: "/userManagement/changePassword",
     },
     {
       label: "پروفایل",

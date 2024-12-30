@@ -8,5 +8,4 @@ const useChangeOldPass = () => {
     mutationFn: changeOldPass,
   });
 };
-
 export default useChangeOldPass;

@@ -2,13 +2,14 @@ import { IconType } from "react-icons";
 import {
   FaBuilding,
   FaEnvelope,
+  FaHome,
   FaPhone,
   FaUser,
   FaUserTie,
 } from "react-icons/fa";
 
 export interface MenuItem {
-  title: string;
+  title?: string;
   path?: string;
   icon?: IconType;
   submenu?: MenuItem[];
@@ -16,6 +17,12 @@ export interface MenuItem {
 }
 
 export const menuItems: MenuItem[] = [
+  {
+    title: "خانه",
+    icon: FaHome,
+    codename: "allow_any",
+    submenu: [{ title: "داشبورد", path: "/", codename: "allow_any" }],
+  },
   {
     title: "حساب کاربری",
     icon: FaUser,
@@ -43,6 +50,7 @@ export const menuItems: MenuItem[] = [
   {
     title: "امور سهامدارن",
     icon: FaUserTie,
+
     submenu: [
       {
         title: "مدیریت سهام",
@@ -76,7 +84,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "پذیره نویسی",
-        codename: "view_underwriting",
+        codename: "unused_precedence_process",
         path: "/underwriting/table",
       },
     ],
