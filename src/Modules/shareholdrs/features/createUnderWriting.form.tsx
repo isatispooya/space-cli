@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { underwritingCreateTypes, underwritingTypes } from "../types";
-import { useUnderwriting } from "../hooks";
+import { useUnderwriting, useUnusedProcess } from "../hooks";
 import { useFormik } from "formik";
 import { useState } from "react";
 
@@ -12,7 +12,7 @@ interface SelectOption {
 const UnderWritingForm = () => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const { mutate: postPrecendence } = useUnderwriting.useCreate();
-  const { data: unusedPrecedenceProcess } = useUnderwriting.useGet();
+  const { data: unusedPrecedenceProcess } = useUnusedProcess.useGetList();
   const [selectedDescription, setSelectedDescription] = useState("");
 
   const typeOptions = [
@@ -25,6 +25,8 @@ const UnderWritingForm = () => {
       label: process.company,
       value: process.id,
     })) || [];
+
+  console.log(unusedPrecedenceProcess, 111111);
 
   const formik = useFormik({
     initialValues: {
@@ -53,7 +55,7 @@ const UnderWritingForm = () => {
           process: String(values.company),
         };
 
-        await postPrecendence(purchaseData<underwritingCreateTypes>, {
+        await postPrecendence(purchaseData, {
           onSuccess: (response) => {
             console.log("Purchase precedence created successfully");
 
@@ -76,8 +78,7 @@ const UnderWritingForm = () => {
   const handleCompanyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCompanyId = e.target.value;
     const selectedCompany = unusedPrecedenceProcess?.find(
-      (process: underwritingTypes) =>
-        process.id === Number(selectedCompanyId)
+      (process: underwritingTypes) => process.id === Number(selectedCompanyId)
     );
     formik.setFieldValue("company", selectedCompanyId);
     formik.setFieldValue("price", selectedCompany?.price || "");

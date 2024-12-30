@@ -56,7 +56,7 @@ const SidePanel = ({
     {
       src: positionIcon,
       alt: "shareholders",
-      onClick: () => handleIconClick(menuItems[1]),
+      onClick: () => handleIconClick(menuItems[2]),
       isReactIcon: false,
     },
     {
@@ -68,13 +68,13 @@ const SidePanel = ({
     {
       src: profileIcon,
       alt: "profile",
-      onClick: () => handleIconClick(menuItems[2]),
+      onClick: () => handleIconClick(menuItems[4]),
       isReactIcon: false,
     },
     {
       src: contactIcon,
       alt: "contact",
-      onClick: () => handleIconClick(menuItems[3]),
+      onClick: () => handleIconClick(menuItems[5]),
       isReactIcon: false,
     },
   ];

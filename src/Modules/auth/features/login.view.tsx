@@ -52,11 +52,11 @@ const Login: React.FC = () => {
       dir="rtl"
       className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-neutral-200 dark:bg-neutral-700"
     >
-      <div className="hidden md:block md:w-[60%] h-screen fixed left-0">
+      <div className="hidden md:block md:w-1/2 xl:w-[60%] h-screen fixed left-0">
         <motion.img
           key={currentAnnouncement?.id}
           {...fadeIn(0.05, 20)}
-          src={underwritingImg}
+          src={underwritingImg || currentAnnouncement?.image}
           alt={currentAnnouncement?.title || "Login illustration"}
           className="w-full h-full object-cover"
         />
@@ -96,77 +96,64 @@ const Login: React.FC = () => {
       </div>
       <motion.div
         {...fadeIn(0.05, 0, 0.4)}
-        className="container flex mx-auto p-4 md:p-8 max-w-md order-0 md:ml-auto md:mr-40"
+        className="w-full md:w-1/2 xl:w-[40%] md:ml-auto px-4 md:px-8 py-8"
       >
-        <div className="flex flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
-          <div className="w-full">
-            <div className="rounded-lg bg-white shadow-lg dark:bg-neutral-800 pr-4">
-              <div className="lg:flex lg:flex-wrap">
-                <div className="px-4 md:px-5 lg:w-full p-8 pr-6">
-                  <motion.div
-                    {...fadeIn(0.05, 10)}
-                    className="mx-auto p-4 md:p-8"
-                  >
-                    <div className="mb-10">
-                      <LoginHead />
-                    </div>
-                    {activeComponent === "login" && (
-                      <>
-                        <LoginForm
-                          handleComponentChange={handleComponentChange}
-                        />
-                        <div className=" text-center text-sm mt-4">
-                          <span className="text-gray-600">
-                            حساب کاربری ندارید؟{" "}
-                          </span>
-                          <button
-                            onClick={() => handleComponentChange("signup")}
-                            className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
-                          >
-                            ثبت‌نام کنید
-                          </button>
-                        </div>
-                      </>
-                    )}
-                    {activeComponent === "signup" && (
-                      <>
-                        <SignupForm />
-                        <div className="mt-4 text-center text-sm">
-                          <span className="text-gray-600">
-                            قبلاً ثبت‌نام کرده‌اید؟{" "}
-                          </span>
-                          <button
-                            onClick={() => handleComponentChange("login")}
-                            className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
-                          >
-                            وارد شوید
-                          </button>
-                        </div>
-                      </>
-                    )}
-                    {activeComponent === "forgetpass" && (
-                      <>
-                        {!isSmsVerified ? (
-                          <ForgetPassSms
-                            onVerificationSuccess={() => setIsSmsVerified(true)}
-                          />
-                        ) : (
-                          <ForgetPassForm />
-                        )}
-                        <div className="mt-4 text-center text-sm">
-                          <button
-                            onClick={() => handleComponentChange("login")}
-                            className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
-                          >
-                            بازگشت به صفحه ورود
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </motion.div>
-                </div>
+        <div className="w-full max-w-[350px] mx-auto">
+          <div className="rounded-lg bg-white shadow-lg dark:bg-neutral-800 p-4 md:p-6">
+            <motion.div {...fadeIn(0.05, 10)}>
+              <div className="mb-10">
+                <LoginHead />
               </div>
-            </div>
+              {activeComponent === "login" && (
+                <>
+                  <LoginForm handleComponentChange={handleComponentChange} />
+                  <div className=" text-center text-sm mt-4">
+                    <span className="text-gray-600">حساب کاربری ندارید؟ </span>
+                    <button
+                      onClick={() => handleComponentChange("signup")}
+                      className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
+                    >
+                      ثبت‌نام کنید
+                    </button>
+                  </div>
+                </>
+              )}
+              {activeComponent === "signup" && (
+                <>
+                  <SignupForm />
+                  <div className="mt-4 text-center text-sm">
+                    <span className="text-gray-600">
+                      قبلاً ثبت‌نام کرده‌اید؟{" "}
+                    </span>
+                    <button
+                      onClick={() => handleComponentChange("login")}
+                      className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
+                    >
+                      وارد شوید
+                    </button>
+                  </div>
+                </>
+              )}
+              {activeComponent === "forgetpass" && (
+                <>
+                  {!isSmsVerified ? (
+                    <ForgetPassSms
+                      onVerificationSuccess={() => setIsSmsVerified(true)}
+                    />
+                  ) : (
+                    <ForgetPassForm />
+                  )}
+                  <div className="mt-4 text-center text-sm">
+                    <button
+                      onClick={() => handleComponentChange("login")}
+                      className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
+                    >
+                      بازگشت به صفحه ورود
+                    </button>
+                  </div>
+                </>
+              )}
+            </motion.div>
           </div>
         </div>
       </motion.div>

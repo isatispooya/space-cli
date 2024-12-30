@@ -176,7 +176,7 @@ const UnderWritingTable: React.FC = () => {
           }}
           sx={tableStyles}
           checkboxSelection
-          rowSelectionModel={selectedRow ? [selectedRow.id] : []}
+          rowSelectionModel={selectedRow?.id ? [selectedRow.id] : []}
           disableMultipleRowSelection
           initialState={{
             pagination: {

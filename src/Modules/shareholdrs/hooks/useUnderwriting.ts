@@ -5,7 +5,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { underwritingServices } from "../services";
-import { underwritingTypes } from "../types";
+import { underwritingCreateTypes, underwritingTypes } from "../types";
 
 const useUnderwriting = {
   useGet: (): UseQueryResult<underwritingTypes[]> => {
@@ -16,13 +16,13 @@ const useUnderwriting = {
   },
 
   useCreate: (): UseMutationResult<
-    underwritingTypes,
+    { redirect_url?: string },
     Error,
-    underwritingTypes
+    underwritingCreateTypes
   > => {
     return useMutation({
       mutationKey: ["createUnderwriting"],
-      mutationFn: (data: underwritingTypes) =>
+      mutationFn: (data: underwritingCreateTypes) =>
         underwritingServices.create(data),
     });
   },
@@ -45,7 +45,6 @@ const useUnderwriting = {
       mutationFn: (id: number) => underwritingServices.delete(id),
     });
   },
- 
 };
 
 export default useUnderwriting;

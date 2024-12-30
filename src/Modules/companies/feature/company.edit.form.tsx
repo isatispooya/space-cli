@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { CompanyData } from "../types/companyData.type";
 
-import useUpdateCompany from "../hooks/useUpdateCompany";
+import { useCompany } from "../hooks";
 import Forms from "../../../components/forms";
 import toast from "react-hot-toast";
 import { FormField } from "../types";
@@ -76,7 +76,7 @@ interface EditCompanyFormProps {
 }
 
 const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
-  const { mutate: updateCompany } = useUpdateCompany(data?.id as number);
+  const { mutate: updateCompany } = useCompany.useUpdate();
   if (!data) return null;
 
   const initialValues: CompanyData = {
@@ -99,7 +99,6 @@ const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
 
   return (
     <>
-  
       <Forms
         formFields={formFields}
         initialValues={initialValues}
@@ -116,7 +115,10 @@ const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             await updateCompany(
-              { ...values },
+              {
+                id: values.id,
+                data: values,
+              },
               {
                 onSuccess: () => {
                   toast.success("شرکت با موفقیت ویرایش شد");

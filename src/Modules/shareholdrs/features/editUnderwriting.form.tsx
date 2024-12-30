@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { useUnderwritingStore } from "../store";
 import { useUnderwriting } from "../hooks";
-import { underwritingCreateTypes, underwritingTypes } from "../types";
+import { underwritingTypes } from "../types";
 
 const EditUnderWritingForm = () => {
   const { data: purchaseData } = useUnderwriting.useGet();
@@ -22,7 +22,10 @@ const EditUnderWritingForm = () => {
       amount: data?.amount?.toString() || "",
       process: data?.process?.toString() || "",
       price: data?.price?.toString() || "",
-      total_price: data ? (data.price * data.amount).toString() : "",
+      total_price:
+        data?.price && data?.amount
+          ? (data.price * data.amount).toString()
+          : "",
       transaction_id: data?.transaction_id || "",
       status: data?.status || "",
       document: data?.document || "",
@@ -35,13 +38,22 @@ const EditUnderWritingForm = () => {
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const purchaseData: underwritingCreateTypes = {
+        if (!data?.id) {
+          throw new Error("ID is required");
+        }
+
+        const purchaseData: underwritingTypes = {
+          id: data.id,
           amount: Number(values.amount),
           price: Number(values.price),
           total_price: Number(values.total_price),
           process: Number(values.process),
           transaction_id: values.transaction_id,
           status: values.status,
+          type: values.type,
+          company: data.company,
+          created_at: data.created_at,
+          description: data.description || "",
         };
 
         await patchUnusedPrecedenceProcess(purchaseData, {
@@ -61,14 +73,14 @@ const EditUnderWritingForm = () => {
   });
 
   const handleCompanyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCompanyId = Number(e.target.value);
+    const selectedCompanyId = e.target.value;
     const selectedCompany = processData?.find(
-      (process: underwritingTypes) => process.id === selectedCompanyId
+      (process: underwritingTypes) => process.id === Number(selectedCompanyId)
     );
 
     const updates = {
       process: selectedCompanyId,
-      price: selectedCompany?.price || "",
+      price: selectedCompany?.price?.toString() || "",
       total_price: formik.values.amount
         ? (
             (selectedCompany?.price || 0) * Number(formik.values.amount)

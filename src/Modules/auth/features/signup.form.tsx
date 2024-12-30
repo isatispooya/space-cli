@@ -13,7 +13,7 @@ const SignupForm = () => {
   const [showOtpInput, setShowOtpInput] = useState<boolean>(false);
   const {
     mutate: signupMutate,
-    isError: signupError,
+ 
     isPending: signupPending,
   } = useApplyNationalCode();
   const { mutate: register, isPending: registerPending } = useRegister();
