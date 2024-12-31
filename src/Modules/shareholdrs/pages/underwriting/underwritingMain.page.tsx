@@ -1,10 +1,15 @@
 import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../../layouts";
 import { Toolbar } from "../../../../components";
-import { LuInfo, LuSquare } from "react-icons/lu";
+import { LuInfo } from "react-icons/lu";
 import { LuTable } from "react-icons/lu";
 import { MdOutlineShoppingBag } from "react-icons/md";
-
+import { FaBusinessTime } from "react-icons/fa6";
+import { RiProgress5Fill } from "react-icons/ri";
+import { FaMoneyCheckAlt } from "react-icons/fa";
+import { GrValidate } from "react-icons/gr";
+import { GrUserExpert } from "react-icons/gr";
+import { IoDocumentAttachSharp } from "react-icons/io5";
 const UnderwritingMain = () => {
   const toolbarButtons = [
     {
@@ -14,37 +19,37 @@ const UnderwritingMain = () => {
       path: "description",
     },
     {
-      icon: LuSquare,
+      icon: FaBusinessTime,
       text: "طرح کسب و کار",
       permission: "unused_precedence_process",
       path: "businessPlan",
     },
     {
       text: "پیشرفت پروژه",
-      icon: LuSquare,
+      icon: RiProgress5Fill,
       permission: "unused_precedence_process",
       path: "projectProgress",
     },
     {
       text: "صورت مالی",
-      icon: LuSquare,
+      icon: FaMoneyCheckAlt,
       permission: "unused_precedence_process",
       path: "financialStatement",
     },
     {
       text: "اعتبار سنجی",
-      icon: LuSquare,
+      icon: GrValidate,
       permission: "unused_precedence_process",
       path: "creditAnalysis",
     },
     {
       text: "کارشناسی سهام",
-      icon: LuSquare,
+      icon: GrUserExpert,
       permission: "unused_precedence_process",
       path: "shareExpert",
     },
     {
-      icon: LuSquare,
+      icon: IoDocumentAttachSharp,
       text: "ضمایم",
       permission: "unused_precedence_process",
       path: "attachments",
