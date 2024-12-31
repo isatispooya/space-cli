@@ -6,4 +6,5 @@ export { default as ProjectProgressView } from "./projectProgress.view";
 export { default as FinancialStatementView } from "./financialStatement.view";
 export { default as CreditAnalysisView } from "./creditAnalysis.view";
 export { default as ImagesView } from "./images.view";
+export { default as ShareExpertView } from "./shareExpert.view";
 

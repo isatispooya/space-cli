@@ -243,6 +243,7 @@ const UnderwritingViewPage = lazy(() =>
     default: module.UnderwritingViewPage,
   }))
 );
+
 const ProjectProgressPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.ProjectProgressPage,
@@ -270,6 +271,12 @@ const BusinessPlanPage = lazy(() =>
 const CreditAnalysisPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.CreditAnalysisPage,
+  }))
+);
+
+const ShareExpertPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.ShareExpertPage,
   }))
 );
 
@@ -720,6 +727,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <ProjectProgressPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "shareExpert",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ShareExpertPage />
             </Suspense>
           ),
         },

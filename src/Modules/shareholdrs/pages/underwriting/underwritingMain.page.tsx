@@ -41,7 +41,7 @@ const UnderwritingMain = () => {
       text: "کارشناسی سهام",
       icon: LuSquare,
       permission: "unused_precedence_process",
-      path: "shareholdersAnalysis",
+      path: "shareExpert",
     },
     {
       icon: LuSquare,

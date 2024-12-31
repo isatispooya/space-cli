@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 interface ViewDownloadProps {
   title?: string;
+  key?: number;
   description: string;
   regulatorLogo: string;
   regulatorText: string;
@@ -15,7 +16,8 @@ interface ViewDownloadProps {
 }
 
 const ViewDownload: FC<ViewDownloadProps> = ({
-  title = "پیشرفت پروژه",
+  title,
+  key,
   description,
   regulatorLogo,
   regulatorText,
@@ -28,18 +30,17 @@ const ViewDownload: FC<ViewDownloadProps> = ({
   const handleDownload = () => {
     if (onDownload) {
       onDownload();
+    } else if (!downloadLink) {
+      toast.error(toastError || "در حال حاضر فایلی برای دانلود وجود ندارد");
+    } else {
+      toast.success(toastMessage || "در حال دانلود فایل");
     }
-    toast.success(toastMessage || "در حال دانلود فایل");
   };
-
-  if (!downloadLink) {
-    toast.error(toastError || "در حال حاضر فایلی برای دانلود وجود ندارد");
-    return null;
-  }
 
   return (
     <div>
       <motion.div
+        key={key}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="max-w-2xl mx-auto p-8"
@@ -88,20 +89,22 @@ const ViewDownload: FC<ViewDownloadProps> = ({
               {regulatorText}
             </p>
           </motion.div>
-          <a href={downloadLink} onClick={handleDownload}>
-            <motion.button
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="mx-auto block bg-[#008282] text-white px-8 py-3 rounded-lg 
+          {downloadLink && (
+            <a href={downloadLink} onClick={handleDownload}>
+              <motion.button
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="mx-auto block bg-[#008282] text-white px-8 py-3 rounded-lg 
                    shadow-lg hover:bg-[#008282] transition-colors duration-200"
-              style={{ fontFamily: "Vazirmatn, sans-serif" }}
-            >
-              {downloadButtonText}
-            </motion.button>
-          </a>
+                style={{ fontFamily: "Vazirmatn, sans-serif" }}
+              >
+                {downloadButtonText}
+              </motion.button>
+            </a>
+          )}
         </motion.div>
       </motion.div>
     </div>

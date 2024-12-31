@@ -7,3 +7,4 @@ export { default as ProjectProgressPage } from "./projectProgress.page";
 export { default as FinancialStatementPage } from "./financialStatement.page";
 export { default as ImagesPage } from "./images.page";
 export { default as BusinessPlanPage } from "./businessPlan.page";
+export { default as ShareExpertPage } from "./shareExpert.page";
