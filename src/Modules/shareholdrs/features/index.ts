@@ -12,6 +12,5 @@ export { default as CreatePrecendenceForm } from "./createPrecendence.form";
 export { default as CreateStocktransferForm } from "./createStocktransfer.form";
 export { default as CreateCapitalIncreaseForm } from "./createCapitalIncrease.form";
 export { default as CreateDisplacementForm } from "./createDisplacement.form";
-export { default as UnderWritingForm } from "./createUnderWriting.form";
 export { default as EditUnderWritingForm } from "./editUnderwriting.form";
-export * from "./underwriting"; 
+export * from "./underwriting";

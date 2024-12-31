@@ -1,24 +1,30 @@
 import * as Yup from "yup";
-import { underwritingCreateTypes, underwritingTypes } from "../types";
-import { useUnderwriting, useUnusedProcess } from "../hooks";
+import { underwritingCreateTypes, underwritingTypes } from "../../types";
+import { useUnderwriting, useUnusedProcess } from "../../hooks";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AgreementPopup } from "../../components";
 
 interface SelectOption {
   label: string;
   value: string;
 }
 
-const UnderWritingForm = () => {
+const CreateUnderWritingForm = () => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const { mutate: postPrecendence } = useUnderwriting.useCreate();
   const { data: unusedPrecedenceProcess } = useUnusedProcess.useGetList();
+  const [showPopup, setShowPopup] = useState(false);
   const [selectedDescription, setSelectedDescription] = useState("");
 
   const typeOptions = [
     { label: "فیش", value: "1" },
     { label: "درگاه", value: "2" },
   ];
+
+  useEffect(() => {
+    setShowPopup(true);
+  }, []);
 
   const companyOptions =
     unusedPrecedenceProcess?.map((process: underwritingTypes) => ({
@@ -106,7 +112,8 @@ const UnderWritingForm = () => {
   const isGatewayType = formik.values.type === "2";
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-[24px] shadow-lg">
+    <>
+       <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-[24px] shadow-lg">
       <h2 className="text-[#29D2C7] text-xl font-bold mb-6">ثبت پذیره نویسی</h2>
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -341,8 +348,22 @@ const UnderWritingForm = () => {
           </button>
         </div>
       </form>
-    </div>
+      </div>
+
+      {showPopup && (
+        <AgreementPopup
+        isOpen={showPopup}
+        onClose={() => setShowPopup(false)}
+        terms={unusedPrecedenceProcess?.map((process: underwritingTypes) => process.agreement_text
+        ) || []}
+        onAccept={() => {
+          // Handle acceptance
+          setShowPopup(false);
+        }}
+        />
+      )}
+    </>
   );
 };
 
-export default UnderWritingForm;
+export default CreateUnderWritingForm;

@@ -14,6 +14,5 @@ export interface underwritingTypes {
   user?: number;
   process?: number;
   description?: string;
-
-
+  agreement_text?: string;
 }

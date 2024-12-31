@@ -1,4 +1,4 @@
-import { useUnusedProcess } from "../../hooks"; 
+import { useUnusedProcess } from "../../hooks";
 import { motion } from "framer-motion";
 import { FiDownload } from "react-icons/fi";
 
@@ -10,18 +10,12 @@ interface AppendixItem {
   created_at: string;
 }
 
-interface ProcessItem {
-  appendices_data: AppendixItem[];
-}
-
 const UnderwritingAttachmentsView = () => {
   const { data } = useUnusedProcess.useGetList();
-  const appendixItems = data?.flatMap((item: ProcessItem) => item.appendices_data || []) || [];
-
+  const appendixItems = data?.[0]?.appendices ? [data[0].appendices] : [];
   if (appendixItems.length === 0) return null;
-
   const getFileFormat = (fileUrl: string) => {
-    const format = fileUrl.split('.').pop()?.toUpperCase() || '';
+    const format = fileUrl.split(".").pop()?.toUpperCase() || "";
     return format;
   };
 
@@ -42,11 +36,15 @@ const UnderwritingAttachmentsView = () => {
           >
             <div className="flex flex-grow items-center">
               <div className="ml-5">
-                <div className={`relative inline-flex h-20 w-20 items-center justify-center rounded-3xl shadow-md ${
-                  item.status === 'error' ? 'bg-gradient-to-br from-red-100 via-red-200 to-red-300 text-red-600' : 
-                  item.status === 'success' ? 'bg-gradient-to-br from-emerald-100 via-emerald-200 to-emerald-300 text-emerald-700' : 
-                  'bg-gradient-to-br from-indigo-100 via-indigo-200 to-indigo-300 text-indigo-700'
-                }`}>
+                <div
+                  className={`relative inline-flex h-20 w-20 items-center justify-center rounded-3xl shadow-md ${
+                    item.status === "error"
+                      ? "bg-gradient-to-br from-red-100 via-red-200 to-red-300 text-red-600"
+                      : item.status === "success"
+                      ? "bg-gradient-to-br from-emerald-100 via-emerald-200 to-emerald-300 text-emerald-700"
+                      : "bg-gradient-to-br from-indigo-100 via-indigo-200 to-indigo-300 text-indigo-700"
+                  }`}
+                >
                   <span className="font-extrabold text-xl tracking-wider">
                     {getFileFormat(item.file)}
                   </span>
@@ -64,9 +62,9 @@ const UnderwritingAttachmentsView = () => {
               </div>
             </div>
 
-            <a 
-              href={item.file} 
-              download 
+            <a
+              href={item.file}
+              download
               className="flex items-center gap-2 text-slate-700 bg-slate-100 hover:bg-indigo-500 hover:text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105"
               onClick={(e) => e.stopPropagation()}
             >

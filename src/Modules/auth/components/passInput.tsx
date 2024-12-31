@@ -24,12 +24,14 @@ const PassInput: React.FC<InputLineProps> = ({
   ...motionProps
 }) => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   return (
     <motion.div
       {...fadeIn(0.4, -20, 0.4)}
       className="relative mb-3"
       data-twe-input-wrapper-init
+      onClick={() => inputRef.current?.focus()}
       {...motionProps}
     >
       <button
@@ -40,6 +42,7 @@ const PassInput: React.FC<InputLineProps> = ({
         {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
       </button>
       <input
+        ref={inputRef}
         type={showPassword ? "text" : "password"}
         value={value}
         onChange={onChange}

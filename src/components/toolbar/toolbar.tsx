@@ -8,6 +8,7 @@ interface ToolbarButton {
   text: string;
   permission: string;
   path: string;
+  onClick?: () => void;
 }
 
 interface ToolbarProps {

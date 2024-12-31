@@ -36,7 +36,7 @@ const Shortcuts: FC = () => {
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-1 gap-6"
       >
         {data?.length === 0 ? (
           <div className="col-span-full text-center text-gray-500 py-8">
@@ -47,21 +47,30 @@ const Shortcuts: FC = () => {
             <motion.div
               key={shortcut.id}
               variants={item}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
             >
               <a href={shortcut.link} target="_blank" rel="noopener noreferrer">
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center min-h-[200px] cursor-pointer">
-                  <div className="mb-4 w-16 h-16">
-                    <img
-                      src={shortcut.picture}
-                      alt={shortcut.title}
-                      className="w-full h-full object-contain"
-                    />
+                <div className="bg-white rounded-xl shadow-md transition-all duration-300 cursor-pointer relative">
+                  <div className="flex flex-col sm:flex-row h-auto sm:h-48">
+                    <div className="w-full sm:w-48 h-48">
+                      <img
+                        src={shortcut.picture}
+                        alt={shortcut.title}
+                        className="w-full h-full object-cover rounded-t-xl sm:rounded-t-none sm:rounded-l-xl"
+                      />
+                    </div>
+                    <div className="flex-grow p-6 flex flex-col justify-between">
+                      <h3 className="text-xl text-gray-700 font-medium">
+                        {shortcut.title}
+                      </h3>
+                      <div className="flex justify-end mt-4 sm:mt-0">
+                        <button className="bg-[#5677BC] text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200">
+                          اطلاعات بیشتر
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-lg text-gray-700 font-medium text-center">
-                    {shortcut.title}
-                  </h3>
                 </div>
               </a>
             </motion.div>
