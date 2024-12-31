@@ -141,13 +141,6 @@ const UnderWritingTable: React.FC = () => {
     navigate("/underwriting/update");
   };
 
-  const handleDelete = () => {
-    if (!selectedRow) {
-      toast.error("لطفا یک مورد را انتخاب کنید");
-      return;
-    }
-    setIsDeleteOpen(true);
-  };
 
   return (
     <>
@@ -195,12 +188,6 @@ const UnderWritingTable: React.FC = () => {
                     show: checkPermission("change_underwriting"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
-                  },
-                  delete: {
-                    label: "حذف",
-                    show: checkPermission("delete_underwriting"),
-                    onClick: handleDelete,
-                    icon: <FaTrash />,
                   },
                 }}
               />
