@@ -1,6 +1,5 @@
 import { GridColDef, DataGrid } from "@mui/x-data-grid";
 import { FaEdit } from "react-icons/fa";
-import { FaTrash } from "react-icons/fa";
 import {
   CustomDataGridToolbar,
   formatNumber,
