@@ -42,7 +42,6 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection }) => {
             </div>
           }
           className="text-white"
-          defaultOpen
         >
           {item.submenu.map((subItem, subIndex) => (
             <React.Fragment key={subIndex}>
@@ -77,7 +76,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection }) => {
 
   return (
     <div className="fixed right-14 pr-1 h-full overflow-hidden transition-all duration-300 w-64">
-      <div className="h-full w-64 bg-gradient-to-b from-[#5677BC] to-[#02205F] ">
+      <div className="h-full w-64 bg-gradient-to-b from-[#5677BC] to-[#02205F] overflow-y-auto">
         <Menu
           className="pt-8 px-4 rounded-l-xl"
           menuItemStyles={{
