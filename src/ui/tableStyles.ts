@@ -2,6 +2,7 @@ export const tableStyles = {
   border: "none",
   "& .MuiDataGrid-root": {
     border: "none",
+    maxWidth: "100%",
   },
   "& .Mui-selected": {
     backgroundColor: "rgba(25, 118, 210, 0.08) !important",
@@ -9,9 +10,15 @@ export const tableStyles = {
   },
   "& .MuiDataGrid-main": {
     borderRadius: "24px",
+    overflow: "auto !important",
+    maxWidth: "100%",
   },
   "& .MuiDataGrid-virtualScroller": {
-    borderRadius: "24px",
+    overflow: "auto !important",
+    maxWidth: "100%",
+  },
+  "& .MuiDataGrid-virtualScrollerContent": {
+    minWidth: "auto !important",
   },
   "& .MuiDataGrid-footerContainer": {
     borderRadius: "0 0 24px 24px",

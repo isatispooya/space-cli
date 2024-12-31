@@ -6,17 +6,17 @@ import {
   formatNumber,
   localeText,
 } from "../../../../utils";
-import { underwritingTypes } from "../../types"; 
-import { tableStyles } from "../../../../ui"; 
+import { underwritingTypes } from "../../types";
+import { tableStyles } from "../../../../ui";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useUnderwriting } from "../../hooks"; 
-import { useUserPermissions } from "../../../permissions"; 
+import { useUnderwriting } from "../../hooks";
+import { useUserPermissions } from "../../../permissions";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import { useUnderwritingStore } from "../../store"; 
-import Popup from "../../../../components/popup"; 
+import { useUnderwritingStore } from "../../store";
+import Popup from "../../../../components/popup";
 
 const UnderWritingTable: React.FC = () => {
   const { setId } = useUnderwritingStore();
@@ -62,18 +62,7 @@ const UnderWritingTable: React.FC = () => {
       headerAlign: "center",
       renderCell: (params) => formatNumber(params.row.price),
     },
-    // {
-    //   field: "payment_detail",
-    //   headerName: "وضعیت پرداخت",
-    //   width: 150,
-    //   align: 'center',
-    //   headerAlign: 'center',
-    //   renderCell: (params) => {
-    //     const status = params.row.payment_detail?.status;
-    //     const statusObj = statusNames.find((s) => s.value === status);
-    //     return statusObj ? statusObj.label : status || "نامشخص";
-    //   },
-    // },
+
     {
       field: "track_id",
       headerName: "شماره پیگیری",
@@ -151,7 +140,10 @@ const UnderWritingTable: React.FC = () => {
 
   return (
     <>
-      <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
+      <div
+        className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden"
+        style={{ maxWidth: "100%" }}
+      >
         <DataGrid
           columns={columns}
           rows={rows}
@@ -170,7 +162,10 @@ const UnderWritingTable: React.FC = () => {
               setSelectedRow(null);
             }
           }}
-          sx={tableStyles}
+          sx={{
+            ...tableStyles,
+            width: "100%",
+          }}
           checkboxSelection
           rowSelectionModel={selectedRow?.id ? [selectedRow.id] : []}
           disableMultipleRowSelection
