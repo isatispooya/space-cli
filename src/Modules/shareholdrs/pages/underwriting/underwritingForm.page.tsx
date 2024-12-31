@@ -1,7 +1,7 @@
-import { UnderWritingForm } from "../../features";
+import { CreateUnderWritingForm } from "../../features";
 
 const UnderWritingFormPage = () => {
-  return <UnderWritingForm />;
+  return <CreateUnderWritingForm />;
 };
 
 export default UnderWritingFormPage;

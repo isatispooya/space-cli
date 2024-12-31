@@ -10,6 +10,7 @@ import { FaMoneyCheckAlt } from "react-icons/fa";
 import { GrValidate } from "react-icons/gr";
 import { GrUserExpert } from "react-icons/gr";
 import { IoDocumentAttachSharp } from "react-icons/io5";
+
 const UnderwritingMain = () => {
   const toolbarButtons = [
     {
@@ -56,7 +57,7 @@ const UnderwritingMain = () => {
     },
     {
       icon: LuTable,
-      text: "جدول",
+      text: "پرداخت ها",
       permission: "unused_precedence_process",
       path: "table",
     },

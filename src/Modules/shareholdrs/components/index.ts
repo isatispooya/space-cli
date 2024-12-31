@@ -1,0 +1,1 @@
+export { default as AgreementPopup } from "./agreement.popup";

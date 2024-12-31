@@ -43,9 +43,7 @@ const FinancialStatementView: FC = () => {
               <th className="px-6 py-4 text-right text-sm font-semibold text-white w-2/5">
                 عنوان
               </th>
-              <th className="px-6 py-4 text-right text-sm font-semibold text-white w-1/5">
-                تاریخ ایجاد
-              </th>
+
               <th className="px-6 py-4 text-right text-sm font-semibold text-white w-1/5">
                 فایل
               </th>
@@ -74,13 +72,6 @@ const FinancialStatementView: FC = () => {
                   <td className="px-6 py-4 w-2/5">
                     <div className="text-sm font-medium text-gray-900 dark:text-white">
                       {statement.title}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 dark:text-white">
-                      {new Date(statement.created_at).toLocaleDateString(
-                        "fa-IR"
-                      )}
                     </div>
                   </td>
 
