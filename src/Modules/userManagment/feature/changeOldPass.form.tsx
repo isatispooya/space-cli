@@ -6,6 +6,11 @@ import * as Yup from "yup";
 
 import toast from "react-hot-toast";
 import { useChangeOldPass } from "../hooks";
+import { AxiosError } from "axios";
+
+interface ErrorResponse {
+  message: string;
+}
 
 const validationSchema = Yup.object().shape({
   last_password: Yup.string().required("رمز عبور فعلی الزامی است"),
@@ -49,9 +54,13 @@ const ChangePasswordForm = () => {
                               toast.success("رمز عبور با موفقیت بازیابی شد");
                               setSubmitting(false);
                             },
-                            onError: () => {
-                              toast.error("خطا در بازیابی رمز عبور");
+                            onError: (error: AxiosError<ErrorResponse>) => {
+                              toast.error(
+                                error.response?.data?.message ||
+                                  "خطایی رخ داده است"
+                              );
                               setSubmitting(false);
+                              console.log(error);
                             },
                           });
                         }}
