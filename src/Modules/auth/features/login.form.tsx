@@ -54,7 +54,7 @@ const LoginForm = ({
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <div className="mt-2 text-left ml-1">
+        <div className="mt-2 text-right ml-1">
           <button
             onClick={() => handleComponentChange("forgetpass")}
             className="text-black-600 hover:text-blue-700 hover:underline text-sm"
