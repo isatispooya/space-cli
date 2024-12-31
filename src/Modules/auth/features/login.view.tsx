@@ -10,7 +10,6 @@ import ForgetPassForm from "./forget_pass.form";
 // import rb from "./rb.png";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
-import underwritingImg from "./photoooo.jpg";
 
 initTWE({ Input, Ripple });
 
@@ -20,23 +19,23 @@ const Login: React.FC = () => {
   >("login");
 
   const [isSmsVerified, setIsSmsVerified] = React.useState(false);
-  const { data, isLoading } = useAnnouncements();
+  const { data: announcements, isLoading } = useAnnouncements();
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] =
     React.useState(0);
 
   React.useEffect(() => {
-    if (data && data.length > 1) {
+    if (announcements && announcements.length > 1) {
       const timer = setInterval(() => {
         setCurrentAnnouncementIndex((prev) =>
-          prev === data.length - 1 ? 0 : prev + 1
+          prev === announcements.length - 1 ? 0 : prev + 1
         );
       }, 5000);
 
       return () => clearInterval(timer);
     }
-  }, [data]);
+  }, [announcements]);
 
-  const currentAnnouncement = data?.[currentAnnouncementIndex];
+  const currentAnnouncement = announcements?.[currentAnnouncementIndex];
 
   const handleComponentChange = (
     component: "login" | "signup" | "forgetpass"
@@ -50,36 +49,49 @@ const Login: React.FC = () => {
   return (
     <section
       dir="rtl"
-      className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-neutral-200 dark:bg-neutral-700"
+      className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-white dark:bg-white"
     >
-      <div className="hidden md:block md:w-1/2 xl:w-[60%] h-screen fixed left-0">
+      <div className="hidden md:block md:w-1/2 xl:w-[70%] h-screen fixed left-0">
         <motion.img
           key={currentAnnouncement?.id}
           {...fadeIn(0.05, 20)}
-          src={underwritingImg || currentAnnouncement?.image}
+          src={currentAnnouncement?.picture}
           alt={currentAnnouncement?.title || "Login illustration"}
           className="w-full h-full object-cover"
         />
 
         <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/40" />
 
-        <div className="absolute bottom-0 left-0 right-0 p-12 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 p-12 bg-gradient-to-t from-black/80 via-black/40 to-transparent backdrop-blur-sm bg-opacity-30">
           <motion.div
             key={`text-${currentAnnouncement?.id}`}
             {...fadeIn(0.05, 40)}
+            className="bg-black/30 backdrop-blur-sm rounded-lg p-6"
           >
-            <h2 className="text-4xl font-bold mb-4 text-white drop-shadow-lg">
-              {currentAnnouncement?.title || "به سامانه ایساتیس پویا آمدید"}
-            </h2>
-            <p className="text-xl text-white/90 drop-shadow-md">
-              {currentAnnouncement?.description ||
-                "ایساتیس پویا یک سامانه آسان و سریع برای ثبت و مدیریت سهام و سهامداران است."}
-            </p>
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-4xl font-bold mb-4 text-white drop-shadow-lg">
+                  {currentAnnouncement?.title || "به سامانه ایساتیس پویا آمدید"}
+                </h2>
+                <p className="text-xl text-white/90 drop-shadow-md">
+                  {currentAnnouncement?.description ||
+                    "ایساتیس پویا یک سامانه آسان و سریع برای ثبت و مدیریت سهام و سهامداران است."}
+                </p>
+              </div>
+              <a
+                href={currentAnnouncement?.link}
+                target="_blank"
+                rel="noopener noreferrer" 
+                className="inline-block px-6 py-3 mt-4 bg-white/20 hover:bg-white/30 text-white rounded-lg backdrop-blur-sm transition-all duration-300"
+              >
+                اطلاعات بیشتر
+              </a>
+            </div>
           </motion.div>
 
-          {data && data.length > 1 && (
+          {announcements && announcements.length > 1 && (
             <div className="flex gap-3 mt-8">
-              {data.map((_: unknown, index: number) => (
+              {announcements.map((_: unknown, index: number) => (
                 <button
                   key={index}
                   onClick={() => setCurrentAnnouncementIndex(index)}
@@ -96,10 +108,10 @@ const Login: React.FC = () => {
       </div>
       <motion.div
         {...fadeIn(0.05, 0, 0.4)}
-        className="w-full md:w-1/2 xl:w-[40%] md:ml-auto px-4 md:px-8 py-8"
+        className="w-full md:w-1/2 xl:w-[30%] md:ml-auto px-4 md:px-8 py-8"
       >
         <div className="w-full max-w-[350px] mx-auto">
-          <div className="rounded-lg bg-white shadow-lg dark:bg-neutral-800 p-4 md:p-6">
+          <div className="rounded-lg  p-4 md:p-6">
             <motion.div {...fadeIn(0.05, 10)}>
               <div className="mb-10">
                 <LoginHead />

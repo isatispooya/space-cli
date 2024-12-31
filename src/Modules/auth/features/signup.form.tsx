@@ -89,7 +89,7 @@ const SignupForm = () => {
             />
             <CaptchaImg setEncryptedResponse={setEncryptedResponse} />
             <motion.button
-              className="inline-block w-full mt-5 rounded px-4 py-3 text-md font-medium uppercase bg-[#29D2C7] leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-[#25beb4]"
+              className="inline-block w-full mt-5 rounded px-4 py-3 text-md font-medium uppercase bg-blue-950 leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-900"
               type="submit"
               data-twe-ripple-init
               data-twe-ripple-color="light"
@@ -97,12 +97,12 @@ const SignupForm = () => {
               whileHover={{
                 scale: 1.02,
                 boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)",
-                backgroundColor: "#25beb4",
+                backgroundColor: "#1e3a8a",
               }}
               whileTap={{
                 scale: 0.98,
                 boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-                backgroundColor: "#1fa39a",
+                backgroundColor: "#1e3a8a",
               }}
               {...fadeIn(0.4, 0, 0.4)}
             >
