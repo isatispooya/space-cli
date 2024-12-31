@@ -1,26 +1,22 @@
 import { GridColDef, DataGrid } from "@mui/x-data-grid";
-
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import {
   CustomDataGridToolbar,
   formatNumber,
   localeText,
-} from "../../../utils";
-import { underwritingTypes } from "../types";
-import { tableStyles } from "../../../ui";
+} from "../../../../utils";
+import { underwritingTypes } from "../../types"; 
+import { tableStyles } from "../../../../ui"; 
 import { useState } from "react";
 import toast from "react-hot-toast";
-
 import { useNavigate } from "react-router-dom";
-import { useUnderwriting } from "../hooks";
-import { useUserPermissions } from "../../permissions";
+import { useUnderwriting } from "../../hooks"; 
+import { useUserPermissions } from "../../../permissions"; 
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import { useUnderwritingStore } from "../store";
-// import ModalLayout from "../../../layouts/ModalLayout";
-// import { Button } from "@headlessui/react";
-import Popup from "../../../components/popup";
+import { useUnderwritingStore } from "../../store"; 
+import Popup from "../../../../components/popup"; 
 
 const UnderWritingTable: React.FC = () => {
   const { setId } = useUnderwritingStore();

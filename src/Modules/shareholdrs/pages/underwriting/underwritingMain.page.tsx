@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import { MainLayout } from "../../../layouts";
-import { Toolbar } from "../../../components";
-import { LuInfo, LuPlusSquare } from "react-icons/lu";
+import { MainLayout } from "../../../../layouts";
+import { Toolbar } from "../../../../components";
+import { LuInfo, LuSquare } from "react-icons/lu";
 import { LuTable } from "react-icons/lu";
 import { MdOutlineShoppingBag } from "react-icons/md";
 
@@ -14,7 +14,37 @@ const UnderwritingMain = () => {
       path: "description",
     },
     {
-      icon: LuPlusSquare,
+      icon: LuSquare,
+      text: "طرح کسب و کار",
+      permission: "unused_precedence_process",
+      path: "businessPlan",
+    },
+    {
+      text: "پیشرفت پروژه",
+      icon: LuSquare,
+      permission: "unused_precedence_process",
+      path: "projectProgress",
+    },
+    {
+      text: "صورت مالی",
+      icon: LuSquare,
+      permission: "unused_precedence_process",
+      path: "financialStatement",
+    },
+    {
+      text: "اعتبار سنجی",
+      icon: LuSquare,
+      permission: "unused_precedence_process",
+      path: "creditAnalysis",
+    },
+    {
+      text: "کارشناسی سهام",
+      icon: LuSquare,
+      permission: "unused_precedence_process",
+      path: "shareholdersAnalysis",
+    },
+    {
+      icon: LuSquare,
       text: "ضمایم",
       permission: "unused_precedence_process",
       path: "attachments",

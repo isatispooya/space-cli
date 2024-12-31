@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
 import { Toolbar } from "../../../components";
-import { LuTable, LuPlusSquare } from "react-icons/lu";
+import { LuTable, LuPlus } from "react-icons/lu";
 
 
 const CompanyMainPage = () => {
@@ -13,7 +13,7 @@ const CompanyMainPage = () => {
       path: "table",
     },
     {
-      icon: LuPlusSquare,
+      icon: LuPlus,
       text: "افزودن",
       permission: "add_company",
       path: "create",

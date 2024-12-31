@@ -13,13 +13,11 @@ export { default as PrecendenceFormPage } from "./precendenceForm.page";
 export { default as StockTransferFormPage } from "./stockTransferForm.page";
 export { default as CapitalIncreaseFormPage } from "./CapitalIncreaseForm.page";
 export { default as DisplacementFormPage } from "./displacementForm.page";
-export { default as UnderWritingFormPage } from "./underwritingForm.page";
-export { default as UnderWritingTablePage } from "./underwritingTable.page";
-export { default as UnderWritingMainPage } from "./underwritingMain.page";
+export { default as UnderWritingMainPage } from "./underwriting/underwritingMain.page";
 export { default as UpdateUnderWritingPage } from "./updateUnderWriting.page";
 export { default as ShareholdersUpdatePage } from "./shareholdersUpdate.page";
 export { default as StockTransferUpdatePage } from "./stockTransferUpdate.page";
 export { default as DisplacementUpdatePage } from "./displacementUpdate.page";
 export { default as PercendenceUpdatePage } from "./percendenceUpdate.page";
-export { default as UnderwritingDescPage } from "./underwritingdesc.page";
-export { default as UnderwritingViewPage } from "./underwritingView.page";
+export * from "./underwriting";
+

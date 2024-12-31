@@ -1,4 +1,4 @@
-import { UnderwritingAttachmentsView } from "../features";
+import { UnderwritingAttachmentsView } from "../../features";
 
 const UnderwritingViewPage = () => {
   return <UnderwritingAttachmentsView />;

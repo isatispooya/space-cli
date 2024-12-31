@@ -243,6 +243,35 @@ const UnderwritingViewPage = lazy(() =>
     default: module.UnderwritingViewPage,
   }))
 );
+const ProjectProgressPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.ProjectProgressPage,
+  }))
+);
+
+const FinancialStatementPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.FinancialStatementPage,
+  }))
+);
+
+const ImagesPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.ImagesPage,
+  }))
+);
+
+const BusinessPlanPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.BusinessPlanPage,
+  }))
+);
+
+const CreditAnalysisPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.CreditAnalysisPage,
+  }))
+);
 
 const StockTransferUpdatePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
@@ -643,6 +672,54 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <UnderwritingViewPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "projectProgress",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ProjectProgressPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "financialStatement",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <FinancialStatementPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "images",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ImagesPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "businessPlan",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <BusinessPlanPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "creditAnalysis",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CreditAnalysisPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "projectProgress",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ProjectProgressPage />
             </Suspense>
           ),
         },
