@@ -74,7 +74,7 @@ const SidePanel = ({
     {
       src: contactIcon,
       alt: "contact",
-      onClick: () => handleIconClick(menuItems[5]),
+      onClick: () => handleIconClick(menuItems[6]),
       isReactIcon: false,
     },
   ];

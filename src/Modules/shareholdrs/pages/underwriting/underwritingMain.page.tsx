@@ -15,6 +15,12 @@ const UnderwritingMain = () => {
   const toolbarButtons = [
     {
       icon: LuInfo,
+      text: "اگهی پذیره نویسی",
+      permission: "unused_precedence_process",
+      path: "announcement",
+    },
+    {
+      icon: LuInfo,
       text: "توضیحات",
       permission: "unused_precedence_process",
       path: "description",
@@ -38,10 +44,16 @@ const UnderwritingMain = () => {
       path: "financialStatement",
     },
     {
-      text: "اعتبار سنجی",
+      text: "اعتبار سنجی بانکی",
       icon: GrValidate,
       permission: "unused_precedence_process",
       path: "creditAnalysis",
+    },
+    {
+      text: "اعتبارسنجی پروژه",
+      icon: FaBusinessTime,
+      permission: "unused_precedence_process",
+      path: "projectAnalysis",
     },
     {
       text: "کارشناسی سهام",
