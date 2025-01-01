@@ -8,4 +8,5 @@ export { default as CreditAnalysisView } from "./creditAnalysis.view";
 export { default as ImagesView } from "./images.view";
 export { default as ShareExpertView } from "./shareExpert.view";
 export { default as CreateUnderWritingForm } from "./createUnderWriting.form";
-
+export { default as AnnouncementView } from "./announcement.view";
+export { default as ProjectAnalysisView } from "./projectAnalysis.view";

@@ -25,6 +25,12 @@ const ChangePassPage = lazy(() =>
   }))
 );
 
+const ContactMainPage = lazy(() =>
+  import("../Modules/contact").then((module) => ({
+    default: module.ContactMainPage,
+  }))
+);
+
 const CompanyMainPage = lazy(() =>
   import("../Modules/companies").then((module) => ({
     default: module.CompanyMainPage,
@@ -280,6 +286,18 @@ const ShareExpertPage = lazy(() =>
   }))
 );
 
+const AnnouncementPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.AnnouncementPage,
+  }))
+);
+
+const ProjectAnalysisPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.ProjectAnalysisPage,
+  }))
+);
+
 const StockTransferUpdatePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.StockTransferUpdatePage,
@@ -349,6 +367,14 @@ export default function Router() {
         },
       ],
     },
+    {
+      path: "/contact",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ContactMainPage />
+        </Suspense>
+      ),
+    },  
 
     {
       path: "/companies",
@@ -731,10 +757,26 @@ export default function Router() {
           ),
         },
         {
+          path: "announcement",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <AnnouncementPage />
+            </Suspense>
+          ),
+        },
+        {
           path: "shareExpert",
           element: (
             <Suspense fallback={<Loader />}>
               <ShareExpertPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "projectAnalysis",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <ProjectAnalysisPage />
             </Suspense>
           ),
         },

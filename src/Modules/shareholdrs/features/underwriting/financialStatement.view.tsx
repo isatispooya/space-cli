@@ -59,7 +59,7 @@ const FinancialStatementView: FC = () => {
               className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700"
             >
               {data?.map((process: ProcessTypes) =>
-                process.financial_statement.map((statement) => (
+                [...process.financial_statement].reverse().map((statement) => (
                   <motion.tr
                     key={statement.id}
                     variants={item}
@@ -111,7 +111,7 @@ const FinancialStatementView: FC = () => {
             className="space-y-4"
           >
             {data?.map((process: ProcessTypes) =>
-              process.financial_statement.map((statement) => (
+              [...process.financial_statement].reverse().map((statement) => (
                 <motion.div
                   key={statement.id}
                   variants={item}
