@@ -98,6 +98,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت شرکت‌ها",
         path: "/companies",
+        codename: "view_company",
       },
     ],
   },
@@ -110,6 +111,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت مکاتبات",
         path: "/correspondence",
+        codename: "view_correspondence",
       },
     ],
   },
@@ -122,6 +124,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت نقش ها",
         path: "/positions",
+        codename: "view_position",
       },
     ],
   },
@@ -131,8 +134,12 @@ export const menuItems: MenuItem[] = [
     icon: FaPhone,
     codename: "view_accounts",
     submenu: [
-      { title: "پیام‌ها", path: "/contact/messages" },
-      { title: "تماس با ما", path: "/contact/us" },
+      {
+        title: "پیام‌ها",
+        path: "/contact/messages",
+        codename: "view_accounts",
+      },
+      { title: "تماس با ما", path: "/contact/us", codename: "view_accounts" },
     ],
   },
   {
@@ -140,13 +147,21 @@ export const menuItems: MenuItem[] = [
     path: "/permissions",
     icon: FaUserTie,
     codename: "view_permission",
-    submenu: [{ title: "مدیریت دسترسی ها", path: "/permissions" }],
+    submenu: [
+      {
+        title: "مدیریت دسترسی ها",
+        path: "/permissions",
+        codename: "view_permission",
+      },
+    ],
   },
   {
     title: "گروه ها",
     path: "/groups",
     icon: FaUserTie,
     codename: "view_group",
-    submenu: [{ title: "مدیریت گروه ها", path: "/groups" }],
+    submenu: [
+      { title: "مدیریت گروه ها", path: "/groups", codename: "view_group" },
+    ],
   },
 ];

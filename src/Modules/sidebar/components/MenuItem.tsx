@@ -1,13 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { MenuItem as MenuItemType } from "../data/menuItems";
 import { Link } from "react-router-dom";
+import { useSearchStore } from "../store";
+import { useUserPermissions } from "../../permissions";
 
 interface MenuItemProps {
   item: MenuItemType;
 }
 
 const CustomMenuItem = ({ item }: MenuItemProps) => {
+  const { search } = useSearchStore();
   const [isOpen, setIsOpen] = useState(false);
+  const { checkPermission } = useUserPermissions();
+
+  const filteredSubmenu = useMemo(() => {
+    return item.submenu?.filter((subItem) => {
+      if (subItem?.codename && checkPermission(subItem?.codename)) {
+        return subItem?.title?.includes(search);
+      }
+      return false;
+    });
+  }, [item.submenu, checkPermission, search]);
+
+  useEffect(() => {
+    if (search && search.length > 0) {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+    }
+  }, [search]);
+
+  if (!filteredSubmenu || filteredSubmenu.length === 0) return null;
 
   return (
     <div className="w-full">
@@ -21,7 +44,7 @@ const CustomMenuItem = ({ item }: MenuItemProps) => {
 
       {item.submenu && isOpen && (
         <div className="mr-4 mt-1">
-          {item.submenu.map((subItem, index) => (
+          {filteredSubmenu.map((subItem, index) => (
             <div key={index}>
               {subItem.path ? (
                 <Link
@@ -41,4 +64,4 @@ const CustomMenuItem = ({ item }: MenuItemProps) => {
   );
 };
 
-export default CustomMenuItem; 
+export default CustomMenuItem;
