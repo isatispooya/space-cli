@@ -48,7 +48,11 @@ const Toolbar = ({ buttons }: ToolbarProps) => {
                     onClick={() => navigate(`/${basePath}/${button.path}`)}
                     className={`z-30 flex items-center justify-center w-full px-4 py-3 text-sm font-medium rounded-lg cursor-pointer transition-all duration-200 ease-in-out
                       ${
-                        currentPath === button.path
+                        button.text === "سرمایه گذاری"
+                          ? currentPath === button.path
+                            ? "bg-[#29D2C7] text-white shadow-lg shadow-[#29D2C7]/20 scale-105"
+                            : "text-slate-600 hover:bg-[#29D2C7]/10 hover:text-[#29D2C7]"
+                          : currentPath === button.path
                           ? "bg-[#5677BC] text-white shadow-lg shadow-[#5677BC]/20 scale-105"
                           : "text-slate-600 hover:bg-slate-100 hover:text-[#5677BC]"
                       }`}
