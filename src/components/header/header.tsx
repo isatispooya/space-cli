@@ -16,15 +16,15 @@ const Header = () => {
       >
         <div className="flex w-full flex-wrap items-center justify-between px-3">
           <div className="flex items-center">
-            <div className=" max-w-xs h-14 flex items-center">
+            <div className="max-w-xs h-14 flex items-center">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="flex items-center"
               >
-                <img src={LogoWhite} className="w-20" alt="logo" />
-                <img src={LogoText} className="w-40" alt="logo text" />
+                <img src={LogoWhite} className="w-20 hidden lg:block" alt="logo" />
+                <img src={LogoText} className="w-40 hidden lg:block" alt="logo text" />
               </motion.div>
             </div>
           </div>
