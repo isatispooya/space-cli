@@ -4,6 +4,7 @@ import { useUnderwriting, useUnusedProcess } from "../../hooks";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { AgreementPopup } from "../../components";
+import { formatNumber } from "../../../../utils";
 
 interface SelectOption {
   label: string;
@@ -24,16 +25,26 @@ const CreateUnderWritingForm = () => {
 
   useEffect(() => {
     setShowPopup(true);
-  }, []);
+    if (unusedPrecedenceProcess && unusedPrecedenceProcess.length > 0) {
+      const firstCompany = unusedPrecedenceProcess[0];
+      formik.setFieldValue("company", firstCompany.id.toString());
+      formik.setFieldValue("price", firstCompany.price || "");
+      setSelectedDescription(firstCompany.description || "");
+
+      if (formik.values.amount) {
+        const totalPrice =
+          (firstCompany.price || 0) * Number(formik.values.amount);
+        formik.setFieldValue("total_price", totalPrice.toString());
+      }
+    }
+  }, [unusedPrecedenceProcess]);
 
   const companyOptions =
     unusedPrecedenceProcess?.map((process: underwritingTypes) => ({
       label: process.company,
       value: process.id,
     })) || [];
-
-  console.log(unusedPrecedenceProcess, 111111);
-
+    
   const formik = useFormik({
     initialValues: {
       amount: "",
@@ -43,15 +54,11 @@ const CreateUnderWritingForm = () => {
       transaction_id: "",
       type: "",
       document: null,
-      agreement: false,
     },
     validationSchema: Yup.object({
       amount: Yup.string().required("مقدار الزامی است"),
       company: Yup.string().required("شرکت الزامی است"),
       type: Yup.string().required("نوع الزامی است"),
-      agreement: Yup.boolean()
-        .oneOf([true], "پذیرش قوانین و مقررات الزامی است")
-        .required("پذیرش قوانین و مقررات الزامی است"),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -219,14 +226,19 @@ const CreateUnderWritingForm = () => {
               >
                 قیمت واحد
               </label>
-              <input
-                id="price"
-                name="price"
-                type="text"
-                disabled
-                value={formik.values.price}
-                className="w-full p-2 text-sm border border-gray-300 rounded-md bg-gray-50"
-              />
+              <div className="relative">
+                <input
+                  id="price"
+                  name="price"
+                  type="text"
+                  disabled
+                  value={formatNumber(Number(formik.values.price))}
+                  className="w-full p-2 pl-12 text-sm border border-gray-300 rounded-md bg-gray-50"
+                />
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                  ریال
+                </span>
+              </div>
             </div>
 
             <div className="space-y-1">
@@ -236,14 +248,19 @@ const CreateUnderWritingForm = () => {
               >
                 قیمت کل
               </label>
-              <input
-                id="total_price"
-                name="total_price"
-                type="text"
-                disabled
-                value={formik.values.total_price}
-                className="w-full p-2 text-sm border border-gray-300 rounded-md bg-gray-50"
-              />
+              <div className="relative">
+                <input
+                  id="total_price"
+                  name="total_price"
+                  type="text"
+                  disabled
+                  value={formatNumber(Number(formik.values.total_price))}
+                  className="w-full p-2 pl-12 text-sm border border-gray-300 rounded-md bg-gray-50"
+                />
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                  ریال
+                </span>
+              </div>
             </div>
           </div>
 
@@ -318,34 +335,12 @@ const CreateUnderWritingForm = () => {
           )}
 
           <div className="space-y-3">
-            <div className="flex items-start gap-2">
-              <input
-                type="checkbox"
-                id="agreement"
-                name="agreement"
-                onChange={formik.handleChange}
-                checked={formik.values.agreement}
-                className="mt-1"
-              />
-              <label htmlFor="agreement" className="text-xs text-slate-600">
-                <span>اینجانب </span>
-                <a
-                  href="/terms"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#29D2C7] hover:text-[#008282] underline"
-                >
-                  قوانین و مقررات
-                </a>
-                <span> را مطالعه کرده و می‌پذیرم</span>
-              </label>
-            </div>
             <p className="text-red-500 text-xs">
               قبل از اتصال به درگاه بانکی از قطع بودن فیلترشکن اطلاع فرمایید
             </p>
             <button
               type="submit"
-              disabled={formik.isSubmitting || !formik.values.agreement}
+              disabled={formik.isSubmitting}
               className="w-full py-3 px-4 mt-20 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#29D2C7] focus:outline-none focus:ring-2 focus:ring-offset-2  disabled:opacity-50"
             >
               {formik.isSubmitting ? "در حال ارسال..." : "ثبت  پذیره نویسی"}
@@ -364,7 +359,6 @@ const CreateUnderWritingForm = () => {
             ) || []
           }
           onAccept={() => {
-            // Handle acceptance
             setShowPopup(false);
           }}
         />

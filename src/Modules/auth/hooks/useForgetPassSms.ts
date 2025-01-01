@@ -1,7 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import postForgetPassSms from "../services/forget_pass_sms.post";
+import { AxiosError } from "axios";
 
-const useForgetPassSms = () => {
+const useForgetPassSms = (): UseMutationResult<
+  void,
+  AxiosError<unknown>,
+  string
+> => {
   return useMutation({
     mutationKey: ["forgetPassSms"],
     mutationFn: postForgetPassSms,

@@ -81,7 +81,7 @@ const UnderwritingMain = () => {
           </p>
         </div>
         <div className="flex-grow flex flex-col">
-          <div className="px-6 py-3">
+          <div className="px-6 ">
             <Toolbar buttons={toolbarButtons} />
           </div>
           <div className="flex-grow px-6 bg-white">

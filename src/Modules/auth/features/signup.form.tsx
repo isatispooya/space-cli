@@ -8,14 +8,13 @@ import useApplyNationalCode from "../hooks/useOtp";
 import { fadeIn } from "../animations/fadeIn";
 import toast from "react-hot-toast";
 import Spinner from "../../../components/spinner";
+import { AxiosError } from "axios";
+import { ErrorResponse } from "../../../types";
 
 const SignupForm = () => {
   const [showOtpInput, setShowOtpInput] = useState<boolean>(false);
-  const {
-    mutate: signupMutate,
- 
-    isPending: signupPending,
-  } = useApplyNationalCode();
+  const { mutate: signupMutate, isPending: signupPending } =
+    useApplyNationalCode();
   const { mutate: register, isPending: registerPending } = useRegister();
   const {
     nationalCode,
@@ -29,10 +28,20 @@ const SignupForm = () => {
   } = useLoginStore();
 
   const handleRegister = () => {
-    register({
-      nationalCode,
-      otpValue: otp,
-    });
+    register(
+      {
+        nationalCode,
+        otpValue: otp,
+      },
+      {
+        onSuccess: () => {
+          setOtp("");
+        },
+        onError: () => {
+          setOtp("");
+        },
+      }
+    );
   };
 
   const handleCaptchaSend = (e: React.FormEvent) => {
@@ -51,9 +60,14 @@ const SignupForm = () => {
         onSuccess: () => {
           setShowOtpInput(true);
           toast.success("کد تایید با موفقیت ارسال شد");
+          setCaptchaInput("");
+          setEncryptedResponse("");
         },
-        onError: () => {
-          toast.error("شما قبلا ثبت نام کرده‌اید");
+        onError: (error: AxiosError<unknown>) => {
+          const errorMessage = (error.response?.data as ErrorResponse)?.error;
+          toast.error(errorMessage || "خطایی رخ داده است");
+          setCaptchaInput("");
+          setEncryptedResponse("");
         },
       }
     );
@@ -76,7 +90,6 @@ const SignupForm = () => {
             setNationalCode(e.target.value)
           }
         />
-
         {!showOtpInput && (
           <>
             <InputLogin
@@ -110,7 +123,6 @@ const SignupForm = () => {
             </motion.button>
           </>
         )}
-
         {showOtpInput && (
           <InputLogin
             type="text"
@@ -122,7 +134,6 @@ const SignupForm = () => {
             }
           />
         )}
-
         {showOtpInput && (
           <motion.div {...fadeIn(0.4, 0, 0.4)} className="mb-6 text-center">
             <button

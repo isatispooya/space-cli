@@ -37,7 +37,6 @@ const FinancialStatementView: FC = () => {
         animate={{ opacity: 1, y: 0 }}
         className="rounded-lg shadow-lg"
       >
-        {/* Desktop View */}
         <div className="hidden sm:block">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-[#5677BC]">
@@ -104,7 +103,6 @@ const FinancialStatementView: FC = () => {
           </table>
         </div>
 
-        {/* Mobile View */}
         <div className="block sm:hidden">
           <motion.div
             variants={container}

@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
-import { FaInstagram, FaTelegram, FaMapMarkerAlt } from "react-icons/fa";
-import { IconType } from "react-icons";
+import { FaMapMarkerAlt } from "react-icons/fa";
+
 import { motion } from "framer-motion";
 import { useUnusedProcess } from "../../hooks";
 
@@ -35,7 +35,7 @@ const UnderwritingDescForm: FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-2">
+    <div className="flex flex-col  min-h-screen py-8">
       {unusedProcessData?.map((item: UnusedProcessData, index: number) => (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -44,10 +44,10 @@ const UnderwritingDescForm: FC = () => {
           key={index}
           className="relative w-full max-w-2xl p-3 sm:p-6 mx-auto bg-white rounded-xl shadow-xl border-4 border-double border-gray-200"
         >
-          <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-[#424769] rounded-tl-lg" />
-          <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-[#424769] rounded-tr-lg" />
-          <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-[#424769] rounded-bl-lg" />
-          <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-[#424769] rounded-br-lg" />
+          <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-[#5677BC] rounded-tl-lg" />
+          <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-[#5677BC] rounded-tr-lg" />
+          <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-[#5677BC] rounded-bl-lg" />
+          <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-[#5677BC] rounded-br-lg" />
           <motion.div className="flex flex-col items-center">
             <motion.div
               className="w-full h-28 sm:h-40 mb-2 sm:mb-4"
@@ -84,6 +84,20 @@ const UnderwritingDescForm: FC = () => {
               >
                 {item?.description}
               </motion.p>
+              <motion.div
+                className="flex items-center justify-center mt-4 space-x-2 text-gray-600 group cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+              >
+                <FaMapMarkerAlt className="text-xl text-red-500 group-hover:text-red-600 transition-colors duration-300" />
+                <a
+                  href={item?.description_location}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-base group-hover:text-gray-800 transition-colors duration-300 mr-2"
+                >
+                  مشاهده موقعیت در نقشه
+                </a>
+              </motion.div>
 
               {isMobile && (
                 <motion.div
@@ -117,74 +131,11 @@ const UnderwritingDescForm: FC = () => {
                 </motion.div>
               )}
             </div>
-
-            <div className="flex gap-6 mb-8">
-              <SocialIcon
-                Icon={FaInstagram}
-                color="from-pink-500 to-purple-500"
-                href={item?.instagram_link}
-              />
-              <SocialIcon
-                Icon={FaTelegram}
-                color="from-blue-400 to-blue-600"
-                href={item?.telegram_link}
-              />
-            </div>
-
-            <motion.div
-              className="w-full max-w-xs backdrop-blur-sm bg-gradient-to-br from-white/90 to-gray-50/90 p-3 sm:p-4 rounded-lg shadow-lg border border-gray-200"
-              whileHover={{ y: -3 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <h2 className="text-base sm:text-lg font-bold text-[#424769] mb-2 sm:mb-3 text-center">
-                با ما در تماس باشید
-              </h2>
-              <motion.a
-                href={`tel:${item?.contact_number}`}
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg font-semibold text-base shadow-md block text-center"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {item?.contact_number}
-              </motion.a>
-
-              <motion.div
-                className="flex items-center justify-center mt-4 space-x-2 text-gray-600 group cursor-pointer"
-                whileHover={{ scale: 1.02 }}
-              >
-                <FaMapMarkerAlt className="text-xl text-red-500 group-hover:text-red-600 transition-colors duration-300" />
-                <a
-                  href={item?.description_location}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-base group-hover:text-gray-800 transition-colors duration-300 mr-2"
-                >
-                  مشاهده موقعیت در نقشه
-                </a>
-              </motion.div>
-            </motion.div>
           </motion.div>
         </motion.div>
       ))}
     </div>
   );
 };
-
-const SocialIcon: FC<{ Icon: IconType; color: string; href?: string }> = ({
-  Icon,
-  color,
-  href,
-}) => (
-  <motion.a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className={`w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-r ${color} shadow-lg`}
-    whileHover={{ scale: 1.1, rotate: 5 }}
-    whileTap={{ scale: 0.9 }}
-  >
-    <Icon className="text-white text-xl" />
-  </motion.a>
-);
 
 export default UnderwritingDescForm;

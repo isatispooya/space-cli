@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import { useProfile, useUpdateProfilePicture } from "../hooks";
 import { motion } from "framer-motion";
+import { server } from "../../../api/server";
 
 const ProfileView: React.FC = () => {
   const { data: profile, refetch } = useProfile();
   const { mutate: updateProfilePicture } = useUpdateProfilePicture();
-  const [avatarUrl, setAvatarUrl] = useState<string>(profile?.avatar || "");
+  const [avatarUrl, setAvatarUrl] = useState<string>(
+    profile?.profile_image || ""
+  );
 
-  console.log(avatarUrl, 111111);
+  React.useEffect(() => {
+    if (profile?.profile_image) {
+      setAvatarUrl(profile.profile_image);
+    }
+  }, [profile?.profile_image]);
 
   const handleAvatarChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -18,14 +25,11 @@ const ProfileView: React.FC = () => {
         const formData = new FormData();
         formData.append("avatar", file);
 
-        await updateProfilePicture(formData);
-        await refetch();
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setAvatarUrl(reader.result as string);
-        };
-        reader.readAsDataURL(file);
+        await updateProfilePicture(formData, {
+          onSuccess: () => {
+            refetch();
+          },
+        });
       } catch (error) {
         console.error("خطا در آپلود تصویر:", error);
       }
@@ -106,7 +110,7 @@ const ProfileView: React.FC = () => {
             <div className="relative mb-6">
               <div className="w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-lg">
                 <img
-                  src={avatarUrl}
+                  src={server + avatarUrl}
                   alt="پروفایل"
                   className="w-full h-full object-cover"
                 />
