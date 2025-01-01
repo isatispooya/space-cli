@@ -1,55 +1,41 @@
-import { ProSidebarProvider } from "react-pro-sidebar";
-import { useState, useEffect, useRef } from "react";
-import SidePanel from "../components/SidePanel";
-import SideMenu from "../components/sideMenu";
-import { MenuItem } from "../data/menuItems";
+import { useSidebarStore } from "../store/sidebar.store";
+import { IoClose } from "react-icons/io5";
+import { menuItems } from "../data/menuItems";
+import CustomMenuItem from "../components/MenuItem";
 
 const SideBar = () => {
-  const [collapsed, setCollapsed] = useState(true);
-  const [activeSection, setActiveSection] = useState<MenuItem | null>(null);
-  const sidebarRef = useRef<HTMLDivElement>(null);
-
-  const handleClose = () => {
-    setCollapsed(true);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node) &&
-        !collapsed
-      ) {
-        handleClose();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [collapsed]);
-
-  const handleToggleCollapse = () => {
-    setCollapsed(!collapsed);
-  };
+  const { isOpen, toggleSidebar } = useSidebarStore();
+  console.log(isOpen);
 
   return (
-    <ProSidebarProvider>
-      <div ref={sidebarRef}>
-        <SidePanel
-          onToggleCollapse={handleToggleCollapse}
-          onSectionChange={setActiveSection}
-          collapsed={collapsed}
-          onClose={handleClose}
-        />
-        <SideMenu
-          collapsed={collapsed}
-          activeSection={activeSection}
-          onClose={handleClose}
+    <div
+      className={`h-full w-[380px] top-0 right-0 z-50 bg-blue-900 shadow-2xl transition-all duration-300 transform ${
+        isOpen ? "absolute translate-x-0" : "hidden translate-x-full"
+      }`}
+    >
+      <div className="w-full flex justify-between items-center p-4 border-b border-blue-800">
+        <h1 className="text-2xl font-bold text-white">منو</h1>
+        <button
+          className="text-4xl cursor-pointer text-white hover:text-gray-200 hover:scale-110 active:scale-95 transition-all duration-200 rounded-full p-2 hover:bg-blue-800"
+          onClick={toggleSidebar}
+          aria-label="بستن منو"
+        >
+          <IoClose />
+        </button>
+      </div>
+      <div className="w-full flex justify-center items-center p-4">
+        <input
+          type="text"
+          placeholder="جستجو"
+          className="w-full p-3 bg-blue-800 text-white rounded-lg border border-blue-700 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-200"
         />
       </div>
-    </ProSidebarProvider>
+      <div className="w-full flex flex-col p-4">
+        {menuItems.map((item, index) => (
+          <CustomMenuItem key={index} item={item} />
+        ))}
+      </div>
+    </div>
   );
 };
 
