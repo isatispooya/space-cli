@@ -286,12 +286,6 @@ const ShareExpertPage = lazy(() =>
   }))
 );
 
-const AnnouncementPage = lazy(() =>
-  import("../Modules/shareholdrs").then((module) => ({
-    default: module.AnnouncementPage,
-  }))
-);
-
 const ProjectAnalysisPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.ProjectAnalysisPage,
@@ -374,7 +368,7 @@ export default function Router() {
           <ContactMainPage />
         </Suspense>
       ),
-    },  
+    },
 
     {
       path: "/companies",
@@ -756,14 +750,7 @@ export default function Router() {
             </Suspense>
           ),
         },
-        {
-          path: "announcement",
-          element: (
-            <Suspense fallback={<Loader />}>
-              <AnnouncementPage />
-            </Suspense>
-          ),
-        },
+
         {
           path: "shareExpert",
           element: (

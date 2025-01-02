@@ -8,5 +8,4 @@ export { default as FinancialStatementPage } from "./financialStatement.page";
 export { default as ImagesPage } from "./images.page";
 export { default as BusinessPlanPage } from "./businessPlan.page";
 export { default as ShareExpertPage } from "./shareExpert.page";
-export { default as AnnouncementPage } from "./announcement.page";
 export { default as ProjectAnalysisPage } from "./projectAnalysis.page";

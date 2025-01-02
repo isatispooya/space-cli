@@ -38,17 +38,17 @@ const ViewDownload: FC<ViewDownloadProps> = ({
   };
 
   return (
-    <div className=" min-h-screen py-8">
+    <div className="py-8 w-full">
       <motion.div
         key={key}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="w-full max-w-3xl mx-auto p-4 sm:p-8"
+        className="w-full mx-auto p-4 sm:p-8"
       >
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="bg-white rounded-lg p-8 sm:p-12 border-2 border-gray-200 relative"
+          className="w-full bg-white rounded-lg p-8 sm:p-12 border-2 border-gray-200 relative"
         >
           <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-[#5677BC] rounded-tl-lg" />
           <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-[#5677BC] rounded-tr-lg" />

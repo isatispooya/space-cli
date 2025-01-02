@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { AgreementPopup } from "../../components";
 import { formatNumber } from "../../../../utils";
+import Sep from "../../../../../public/assets/sep.png";
 
 interface SelectOption {
   label: string;
@@ -44,7 +45,7 @@ const CreateUnderWritingForm = () => {
       label: process.company,
       value: process.id,
     })) || [];
-    
+
   const formik = useFormik({
     initialValues: {
       amount: "",
@@ -103,6 +104,7 @@ const CreateUnderWritingForm = () => {
       formik.setFieldValue("total_price", totalPrice.toString());
     }
   };
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAmount = e.target.value;
     formik.setFieldValue("amount", newAmount);
@@ -336,8 +338,18 @@ const CreateUnderWritingForm = () => {
 
           <div className="space-y-3">
             <p className="text-red-500 text-xs">
-              قبل از اتصال به درگاه بانکی از قطع بودن فیلترشکن اطلاع فرمایید
+              . قبل از اتصال به درگاه بانکی از قطع بودن فیلترشکن خود مطمئن شوید
             </p>
+            {isGatewayType && (
+              <div className="flex justify-center items-center my-4">
+                <img
+                  src={Sep}
+                  alt="SEP Bank Logo"
+                  className="h-16 object-contain"
+                />
+                <h1 className="mr-2"> درگاه پرداخت اینترنتی سِپ</h1>
+              </div>
+            )}
             <button
               type="submit"
               disabled={formik.isSubmitting}

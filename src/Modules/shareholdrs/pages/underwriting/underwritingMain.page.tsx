@@ -13,15 +13,10 @@ import { IoDocumentAttachSharp } from "react-icons/io5";
 
 const UnderwritingMain = () => {
   const toolbarButtons = [
+
     {
       icon: LuInfo,
-      text: "اگهی پذیره نویسی",
-      permission: "unused_precedence_process",
-      path: "announcement",
-    },
-    {
-      icon: LuInfo,
-      text: "توضیحات",
+      text: "آگهی پذیره نویسی",
       permission: "unused_precedence_process",
       path: "description",
     },
@@ -63,13 +58,13 @@ const UnderwritingMain = () => {
     },
     {
       icon: IoDocumentAttachSharp,
-      text: "ضمایم",
+      text: "سایر اطلاعات",
       permission: "unused_precedence_process",
       path: "attachments",
     },
     {
       icon: LuTable,
-      text: "پرداخت ها",
+      text: "سرمایه گذاری های من",
       permission: "unused_precedence_process",
       path: "table",
     },

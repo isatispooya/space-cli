@@ -1,12 +1,11 @@
 import { MainLayout } from "../../../layouts";
-
-import Shortcuts from "../components/shortcuts";
+import { Greetings, Shortcuts } from "../components";
 
 const Dashboard = () => {
-
   return (
     <>
       <MainLayout>
+        <Greetings />
         <Shortcuts />
       </MainLayout>
     </>

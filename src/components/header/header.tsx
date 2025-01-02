@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import LogoWhite from "../../assets/Artboard 1 copy 17.png";
 import LogoText from "../../assets/textLogo.png";
 
+
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
+  
   return (
     <header>
       <nav
@@ -34,7 +36,9 @@ const Header = () => {
             id="navbarSupportedContentY"
             data-twe-collapse-item
           ></div>
-
+          <h1 className="text-md  text-[#5677BC] ml-7">
+            نرم افزار تحت وب ایساتیس من
+          </h1>
           <div className="flex items-center ml-8 space-x-4">
             <Avatar />
           </div>

@@ -93,7 +93,7 @@ const FinancialStatementView: FC = () => {
                         rel="noopener noreferrer"
                         className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs sm:text-sm hover:bg-green-200 transition-colors duration-200"
                       >
-                        مشاهده لینک
+                        سامانه جامع اطلاع رسانی ناشران کُدال
                       </motion.a>
                     </td>
                   </motion.tr>
