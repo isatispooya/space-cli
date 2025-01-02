@@ -9,3 +9,4 @@ export { default as ImagesView } from "./images.view";
 export { default as ShareExpertView } from "./shareExpert.view";
 export { default as CreateUnderWritingForm } from "./createUnderWriting.form";
 export { default as ProjectAnalysisView } from "./projectAnalysis.view";
+export { default as EditUnderWritingForm } from "./editUnderwriting.form";

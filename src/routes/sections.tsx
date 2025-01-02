@@ -92,7 +92,7 @@ const ShareholdersPage = lazy(() =>
 );
 const ShareholdTablePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
-    default: module.ShareholdTablePage,
+    default: module.ShareholdersTablePage,
   }))
 );
 const ShareholdersFormPage = lazy(() =>
@@ -234,7 +234,7 @@ const UnderWritingFormPage = lazy(() =>
 
 const UnderWritingMainPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
-    default: module.UnderWritingMainPage,
+    default: module.UnderwritingMainPage,
   }))
 );
 
