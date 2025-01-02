@@ -133,18 +133,7 @@ export const menuItems: MenuItem[] = [
     path: "/contact",
     icon: FaPhone,
     codename: "view_accounts",
-<<<<<<< HEAD
     submenu: [{ title: "تماس با ما", path: "/contact" }],
-=======
-    submenu: [
-      {
-        title: "پیام‌ها",
-        path: "/contact/messages",
-        codename: "view_accounts",
-      },
-      { title: "تماس با ما", path: "/contact/us", codename: "view_accounts" },
-    ],
->>>>>>> feature/sidebar
   },
   {
     title: "دسترسی ها",

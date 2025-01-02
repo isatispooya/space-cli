@@ -48,19 +48,18 @@ const Header = () => {
                 </motion.div>
               </div>
             </div>
+          </div>
+          <div
+            className="!visible hidden grow basis-[100%] items-center text-center lg:!flex lg:basis-auto lg:text-left"
+            id="navbarSupportedContentY"
+            data-twe-collapse-item
+          ></div>
+          <h1 className="text-md  text-[#5677BC] ml-7">
+            نرم افزار تحت وب ایساتیس من
+          </h1>
 
-            <div
-              className="!visible hidden grow basis-[100%] items-center text-center lg:!flex lg:basis-auto lg:text-left"
-              id="navbarSupportedContentY"
-              data-twe-collapse-item
-            ></div>
-            <h1 className="text-md  text-[#5677BC] ml-7">
-              نرم افزار تحت وب ایساتیس من
-            </h1>
-
-            <div className="flex items-center ml-8 space-x-4">
-              <Avatar />
-            </div>
+          <div className="flex items-center ml-8 space-x-4">
+            <Avatar />
           </div>
         </div>
       </nav>

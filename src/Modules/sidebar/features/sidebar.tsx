@@ -3,20 +3,28 @@ import { IoClose } from "react-icons/io5";
 import { menuItems } from "../data/menuItems";
 import CustomMenuItem from "../components/MenuItem";
 import { motion } from "framer-motion";
-import bothLogo from '../../../../public/bothLogo.svg';
-
+import bothLogo from "../../../../public/bothLogo.svg";
 
 const SideBar = () => {
   const { isOpen, toggleSidebar } = useSidebarStore();
   const { search, setSearch } = useSearchStore();
   console.log(isOpen);
 
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      toggleSidebar();
+    }
+  };
+
   return (
-    <div className={`fixed top-0 right-0 h-full rou z-50 transition-transform duration-700 ease-in-out ${
-        isOpen ? "translate-x-0" : "translate-x-full"
-      }`}>
+    <div
+      onClick={handleOverlayClick}
+      className={`fixed top-0 right-0 h-full w-full z-50 transition-transform duration-700 ease-in-out ${
+        isOpen ? "bg-transparent" : "pointer-events-none"
+      } ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+    >
       <div
-        className={`h-full w-[320px] bg-gradient-to-br from-[#5677BC] to-[#02205F] rounded-l-xl shadow-lg transition-all duration-700 transform ${
+        className={`h-full w-[320px] bg-gradient-to-br from-[#5677BC] to-[#02205F] rounded-l-xl shadow-lg transition-all duration-700 transform ml-auto ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -46,7 +54,11 @@ const SideBar = () => {
         </div>
         <div className="flex flex-col p-4 space-y-2">
           {menuItems.map((item, index) => (
-            <CustomMenuItem key={index} item={item} className="flex items-center p-2 text-white hover:bg-blue-600 rounded-lg transition-colors duration-300" />
+            <CustomMenuItem
+              key={index}
+              item={item}
+              className="flex items-center p-2 text-white hover:bg-blue-600 rounded-lg transition-colors duration-300"
+            />
           ))}
         </div>
       </div>
