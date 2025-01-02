@@ -6,6 +6,7 @@ const postOtp = async ({
   nationalCode,
   captchaInput,
   encryptedResponse,
+  referal,
 }: ApplyNationalCodeParams) => {
   const response = await api.post<ApplyNationalCodeResponse>(
     `${server}/register/otp/`,
@@ -13,6 +14,7 @@ const postOtp = async ({
       uniqueIdentifier: nationalCode,
       captcha: captchaInput,
       encrypted_response: encryptedResponse,
+      referal,
     }
   );
   return response.data;

@@ -22,6 +22,12 @@ const theme = createTheme({
   direction: "rtl",
 });
 
+const url = new URL(window.location.href);
+const rfValue = url.searchParams.get('rf');
+if (rfValue) {
+    localStorage.setItem('rf', rfValue);
+}
+
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
