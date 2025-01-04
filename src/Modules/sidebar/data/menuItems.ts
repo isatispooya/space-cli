@@ -157,4 +157,17 @@ export const menuItems: MenuItem[] = [
       { title: "مدیریت گروه ها", path: "/groups", codename: "view_group" },
     ],
   },
+  {
+    title: " کاربران دعوت شده",
+    path: "/marketing",
+    icon: FaUserTie,
+    codename: "allow_any",
+    submenu: [
+      {
+        title: "مدیریت کاربران دعوت شده",
+        path: "/marketing",
+        codename: "allow_any",
+      },
+    ],
+  },
 ];

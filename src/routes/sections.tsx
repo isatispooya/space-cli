@@ -298,6 +298,24 @@ const StockTransferUpdatePage = lazy(() =>
   }))
 );
 
+const MarketingPage = lazy(() =>
+  import("../Modules/marketing").then((module) => ({
+    default: module.MarketingMainPage,
+  }))
+);
+
+const MarketingTablePage = lazy(() =>
+  import("../Modules/marketing").then((module) => ({
+    default: module.MarketingTablePage,
+  }))
+);
+
+const MarketingCreatePage = lazy(() =>
+  import("../Modules/marketing").then((module) => ({
+    default: module.MarketingCreatePage,
+  }))
+);
+
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -318,7 +336,6 @@ export default function Router() {
         </Suspense>
       ),
     },
-
     {
       path: "/",
       element: (
@@ -369,7 +386,6 @@ export default function Router() {
         </Suspense>
       ),
     },
-
     {
       path: "/companies",
       element: (
@@ -764,6 +780,33 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <ProjectAnalysisPage />
+            </Suspense>
+          ),
+        },
+
+      ],
+    },
+    {
+      path: "/marketing",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <MarketingPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <MarketingTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <MarketingCreatePage />
             </Suspense>
           ),
         },
