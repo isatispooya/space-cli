@@ -1,0 +1,1 @@
+export { default as getInvitation } from "./invitationServices";

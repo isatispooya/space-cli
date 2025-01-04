@@ -1,4 +1,4 @@
-@import "./fonts.css";
+/* @import "./fonts.css"; */
 
 @tailwind base;
 @tailwind components;
@@ -7,11 +7,13 @@
 @layer base {
   html {
     font-family: Peyda, system-ui, sans-serif;
+    font-weight: 200;
   }
 }
 
 body {
   font-family: Peyda, sans-serif;
+  font-weight: 200;
   direction: rtl;
 }
 

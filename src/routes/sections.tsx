@@ -92,7 +92,7 @@ const ShareholdersPage = lazy(() =>
 );
 const ShareholdTablePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
-    default: module.ShareholdTablePage,
+    default: module.ShareholdersTablePage,
   }))
 );
 const ShareholdersFormPage = lazy(() =>
@@ -234,7 +234,7 @@ const UnderWritingFormPage = lazy(() =>
 
 const UnderWritingMainPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
-    default: module.UnderWritingMainPage,
+    default: module.UnderwritingMainPage,
   }))
 );
 
@@ -286,12 +286,6 @@ const ShareExpertPage = lazy(() =>
   }))
 );
 
-const AnnouncementPage = lazy(() =>
-  import("../Modules/shareholdrs").then((module) => ({
-    default: module.AnnouncementPage,
-  }))
-);
-
 const ProjectAnalysisPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.ProjectAnalysisPage,
@@ -301,6 +295,24 @@ const ProjectAnalysisPage = lazy(() =>
 const StockTransferUpdatePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.StockTransferUpdatePage,
+  }))
+);
+
+const MarketingPage = lazy(() =>
+  import("../Modules/marketing").then((module) => ({
+    default: module.MarketingMainPage,
+  }))
+);
+
+const MarketingTablePage = lazy(() =>
+  import("../Modules/marketing").then((module) => ({
+    default: module.MarketingTablePage,
+  }))
+);
+
+const MarketingCreatePage = lazy(() =>
+  import("../Modules/marketing").then((module) => ({
+    default: module.MarketingCreatePage,
   }))
 );
 
@@ -324,7 +336,6 @@ export default function Router() {
         </Suspense>
       ),
     },
-
     {
       path: "/",
       element: (
@@ -374,8 +385,7 @@ export default function Router() {
           <ContactMainPage />
         </Suspense>
       ),
-    },  
-
+    },
     {
       path: "/companies",
       element: (
@@ -756,14 +766,7 @@ export default function Router() {
             </Suspense>
           ),
         },
-        {
-          path: "announcement",
-          element: (
-            <Suspense fallback={<Loader />}>
-              <AnnouncementPage />
-            </Suspense>
-          ),
-        },
+
         {
           path: "shareExpert",
           element: (
@@ -777,6 +780,33 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <ProjectAnalysisPage />
+            </Suspense>
+          ),
+        },
+
+      ],
+    },
+    {
+      path: "/marketing",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <MarketingPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <MarketingTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <MarketingCreatePage />
             </Suspense>
           ),
         },

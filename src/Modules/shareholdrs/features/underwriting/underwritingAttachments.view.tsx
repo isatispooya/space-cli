@@ -1,6 +1,6 @@
 import { useUnusedProcess } from "../../hooks";
 import { motion } from "framer-motion";
-import { FiDownload } from "react-icons/fi";
+import { FiDownload, FiFileText } from "react-icons/fi";
 
 interface AppendixItem {
   id: number;
@@ -13,7 +13,16 @@ interface AppendixItem {
 const UnderwritingAttachmentsView = () => {
   const { data } = useUnusedProcess.useGetList();
   const appendixItems = data?.[0]?.appendices ? [data[0].appendices] : [];
-  if (appendixItems.length === 0) return null;
+  if (appendixItems.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 text-center">
+        <FiFileText className="w-16 h-16 text-slate-300 mb-4" />
+        <p className="text-lg text-slate-500 font-medium">
+          فایلی برای مشاهده وجود نداره
+        </p>
+      </div>
+    );
+  }
   const getFileFormat = (fileUrl: string) => {
     const format = fileUrl.split(".").pop()?.toUpperCase() || "";
     return format;
@@ -50,7 +59,6 @@ const UnderwritingAttachmentsView = () => {
                   </span>
                 </div>
               </div>
-
               <div>
                 <h6 className="text-slate-800 font-bold text-lg mb-2 group-hover:text-indigo-600 transition-colors">
                   {item.name}

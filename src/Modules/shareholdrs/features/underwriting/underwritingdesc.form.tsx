@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaDownload, FaMapMarkerAlt } from "react-icons/fa";
 
 import { motion } from "framer-motion";
 import { useUnusedProcess } from "../../hooks";
@@ -26,8 +26,9 @@ const UnderwritingDescForm: FC = () => {
 
   interface UnusedProcessData {
     description_picture: string;
-    description_title: string;
+    announcement_underwriting_description: string;
     description: string;
+    announcement_underwriting: string;
     instagram_link: string;
     telegram_link: string;
     contact_number: string;
@@ -55,7 +56,9 @@ const UnderwritingDescForm: FC = () => {
             >
               <img
                 src={item?.description_picture}
-                alt={item?.description_title || "Description"}
+                alt={
+                  item?.announcement_underwriting_description || "Description"
+                }
                 className="w-full h-full object-cover rounded-lg"
               />
             </motion.div>
@@ -64,7 +67,7 @@ const UnderwritingDescForm: FC = () => {
               className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#424769] to-[#2C3333] mb-2 sm:mb-4 font-iransans truncate w-full text-center"
               whileHover={{ scale: 1.02 }}
             >
-              {item?.description_title}
+              {item?.announcement_underwriting_description}
             </motion.h1>
 
             <div className="w-full relative">
@@ -88,10 +91,23 @@ const UnderwritingDescForm: FC = () => {
                 className="flex items-center justify-center mt-4 space-x-2 text-gray-600 group cursor-pointer"
                 whileHover={{ scale: 1.02 }}
               >
+                <FaDownload className="text-xl text-blue-500 group-hover:text-blue-600 transition-colors duration-300" />
+                <a
+                  href={item?.announcement_underwriting}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-base group-hover:text-gray-800 transition-colors duration-300 mr-2"
+                >
+                  دانلود آگهی پذیره نویسی
+                </a>
+              </motion.div>
+              <motion.div
+                className="flex items-center justify-center mt-4 space-x-2 text-gray-600 group cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+              >
                 <FaMapMarkerAlt className="text-xl text-red-500 group-hover:text-red-600 transition-colors duration-300" />
                 <a
                   href={item?.description_location}
-                  target="_blank"
                   rel="noopener noreferrer"
                   className="text-base group-hover:text-gray-800 transition-colors duration-300 mr-2"
                 >

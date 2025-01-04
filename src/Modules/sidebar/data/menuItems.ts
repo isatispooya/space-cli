@@ -98,6 +98,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت شرکت‌ها",
         path: "/companies",
+        codename: "view_company",
       },
     ],
   },
@@ -110,6 +111,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت مکاتبات",
         path: "/correspondence",
+        codename: "view_correspondence",
       },
     ],
   },
@@ -122,28 +124,50 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت نقش ها",
         path: "/positions",
+        codename: "view_position",
       },
     ],
   },
   {
     title: "راه‌های ارتباطی",
     path: "/contact",
+    codename: "allow_any",
     icon: FaPhone,
-    codename: "view_accounts",
-    submenu: [{ title: "تماس با ما", path: "/contact" }],
+    submenu: [{ title: "تماس با ما", path: "/contact" , codename: "allow_any" }],
   },
   {
     title: "دسترسی ها",
     path: "/permissions",
     icon: FaUserTie,
     codename: "view_permission",
-    submenu: [{ title: "مدیریت دسترسی ها", path: "/permissions" }],
+    submenu: [
+      {
+        title: "مدیریت دسترسی ها",
+        path: "/permissions",
+        codename: "view_permission",
+      },
+    ],
   },
   {
     title: "گروه ها",
     path: "/groups",
     icon: FaUserTie,
     codename: "view_group",
-    submenu: [{ title: "مدیریت گروه ها", path: "/groups" }],
+    submenu: [
+      { title: "مدیریت گروه ها", path: "/groups", codename: "view_group" },
+    ],
+  },
+  {
+    title: " کاربران دعوت شده",
+    path: "/marketing",
+    icon: FaUserTie,
+    codename: "allow_any",
+    submenu: [
+      {
+        title: "مدیریت کاربران دعوت شده",
+        path: "/marketing",
+        codename: "allow_any",
+      },
+    ],
   },
 ];

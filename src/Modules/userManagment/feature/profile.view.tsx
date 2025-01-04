@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { useProfile, useUpdateProfilePicture } from "../hooks";
 import { motion } from "framer-motion";
 import { server } from "../../../api/server";
+import defaultAvatar from "../../../../public/assets/user-286-128.png";
 
 const ProfileView: React.FC = () => {
   const { data: profile, refetch } = useProfile();
   const { mutate: updateProfilePicture } = useUpdateProfilePicture();
-  const [avatarUrl, setAvatarUrl] = useState<string>(
-    profile?.profile_image || ""
-  );
+  const [avatarUrl, setAvatarUrl] = useState<string>(profile?.profile_image);
 
   React.useEffect(() => {
     if (profile?.profile_image) {
@@ -110,9 +109,14 @@ const ProfileView: React.FC = () => {
             <div className="relative mb-6">
               <div className="w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-lg">
                 <img
-                  src={server + avatarUrl}
+                  src={
+                    profile?.profile_image ? server + avatarUrl : defaultAvatar
+                  }
                   alt="پروفایل"
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = defaultAvatar;
+                  }}
                 />
               </div>
               <label className="absolute bottom-2 right-2 bg-white p-2 rounded-full cursor-pointer shadow-lg">

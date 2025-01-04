@@ -11,7 +11,7 @@ interface SideMenuProps {
   onClose: () => void;
 }
 
-const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection }) => {
+const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection, onClose }) => {
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
 
@@ -31,6 +31,10 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection }) => {
     });
   };
 
+  const handleMenuClick = () => {
+    onClose();
+  };
+
   const renderMenuItem = (item: MenuItemType) => {
     if (item.submenu) {
       return (
@@ -42,6 +46,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection }) => {
             </div>
           }
           className="text-white"
+          onClick={handleMenuClick}
         >
           {item.submenu.map((subItem, subIndex) => (
             <React.Fragment key={subIndex}>
@@ -49,7 +54,12 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection }) => {
                 renderMenuItem(subItem)
               ) : (
                 <MenuItem
-                  onClick={() => subItem.path && navigate(subItem.path)}
+                  onClick={() => {
+                    if (subItem.path) {
+                      navigate(subItem.path);
+                    }
+                    handleMenuClick();
+                  }}
                 >
                   {subItem.title}
                 </MenuItem>
@@ -61,7 +71,14 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection }) => {
     }
 
     return (
-      <MenuItem onClick={() => item.path && navigate(item.path)}>
+      <MenuItem
+        onClick={() => {
+          if (item.path) {
+            navigate(item.path);
+          }
+          handleMenuClick();
+        }}
+      >
         {item.title}
       </MenuItem>
     );

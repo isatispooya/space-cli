@@ -46,34 +46,27 @@ const Toolbar = ({ buttons }: ToolbarProps) => {
                 >
                   <motion.a
                     onClick={() => navigate(`/${basePath}/${button.path}`)}
-                    className={`z-30 flex items-center justify-center w-full px-4 py-3 text-sm font-medium rounded-lg cursor-pointer transition-all duration-200 ease-in-out
-                      ${
-                        button.text === "سرمایه گذاری"
-                          ? currentPath === button.path
-                            ? "bg-[#29D2C7] text-white shadow-lg shadow-[#29D2C7]/20 scale-105"
-                            : "text-slate-600 hover:bg-[#29D2C7]/10 hover:text-[#29D2C7]"
-                          : currentPath === button.path
-                          ? "bg-[#5677BC] text-white shadow-lg shadow-[#5677BC]/20 scale-105"
-                          : "text-slate-600 hover:bg-slate-100 hover:text-[#5677BC]"
-                      }`}
+                    className={`z-30 flex items-center justify-center w-full px-4 py-3 text-sm font-medium rounded-lg cursor-pointer transition-all duration-200 ease-in-out ${
+                      button.path === "create"
+                        ? "bg-[#29D2C7] text-white shadow-lg shadow-[#29D2C7]/20"
+                        : currentPath === button.path
+                        ? "bg-[#5677BC] text-white shadow-lg shadow-[#5677BC]/20"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-[#5677BC]"
+                    }`}
                     role="tab"
                     aria-selected={currentPath === button.path}
-                    whileHover={{
-                      scale: currentPath !== button.path ? 1.02 : 1,
-                    }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <motion.div
-                      className="flex items-center gap-4"
-                      initial={false}
-                      animate={{
-                        color:
-                          currentPath === button.path ? "#ffffff" : "#475569",
-                      }}
+                    <div
+                      className={`flex items-center gap-2 ${
+                        button.text === "سرمایه گذاری"
+                          ? "text-white text-sm"
+                          : ""
+                      }`}
                     >
-                      <button.icon className="w-5 h-5" />
+                      <button.icon className="w-4 h-4" />
                       <span>{button.text}</span>
-                    </motion.div>
+                    </div>
                   </motion.a>
                 </motion.li>
               )

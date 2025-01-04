@@ -1,3 +1,3 @@
-export * from "../userManagment/pages";
-
+export * from "./pages";
+export * from "./hooks";
 

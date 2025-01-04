@@ -27,11 +27,16 @@ const SignupForm = () => {
     setOtp,
   } = useLoginStore();
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const referal = urlParams.get('rf') || '';
+
+
   const handleRegister = () => {
     register(
       {
         nationalCode,
         otpValue: otp,
+
       },
       {
         onSuccess: () => {
@@ -55,6 +60,7 @@ const SignupForm = () => {
         nationalCode,
         captchaInput,
         encryptedResponse,
+        referal,
       },
       {
         onSuccess: () => {

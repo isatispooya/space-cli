@@ -80,13 +80,17 @@ const SidePanel = ({
   ];
 
   return (
-    <div className="fixed right-0 w-20 h-full bg-gradient-to-b from-[#5677BC] to-[#02205F] rounded-l-3xl shadow-2xl z-20">
+    <div
+      className={`fixed right-0 w-20 h-full bg-gradient-to-b from-[#5677BC] to-[#02205F] rounded-l-3xl shadow-2xl z-20 transition-transform duration-500 ease-in-out ${
+        collapsed ? "translate-x-full" : "translate-x-0"
+      }`}
+    >
       <div className="flex flex-col items-center py-8 gap-8">
         {icons.map((icon, index) =>
           icon.isReactIcon && icon.icon ? (
             <icon.icon
               key={index}
-              className="sidebar-icon"
+              className="sidebar-icon transition-transform hover:scale-110"
               onClick={icon.onClick}
             />
           ) : (
