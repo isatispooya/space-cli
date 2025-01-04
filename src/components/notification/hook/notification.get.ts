@@ -6,6 +6,10 @@ interface NotificationData {
   message: string;
   date: string;
   isRead: boolean;
+  title: string;
+  tag: string;
+  read: boolean;
+  created_at: string;
 }
 
 const useCorrespondencesData = () => {

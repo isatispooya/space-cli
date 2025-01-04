@@ -103,7 +103,7 @@ const Header = () => {
               />
             </Badge>
             {showNotifications && (
-              <Notification anchorRef={notificationIconRef} />
+              <Notification  />
             )}
             <Avatar />
           </div>
