@@ -7,7 +7,7 @@ import { useSidebarStore } from "../../Modules/sidebar/store/sidebar.store";
 import { FiMenu } from "react-icons/fi";
 import Badge from '@mui/material/Badge';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useCorrespondencesData } from '../notification/hook/notification.get';
 import Notification from '../notification/notification';
 
@@ -16,12 +16,25 @@ initTWE({ Collapse, Ripple });
 const Header = () => {
   const { toggleSidebar } = useSidebarStore();
   const [showNotifications, setShowNotifications] = useState(false);
-  const notificationIconRef = useRef(null);
+  const notificationIconRef = useRef<SVGSVGElement>(null);
   const { data: notifications } = useCorrespondencesData();
   const unreadCount = notifications?.filter(notification => notification.read === false).length ?? 0;
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (notificationIconRef.current && !notificationIconRef.current.contains(event.target as Node)) {
+      setShowNotifications(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header>
@@ -103,7 +116,7 @@ const Header = () => {
               />
             </Badge>
             {showNotifications && (
-              <Notification  />
+              <Notification />
             )}
             <Avatar />
           </div>
