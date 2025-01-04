@@ -2,17 +2,14 @@ import { Container, Grid } from "@mui/material";
 import { MainLayout } from "../../../layouts";
 import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
-import DashboardStats, { StatsProps } from "../components/dashboard.stats";
-import { IoPersonOutline } from "react-icons/io5";
-import { BiDollar } from "react-icons/bi";
-import { BsCart } from "react-icons/bs";
+
 import { useShortcuts } from "../hooks";
 import { useMemo } from "react";
 
+import { DashboardMarketingStat } from "../components";
+
 const DashboardPage = () => {
   const { data: shortcuts } = useShortcuts();
-
-  console.log(shortcuts);
 
   const sliderData = useMemo(
     () =>
@@ -24,37 +21,6 @@ const DashboardPage = () => {
       })) || [],
     [shortcuts]
   );
-
-  const statsData: StatsProps[] = [
-    {
-      title: "کاربران دعوت شده",
-      value: "2,534",
-      icon: <IoPersonOutline className="w-6 h-6" />,
-      change: 12,
-      changeText: "دعوت کردن ",
-      trend: "up" as const,
-      iconColor: "text-blue-600",
-      route: "/marketing",
-    },
-    {
-      title: "درآمد کل",
-      value: "۳,۶۵۴,۰۰۰ تومان",
-      icon: <BiDollar className="w-6 h-6" />,
-      change: -2.5,
-      changeText: "کاهش درآمد",
-      trend: "down" as const,
-      iconColor: "text-green-600",
-    },
-    {
-      title: "سفارشات",
-      value: "1,423",
-      icon: <BsCart className="w-6 h-6" />,
-      change: 8.2,
-      changeText: "افزایش سفارشات",
-      trend: "up" as const,
-      iconColor: "text-purple-600",
-    },
-  ];
 
   return (
     <MainLayout>
@@ -80,20 +46,17 @@ const DashboardPage = () => {
           </Grid>
           <Grid item xs={12} md={3}>
             <Grid container spacing={{ xs: 2, md: 3 }}>
-              {statsData.map((stat, index) => (
-                <Grid
-                  key={index}
-                  item
-                  xs={12}
-                  sm={4}
-                  md={12}
-                  sx={{
-                    height: { xs: "200px", md: "calc(30vh - 16px)" },
-                  }}
-                >
-                  <DashboardStats {...stat} />
-                </Grid>
-              ))}
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                md={12}
+                sx={{
+                  height: { xs: "200px", md: "calc(30vh - 16px)" },
+                }}
+              >
+                <DashboardMarketingStat />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
