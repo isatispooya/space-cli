@@ -5,11 +5,24 @@ import LogoWhite from "../../assets/Artboard 1 copy 17.png";
 import LogoText from "../../assets/textLogo.png";
 import { useSidebarStore } from "../../Modules/sidebar/store/sidebar.store";
 import { FiMenu } from "react-icons/fi";
+import Badge from '@mui/material/Badge';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import { useState, useRef } from 'react';
+import { useCorrespondencesData } from '../notification/hook/notification.get';
+import Notification from '../notification/notification';
 
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
   const { toggleSidebar } = useSidebarStore();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const notificationIconRef = useRef(null);
+  const { data: notifications } = useCorrespondencesData();
+  const unreadCount = notifications?.filter(notification => notification.read === false).length ?? 0;
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
   return (
     <header>
       <nav
@@ -46,6 +59,7 @@ const Header = () => {
                     alt="logo text"
                   />
                 </motion.div>
+                
               </div>
             </div>
           </div>
@@ -53,12 +67,44 @@ const Header = () => {
             className="!visible hidden grow basis-[100%] items-center text-center lg:!flex lg:basis-auto lg:text-left"
             id="navbarSupportedContentY"
             data-twe-collapse-item
-          ></div>
+          >
+
+            
+          </div>
+          
           <h1 className="text-md  text-[#5677BC] ml-7">
             نرم افزار تحت وب ایساتیس من
           </h1>
-
-          <div className="flex items-center ml-8 space-x-4">
+          <div className="flex items-center ml-8 space-x-4 relative">
+            <Badge 
+              sx={{
+                position: "relative", 
+                zIndex: 1, 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center'
+              }} 
+              badgeContent={unreadCount} 
+              color="primary"
+            >
+              <NotificationsNoneIcon
+                ref={notificationIconRef}
+                onClick={toggleNotifications}
+                sx={{
+                  transform: "scale(1.1)",
+                  transition: "transform 0.2s", 
+                  borderRadius: "50%",
+                  padding: "2px",
+                  fontSize: "2.3rem",
+                  cursor: "pointer",
+                  color: "#5677BC",
+                  marginLeft: "10px"
+                }}
+              />
+            </Badge>
+            {showNotifications && (
+              <Notification anchorRef={notificationIconRef} />
+            )}
             <Avatar />
           </div>
         </div>
