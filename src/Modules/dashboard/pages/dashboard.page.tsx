@@ -51,10 +51,10 @@ const DashboardPage = () => {
               <Grid
                 item
                 xs={12}
-                sm={4}
+                sm={6}
                 md={12}
                 sx={{
-                  height: { xs: "250px", md: "calc(30.33vh - 16px)" },
+                  height: { xs: "250px", md: "calc(33.33vh - 16px)" },
                 }}
               >
                 <DashboardBimeStat />
@@ -62,10 +62,10 @@ const DashboardPage = () => {
               <Grid
                 item
                 xs={12}
-                sm={4}
+                sm={6}
                 md={12}
                 sx={{
-                  height: { xs: "250px", md: "calc(32.33vh - 16px)" },
+                  height: { xs: "260px", md: "calc(33.33vh - 16px)" },
                 }}
               >
                 <DashboardCrowdStat />
@@ -73,7 +73,7 @@ const DashboardPage = () => {
               <Grid
                 item
                 xs={12}
-                sm={4}
+                sm={6}
                 md={12}
                 sx={{ height: { xs: "250px", md: "calc(33.33vh - 16px)" } }}
               >
