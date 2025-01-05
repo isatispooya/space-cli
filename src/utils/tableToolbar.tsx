@@ -83,6 +83,7 @@ const CustomDataGridToolbar = <T extends Record<string, unknown>>({
         p: 1,
         justifyContent: "space-between",
         flexWrap: "wrap",
+        overflowX: "auto",
       }}
     >
       <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
