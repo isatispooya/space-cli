@@ -10,11 +10,11 @@ interface LayoutProps {
 
 const MainLayout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex h-screen">
-      <SideBar />
-      <div className="flex-1 flex flex-col">
-        <Header />
-        <main className="flex-1 p-4 overflow-auto">
+    <div>
+      <SideBar/>
+      <div >
+        <Header/>
+        <main  >
           {children}
         </main>
       </div>
