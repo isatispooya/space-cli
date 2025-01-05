@@ -31,7 +31,7 @@ const DashboardBimeStat = () => {
         </motion.p>
       </div>
 
-      <a href="https://isatiscrowd.ir" target="_blank">
+      <a href="https://bime.isatispooya.com" target="_blank">
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
