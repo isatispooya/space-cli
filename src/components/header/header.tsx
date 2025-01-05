@@ -10,11 +10,14 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useState, useRef, useEffect } from 'react';
 import { useCorrespondencesData } from '../notification/hook/notification.get';
 import Notification from '../notification/notification';
+import { useNavigate } from "react-router-dom";
 
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
   const { toggleSidebar } = useSidebarStore();
+
+  const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationIconRef = useRef<SVGSVGElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
@@ -65,7 +68,8 @@ const Header = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex items-center"
+                  className="flex items-center cursor-pointer"
+                  onClick={() => navigate("/")}
                 >
                   <img
                     src={LogoWhite}
