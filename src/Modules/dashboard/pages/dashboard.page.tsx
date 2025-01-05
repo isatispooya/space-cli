@@ -57,7 +57,7 @@ const DashboardPage = () => {
                   height: { xs: "200px", md: "calc(30vh - 16px)" },
                 }}
               >
-                <DashboardMarketingStat />
+                <DashboardBimeStat />
               </Grid>
               <Grid
                 item
@@ -77,7 +77,7 @@ const DashboardPage = () => {
                 md={12}
                 sx={{ height: { xs: "200px", md: "calc(30vh - 16px)" } }}
               >
-                <DashboardBimeStat />
+                <DashboardMarketingStat />
               </Grid>
             </Grid>
           </Grid>
