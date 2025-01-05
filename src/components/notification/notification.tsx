@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCorrespondencesData, useMarkAsRead } from "./hook/notification.get";
 import { formatDistanceToNow } from "date-fns";
@@ -18,13 +18,11 @@ interface NotificationMessage {
 
 
 
-const Notification = () => {
+const Notification = React.forwardRef<HTMLDivElement>((_props, ref) => {
   const { data } = useCorrespondencesData();
   const markAsReadMutation = useMarkAsRead();
 
   const [messages, setMessages] = useState<NotificationMessage[]>([]);
-  const [isVisible, setIsVisible] = useState(true);
-  const notificationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (data) {
@@ -40,18 +38,6 @@ const Notification = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
-        setIsVisible(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const [activeTab, setActiveTab] = useState("unread");
   const [visibleCount, setVisibleCount] = useState(4);
@@ -96,8 +82,7 @@ const Notification = () => {
   };
 
   return (
-    isVisible && (
-      <div ref={notificationRef}>
+      <div ref={ref}>
         <AnimatePresence>
           <motion.div
             initial={{ opacity: 0, height: 0 }}
@@ -223,7 +208,6 @@ const Notification = () => {
         </AnimatePresence>
       </div>
     )
-  );
-};
+});
 
 export default Notification;

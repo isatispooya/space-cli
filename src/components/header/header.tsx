@@ -17,6 +17,7 @@ const Header = () => {
   const { toggleSidebar } = useSidebarStore();
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationIconRef = useRef<SVGSVGElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
   const { data: notifications } = useCorrespondencesData();
   const unreadCount = notifications?.filter(notification => notification.read === false).length ?? 0;
   const toggleNotifications = () => {
@@ -24,7 +25,12 @@ const Header = () => {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (notificationIconRef.current && !notificationIconRef.current.contains(event.target as Node)) {
+    if (
+      notificationIconRef.current &&
+      !notificationIconRef.current.contains(event.target as Node) &&
+      notificationRef.current &&
+      !notificationRef.current.contains(event.target as Node)
+    ) {
       setShowNotifications(false);
     }
   };
@@ -112,7 +118,7 @@ const Header = () => {
               />
             </Badge>
             {showNotifications && (
-              <Notification />
+              <Notification ref={notificationRef} />
             )}
             <Avatar />
           </div>
