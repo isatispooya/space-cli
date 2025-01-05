@@ -33,28 +33,28 @@ const DashboardPage = () => {
           py: { xs: 1, sm: 2 },
         }}
       >
-        <Grid container spacing={{ xs: 2, md: 3 }} sx={{ height: "100%" }}>
+        <Grid container spacing={3} sx={{ height: "100%" }}>
           <Grid item xs={12} md={9}>
-            <Grid container spacing={{ xs: 2, md: 3 }}>
+            <Grid container spacing={3}>
               <Grid item xs={12} sx={{ height: "25vh" }}>
                 {sliderData.length > 0 && (
                   <DashboardSlider slides={sliderData} />
                 )}
               </Grid>
-              <Grid item xs={12} sx={{ height: "65vh" }}>
+              <Grid item xs={12} sx={{ height: "60vh" }}>
                 <DashboardChart />
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} md={3}>
-            <Grid container spacing={{ xs: 2, md: 3 }}>
+            <Grid container spacing={2}>
               <Grid
                 item
                 xs={12}
-                sm={4}
+                sm={6}
                 md={12}
                 sx={{
-                  height: { xs: "200px", md: "calc(30vh - 16px)" },
+                  height: { xs: "250px", md: "calc(33.33vh - 16px)" },
                 }}
               >
                 <DashboardBimeStat />
@@ -62,10 +62,10 @@ const DashboardPage = () => {
               <Grid
                 item
                 xs={12}
-                sm={4}
+                sm={6}
                 md={12}
                 sx={{
-                  height: { xs: "200px", md: "calc(30vh - 16px)" },
+                  height: { xs: "260px", md: "calc(33.33vh - 16px)" },
                 }}
               >
                 <DashboardCrowdStat />
@@ -73,9 +73,9 @@ const DashboardPage = () => {
               <Grid
                 item
                 xs={12}
-                sm={4}
+                sm={6}
                 md={12}
-                sx={{ height: { xs: "200px", md: "calc(30vh - 16px)" } }}
+                sx={{ height: { xs: "250px", md: "calc(33.33vh - 16px)" } }}
               >
                 <DashboardMarketingStat />
               </Grid>

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useDashboard } from "../hooks";
 import { IoIosArrowBack } from "react-icons/io";
 
-import crowdImg from "../../../../public/assets/crowdlogo.png";
+import bimeImg from "../../../../public/assets/bime.png";
 
 const DashboardBimeStat = () => {
   const { data: stats } = useDashboard.useGetStats();
@@ -16,7 +16,7 @@ const DashboardBimeStat = () => {
       style={{ zIndex: 2 }}
     >
       <div className="flex items-center ">
-        <img src={crowdImg} alt="crowd" className="w-10 h-10" />
+        <img src={bimeImg} alt="bime" className="w-10 h-10" />
         <h3 className="text-sm text-[#1a5c35] font-bold font-iranSans">بیمه</h3>
       </div>
 
@@ -31,7 +31,7 @@ const DashboardBimeStat = () => {
         </motion.p>
       </div>
 
-      <a href="https://isatiscrowd.ir" target="_blank">
+      <a href="https://bime.isatispooya.com" target="_blank">
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}

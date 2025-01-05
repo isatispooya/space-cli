@@ -43,13 +43,12 @@ const DashboardChart = () => {
   const { data: statsChart } = useDashboard.useGetStats();
   const [isVertical, setIsVertical] = useState(false);
 
-  // Add useEffect to handle responsive layout
   useEffect(() => {
     const handleResize = () => {
-      setIsVertical(window.innerWidth < 768); 
+      setIsVertical(window.innerWidth < 768);
     };
 
-    handleResize(); 
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -58,7 +57,7 @@ const DashboardChart = () => {
     ...(statsChart?.companies
       ? statsChart.companies.map((company: barTypes) => ({
           name: company.name,
-          value: 20,
+          value: company.shares,
           logo: company.logo,
         }))
       : []),
@@ -125,7 +124,7 @@ const DashboardChart = () => {
   };
 
   return (
-    <div className="w-full h-full bg-white rounded-xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
+    <div className="w-full h-full  border-2 border-[#5677BC] bg-white rounded-xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
       <div className="w-full h-full p-4 sm:p-6">
         <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-6 text-center font-iranSans">
           آمار
@@ -193,7 +192,8 @@ const DashboardChart = () => {
               </defs>
               <Bar
                 dataKey="value"
-                name="مقدار"
+                name="واحد"
+                fill="#818cf8"
                 shape={<CustomBar />}
                 maxBarSize={60}
               />
