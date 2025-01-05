@@ -8,6 +8,10 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useDashboard } from "../hooks";
+import { motion } from "framer-motion";
+import { server } from "../../../api/server";
+import { useEffect, useState } from "react";
 
 interface TooltipProps {
   active?: boolean;
@@ -18,15 +22,46 @@ interface TooltipProps {
   label?: string;
 }
 
+interface barTypes {
+  name: string;
+  value: number;
+  logo: string;
+  shares: number;
+}
+
+interface barPropsTypes {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  index?: number;
+  payload?: barTypes;
+  data?: barTypes[];
+}
+
 const DashboardChart = () => {
+  const { data: statsChart } = useDashboard.useGetStats();
+  const [isVertical, setIsVertical] = useState(false);
+
+  // Add useEffect to handle responsive layout
+  useEffect(() => {
+    const handleResize = () => {
+      setIsVertical(window.innerWidth < 768); 
+    };
+
+    handleResize(); 
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const data = [
-    { name: "فروردین", value: 65 },
-    { name: "اردیبهشت", value: 59 },
-    { name: "خرداد", value: 80 },
-    { name: "تیر", value: 81 },
-    { name: "مرداد", value: 56 },
-    { name: "شهریور", value: 55 },
-    { name: "مهر", value: 40 },
+    ...(statsChart?.companies
+      ? statsChart.companies.map((company: barTypes) => ({
+          name: company.name,
+          value: 20,
+          logo: company.logo,
+        }))
+      : []),
   ];
 
   const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
@@ -35,7 +70,7 @@ const DashboardChart = () => {
         <div className="bg-white p-3 shadow-lg rounded-lg border border-gray-100">
           <p className="text-sm text-gray-600 mb-1 font-iranSans">{label}</p>
           <p className="text-lg font-bold text-indigo-600 font-iranSans">
-            {payload[0].value} <span className="text-xs">عدد</span>
+            {payload[0].value} <span className="text-xs">واحد</span>
           </p>
         </div>
       );
@@ -43,48 +78,101 @@ const DashboardChart = () => {
     return null;
   };
 
+  const CustomBar = (props: barPropsTypes) => {
+    const { x = 0, y = 0, width = 0, height = 0, payload } = props;
+
+    const logoSize = isVertical
+      ? Math.min(width * 0.8, 40)
+      : Math.min(height * 0.8, 60);
+
+    const logoX = isVertical ? x - (logoSize + 25) : x + (width - logoSize) / 2;
+    const logoY = isVertical
+      ? y + (height - logoSize) / 2
+      : y - (logoSize + 10);
+
+    return (
+      <motion.g
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: (props.index ?? 0) * 0.1 }}
+      >
+        {/* Bar */}
+        <motion.rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill="url(#barGradient)"
+          rx={6}
+          ry={6}
+          initial={{ height: 0 }}
+          animate={{ height }}
+          transition={{ duration: 0.5, delay: (props.index ?? 0) * 0.1 }}
+        />
+        {/* Logo */}
+        {payload?.logo && (
+          <image
+            x={logoX}
+            y={logoY}
+            width={logoSize}
+            height={logoSize}
+            href={server + payload?.logo}
+            className="rounded-full"
+          />
+        )}
+      </motion.g>
+    );
+  };
+
   return (
-    <div className="w-full h-full bg-white rounded-lg shadow-lg flex flex-col">
-      <div className="w-full h-full p-2 sm:p-4">
-        <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-4 text-center font-iranSans">
-          آمار ماهانه
+    <div className="w-full h-full bg-white rounded-xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
+      <div className="w-full h-full p-4 sm:p-6">
+        <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-6 text-center font-iranSans">
+          آمار
         </h3>
-        <div className="w-full h-[calc(100%-2rem)]">
+        <div className="w-full h-[calc(100%-3rem)]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
+              layout={isVertical ? "vertical" : "horizontal"}
               margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 15,
+                top: isVertical ? 20 : 70,
+                right: isVertical ? 70 : 30,
+                left: isVertical ? 20 : 20,
+                bottom: isVertical ? 15 : 15,
               }}
             >
               <CartesianGrid
                 strokeDasharray="3 3"
-                vertical={false}
+                horizontal={!isVertical}
+                vertical={isVertical}
                 stroke="#f0f0f0"
               />
-              <XAxis
-                dataKey="name"
-                tick={{
-                  fontSize: 12,
-                  fontFamily: "IRANSans",
-                  fill: "#6b7280",
-                }}
-                tickMargin={10}
-                axisLine={{ stroke: "#e5e7eb" }}
-              />
-              <YAxis
-                tick={{
-                  fontSize: 12,
-                  fontFamily: "IRANSans",
-                  fill: "#6b7280",
-                }}
-                tickMargin={10}
-                axisLine={{ stroke: "#e5e7eb" }}
-                tickLine={{ stroke: "#e5e7eb" }}
-              />
+              {/* Swap XAxis and YAxis for vertical layout */}
+              {isVertical ? (
+                <>
+                  <XAxis
+                    type="number"
+                    tick={false}
+                    axisLine={{ stroke: "#e5e7eb" }}
+                  />
+                  <YAxis
+                    type="category"
+                    dataKey="name"
+                    tick={false}
+                    axisLine={{ stroke: "#e5e7eb" }}
+                  />
+                </>
+              ) : (
+                <>
+                  <XAxis
+                    dataKey="name"
+                    tick={false}
+                    axisLine={{ stroke: "#e5e7eb" }}
+                  />
+                  <YAxis tick={false} axisLine={{ stroke: "#e5e7eb" }} />
+                </>
+              )}
               <Tooltip
                 content={<CustomTooltip />}
                 cursor={{ fill: "rgba(236, 238, 241, 0.4)" }}
@@ -106,11 +194,8 @@ const DashboardChart = () => {
               <Bar
                 dataKey="value"
                 name="مقدار"
-                fill="url(#barGradient)"
-                radius={[6, 6, 0, 0]}
+                shape={<CustomBar />}
                 maxBarSize={60}
-                animationDuration={1500}
-                animationBegin={300}
               />
             </BarChart>
           </ResponsiveContainer>

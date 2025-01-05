@@ -33,7 +33,19 @@ const CustomMenuItem: React.FC<MenuItemProps> = ({ item }) => {
     }
   }, [search]);
 
-  if (!filteredSubmenu || filteredSubmenu.length === 0) return null;
+  if (!filteredSubmenu || filteredSubmenu.length === 0) {
+    return (
+      <div className="w-full">
+        <Link
+          to={item.path || "#"}
+          className="flex items-center gap-2 p-3 text-white hover:bg-blue-800 rounded-lg cursor-pointer"
+        >
+          {item.icon && <item.icon className="text-xl" />}
+          <span>{item.title}</span>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

@@ -36,14 +36,14 @@ const UnderwritingDescForm: FC = () => {
   }
 
   return (
-    <div className="flex flex-col  min-h-screen py-8">
+    <div className="flex flex-col w-full min-h-screen py-12">
       {unusedProcessData?.map((item: UnusedProcessData, index: number) => (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           key={index}
-          className="relative w-full max-w-2xl p-3 sm:p-6 mx-auto bg-white rounded-xl shadow-xl border-4 border-double border-gray-200"
+          className="relative w-full max-w-none p-4 sm:p-8 mx-auto bg-white rounded-xl shadow-xl border-4 border-double border-gray-200"
         >
           <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-[#5677BC] rounded-tl-lg" />
           <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-[#5677BC] rounded-tr-lg" />
@@ -51,7 +51,7 @@ const UnderwritingDescForm: FC = () => {
           <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-[#5677BC] rounded-br-lg" />
           <motion.div className="flex flex-col items-center">
             <motion.div
-              className="w-full h-28 sm:h-40 mb-2 sm:mb-4"
+              className="w-full h-48 sm:h-96 mb-4 sm:mb-6"
               whileHover={{ scale: 1.02 }}
             >
               <img
@@ -69,7 +69,6 @@ const UnderwritingDescForm: FC = () => {
             >
               {item?.announcement_underwriting_description}
             </motion.h1>
-
             <div className="w-full relative">
               <motion.p
                 onClick={() => isMobile && toggleExpand(index)}

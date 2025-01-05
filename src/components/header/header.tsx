@@ -7,21 +7,43 @@ import { useSidebarStore } from "../../Modules/sidebar/store/sidebar.store";
 import { FiMenu } from "react-icons/fi";
 import Badge from '@mui/material/Badge';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useCorrespondencesData } from '../notification/hook/notification.get';
 import Notification from '../notification/notification';
+import { useNavigate } from "react-router-dom";
 
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
   const { toggleSidebar } = useSidebarStore();
+
+  const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
-  const notificationIconRef = useRef(null);
+  const notificationIconRef = useRef<SVGSVGElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
   const { data: notifications } = useCorrespondencesData();
   const unreadCount = notifications?.filter(notification => notification.read === false).length ?? 0;
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      notificationIconRef.current &&
+      !notificationIconRef.current.contains(event.target as Node) &&
+      notificationRef.current &&
+      !notificationRef.current.contains(event.target as Node)
+    ) {
+      setShowNotifications(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header>
@@ -46,7 +68,8 @@ const Header = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex items-center"
+                  className="flex items-center cursor-pointer"
+                  onClick={() => navigate("/")}
                 >
                   <img
                     src={LogoWhite}
@@ -71,11 +94,7 @@ const Header = () => {
 
             
           </div>
-          
-          <h1 className="text-md  text-[#5677BC] ml-7">
-            نرم افزار تحت وب ایساتیس من
-          </h1>
-          <div className="flex items-center ml-8 space-x-4 relative">
+          <div className="flex items-center ml-8  relative">
             <Badge 
               sx={{
                 position: "relative", 
@@ -103,7 +122,7 @@ const Header = () => {
               />
             </Badge>
             {showNotifications && (
-              <Notification  />
+              <Notification ref={notificationRef} />
             )}
             <Avatar />
           </div>

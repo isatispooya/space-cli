@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { motion } from "framer-motion";
-import { useShortcuts } from "../hooks";
+import { useDashboard } from "../hooks";
 import { LoaderLg } from "../../../components";
 
 interface Shortcut {
@@ -26,7 +26,7 @@ const item = {
 };
 
 const Shortcuts: FC = () => {
-  const { data, isLoading } = useShortcuts();
+  const { data, isLoading } = useDashboard.useGetShortcuts();
 
   if (isLoading) return <LoaderLg />;
 

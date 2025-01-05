@@ -75,7 +75,7 @@ const CompanyTable = () => {
   return (
     <>
 
-      <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
+      <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden ">
         <DataGrid
           rows={rows}
           columns={columns}

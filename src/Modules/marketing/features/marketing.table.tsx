@@ -18,14 +18,9 @@ const MarketingTable = () => {
     { field: "code", headerName: "کد معرف", width: 100 },
     { field: "description", headerName: "توضیحات", width: 100 },
     {
-      field: "introducer_user_detail",
-      headerName: "تعداد کاربران معرف",
+      field: "invited_users_count",
+      headerName: "تعداد دعوت ها",
       width: 100,
-      valueGetter: (params: TableParamsTypes) => {
-        return typeof params.value === "object"
-          ? Object.keys(params.value).length
-          : 0;
-      },
     },
     {
       field: "created_at",
