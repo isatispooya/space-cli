@@ -12,36 +12,50 @@ const DashboardBimeStat = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl shadow-xl p-4 h-full hover:shadow-2xl transition-shadow duration-300"
+      className="relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105"
+      style={{ zIndex: 2 }}
     >
-      <div className="flex items-center justify-between ">
+      <div className="flex items-center ">
         <img src={crowdImg} alt="crowd" className="w-10 h-10" />
+        <h3 className="text-sm text-[#000080] font-bold font-iranSans">بیمه</h3>
       </div>
 
-      <div className="mb-6">
-        <h3 className="text-sm text-gray-500 font-iranSans">بیمه</h3>
+      <div className="mb-4 z-50">
         <motion.p
           initial={{ scale: 0.5 }}
           animate={{ scale: 1 }}
-          className="text-xl font-bold text-gray-900 mt-2 space-x-2 font-iranSans"
+          className="text-8xl text-center font-bold text-[#000080] mt-2 font-iranSans"
         >
-          <span className="text-sm ml-2">مجموع کل سرمایه گذاری</span>
           {stats?.pishkar?.["count"] || 0}
+          <span className="text-sm text-[#000080] font-iranSans">مجموع کل سرمایه گذاری</span>
         </motion.p>
-
-        <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg"></div>
-        <a href="https://isatiscrowd.ir" target="_blank">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full mt-4 bg-[#5677BC] hover:bg-[#5677BC] text-white py-2 px-4 rounded-lg 
-                     font-iranSans transition-colors duration-200 flex items-center justify-center gap-2"
-          >
-            <span> پنل بیمه</span>
-            <IoIosArrowBack className="w-4 h-4" />
-          </motion.button>
-        </a>
       </div>
+
+      <a href="https://isatiscrowd.ir" target="_blank">
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full mt-4 bg-blue-800 hover:bg-blue-200 text-blue-600 py-2 px-4 rounded-lg font-iranSans transition-colors duration-200 flex items-center justify-center gap-2"
+        >
+          <span className="text-sm text-white"> پنل بیمه</span>
+          <IoIosArrowBack className="w-4 h-4 text-white" />
+        </motion.button>
+      </a>
+
+      <svg
+        className="absolute bottom-0 rounded-xl left-0 w-full h-48"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+        width="100%"
+        style={{ zIndex: -1 }}
+      >
+        <path
+          fill="#4a90e2"
+          fillOpacity="0.3"
+          d="M0,192L30,192C60,192,120,192,180,197.3C240,202.7,300,213.3,360,213.3C420,213.3,480,202.7,540,197.3C600,192,660,192,720,197.3C780,202.7,840,213.3,900,213.3C960,213.3,1020,202.7,1080,197.3C1140,192,1200,192,1260,197.3C1320,202.7,1380,213.3,1410,218.7L1440,224L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
+        ></path>
+      </svg>
     </motion.div>
   );
 };
