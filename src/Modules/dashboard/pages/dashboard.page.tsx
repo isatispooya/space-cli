@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { DashboardMarketingStat } from "../components";
 import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
+import DashboardBimeStat from "../components/dashboardBime.stat";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
@@ -68,6 +69,15 @@ const DashboardPage = () => {
                 }}
               >
                 <DashboardCrowdStat />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                md={12}
+                sx={{ height: { xs: "200px", md: "calc(30vh - 16px)" } }}
+              >
+                <DashboardBimeStat />
               </Grid>
             </Grid>
           </Grid>
