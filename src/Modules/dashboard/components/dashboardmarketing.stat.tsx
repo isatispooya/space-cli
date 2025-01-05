@@ -41,12 +41,12 @@ const DashboardMarketingStat = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105"
-        style={{ zIndex: 2 }}
+        style={{ zIndex: 2, backgroundColor: '#ebf8ff' }}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <RiUserReceived2Line className="w-5 h-5 text-[#1a5c35]" />
-            <h3 className="text-sm text-[#1a5c35] font-bold font-iranSans">
+            <RiUserReceived2Line className="w-5 h-5 text-[#3182ce]" />
+            <h3 className="text-sm text-[#3182ce] font-bold font-iranSans">
               کاربران دعوت شده
               
             </h3>
@@ -59,16 +59,16 @@ const DashboardMarketingStat = () => {
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
-            className="text-8xl text-center font-bold text-[#1a5c35] mt-2 font-iranSans"
+            className="text-8xl text-center font-bold text-[#3182ce] mt-2 font-iranSans"
           >
             {invitation?.[0]?.invited_users_count || 25}
-            <span className="text-sm text-[#1a5c35] font-iranSans">
+            <span className="text-sm text-[#3182ce] font-iranSans">
               نفر
             </span>
           </motion.p>
         </div>
         <div className="relative z-20 flex items-center gap-1 bg-gray-100 p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200 mt-4">
-    <p className="flex-1 text-[13px] text-gray-700 font-iranSans truncate">
+    <p className="flex-1 text-[13px] text-[#3182ce] font-iranSans truncate">
       {`my.isatispooya.com/login?rf=${invitation?.[0]?.code}`}
     </p>
     <motion.button
@@ -91,7 +91,7 @@ const DashboardMarketingStat = () => {
           style={{ zIndex: 1 }}
         >
           <path
-            fill="#48bb78"
+            fill="#63b3ed"
             fillOpacity="0.3"
             d="M0,224L48,213.3C96,203,192,181,288,192C384,203,480,245,576,245.3C672,245,768,203,864,186.7C960,171,1056,181,1152,186.7C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ></path>
