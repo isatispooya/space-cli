@@ -1,1 +1,1 @@
-export { default as useShortcuts } from "./useShortcuts";
+export { default as useDashboard } from "./useShortcuts";

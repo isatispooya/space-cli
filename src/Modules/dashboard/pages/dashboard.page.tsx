@@ -2,14 +2,15 @@ import { Container, Grid } from "@mui/material";
 import { MainLayout } from "../../../layouts";
 import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
-
-import { useShortcuts } from "../hooks";
 import { useMemo } from "react";
 
 import { DashboardMarketingStat } from "../components";
+import { useDashboard } from "../hooks";
+import DashboardCrowdStat from "../components/dashboardCrowd.stat";
 
 const DashboardPage = () => {
-  const { data: shortcuts } = useShortcuts();
+  const { data: shortcuts } = useDashboard.useGetShortcuts();
+
 
   const sliderData = useMemo(
     () =>
@@ -56,6 +57,17 @@ const DashboardPage = () => {
                 }}
               >
                 <DashboardMarketingStat />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                md={12}
+                sx={{
+                  height: { xs: "200px", md: "calc(30vh - 16px)" },
+                }}
+              >
+                <DashboardCrowdStat />
               </Grid>
             </Grid>
           </Grid>

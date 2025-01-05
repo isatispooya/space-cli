@@ -1,9 +1,8 @@
 import { ReactNode } from "react";
-import { IoPersonOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 import { useInvitation } from "../../marketing/hooks";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { RiMessage2Fill } from "react-icons/ri";
 
 export interface StatsProps {
   title: string;
@@ -19,7 +18,6 @@ export interface StatsProps {
 }
 
 const DashboardMarketingStat = () => {
-  const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const { data: invitation } = useInvitation.useGetCodes();
 
@@ -38,9 +36,7 @@ const DashboardMarketingStat = () => {
       className="bg-white rounded-xl shadow-xl p-6 h-full hover:shadow-2xl transition-shadow duration-300"
     >
       <div className="flex items-center justify-between ">
-
-          <IoPersonOutline className="w-7 h-7" />
- 
+        <RiMessage2Fill className="w-7 h-7" />
       </div>
 
       <div className="mb-6">
@@ -73,8 +69,6 @@ const DashboardMarketingStat = () => {
           {copied ? "کپی شد!" : "کپی لینک"}
         </motion.button>
       </div>
-
-
     </motion.div>
   );
 };
