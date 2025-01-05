@@ -84,11 +84,7 @@ const Header = () => {
 
             
           </div>
-          
-          <h1 className="text-md  text-[#5677BC] ml-7">
-            نرم افزار تحت وب ایساتیس من
-          </h1>
-          <div className="flex items-center ml-8 space-x-4 relative">
+          <div className="flex items-center ml-8  relative">
             <Badge 
               sx={{
                 position: "relative", 
