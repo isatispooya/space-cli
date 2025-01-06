@@ -10,6 +10,10 @@ const SideBar = () => {
   const { search, setSearch } = useSearchStore();
   console.log(isOpen);
 
+  const filteredMenuItems = menuItems.filter(item =>
+    item.title?.toLowerCase().includes(search.toLowerCase()) ?? false
+  );
+
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       toggleSidebar();
@@ -53,13 +57,17 @@ const SideBar = () => {
           />
         </div>
         <div className="flex flex-col p-4 space-y-2">
-          {menuItems.map((item, index) => (
-            <CustomMenuItem
-              key={index}
-              item={item}
-              className="flex items-center p-2 text-white hover:bg-blue-600 rounded-lg transition-colors duration-300"
-            />
-          ))}
+          {filteredMenuItems.length > 0 ? (
+            filteredMenuItems.map((item, index) => (
+              <CustomMenuItem
+                key={index}
+                item={item}
+                className="flex items-center p-2 text-white hover:bg-blue-600 rounded-lg transition-colors duration-300"
+              />
+            ))
+          ) : (
+            <p className="text-white text-center">نتیجه‌ای یافت نشد</p>
+          )}
         </div>
       </div>
     </div>
