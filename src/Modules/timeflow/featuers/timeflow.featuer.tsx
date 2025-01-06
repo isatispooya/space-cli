@@ -16,19 +16,37 @@ const TimeFlowTable = () => {
 
   const { data = {}, isLoading } = useTimeFlow.useGet();
 
-  const rows = Object.entries(data).map(([date, log]) => ({
-    id: date,
-    date: moment(date).format('jYYYY/jMM/jDD'),
-    firstLoginTime: log.first_login?.time,
-    ip: log.first_login?.ip,
-    device: log.first_login?.device,
-    browser: log.first_login?.browser,
-    os: log.first_login?.os,
-    intermediate_logs: log.intermediate_logs,
-    last_logout: log.last_logout
-  }));
+  console.log(data);
+
+  const rows = Object.entries(data).map(([date, log]) => {
+    if (!log) return null;
+    return {
+      id: date,
+      date: moment(date).format('jYYYY/jMM/jDD'),
+      firstLoginTime: log.login?.time,
+      ip: log.login?.ip,
+      device: log.login?.device,
+      browser: log.login?.browser,
+      os: log.login?.os,
+      intermediate_logs: log.intermediate_logs,
+      last_logout: log.logout?.time,
+      logout_ip: log.logout?.ip,
+      logout_device: log.logout?.device,
+      logout_browser: log.logout?.browser,
+      logout_os: log.logout?.os,
+      fullName: log.user?.full_name,
+      duration: log.duration
+    };
+  }).filter(row => row !== null);
 
   const columns: GridColDef[] = [
+    {
+      field: "fullName",
+      headerName: "نام و نام خانوادگی",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "date",
       headerName: "تاریخ",
@@ -45,7 +63,7 @@ const TimeFlowTable = () => {
     },
     {
       field: "ip",
-      headerName: "آی‌پی",
+      headerName: " آی‌پی",
       width: 150,
       align: "center",
       headerAlign: "center",
@@ -57,6 +75,36 @@ const TimeFlowTable = () => {
       align: "center",
       headerAlign: "center",
     },
+    {
+      field: "last_logout",
+      headerName: "زمان خروج",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "logout_ip",
+      headerName: "آی‌پی خروج",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "logout_device",
+      headerName: "دستگاه خروج",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+
+    {
+      field: "duration",
+      headerName: "زمان",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+
   ];
 
 
