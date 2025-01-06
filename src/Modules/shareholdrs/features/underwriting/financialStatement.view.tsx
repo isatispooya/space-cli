@@ -61,6 +61,7 @@ const FinancialStatementView: FC = () => {
               {data?.map((process: ProcessTypes) =>
                 [...process.financial_statement].reverse().map((statement) => (
                   <motion.tr
+                  
                     key={statement.id}
                     variants={item}
                     whileHover={{

@@ -4,7 +4,16 @@ export interface FormField {
   disabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any;
-  type: "text" | "email" | "password" | "select" | "checkbox" | "transferList" | "date" | "file";
+  type:
+    | "text"
+    | "email"
+    | "password"
+    | "select"
+    | "checkbox"
+    | "transferList"
+    | "date"
+    | "file"
+    | "viewFile";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options?: { label: string; value: any }[];
   transferListProps?: {
@@ -16,7 +25,11 @@ export interface FormField {
     required?: boolean;
     disabled?: boolean;
     error?: string;
-    
+  };
+  viewFileProps?: {
+    url?: string;
+    fileType?: string;
+    showPreview?: boolean;
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange?: (value: any) => void;
@@ -26,4 +39,4 @@ export interface TransferListItem {
   id: number;
   name: string;
   codename: string;
-} 
+}

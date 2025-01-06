@@ -11,8 +11,15 @@ export interface underwritingTypes {
   updated_at?: string;
   redirect_url?: string;
   total_price?: number;
-  user?: number;
+  user?: string;
   process?: number;
   description?: string;
   agreement_text?: string;
+  document_type?: string;
+  user_detail?: {
+    first_name: string;
+    last_name: string;
+    id: number;
+  };
 }
+

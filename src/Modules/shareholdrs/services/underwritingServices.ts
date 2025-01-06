@@ -11,7 +11,7 @@ const underwritingServices = {
     return response.data;
   },
   update: async (data: underwritingTypes) => {
-    const response = await api.put(
+    const response = await api.patch(
       `/stock_affairs/create_underwriting/${data.id}/`,
       data
     );

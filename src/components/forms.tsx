@@ -6,6 +6,7 @@ import { FormField } from "../Modules/companies/types";
 import { FormikHelpers } from "formik";
 import { AnyObject, Maybe, ObjectSchema } from "yup";
 import { RiCloseLargeLine } from "react-icons/ri";
+import ViewFileInput from "./viewFileInput";
 
 interface FormsProps<T extends Maybe<AnyObject>> {
   formFields: FormField[];
@@ -73,7 +74,14 @@ const Forms = <T extends FormikValues>({
         <Form className="grid grid-cols-2 gap-4">
           {formFields.map((field) => (
             <div key={field.name} className="col-span-2 sm:col-span-1">
-              {field.type === "select" ? (
+              {field.type === "viewFile" ? (
+                <ViewFileInput
+                  url={field.viewFileProps?.url}
+                  label={field.label}
+                  fileType={field.viewFileProps?.fileType}
+                  showPreview={field.viewFileProps?.showPreview}
+                />
+              ) : field.type === "select" ? (
                 <Field name={field.name}>
                   {({
                     field: { value },
@@ -88,6 +96,7 @@ const Forms = <T extends FormikValues>({
                       }
                       className="h-5"
                       placeholder={`جستجو ${field.label}...`}
+                      disabled={field.disabled}
                     />
                   )}
                 </Field>
