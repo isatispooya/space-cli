@@ -62,7 +62,7 @@ const Login: React.FC = () => {
 
         <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-black/40" />
 
-        <div className="absolute bottom-0 left-0 right-0 p-12 bg-gradient-to-t from-black/80 via-black/40 to-transparent backdrop-blur-sm bg-opacity-30">
+        <div className="absolute bottom-0 left-0 right-0 p-12 bg-gradient-to-t from-black/80 via-black/40 to-transparent bg-opacity-30">
           <motion.div
             key={`text-${currentAnnouncement?.id}`}
             {...fadeIn(0.05, 40)}
@@ -82,7 +82,7 @@ const Login: React.FC = () => {
                 href={currentAnnouncement?.link}
                 target="_blank"
                 rel="noopener noreferrer" 
-                className="inline-block px-6 py-3 mt-4 bg-white/20 hover:bg-white/30 text-white rounded-lg backdrop-blur-sm transition-all duration-300"
+                className="inline-block px-6 py-3 mt-4 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all duration-300"
               >
                 اطلاعات بیشتر
               </a>
