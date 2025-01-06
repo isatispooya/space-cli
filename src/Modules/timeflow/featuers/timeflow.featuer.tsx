@@ -16,30 +16,37 @@ const TimeFlowTable = () => {
 
   const { data = {} as TimeFlowResponse, isLoading } = useTimeFlow.useGet();
 
-  const formatJalaliDate = (date: string) => moment(date).format('jYYYY/jMM/jDD');
+  console.log(data);
 
   const rows = Object.entries(data).map(([date, log]) => {
-    const { first_login, intermediate_logs, last_logout, user } = log;
-    const { firstName, lastName, nationalId } = user || {};
-    const { time: firstLoginTime, ip, device, browser, os } = first_login || {};
-
+    if (!log) return null;
     return {
       id: date,
-      date: formatJalaliDate(date),
-      firstLoginTime,
-      ip,
-      device,
-      browser,
-      os,
-      intermediate_logs,
-      last_logout,
-      firstName,
-      lastName,
-      nationalId
+      date: moment(date).format('jYYYY/jMM/jDD'),
+      firstLoginTime: log.login?.time,
+      ip: log.login?.ip,
+      device: log.login?.device,
+      browser: log.login?.browser,
+      os: log.login?.os,
+      intermediate_logs: log.intermediate_logs,
+      last_logout: log.logout?.time,
+      logout_ip: log.logout?.ip,
+      logout_device: log.logout?.device,
+      logout_browser: log.logout?.browser,
+      logout_os: log.logout?.os,
+      fullName: log.user?.full_name,
+      duration: log.duration
     };
-  });
+  }).filter(row => row !== null);
 
   const columns: GridColDef[] = [
+    {
+      field: "fullName",
+      headerName: "نام و نام خانوادگی",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "date",
       headerName: "تاریخ",
@@ -89,6 +96,36 @@ const TimeFlowTable = () => {
       align: "center",
       headerAlign: "center",
     },
+    {
+      field: "last_logout",
+      headerName: "زمان خروج",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "logout_ip",
+      headerName: "آی‌پی خروج",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "logout_device",
+      headerName: "دستگاه خروج",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+
+    {
+      field: "duration",
+      headerName: "زمان",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+
   ];
 
 
