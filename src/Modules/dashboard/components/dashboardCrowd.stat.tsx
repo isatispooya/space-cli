@@ -58,7 +58,7 @@ const DashboardCrowdStat = () => {
       </div>
 
       <motion.div {...getMotionDivStyles()}>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between space-x-4">
           <div className="flex items-center">
             <img src={crowdImg} alt="crowd" className="w-12 h-12" />
             <h3 className="text-sm text-[#4b0082] font-bold font-iranSans">
@@ -79,9 +79,16 @@ const DashboardCrowdStat = () => {
             <motion.p
               initial={{ scale: 0.5 }}
               animate={{ scale: 1 }}
-              className="text-8xl font-bold text-[#4b0082] mt-2 font-iranSans overflow-hidden text-ellipsis whitespace-nowrap"
+              className="text-6xl md:text-8xl font-bold text-[#4b0082] mt-2 font-iranSans overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              {formatValue(stats?.crowd?.["total value"] || 20000000000)}
+              {stats?.crowd?.["total value"] === 0 ? (
+                <>
+                  0
+                  <span className="text-sm text-[#4b0082] font-iranSans"> ریال</span>
+                </>
+              ) : (
+                formatValue(stats?.crowd?.["total value"] || 0)
+              )}
             </motion.p>
           </div>
           <a href="https://isatiscrowd.ir" target="_blank">
@@ -98,7 +105,7 @@ const DashboardCrowdStat = () => {
         </div>
 
         <svg
-          className="absolute bottom-0 rounded-xl left-0 w-full h-48"
+          className="absolute bottom-0 rounded-xl left-0 w-full h-32 md:h-48"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"

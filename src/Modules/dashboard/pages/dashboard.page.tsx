@@ -36,7 +36,7 @@ const DashboardPage = () => {
         <Grid container spacing={3} sx={{ height: "100%" }}>
           <Grid item xs={12} md={9}>
             <Grid container spacing={3}>
-              <Grid item xs={12} sx={{ height: "25vh" }}>
+              <Grid item xs={12} sx={{ height: "24vh" }}>
                 {sliderData.length > 0 && (
                   <DashboardSlider slides={sliderData} />
                 )}
@@ -47,14 +47,15 @@ const DashboardPage = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} md={3}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ height: "100%" }}>
               <Grid
                 item
                 xs={12}
                 sm={6}
                 md={12}
                 sx={{
-                  height: { xs: "250px", md: "calc(33.33vh - 16px)" },
+                  flex: 1,
+                  minHeight: { xs: "200px", md: "calc(30vh - 16px)" },
                 }}
               >
                 <DashboardBimeStat />
@@ -65,7 +66,8 @@ const DashboardPage = () => {
                 sm={6}
                 md={12}
                 sx={{
-                  height: { xs: "260px", md: "calc(33.33vh - 16px)" },
+                  flex: 1,
+                  minHeight: { xs: "200px", md: "calc(30vh - 16px)" },
                 }}
               >
                 <DashboardCrowdStat />
@@ -75,7 +77,10 @@ const DashboardPage = () => {
                 xs={12}
                 sm={6}
                 md={12}
-                sx={{ height: { xs: "250px", md: "calc(33.33vh - 16px)" } }}
+                sx={{
+                  flex: 1,
+                  minHeight: { xs: "200px", md: "calc(30vh - 16px)" },
+                }}
               >
                 <DashboardMarketingStat />
               </Grid>
