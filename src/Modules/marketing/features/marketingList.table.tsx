@@ -10,8 +10,19 @@ import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { LoaderLg } from "../../../components";
 
+interface InvitationTableRow extends InvitationTypes {
+  first_name: string;
+  last_name: string;
+  mobile_number: string;
+  national_code: string;
+  invitation_date: string;
+  invitation_code: string;
+}
+
 const MarketingListTable = () => {
-  const [selectedRow, setSelectedRow] = useState<InvitationTypes | null>(null);
+  const [selectedRow, setSelectedRow] = useState<InvitationTableRow | null>(
+    null
+  );
   const { checkPermission } = useUserPermissions();
 
   const columns: GridColDef[] = [
@@ -85,6 +96,9 @@ const MarketingListTable = () => {
 
   const rows = (data || []).map((row) => ({
     id: row.id,
+    invited_user_detail: row.invited_user_detail,
+    invitation_code_detail: row.invitation_code_detail,
+    created_at: row.created_at,
     first_name: row.invited_user_detail.first_name,
     last_name: row.invited_user_detail.last_name,
     mobile_number: row.invited_user_detail.mobile,
