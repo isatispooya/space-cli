@@ -14,9 +14,9 @@ import Popup from "../../../../components/popup";
 import { useUserPermissions } from "../../../permissions";
 import { companyTypes } from "../../data/companyTypes";
 import { useShareholders } from "../../hooks";
-
+import { LoaderLg } from "../../../../components";
 const ShareholdTable: React.FC = () => {
-  const { data: shareholders, refetch } = useShareholders.useGet();
+  const { data: shareholders, refetch, isPending } = useShareholders.useGet();
   const [selectedRow, setSelectedRow] = useState<ShareholdersTypes | null>(
     null
   );
@@ -117,6 +117,14 @@ const ShareholdTable: React.FC = () => {
     ...row,
     id: row.id || Math.random(),
   }));
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   return (
     <>

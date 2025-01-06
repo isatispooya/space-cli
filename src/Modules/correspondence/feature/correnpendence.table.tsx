@@ -13,9 +13,10 @@ import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import SeeCorrespondence from "./seeCorrespondence";
 import EditCorrespondence from "./editCorrespondence.form";
 import DeleteCorrespondence from "./deleteCorrespondence";
+import { LoaderLg } from "../../../components";
 
 const CorrespondenceTable = () => {
-  const { data } = useCorrespondencesData();
+  const { data, isPending } = useCorrespondencesData();
   const {
     selectedRow,
     setSelectedRow,
@@ -71,6 +72,12 @@ const CorrespondenceTable = () => {
       icon: <FaTrash />,
     },
   };
+
+  if (isPending) {
+    return <div className="flex justify-center mb-10 items-center h-full">
+      <LoaderLg />
+    </div>;
+  }
 
   const columns: GridColDef<CorrespondenceTypes>[] = [
     { field: "subject", headerName: "موضوع", width: 150 },

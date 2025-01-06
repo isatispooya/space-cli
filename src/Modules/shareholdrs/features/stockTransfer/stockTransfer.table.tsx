@@ -14,9 +14,10 @@ import Popup from "../../../../components/popup";
 import { useStockTransferStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../permissions";
+import { LoaderLg } from "../../../../components";
 
 const StockTransferTable: React.FC = () => {
-  const { data: stockTransfer, refetch } = useStockTransfer.useGet();
+  const { data: stockTransfer, refetch, isPending } = useStockTransfer.useGet();
   const { setId } = useStockTransferStore();
   const { checkPermission } = useUserPermissions();
 
@@ -112,6 +113,14 @@ const StockTransferTable: React.FC = () => {
   };
 
   const stockTransferData = stockTransfer || [];
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   return (
     <>

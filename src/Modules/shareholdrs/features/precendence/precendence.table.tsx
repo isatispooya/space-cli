@@ -13,9 +13,10 @@ import { useNavigate } from "react-router-dom";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { useUserPermissions } from "../../../permissions";
+import { LoaderLg } from "../../../../components";
 
 const PrecendenceTable: React.FC = () => {
-  const { data, refetch } = usePrecendence.useGet();
+  const { data, refetch, isPending } = usePrecendence.useGet();
   const navigate = useNavigate();
 
   const { mutate: deletePrecendence } = usePrecendence.useDelete();
@@ -93,6 +94,14 @@ const PrecendenceTable: React.FC = () => {
   };
 
   const rows = data || [];
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   return (
     <>

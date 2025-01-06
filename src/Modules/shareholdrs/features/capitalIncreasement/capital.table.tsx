@@ -13,10 +13,11 @@ import { useCapitalStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../permissions";
 import { useCapital } from "../../hooks";
+import { LoaderLg } from "../../../../components";
 
 const CapitalTable: React.FC = () => {
-  const { data } = useCapital.useGet();
-  
+  const { data, isPending } = useCapital.useGet();
+
   const { setId } = useCapitalStore();
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
@@ -63,6 +64,14 @@ const CapitalTable: React.FC = () => {
     }
     setIsDeleteOpen(true);
   };
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   return (
     <>

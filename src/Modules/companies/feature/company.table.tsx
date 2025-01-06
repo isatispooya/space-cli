@@ -8,16 +8,19 @@ import { ModalLayout } from "../../../layouts";
 import toast from "react-hot-toast";
 import SeeCompany from "./company.details";
 import Popup from "../../../components/popup";
-
 import EditCompanyForm from "./company.edit.form";
 import { tableStyles } from "../../../ui";
 import { useUserPermissions } from "../../permissions";
 import useCompany from "../hooks/useCompany";
+import Spinner from "../../../components/spinner";
+
 
 const CompanyTable = () => {
-  const { data } = useCompany.useGet();
+  const { data, isPending } = useCompany.useGet();
   const { mutate: deleteCompanyMutation } = useCompany.useDelete();
-  const { checkPermission } = useUserPermissions(); 
+  const { checkPermission } = useUserPermissions();
+
+
 
   const rows = data || [];
   const [selectedRow, setSelectedRow] = useState<CompanyData | null>(null);
@@ -72,9 +75,12 @@ const CompanyTable = () => {
     { field: "website", headerName: "وبسایت", width: 90 },
   ];
 
+  if (isPending) {
+    return <Spinner />;
+  }
+
   return (
     <>
-
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden ">
         <DataGrid
           rows={rows}

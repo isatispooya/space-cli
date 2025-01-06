@@ -8,22 +8,68 @@ import { useUserPermissions } from "../../permissions";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
+import { LoaderLg } from "../../../components";
 
 const MarketingListTable = () => {
   const [selectedRow, setSelectedRow] = useState<InvitationTypes | null>(null);
   const { checkPermission } = useUserPermissions();
 
   const columns: GridColDef[] = [
-    { field: "first_name", headerName: "نام", width: 150, align: 'center', headerAlign: 'center' },
-    { field: "last_name", headerName: "نام خانوادگی", width: 150, align: 'center', headerAlign: 'center' },
-    { field: "mobile_number", headerName: "شماره موبایل", width: 150, align: 'center', headerAlign: 'center' },
-    { field: "national_code", headerName: "کد ملی", width: 150, align: 'center', headerAlign: 'center' },
-    { field: "invitation_date", headerName: "تاریخ دعوت", width: 200, align: 'center', headerAlign: 'center', renderCell: (params: GridRenderCellParams) => moment(params.row.invitation_date).locale("fa").format("jYYYY/jMM/jDD") },
-    { field: "invitation_code", headerName: "کد دعوت", width: 150, align: 'center', headerAlign: 'center' },
+    {
+      field: "first_name",
+      headerName: "نام",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "last_name",
+      headerName: "نام خانوادگی",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "mobile_number",
+      headerName: "شماره موبایل",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "national_code",
+      headerName: "کد ملی",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "invitation_date",
+      headerName: "تاریخ دعوت",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams) =>
+        moment(params.row.invitation_date).locale("fa").format("jYYYY/jMM/jDD"),
+    },
+    {
+      field: "invitation_code",
+      headerName: "کد دعوت",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
   ];
 
-  const { data } = useInvitation.useGetList();
-  console.log("data", data);
+  const { data, isPending } = useInvitation.useGetList();
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   const handleEdit = () => {
     if (selectedRow) {
@@ -46,6 +92,14 @@ const MarketingListTable = () => {
     invitation_date: row.created_at,
     invitation_code: row.invitation_code_detail.code,
   }));
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-gray-100 shadow-md relative" dir="rtl">
