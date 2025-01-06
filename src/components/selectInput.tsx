@@ -14,6 +14,7 @@ interface SelectInputProps {
   onChange?: (value: string) => void;
   className?: string;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 const SelectInput = ({
@@ -23,6 +24,7 @@ const SelectInput = ({
   onChange,
   className = "",
   placeholder = "جستجو...",
+  disabled = false,
 }: SelectInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,15 +52,21 @@ const SelectInput = ({
   }, []);
 
   const handleSelect = (selectedValue: string) => {
-    onChange?.(selectedValue);
-    setIsOpen(false);
-    setSearchTerm("");
+    if (!disabled) {
+      onChange?.(selectedValue);
+      setIsOpen(false);
+      setSearchTerm("");
+    }
   };
 
   const selectedOption = options.find((opt) => opt.value === value);
 
   return (
-    <div className={`w-full max-w-sm min-w-[160px] mt-1 ${className}`}>
+    <div
+      className={`w-full max-w-sm min-w-[160px] mt-1 ${className} ${
+        disabled ? " cursor-none opacity-80" : ""
+      }`}
+    >
       {label && (
         <label className="block text-sm font-medium text-slate-500 mb-1">
           {label}
@@ -66,9 +74,9 @@ const SelectInput = ({
       )}
       <div className="relative select-container">
         <motion.div
-          onClick={() => setIsOpen(!isOpen)}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
+          onClick={() => !disabled && setIsOpen(!isOpen)}
+          whileHover={{ scale: disabled ? 1 : 1.01 }}
+          whileTap={{ scale: disabled ? 1 : 0.99 }}
           className="w-full bg-transparent text-slate-700 text-sm border border-slate-200 rounded pl-8 pr-2 py-2 transition duration-300 ease hover:border-slate-400 shadow-sm cursor-pointer flex items-center justify-between"
         >
           <span>{selectedOption?.label || "انتخاب کنید"}</span>

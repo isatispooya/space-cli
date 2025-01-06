@@ -1,225 +1,132 @@
-import { useFormik } from "formik";
-
-import * as Yup from "yup";
-
-import toast from "react-hot-toast";
 import { useUnderwritingStore } from "../../store";
 import { useUnderwriting } from "../../hooks";
+import Forms from "../../../../components/forms";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 import { underwritingTypes } from "../../types";
+import moment from "moment-jalaali";
+import { FormField } from "../../../companies/types";
+import toast from "react-hot-toast";
+import { formatNumber } from "../../../../utils";
+import { server } from "../../../../api";
 
 const EditUnderWritingForm = () => {
-  const { data: purchaseData } = useUnderwriting.useGet();
   const { id } = useUnderwritingStore();
-
   const { data: processData } = useUnderwriting.useGet();
+  const { mutate: update } = useUnderwriting.useUpdate();
+  const navigate = useNavigate();
 
-  const data = purchaseData?.find((item: underwritingTypes) => item.id === id);
+  const process = processData?.find(
+    (item: underwritingTypes) => item.id === id
+  );
 
-  const { mutate: patchUnusedPrecedenceProcess } = useUnderwriting.useUpdate();
+  if (!process && !id) {
+    navigate("/underwriting/table");
+  }
 
-  const formik = useFormik({
-    initialValues: {
-      amount: data?.amount?.toString() || "",
-      process: data?.process?.toString() || "",
-      price: data?.price?.toString() || "",
-      total_price:
-        data?.price && data?.amount
-          ? (data.price * data.amount).toString()
-          : "",
-      transaction_id: data?.transaction_id || "",
-      status: data?.status || "",
-      document: data?.document || "",
-      type: data?.type?.toString() || "",
+  const validationSchema = yup.object().shape({
+    id: yup.number().required(),
+    process: yup.number().required(),
+    status: yup.string().required("ثبت وضعیت الزامی است"),
+  }) as yup.ObjectSchema<underwritingTypes>;
+
+  const formFields: FormField[] = [
+    {
+      name: "price",
+      label: "قیمت",
+      type: "text",
+      disabled: true,
     },
-    validationSchema: Yup.object({
-      amount: Yup.string().required("مقدار الزامی است"),
-      process: Yup.string().required("شرکت الزامی است"),
-      type: Yup.string().required("نوع الزامی است"),
-    }),
-    onSubmit: async (values, { setSubmitting }) => {
-      try {
-        if (!data?.id) {
-          throw new Error("ID is required");
-        }
+    {
+      name: "status",
+      label: "وضعیت",
+      type: "select",
+      options: [
+        { label: "تایید شده", value: "approved" },
+        { label: "رد شده", value: "rejected" },
+        { label: "در انتظار تایید", value: "pending" },
+      ],
+    },
+    {
+      name: "type",
+      label: "نوع",
+      type: "select" as const,
+      disabled: true,
+      options: [
+        { label: "فیش", value: "1" },
+        { label: "درگاه", value: "2" },
+      ],
+    },
+    {
+      name: "created_at",
+      label: "تاریخ ایجاد",
+      type: "text",
+      disabled: true,
+    },
+    {
+      name: "user",
+      label: "کاربر",
+      type: "text",
+      disabled: true,
+      value: `${process?.user_detail?.first_name || ""} ${
+        process?.user_detail?.last_name || ""
+      }`,
+    },
+    {
+      name: "document",
+      label: "فیش فایل",
+      type: "viewFile",
+      viewFileProps: {
+        showPreview: true,
+        url: server + process?.document || "",
+        fileType: process?.document_type || "",
+      },
+    },
+  ];
 
-        const purchaseData: underwritingTypes = {
-          id: data.id,
-          amount: Number(values.amount),
-          price: Number(values.price),
-          total_price: Number(values.total_price),
-          process: Number(values.process),
-          transaction_id: values.transaction_id,
-          status: values.status,
-          type: values.type,
-          company: data.company,
-          created_at: data.created_at,
-          description: data.description || "",
-        };
+  const initialValues: underwritingTypes = {
+    id: process?.id || 0,
+    price: formatNumber(process?.price || 0) as unknown as number,
+    process: process?.process || 0,
+    status: process?.status || "",
+    type: process?.type || "",
+    created_at: moment(process?.created_at).format("jYYYY/jMM/jDD") || "",
+    user: `${process?.user_detail?.first_name || ""} ${
+      process?.user_detail?.last_name || ""
+    }`,
+    document: server + process?.document || null,
+  };
 
-        await patchUnusedPrecedenceProcess(purchaseData, {
-          onSuccess: () => {
-            console.log("Purchase precedence updated successfully");
-          },
-          onError: () => {
-            toast.error("خطایی رخ داده است");
-          },
-        });
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
-        setSubmitting(false);
+  const onSubmit = (values: Pick<underwritingTypes, "status">) => {
+    update(
+      { id: process?.id, status: values.status },
+      {
+        onSuccess: () => {
+          toast.success("پرداخت با موفقیت ویرایش شد");
+          navigate("/underwriting/table");
+        },
+        onError: () => {
+          toast.error("خطایی رخ داده است");
+        },
       }
-    },
-  });
-
-  const handleCompanyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCompanyId = e.target.value;
-    const selectedCompany = processData?.find(
-      (process: underwritingTypes) => process.id === Number(selectedCompanyId)
     );
-
-    const updates = {
-      process: selectedCompanyId,
-      price: selectedCompany?.price?.toString() || "",
-      total_price: formik.values.amount
-        ? (
-            (selectedCompany?.price || 0) * Number(formik.values.amount)
-          ).toString()
-        : "",
-    };
-
-    formik.setValues({
-      ...formik.values,
-      ...updates,
-    });
   };
-
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newAmount = e.target.value;
-
-    const selectedCompany = processData?.find(
-      (process: underwritingTypes) =>
-        process.id === Number(formik.values.process)
-    );
-
-    const updates = {
-      amount: newAmount,
-      total_price: formik.values.process
-        ? ((selectedCompany?.price || 0) * Number(newAmount)).toString()
-        : "",
-    };
-
-    formik.setValues({
-      ...formik.values,
-      ...updates,
-    });
-  };
-
-  const isGatewayType = formik.values.type === "2";
 
   return (
     <>
-      <div className="p-6">
-        <h2 className="text-[#29D2C7] text-xl mb-6">ثبت حق تقدم</h2>
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="amount">مقدار</label>
-            <input
-              id="amount"
-              name="amount"
-              type="text"
-              onChange={handleAmountChange}
-              value={formik.values.amount}
-              className="w-full p-2 border rounded"
-            />
-            {formik.errors.amount && formik.touched.amount && (
-              <div className="text-red-500 text-sm">
-                {formik.errors.amount as string}
-              </div>
-            )}
-          </div>
-          <div>
-            <label htmlFor="company">فرایند</label>
-            <select
-              id="company"
-              name="process"
-              onChange={handleCompanyChange}
-              value={formik.values.process}
-              className="w-full p-2 border rounded"
-            >
-              <option value="">انتخاب کنید</option>
-              {processData?.map((process: underwritingTypes) => (
-                <option key={process.id} value={process.id}>
-                  {process.company}
-                </option>
-              ))}
-            </select>
-            {formik.errors.process && formik.touched.process && (
-              <div className="text-red-500 text-sm">
-                {formik.errors.process as string}
-              </div>
-            )}
-          </div>
-          <div>
-            <label htmlFor="price">قیمت واحد</label>
-            <input
-              id="price"
-              name="price"
-              type="text"
-              disabled
-              value={formik.values.price}
-              className="w-full p-2 border rounded bg-gray-100"
-            />
-          </div>
-          <div>
-            <label htmlFor="total_price">قیمت کل</label>
-            <input
-              id="total_price"
-              name="total_price"
-              type="text"
-              disabled
-              value={formik.values.total_price}
-              className="w-full p-2 border rounded bg-gray-100"
-            />
-          </div>
-          <div>
-            <label htmlFor="status">وضعیت</label>
-            <select
-              id="status"
-              name="status"
-              onChange={formik.handleChange}
-              value={formik.values.status}
-              className="w-full p-2 border rounded"
-            >
-              <option value="pending">در انتظار</option>
-              <option value="approved">تایید شده</option>
-              <option value="rejected">رد شده</option>
-            </select>
-          </div>
-          {!isGatewayType && (
-            <>
-              <div>
-                <label htmlFor="transaction_id">شناسه تراکنش</label>
-                <input
-                  id="transaction_id"
-                  name="transaction_id"
-                  type="text"
-                  onChange={formik.handleChange}
-                  value={formik.values.transaction_id}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-            </>
-          )}
-          <button
-            type="submit"
-            disabled={formik.isSubmitting}
-            className="bg-[#29D2C7] hover:bg-[#008282] text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {formik.isSubmitting ? "در حال ارسال..." : "ویرایش حق تقدم"}
-          </button>
-        </form>
-      </div>
+      <Forms
+        formFields={formFields as FormField[]}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        title="ویرایش پرداخت"
+        colors="text-[#5677BC]"
+        buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
+        submitButtonText={{
+          default: "ویرایش",
+          loading: "در حال ویرایش",
+        }}
+        onSubmit={onSubmit}
+      />
     </>
   );
 };

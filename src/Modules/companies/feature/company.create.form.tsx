@@ -62,7 +62,6 @@ const formFields: FormField[] = [
   { name: "description", label: "توضیحات", type: "text" },
   { name: "registered_capital", label: "سرمایه ثبتی", type: "text" },
   { name: "registration_number", label: "تعداد سرمایه ثبتی", type: "text" },
-
   { name: "type_of_activity", label: "نوع فعالیت", type: "text" },
   { name: "website", label: "وبسایت", type: "text" },
   { name: "email", label: "ایمیل", type: "email" },
