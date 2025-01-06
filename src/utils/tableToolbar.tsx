@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 
 
-import { FaDownload, FaEdit, FaEye, FaPlus, FaTrash } from "react-icons/fa";
+import { FaDownload, FaEdit, FaEye, FaPlus, FaPrint, FaTrash } from "react-icons/fa";
 
 interface PaginatedResponse<T> {
   count: number;
@@ -36,6 +36,7 @@ interface CustomDataGridToolbarProps<T = Record<string, unknown>> {
     view?: ActionButton;
     delete?: ActionButton;
     create?: ActionButton;
+    print?: ActionButton;
   };
 }
 
@@ -131,6 +132,15 @@ const CustomDataGridToolbar = <T extends Record<string, unknown>>({
           >
             {actions.create.icon || <FaPlus />}
             {actions.create.label}
+          </button>
+        )}
+        {actions?.print?.show && (
+          <button
+            onClick={actions.print.onClick}
+            className="flex items-center gap-1 px-3 py-1 font-bold text-purple-600 hover:bg-purple-50 rounded-lg"
+          >
+            {actions.print.icon || <FaPrint />}
+            {actions.print.label}
           </button>
         )}
 

@@ -1,5 +1,5 @@
 import { GridColDef, DataGrid } from "@mui/x-data-grid";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaPrint } from "react-icons/fa";
 import {
   CustomDataGridToolbar,
   formatNumber,
@@ -28,6 +28,10 @@ const UnderWritingTable: React.FC = () => {
   const [selectedRow, setSelectedRow] = useState<underwritingTypes | null>(
     null
   );
+
+  const handlePrint = () => {
+    navigate("/underwriting/print");
+  };
 
   const statusNames = [
     {
@@ -188,6 +192,12 @@ const UnderWritingTable: React.FC = () => {
                     show: checkPermission("change_underwriting"),
                     onClick: handleEdit,
                     icon: <FaEdit />,
+                  },
+                  print: {
+                    label: "چاپ",
+                    show: checkPermission("allow_any"),
+                    onClick: handlePrint,
+                    icon: <FaPrint />,
                   },
                 }}
               />

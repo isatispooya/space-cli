@@ -1,8 +1,8 @@
 import { FC } from "react";
+import { PrintUnderwriting } from "../../features";
 
 const PrintUnderwritingPage: FC = () => {
-  return <div>PrintPage</div>;
+  return <PrintUnderwriting />;
 };
 
 export default PrintUnderwritingPage;
-
