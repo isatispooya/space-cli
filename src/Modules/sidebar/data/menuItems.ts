@@ -7,6 +7,7 @@ import {
   // FaUser,
   FaUserTie,
 } from "react-icons/fa";
+import { FaClockRotateLeft } from "react-icons/fa6";
 
 export interface MenuItem {
   title?: string;
@@ -157,6 +158,17 @@ export const menuItems: MenuItem[] = [
       { title: "مدیریت گروه ها", path: "/groups", codename: "view_group" },
     ],
   },
+
+  {
+    title: "تردد",
+    path: "/timeflow", 
+    icon: FaClockRotateLeft,
+    codename: "time_flow",
+    submenu: [
+      { title: "ورود و خروج کاربران", path: "/timeflow/table", codename: "allow_any" },
+    ],
+  },
+
   {
     title: " کاربران دعوت شده",
     path: "/marketing",
