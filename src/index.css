@@ -83,3 +83,26 @@ body {
 .headlessui-tooltip-panel {
   animation: tooltip-slide 0.2s ease-out;
 }
+
+/* styles.css */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #5677BC #02205F;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #02205F;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #5677BC;
+  border-radius: 10px;
+  border: 2px solid #02205F;
+}
