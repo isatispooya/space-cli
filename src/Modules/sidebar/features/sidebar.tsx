@@ -19,14 +19,14 @@ const SideBar = () => {
   return (
     <div
       onClick={handleOverlayClick}
-      className={`fixed top-0 right-0 h-full w-full z-50 transition-transform duration-700 ease-in-out ${
+      className={`fixed  top-0 right-0 h-full w-full z-50 transition-transform duration-700 ease-in-out ${
         isOpen ? "bg-transparent" : "pointer-events-none"
       } ${isOpen ? "translate-x-0" : "translate-x-full"}`}
     >
       <div
-        className={`h-full w-[320px] bg-gradient-to-br from-[#5677BC] to-[#02205F] rounded-l-xl shadow-lg transition-all duration-700 transform ml-auto ${
+        className={`h-full w-[320px] overflow-y-auto bg-gradient-to-br from-[#5677BC] to-[#02205F] rounded-l-xl shadow-lg transition-all duration-700 transform ml-auto ${
           isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        } custom-scrollbar`}
       >
         <div className="flex items-center justify-between p-4 border-b border-blue-800">
           <img src={bothLogo} alt="لوگو" className="h-16 w-auto" />

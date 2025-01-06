@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "../../Modules/userManagment/hooks/useProfile";
+import { removeCookie } from "../../api/cookie";
 
 const Avatar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,6 +42,11 @@ const Avatar = () => {
       href: "/userManagement/profile",
     },
   ];
+
+  const handleLogout = () => {
+    removeCookie("access_token");
+    removeCookie("refresh_token");
+  };
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -90,6 +96,7 @@ const Avatar = () => {
             <div className="py-1">
               <a
                 href="/login"
+                onClick={handleLogout}
                 className="block px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200 font-medium"
               >
                 خروج
