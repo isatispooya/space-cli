@@ -1,6 +1,6 @@
 import axios from "axios";
 import { server } from "./server";
-import { getCookie, setCookie } from "./cookie";
+import { getCookie, setCookie, removeCookie } from "./cookie";
 
 const api = axios.create({
   baseURL: server,
@@ -59,8 +59,8 @@ api.interceptors.response.use(
           isRefreshing = false;
           refreshSubscribers = [];
           
-          document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          removeCookie("access_token");
+          removeCookie("refresh_token");
           
           if (!window.location.pathname.includes('/login')) {
             window.location.href = "/login";

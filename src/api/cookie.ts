@@ -49,3 +49,24 @@ export function getCookie(
   }
   return null;
 }
+
+export function removeCookie(
+  cname: string,
+  isHostPrefix: boolean = false
+): void {
+  const isHttps = window.location.protocol === "https:";
+  let cookieName = cname;
+
+  if (isHostPrefix && isHttps) {
+    cookieName = `__Host-${cname}`;
+  } else if (isHttps) {
+    cookieName = `__Secure-${cname}`;
+  }
+
+  const expires = "expires=Thu, 01 Jan 1970 00:00:00 UTC";
+  const pathFlag = ";Path=/";
+  const secureFlag = isHttps ? ";Secure" : "";
+  const sameSiteFlag = ";SameSite=Lax";
+
+  document.cookie = `${cookieName}=;${expires}${pathFlag}${secureFlag}${sameSiteFlag}`;
+}
