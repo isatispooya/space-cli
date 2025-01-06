@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "../../Modules/userManagment/hooks/useProfile";
-import { removeCookie } from "../../api/cookie";
+import { getCookie } from "../../api/cookie";
+import useLogout from "./hooks/useLogout";
 
 const Avatar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +25,8 @@ const Avatar = () => {
   }, []);
 
   const { data } = useProfile();
+  const logout = useLogout();
+  
 
   const profileInfo = data
     ? {
@@ -44,8 +47,10 @@ const Avatar = () => {
   ];
 
   const handleLogout = () => {
-    removeCookie("access_token");
-    removeCookie("refresh_token");
+    const refresh_token = getCookie("refresh_token");
+    if (refresh_token) {
+      logout.mutate(refresh_token);
+    }
   };
 
   return (
