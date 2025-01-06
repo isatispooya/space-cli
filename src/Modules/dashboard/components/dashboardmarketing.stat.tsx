@@ -24,7 +24,7 @@ const DashboardMarketingStat = () => {
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(
-      `my.isatispooya.com/login?rf=${invitation?.[0]?.invitation_code_detail.code}`
+      `my.isatispooya.com/login?rf=${invitation?.[0]?.code}`
     );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -58,7 +58,7 @@ const DashboardMarketingStat = () => {
             animate={{ scale: 1 }}
             className="text-6xl md:text-8xl text-center font-bold text-[#3182ce] mt-2 font-iranSans"
           >
-            {invitation?.[0]?.invited_user_detail.uniqueIdentifier || 0}
+            {invitation?.[0]?.invited_users_count || 0}
             <span className="text-sm text-[#3182ce] font-iranSans">
               نفر
             </span>
@@ -66,7 +66,7 @@ const DashboardMarketingStat = () => {
         </div>
         <div className="relative z-20 flex items-center gap-1 bg-gray-100 p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200 mt-4">
           <p className="flex-1 text-[13px] text-[#3182ce] font-iranSans truncate">
-            {`my.isatispooya.com/login?rf=${invitation?.[0]?.invitation_code_detail.code}`}
+            {`my.isatispooya.com/login?rf=${invitation?.[0]?.code}`}
           </p>
           <motion.button
             whileTap={{ scale: 0.95 }}
@@ -78,8 +78,6 @@ const DashboardMarketingStat = () => {
             {copied ? "کپی شد!" : "کپی لینک"}
           </motion.button>
         </div>
-
-
 
         <svg
           className="absolute bottom-0 rounded-xl left-0 w-full h-32 md:h-48"

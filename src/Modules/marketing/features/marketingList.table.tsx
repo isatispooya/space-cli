@@ -2,7 +2,10 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useInvitation } from "../hooks";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useState } from "react";
-import { InvitationTypes } from "../types/invitationList.type";
+import {
+  InvitationListType,
+
+} from "../types/invitationList.type";
 import { tableStyles } from "../../../ui";
 import { useUserPermissions } from "../../permissions";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -10,7 +13,7 @@ import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { LoaderLg } from "../../../components";
 
-interface InvitationTableRow extends InvitationTypes {
+interface TableRow extends Omit<InvitationListType, "invited_user_detail"> {
   first_name: string;
   last_name: string;
   mobile_number: string;
@@ -20,9 +23,7 @@ interface InvitationTableRow extends InvitationTypes {
 }
 
 const MarketingListTable = () => {
-  const [selectedRow, setSelectedRow] = useState<InvitationTableRow | null>(
-    null
-  );
+  const [selectedRow, setSelectedRow] = useState<TableRow | null>(null);
   const { checkPermission } = useUserPermissions();
 
   const columns: GridColDef[] = [
@@ -94,18 +95,19 @@ const MarketingListTable = () => {
     }
   };
 
-  const rows = (data || []).map((row) => ({
-    id: row.id,
-    invited_user_detail: row.invited_user_detail,
-    invitation_code_detail: row.invitation_code_detail,
-    created_at: row.created_at,
-    first_name: row.invited_user_detail.first_name,
-    last_name: row.invited_user_detail.last_name,
-    mobile_number: row.invited_user_detail.mobile,
-    national_code: row.invited_user_detail.uniqueIdentifier,
-    invitation_date: row.created_at,
-    invitation_code: row.invitation_code_detail.code,
-  }));
+  const rows = (data || []).map(
+    (row): TableRow => ({
+      id: row.id,
+      first_name: row.invited_user_detail.first_name,
+      last_name: row.invited_user_detail.last_name,
+      mobile_number: row.invited_user_detail.mobile,
+      national_code: row.invited_user_detail?.uniqueIdentifier || "",
+      invitation_date: row.created_at,
+      invitation_code: row.invitation_code_detail.code,
+      invitation_code_detail: row.invitation_code_detail,
+      created_at: row.created_at,
+    })
+  );
 
   if (isPending) {
     return (
@@ -126,7 +128,7 @@ const MarketingListTable = () => {
           if (newSelectionModel.length > 0) {
             const selectedId = newSelectionModel[0];
             const selectedRow = rows.find(
-              (row: InvitationTypes) => row.id === selectedId
+              (row: (typeof rows)[0]) => row.id === selectedId
             );
             if (selectedRow) {
               setSelectedRow(selectedRow);

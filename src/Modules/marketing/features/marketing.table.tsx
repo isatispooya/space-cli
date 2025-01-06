@@ -11,12 +11,9 @@ import moment from "moment-jalaali";
 import { TableParamsTypes } from "../types/tableParams.type";
 import { LoaderLg } from "../../../components";
 
-
 const MarketingTable = () => {
   const [selectedRow, setSelectedRow] = useState<InvitationTypes | null>(null);
   const { checkPermission } = useUserPermissions();
-
-
 
   const columns = [
     {
@@ -75,7 +72,9 @@ const MarketingTable = () => {
 
   const rows = (data || []).map((row) => ({
     ...row,
-    code: `my.isatispooya.com?rf=${row.invitation_code_detail.code}`,
+    code: row.invitation_code_detail
+      ? `my.isatispooya.com?rf=${row.invitation_code_detail.code}`
+      : "N/A",
   }));
 
   return (
@@ -89,7 +88,7 @@ const MarketingTable = () => {
           if (newSelectionModel.length > 0) {
             const selectedId = newSelectionModel[0];
             const selectedRow = rows.find(
-              (row: InvitationTypes) => row.id === selectedId
+              (row: (typeof rows)[0]) => row.id === selectedId
             );
             if (selectedRow) {
               setSelectedRow(selectedRow);

@@ -4,8 +4,13 @@ export interface InvitationTypes {
     first_name: string;
     last_name: string;
     mobile: string;
-    uniqueIdentifier: string;
+    uniqueIdentifier?: string;
+    
+    
   };
+  uniqueIdentifier?: string;
+  invited_users_count?: number;
+  code?: string;
   invitation_code_detail: {
     code: string;
   };
