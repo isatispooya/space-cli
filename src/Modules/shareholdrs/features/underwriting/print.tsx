@@ -30,7 +30,6 @@ const PrintUnderwriting: FC = () => {
   const { data, isLoading } = useUnderwriting.useGetById(Number(id));
   const underwritingPrint = data as underwritingTypes | undefined;
 
-
   if (isLoading) {
     return <div>در حال بارگذاری...</div>;
   }
@@ -52,8 +51,6 @@ const PrintUnderwriting: FC = () => {
             تاریخ: {new Date().toLocaleDateString("fa-IR")}
           </p>
         </div>
-
-        {/* Content Section */}
         {underwritingPrint && (
           <div className="space-y-6 print:space-y-8">
             <div className="border-2 border-gray-100 rounded-lg p-6 bg-gray-50">
