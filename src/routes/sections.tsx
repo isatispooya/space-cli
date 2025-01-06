@@ -799,7 +799,7 @@ export default function Router() {
       ],
     },
     {
-      path: "underwriting/print",
+      path: "underwriting/print/:id",
       element: (
         <Suspense fallback={<Loader />}>
           <UnderwritingPrintPage />

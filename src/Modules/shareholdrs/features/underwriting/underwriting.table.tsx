@@ -14,12 +14,10 @@ import { useUnderwriting } from "../../hooks";
 import { useUserPermissions } from "../../../permissions";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import { useUnderwritingStore } from "../../store";
 import Popup from "../../../../components/popup";
 import { LoaderLg } from "../../../../components";
 
 const UnderWritingTable: React.FC = () => {
-  const { setId } = useUnderwritingStore();
   const { data, refetch, isPending } = useUnderwriting.useGet();
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
@@ -30,7 +28,11 @@ const UnderWritingTable: React.FC = () => {
   );
 
   const handlePrint = () => {
-    navigate("/underwriting/print");
+    if (!selectedRow) {
+      toast.error("لطفا یک مورد را انتخاب کنید");
+      return;
+    }
+    window.open(`/underwriting/print/${selectedRow.id}`, "_blank");
   };
 
   const statusNames = [
@@ -136,14 +138,13 @@ const UnderWritingTable: React.FC = () => {
       toast.error("لطفا یک مورد را انتخاب کنید");
       return;
     }
-    setId(Number(selectedRow.id));
     navigate("/underwriting/update");
   };
 
   return (
     <>
       <div
-        className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden"
+        className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden h-[600px]"
         style={{ maxWidth: "100%" }}
       >
         <DataGrid
@@ -167,6 +168,7 @@ const UnderWritingTable: React.FC = () => {
           sx={{
             ...tableStyles,
             width: "100%",
+            height: "100%",
           }}
           checkboxSelection
           rowSelectionModel={selectedRow?.id ? [selectedRow.id] : []}
