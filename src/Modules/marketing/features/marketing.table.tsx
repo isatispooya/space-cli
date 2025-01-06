@@ -9,27 +9,40 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { TableParamsTypes } from "../types/tableParams.type";
+import { LoaderLg } from "../../../components";
 
 const MarketingTable = () => {
   const [selectedRow, setSelectedRow] = useState<InvitationTypes | null>(null);
   const { checkPermission } = useUserPermissions();
 
   const columns = [
-    { field: "code", headerName: "کد معرف", width: 230, align: 'center', headerAlign: 'center' },
-    { field: "description", headerName: "توضیحات", width: 200, align: 'center', headerAlign: 'center' },
+    {
+      field: "code",
+      headerName: "کد معرف",
+      width: 230,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "description",
+      headerName: "توضیحات",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "invited_users_count",
       headerName: "تعداد دعوت ها",
       width: 200,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "created_at",
       headerName: "تاریخ ایجاد",
       width: 200,
-      align: 'center',
-      headerAlign: 'center',
+      align: "center",
+      headerAlign: "center",
       renderCell: (params: TableParamsTypes) => {
         console.log(params.row);
         return moment(params.row.created_at)
@@ -39,9 +52,15 @@ const MarketingTable = () => {
     },
   ];
 
-  const { data } = useInvitation.useGetCodes();
+  const { data, isPending } = useInvitation.useGetCodes();
 
-  console.log(data);
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   const handleEdit = () => {
     console.log("edit");

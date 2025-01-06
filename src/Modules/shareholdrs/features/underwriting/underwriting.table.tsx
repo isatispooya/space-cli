@@ -16,10 +16,11 @@ import moment from "moment-jalaali";
 import "moment/locale/fa";
 import { useUnderwritingStore } from "../../store";
 import Popup from "../../../../components/popup";
+import { LoaderLg } from "../../../../components";
 
 const UnderWritingTable: React.FC = () => {
   const { setId } = useUnderwritingStore();
-  const { data, refetch } = useUnderwriting.useGet();
+  const { data, refetch, isPending } = useUnderwriting.useGet();
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
   const { mutate: deletePurchasePrecendense } = useUnderwriting.useDelete();
@@ -118,7 +119,13 @@ const UnderWritingTable: React.FC = () => {
 
   const rows = data || [];
 
-  console.log(data);
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   const handleEdit = () => {
     if (!selectedRow) {
@@ -128,7 +135,6 @@ const UnderWritingTable: React.FC = () => {
     setId(Number(selectedRow.id));
     navigate("/underwriting/update");
   };
-
 
   return (
     <>

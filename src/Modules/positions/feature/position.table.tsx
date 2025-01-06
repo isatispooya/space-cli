@@ -9,12 +9,15 @@ import { PositionUpdate } from "./";
 import toast from "react-hot-toast";
 import { deletePosition } from "../services";
 import { useUserPermissions } from "../../permissions";
+import { LoaderLg } from "../../../components";
 
 const PositionsTable = () => {
-  const { data: positions } = usePositionData();
+  const { data: positions, isPending } = usePositionData();
   const [selectedRow, setSelectedRow] = useState<PositionData | null>(null);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const { checkPermission } = useUserPermissions();   
+
+ 
 
   const handleEdit = useCallback(() => {
     if (!selectedRow) {
@@ -44,6 +47,14 @@ const PositionsTable = () => {
     { field: "start_date", headerName: "تاریخ شروع", width: 200 },
     { field: "end_date", headerName: "تاریخ پایان", width: 200 },
   ];
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   return (
     <>

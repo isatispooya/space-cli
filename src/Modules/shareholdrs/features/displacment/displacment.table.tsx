@@ -12,9 +12,10 @@ import Popup from "../../../../components/popup";
 import { useDisplacementStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../permissions";
+import { LoaderLg } from "../../../../components";
 
 const DisplacementTable = () => {
-  const { data, refetch } = useDisplacement.useGet();
+  const { data, refetch, isPending } = useDisplacement.useGet();
   const { mutate: deleteDisplacement } = useDisplacement.useDelete();
   const { checkPermission } = useUserPermissions();
   const { setId } = useDisplacementStore();
@@ -97,6 +98,14 @@ const DisplacementTable = () => {
     },
 
   ];
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   const handleEdit = () => {
     if (!selectedRow) {

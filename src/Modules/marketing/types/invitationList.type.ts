@@ -6,6 +6,8 @@ export interface InvitationTypes {
       mobile: string;
       uniqueIdentifier: string;
     };
+    
+
     invitation_code_detail: {
       code: string;
     };

@@ -9,11 +9,14 @@ import { FaEdit } from "react-icons/fa";
 import ModalLayout from "../../../layouts/ModalLayout";
 import EditPermissionForm from "./editpermissions.form";
 import { PaginatedResponse } from "../../../types/paginated";
+import { LoaderLg } from "../../../components";
 
 const PermissionsTable: React.FC = () => {
-  const { data } = usePermissionList();
+  const { data, isPending  } = usePermissionList();
   const [selectedRow, setSelectedRow] = useState<PermissionData | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
+
+
 
   const columns = [
     { field: "id", headerName: "شناسه", width: 100 },
@@ -28,6 +31,14 @@ const PermissionsTable: React.FC = () => {
     }
     setIsEditOpen(true);
   }, [selectedRow]);
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   return (
     <>
