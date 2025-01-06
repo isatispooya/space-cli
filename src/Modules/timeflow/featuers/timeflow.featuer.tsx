@@ -35,7 +35,8 @@ const TimeFlowTable = () => {
       logout_browser: log.logout?.browser,
       logout_os: log.logout?.os,
       fullName: log.user?.full_name,
-      duration: log.duration
+      duration: log.duration,
+      username: log.user?.username,
     };
   }).filter(row => row !== null);
 
@@ -55,21 +56,7 @@ const TimeFlowTable = () => {
       headerAlign: "center",
     },
     {
-      field: "firstName",
-      headerName: "نام",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "lastName",
-      headerName: "نام خانوادگی",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "nationalId",
+      field: "username",
       headerName: "کد ملی",
       width: 150,
       align: "center",

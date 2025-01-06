@@ -1,4 +1,3 @@
-
 export interface TimeFlowTypes {
   id: string;
   date: string;
@@ -28,6 +27,7 @@ export interface TimeFlowData {
   };
   user: {
     full_name: string;
+    username: string;
   };
   duration: string;
   intermediate_logs?: Record<string, unknown>;
