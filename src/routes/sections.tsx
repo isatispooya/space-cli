@@ -4,6 +4,7 @@ import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../Modules/dashboard/pages/dashboard.page";
 import { UpdateUnderWritingPage } from "../Modules/shareholdrs";
+import { TimeFlowTable } from "../Modules/timeflow/featuers";
 
 const LoginPage = lazy(() => import("../pages/login.page"));
 
@@ -319,6 +320,12 @@ const MarketingCreatePage = lazy(() =>
 const MarketingListTablePage = lazy(() =>
   import("../Modules/marketing").then((module) => ({
     default: module.MarketingListTablePage,
+  }))
+);
+
+const TimeFlowPage = lazy(() =>
+  import("../Modules/timeflow").then((module) => ({
+    default: module.TimeFlowPage,
   }))
 );
 
@@ -790,6 +797,24 @@ export default function Router() {
           ),
         },
 
+      ],
+    },
+    {
+      path: "/timeflow",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <TimeFlowPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <TimeFlowTable />
+            </Suspense>
+          ),
+        },
       ],
     },
     {
