@@ -8,13 +8,19 @@ const MarketingMainPage = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
-      text: "جدول",
+      text: "لیست دعوت",
+      permission: "allow_any",
+      path: "list",
+    },
+    {
+      icon: LuTable,
+      text: "لیست کد",
       permission: "allow_any",
       path: "table",
     },
     {
       icon: LuPlus,
-      text: "افزودن",
+      text: "ایجاد",
       permission: "allow_any",
       path: "create",
     },

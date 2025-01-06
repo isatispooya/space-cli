@@ -316,6 +316,12 @@ const MarketingCreatePage = lazy(() =>
   }))
 );
 
+const MarketingListTablePage = lazy(() =>
+  import("../Modules/marketing").then((module) => ({
+    default: module.MarketingListTablePage,
+  }))
+);
+
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -807,6 +813,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <MarketingCreatePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "list",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <MarketingListTablePage />
             </Suspense>
           ),
         },
