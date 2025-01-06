@@ -80,33 +80,41 @@ const DashboardChart = () => {
   const CustomBar = (props: barPropsTypes) => {
     const { x = 0, y = 0, width = 0, height = 0, payload } = props;
 
-    const logoSize = isVertical
-      ? Math.min(width * 0.8, 40)
-      : Math.min(height * 0.8, 60);
+    const minHeight = 5;
+    const adjustedHeight = Math.max(height, minHeight);
 
-    const logoX = isVertical ? x - (logoSize + 25) : x + (width - logoSize) / 2;
+    const minWidth = 5;
+    const adjustedWidth = Math.max(width, minWidth);
+
+    const logoSize = isVertical
+      ? Math.min(adjustedWidth * 4, 60)
+      : Math.min(adjustedHeight * 10, 120);
+
+    const logoX = isVertical ? x - logoSize - 10 : x + (adjustedWidth - logoSize) / 2;
     const logoY = isVertical
-      ? y + (height - logoSize) / 2
-      : y - (logoSize + 10);
+      ? y + (adjustedHeight - logoSize) / 2
+      : y - logoSize - 10;
 
     return (
       <motion.g
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: (props.index ?? 0) * 0.1 }}
+        whileHover={{ scale: 1.05 }}
       >
         {/* Bar */}
         <motion.rect
           x={x}
-          y={y}
-          width={width}
-          height={height}
+          y={y - (adjustedHeight - height)}
+          width={adjustedWidth}
+          height={adjustedHeight}
           fill="url(#barGradient)"
           rx={6}
           ry={6}
           initial={{ height: 0 }}
-          animate={{ height }}
+          animate={{ height: adjustedHeight }}
           transition={{ duration: 0.5, delay: (props.index ?? 0) * 0.1 }}
+          whileHover={{ fill: "#4f46e5" }}
         />
         {/* Logo */}
         {payload?.logo && (
@@ -124,7 +132,7 @@ const DashboardChart = () => {
   };
 
   return (
-    <div className="w-full h-full  border-2 border-[#5677BC] bg-white rounded-xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
+    <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
       <div className="w-full h-full p-4 sm:p-6">
         <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-6 text-center font-iranSans">
           آمار
@@ -145,9 +153,8 @@ const DashboardChart = () => {
                 strokeDasharray="3 3"
                 horizontal={!isVertical}
                 vertical={isVertical}
-                stroke="#f0f0f0"
+                stroke="#e0e0e0"
               />
-              {/* Swap XAxis and YAxis for vertical layout */}
               {isVertical ? (
                 <>
                   <XAxis
