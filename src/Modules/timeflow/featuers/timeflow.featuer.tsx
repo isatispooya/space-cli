@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
-import { TimeFlowTypes } from "../types/timeflow.type";
+import { TimeFlowResponse, TimeFlowTypes } from "../types/timeflow.type";
 import { LoaderLg } from "../../../components";
 import { tableStyles } from "../../../ui";
 import useTimeFlow from "../hooks/usetimeflow";
@@ -14,24 +14,56 @@ const TimeFlowTable = () => {
   const { checkPermission } = useUserPermissions();
 
 
-  const { data = {}, isLoading } = useTimeFlow.useGet();
+  const { data = {} as TimeFlowResponse, isLoading } = useTimeFlow.useGet();
 
-  const rows = Object.entries(data).map(([date, log]) => ({
-    id: date,
-    date: moment(date).format('jYYYY/jMM/jDD'),
-    firstLoginTime: log.first_login?.time,
-    ip: log.first_login?.ip,
-    device: log.first_login?.device,
-    browser: log.first_login?.browser,
-    os: log.first_login?.os,
-    intermediate_logs: log.intermediate_logs,
-    last_logout: log.last_logout
-  }));
+  const formatJalaliDate = (date: string) => moment(date).format('jYYYY/jMM/jDD');
+
+  const rows = Object.entries(data).map(([date, log]) => {
+    const { first_login, intermediate_logs, last_logout, user } = log;
+    const { firstName, lastName, nationalId } = user || {};
+    const { time: firstLoginTime, ip, device, browser, os } = first_login || {};
+
+    return {
+      id: date,
+      date: formatJalaliDate(date),
+      firstLoginTime,
+      ip,
+      device,
+      browser,
+      os,
+      intermediate_logs,
+      last_logout,
+      firstName,
+      lastName,
+      nationalId
+    };
+  });
 
   const columns: GridColDef[] = [
     {
       field: "date",
       headerName: "تاریخ",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "firstName",
+      headerName: "نام",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "lastName",
+      headerName: "نام خانوادگی",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "nationalId",
+      headerName: "کد ملی",
       width: 150,
       align: "center",
       headerAlign: "center",
@@ -45,14 +77,14 @@ const TimeFlowTable = () => {
     },
     {
       field: "ip",
-      headerName: "آی‌پی",
+      headerName: "آی‌پی ورود",
       width: 150,
       align: "center",
       headerAlign: "center",
     },
     {
       field: "device",
-      headerName: "دستگاه",
+      headerName: "دستگاه ورود",
       width: 150,
       align: "center",
       headerAlign: "center",
