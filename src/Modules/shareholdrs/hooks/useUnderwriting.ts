@@ -45,6 +45,14 @@ const useUnderwriting = {
       mutationFn: (id: number) => underwritingServices.delete(id),
     });
   },
+
+  useGetById: (id: number): UseQueryResult<underwritingTypes> => {
+    return useQuery({
+      queryKey: ["underwriting", id],
+      queryFn: () => underwritingServices.getById(id),
+      enabled: !!id,
+    });
+  },
 };
 
 export default useUnderwriting;

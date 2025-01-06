@@ -251,6 +251,12 @@ const UnderwritingViewPage = lazy(() =>
   }))
 );
 
+const UnderwritingPrintPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.PrintUnderwritingPage,
+  }))
+);
+
 const ProjectProgressPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.ProjectProgressPage,
@@ -715,6 +721,7 @@ export default function Router() {
             </Suspense>
           ),
         },
+
         {
           path: "description",
           element: (
@@ -796,8 +803,15 @@ export default function Router() {
             </Suspense>
           ),
         },
-
       ],
+    },
+    {
+      path: "underwriting/print/:id",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <UnderwritingPrintPage />
+        </Suspense>
+      ),
     },
     {
       path: "/timeflow",

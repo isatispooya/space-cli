@@ -6,8 +6,15 @@ const underwritingServices = {
     const response = await api.get("/stock_affairs/create_underwriting/");
     return response.data;
   },
+  getById: async (id: number) => {
+    const response = await api.get(`/stock_affairs/create_underwriting/${id}/`);
+    return response.data;
+  },
   create: async (data: underwritingCreateTypes) => {
-    const response = await api.post("/stock_affairs/create_underwriting/", data);
+    const response = await api.post(
+      "/stock_affairs/create_underwriting/",
+      data
+    );
     return response.data;
   },
   update: async (data: underwritingTypes) => {
@@ -23,9 +30,6 @@ const underwritingServices = {
     );
     return response.data;
   },
-
 };
 
 export default underwritingServices;
-
-
