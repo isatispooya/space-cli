@@ -6,7 +6,10 @@ const underwritingServices = {
     const response = await api.get("/stock_affairs/create_underwriting/");
     return response.data;
   },
-  getById: (id: number) => api.get(`/stock_affairs/create_underwriting/${id}/`),
+  getById: async (id: number) => {
+    const response = await api.get(`/stock_affairs/create_underwriting/${id}/`);
+    return response.data;
+  },
   create: async (data: underwritingCreateTypes) => {
     const response = await api.post(
       "/stock_affairs/create_underwriting/",

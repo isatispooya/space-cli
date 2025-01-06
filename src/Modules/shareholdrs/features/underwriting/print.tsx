@@ -30,6 +30,7 @@ const PrintUnderwriting: FC = () => {
   const { data, isLoading } = useUnderwriting.useGetById(Number(id));
   const underwritingPrint = data as underwritingTypes | undefined;
 
+
   if (isLoading) {
     return <div>در حال بارگذاری...</div>;
   }
