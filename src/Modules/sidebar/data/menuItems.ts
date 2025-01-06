@@ -4,7 +4,7 @@ import {
   FaEnvelope,
   FaHome,
   FaPhone,
-  FaUser,
+  // FaUser,
   FaUserTie,
 } from "react-icons/fa";
 
@@ -23,30 +23,30 @@ export const menuItems: MenuItem[] = [
     codename: "allow_any",
     submenu: [{ title: "داشبورد", path: "/", codename: "allow_any" }],
   },
-  {
-    title: "حساب کاربری",
-    icon: FaUser,
-    codename: "user_account",
-    submenu: [
-      { title: "پروفایل", path: "/profile", codename: "user_profile" },
-      {
-        title: "تنظیمات",
-        codename: "user_settings",
-        submenu: [
-          {
-            title: "تنظیمات حساب",
-            path: "/settings/account",
-            codename: "account_settings",
-          },
-          {
-            title: "تنظیمات امنیتی",
-            path: "/settings/security",
-            codename: "security_settings",
-          },
-        ],
-      },
-    ],
-  },
+  // {
+  //   title: "حساب کاربری",
+  //   icon: FaUser,
+  //   codename: "user_account",
+  //   submenu: [
+  //     { title: "پروفایل", path: "/profile", codename: "user_profile" },
+  //     {
+  //       title: "تنظیمات",
+  //       codename: "user_settings",
+  //       submenu: [
+  //         {
+  //           title: "تنظیمات حساب",
+  //           path: "/settings/account",
+  //           codename: "account_settings",
+  //         },
+  //         {
+  //           title: "تنظیمات امنیتی",
+  //           path: "/settings/security",
+  //           codename: "security_settings",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
     title: "امور سهامدارن",
     icon: FaUserTie,
