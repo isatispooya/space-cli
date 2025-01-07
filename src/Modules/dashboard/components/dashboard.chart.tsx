@@ -136,11 +136,11 @@ const DashboardChart = () => {
 
   return (
     <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
-      <div className="w-full h-full p-4 sm:p-6">
+      <div className="w-full h-[300px] p-4 sm:p-6">
         <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-6 text-center font-iranSans">
           تعداد سهام شما در گروه های شرکت های مالی و سرمایه گذاری
         </h3>
-        <div className="w-full h-[calc(100%-3rem)]">
+        <div className="w-full h-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}

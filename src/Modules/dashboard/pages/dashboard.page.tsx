@@ -1,4 +1,3 @@
-import { Container, Grid } from "@mui/material";
 import { MainLayout } from "../../../layouts";
 import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
@@ -26,140 +25,36 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
-      <Container
-        maxWidth="xl"
-        sx={{
-          minHeight: { xs: "auto", md: "calc(100vh - 80px)" },
-          py: { xs: 1, sm: 2 },
-        }}
-      >
-        <Grid container spacing={3} sx={{ height: "100%" }}>
-          <Grid item xs={12} md={9}>
-            <Grid
-              container
-              spacing={3}
-              sx={{ height: { xs: "auto", md: "100%" } }}
-            >
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  height: {
-                    xs: "300px",
-                    sm: "24vh",
-                    md: "24vh",
-                  },
-                }}
-              >
-                {sliderData.length > 0 && (
-                  <DashboardSlider slides={sliderData} />
-                )}
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  height: {
-                    xs: "auto",
-                    md: "calc(76vh - 104px)",
-                  },
-                }}
-              >
-                <Grid container spacing={3} sx={{ height: "100%" }}>
-                  <Grid
-                    item
-                    xs={12}
-                    md={8}
-                    sx={{
-                      height: {
-                        xs: "400px",
-                        md: "100%",
-                      },
-                    }}
-                  >
-                    <DashboardChart />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={4}
-                    sx={{
-                      height: {
-                        xs: "300px",
-                        md: "100%",
-                      },
-                    }}
-                  >
-                    <div style={{ height: "100%" }}>
-                      <DashboardMarketingStat />
-                    </div>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={3}
-            sx={{
-              height: {
-                xs: "auto",
-                sm: "auto",
-                md: "calc(100vh - 104px)",
-              },
-            }}
-          >
-            <Grid container spacing={2} sx={{ height: "100%" }}>
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                md={12}
-                sx={{
-                  height: {
-                    xs: "300px",
-                    sm: "300px",
-                    md: "33.33%",
-                  },
-                }}
-              >
-                <DashboardCrowdStat />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                md={12}
-                sx={{
-                  height: {
-                    xs: "300px",
-                    sm: "300px",
-                    md: "33.33%",
-                  },
-                }}
-              >
-                <DashboardBimeStat />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                md={12}
-                sx={{
-                  height: {
-                    xs: "300px",
-                    sm: "300px",
-                    md: "33.33%",
-                  },
-                }}
-              >
-                <DashboardBorsStat />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Container>
+      <div className="container mx-auto px-4 min-h-screen py-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="lg:col-span-3 space-y-4 lg:space-y-6">
+            <div className="h-[250px] sm:h-[300px] lg:h-[24vh]">
+              {sliderData.length > 0 && <DashboardSlider slides={sliderData} />}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+              <div className="md:col-span-2">
+                <DashboardChart />
+              </div>
+              <div className="md:col-span-1">
+                <DashboardMarketingStat />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 lg:gap-6">
+            <div>
+              <DashboardCrowdStat />
+            </div>
+            <div>
+              <DashboardBimeStat />
+            </div>
+            <div>
+              <DashboardBorsStat />
+            </div>
+          </div>
+        </div>
+      </div>
     </MainLayout>
   );
 };
