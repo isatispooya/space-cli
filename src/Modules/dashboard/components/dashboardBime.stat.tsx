@@ -41,7 +41,7 @@ const DashboardBimeStat = () => {
               className="w-full bg-green-800 hover:bg-green-600 text-white py-1 px-2 rounded-lg 
                        font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
             >
-              <span className="text-white font-bold">پنل بیمه</span>
+              <span className="text-white font-bold">وبسایت بیمه</span>
               <IoIosArrowBack className="w-3 h-3" />
             </motion.button>
           </a>
