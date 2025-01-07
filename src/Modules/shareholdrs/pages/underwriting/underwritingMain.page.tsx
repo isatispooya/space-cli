@@ -84,7 +84,7 @@ const UnderwritingMain = () => {
             پذیره نویسی
           </h1>
           <p className="text-gray-600 text-center text-sm">
-            مدیریت و پیگیری پذیره نویسی
+            حق تقدم استفاده نشده شرکت صنایع مفتول ایساتیس پویا (سهامی عام)
           </p>
         </div>
         <div className="flex-grow flex flex-col">
