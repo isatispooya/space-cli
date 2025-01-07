@@ -20,6 +20,7 @@ export interface StatsProps {
 const DashboardMarketingStat = () => {
   const [copied, setCopied] = useState(false);
   const { data: invitation } = useInvitation.useGetCodes();
+  const { data: invitedUsers } = useInvitation.useGetList();
 
   const handleCopy = async () => {
     const code = invitation?.[0]?.invitation_code_detail?.code;
@@ -64,6 +65,34 @@ const DashboardMarketingStat = () => {
               نفر
             </span>
           </motion.p>
+        </div>
+
+        <div className="mt-6 mb-4 flex-grow">
+          <h4 className="text-gray-600 font-iranSans mb-3 text-sm">
+            لیست کاربران دعوت شده
+          </h4>
+          <div className="flex flex-col gap-1">
+            {[
+              "علی محمدی",
+              "سارا احمدی",
+              "رضا کریمی",
+            ].map((name, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="p-2 hover:bg-gray-50 transition-colors duration-200"
+              >
+                <div className="flex flex-col">
+                  <span className="font-iranSans text-gray-800 text-base  whitespace-nowrap overflow-hidden text-ellipsis">
+                    {name}
+                  </span>
+                  <div className="w-full h-0.5 bg-[#CF003F] opacity-10 "></div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         <div className="relative z-20 mt-auto">

@@ -15,9 +15,6 @@ import { LoaderLg } from "../../../components";
 const MarketingTable = () => {
   const [selectedRow, setSelectedRow] = useState<InvitationTypes | null>(null);
   const { checkPermission } = useUserPermissions();
-
-
-
   const columns = [
     {
       field: "code",
