@@ -5,7 +5,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { useDashboard } from "../hooks";
@@ -50,7 +49,7 @@ const DashboardChart = () => {
 
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize); 
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const data = [
@@ -90,10 +89,14 @@ const DashboardChart = () => {
       ? Math.min(adjustedWidth * 4, 60)
       : Math.min(adjustedHeight * 10, 120);
 
-    const logoX = isVertical ? x - logoSize - 10 : x + (adjustedWidth - logoSize) / 2;
+    const logoX = isVertical
+      ? x - logoSize - 10
+      : x + (adjustedWidth - logoSize) / 2;
     const logoY = isVertical
       ? y + (adjustedHeight - logoSize) / 2
       : y - logoSize - 10;
+
+    const barFill = payload?.value === 0 ? "#E5E7EB" : "url(#barGradient)";
 
     return (
       <motion.g
@@ -108,13 +111,13 @@ const DashboardChart = () => {
           y={y - (adjustedHeight - height)}
           width={adjustedWidth}
           height={adjustedHeight}
-          fill="url(#barGradient)"
+          fill={barFill}
           rx={6}
           ry={6}
           initial={{ height: 0 }}
           animate={{ height: adjustedHeight }}
           transition={{ duration: 0.5, delay: (props.index ?? 0) * 0.1 }}
-          whileHover={{ fill: "#4f46e5" }}
+          whileHover={{ fill: payload?.value === 0 ? "#D1D5DB" : "#4f46e5" }}
         />
         {/* Logo */}
         {payload?.logo && (
@@ -135,7 +138,7 @@ const DashboardChart = () => {
     <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
       <div className="w-full h-full p-4 sm:p-6">
         <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-6 text-center font-iranSans">
-          آمار
+          تعداد سهام شما در گروه های شرکت های مالی و سرمایه گذاری
         </h3>
         <div className="w-full h-[calc(100%-3rem)]">
           <ResponsiveContainer width="100%" height="100%">
@@ -182,14 +185,6 @@ const DashboardChart = () => {
               <Tooltip
                 content={<CustomTooltip />}
                 cursor={{ fill: "rgba(236, 238, 241, 0.4)" }}
-              />
-              <Legend
-                wrapperStyle={{
-                  fontFamily: "IRANSans",
-                  fontSize: "12px",
-                  paddingTop: "20px",
-                }}
-                iconType="circle"
               />
               <defs>
                 <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
