@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { IoIosArrowBack } from "react-icons/io";
 import { RiUserReceived2Line } from "react-icons/ri";
+import { useDashboard } from "../hooks";
 
 const getMotionDivStyles = () => ({
   initial: { opacity: 0, y: 20 },
@@ -10,11 +11,10 @@ const getMotionDivStyles = () => ({
 });
 
 const DashboardBorsStat = () => {
-  const staticData = {
-    title: "بورس",
-    value: 1234,
-    code: "static-code-1234", 
-  };
+  const { data } = useDashboard.useGetStats();
+
+  const title = data?.title || "بورس";
+  const value = data?.value || 0;
 
   return (
     <div>
@@ -27,7 +27,7 @@ const DashboardBorsStat = () => {
           <div className="flex items-center mb-8">
             <RiUserReceived2Line className="w-5 h-5  text-[#1e40af]" />
             <h3 className="text-sm  text-[#1e40af] font-bold font-iranSans">
-              {staticData.title}
+              {title}
             </h3>
           </div>
         </div>
@@ -38,7 +38,7 @@ const DashboardBorsStat = () => {
             animate={{ scale: 1 }}
             className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#1e40af] mt-4 font-iranSans"
           >
-            {staticData.value}
+            {value}
             <span className="text-sm text-[#1e40af] font-iranSans">نفر</span>
           </motion.p>
         </div>

@@ -4,6 +4,8 @@ import { useDashboard } from "../hooks";
 import { IoIosArrowBack } from "react-icons/io";
 
 import crowdImg from "../../../../public/assets/crowdlogo.png";
+import usePostUUID from "../hooks/useuuidpost";
+import toast from "react-hot-toast";
 
 const getMotionDivStyles = () => ({
   initial: { opacity: 0, y: 20 },
@@ -49,6 +51,21 @@ const formatValue = (value: number) => {
 
 const DashboardCrowdStat = () => {
   const { data: stats } = useDashboard.useGetStats();
+  const { mutate: crowdUUID } = usePostUUID();
+
+  const handleCrowdUUID = () => {
+    crowdUUID(undefined, {
+      onSuccess: (response) => {
+        console.log("Response:", response.data.uuid);
+        const crowdUUIDLink = `https://app.isatiscrowd.com/onetimeLogin/${response.data.uuid}`;
+        window.open(crowdUUIDLink, "_blank");
+      },
+      onError: (error) => {
+        toast.error(`خطایی رخ داده است: ${error.message}`);
+      },
+    });
+  };
+
 
   console.log(stats);
 
@@ -63,7 +80,7 @@ const DashboardCrowdStat = () => {
           <div className="flex items-center">
             <img src={crowdImg} alt="crowd" className="w-12 h-12" />
             <h3 className="text-sm text-[#4b0082] font-bold font-iranSans">
-              ایساتیس کراد
+              {stats?.crowd?.["title"] || "ایساتیس کراد"}
             </h3>
           </div>
         </div>
@@ -74,7 +91,7 @@ const DashboardCrowdStat = () => {
             animate={{ scale: 1 }}
             className="text-[11px] font-bold text-[#4b0082] mb-2 font-iranSans"
           >
-            مجموع تامین مالی جمعی
+            {stats?.crowd?.["total value"] || "مجموع تامین مالی جمعی"}
           </motion.p>
           <div className="text-center">
             <motion.p
@@ -95,8 +112,9 @@ const DashboardCrowdStat = () => {
               )}
             </motion.p>
           </div>
-          <a href="https://isatiscrowd.ir" target="_blank">
+          <a onClick={handleCrowdUUID}>
             <motion.button
+              onClick={handleCrowdUUID}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="w-full bg-purple-900 hover:bg-purple-700 text-white py-1 px-2 rounded-lg 
