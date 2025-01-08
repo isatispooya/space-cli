@@ -16,9 +16,12 @@ import moment from "moment-jalaali";
 import "moment/locale/fa";
 import Popup from "../../../../components/popup";
 import { LoaderLg } from "../../../../components";
+import { useUnderwritingStore } from "../../store";
 
 const UnderWritingTable: React.FC = () => {
   const { data, refetch, isPending } = useUnderwriting.useGet();
+  const { setId } = useUnderwritingStore();
+
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
   const { mutate: deletePurchasePrecendense } = useUnderwriting.useDelete();
@@ -134,10 +137,11 @@ const UnderWritingTable: React.FC = () => {
   }
 
   const handleEdit = () => {
-    if (!selectedRow) {
+    if (!selectedRow || !selectedRow.id) {
       toast.error("لطفا یک مورد را انتخاب کنید");
       return;
     }
+    setId(selectedRow.id);
     navigate("/underwriting/update");
   };
 

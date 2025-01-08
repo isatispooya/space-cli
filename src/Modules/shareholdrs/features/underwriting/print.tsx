@@ -16,6 +16,7 @@ interface underwritingTypes {
     first_name: string;
     last_name: string;
     username: string;
+    uniqueIdentifier: string;
   };
   requested_amount: number;
   created_at: string;
@@ -37,6 +38,7 @@ const PrintUnderwriting: FC = () => {
   if (!underwritingPrint) {
     return <div>اطلاعاتی یافت نشد</div>;
   }
+  console.log(underwritingPrint);
 
   return (
     <div className="min-h-screen bg-gray-100 p-8 rtl print:p-0">
@@ -74,7 +76,7 @@ const PrintUnderwriting: FC = () => {
                     کد ملی:
                   </p>
                   <p className="font-semibold text-gray-800 text-lg">
-                    {underwritingPrint.user_detail?.username || "نامشخص"}
+                    {underwritingPrint.user_detail?.uniqueIdentifier || "نامشخص"}
                   </p>
                 </div>
 
