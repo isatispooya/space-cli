@@ -2,6 +2,8 @@ import { ReactNode, useEffect, useState } from "react";
 import { useInvitation } from "../../marketing/hooks";
 import { motion } from "framer-motion";
 import { RiUserReceived2Line } from "react-icons/ri";
+import "moment/locale/fa";
+import moment from "moment-jalaali";
 
 export interface StatsProps {
   title: string;
@@ -14,6 +16,7 @@ export interface StatsProps {
   bgColor?: string;
   iconColor?: string;
   route?: string;
+  created_at?: string;
 }
 
 const DashboardMarketingStat = () => {
@@ -22,7 +25,7 @@ const DashboardMarketingStat = () => {
   const { data: invitedUsers } = useInvitation.useGetList();
 
   const allNames = [...(invitedUsers || [])];
-  console.log(allNames);
+  
 
   const [visibleIndices, setVisibleIndices] = useState<number[]>([]);
 
@@ -45,7 +48,7 @@ const DashboardMarketingStat = () => {
   }, [allNames.length]);
 
   const handleCopy = async () => {
-    const code = invitation?.[0]?.invitation_code_detail?.code;
+    const code = invitation?.[0]?.code;
     if (code) {
       await navigator.clipboard.writeText(
         `my.isatispooya.com/login?rf=${code}`
@@ -124,7 +127,11 @@ const DashboardMarketingStat = () => {
                           : "نام کاربر نامشخص"}
                       </span>
                       <span>
-                        {userDetail ? ` ${userDetail.uniqueIdentifier}` : ""}
+                        {userDetail
+                          ? ` ${moment(userDetail.created_at)
+                              .locale("fa")
+                              .format("jYYYY/jMM/jDD")}`
+                          : ""}
                       </span>
                     </span>
                     <div className="w-full h-0.5 bg-[#E5533D] opacity-10"></div>
@@ -139,7 +146,7 @@ const DashboardMarketingStat = () => {
           <div className="flex items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
             <p className="flex-1 text-[13px] text-[#E5533D] font-iranSans truncate">
               {`my.isatispooya.com/login?rf=${
-                invitation?.[0]?.invitation_code_detail?.code || ""
+                invitation?.[0]?.code || ""
               }`}
             </p>
             <motion.button

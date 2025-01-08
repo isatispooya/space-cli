@@ -50,8 +50,6 @@ const formatValue = (value: number) => {
 const DashboardCrowdStat = () => {
   const { data: stats } = useDashboard.useGetStats();
 
-  console.log(stats);
-
   return (
     <div className="relative isolate">
       <div className="background absolute inset-0" style={{ zIndex: -1 }}></div>

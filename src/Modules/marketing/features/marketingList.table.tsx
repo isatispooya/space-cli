@@ -17,12 +17,20 @@ interface InvitationTableRow extends InvitationTypes {
   national_code: string;
   invitation_date: string;
   invitation_code: string;
+  code: string;
+  invited_user_detail: {
+    first_name: string;
+    last_name: string;
+    mobile: string;
+    uniqueIdentifier: string;
+    created_at?: string;
+  };
 }
 
+type TableRow = Omit<InvitationTableRow, "invitation_code_detail">;
+
 const MarketingListTable = () => {
-  const [selectedRow, setSelectedRow] = useState<InvitationTableRow | null>(
-    null
-  );
+  const [selectedRow, setSelectedRow] = useState<TableRow | null>(null);
   const { checkPermission } = useUserPermissions();
 
   const columns: GridColDef[] = [
@@ -47,13 +55,7 @@ const MarketingListTable = () => {
       align: "center",
       headerAlign: "center",
     },
-    {
-      field: "national_code",
-      headerName: "کد ملی",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-    },
+
     {
       field: "invitation_date",
       headerName: "تاریخ دعوت",
@@ -97,14 +99,14 @@ const MarketingListTable = () => {
   const rows = (data || []).map((row) => ({
     id: row.id,
     invited_user_detail: row.invited_user_detail,
-    invitation_code_detail: row.invitation_code_detail,
+    code: row.code,
     created_at: row.created_at,
     first_name: row.invited_user_detail.first_name,
     last_name: row.invited_user_detail.last_name,
     mobile_number: row.invited_user_detail.mobile,
     national_code: row.invited_user_detail.uniqueIdentifier,
     invitation_date: row.created_at,
-    invitation_code: row.invitation_code_detail.code,
+    invitation_code: row.code,
   }));
 
   if (isPending) {
@@ -125,9 +127,7 @@ const MarketingListTable = () => {
         onRowSelectionModelChange={(newSelectionModel) => {
           if (newSelectionModel.length > 0) {
             const selectedId = newSelectionModel[0];
-            const selectedRow = rows.find(
-              (row: InvitationTypes) => row.id === selectedId
-            );
+            const selectedRow = rows.find((row) => row.id === selectedId);
             if (selectedRow) {
               setSelectedRow(selectedRow);
             }

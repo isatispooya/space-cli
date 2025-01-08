@@ -37,11 +37,10 @@ const DashboardPage = () => {
                 <DashboardChart />
               </div>
               <div className="md:col-span-1">
-                <DashboardMarketingStat />
+                <DashboardMarketingStat />  
               </div>
             </div>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 lg:gap-6">
             <div>
               <DashboardCrowdStat />

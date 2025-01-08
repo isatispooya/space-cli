@@ -71,7 +71,7 @@ const CreateUnderWritingForm = () => {
 
         await postPrecendence(purchaseData, {
           onSuccess: (response) => {
-            console.log("Purchase precedence created successfully");
+          
 
             if (response.redirect_url) {
               window.open(response.redirect_url, "_blank");

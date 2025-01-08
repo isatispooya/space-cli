@@ -12,8 +12,6 @@ const CreateCapitalIncreaseForm = () => {
   const { data: companies } = useCompany.useGet();
   const { data: users } = useUserData();
 
-  console.log("Users data:", users);
-
   const formFields: FormField[] = [
     { name: "number_of_shares", label: "تعداد سهام", type: "text" as const },
     { name: "price", label: "قیمت", type: "text" as const },

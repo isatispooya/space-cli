@@ -44,7 +44,6 @@ const MarketingTable = () => {
       align: "center",
       headerAlign: "center",
       renderCell: (params: TableParamsTypes) => {
-        console.log(params.row);
         return moment(params.row.created_at)
           .locale("fa")
           .format("jYYYY/jMM/jDD");
@@ -72,7 +71,7 @@ const MarketingTable = () => {
 
   const rows = (data || []).map((row) => ({
     ...row,
-    code: `my.isatispooya.com?rf=${row.invitation_code_detail.code}`,
+    code: `my.isatispooya.com?rf=${row.code}`,
   }));
 
   return (

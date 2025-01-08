@@ -5,9 +5,9 @@ export interface InvitationTypes {
     last_name: string;
     mobile: string;
     uniqueIdentifier: string;
+    created_at?: string;
   };
-  invitation_code_detail: {
-    code: string;
-  };
+  code: string;
+
   created_at: string;
 }
