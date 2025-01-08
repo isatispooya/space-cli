@@ -75,8 +75,8 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
               </h2>
 
               <div className="absolute bottom-0 left-0 right-5 p-4 z-10">
-                <button className="mb-10 px-48 py-1 bg-green-600 text-white rounded-lg font-medium text-lg relative block mr-32">
-                  <span className="before:content-[''] before:block before:absolute before:left-12 before:top-1/2 before:w-1/6 before:border-t-2 before:border-white before:transform before:-translate-y-1/2 after:content-[''] after:block after:absolute after:right-12 after:top-1/2 after:w-1/6 after:border-t-2 after:border-white after:transform after:-translate-y-1/2">
+                <button className="mb-5 px-48 py-1 bg-green-600 text-white rounded-lg font-medium text-lg relative block mr-32">
+                  <span className="before:content-[''] before:block before:absolute before:left-12 font-bold before:top-1/2 before:w-1/6 before:border-t-2 before:border-white before:transform before:-translate-y-1/2 after:content-[''] after:block after:absolute after:right-12 after:top-1/2 after:w-1/6 after:border-t-2 after:border-white after:transform after:-translate-y-1/2">
                     امکان سرمایه‌گذاری آنلاین
                   </span>
                 </button>
