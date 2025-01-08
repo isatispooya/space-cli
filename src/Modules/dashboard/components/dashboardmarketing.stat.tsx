@@ -74,7 +74,7 @@ const DashboardMarketingStat = () => {
       <div className="background"></div>
 
       <motion.div {...getMotionDivStyles()}>
-        <div className="flex flex-col md:flex-row items-center justify-between space-x-4">
+        <div className="flex flex-col md:flex-row items-center justify-between space-x-4 ">
           <div className="flex items-center">
             <RiUserReceived2Line className="w-5 h-6 text-[#E5533D] animate-bounce" />
             <h3 className="text-sm text-[#E5533D] font-bold font-iranSans mr-2">
