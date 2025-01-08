@@ -1,11 +1,14 @@
 import { FC, useEffect, useState } from "react";
-import { FaDownload, FaMapMarkerAlt } from "react-icons/fa";
+import { FaDownload, FaMapMarkerAlt, FaShare } from "react-icons/fa";
 
 import { motion } from "framer-motion";
 import { useUnusedProcess } from "../../hooks";
+import { useInvitation } from "../../../marketing/hooks";
 
 const UnderwritingDescForm: FC = () => {
   const { data: unusedProcessData } = useUnusedProcess.useGetList();
+  const { data: invitation } = useInvitation.useGetCodes();
+
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
   const [expandedItems, setExpandedItems] = useState<number[]>([]);
 
@@ -34,6 +37,35 @@ const UnderwritingDescForm: FC = () => {
     contact_number: string;
     description_location: string;
   }
+  const rf = `${invitation?.[0]?.code || ""}`;
+  const handleShare = async (item: UnusedProcessData) => {
+    try {
+      const shareText = `${item.description}\n\nکد معرف: ${rf}`;
+
+      if (navigator.share) {
+        await navigator
+          .share({
+            text: shareText,
+          })
+          .then(() => {
+            console.log("Successfully shared");
+          });
+      } else {
+        navigator.clipboard.writeText(shareText);
+        alert("Link copied to clipboard!");
+      }
+    } catch (error) {
+      console.error("Error in sharing:", error);
+      // Fallback to clipboard if sharing fails
+      try {
+        const shareText = `${item.description}\n\nکد معرف: https://my.isatispooya.com/login?rf=${rf}`;
+        navigator.clipboard.writeText(shareText);
+        alert("Link copied to clipboard!");
+      } catch (clipboardError) {
+        console.error("Clipboard error:", clipboardError);
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col w-full min-h-screen py-12">
@@ -112,6 +144,18 @@ const UnderwritingDescForm: FC = () => {
                 >
                   مشاهده موقعیت در نقشه
                 </a>
+              </motion.div>
+              <motion.div
+                className="flex items-center justify-center mt-4 space-x-2 text-gray-600 group cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+              >
+                <FaShare className="text-xl text-green-500 group-hover:text-green-600 transition-colors duration-300" />
+                <button
+                  onClick={() => handleShare(item)}
+                  className="text-base group-hover:text-gray-800 transition-colors duration-300 mr-2"
+                >
+                  اشتراک‌گذاری
+                </button>
               </motion.div>
 
               {isMobile && (

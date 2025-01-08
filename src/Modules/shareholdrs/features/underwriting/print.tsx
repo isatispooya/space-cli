@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useUnderwriting } from "../../hooks";
 import moment from "jalali-moment";
 import { useParams } from "react-router-dom";
-
+// `https://my.isatispooya.com/login?rf=${rf}`
 interface underwritingTypes {
   id: number;
   type: string;

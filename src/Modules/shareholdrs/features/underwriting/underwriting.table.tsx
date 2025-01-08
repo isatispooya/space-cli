@@ -206,7 +206,7 @@ const UnderWritingTable: React.FC = () => {
                     icon: <FaPrint />,
                   },
                 }}
-              />
+              />  
             ),
           }}
           slotProps={{
