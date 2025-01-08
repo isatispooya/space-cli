@@ -11,6 +11,8 @@ import { useDashboard } from "../hooks";
 import { motion } from "framer-motion";
 import { server } from "../../../api/server";
 import { useEffect, useState } from "react";
+import { menuItems } from "../../sidebar/data/menuItems";
+import { IoIosArrowBack } from "react-icons/io";
 
 interface TooltipProps {
   active?: boolean;
@@ -42,6 +44,10 @@ const DashboardChart = () => {
   const { data: statsChart } = useDashboard.useGetStats();
   const [isVertical, setIsVertical] = useState(false);
 
+  const hasShareholdersAccess = menuItems.some(item =>
+    item.submenu?.some(subItem => subItem.codename === "view_shareholders")
+  );
+
   useEffect(() => {
     const handleResize = () => {
       setIsVertical(window.innerWidth < 1300);
@@ -70,7 +76,7 @@ const DashboardChart = () => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-3 shadow-lg rounded-lg border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1 font-iranSans">{label}</p>
+          <p className="text-sm text-gray-600  font-iranSans">{label}</p>
           <p className="text-lg font-bold text-indigo-600 font-iranSans">
             {payload[0].value} <span className="text-xs">%</span>
           </p>
@@ -109,6 +115,7 @@ const DashboardChart = () => {
         transition={{ duration: 0.5, delay: (props.index ?? 0) * 0.1 }}
         whileHover={{ scale: 1.05 }}
       >
+        
         {/* Bar */}
         <motion.rect
           x={x}
@@ -133,18 +140,22 @@ const DashboardChart = () => {
             href={server + payload?.logo}
             className="rounded-full"
           />
+          
         )}
+        
       </motion.g>
     );
   };
 
   return (
+    
     <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
-      <div className="w-full h-[500px] lg:h-[500px] md:h-[400px] xs:h-[600px] xs:h-[700px] p-4 sm:p-2">
-        <h3 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-6 text-center font-iranSans">
-          تعداد سهام شما در گروه های شرکت های مالی و سرمایه گذاری
+      <div className="w-full h-[400px] lg:h-[400px] md:h-[300px] xs:h-[500px] xs:h-[600px] p-4 sm:p-2">
+        <h3 className="text-base sm:text-[8px] md:text-[14px] lg:text-sm font-bold text-gray-800  text-center font-iranSans">
+          درصد سهام شما در شرکت های گروه مالی و سرمایه گذاری ایساتیس پویا
         </h3>
-        <div className="w-full h-[500px]  md:h-[400px] ">
+   
+        <div className="w-full h-[600px]  md:h-[500px] ">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
@@ -201,6 +212,19 @@ const DashboardChart = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
+       
+      </div>
+      <div className="flex justify-center mt-20 p-4 z-10">
+        {hasShareholdersAccess && (
+          <button
+            onClick={() => window.location.href = '/shareholders/table'}
+            className="px-4 py-2 text-sm font-bold text-white bg-[#1e40af]
+            rounded hover:bg-[#1e3a8a] transition-colors flex items-center gap-1"
+          >
+            مدیریت سهام
+            <IoIosArrowBack className="w-3 h-3 inline-block" />
+          </button>
+        )}
       </div>
     </div>
   );

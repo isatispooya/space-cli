@@ -25,7 +25,7 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 min-h-screen py-4">
+      <div className="container mx-auto px-4 py-2">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
           <div className="lg:col-span-3 space-y-4 lg:space-y-6">
             <div className="h-[250px] sm:h-[300px] lg:h-[24vh]">

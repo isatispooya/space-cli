@@ -45,6 +45,7 @@ const LoginForm = ({
       <form onSubmit={handleSubmit}>
         <InputBase
           type="text"
+          name="username"
           label="کدملی"
           placeholder="کدملی"
           value={nationalCode}
@@ -52,6 +53,7 @@ const LoginForm = ({
         />
         <PassInput
           type="password"
+          name="password"
           label="رمز عبور"
           placeholder="رمز عبور"
           value={password}
