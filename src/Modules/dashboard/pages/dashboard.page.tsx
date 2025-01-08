@@ -1,4 +1,3 @@
-import { Container, Grid } from "@mui/material";
 import { MainLayout } from "../../../layouts";
 import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
@@ -8,10 +7,10 @@ import { DashboardMarketingStat } from "../components";
 import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
 import DashboardBimeStat from "../components/dashboardBime.stat";
+import DashboardBorsStat from "../components/dashboardBors.stat";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
-
 
   const sliderData = useMemo(
     () =>
@@ -26,68 +25,36 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
-      <Container
-        maxWidth="xl"
-        sx={{
-          minHeight: { xs: "auto", md: "calc(100vh - 80px)" },
-          py: { xs: 1, sm: 2 },
-        }}
-      >
-        <Grid container spacing={3} sx={{ height: "100%" }}>
-          <Grid item xs={12} md={9}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sx={{ height: "24vh" }}>
-                {sliderData.length > 0 && (
-                  <DashboardSlider slides={sliderData} />
-                )}
-              </Grid>
-              <Grid item xs={12} sx={{ height: "60vh" }}>
+      <div className="container mx-auto px-4 min-h-screen py-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="lg:col-span-3 space-y-4 lg:space-y-6">
+            <div className="h-[250px] sm:h-[300px] lg:h-[24vh]">
+              {sliderData.length > 0 && <DashboardSlider slides={sliderData} />}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sx gap-4 lg:gap-10 ">
+              <div className="md:col-span-2 ">
                 <DashboardChart />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Grid container spacing={2} sx={{ height: "100%" }}>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={12}
-                sx={{
-                  flex: 1,
-                  minHeight: { xs: "200px", md: "calc(30vh - 16px)" },
-                }}
-              >
-                <DashboardBimeStat />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={12}
-                sx={{
-                  flex: 1,
-                  minHeight: { xs: "200px", md: "calc(30vh - 16px)" },
-                }}
-              >
-                <DashboardCrowdStat />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={12}
-                sx={{
-                  flex: 1,
-                  minHeight: { xs: "200px", md: "calc(30vh - 16px)" },
-                }}
-              >
+              </div>
+              <div className="md:col-span-1 ">
                 <DashboardMarketingStat />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Container>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 lg:gap-4">
+            <div>
+              <DashboardCrowdStat />
+            </div>
+            <div>
+              <DashboardBimeStat />
+            </div>
+            <div>
+              <DashboardBorsStat />
+            </div>
+          </div>
+        </div>
+      </div>
     </MainLayout>
   );
 };

@@ -12,8 +12,6 @@ const CreateCapitalIncreaseForm = () => {
   const { data: companies } = useCompany.useGet();
   const { data: users } = useUserData();
 
-  console.log("Users data:", users);
-
   const formFields: FormField[] = [
     { name: "number_of_shares", label: "تعداد سهام", type: "text" as const },
     { name: "price", label: "قیمت", type: "text" as const },
@@ -33,8 +31,8 @@ const CreateCapitalIncreaseForm = () => {
       type: "select" as const,
       options:
         users?.map(
-          (user: { first_name: string; last_name: string; id: number }) => ({
-            label: `${user.first_name} ${user.last_name}`,
+          (user: { first_name: string; last_name: string; id: number; uniqueIdentifier: string }) => ({
+            label: `${user.first_name} ${user.last_name} | ${user.uniqueIdentifier}`,
             value: user.id.toString(),
           })
         ) || [],

@@ -14,7 +14,6 @@ import { LoaderLg } from "../../../components";
 const MarketingTable = () => {
   const [selectedRow, setSelectedRow] = useState<InvitationTypes | null>(null);
   const { checkPermission } = useUserPermissions();
-
   const columns = [
     {
       field: "code",
@@ -44,7 +43,6 @@ const MarketingTable = () => {
       align: "center",
       headerAlign: "center",
       renderCell: (params: TableParamsTypes) => {
-        console.log(params.row);
         return moment(params.row.created_at)
           .locale("fa")
           .format("jYYYY/jMM/jDD");
@@ -72,9 +70,7 @@ const MarketingTable = () => {
 
   const rows = (data || []).map((row) => ({
     ...row,
-    code: row.invitation_code_detail
-      ? `my.isatispooya.com?rf=${row.invitation_code_detail.code}`
-      : "N/A",
+    code: `my.isatispooya.com?rf=${row.code}`,
   }));
 
   return (

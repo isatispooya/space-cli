@@ -2,29 +2,22 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useInvitation } from "../hooks";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useState } from "react";
-import {
-  InvitationListType,
-
-} from "../types/invitationList.type";
 import { tableStyles } from "../../../ui";
 import { useUserPermissions } from "../../permissions";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { LoaderLg } from "../../../components";
+import { InvitationTypes } from "../types";
 
-interface TableRow extends Omit<InvitationListType, "invited_user_detail"> {
-  first_name: string;
-  last_name: string;
-  mobile_number: string;
-  national_code: string;
-  invitation_date: string;
-  invitation_code: string;
-}
+
+
+type TableRow = Omit<InvitationTypes, "invitation_code_detail">;
 
 const MarketingListTable = () => {
   const [selectedRow, setSelectedRow] = useState<TableRow | null>(null);
   const { checkPermission } = useUserPermissions();
+
 
   const columns: GridColDef[] = [
     {
@@ -48,13 +41,7 @@ const MarketingListTable = () => {
       align: "center",
       headerAlign: "center",
     },
-    {
-      field: "national_code",
-      headerName: "کد ملی",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-    },
+
     {
       field: "invitation_date",
       headerName: "تاریخ دعوت",
@@ -74,6 +61,7 @@ const MarketingListTable = () => {
   ];
 
   const { data, isPending } = useInvitation.useGetList();
+  console.log(data);
 
   if (isPending) {
     return (
@@ -95,19 +83,18 @@ const MarketingListTable = () => {
     }
   };
 
-  const rows = (data || []).map(
-    (row): TableRow => ({
-      id: row.id,
-      first_name: row.invited_user_detail.first_name,
-      last_name: row.invited_user_detail.last_name,
-      mobile_number: row.invited_user_detail.mobile,
-      national_code: row.invited_user_detail?.uniqueIdentifier || "",
-      invitation_date: row.created_at,
-      invitation_code: row.invitation_code_detail.code,
-      invitation_code_detail: row.invitation_code_detail,
-      created_at: row.created_at,
-    })
-  );
+  const rows = (data || []).map((row) => ({
+    id: row.id,
+    invited_user_detail: row.invited_user_detail,
+    code: row.code,
+    created_at: row.created_at,
+    first_name: row.invited_user_detail.first_name,
+    last_name: row.invited_user_detail.last_name,
+    mobile_number: row.invited_user_detail.mobile,
+    national_code: row.invited_user_detail.uniqueIdentifier,
+    invitation_date: row.created_at,
+    invitation_code: row.code,
+  }));
 
   if (isPending) {
     return (
@@ -127,11 +114,9 @@ const MarketingListTable = () => {
         onRowSelectionModelChange={(newSelectionModel) => {
           if (newSelectionModel.length > 0) {
             const selectedId = newSelectionModel[0];
-            const selectedRow = rows.find(
-              (row: (typeof rows)[0]) => row.id === selectedId
-            );
+            const selectedRow = rows.find((row) => row.id === selectedId);
             if (selectedRow) {
-              setSelectedRow(selectedRow);
+              setSelectedRow(selectedRow as unknown as TableRow);
             }
           } else {
             setSelectedRow(null);

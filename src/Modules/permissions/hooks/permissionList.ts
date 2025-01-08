@@ -7,7 +7,6 @@ const usePermissionList = () => {
     queryKey: ["permissionList"],
     queryFn: async () => {
       const response = await permissionService.getList();
-      console.log("API response:", response); // Debug log
       return response;
     },
   });

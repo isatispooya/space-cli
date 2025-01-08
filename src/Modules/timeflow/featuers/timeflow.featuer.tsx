@@ -16,7 +16,6 @@ const TimeFlowTable = () => {
 
   const { data = {} as TimeFlowResponse, isLoading } = useTimeFlow.useGet();
 
-  console.log(data);
 
   const rows = Object.entries(data).map(([date, log]) => {
     if (!log) return null;

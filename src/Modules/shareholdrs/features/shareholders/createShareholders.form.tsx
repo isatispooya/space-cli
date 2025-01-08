@@ -27,13 +27,13 @@ const CreateShareholdersPost = () => {
         })) || [],
     },
     {
-      name: "user",
+      name: "user", 
       label: "کاربر",
       type: "select" as const,
       options:
         users?.map(
-          (user: { first_name: string; last_name: string; id: number }) => ({
-            label: `${user.first_name} ${user.last_name}`,
+          (user: { first_name: string; last_name: string; id: number; uniqueIdentifier: string }) => ({
+            label: `${user.first_name} ${user.last_name} | ${user.uniqueIdentifier}`,
             value: user.id.toString(),
           })
         ) || [],

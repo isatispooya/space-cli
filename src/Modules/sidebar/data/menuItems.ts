@@ -24,30 +24,6 @@ export const menuItems: MenuItem[] = [
     codename: "allow_any",
     submenu: [{ title: "داشبورد", path: "/", codename: "allow_any" }],
   },
-  // {
-  //   title: "حساب کاربری",
-  //   icon: FaUser,
-  //   codename: "user_account",
-  //   submenu: [
-  //     { title: "پروفایل", path: "/profile", codename: "user_profile" },
-  //     {
-  //       title: "تنظیمات",
-  //       codename: "user_settings",
-  //       submenu: [
-  //         {
-  //           title: "تنظیمات حساب",
-  //           path: "/settings/account",
-  //           codename: "account_settings",
-  //         },
-  //         {
-  //           title: "تنظیمات امنیتی",
-  //           path: "/settings/security",
-  //           codename: "security_settings",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
   {
     title: "امور سهامدارن",
     icon: FaUserTie,
@@ -170,13 +146,13 @@ export const menuItems: MenuItem[] = [
   },
 
   {
-    title: " کاربران دعوت شده",
+    title: "باشگاه مشتریان",
     path: "/marketing",
     icon: FaUserTie,
     codename: "allow_any",
     submenu: [
       {
-        title: "مدیریت کاربران دعوت شده",
+        title: " کاربران دعوت شده",
         path: "/marketing",
         codename: "allow_any",
       },

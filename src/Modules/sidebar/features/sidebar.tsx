@@ -8,10 +8,9 @@ import bothLogo from "../../../../public/bothLogo.svg";
 const SideBar = () => {
   const { isOpen, toggleSidebar } = useSidebarStore();
   const { search, setSearch } = useSearchStore();
-  console.log(isOpen);
 
-  const filteredMenuItems = menuItems.filter(item =>
-    item.title?.toLowerCase().includes(search.toLowerCase()) ?? false
+  const filteredMenuItems = menuItems.filter(
+    (item) => item.title?.toLowerCase().includes(search.toLowerCase()) ?? false
   );
 
   const handleOverlayClick = (e: React.MouseEvent) => {

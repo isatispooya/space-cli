@@ -60,7 +60,6 @@ const ChangePasswordForm = () => {
                                   "خطایی رخ داده است"
                               );
                               setSubmitting(false);
-                              console.log(error);
                             },
                           });
                         }}

@@ -4,12 +4,15 @@ import { useDashboard } from "../hooks";
 import { IoIosArrowBack } from "react-icons/io";
 
 import crowdImg from "../../../../public/assets/crowdlogo.png";
+import usePostUUID from "../hooks/useuuidpost";
+import toast from "react-hot-toast";
 
 const getMotionDivStyles = () => ({
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  className: "relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
-  style: { zIndex: 2 }
+  className:
+    "relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl",
+  style: { zIndex: 1 },
 });
 
 const formatValue = (value: number) => {
@@ -48,51 +51,65 @@ const formatValue = (value: number) => {
 
 const DashboardCrowdStat = () => {
   const { data: stats } = useDashboard.useGetStats();
+  const { mutate: crowdUUID } = usePostUUID();
 
-  console.log(stats);
+  const handleCrowdUUID = () => {
+    crowdUUID(undefined, {
+      onSuccess: (response) => {
+        console.log("Response:", response.uuid);
+        const crowdUUIDLink = `https://app.isatiscrowd.ir/onetimeLogin/${response.uuid}`;
+        window.open(crowdUUIDLink, "_blank");
+      },
+      onError: (error) => {
+        toast.error(`خطایی رخ داده است: ${error.message}`);
+      },
+    });
+  };
 
   return (
     <div>
-      <div className="background" style={{ zIndex: -2 }}>
-        {/* پس‌زمینه */}
-      </div>
+      <div className="background">{/* پس‌زمینه */}</div>
 
       <motion.div {...getMotionDivStyles()}>
         <div className="flex items-center justify-between space-x-4">
           <div className="flex items-center">
             <img src={crowdImg} alt="crowd" className="w-12 h-12" />
             <h3 className="text-sm text-[#4b0082] font-bold font-iranSans">
-              ایساتیس کراد
+              {stats?.crowd?.["title"] || "ایساتیس کراد"}
             </h3>
           </div>
         </div>
 
-        <div className="mb-1 z-50">
+        <div className="mb-1">
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             className="text-[11px] font-bold text-[#4b0082] mb-2 font-iranSans"
           >
-            مجموع تامین مالی جمعی
+            {stats?.crowd?.["total value"] || "مجموع تامین مالی جمعی"}
           </motion.p>
           <div className="text-center">
             <motion.p
               initial={{ scale: 0.5 }}
               animate={{ scale: 1 }}
-              className="text-6xl md:text-8xl font-bold text-[#4b0082] mt-2 font-iranSans overflow-hidden text-ellipsis whitespace-nowrap"
+              className="text-4xl md:text-6xl lg:text-8xl font-bold text-[#4b0082] mt-4 font-iranSans overflow-hidden text-ellipsis whitespace-nowrap"
             >
               {stats?.crowd?.["total value"] === 0 ? (
                 <>
                   0
-                  <span className="text-sm text-[#4b0082] font-iranSans"> ریال</span>
+                  <span className="text-sm text-[#4b0082] font-iranSans">
+                    {" "}
+                    ریال
+                  </span>
                 </>
               ) : (
                 formatValue(stats?.crowd?.["total value"] || 0)
               )}
             </motion.p>
           </div>
-          <a href="https://isatiscrowd.ir" target="_blank">
+          <a onClick={handleCrowdUUID}>
             <motion.button
+              onClick={handleCrowdUUID}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="w-full bg-purple-900 hover:bg-purple-700 text-white py-1 px-2 rounded-lg 
@@ -109,7 +126,6 @@ const DashboardCrowdStat = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
-          width="100%"
           style={{ zIndex: -1 }}
         >
           <path

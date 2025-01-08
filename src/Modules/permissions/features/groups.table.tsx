@@ -12,7 +12,6 @@ const GroupsTable: React.FC = () => {
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions(); 
   const { data } = useGroupsList();
-  console.log(data, "data");
   const [selectedRow, setSelectedRow] = useState<PermissionData | null>(null);
 
   const columns = [

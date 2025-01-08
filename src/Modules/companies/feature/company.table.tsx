@@ -182,7 +182,6 @@ const CompanyTable = () => {
             label="حذف شرکت"
             text="آیا از حذف شرکت مطمئن هستید؟"
             onConfirm={() => {
-              console.log("Deleting company:", selectedRow);
               setIsDeleteOpen(false);
               setSelectedRow(null);
             }}

@@ -7,7 +7,6 @@ import bimeImg from "../../../../public/assets/bime.png";
 
 const DashboardBimeStat = () => {
   const { data: stats } = useDashboard.useGetStats();
-  
 
   return (
     <motion.div
@@ -18,33 +17,33 @@ const DashboardBimeStat = () => {
     >
       <div className="flex items-center space-x-4">
         <img src={bimeImg} alt="bime" className="w-10 h-10" />
-        <h3 className="text-sm text-[#1a5c35] font-bold font-iranSans">کارگزاری رسمی بیمه</h3>
+        <h3 className="text-sm text-[#1a5c35] font-bold font-iranSans">
+          بیمه ایساتیس
+        </h3>
       </div>
 
-      <div className="mb-4 z-50">
+      <div >
         <motion.p
           initial={{ scale: 0.5 }}
           animate={{ scale: 1 }}
-          className="text-6xl md:text-8xl text-center font-bold text-[#1a5c35] mt-2 font-iranSans"
+          className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#1a5c35] mt-2 mb-8 font-iranSans"
         >
           {stats?.pishkar?.["count"] || 0}
           <span className="text-sm text-[#1a5c35] font-iranSans">عدد</span>
         </motion.p>
       </div>
 
-  
-
       <a href="https://bime.isatispooya.com" target="_blank">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full bg-green-800 hover:bg-green-600 text-white py-1 px-2 rounded-lg 
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full bg-green-800 hover:bg-green-600 text-white py-1 px-2 rounded-lg 
                        font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
-            >
-              <span className="text-white font-bold">پنل بیمه</span>
-              <IoIosArrowBack className="w-3 h-3" />
-            </motion.button>
-          </a>
+        >
+          <span className="text-white font-bold">وبسایت بیمه</span>
+          <IoIosArrowBack className="w-3 h-3" />
+        </motion.button>
+      </a>
 
       <svg
         className="absolute bottom-0 rounded-xl left-0 w-full h-32 md:h-48"
