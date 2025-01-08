@@ -69,6 +69,7 @@ const DashboardMarketingStat = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
+      className="relative isolate"
     >
       <div className="background"></div>
 
@@ -99,7 +100,10 @@ const DashboardMarketingStat = () => {
           <h4 className="text-gray-600 font-iranSans mb-3 text-sm">
             لیست کاربران دعوت شده
           </h4>
-          <div className="flex flex-col gap-1 overflow-hidden" style={{ height: '150px' }}>
+          <div
+            className="flex flex-col gap-1 overflow-hidden"
+            style={{ height: "150px" }}
+          >
             {visibleIndices.map((index) => {
               const userDetail = allNames[index]?.invited_user_detail;
               return (
@@ -113,8 +117,14 @@ const DashboardMarketingStat = () => {
                 >
                   <div className="flex flex-col">
                     <span className="font-iranSans text-gray-800 text-base whitespace-nowrap overflow-hidden text-ellipsis flex justify-between">
-                      <span>{userDetail ? `${userDetail.first_name} ${userDetail.last_name}` : "نام کاربر نامشخص"}</span>
-                      <span>{userDetail ? ` ${userDetail.uniqueIdentifier}` : ""}</span>
+                      <span>
+                        {userDetail
+                          ? `${userDetail.first_name} ${userDetail.last_name}`
+                          : "نام کاربر نامشخص"}
+                      </span>
+                      <span>
+                        {userDetail ? ` ${userDetail.uniqueIdentifier}` : ""}
+                      </span>
                     </span>
                     <div className="w-full h-0.5 bg-[#E5533D] opacity-10"></div>
                   </div>
@@ -150,8 +160,7 @@ const DashboardMarketingStat = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
-          width="100%"
-          style={{ zIndex: 1 }}
+          style={{ zIndex: -1 }}
         >
           <path
             fill="#E5533D"

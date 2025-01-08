@@ -1,4 +1,3 @@
-import { Container, Grid } from "@mui/material";
 import { MainLayout } from "../../../layouts";
 import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
@@ -9,6 +8,8 @@ import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
 import DashboardBimeStat from "../components/dashboardBime.stat";
 import DashboardBorsStat from "../components/dashboardBors.stat";
+import { Grid } from "antd";
+import { Container } from "@mui/material";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();

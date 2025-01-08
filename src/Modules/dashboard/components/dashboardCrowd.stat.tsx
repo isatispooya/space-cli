@@ -8,8 +8,9 @@ import crowdImg from "../../../../public/assets/crowdlogo.png";
 const getMotionDivStyles = () => ({
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  className: "relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
-  style: { zIndex: 2 }
+  className:
+    "relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl",
+  style: { zIndex: 1 },
 });
 
 const formatValue = (value: number) => {
@@ -84,7 +85,10 @@ const DashboardCrowdStat = () => {
               {stats?.crowd?.["total value"] === 0 ? (
                 <>
                   0
-                  <span className="text-sm text-[#4b0082] font-iranSans"> ریال</span>
+                  <span className="text-sm text-[#4b0082] font-iranSans">
+                    {" "}
+                    ریال
+                  </span>
                 </>
               ) : (
                 formatValue(stats?.crowd?.["total value"] || 0)
@@ -109,7 +113,6 @@ const DashboardCrowdStat = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
-          width="100%"
           style={{ zIndex: -1 }}
         >
           <path
