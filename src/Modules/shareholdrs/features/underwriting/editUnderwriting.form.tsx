@@ -29,6 +29,7 @@ const EditUnderWritingForm = () => {
     process: yup.number().required(),
     status: yup.string().required("ثبت وضعیت الزامی است"),
   }) as yup.ObjectSchema<underwritingTypes>;
+  
 
   const formFields: FormField[] = [
     {
@@ -78,7 +79,7 @@ const EditUnderWritingForm = () => {
       type: "viewFile",
       viewFileProps: {
         showPreview: true,
-        url: server + process?.document || "",
+        url: server +"/"+ process?.document || "",
         fileType: process?.document_type || "",
       },
     },

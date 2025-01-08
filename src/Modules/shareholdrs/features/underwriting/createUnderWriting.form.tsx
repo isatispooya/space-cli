@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { AgreementPopup } from "../../components";
 import { formatNumber } from "../../../../utils";
 import Sep from "../../../../../public/assets/sep.png";
+import {  toast } from 'react-hot-toast';
+
 
 interface SelectOption {
   label: string;
@@ -53,7 +55,7 @@ const CreateUnderWritingForm = () => {
       price: "",
       total_price: "",
       transaction_id: "",
-      type: "",
+      type: "2",
       document: null,
     },
     validationSchema: Yup.object({
@@ -63,26 +65,49 @@ const CreateUnderWritingForm = () => {
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const purchaseData: underwritingCreateTypes = {
-          amount: Number(values.amount),
-          type: String(values.type),
-          process: String(values.company),
-        };
+        if (values.type === "1") {
+          const formData = new FormData();
+          formData.append("amount", values.amount);
+          formData.append("type", values.type);
+          formData.append("process", values.company);
+          if (values.document) {
+            formData.append("document", values.document);
+          }
 
-        await postPrecendence(purchaseData, {
-          onSuccess: (response) => {
-          
+          await postPrecendence(formData as underwritingCreateTypes, {
+            onSuccess: (response) => {
+              if (response.redirect_url) {
+                window.open(response.redirect_url, "_blank");
+              }
+              toast.success("عملیات با موفقیت انجام شد");
+            },
+            onError: (error) => {
+              toast.error(`خطا در انجام عملیات: ${error.message}`);
+            },
+          });
+        } else {
+          const purchaseData: underwritingCreateTypes = {
+            amount: Number(values.amount),
+            type: String(values.type),
+            process: String(values.company),
+          };
 
-            if (response.redirect_url) {
-              window.open(response.redirect_url, "_blank");
-            }
-          },
-          onError: (error) => {
-            console.error("Error creating purchase precedence:", error);
-          },
-        });
+          await postPrecendence(purchaseData, {
+            onSuccess: (response) => {
+              if (response.redirect_url) {
+                window.open(response.redirect_url, "_blank");
+              }
+              toast.success("عملیات با موفقیت انجام شد");
+            },
+            onError: (error) => {
+              toast.error(`خطا در انجام عملیات: ${error.message}`);
+            },
+           
+          });
+        }
       } catch (error) {
         console.error("Error:", error);
+        toast.error("خطا در انجام عملیات");
       } finally {
         setSubmitting(false);
       }
