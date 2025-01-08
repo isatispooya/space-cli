@@ -70,7 +70,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
 
               <div className="absolute inset-0 " />
 
-              <h2 className="absolute top-0 left-0 right-0 mr-32 text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1 p-4 z-10">
+              <h2 className="absolute top-4 left-0 right-0 mr-32 text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1 p-4 z-10">
                 {slide.title}
               </h2>
 
