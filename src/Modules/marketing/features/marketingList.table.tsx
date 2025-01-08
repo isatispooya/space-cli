@@ -33,6 +33,7 @@ const MarketingListTable = () => {
   const [selectedRow, setSelectedRow] = useState<TableRow | null>(null);
   const { checkPermission } = useUserPermissions();
 
+
   const columns: GridColDef[] = [
     {
       field: "first_name",
@@ -75,6 +76,7 @@ const MarketingListTable = () => {
   ];
 
   const { data, isPending } = useInvitation.useGetList();
+  console.log(data);
 
   if (isPending) {
     return (
@@ -106,7 +108,7 @@ const MarketingListTable = () => {
     mobile_number: row.invited_user_detail.mobile,
     national_code: row.invited_user_detail.uniqueIdentifier,
     invitation_date: row.created_at,
-    invitation_code: row.code,
+    invitation_code: row.invitation_code_detail.code,
   }));
 
   if (isPending) {
