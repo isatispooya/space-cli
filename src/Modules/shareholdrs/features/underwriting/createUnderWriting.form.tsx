@@ -74,7 +74,7 @@ const CreateUnderWritingForm = () => {
             formData.append("document", values.document);
           }
 
-          await postPrecendence(formData as underwritingCreateTypes, {
+          await postPrecendence(formData as unknown as underwritingCreateTypes, {
             onSuccess: (response) => {
               if (response.redirect_url) {
                 window.open(response.redirect_url, "_blank");

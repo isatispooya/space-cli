@@ -108,7 +108,7 @@ const MarketingListTable = () => {
     mobile_number: row.invited_user_detail.mobile,
     national_code: row.invited_user_detail.uniqueIdentifier,
     invitation_date: row.created_at,
-    invitation_code: row.invitation_code_detail.code,
+    invitation_code: row.code,
   }));
 
   if (isPending) {
@@ -131,7 +131,7 @@ const MarketingListTable = () => {
             const selectedId = newSelectionModel[0];
             const selectedRow = rows.find((row) => row.id === selectedId);
             if (selectedRow) {
-              setSelectedRow(selectedRow);
+              setSelectedRow(selectedRow as unknown as TableRow);
             }
           } else {
             setSelectedRow(null);
