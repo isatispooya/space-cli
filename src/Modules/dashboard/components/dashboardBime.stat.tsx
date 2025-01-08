@@ -12,7 +12,7 @@ const DashboardBimeStat = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative bg-white    rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105"
+      className="relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105"
       style={{ zIndex: 2 }}
     >
       <div className="flex items-center space-x-4">
@@ -22,11 +22,11 @@ const DashboardBimeStat = () => {
         </h3>
       </div>
 
-      <div className="mb-4 z-50">
+      <div >
         <motion.p
           initial={{ scale: 0.5 }}
           animate={{ scale: 1 }}
-          className="text-6xl md:text-8xl text-center font-bold text-[#1a5c35] mt-2 font-iranSans"
+          className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#1a5c35] mt-2 mb-8 font-iranSans"
         >
           {stats?.pishkar?.["count"] || 0}
           <span className="text-sm text-[#1a5c35] font-iranSans">عدد</span>

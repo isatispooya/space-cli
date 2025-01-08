@@ -63,9 +63,8 @@ const DashboardMarketingStat = () => {
   const getMotionDivStyles = () => ({
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
-    className:
-      "relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl",
-    style: { zIndex: 1 },
+    className: "relative bg-white rounded-xl shadow-lg p-6 h-auto sm:h-[520px] md:h-[520px] lg:h-[550px] transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105 ",
+    style: { zIndex: 2 }
   });
 
   return (
@@ -75,10 +74,10 @@ const DashboardMarketingStat = () => {
       transition={{ duration: 0.5 }}
       className="relative isolate"
     >
-      <div className="background absolute inset-0" style={{ zIndex: -1 }}></div>
+      <div className="background"></div>
 
       <motion.div {...getMotionDivStyles()}>
-        <div className="flex flex-col md:flex-row items-center justify-between space-x-4">
+        <div className="flex flex-col md:flex-row items-center justify-between space-x-4 ">
           <div className="flex items-center">
             <RiUserReceived2Line className="w-5 h-6 text-[#E5533D] animate-bounce" />
             <h3 className="text-sm text-[#E5533D] font-bold font-iranSans mr-2">

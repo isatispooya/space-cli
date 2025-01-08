@@ -44,7 +44,7 @@ const DashboardChart = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsVertical(window.innerWidth < 768);
+      setIsVertical(window.innerWidth < 1300);
     };
 
     handleResize();
@@ -62,13 +62,17 @@ const DashboardChart = () => {
       : []),
   ];
 
+  const chartMargins = isVertical
+    ? { top: 20, right: 70, left: 20, bottom: 15 }
+    : { top: 70, right: 30, left: 20, bottom: 15 };
+
   const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-3 shadow-lg rounded-lg border border-gray-100">
           <p className="text-sm text-gray-600 mb-1 font-iranSans">{label}</p>
           <p className="text-lg font-bold text-indigo-600 font-iranSans">
-            {payload[0].value} <span className="text-xs">واحد</span>
+            {payload[0].value} <span className="text-xs">%</span>
           </p>
         </div>
       );
@@ -136,21 +140,16 @@ const DashboardChart = () => {
 
   return (
     <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
-      <div className="w-full h-[300px] p-4 sm:p-6">
-        <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-6 text-center font-iranSans">
+      <div className="w-full h-[500px] lg:h-[500px] md:h-[400px] xs:h-[600px] xs:h-[700px] p-4 sm:p-2">
+        <h3 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-6 text-center font-iranSans">
           تعداد سهام شما در گروه های شرکت های مالی و سرمایه گذاری
         </h3>
-        <div className="w-full h-full">
+        <div className="w-full h-[500px]  md:h-[400px] ">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
               layout={isVertical ? "vertical" : "horizontal"}
-              margin={{
-                top: isVertical ? 20 : 70,
-                right: isVertical ? 70 : 30,
-                left: isVertical ? 20 : 20,
-                bottom: isVertical ? 15 : 15,
-              }}
+              margin={chartMargins}
             >
               <CartesianGrid
                 strokeDasharray="3 3"
@@ -194,7 +193,7 @@ const DashboardChart = () => {
               </defs>
               <Bar
                 dataKey="value"
-                name="واحد"
+                name="%"
                 fill="#818cf8"
                 shape={<CustomBar />}
                 maxBarSize={60}

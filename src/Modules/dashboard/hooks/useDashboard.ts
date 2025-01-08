@@ -1,21 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { dashboardService } from "../services";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import dashboardServices from "../services/dashboardServices";
+import crowdUUIDservice from "../services/crowdUUIDservice";
 
 const useDashboard = {
-  useGetShortcuts: () => {
-    return useQuery({
-      queryKey: ["shortcuts"],
-      queryFn: dashboardService.getShortcuts,
-    });
-  },
-
-  useGetStats: () => {
-    return useQuery({
-      queryKey: ["stats"],
-      queryFn: dashboardService.getStats,
-      retry: 2,
-    });
-  },
+  useGetStats: () => useQuery({ queryKey: ["stats"], queryFn: dashboardServices.getStats }),
+  useGetShortcuts: () => useQuery({ queryKey: ["shortcuts"], queryFn: dashboardServices.getShortcuts }),
+  useCrowdUUID: () => useMutation({ mutationFn: crowdUUIDservice.post })
 };
 
 export default useDashboard;

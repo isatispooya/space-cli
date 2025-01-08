@@ -1,31 +1,33 @@
 import { motion } from "framer-motion";
 import { IoIosArrowBack } from "react-icons/io";
 import { RiUserReceived2Line } from "react-icons/ri";
+import { useDashboard } from "../hooks";
+
+const getMotionDivStyles = () => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  className: "relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
+  style: { zIndex: 2 }
+});
 
 const DashboardBorsStat = () => {
-  const staticData = {
-    title: "بورس",
-    value: 1234, // Static value
-    code: "static-code-1234", // Static code
-  };
+  const { data } = useDashboard.useGetStats();
+
+  const title = data?.title || "بورس";
+  const value = data?.value || 0;
 
   return (
     <div>
-      <div className="background" style={{ zIndex: -2 }}>
-   
+      <div className="background">
+        {/* پس‌زمینه */}
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105"
-        style={{ zIndex: 2, backgroundColor: "#ffffff" }}
-      >
+      <motion.div {...getMotionDivStyles()}>
         <div className="flex items-center justify-between space-x-4">
-          <div className="flex items-center">
-            <RiUserReceived2Line className="w-5 h-5 text-[#1e40af]" />
-            <h3 className="text-sm text-[#1e40af] font-bold font-iranSans">
-              {staticData.title}
+          <div className="flex items-center mb-8">
+            <RiUserReceived2Line className="w-5 h-5  text-[#1e40af]" />
+            <h3 className="text-sm  text-[#1e40af] font-bold font-iranSans">
+              {title}
             </h3>
           </div>
         </div>
@@ -34,9 +36,9 @@ const DashboardBorsStat = () => {
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
-            className="text-6xl md:text-8xl text-center font-bold text-[#1e40af] mt-2 font-iranSans"
+            className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#1e40af] mt-4 font-iranSans"
           >
-            {staticData.value}
+            {value}
             <span className="text-sm text-[#1e40af] font-iranSans">نفر</span>
           </motion.p>
         </div>
@@ -44,7 +46,7 @@ const DashboardBorsStat = () => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full bg-blue-900 hover:bg-blue-700 text-white py-1 px-2 rounded-lg 
+            className="w-full bg-blue-900  hover:bg-blue-700 text-white py-1 px-2 rounded-lg 
                        font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
           >
             <span className="text-white font-bold">پنل بورس</span>
@@ -58,7 +60,7 @@ const DashboardBorsStat = () => {
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
           width="100%"
-          style={{ zIndex: 1 }}
+          style={{ zIndex: -1 }}
         >
           <path
             fill="#1e40af"
