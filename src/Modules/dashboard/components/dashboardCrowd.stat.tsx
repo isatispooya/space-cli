@@ -118,7 +118,7 @@ const DashboardCrowdStat = () => {
               className="w-full bg-purple-900 hover:bg-purple-700 text-white py-1 px-2 rounded-lg 
                        font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
             >
-              <span className="text-white font-bold">وبسایت کراد</span>
+              <span className="text-white font-bold">پنل کراد</span>
               <IoIosArrowBack className="w-3 h-3" />
             </motion.button>
           </a>

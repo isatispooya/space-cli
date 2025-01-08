@@ -24,10 +24,10 @@ const StockTransferPage: React.FC = () => {
       <div className="min-h-screen flex flex-col">
         <div className="bg-white p-3">
           <h1 className="text-2xl font-bold text-center text-indigo-600 mb-1">
-            سامانه جابهجایی سهامداران
+            نقل و انتقال سهام
           </h1>
           <p className="text-gray-600 text-center text-sm">
-            جابهجایی سهامداران به صورت هوشمند
+            نقل و انتقال سهام به صورت هوشمند
           </p>
         </div>
         <div className="flex-grow flex flex-col">
