@@ -72,7 +72,7 @@ const DashboardChart = () => {
         <div className="bg-white p-3 shadow-lg rounded-lg border border-gray-100">
           <p className="text-sm text-gray-600 mb-1 font-iranSans">{label}</p>
           <p className="text-lg font-bold text-indigo-600 font-iranSans">
-            {payload[0].value} <span className="text-xs">واحد</span>
+            {payload[0].value} <span className="text-xs">%</span>
           </p>
         </div>
       );
@@ -193,7 +193,7 @@ const DashboardChart = () => {
               </defs>
               <Bar
                 dataKey="value"
-                name="واحد"
+                name="%"
                 fill="#818cf8"
                 shape={<CustomBar />}
                 maxBarSize={60}
