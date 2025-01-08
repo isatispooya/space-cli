@@ -56,8 +56,8 @@ const DashboardCrowdStat = () => {
   const handleCrowdUUID = () => {
     crowdUUID(undefined, {
       onSuccess: (response) => {
-        console.log("Response:", response.data.uuid);
-        const crowdUUIDLink = `https://app.isatiscrowd.com/onetimeLogin/${response.data.uuid}`;
+        console.log("Response:", response.uuid);
+        const crowdUUIDLink = `https://app.isatiscrowd.ir/onetimeLogin/${response.uuid}`;
         window.open(crowdUUIDLink, "_blank");
       },
       onError: (error) => {
@@ -66,12 +66,9 @@ const DashboardCrowdStat = () => {
     });
   };
 
-
   return (
     <div>
-      <div className="background">
-        {/* پس‌زمینه */}
-      </div>
+      <div className="background">{/* پس‌زمینه */}</div>
 
       <motion.div {...getMotionDivStyles()}>
         <div className="flex items-center justify-between space-x-4">
