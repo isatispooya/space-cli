@@ -31,6 +31,7 @@ const DashboardPage = () => {
         sx={{
           minHeight: { xs: "auto", md: "calc(100vh - 80px)" },
           py: { xs: 1, sm: 2 },
+          px: { xs: 1, sm: 3 },
         }}
       >
         <Grid container spacing={3} sx={{ height: "100%" }}>
@@ -49,6 +50,7 @@ const DashboardPage = () => {
                     sm: "24vh",
                     md: "24vh",
                   },
+                  mb: { xs: 2, sm: 3 },
                 }}
               >
                 {sliderData.length > 0 && (
@@ -73,7 +75,7 @@ const DashboardPage = () => {
                     sx={{
                       height: {
                         xs: "400px",
-                        md: "100%",
+                        md: "102%",
                       },
                     }}
                   >
@@ -85,12 +87,12 @@ const DashboardPage = () => {
                     md={4}
                     sx={{
                       height: {
-                        xs: "300px",
+                        xs: "auto",
                         md: "100%",
                       },
                     }}
                   >
-                    <div style={{ height: "100%" }}>
+                    <div>
                       <DashboardMarketingStat />
                     </div>
                   </Grid>
@@ -108,6 +110,7 @@ const DashboardPage = () => {
                 sm: "auto",
                 md: "calc(100vh - 104px)",
               },
+              mt: { xs: 2, sm: 2, md: -12 },
             }}
           >
             <Grid container spacing={2} sx={{ height: "100%" }}>
@@ -118,10 +121,12 @@ const DashboardPage = () => {
                 md={12}
                 sx={{
                   height: {
-                    xs: "300px",
-                    sm: "300px",
+                    xs: "auto",
+                    sm: "auto",
                     md: "33.33%",
                   },
+                  mb: { xs: 2, sm: 2, md: 3 },
+                  mt: { xs: 2, sm:2, md: 12 },
                 }}
               >
                 <DashboardCrowdStat />
@@ -133,10 +138,12 @@ const DashboardPage = () => {
                 md={12}
                 sx={{
                   height: {
-                    xs: "300px",
-                    sm: "300px",
+                    xs: "auto",
+                    sm: "auto",
                     md: "33.33%",
                   },
+                  mb: { xs: 2, sm: 2, md: 3 },
+                  mt: { xs: 2, sm:2, md: -2 },
                 }}
               >
                 <DashboardBimeStat />
@@ -148,10 +155,13 @@ const DashboardPage = () => {
                 md={12}
                 sx={{
                   height: {
-                    xs: "300px",
-                    sm: "300px",
+                    xs: "auto",
+                    sm: "auto",
                     md: "33.33%",
                   },
+                  
+                  mt: { xs: 2, sm:2, md: -2 },
+
                 }}
               >
                 <DashboardBorsStat />

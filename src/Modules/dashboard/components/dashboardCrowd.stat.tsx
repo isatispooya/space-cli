@@ -53,7 +53,7 @@ const DashboardCrowdStat = () => {
 
   return (
     <div>
-      <div className="background" style={{ zIndex: -2 }}>
+      <div className="background">
         {/* پس‌زمینه */}
       </div>
 
@@ -67,7 +67,7 @@ const DashboardCrowdStat = () => {
           </div>
         </div>
 
-        <div className="mb-1 z-50">
+        <div className="mb-1">
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
@@ -79,7 +79,7 @@ const DashboardCrowdStat = () => {
             <motion.p
               initial={{ scale: 0.5 }}
               animate={{ scale: 1 }}
-              className="text-6xl md:text-8xl font-bold text-[#4b0082] mt-2 font-iranSans overflow-hidden text-ellipsis whitespace-nowrap"
+              className="text-4xl md:text-6xl lg:text-8xl font-bold text-[#4b0082] mt-4 font-iranSans overflow-hidden text-ellipsis whitespace-nowrap"
             >
               {stats?.crowd?.["total value"] === 0 ? (
                 <>

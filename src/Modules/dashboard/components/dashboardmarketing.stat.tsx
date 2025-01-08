@@ -60,7 +60,7 @@ const DashboardMarketingStat = () => {
   const getMotionDivStyles = () => ({
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
-    className: "relative bg-white rounded-xl shadow-lg p-6 h-auto md:h-[520px] transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
+    className: "relative bg-white rounded-xl shadow-lg p-6 h-auto sm:h-[520px] md:h-[520px] lg:h-[550px] transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105 ",
     style: { zIndex: 2 }
   });
 
@@ -70,7 +70,7 @@ const DashboardMarketingStat = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="background" style={{ zIndex: -2 }}></div>
+      <div className="background"></div>
 
       <motion.div {...getMotionDivStyles()}>
         <div className="flex flex-col md:flex-row items-center justify-between space-x-4">
