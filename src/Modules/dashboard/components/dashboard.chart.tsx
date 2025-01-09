@@ -148,10 +148,24 @@ const DashboardChart = () => {
   };
 
   return (
-    
-    <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl">
+    <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl relative">
+      {/* SVG Wave Top */}
+      <svg
+        className="absolute top-0 left-0 w-full h-16 md:h-24 rounded-lg"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+        style={{ zIndex: -1 }}
+      >
+        <path
+          fill="#1e40af"
+          fillOpacity="0.3"
+          d="M0,160L34.3,165.3C68.6,171,137,181,206,192C274.3,203,343,213,411,197.3C480,181,549,139,617,144C685.7,149,754,203,823,224C891.4,245,960,235,1029,213.3C1097.1,192,1166,160,1234,144C1302.9,128,1371,128,1406,128L1440,128L1440,0L1405.7,0C1371.4,0,1303,0,1234,0C1165.7,0,1097,0,1029,0C960,0,891,0,823,0C754.3,0,686,0,617,0C548.6,0,480,0,411,0C342.9,0,274,0,206,0C137.1,0,69,0,34,0L0,0Z"
+        ></path>
+      </svg>
+
       <div className="w-full h-[400px] lg:h-[400px] md:h-[300px] xs:h-[500px] xs:h-[600px] p-4 sm:p-2">
-        <h3 className="text-base sm:text-[8px] md:text-[14px] lg:text-sm font-bold text-gray-800  text-center font-iranSans">
+        <h3 className="text-base sm:text-[8px] md:text-[14px] lg:text-sm font-bold text-gray-800 text-center font-iranSans">
           درصد سهام شما در شرکت های گروه مالی و سرمایه گذاری ایساتیس پویا
         </h3>
    
@@ -226,6 +240,21 @@ const DashboardChart = () => {
           </button>
         )}
       </div>
+
+      {/* SVG Wave Bottom */}
+      <svg
+        className="absolute bottom-0 left-0 w-full h-16 md:h-24 rounded-lg"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+        style={{ zIndex: -1 }}
+      >
+        <path
+          fill="#1e40af"
+          fillOpacity="0.3"
+          d="M0,160L34.3,165.3C68.6,171,137,181,206,192C274.3,203,343,213,411,197.3C480,181,549,139,617,144C685.7,149,754,203,823,224C891.4,245,960,235,1029,213.3C1097.1,192,1166,160,1234,144C1302.9,128,1371,128,1406,128L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"
+        ></path>
+      </svg>
     </div>
   );
 };
