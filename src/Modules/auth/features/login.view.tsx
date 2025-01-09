@@ -7,7 +7,6 @@ import LoginForm from "./login.form";
 import SignupForm from "./signup.form";
 import ForgetPassSms from "./forget_pass_sms.form";
 import ForgetPassForm from "./forget_pass.form";
-// import rb from "./rb.png";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
 
@@ -144,6 +143,16 @@ const Login: React.FC = () => {
                       وارد شوید
                     </button>
                   </div>
+                  <a href="https://profilesejam.csdiran.ir/">
+                    <div className="mt-4 text-center text-sm">
+                      <button
+                        onClick={() => handleComponentChange("login")}
+                        className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
+                      >
+                        ثبت نام در سجام
+                      </button>
+                    </div>
+                  </a>
                 </>
               )}
               {activeComponent === "forgetpass" && (
@@ -165,6 +174,10 @@ const Login: React.FC = () => {
                   </div>
                 </>
               )}
+         
+                
+
+        
             </motion.div>
           </div>
         </div>
