@@ -13,6 +13,7 @@ interface ViewDownloadProps {
   onDownload?: () => void;
   toastMessage?: string;
   toastError?: string;
+  target: string;
 }
 
 const ViewDownload: FC<ViewDownloadProps> = ({
@@ -26,6 +27,7 @@ const ViewDownload: FC<ViewDownloadProps> = ({
   onDownload,
   toastMessage,
   toastError,
+  target,
 }) => {
   const handleDownload = () => {
     if (onDownload) {
@@ -95,7 +97,7 @@ const ViewDownload: FC<ViewDownloadProps> = ({
 
           {downloadLink && (
             <div className="w-full text-center">
-              <a href={downloadLink} onClick={handleDownload}>
+              <a href={downloadLink} target={target} rel="noopener noreferrer" onClick={handleDownload}>
                 <motion.button
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
