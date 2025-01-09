@@ -8,6 +8,7 @@ import "./fonts.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Toaster } from "react-hot-toast";
+import loadWidget from "./components/chatBox";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 const queryClient = new QueryClient();
@@ -27,6 +28,8 @@ const rfValue = url.searchParams.get('rf');
 if (rfValue) {
     localStorage.setItem('rf', rfValue);
 }
+
+loadWidget();
 
 root.render(
   <React.StrictMode>

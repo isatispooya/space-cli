@@ -6,6 +6,10 @@ import { faIR } from "date-fns/locale";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PendingIcon from "@mui/icons-material/Pending";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 
 interface NotificationMessage {
   id: number;
@@ -76,6 +80,15 @@ const Notification = React.forwardRef<HTMLDivElement>((_props, ref) => {
         return <HowToRegIcon sx={{ color: "#4CAF50" }} />;
       case "invitation":
         return <CoPresentIcon sx={{ color: "#2196F3" }} />;
+      case "pendding":
+        return <PendingIcon sx={{ color: "#FFA726" }} />;
+      case "approved":
+        return <CheckCircleIcon sx={{ color: "#4CAF50" }} />;
+      case "success":  
+        return <TaskAltIcon sx={{ color: "#4CAF50" }} />;
+      case "rejected":
+        return <CancelIcon sx={{ color: "#F44336" }} />;
+
       default:
         return <BubbleChartIcon sx={{ color: "#9C27B0" }} />;
     }
