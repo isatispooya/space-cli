@@ -60,15 +60,19 @@ const DashboardBorsStat = () => {
                   labelLine={false}
                   label={false}
                   outerRadius={55}
-                  fill="#8884d8"
                   dataKey="value"
                 >
-                  {pieData?.map(( index: number) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
+                  {pieData?.map(
+                    (
+                      _entry: { name: string; value: number },
+                      index: number
+                    ) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    )
+                  )}
                 </Pie>
                 <Tooltip
                   formatter={(value: number) => [formatNumber(value), "ارزش"]}

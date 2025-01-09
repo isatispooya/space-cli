@@ -17,6 +17,9 @@ const useRegister = () => {
       navigate("/");
       setOpenOtp(true);
     },
+    onError: (error) => {
+      console.log(error);
+    },
   });
 };
 
