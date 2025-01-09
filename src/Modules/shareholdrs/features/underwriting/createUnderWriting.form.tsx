@@ -228,7 +228,7 @@ const CreateUnderWritingForm = () => {
             </button>
             <div
               className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                isDescriptionOpen ? "max-h-96" : "max-h-0"
+                isDescriptionOpen ? "max-h-full" : "max-h-0"
               }`}
             >
               <div className="border-t border-slate-200">
@@ -304,9 +304,9 @@ const CreateUnderWritingForm = () => {
                 name="type"
                 onChange={formik.handleChange}
                 value={formik.values.type}
-                className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-[#29D2C7] focus:border-transparent"
+                className="w-full p-4  text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-[#29D2C7] focus:border-transparent"
               >
-                <option value="">انتخاب کنید</option>
+                <option className="p-6" value="">انتخاب کنید</option>
                 {typeOptions.map((option: SelectOption) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -362,17 +362,18 @@ const CreateUnderWritingForm = () => {
           )}
 
           <div className="space-y-3">
-            <p className="text-red-500 text-xs">
-              . قبل از اتصال به درگاه بانکی از قطع بودن فیلترشکن خود مطمئن شوید
-            </p>
             {isGatewayType && (
-              <div className="flex justify-center items-center my-4">
+              <p className="text-red-500 text-xs">
+                . قبل از اتصال به درگاه بانکی از قطع بودن فیلترشکن خود مطمئن شوید
+              </p>
+            )}
+            {isGatewayType && (
+              <div className="flex justify-start items-center my-4">
                 <img
                   src={Sep}
                   alt="SEP Bank Logo"
                   className="h-16 object-contain"
                 />
-                <h1 className="mr-2"> درگاه پرداخت اینترنتی سِپ</h1>
               </div>
             )}
             <button
