@@ -2,6 +2,7 @@ export interface InvitationTypes {
     id: string;
     code: string;
     created_at: string;
+    
     invited_user_detail: {
       first_name: string;
       last_name: string;
@@ -10,6 +11,6 @@ export interface InvitationTypes {
       created_at?: string;
     };
     invitation_code_detail: {
-      code: string;
+      code?: string;
     };
   } 

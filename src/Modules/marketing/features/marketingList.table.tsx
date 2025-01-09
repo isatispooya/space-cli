@@ -25,6 +25,7 @@ interface InvitationTableRow extends InvitationTypes {
     uniqueIdentifier: string;
     created_at?: string;
   };
+
 }
 
 type TableRow = Omit<InvitationTableRow, "invitation_code_detail">;
@@ -101,14 +102,14 @@ const MarketingListTable = () => {
   const rows = (data || []).map((row) => ({
     id: row.id,
     invited_user_detail: row.invited_user_detail,
-    code: row.code,
+    code: row.invitation_code_detail?.code,
     created_at: row.created_at,
     first_name: row.invited_user_detail.first_name,
     last_name: row.invited_user_detail.last_name,
     mobile_number: row.invited_user_detail.mobile,
     national_code: row.invited_user_detail.uniqueIdentifier,
     invitation_date: row.created_at,
-    invitation_code: row.code,
+    invitation_code: row.invitation_code_detail?.code,
   }));
 
   if (isPending) {
