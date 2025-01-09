@@ -21,7 +21,6 @@ const DashboardBimeStat = () => {
           بیمه ایساتیس
         </h3>
       </div>
-
       <div >
         <motion.p
           initial={{ scale: 0.5 }}

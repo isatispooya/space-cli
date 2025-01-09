@@ -11,6 +11,7 @@ interface InputLineProps extends HTMLMotionProps<"div"> {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
+  maxLength?: number;
 }
 
 const InputBase: React.FC<InputLineProps> = ({
@@ -22,6 +23,8 @@ const InputBase: React.FC<InputLineProps> = ({
   disabled,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   error,
+
+  maxLength,
   ...motionProps
 }) => {
   return (
@@ -40,6 +43,7 @@ const InputBase: React.FC<InputLineProps> = ({
         placeholder=" "
         aria-label={label}
         disabled={disabled}
+        maxLength={maxLength}
       />
       <label
         className={`absolute cursor-text px-1 pt-1 right-2.5 text-slate-400 text-sm transition-all transform origin-right
