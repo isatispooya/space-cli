@@ -57,6 +57,20 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
         loop={slides.length > 1}
         className="!absolute inset-0 rounded-lg overflow-hidden"
         initialSlide={0}
+        breakpoints={{
+          640: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+        }}
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
@@ -70,13 +84,13 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
 
               <div className="absolute inset-0 " />
 
-              <h2 className="absolute top-4 left-0 right-0 mr-32 text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1 p-4 z-10">
+              <h2 className="absolute top-4 left-0 right-0 mr-4 sm:mr-8 md:mr-16 lg:mr-32 text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1 p-2 sm:p-3 md:p-4 z-10">
                 {slide.title}
               </h2>
 
-              <div className="absolute bottom-0 left-0 right-5 p-4 z-10">
-                <button className="mb-5 px-48 py-1 bg-green-600 text-white rounded-lg font-medium text-lg relative block mr-32">
-                  <span className="before:content-[''] before:block before:absolute before:left-12 font-bold before:top-1/2 before:w-1/6 before:border-t-2 before:border-white before:transform before:-translate-y-1/2 after:content-[''] after:block after:absolute after:right-12 after:top-1/2 after:w-1/6 after:border-t-2 after:border-white after:transform after:-translate-y-1/2">
+              <div className="absolute bottom-0 left-0 right-5 p-4 z-10 text-right">
+                <button className="mb-5 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 py-1 bg-green-600 text-white rounded-lg font-medium text-sm sm:text-base md:text-lg relative block mx-auto">
+                  <span className="before:content-[''] before:hidden sm:before:block before:absolute before:left-4 sm:before:left-8 md:before:left-12 font-bold before:top-1/2 before:w-8 sm:before:w-12 md:before:w-16 before:border-t-2 before:border-white before:transform before:-translate-y-1/2 after:content-[''] after:hidden sm:after:block after:absolute after:right-4 sm:after:right-8 md:after:right-12 after:top-1/2 after:w-8 sm:after:w-12 md:after:w-16 after:border-t-2 after:border-white after:transform after:-translate-y-1/2">
                     امکان سرمایه‌گذاری آنلاین
                   </span>
                 </button>

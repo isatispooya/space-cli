@@ -11,11 +11,13 @@ import { useState, useRef, useEffect } from 'react';
 import { useCorrespondencesData } from '../notification/hook/notification.get';
 import Notification from '../notification/notification';
 import { useNavigate } from "react-router-dom";
+import { useProfile } from "../../Modules/userManagment";
 
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
   const { toggleSidebar } = useSidebarStore();
+  const { data: profileData } = useProfile();
 
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -44,6 +46,8 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  console.log(profileData);
 
   return (
     <header>
@@ -94,7 +98,10 @@ const Header = () => {
 
             
           </div>
-          <div className="flex items-center ml-8  relative">
+          <div className="flex items-center ml-8 relative">
+            <span className="mr-4 text-gray-700">
+              {profileData?.first_name} {profileData?.last_name}
+            </span>
             <Badge 
               sx={{
                 position: "relative", 
