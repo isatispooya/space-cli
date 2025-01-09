@@ -112,6 +112,8 @@ const MarketingListTable = () => {
     invitation_code: row.invitation_code_detail?.code,
   }));
 
+  
+
   if (isPending) {
     return (
       <div className="flex justify-center mb-10 items-center h-full">

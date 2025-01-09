@@ -1,89 +1,95 @@
 import { motion } from "framer-motion";
 import { IoIosArrowBack } from "react-icons/io";
 import { useDashboard } from "../hooks";
-import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, TooltipItem } from 'chart.js';
-// Register the ArcElement
-ChartJS.register(ArcElement);
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+} from "recharts";
+import { formatNumber } from "../../../utils";
 
 interface PortfolioItem {
   Symbol: string;
   VolumeInPrice: string | number;
 }
 
-const getMotionDivStyles = () => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  className: "relative bg-white rounded-lg shadow-md p-2 h-full transition-shadow duration-300 hover:shadow-lg transform hover:scale-105",
-  style: { zIndex: 2 }
-});
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#5677BC"];
 
 const DashboardBorsStat = () => {
   const { data } = useDashboard.useGetStats();
-  console.log(data);
-
   const title = data?.title || "کارگزاری ایساتیس پویا (بورس)";
-
-  // داده‌های جدید برای چارت
-  const chartData = {
-    labels: data?.protfolio ? data.protfolio.map((item: PortfolioItem) => item.Symbol) : ['نبابک1', 'سیسکو1'],
-    datasets: [
-      {
-        data: data?.protfolio ? data.protfolio.map((item: PortfolioItem) => parseInt(item.VolumeInPrice.toString())) : [606400, 19532800],
-        backgroundColor: ['#ff6384', '#36a2eb'],
-        hoverBackgroundColor: ['#ff6384', '#36a2eb'],
-      },
-    ],
-  };
-
-  const chartOptions = {
-    maintainAspectRatio: false,
-    responsive: true,
-    plugins: {
-      tooltip: {
-        enabled: true,
-        callbacks: {
-          label: function(context: TooltipItem<'doughnut'>) {
-            const label = context.label || '';
-            const value = context.raw || 0;
-            const percentage = ((value / context.dataset.data.reduce((a, b) => a + b, 0)) * 100).toFixed(2);
-            return `${label}: ${value} (${percentage}%)`;
-          },
-          labelTextColor: function() {
-            return '#000000';
-          }
-        }
-      }
-    }
-  };
+  const pieData = data?.bourse.protfolio
+    ? data.bourse.protfolio.map((item: PortfolioItem) => ({
+        name: item.Symbol,
+        value: parseInt(item.VolumeInPrice.toString()),
+      }))
+    : null;
 
   return (
     <div className="container mx-auto px-1">
-      <div className="background">
-        {/* پس‌زمینه */}
-      </div>
+      <div className="background"></div>
 
-      <motion.div {...getMotionDivStyles()}>
-        <div className="flex flex-wrap mr-2 items-center justify-between space-x-1">
-          <div className="flex items-center">
-            <img src="public/Artboard 1 copy 16.png" alt="بورس آیکن" className="w-12 h-12" />
-            <h3 className="text-base text-[#1e40af] font-bold font-iranSans">
-              {title}
-            </h3>
-          </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105"
+        style={{ zIndex: 2 }}
+      >
+        <div className="flex items-center space-x-4">
+          <img
+            src="public/Artboard 1 copy 16.png"
+            alt="بورس آیکن"
+            className="w-10 h-10"
+          />
+          <h3 className="text-sm text-[#1e40af] font-bold font-iranSans">
+            {title}
+          </h3>
         </div>
 
-        <div className="mb-4 flex justify-center items-center relative">
-          <Doughnut data={chartData} options={chartOptions} />
-          <div className="absolute bottom-[-10px] left-0 right-0 flex flex-row items-center justify-center space-x-1 mt-4">
-            {data?.bourse?.protfolio ? data.bourse.protfolio.map((item: PortfolioItem, index: number) => (
-              <div key={index} className="flex items-center space-x-1 text-xs">
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: chartData.datasets[0].backgroundColor[index] }}></span>
-                <span className="font-bold">{item.Symbol}:</span>
-                <span>{item.VolumeInPrice}</span>
-              </div>
-            )) : null}
-          </div>
+        <div className="w-full h-28 md:h-56 lg:h-28">
+          {data?.bourse.protfolio.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={false}
+                  outerRadius={55}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {pieData?.map(( index: number) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(value: number) => [formatNumber(value), "ارزش"]}
+                />
+                <Legend
+                  layout="vertical"
+                  align="left"
+                  verticalAlign="middle"
+                  wrapperStyle={{
+                    fontSize: window.innerWidth <= 500 ? "10px" : "12px",
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-sm text-gray-500">
+                داده‌ای برای نمایش وجود ندارد
+              </p>
+            </div>
+          )}
         </div>
 
         <a href="https://ipb.ir" target="_blank" className="mt-4 block">
