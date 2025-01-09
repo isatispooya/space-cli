@@ -21,6 +21,8 @@ const ShareExpertView: FC = () => {
     <div>
       {data?.map((item: IFinancialStatement, index: number) => (
         <ViewDownload
+          target="_blank"
+          downloadButtonText="دانلود کارشناسی سهامی"
           key={index}
           title="کارشناسی سهامی"
           description={item?.share_expert_description}

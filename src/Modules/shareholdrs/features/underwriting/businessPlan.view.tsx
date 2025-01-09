@@ -30,6 +30,7 @@ const BusinessPlanView: FC = () => {
           toastMessage="در حال دانلود فایل"
           toastError="در حال حاضر فایلی برای دانلود وجود ندارد"
           onDownload={handleDownload}
+          target="_blank"
         />
       ))}
     </div>

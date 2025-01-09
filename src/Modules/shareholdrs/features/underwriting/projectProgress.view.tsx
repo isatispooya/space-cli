@@ -35,9 +35,11 @@ const ProjectProgressView: FC = () => {
             regulatorLogo={item?.progress_plan_regulator_logo}
             regulatorText={item?.progress_plan_regulator}
             downloadLink={item?.progress_plan}
+            downloadButtonText="دانلود پیشرفت پروژه"
             toastMessage="در حال دانلود فایل"
             toastError="در حال حاضر فایلی برای دانلود وجود ندارد"
             onDownload={handleDownload}
+            target="_blank"
           />
       ))}
     </div>

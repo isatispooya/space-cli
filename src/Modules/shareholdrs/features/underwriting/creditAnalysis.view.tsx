@@ -26,7 +26,7 @@ const CreditAnalysisView: FC = () => {
       {data?.map((item: ICreditAnalysis, index: number) => (
         <ViewDownload
           key={index}
-          title="تحلیل اعتبار"
+          title="اعتبار سنجی بانکی"
           description={item?.validation_description}
           regulatorLogo={item?.validation_regulator_logo}
           regulatorText={item?.validation_regulator}
@@ -34,6 +34,8 @@ const CreditAnalysisView: FC = () => {
           toastMessage="در حال دانلود فایل"
           toastError="در حال حاضر فایلی برای دانلود وجود ندارد"
           onDownload={handleDownload}
+          downloadButtonText="دانلود اعتبار سنجی بانکی"
+          target="_blank"
         />
       ))}
     </div>

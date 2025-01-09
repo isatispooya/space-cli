@@ -7,7 +7,9 @@ export interface InvitationTypes {
     uniqueIdentifier: string;
     created_at?: string;
   };
-  code: string;
-
+  code?: string;
+  invitation_code_detail: {
+    code: string;
+  };
   created_at: string;
 }

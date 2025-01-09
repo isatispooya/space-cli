@@ -21,11 +21,12 @@ const ProjectAnalysisView: FC = () => {
     <div>
       {data?.map((item: IProjectAnalysis, index: number) => (
         <ViewDownload
+          target="_blank"
+          downloadButtonText="دانلود تحلیل پروژه"
           key={index}
           title="تحلیل پروژه"
           description={item?.validation_project_description}
           downloadLink={item?.validation_project}
-          downloadButtonText="دانلود تحلیل پروژه"
           regulatorLogo={item?.validation_project_regulator_logo}
           regulatorText={item?.validation_project_regulator}
           toastMessage="در حال دانلود فایل"

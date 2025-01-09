@@ -1,53 +1,103 @@
 import { motion } from "framer-motion";
 import { IoIosArrowBack } from "react-icons/io";
-import { RiUserReceived2Line } from "react-icons/ri";
 import { useDashboard } from "../hooks";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+} from "recharts";
+import { formatNumber } from "../../../utils";
 
-const getMotionDivStyles = () => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  className: "relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
-  style: { zIndex: 2 }
-});
+interface PortfolioItem {
+  Symbol: string;
+  VolumeInPrice: string | number;
+}
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#5677BC"];
 
 const DashboardBorsStat = () => {
   const { data } = useDashboard.useGetStats();
-
-  const title = data?.title || "بورس";
-  const value = data?.value || 0;
+  const title = data?.title || "کارگزاری ایساتیس پویا (بورس)";
+  const pieData = data?.bourse.protfolio
+    ? data.bourse.protfolio.map((item: PortfolioItem) => ({
+        name: item.Symbol,
+        value: parseInt(item.VolumeInPrice.toString()),
+      }))
+    : null;
 
   return (
-    <div>
-      <div className="background">
-        {/* پس‌زمینه */}
-      </div>
+    <div className="container mx-auto px-1">
+      <div className="background"></div>
 
-      <motion.div {...getMotionDivStyles()}>
-        <div className="flex items-center justify-between space-x-4">
-          <div className="flex items-center mb-8">
-            <RiUserReceived2Line className="w-5 h-5  text-[#1e40af]" />
-            <h3 className="text-sm  text-[#1e40af] font-bold font-iranSans">
-              {title}
-            </h3>
-          </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105"
+        style={{ zIndex: 2 }}
+      >
+        <div className="flex items-center space-x-4">
+          <img
+            src="public/Artboard 1 copy 16.png"
+            alt="بورس آیکن"
+            className="w-10 h-10"
+          />
+          <h3 className="text-sm text-[#1e40af] font-bold font-iranSans">
+            {title}
+          </h3>
         </div>
 
-        <div className="mb-4">
-          <motion.p
-            initial={{ scale: 0.5 }}
-            animate={{ scale: 1 }}
-            className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#1e40af] mt-4 font-iranSans"
-          >
-            {value}
-            <span className="text-sm text-[#1e40af] font-iranSans">نفر</span>
-          </motion.p>
+        <div className="w-full h-28 md:h-56 lg:h-28">
+          {data?.bourse.protfolio.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={false}
+                  outerRadius={55}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {pieData?.map(( index: number) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(value: number) => [formatNumber(value), "ارزش"]}
+                />
+                <Legend
+                  layout="vertical"
+                  align="left"
+                  verticalAlign="middle"
+                  wrapperStyle={{
+                    fontSize: window.innerWidth <= 500 ? "10px" : "12px",
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-sm text-gray-500">
+                داده‌ای برای نمایش وجود ندارد
+              </p>
+            </div>
+          )}
         </div>
-        <a href="https://ipb.ir" target="_blank">
+
+        <a href="https://ipb.ir" target="_blank" className="mt-4 block">
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full bg-blue-900  hover:bg-blue-700 text-white py-1 px-2 rounded-lg 
-                       font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
+            className="w-full bg-blue-900 hover:bg-blue-700 text-white py-1 px-1 rounded-md 
+                       font-iranSans duration-200 flex items-center justify-center gap-1 text-xs"
           >
             <span className="text-white font-bold">پنل بورس</span>
             <IoIosArrowBack className="w-3 h-3" />
@@ -55,7 +105,7 @@ const DashboardBorsStat = () => {
         </a>
 
         <svg
-          className="absolute bottom-0 rounded-xl left-0 w-full h-32 md:h-48"
+          className="absolute bottom-0 rounded-lg left-0 w-full h-16 md:h-24"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"

@@ -80,11 +80,11 @@ const DashboardCrowdStat = () => {
           </div>
         </div>
 
-        <div className="mb-1">
+        <div >
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
-            className="text-[11px] font-bold text-[#4b0082] mb-2 font-iranSans"
+            className="text-[11px] font-bold text-[#4b0082]  font-iranSans"
           >
             {stats?.crowd?.["total value"] || "مجموع تامین مالی جمعی"}
           </motion.p>

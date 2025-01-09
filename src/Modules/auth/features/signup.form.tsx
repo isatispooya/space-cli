@@ -36,6 +36,7 @@ const SignupForm = () => {
       {
         nationalCode,
         otpValue: otp,
+        referal,
 
       },
       {

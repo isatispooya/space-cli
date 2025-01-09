@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface AgreementPopupProps {
   isOpen: boolean;
@@ -26,8 +27,15 @@ const AgreementPopup = ({
   acceptButtonText = "تایید",
 }: AgreementPopupProps) => {
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
+
+  const handleCancel = () => {
+    setIsChecked(false);
+    onClose();
+    navigate('/underwriting/table');
+  };
 
   return (
     <motion.div
@@ -86,7 +94,7 @@ const AgreementPopup = ({
 
         <div className="flex justify-end gap-4">
           <button
-            onClick={onClose}
+            onClick={handleCancel}
             className="px-6 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-800 
               hover:bg-gray-100 rounded-lg transition-colors"
           >
