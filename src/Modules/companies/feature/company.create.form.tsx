@@ -96,7 +96,6 @@ const CreateCompanyForm = () => {
         toast.success("شرکت با موفقیت ایجاد شد");
         navigate("/companies/table");
       },
-
       onSettled: () => {
         setSubmitting(false);
       },
