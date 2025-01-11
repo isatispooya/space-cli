@@ -7,6 +7,9 @@ import { FormikHelpers } from "formik";
 import { AnyObject, Maybe, ObjectSchema } from "yup";
 import { RiCloseLargeLine } from "react-icons/ri";
 import ViewFileInput from "./viewFileInput";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 
 interface FormsProps<T extends Maybe<AnyObject>> {
   formFields: FormField[];
@@ -57,7 +60,7 @@ const Forms = <T extends FormikValues>({
         dir="rtl"
         className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg"
       >
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <h2 className={`text-2xl font-bold ${colors}`}>{title}</h2>
           {showCloseButton && onClose && (
             <motion.button
@@ -71,9 +74,9 @@ const Forms = <T extends FormikValues>({
             </motion.button>
           )}
         </div>
-        <Form className="grid grid-cols-2 gap-4">
+        <Form className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {formFields.map((field) => (
-            <div key={field.name} className="col-span-2 sm:col-span-1">
+            <div key={field.name} className="col-span-1">
               {field.type === "viewFile" ? (
                 <ViewFileInput
                   url={field.viewFileProps?.url}
@@ -120,6 +123,29 @@ const Forms = <T extends FormikValues>({
                     </div>
                   )}
                 </Field>
+              ) : field.type === "date" ? (
+                <Field name={field.name}>
+                  {({ field: fieldProps, form: { setFieldValue } }: FieldProps) => (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        {field.label}
+                      </label>
+                      <DatePicker
+                        value={fieldProps.value}
+                        onChange={(date) => {
+                          setFieldValue(field.name, date);
+                          return false;
+                        }}
+                        calendar={persian}
+                        locale={persian_fa}
+                        inputClass="h-10 w-[93%] px-4 rounded-md border border-gray-300 bg-white py-1 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-100"
+                        placeholder={`انتخاب ${field.label}...`}
+                        disabled={field.disabled}
+                        containerClassName="w-full"
+                      />
+                    </div>
+                  )}
+                </Field>
               ) : (
                 <Field name={field.name}>
                   {({ field: fieldProps }: FieldProps) => (
@@ -145,7 +171,7 @@ const Forms = <T extends FormikValues>({
             </div>
           ))}
 
-          <div className="col-span-2">
+          <div className="col-span-1 sm:col-span-2">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}

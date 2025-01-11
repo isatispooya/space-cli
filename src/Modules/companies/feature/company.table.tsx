@@ -1,4 +1,4 @@
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import CustomDataGridToolbar from "../../../utils/tableToolbar";
 import { localeText } from "../../../utils/localtext";
 import { useCallback, useState } from "react";
@@ -53,26 +53,24 @@ const CompanyTable = () => {
     setIsDeleteOpen(true);
   }, [selectedRow, deleteCompanyMutation]);
 
-  const columns = [
-    { field: "name", headerName: "نام شرکت", width: 130 },
-    { field: "company_type", headerName: "نوع شرکت", width: 200 },
-    { field: "year_of_establishment", headerName: "سال تاسیس", width: 90 },
-    { field: "phone", headerName: "تلفن", width: 90 },
-    { field: "postal_code", headerName: "کد پستی", width: 90 },
-    { field: "national_id", headerName: "کد شناسه", width: 90 },
-    { field: "description", headerName: "توضیحات", width: 90 },
-    { field: "logo", headerName: "لوگو", width: 90 },
-    { field: "letterhead", headerName: "سربرگ", width: 90 },
-    { field: "registered_capital", headerName: "سرمایه ثبتی", width: 90 },
+  const columns: GridColDef<CompanyData>[] = [
+    { field: "name", headerName: "نام شرکت", width: 130, headerAlign: 'center', align: 'center', type: 'string' },
+    { field: "company_type", headerName: "نوع شرکت", width: 200, headerAlign: 'center', align: 'center', type: 'string' },
+    { field: "year_of_establishment", headerName: "سال تاسیس", width: 90, headerAlign: 'center', align: 'center', type: 'number' },
+    { field: "phone", headerName: "تلفن", width: 90, headerAlign: 'center', align: 'center' },
+    { field: "postal_code", headerName: "کد پستی", width: 150, headerAlign: 'center', align: 'center' },
+    { field: "national_id", headerName: "کد شناسه", width: 90, headerAlign: 'center', align: 'center' },
+    { field: "description", headerName: "توضیحات", width: 200, headerAlign: 'center', align: 'center' },
+    { field: "registered_capital", headerName: "سرمایه ثبتی", width: 200, headerAlign: 'center', align: 'center' },
     {
       field: "registration_number",
       headerName: "تعداد سرمایه ثبتی",
-      width: 90,
+      width: 200,
+      headerAlign: 'center',
+      align: 'center'
     },
-    { field: "seal", headerName: "علامت تجاری", width: 90 },
-    { field: "signature", headerName: "امضا", width: 90 },
-    { field: "type_of_activity", headerName: "نوع فعالیت", width: 90 },
-    { field: "website", headerName: "وبسایت", width: 90 },
+    { field: "type_of_activity", headerName: "نوع فعالیت", width: 90, headerAlign: 'center', align: 'center' },
+    { field: "website", headerName: "وبسایت", width: 250, headerAlign: 'center', align: 'center' },
   ];
 
   if (isPending) {
