@@ -8,6 +8,7 @@ const postRegister = async ({
 }: {
   nationalCode: string;
   otpValue: string;
+  encryptedResponse: string;
   referral: string;
 }) => {
   const response = await api.post(`${server}/register/`, {
