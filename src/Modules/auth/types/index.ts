@@ -6,3 +6,4 @@ export * from "./loginStore.type";
 export * from "./loginParams.type";
 export * from "./token.type";
 export * from "./forgetPass.type";
+export * from "./registerParams.type";

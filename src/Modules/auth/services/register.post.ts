@@ -4,16 +4,16 @@ import { server } from "../../../api/server";
 const postRegister = async ({
   nationalCode,
   otpValue,
-  referal,
+  referral,
 }: {
   nationalCode: string;
   otpValue: string;
-  referal: string;
+  referral: string;
 }) => {
   const response = await api.post(`${server}/register/`, {
     uniqueIdentifier: nationalCode,
     otp: otpValue,
-    referal,
+    referral,
   });
   return response.data;
 };

@@ -37,7 +37,7 @@ const SignupForm = () => {
   const { encryptedResponse, setEncryptedResponse } = useLoginStore();
 
   const urlParams = new URLSearchParams(window.location.search);
-  const referal = urlParams.get("rf") || "";
+  const referral = urlParams.get("rf") || "";
 
   const formik = useFormik({
     initialValues: {
@@ -61,7 +61,8 @@ const SignupForm = () => {
       {
         nationalCode: values.nationalCode,
         otpValue: values.otp,
-        referal,
+        encryptedResponse: encryptedResponse || "",
+        referral,
       },
       {
         onSuccess: () => {
@@ -80,9 +81,9 @@ const SignupForm = () => {
         nationalCode: values.nationalCode,
         captchaInput: values.captchaInput,
         encryptedResponse: encryptedResponse || "",
-        referal,
+        referral,
       },
-      {
+      { 
         onSuccess: () => {
           setShowOtpInput(true);
           formik.setFieldValue("showOtpInput", true);

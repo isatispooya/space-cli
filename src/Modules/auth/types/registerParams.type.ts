@@ -1,6 +1,6 @@
-export interface ApplyNationalCodeParams {
+export interface RegisterParams {
   nationalCode: string;
-  captchaInput: string;
+  otpValue: string;
   encryptedResponse: string;
   referral: string;
-}
+} 
