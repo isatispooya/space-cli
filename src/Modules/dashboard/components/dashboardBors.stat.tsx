@@ -20,6 +20,7 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#5677BC"];
 
 const DashboardBorsStat = () => {
   const { data } = useDashboard.useGetStats();
+
   const title = data?.title || "کارگزاری ایساتیس پویا (بورس)";
   const pieData = data?.bourse.protfolio
     ? data.bourse.protfolio.map((item: PortfolioItem) => ({

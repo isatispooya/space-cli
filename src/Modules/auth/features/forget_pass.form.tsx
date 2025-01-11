@@ -4,6 +4,8 @@ import InputLogin from "../../../components/inputBase";
 import useForgetPass from "../hooks/useForgetPass";
 import toast from "react-hot-toast";
 import PassInput from "../components/passInput";
+import { AxiosError } from "axios";
+import { ErrorResponse } from "../../../types";
 
 const validationSchema = Yup.object().shape({
   smsCode: Yup.string()
@@ -22,7 +24,6 @@ const ForgetPassForm = () => {
 
   return (
     <>
- 
       <Formik
         initialValues={{
           smsCode: "",
@@ -32,14 +33,16 @@ const ForgetPassForm = () => {
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           mutate(values, {
-            onSuccess: () => {
-              toast.success("رمز عبور با موفقیت بازیابی شد");
+            onSuccess: (response) => {
+              toast.success(response.message);
               setSubmitting(false);
               window.location.reload();
             },
-            onError: () => {
-              toast.error("خطا در بازیابی رمز عبور");
-              setSubmitting(false);
+            onError: (error: AxiosError<unknown>) => {
+              const errorMessage = (error.response?.data as ErrorResponse)
+                ?.error;
+            
+              toast.error(errorMessage || "خطایی رخ داده است");
             },
           });
         }}
