@@ -50,7 +50,7 @@ const DashboardBorsStat = () => {
         </div>
 
         <div className="w-full h-28 md:h-56 lg:h-28">
-          {data?.bourse.protfolio.length > 0 ? (
+          {data?.bourse?.protfolio?.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie

@@ -47,7 +47,7 @@ const Header = () => {
     };
   }, []);
 
-  console.log(profileData);
+
 
   return (
     <header>
