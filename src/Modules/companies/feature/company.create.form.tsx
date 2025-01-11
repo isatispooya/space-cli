@@ -1,4 +1,3 @@
-import * as Yup from "yup";
 import Forms from "../../../components/forms";
 import { CompanyData } from "../types/companyData.type";
 import { FormField } from "../types";
@@ -6,34 +5,9 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FormikHelpers } from "formik";
 import { useCompany } from "../hooks";
+import * as Yup from 'yup';
 
-const validationSchema = Yup.object().shape({
-  id: Yup.number().required(),
-  name: Yup.string().required("نام شرکت الزامی است"),
-  company_type: Yup.string().required("نوع شرکت الزامی است"),
-  year_of_establishment: Yup.number().required("سال تاسیس الزامی است"),
-  phone: Yup.string().required("تلفن الزامی است"),
-  postal_code: Yup.string().required("کد پستی الزامی است"),
-  national_id: Yup.string().required("کد شناسه الزامی است"),
-  description: Yup.string(),
-  registered_capital: Yup.number().optional(),
-  registration_number: Yup.number().required("تعداد سرمایه ثبتی الزامی است"),
-  type_of_activity: Yup.string().required("نوع فعالیت الزامی است"),
-  address: Yup.string().required("آدرس الزامی است"),
-  website: Yup.string().url("آدرس وبسایت نامعتبر است"),
-  email: Yup.string()
-    .email("فرمت ایمیل نامعتبر است")
-    .matches(
-      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-      "فرمت ایمیل نامعتبر است (مثال: example@gmail.com)"
-    )
-    .required("ایمیل الزامی است"),
-  employees: Yup.number().required(),
-  logo: Yup.string().optional(),
-  letterhead: Yup.string().optional(),
-  seal: Yup.string().optional(),
-  signature: Yup.string().optional(),
-});
+
 
 const COMPANY_TYPES = [
   { value: "private_joint_stock", label: "سهامی خاص" },
@@ -65,7 +39,35 @@ const formFields: FormField[] = [
   { name: "type_of_activity", label: "نوع فعالیت", type: "text" },
   { name: "website", label: "وبسایت", type: "text" },
   { name: "email", label: "ایمیل", type: "email" },
+  { name: "logo", label: "لوگو", type: "file" },
+  { name: "letterhead", label: "سربرگ", type: "file" },
+  { name: "signature", label: "امضا", type: "file" },
+  { name: "seal", label: "مهر", type: "file" },
+  
 ];
+
+const validationSchema = Yup.object().shape({
+  id: Yup.number(),
+  employees: Yup.number(),
+  file: Yup.mixed(),
+  name: Yup.string().required('نام شرکت الزامی است'),
+  company_type: Yup.string().required('نوع شرکت الزامی است'),
+  address: Yup.string().required('آدرس الزامی است'),
+  year_of_establishment: Yup.string().required('سال تاسیس الزامی است'),
+  phone: Yup.string().required('تلفن الزامی است'),
+  postal_code: Yup.string().required('کد پستی الزامی است'),
+  national_id: Yup.string().required('کد شناسه الزامی است'),
+  description: Yup.string(),
+  registered_capital: Yup.string().required('سرمایه ثبتی الزامی است'),
+  registration_number: Yup.string().required('تعداد سرمایه ثبتی الزامی است'),
+  type_of_activity: Yup.string().required('نوع فعالیت الزامی است'),
+  website: Yup.string().url('وبسایت باید یک URL معتبر باشد'),
+  email: Yup.string().email('ایمیل باید معتبر باشد').required('ایمیل الزامی است'),
+  logo: Yup.mixed().required('لوگو الزامی است'),
+  letterhead: Yup.mixed().required('سربرگ الزامی است'),
+  signature: Yup.mixed().required('امضا الزامی است'),
+  seal: Yup.mixed().required('مهر الزامی است'),
+});
 
 const CreateCompanyForm = () => {
   const { mutate: createCompany } = useCompany.useCreate();
@@ -82,29 +84,33 @@ const CreateCompanyForm = () => {
     values: CompanyData,
     { setSubmitting }: FormikHelpers<CompanyData>
   ) => {
-    const formData = {
-      ...values,
-      id: 0,
-      employees: 0,
-      year_of_establishment: Number(values.year_of_establishment),
-      registered_capital: Number(values.registered_capital),
-      registration_number: Number(values.registration_number),
-    };
-
+    const formData = new FormData();
+  
+    Object.keys(values).forEach((key) => {
+      const value = values[key as keyof CompanyData];
+      if (key === 'logo' || key === 'letterhead' || key === 'signature' || key === 'seal') {
+        const fileInput = document.querySelector(`input[name="${key}"]`) as HTMLInputElement;
+        const file = fileInput?.files?.[0];
+        if (file) formData.append(key, file);
+      } else if (value) {
+        formData.append(key, String(value));
+      }
+    });
+  
     createCompany(formData, {
       onSuccess: () => {
         toast.success("شرکت با موفقیت ایجاد شد");
         navigate("/companies/table");
       },
-
       onSettled: () => {
         setSubmitting(false);
       },
     });
   };
+  
 
   return (
-    <Forms
+    <Forms<CompanyData>
       formFields={formFields}
       initialValues={initialValues}
       validationSchema={validationSchema}

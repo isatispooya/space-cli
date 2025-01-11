@@ -14,10 +14,10 @@ const useCompany = {
       queryFn: companiesService.get,
     });
   },
-  useCreate: (): UseMutationResult<CompanyData, Error, CompanyData> => {
+  useCreate: (): UseMutationResult<CompanyData, Error, FormData> => {
     return useMutation({
       mutationKey: ["createCompany"],
-      mutationFn: (data: CompanyData) => companiesService.create(data),
+      mutationFn: (data: FormData) => companiesService.create(data),
       onError: (error) => {
         console.error("Mutation error:", error);
       },
