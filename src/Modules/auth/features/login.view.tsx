@@ -112,7 +112,7 @@ const Login: React.FC = () => {
       >
         <a
           href="https://profilesejam.csdiran.ir/"
-          className="fixed right-8 bottom-8 text-blue-600 px-6 py-3 transition-all duration-300 text-lg font-medium flex items-center gap-2"
+          className="fixed text-center left-1/2 -translate-x-1/2 sm:left-auto sm:right-10 md:right-10 lg:right-40 xl:right-24 bottom-8 text-blue-600 px-6 py-3 transition-all duration-300 text-lg font-medium flex items-center gap-2"
           target="_blank"
           rel="noopener noreferrer"
         >

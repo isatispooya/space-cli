@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Toaster } from "react-hot-toast";
 import loadWidget from "./components/chatBox";
+import ContactUsBox from "./components/contactUsBox";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ root.render(
         <ThemeProvider theme={theme}>
           <Toaster />
           <App />
+          <ContactUsBox />
         </ThemeProvider>
       </BrowserRouter>
     </QueryClientProvider>
