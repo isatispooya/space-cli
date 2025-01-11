@@ -29,6 +29,7 @@ interface User {
   id: number;
   first_name?: string;
   last_name?: string;
+  uniqueIdentifier?: string;
 }
 
 interface Position {
@@ -53,6 +54,8 @@ const PositionCreate = () => {
     user: Yup.number().required("کاربر الزامی است"),
   });
 
+
+
   const typeOfEmploymentOptions = [
     "full_time",
     "part_time",
@@ -68,7 +71,6 @@ const PositionCreate = () => {
     freelance: "فریلنسر",
     internship: "کارآموزی",
   };
-
   const formFields: FormField[] = [
     {
       name: "name",
@@ -95,7 +97,7 @@ const PositionCreate = () => {
       options:
         users?.map((user: User) => ({
           value: user.id,
-          label: user.first_name || user.last_name,
+          label: `${user.first_name || ''} ${user.last_name || ''} | ${user.uniqueIdentifier || ''}`,
         })) || [],
     },
     {

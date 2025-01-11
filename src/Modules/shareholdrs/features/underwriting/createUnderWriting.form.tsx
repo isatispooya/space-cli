@@ -14,17 +14,27 @@ interface SelectOption {
   value: string;
 }
 
+interface UserAccount {
+  is_default: boolean;
+  sheba_number: string;
+}
+
 const CreateUnderWritingForm = () => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const { mutate: postPrecendence } = useUnderwriting.useCreate();
   const { data: unusedPrecedenceProcess } = useUnusedProcess.useGetList();
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDescription, setSelectedDescription] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
 
   const typeOptions = [
     { label: "فیش", value: "1" },
-    { label: "درگاه", value: "2" },
+    { label: "درگاه", value: "2" }, 
   ];
+
+  console.log(unusedPrecedenceProcess);
+  
+
 
   useEffect(() => {
     setShowPopup(true);
@@ -144,6 +154,27 @@ const CreateUnderWritingForm = () => {
   };
 
   const isGatewayType = formik.values.type === "2";
+  const isChequeType = formik.values.type === "1";
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('/api/user');
+        const userData = await response.json();
+
+        if (isChequeType && userData.accounts.length > 0) {
+          const defaultAccount = userData.accounts.find((account: UserAccount) => account.is_default);
+          if (defaultAccount) {
+            formik.setFieldValue("iban", defaultAccount.sheba_number);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [isChequeType, formik]);
 
   return (
     <>
@@ -336,6 +367,8 @@ const CreateUnderWritingForm = () => {
                 />
               </div>
             )}
+
+           
           </div>
 
           {!isGatewayType && (
@@ -376,6 +409,38 @@ const CreateUnderWritingForm = () => {
                 />
               </div>
             )}
+              {isChequeType && (
+                <div className="bg-gray-50 border border-gray-300 rounded-lg p-6 shadow-md">
+                  <div className="flex flex-col space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-semibold text-gray-800">
+                        شماره شبا:
+                      </p>
+                      <p className="text-sm font-medium text-gray-900 bg-white px-4 py-2 rounded-md shadow-inner">
+                        {unusedPrecedenceProcess?.[0]?.sheba_number}
+                      </p>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(unusedPrecedenceProcess?.[0]?.sheba_number || '');
+                          toast.success('شماره شبا با موفقیت کپی شد');
+                          setIsCopied(true);
+                          setTimeout(() => setIsCopied(false), 2000);
+                        }}
+                        className={`px-4 py-2 ${isCopied ? 'bg-green-500' : 'bg-[#29D2C7]'} text-white rounded-md shadow hover:bg-[#25b2a8] transition-colors text-xs flex items-center`}
+                      >
+                        {isCopied ? 'کپی شد!' : 'کپی شماره شبا'}
+                      </button>
+                    </div>
+                    
+                    <div className="flex items-center justify-between border-t border-gray-300 pt-4">
+                      <p className="text-sm font-medium text-gray-800">نام بانک:</p>
+                      <p className="text-sm text-gray-900">
+                      بانک صادرات جمهوری اسلامی ایران 
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             <button
               type="submit"
               disabled={formik.isSubmitting}
@@ -384,7 +449,11 @@ const CreateUnderWritingForm = () => {
               {formik.isSubmitting ? "در حال ارسال..." : "ثبت  پذیره نویسی"}
             </button>
           </div>
+
+        
         </form>
+
+        
       </div>
 
       {showPopup && (

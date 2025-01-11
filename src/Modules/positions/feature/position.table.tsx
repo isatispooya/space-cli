@@ -36,6 +36,7 @@ const PositionsTable = () => {
   }, [selectedRow]);
 
   const rows = positions?.results || [];
+  console.log(rows);
   const columns = [
     { field: "name", headerName: "نام نقش", width: 200 },
     { field: "company", headerName: "نام شرکت", width: 130 },
