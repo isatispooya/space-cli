@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "recharts";
 import { formatNumber } from "../../../utils";
+import Spinner from "../../../components/spinner";
 
 interface PortfolioItem {
   Symbol: string;
@@ -19,7 +20,7 @@ interface PortfolioItem {
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#5677BC"];
 
 const DashboardBorsStat = () => {
-  const { data } = useDashboard.useGetStats();
+  const { data, isLoading } = useDashboard.useGetStats();
 
   const title = data?.title || "کارگزاری ایساتیس پویا (بورس)";
   const pieData = data?.bourse.protfolio
@@ -51,7 +52,11 @@ const DashboardBorsStat = () => {
         </div>
 
         <div className="w-full h-28 md:h-56 lg:h-28">
-          {data?.bourse?.protfolio?.length > 0 ? (
+          {isLoading ? (
+            <div className="w-full h-full flex justify-center items-center">
+              <Spinner />
+            </div>
+          ) : data?.bourse?.protfolio?.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
