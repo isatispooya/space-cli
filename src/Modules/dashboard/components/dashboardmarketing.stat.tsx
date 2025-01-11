@@ -79,8 +79,8 @@ const DashboardMarketingStat = () => {
       <motion.div {...getMotionDivStyles()}>
         <div className="flex flex-col md:flex-row items-center justify-between space-x-4 ">
           <div className="flex items-center">
-            <RiUserReceived2Line className="w-5 h-6 text-[#E5533D] " />
-            <h3 className="text-sm text-[#E5533D] font-bold font-iranSans mr-2">
+            <RiUserReceived2Line className="w-5 h-6 text-[#D2042D] " />
+            <h3 className="text-sm text-[#D2042D] font-bold font-iranSans mr-2">
               باشگاه مشتریان
             </h3>
           </div>
@@ -90,10 +90,10 @@ const DashboardMarketingStat = () => {
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
-            className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#E5533D] font-iranSans"
+            className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans"
           >
-            {invitation?.[0]?.invited_user_detail?.uniqueIdentifier || 0}
-            <span className="text-sm text-[#E5533D] font-iranSans mr-2">
+            {invitation?.length || 0}
+            <span className="text-sm text-[#D2042D] font-iranSans mr-2">
               نفر
             </span>
           </motion.p>
@@ -133,7 +133,7 @@ const DashboardMarketingStat = () => {
                           : ""}
                       </span>
                     </span>
-                    <div className="w-full h-0.5 bg-[#E5533D] opacity-10"></div>
+                    <div className="w-full h-0.5 bg-[#D2042D] opacity-10"></div>
                   </div>
                 </motion.div>
               );
@@ -143,7 +143,7 @@ const DashboardMarketingStat = () => {
 
         <div className="relative mt-[120px] z-20">
           <div className="flex items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
-            <p className="flex-1 text-[13px] text-[#E5533D] font-iranSans truncate">
+            <p className="flex-1 text-[13px] text-[#D2042D] font-iranSans truncate">
               {`my.isatispooya.com/login?rf=${
                 invitation?.[0]?.code || ""
               }`}
@@ -153,8 +153,8 @@ const DashboardMarketingStat = () => {
               onClick={handleCopy}
               className={`px-2 rounded-md text-[12px] font-medium transition-all duration-200 ${
                 copied
-                  ? "bg-[#E5533D] text-[#ffffff]"
-                  : "bg-[#E5533D] text-white hover:bg-[#E57350]"
+                  ? "bg-[#D2042D] text-[#ffffff]"
+                  : "bg-[#D2042D] text-white hover:bg-[#E57350]"
               }`}
             >
               {copied ? "کپی شد!" : "کپی لینک"}
@@ -170,8 +170,8 @@ const DashboardMarketingStat = () => {
           style={{ zIndex: -1 }}
         >
           <path
-            fill="#E5533D"
-            fillOpacity="0.3"
+            fill="#A0001C"
+            fillOpacity=".6"
             d="M0,160L34.3,165.3C68.6,171,137,181,206,192C274.3,203,343,213,411,197.3C480,181,549,139,617,144C685.7,149,754,203,823,224C891.4,245,960,235,1029,213.3C1097.1,192,1166,160,1234,144C1302.9,128,1371,128,1406,128L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"
           ></path>
         </svg>

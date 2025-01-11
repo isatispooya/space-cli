@@ -35,6 +35,14 @@ interface Position {
   name: string;
 }
 
+const formatDate = (date: Date | string): string => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 const PositionCreate = () => {
   const { data: companies } = useCompany.useGet();
   const { data: users } = useUserData();
@@ -162,13 +170,16 @@ const PositionCreate = () => {
         loading: "در حال ارسال...",
       }}
       onSubmit={async (values, { setSubmitting }) => {
+        
         try {
           const formData = {
             ...values,
-            parent: values.parent || null,
+            parent: values.parent,
             type_of_employment: values.type_of_employment || null,
+            start_date: values.start_date ? formatDate(values.start_date) : null,
+            end_date: values.end_date ? formatDate(values.end_date) : null,
           };
-          await createPosition(formData);
+          await createPosition(formData as PositionFormValues);
         } catch (error) {
           console.error("Error creating position:", error);
         } finally {

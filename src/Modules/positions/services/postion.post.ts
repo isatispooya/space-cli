@@ -5,7 +5,7 @@ const createPosition = async (data: PositionFormValues) => {
   const apiData = {
     ...data,
     company: Number(data.company),
-    parent: Number(data.parent),
+    parent: data.parent ? Number(data.parent) : null,
     type_of_employment: Number(data.type_of_employment),
   };
   return api.post("/positions/", apiData);
