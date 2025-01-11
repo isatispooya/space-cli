@@ -165,13 +165,13 @@ const StockTransferTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: checkPermission("change_stocktransfer"),
+                    show: checkPermission(["change_stocktransfer"]),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: checkPermission("delete_stocktransfer"),
+                    show: checkPermission(["delete_stocktransfer"]),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

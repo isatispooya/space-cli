@@ -8,13 +8,13 @@ const UserManagementMainPage: React.FC = () => {
     {
       icon: LuUser,
       text: "پروفایل",
-      permission: "allow_any",
+      permission: ["allow_any"],
       path: "profile",
     },
     {
       icon: LuSettings,
       text: "تغییر رمز عبور",
-      permission: "allow_any",
+      permission: ["allow_any"],
       path: "changePassword",
     },
   ];

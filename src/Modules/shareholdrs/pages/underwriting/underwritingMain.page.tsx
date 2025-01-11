@@ -13,65 +13,64 @@ import { IoDocumentAttachSharp } from "react-icons/io5";
 
 const UnderwritingMain = () => {
   const toolbarButtons = [
-
     {
       icon: LuInfo,
       text: "آگهی پذیره نویسی",
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "description",
     },
     {
       icon: FaBusinessTime,
       text: "طرح کسب و کار",
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "businessPlan",
     },
     {
       text: "پیشرفت پروژه",
       icon: RiProgress5Fill,
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "projectProgress",
     },
     {
       text: "صورت مالی",
       icon: FaMoneyCheckAlt,
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "financialStatement",
     },
     {
       text: "اعتبار سنجی بانکی",
       icon: GrValidate,
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "creditAnalysis",
     },
     {
       text: "اعتبارسنجی پروژه",
       icon: FaBusinessTime,
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "projectAnalysis",
     },
     {
       text: "کارشناسی سهام",
       icon: GrUserExpert,
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "shareExpert",
     },
     {
       icon: IoDocumentAttachSharp,
       text: "سایر اطلاعات",
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "attachments",
     },
     {
       icon: LuTable,
       text: "سرمایه گذاری های من",
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "table",
     },
     {
       icon: MdOutlineShoppingBag,
       text: "سرمایه گذاری",
-      permission: "unused_precedence_process",
+      permission: ["unused_precedence_process"],
       path: "create",
     },
   ];

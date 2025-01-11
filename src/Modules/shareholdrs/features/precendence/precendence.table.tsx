@@ -153,13 +153,13 @@ const PrecendenceTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: checkPermission("change_precedence"),
+                    show: checkPermission(["change_precedence"]),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: checkPermission("delete_precedence"),
+                    show: checkPermission(["delete_precedence"]),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

@@ -8,13 +8,13 @@ const DisplacementMainPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_displacementprecedence",
+      permission: ["view_displacementprecedence"],
       path: "table"
     },
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: "add_displacementprecedence",
+      permission: ["add_displacementprecedence"],
       path: "create"
     }
   ];

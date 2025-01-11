@@ -10,7 +10,7 @@ const TimeFlowPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "allow_any",
+      permission: ["allow_any"],
       path: "table",
     },
 

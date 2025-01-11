@@ -64,7 +64,7 @@ const GroupsTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: checkPermission("change_permission"),
+                    show: checkPermission(["change_permission"]),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },

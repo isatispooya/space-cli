@@ -8,13 +8,13 @@ const PermissionMainPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_permission",
+      permission: ["view_permission"],
       path: "table",
     },
     {
       icon: LuPlus,
       text: "افزودن",
-      permission: "add_permission",
+      permission: ["add_permission"],
       path: "create",
     },
   ];

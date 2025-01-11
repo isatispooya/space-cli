@@ -12,21 +12,21 @@ const useUserPermissions = () => {
     queryFn: permissionService.getUserPermission,
   });
 
-  const checkPermission = (permission: string | string[]) => {
+  const checkPermission = (permission: string[]) => {
     if (isLoading || !data) {
       return false;
     }
-    if (permission === "allow_any") {
-      return true;
-    }
 
-    // تبدیل ورودی به آرایه
-    const permissionsToCheck = Array.isArray(permission)
+    // اطمینان از آرایه بودن
+    const permissionArray = Array.isArray(permission)
       ? permission
       : [permission];
 
-    // بررسی اینکه آیا حداقل یکی از پرمیشن‌ها وجود دارد
-    const hasPermission = permissionsToCheck.some((perm) =>
+    if (permissionArray.includes("allow_any")) {
+      return true;
+    }
+
+    const hasPermission = permissionArray.some((perm) =>
       data.some((item: Permission) => item.codename === perm)
     );
 
