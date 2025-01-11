@@ -35,7 +35,7 @@ const SignupForm = () => {
   const { mutate: signupMutate, isPending: signupPending } =
     useApplyNationalCode();
   const { mutate: register, isPending: registerPending } = useRegister();
-  const {  refetch } = useCaptcha();
+  const { refetch } = useCaptcha();
   const { encryptedResponse, setEncryptedResponse } = useLoginStore();
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -87,14 +87,13 @@ const SignupForm = () => {
         encryptedResponse: encryptedResponse || "",
         referral,
       },
-      { 
+      {
         onSuccess: () => {
           setShowOtpInput(true);
           formik.setFieldValue("showOtpInput", true);
           toast.success("کد تایید با موفقیت ارسال شد");
           formik.setFieldValue("captchaInput", "");
           setEncryptedResponse("");
-        
         },
         onError: (error: AxiosError<unknown>) => {
           const errorMessage = (error.response?.data as ErrorResponse)?.error;
