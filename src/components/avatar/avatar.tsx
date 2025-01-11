@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "../../Modules/userManagment/hooks/useProfile";
 import { getCookie } from "../../api/cookie";
 import useLogout from "./hooks/useLogout";
+import { removeCookie } from "../../api/cookie";
 
 const Avatar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,6 +52,8 @@ const Avatar = () => {
     if (refresh_token) {
       logout.mutate(refresh_token);
     }
+    removeCookie("access_token");
+    removeCookie("refresh_token");
   };
 
   return (
