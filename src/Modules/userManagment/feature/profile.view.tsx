@@ -7,7 +7,9 @@ import defaultAvatar from "../../../../public/assets/user-286-128.png";
 const ProfileView: React.FC = () => {
   const { data: profile, refetch } = useProfile();
   const { mutate: updateProfilePicture } = useUpdateProfilePicture();
-  const [avatarUrl, setAvatarUrl] = useState<string>(profile?.profile_image);
+  const [avatarUrl, setAvatarUrl] = useState<string>(
+    profile?.profile_image ?? ""
+  );
 
   React.useEffect(() => {
     if (profile?.profile_image) {
