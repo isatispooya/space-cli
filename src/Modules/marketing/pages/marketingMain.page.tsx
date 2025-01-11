@@ -9,19 +9,19 @@ const MarketingMainPage = () => {
     {
       icon: LuTable,
       text: "لیست دعوت",
-      permission: "allow_any",
+      permission: ["allow_any"],
       path: "list",
     },
     {
       icon: LuTable,
       text: "لیست کد",
-      permission: "allow_any",
+      permission: ["allow_any"],
       path: "table",
     },
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: "allow_any",
+      permission: ["allow_any"],
       path: "create",
     },
   ];

@@ -123,13 +123,13 @@ const CapitalTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: checkPermission("change_capitalincreasepayment"),
+                    show: checkPermission(["change_capitalincreasepayment"]),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: checkPermission("delete_capitalincreasepayment"),
+                    show: checkPermission(["delete_capitalincreasepayment"]),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

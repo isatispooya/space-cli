@@ -46,7 +46,9 @@ const DashboardChart = () => {
   const [isVertical, setIsVertical] = useState(false);
 
   const hasShareholdersAccess = menuItems.some((item) =>
-    item.submenu?.some((subItem) => subItem.codename === "view_shareholders")
+    item.submenu?.some((subItem) =>
+      subItem.codename?.includes("view_shareholders")
+    )
   );
 
   useEffect(() => {

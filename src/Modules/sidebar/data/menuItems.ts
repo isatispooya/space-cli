@@ -14,15 +14,15 @@ export interface MenuItem {
   path?: string;
   icon?: IconType;
   submenu?: MenuItem[];
-  codename?: string | string[];
+  codename?:  string[];
 }
 
 export const menuItems: MenuItem[] = [
   {
     title: "خانه",
     icon: FaHome,
-    codename: "allow_any",
-    submenu: [{ title: "داشبورد", path: "/", codename: "allow_any" }],
+    codename: ["allow_any"],
+    submenu: [{ title: "داشبورد", path: "/", codename: ["allow_any"] }],
   },
   {
     title: "امور سهامدارن",
@@ -36,32 +36,32 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "نقل و انتقال  سهام",
-        codename: "view_stocktransfer",
+        codename: ["view_stocktransfer"],
         path: "/transferstock/table",
       },
       {
         title: "مدیریت حق تقدم",
-        codename: "add_precedence",
+        codename: ["add_precedence"],
         path: "/precendence/table",
       },
       {
         title: "نقل و انتقال حق تقدم",
-        codename: "view_displacementprecedence",
+        codename: ["view_displacementprecedence"],
         path: "/displacement/table",
       },
       {
         title: "پرداخت حق تقدم",
-        codename: "view_paid_precedence",
+        codename: ["view_paid_precedence"],
         path: "/purchacePrecendence/table",
       },
       {
         title: "تبدیل حق تقدم به سهم",
-        codename: "view_capitalincreasepayment",
+        codename: ["view_capitalincreasepayment"],
         path: "/capital/table",
       },
       {
         title: "پذیره نویسی",
-        codename: "unused_precedence_process",
+        codename: ["unused_precedence_process"],
         path: "/underwriting/table",
       },
     ],
@@ -70,12 +70,12 @@ export const menuItems: MenuItem[] = [
     title: "امور شرکت‌ها",
     path: "/companies",
     icon: FaBuilding,
-    codename: "view_company",
+    codename: ["view_company"],
     submenu: [
       {
         title: "مدیریت شرکت‌ها",
         path: "/companies",
-        codename: "view_company",
+        codename: ["view_company"],
       },
     ],
   },
@@ -83,12 +83,12 @@ export const menuItems: MenuItem[] = [
     title: "مکاتبات",
     path: "/correspondence",
     icon: FaEnvelope,
-    codename: "view_correspondence",
+    codename: ["view_correspondence"],
     submenu: [
       {
         title: "مدیریت مکاتبات",
         path: "/correspondence",
-        codename: "view_correspondence",
+        codename: ["view_correspondence"],
       },
     ],
   },
@@ -96,32 +96,32 @@ export const menuItems: MenuItem[] = [
     title: "مدیریت نقش‌ها",
     path: "/positions",
     icon: FaUserTie,
-    codename: "view_position",
+    codename: ["view_position"],
     submenu: [
       {
         title: "مدیریت نقش ها",
         path: "/positions",
-        codename: "view_position",
+        codename: ["view_position"],
       },
     ],
   },
   {
     title: "راه‌های ارتباطی",
     path: "/contact",
-    codename: "allow_any",
+    codename: ["allow_any"],
     icon: FaPhone,
-    submenu: [{ title: "تماس با ما", path: "/contact", codename: "allow_any" }],
+    submenu: [{ title: "تماس با ما", path: "/contact", codename: ["allow_any"] }],
   },
   {
     title: "دسترسی ها",
     path: "/permissions",
     icon: FaUserTie,
-    codename: "view_permission",
+    codename: ["view_permission"],
     submenu: [
       {
         title: "مدیریت دسترسی ها",
         path: "/permissions",
-        codename: "view_permission",
+        codename: ["view_permission"],
       },
     ],
   },
@@ -129,9 +129,9 @@ export const menuItems: MenuItem[] = [
     title: "گروه ها",
     path: "/groups",
     icon: FaUserTie,
-    codename: "view_group",
+    codename: ["view_group"],
     submenu: [
-      { title: "مدیریت گروه ها", path: "/groups", codename: "view_group" },
+      { title: "مدیریت گروه ها", path: "/groups", codename: ["view_group"] },
     ],
   },
 
@@ -139,12 +139,12 @@ export const menuItems: MenuItem[] = [
     title: "تردد",
     path: "/timeflow",
     icon: FaClockRotateLeft,
-    codename: "time_flow",
+    codename: ["time_flow"],
     submenu: [
       {
         title: "ورود و خروج کاربران",
         path: "/timeflow/table",
-        codename: "allow_any",
+        codename: ["allow_any"],
       },
     ],
   },
@@ -153,12 +153,12 @@ export const menuItems: MenuItem[] = [
     title: "باشگاه مشتریان",
     path: "/marketing",
     icon: FaUserTie,
-    codename: "allow_any",
+    codename: ["allow_any"],
     submenu: [
       {
         title: " کاربران دعوت شده",
         path: "/marketing",
-        codename: "allow_any",
+        codename: ["allow_any"],
       },
     ],
   },

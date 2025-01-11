@@ -103,13 +103,13 @@ const PositionsTable = () => {
               showExcelExport={true}
               actions={{
                 edit: {
-                  show: checkPermission("change_position"),
+                  show: checkPermission(["change_position"]),
                   label: "ویرایش",
                   onClick: handleEdit,
                   icon: <FaEdit />,
                 },
                 delete: {
-                  show: checkPermission("delete_position"),
+                  show: checkPermission(["delete_position"]),
                   label: "حذف",
                   onClick: handleDelete,
                   icon: <FaTrash />,

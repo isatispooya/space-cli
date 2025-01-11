@@ -9,13 +9,13 @@ const PositionMainPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_position",
+      permission: ["view_position"],
       path: "table",
     },
     {
       icon: LuPlus,
       text: "افزودن",
-      permission: "add_position",
+      permission: ["add_position"],
       path: "create",
     },
   ];

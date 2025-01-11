@@ -178,13 +178,13 @@ const TimeFlowTable = () => {
               actions={{
                 edit: {
                   label: "ویرایش",
-                  show: checkPermission("allow-any"),
+                  show: checkPermission(["allow-any"]),
                   onClick: handleEdit,
                   icon: <FaEdit />,
                 },
                 delete: {
                   label: "حذف",
-                  show: checkPermission("delete_shareholders"),
+                  show: checkPermission(["delete_shareholders"]),
                   onClick: handleDelete,
                   icon: <FaTrash />,
                 },

@@ -169,13 +169,13 @@ const ShareholdTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: checkPermission("change_shareholders"),
+                    show: checkPermission(["change_shareholders"]),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: checkPermission("delete_shareholders"),
+                    show: checkPermission(["delete_shareholders"]),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

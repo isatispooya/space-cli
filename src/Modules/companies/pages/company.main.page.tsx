@@ -9,13 +9,13 @@ const CompanyMainPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_company",
+      permission: ["view_company"],
       path: "table",
     },
     {
       icon: LuPlus,
       text: "افزودن",
-      permission: "add_company",
+      permission: ["add_company"],
       path: "create",
     },
   ];

@@ -9,13 +9,13 @@ const StockTransferPage: React.FC = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_stocktransfer",
+      permission: ["view_stocktransfer"],
       path: "table"
     },
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: "add_stocktransfer",
+      permission: ["add_stocktransfer"],
       path: "create"
     } 
   ];

@@ -18,7 +18,7 @@ const CustomMenuItem: React.FC<MenuItemProps> = ({ item }) => {
 
   const filteredSubmenu = useMemo(() => {
     return item.submenu?.filter((subItem) => {
-      if (subItem?.codename && checkPermission(subItem?.codename)) {
+      if (subItem?.codename && checkPermission(subItem?.codename as string[])) {
         return subItem?.title?.includes(search);
       }
       return false;

@@ -17,7 +17,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection, onClose }
 
   const filterMenuItems = (items: MenuItemType[]): MenuItemType[] => {
     return items.filter((item) => {
-      if (item.codename && !checkPermission(item.codename)) {
+      if (item.codename && !checkPermission(item.codename as string[])) {
         return false;
       }
       if (item.submenu) {

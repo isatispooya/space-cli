@@ -195,13 +195,13 @@ const UnderWritingTable: React.FC = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: checkPermission("change_underwriting"),
+                    show: checkPermission(["change_underwriting"]),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   print: {
                     label: "چاپ",
-                    show: checkPermission("allow_any"),
+                    show: checkPermission(["allow_any"]),
                     onClick: handlePrint,
                     icon: <FaPrint />,
                   },

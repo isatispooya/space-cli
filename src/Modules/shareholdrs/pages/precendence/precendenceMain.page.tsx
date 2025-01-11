@@ -9,13 +9,13 @@ const PrecendenceMainPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_precedence",
+      permission: ["view_precedence"],
       path: "table"
     },
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: "add_precedence",
+      permission: ["add_precedence"],
       path: "create"
     }
   ];

@@ -9,13 +9,13 @@ const CorrespondencePage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_correspondence",
+      permission: ["view_correspondence"],
       path: "table",
     },
     {
       icon: LuPlus,
       text: "افزودن",
-      permission: "add_correspondence",
+      permission: ["add_correspondence"],
       path: "create",
     },
   ];

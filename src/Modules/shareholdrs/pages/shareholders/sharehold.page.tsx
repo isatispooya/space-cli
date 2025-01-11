@@ -8,13 +8,13 @@ const ShareholdersPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "shareholder",
+      permission: ["shareholder"],
       path: "table",
     },
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: "add_shareholders",
+      permission: ["add_shareholders"],
       path: "create",
     },
   ];

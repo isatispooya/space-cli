@@ -176,12 +176,12 @@ const DisplacementTable = () => {
                     label: "ویرایش",
 
                     onClick: handleEdit,
-                    show: checkPermission("change_displacementprecedence"),
+                    show: checkPermission(["change_displacementprecedence"]),
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: checkPermission("delete_displacementprecedence"),
+                    show: checkPermission(["delete_displacementprecedence"]),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },

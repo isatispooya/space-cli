@@ -9,13 +9,13 @@ const CapitalMainPage: React.FC = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_capitalincreasepayment",
+      permission: ["view_capitalincreasepayment"],
       path: "table",
     },
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: "add_capitalincreasepayment",
+      permission: ["add_capitalincreasepayment"],
       path: "create",
     },
   ];

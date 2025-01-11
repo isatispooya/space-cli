@@ -122,19 +122,19 @@ const CompanyTable = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: checkPermission("change_company"),
+                    show: checkPermission(["change_company"]),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   view: {
                     label: "مشاهده",
-                    show: checkPermission("view_company"),
+                    show: checkPermission(["view_company"]),
                     onClick: handleView,
                     icon: <FaEye />,
                   },
                   delete: {
                     label: "حذف",
-                    show: checkPermission("delete_company"),
+                    show: checkPermission(["delete_company"]),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },
