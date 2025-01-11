@@ -102,7 +102,11 @@ const DashboardBorsStat = () => {
           )}
         </div>
 
-        <a href="https://ipb.ir" target="_blank" className="mt-4 block">
+        <a
+          href="https://online.ipb.ir/Account/Login"
+          target="_blank"
+          className="mt-4 block"
+        >
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

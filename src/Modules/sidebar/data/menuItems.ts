@@ -14,7 +14,7 @@ export interface MenuItem {
   path?: string;
   icon?: IconType;
   submenu?: MenuItem[];
-  codename?: string;
+  codename?: string | string[];
 }
 
 export const menuItems: MenuItem[] = [
@@ -32,7 +32,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت سهام",
         path: "/shareholders/table",
-        codename: "view_shareholders",
+        codename: ["shareholder", "view_shareholders"],
       },
       {
         title: "نقل و انتقال  سهام",
@@ -110,7 +110,7 @@ export const menuItems: MenuItem[] = [
     path: "/contact",
     codename: "allow_any",
     icon: FaPhone,
-    submenu: [{ title: "تماس با ما", path: "/contact" , codename: "allow_any" }],
+    submenu: [{ title: "تماس با ما", path: "/contact", codename: "allow_any" }],
   },
   {
     title: "دسترسی ها",
@@ -137,11 +137,15 @@ export const menuItems: MenuItem[] = [
 
   {
     title: "تردد",
-    path: "/timeflow", 
+    path: "/timeflow",
     icon: FaClockRotateLeft,
     codename: "time_flow",
     submenu: [
-      { title: "ورود و خروج کاربران", path: "/timeflow/table", codename: "allow_any" },
+      {
+        title: "ورود و خروج کاربران",
+        path: "/timeflow/table",
+        codename: "allow_any",
+      },
     ],
   },
 

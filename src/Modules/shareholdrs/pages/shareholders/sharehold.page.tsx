@@ -8,7 +8,7 @@ const ShareholdersPage = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: "view_shareholders",
+      permission: "shareholder",
       path: "table",
     },
     {
