@@ -12,6 +12,7 @@ import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../types";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useCaptcha } from "../hooks";
 
 const validationSchema = Yup.object({
   nationalCode: Yup.string()
@@ -34,6 +35,7 @@ const SignupForm = () => {
   const { mutate: signupMutate, isPending: signupPending } =
     useApplyNationalCode();
   const { mutate: register, isPending: registerPending } = useRegister();
+  const {  refetch } = useCaptcha();
   const { encryptedResponse, setEncryptedResponse } = useLoginStore();
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -66,9 +68,11 @@ const SignupForm = () => {
       {
         onSuccess: () => {
           formik.setFieldValue("otp", "");
+          refetch();
         },
         onError: () => {
           formik.setFieldValue("otp", "");
+          refetch();
         },
       }
     );
@@ -89,12 +93,14 @@ const SignupForm = () => {
           toast.success("کد تایید با موفقیت ارسال شد");
           formik.setFieldValue("captchaInput", "");
           setEncryptedResponse("");
+        
         },
         onError: (error: AxiosError<unknown>) => {
           const errorMessage = (error.response?.data as ErrorResponse)?.error;
           toast.error(errorMessage || "خطایی رخ داده است");
           formik.setFieldValue("captchaInput", "");
           setEncryptedResponse("");
+          refetch();
         },
       }
     );

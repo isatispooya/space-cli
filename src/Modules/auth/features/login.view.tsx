@@ -9,6 +9,7 @@ import ForgetPassSms from "./forget_pass_sms.form";
 import ForgetPassForm from "./forget_pass.form";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
+import { HiExternalLink } from "react-icons/hi";
 
 initTWE({ Input, Ripple });
 
@@ -80,7 +81,7 @@ const Login: React.FC = () => {
               <a
                 href={currentAnnouncement?.link}
                 target="_blank"
-                rel="noopener noreferrer" 
+                rel="noopener noreferrer"
                 className="inline-block px-6 py-3 mt-4 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all duration-300"
               >
                 اطلاعات بیشتر
@@ -107,8 +108,18 @@ const Login: React.FC = () => {
       </div>
       <motion.div
         {...fadeIn(0.05, 0, 0.4)}
-        className="w-full md:w-1/2 xl:w-[30%] md:ml-auto px-4 md:px-8 py-8"
+        className="w-full md:w-1/2 xl:w-[30%] md:ml-auto px-4 md:px-8 py-8 relative"
       >
+        <a
+          href="https://profilesejam.csdiran.ir/"
+          className="fixed right-8 bottom-8 text-blue-600 px-6 py-3 transition-all duration-300 text-lg font-medium flex items-center gap-2"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>ثبت نام در سجام</span>
+          <HiExternalLink className="w-5 h-5" />
+        </a>
+
         <div className="w-full max-w-[350px] mx-auto">
           <div className="rounded-lg  p-4 md:p-6">
             <motion.div {...fadeIn(0.05, 10)}>
@@ -143,16 +154,6 @@ const Login: React.FC = () => {
                       وارد شوید
                     </button>
                   </div>
-                  <a href="https://profilesejam.csdiran.ir/">
-                    <div className="mt-4 text-center text-sm">
-                      <button
-                        onClick={() => handleComponentChange("login")}
-                        className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
-                      >
-                        ثبت نام در سجام
-                      </button>
-                    </div>
-                  </a>
                 </>
               )}
               {activeComponent === "forgetpass" && (
@@ -174,10 +175,6 @@ const Login: React.FC = () => {
                   </div>
                 </>
               )}
-         
-                
-
-        
             </motion.div>
           </div>
         </div>
