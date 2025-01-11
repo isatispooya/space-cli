@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import PassInput from "../components/passInput";
 import InputBase from "../../../components/inputBase";
 import Spinner from "../../../components/spinner";
+import { ErrorResponse } from "../../../types";
+import { AxiosError } from "axios";
 const LoginForm = ({
   handleComponentChange,
 }: {
@@ -20,20 +22,18 @@ const LoginForm = ({
       return;
     }
 
-
- 
-
     mutate(
       {
         nationalCode,
-        password,      
+        password,
       },
       {
         onSuccess: () => {
           toast.success("ورود با موفقیت انجام شد");
         },
-        onError: () => {
-          toast.error("نام کاربری یا رمز عبور اشتباه است");
+        onError: (error: AxiosError<unknown>) => {
+          const errorMessage = (error.response?.data as ErrorResponse)?.error;
+          toast.error(errorMessage || "نام کاربری یا رمز عبور اشتباه است");
         },
       }
     );
@@ -41,7 +41,6 @@ const LoginForm = ({
 
   return (
     <>
-   
       <form onSubmit={handleSubmit}>
         <InputBase
           type="text"

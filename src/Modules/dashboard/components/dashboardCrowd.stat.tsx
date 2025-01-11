@@ -56,7 +56,7 @@ const DashboardCrowdStat = () => {
   const handleCrowdUUID = () => {
     crowdUUID(undefined, {
       onSuccess: (response) => {
-        console.log("Response:", response.uuid);
+        
         const crowdUUIDLink = `https://app.isatiscrowd.ir/onetimeLogin/${response.uuid}`;
         window.open(crowdUUIDLink, "_blank");
       },

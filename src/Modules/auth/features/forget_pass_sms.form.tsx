@@ -28,8 +28,8 @@ const ForgetPassSmsForm: React.FC<{ onVerificationSuccess: () => void }> = ({
     onSubmit: (values) => {
       setNationalCode(values.nationalCode);
       mutate(values.nationalCode, {
-        onSuccess: () => {
-          toast.success("کد بازیابی با موفقیت ارسال شد");
+        onSuccess: (response: { message: string }) => {
+          toast.success(response.message);
           onVerificationSuccess();
         },
         onError: (error: AxiosError<unknown>) => {
@@ -42,7 +42,6 @@ const ForgetPassSmsForm: React.FC<{ onVerificationSuccess: () => void }> = ({
 
   return (
     <>
-      
       <form onSubmit={formik.handleSubmit}>
         <InputLogin
           type="text"

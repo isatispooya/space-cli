@@ -13,6 +13,7 @@ import { server } from "../../../api/server";
 import { useEffect, useState } from "react";
 import { menuItems } from "../../sidebar/data/menuItems";
 import { IoIosArrowBack } from "react-icons/io";
+import Spinner from "../../../components/spinner";
 
 interface TooltipProps {
   active?: boolean;
@@ -41,11 +42,11 @@ interface barPropsTypes {
 }
 
 const DashboardChart = () => {
-  const { data: statsChart } = useDashboard.useGetStats();
+  const { data: statsChart, isLoading } = useDashboard.useGetStats();
   const [isVertical, setIsVertical] = useState(false);
 
-  const hasShareholdersAccess = menuItems.some(item =>
-    item.submenu?.some(subItem => subItem.codename === "view_shareholders")
+  const hasShareholdersAccess = menuItems.some((item) =>
+    item.submenu?.some((subItem) => subItem.codename === "view_shareholders")
   );
 
   useEffect(() => {
@@ -60,11 +61,13 @@ const DashboardChart = () => {
 
   const data = [
     ...(statsChart?.companies
-      ? statsChart.companies.map((company: barTypes) => ({
-          name: company.name,
-          value: company.shares,
-          logo: company.logo,
-        }))
+      ? statsChart.companies
+          .sort((a: barTypes, b: barTypes) => b.shares - a.shares)
+          .map((company: barTypes) => ({
+            name: company.name,
+            value: company.shares,
+            logo: company.logo,
+          }))
       : []),
   ];
 
@@ -86,6 +89,10 @@ const DashboardChart = () => {
     return null;
   };
 
+  // if (isLoading) {
+  //   return <Spinner />;
+  // }
+
   const CustomBar = (props: barPropsTypes) => {
     const { x = 0, y = 0, width = 0, height = 0, payload } = props;
 
@@ -95,9 +102,11 @@ const DashboardChart = () => {
     const minWidth = 5;
     const adjustedWidth = Math.max(width, minWidth);
 
-    const logoSize = isVertical
-      ? Math.min(adjustedWidth * 4, 60)
-      : Math.min(adjustedHeight * 10, 120);
+    const getLogoSize = () => {
+      return isVertical ? 25 : 30;
+    };
+
+    const logoSize = getLogoSize();
 
     const logoX = isVertical
       ? x - logoSize - 10
@@ -115,7 +124,6 @@ const DashboardChart = () => {
         transition={{ duration: 0.5, delay: (props.index ?? 0) * 0.1 }}
         whileHover={{ scale: 1.05 }}
       >
-        
         {/* Bar */}
         <motion.rect
           x={x}
@@ -140,9 +148,7 @@ const DashboardChart = () => {
             href={server + payload?.logo}
             className="rounded-full"
           />
-          
         )}
-        
       </motion.g>
     );
   };
@@ -168,70 +174,75 @@ const DashboardChart = () => {
         <h3 className="text-base sm:text-[8px] md:text-[14px] lg:text-sm font-bold text-gray-800 text-center font-iranSans">
           درصد سهام شما در شرکت های گروه مالی و سرمایه گذاری ایساتیس پویا
         </h3>
-   
+
         <div className="w-full h-[600px]  md:h-[500px] ">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
-              layout={isVertical ? "vertical" : "horizontal"}
-              margin={chartMargins}
-            >
-              <CartesianGrid
-                strokeDasharray="3 3"
-                horizontal={!isVertical}
-                vertical={isVertical}
-                stroke="#e0e0e0"
-              />
-              {isVertical ? (
-                <>
-                  <XAxis
-                    type="number"
-                    tick={false}
-                    axisLine={{ stroke: "#e5e7eb" }}
-                  />
-                  <YAxis
-                    type="category"
-                    dataKey="name"
-                    tick={false}
-                    axisLine={{ stroke: "#e5e7eb" }}
-                  />
-                </>
-              ) : (
-                <>
-                  <XAxis
-                    dataKey="name"
-                    tick={false}
-                    axisLine={{ stroke: "#e5e7eb" }}
-                  />
-                  <YAxis tick={false} axisLine={{ stroke: "#e5e7eb" }} />
-                </>
-              )}
-              <Tooltip
-                content={<CustomTooltip />}
-                cursor={{ fill: "rgba(236, 238, 241, 0.4)" }}
-              />
-              <defs>
-                <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#818cf8" />
-                  <stop offset="100%" stopColor="#6366f1" />
-                </linearGradient>
-              </defs>
-              <Bar
-                dataKey="value"
-                name="%"
-                fill="#818cf8"
-                shape={<CustomBar />}
-                maxBarSize={60}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+          {isLoading ? (
+            <div className="w-full h-full flex justify-center items-center">
+              <Spinner />
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={data}
+                layout={isVertical ? "vertical" : "horizontal"}
+                margin={chartMargins}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  horizontal={!isVertical}
+                  vertical={isVertical}
+                  stroke="#e0e0e0"
+                />
+                {isVertical ? (
+                  <>
+                    <XAxis
+                      type="number"
+                      tick={false}
+                      axisLine={{ stroke: "#e5e7eb" }}
+                    />
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      tick={false}
+                      axisLine={{ stroke: "#e5e7eb" }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <XAxis
+                      dataKey="name"
+                      tick={false}
+                      axisLine={{ stroke: "#e5e7eb" }}
+                    />
+                    <YAxis tick={false} axisLine={{ stroke: "#e5e7eb" }} />
+                  </>
+                )}
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ fill: "rgba(236, 238, 241, 0.4)" }}
+                />
+                <defs>
+                  <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#818cf8" />
+                    <stop offset="100%" stopColor="#6366f1" />
+                  </linearGradient>
+                </defs>
+                <Bar
+                  dataKey="value"
+                  name="%"
+                  fill="#818cf8"
+                  shape={<CustomBar />}
+                  maxBarSize={60}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
         </div>
-       
       </div>
       <div className="flex justify-center mt-20 p-4 z-10">
         {hasShareholdersAccess && (
           <button
-            onClick={() => window.location.href = '/shareholders/table'}
+            onClick={() => (window.location.href = "/shareholders/table")}
             className="px-4 py-2 text-sm font-bold text-white bg-[#1e40af]
             rounded hover:bg-[#1e3a8a] transition-colors flex items-center gap-1"
           >

@@ -11,7 +11,6 @@ import moment from "moment-jalaali";
 import { TableParamsTypes } from "../types/tableParams.type";
 import { LoaderLg } from "../../../components";
 
-
 const MarketingTable = () => {
   const [selectedRow, setSelectedRow] = useState<InvitationTypes | null>(null);
   const { checkPermission } = useUserPermissions();
@@ -85,7 +84,7 @@ const MarketingTable = () => {
           if (newSelectionModel.length > 0) {
             const selectedId = newSelectionModel[0];
             const selectedRow = rows.find(
-              (row: InvitationTypes) => row.id === selectedId
+              (row: (typeof rows)[0]) => row.id === selectedId
             );
             if (selectedRow) {
               setSelectedRow(selectedRow);

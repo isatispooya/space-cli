@@ -2,33 +2,17 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useInvitation } from "../hooks";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useState } from "react";
-import { InvitationTypes } from "../types/invitationList.type";
 import { tableStyles } from "../../../ui";
 import { useUserPermissions } from "../../permissions";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { LoaderLg } from "../../../components";
+import { InvitationTypes } from "../types";
 
-interface InvitationTableRow extends InvitationTypes {
-  first_name: string;
-  last_name: string;
-  mobile_number: string;
-  national_code: string;
-  invitation_date: string;
-  invitation_code: string;
-  code: string;
-  invited_user_detail: {
-    first_name: string;
-    last_name: string;
-    mobile: string;
-    uniqueIdentifier: string;
-    created_at?: string;
-  };
 
-}
 
-type TableRow = Omit<InvitationTableRow, "invitation_code_detail">;
+type TableRow = Omit<InvitationTypes, "invitation_code_detail">;
 
 const MarketingListTable = () => {
   const [selectedRow, setSelectedRow] = useState<TableRow | null>(null);
