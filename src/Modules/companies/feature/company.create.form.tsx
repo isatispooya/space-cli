@@ -53,13 +53,13 @@ const validationSchema = Yup.object().shape({
   name: Yup.string().required('نام شرکت الزامی است'),
   company_type: Yup.string().required('نوع شرکت الزامی است'),
   address: Yup.string().required('آدرس الزامی است'),
-  year_of_establishment: Yup.string().required('سال تاسیس الزامی است'),
+  year_of_establishment: Yup.number().transform(value => Number(value) || undefined).required('سال تاسیس الزامی است'),
   phone: Yup.string().required('تلفن الزامی است'),
   postal_code: Yup.string().required('کد پستی الزامی است'),
   national_id: Yup.string().required('کد شناسه الزامی است'),
   description: Yup.string(),
-  registered_capital: Yup.string().required('سرمایه ثبتی الزامی است'),
-  registration_number: Yup.string().required('تعداد سرمایه ثبتی الزامی است'),
+  registered_capital: Yup.number().transform(value => Number(value) || undefined).required('سرمایه ثبتی الزامی است'),
+  registration_number: Yup.number().transform(value => Number(value) || undefined).required('تعداد سرمایه ثبتی الزامی است'),
   type_of_activity: Yup.string().required('نوع فعالیت الزامی است'),
   website: Yup.string().url('وبسایت باید یک URL معتبر باشد'),
   email: Yup.string().email('ایمیل باید معتبر باشد').required('ایمیل الزامی است'),
@@ -113,7 +113,7 @@ const CreateCompanyForm = () => {
     <Forms<CompanyData>
       formFields={formFields}
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={validationSchema as Yup.ObjectSchema<CompanyData>}
       title="ثبت اطلاعات شرکت"
       colors="text-[#29D2C7]"
       buttonColors="bg-[#29D2C7] hover:bg-[#008282]"
