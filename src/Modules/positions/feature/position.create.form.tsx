@@ -1,8 +1,6 @@
 import useCreatePos from "../hooks/useCreatePos";
 import * as Yup from "yup";
-
 import { PositionFormValues } from "../types";
-
 import { useUserData } from "../../users/hooks";
 import { usePositionData } from "../hooks";
 import Forms from "../../../components/forms";
