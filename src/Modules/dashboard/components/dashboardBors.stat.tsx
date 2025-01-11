@@ -17,7 +17,7 @@ interface PortfolioItem {
   VolumeInPrice: string | number;
 }
 
-const COLORS = ["#4A90E2", "#50E3C2", "#F5A623", "#7ED321", "#9013FE"];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#5677BC"];
 
 const DashboardBorsStat = () => {
   const { data, isLoading } = useDashboard.useGetStats();
@@ -65,9 +65,8 @@ const DashboardBorsStat = () => {
                   cy="50%"
                   labelLine={false}
                   label={false}
-                  outerRadius={40}
+                  outerRadius={55}
                   dataKey="value"
-                  cornerRadius={10}
                 >
                   {pieData?.map(
                     (
