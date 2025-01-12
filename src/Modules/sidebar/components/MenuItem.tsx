@@ -33,7 +33,7 @@ const CustomMenuItem: React.FC<MenuItemProps> = ({ item }) => {
     }
   }, [search]);
 
-  if (!item.codename || !checkPermission(item.codename)) {
+  if (item.submenu?.every(subItem => subItem.codename && !checkPermission(subItem.codename))) {
     return null;
   }
 
