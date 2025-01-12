@@ -20,18 +20,17 @@ const ContactUsBox = () => {
     <div className="relative">
       <>
         <motion.div
-          className={`w-16 h-16 p-4 z-10
-               rounded-full flex justify-center bg-[#0f1e47] items-center fixed bottom-5 right-5 shadow-lg transition-transform duration-300 ease-in-out cursor-pointer ${
+          className={`w-14 h-16 z-10
+               rounded-l-full flex justify-center bg-[#0f1e47] items-center fixed bottom-5  shadow-lg  cursor-pointer ${
                  isOpen ? "opacity-0" : "opacity-100"
                } scale-100`}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 0.8 }}
+          style={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
           onClick={toggleBox}
         >
           <FaPhone className="text-white text-2xl" />
         </motion.div>
         <motion.div
-          className={`w-64 bg-white rounded-lg flex flex-col fixed bottom-5 right-5 shadow-lg overflow-hidden transition-all duration-300 ease-out max-h-96 ${
+          className={`w-64 bg-white rounded-lg flex flex-col fixed bottom-5 right-5 shadow-lg overflow-hidden  max-h-96 ${
             isOpen ? "opacity-100" : "opacity-0"
           }`}
           initial={{ opacity: 0 }}
