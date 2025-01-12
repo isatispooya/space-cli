@@ -207,6 +207,8 @@ const DashboardChart = () => {
                       dataKey="name"
                       tick={false}
                       axisLine={{ stroke: "#e5e7eb" }}
+                      tickLine={false}
+                      tickFormatter={(value) => <text className="text-center">{value}</text>}
                     />
                   </>
                 ) : (
@@ -215,6 +217,8 @@ const DashboardChart = () => {
                       dataKey="name"
                       tick={false}
                       axisLine={{ stroke: "#e5e7eb" }}
+                      tickLine={false}
+                      tickFormatter={(value) => <text className="text-center">{value}</text>}
                     />
                     <YAxis tick={false} axisLine={{ stroke: "#e5e7eb" }} />
                   </>
@@ -243,14 +247,16 @@ const DashboardChart = () => {
       </div>
       <div className="flex justify-center mt-20 p-4 z-10">
         {hasShareholdersAccess && (
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => (window.location.href = "/shareholders/table")}
-            className="px-4 py-2 text-sm font-bold text-white bg-[#1e40af]
-            rounded hover:bg-[#1e3a8a] transition-colors flex items-center gap-1"
+            className="w-96 font-bold bg-indigo-900 hover:bg-indigo-700 text-white py-1 px-1 rounded-md 
+                       font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
           >
             مدیریت سهام
-            <IoIosArrowBack className="w-3 h-3 inline-block" />
-          </button>
+            <IoIosArrowBack className="w-3 h-3" />
+          </motion.button>
         )}
       </div>
 
