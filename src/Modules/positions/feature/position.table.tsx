@@ -93,8 +93,6 @@ const PositionsTable = () => {
     { field: "end_date", headerName: "تاریخ پایان", width: 200, headerAlign: "center", align: "center" },
   ];
 
-  console.log(rows);
-
   if (isPending) {
     return (
       <div className="flex justify-center mb-10 items-center h-full">

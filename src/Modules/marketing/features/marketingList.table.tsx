@@ -61,7 +61,6 @@ const MarketingListTable = () => {
   ];
 
   const { data, isPending } = useInvitation.useGetList();
-  console.log(data);
 
   if (isPending) {
     return (
