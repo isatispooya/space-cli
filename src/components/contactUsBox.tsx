@@ -2,7 +2,6 @@ import {
   FaPhone,
   FaTelegram,
   FaInstagram,
-  FaTwitter,
   FaEnvelope,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -117,14 +116,6 @@ const ContactUsBox = () => {
                 className="text-pink-500 hover:text-pink-700 transition-transform duration-200 transform hover:scale-110"
               >
                 <FaInstagram className="text-2xl" />
-              </a>
-              <a
-                href="https://x.com/isatispooyaa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:text-blue-600 transition-transform duration-200 transform hover:scale-110"
-              >
-                <FaTwitter className="text-2xl" />
               </a>
             </div>
           </div>
