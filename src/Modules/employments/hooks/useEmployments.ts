@@ -1,12 +1,34 @@
 import { employmentServices } from "../services";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { EmploymentsTypes } from "../types";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { EmploymentsPostTypes, EmploymentsTypes } from "../types";
+import { AxiosError } from "axios";
 
 const useEmployments = {
-  useGetJobOffers: () : UseQueryResult<EmploymentsTypes[]> => {
+  useGetJobOffers: (): UseQueryResult<EmploymentsTypes[]> => {
     return useQuery({
       queryKey: ["employments"],
       queryFn: employmentServices.getEmployments,
+    });
+  },
+  usePostJobOffer: (): UseMutationResult<
+    EmploymentsTypes,
+    AxiosError,
+    FormData
+  > => {
+    const queryClient = useQueryClient();
+
+    return useMutation<EmploymentsTypes, AxiosError, FormData>({
+      mutationKey: ["postJobOffer"],
+      mutationFn: employmentServices.postJobOffer,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["employments"] });
+      },
     });
   },
 };
