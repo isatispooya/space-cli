@@ -7,7 +7,12 @@ const employmentServices = {
     return response.data;
   },
   postJobOffer: async (data: EmploymentsPostTypes) => {
-    const response = await api.post("/positions/job-offers/", data);
+    const response = await api.post("/positions/job-offers/", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        
+      },
+    });
     return response.data;
   },
 };

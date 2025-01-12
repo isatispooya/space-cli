@@ -5,6 +5,8 @@ import { useCompany } from "../../companies";
 import { useEmployments } from "../hooks";
 import { FormField } from "../../companies/types";
 import { useState } from "react";
+import { FormikHelpers } from "formik";
+import toast from "react-hot-toast";
 
 const EmploymentsCreateForm = () => {
   const { data: companies } = useCompany.useGet();
@@ -21,20 +23,7 @@ const EmploymentsCreateForm = () => {
     gender: yup.string(),
     expiration_date: yup.string(),
     is_active: yup.boolean(),
-    picture: yup.mixed().test("fileType", "Invalid file type", (value) => {
-      if (!value) return true; // Allow empty
-      if (value instanceof File) {
-        // Accept common image formats
-        const acceptedTypes = [
-          "image/jpeg",
-          "image/png",
-          "image/gif",
-          "image/jpg",
-        ];
-        return acceptedTypes.includes(value.type);
-      }
-      return false;
-    }),
+    picture: yup.mixed()
   });
 
   const kindOfJobs = [
@@ -108,20 +97,6 @@ const EmploymentsCreateForm = () => {
       name: "picture",
       label: "عکس",
       type: "file" as const,
-      accept: "image/png, image/jpeg, image/gif",
-      onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-          console.log("File selected:", file);
-          console.log("File type:", file.type);
-          setSelectedFile(file);
-          return file;
-        } else {
-          console.log("No file selected");
-          setSelectedFile(null);
-          return null;
-        }
-      },
     },
   ];
 
@@ -139,35 +114,38 @@ const EmploymentsCreateForm = () => {
     picture: null,
   };
 
-  const onSubmit = async (values: EmploymentsPostTypes) => {
-    try {
-      const formData = new FormData();
+  const handleSubmit = async (
+    values: EmploymentsPostTypes,
+    { setSubmitting }: FormikHelpers<EmploymentsPostTypes>
+  ) => {
+    const formData = new FormData();
 
-      console.log("Selected file:", selectedFile);
-
-      if (selectedFile) {
-        formData.append("picture", selectedFile);
-        console.log("Picture appended to FormData");
-      } else {
-        console.log("No picture selected");
+    Object.keys(values).forEach((key) => {
+      const value = values[key as keyof EmploymentsPostTypes];
+      if (
+        key === "logo" ||
+        key === "letterhead" ||
+        key === "signature" ||
+        key === "seal"
+      ) {
+        const fileInput = document.querySelector(
+          `input[name="${key}"]`
+        ) as HTMLInputElement;
+        const file = fileInput?.files?.[0];
+        if (file) formData.append(key, file);
+      } else if (value) {
+        formData.append(key, String(value));
       }
+    });
 
-      Object.entries(values).forEach(([key, value]) => {
-        if (key !== "picture" && value !== null) {
-          formData.append(key, value.toString());
-        }
-      });
-
-      console.log("FormData contents before submission:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0], ":", pair[1]);
-      }
-
-      await postJobOffer(formData);
-      console.log("Request completed successfully");
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
+    postJobOffer(formData, {
+      onSuccess: () => {
+        toast.success("شرکت با موفقیت ایجاد شد");
+      },
+      onSettled: () => {
+        setSubmitting(false);
+      },
+    });
   };
 
   return (
@@ -179,7 +157,7 @@ const EmploymentsCreateForm = () => {
         colors="text-[#5677BC]"
         buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
         showCloseButton={true}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         submitButtonText={{ default: "ثبت", loading: "در حال ثبت..." }}
         title="ثبت آگهی شغل"
       />
