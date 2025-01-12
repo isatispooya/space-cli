@@ -102,7 +102,7 @@ const ContactUsBox = () => {
             </div>
             <div className="flex justify-center gap-3 my-3">
               <a
-                href="https://t.me/isatispooyabot"
+                href="https://t.me/isatispooy_info"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-500 hover:text-blue-700 transition-transform duration-200 transform hover:scale-110"
@@ -110,7 +110,7 @@ const ContactUsBox = () => {
                 <FaTelegram className="text-2xl" />
               </a>
               <a
-                href="https://www.instagram.com/isatispooyagroup"
+                href="https://www.instagram.com/isatispooya"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-pink-500 hover:text-pink-700 transition-transform duration-200 transform hover:scale-110"
