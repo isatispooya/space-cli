@@ -6,6 +6,7 @@ import { usePositionData } from "../hooks";
 import Forms from "../../../components/forms";
 import { useCompany } from "../../companies/feature";
 import { CompanyData } from "../../companies/types/companyData.type";
+import { useNavigate } from "react-router-dom";
 
 interface FormField {
   name: keyof PositionFormValues;
@@ -44,7 +45,9 @@ const formatDate = (date: Date | string): string => {
 };
 
 const PositionCreate = () => {
+  const navigate = useNavigate();
   const { data: companies } = useCompany.useGet();
+  const { refetch } = usePositionData();
   const { data: users } = useUserData();
   const { data: positions } = usePositionData();
   const { mutate: createPosition } = useCreatePos();
@@ -129,10 +132,10 @@ const PositionCreate = () => {
       label: "ارشد",
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
-      options: positions?.results?.map((position: Position) => ({
-        value: position.id,
+      options: positions?.map((position: Position) => ({
+        value: position.id.toString(),
         label: position.name,
-      })),
+      })) || [],
     },
     {
       name: "type_of_employment",
@@ -180,6 +183,9 @@ const PositionCreate = () => {
             end_date: values.end_date ? formatDate(values.end_date) : null,
           };
           await createPosition(formData as PositionFormValues);
+          navigate("/positions/table");
+          // window.location.reload(); 
+          refetch();
         } catch (error) {
           console.error("Error creating position:", error);
         } finally {

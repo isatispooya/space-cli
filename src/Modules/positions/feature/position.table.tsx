@@ -1,23 +1,43 @@
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { usePositionData } from "../hooks";
 import { useState, useCallback } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
-import { PositionData } from "../types";
 import { ModalLayout } from "../../../layouts";
 import { PositionUpdate } from "./";
 import toast from "react-hot-toast";
 import { deletePosition } from "../services";
 import { useUserPermissions } from "../../permissions";
 import { LoaderLg } from "../../../components";
+import { tableStyles } from "../../../ui";
+import moment from 'moment-jalaali';
+
+
+type RowType = {
+  id: number;
+  name: string;
+  company: number;
+  parent: number;
+  type_of_employment: number;
+  description: string;
+  user: {
+    first_name: string;
+    last_name: string;
+  };
+  created_at: string;
+  start_date: string;
+  end_date: string;
+  sender: string;
+  first_name: string;
+  last_name: string;
+};
 
 const PositionsTable = () => {
-  const { data: positions, isPending } = usePositionData();
-  const [selectedRow, setSelectedRow] = useState<PositionData | null>(null);
+  const { data: positions, isPending, refetch } = usePositionData();
+  const [selectedRow, setSelectedRow] = useState<RowType | null>(null);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const { checkPermission } = useUserPermissions();   
 
- 
 
   const handleEdit = useCallback(() => {
     if (!selectedRow) {
@@ -33,21 +53,47 @@ const PositionsTable = () => {
       return;
     }
     deletePosition(selectedRow.id);
-  }, [selectedRow]);
+    refetch();
+  }, [selectedRow, refetch]);  
 
-  const rows = positions?.results || [];
-  console.log(rows);
-  const columns = [
-    { field: "name", headerName: "نام نقش", width: 200 },
-    { field: "company", headerName: "نام شرکت", width: 130 },
-    { field: "parent", headerName: "نام نقش", width: 200 },
-    { field: "type_of_employment", headerName: "نوع استخدام", width: 200 },
-    { field: "description", headerName: "توضیحات", width: 200 },
-    { field: "user", headerName: "کاربر", width: 200 },
-    { field: "created_at", headerName: "تاریخ ایجاد", width: 200 },
-    { field: "start_date", headerName: "تاریخ شروع", width: 200 },
-    { field: "end_date", headerName: "تاریخ پایان", width: 200 },
+  const rows = positions ? positions.map((position) => ({
+    id: position.id,
+    name: position.name,
+    company: position.company,
+    parent: position.parent,
+    type_of_employment: position.type_of_employment,
+    description: position.description,
+    user: {
+      first_name: position.user.first_name,
+      last_name: position.user.last_name,
+    },
+    created_at: moment(position.created_at).format('jYYYY/jMM/jDD'),
+    start_date: moment(position.start_date).format('jYYYY/jMM/jDD'),
+    end_date: moment(position.end_date).format('jYYYY/jMM/jDD'),
+  })) : [];
+  const columns: GridColDef[] = [
+    { field: "name", headerName: "نام نقش", width: 200, headerAlign: "center", align: "center" },
+    { field: "company", headerName: "نام شرکت", width: 130, headerAlign: "center", align: "center" },
+    { field: "parent", headerName: "نام نقش", width: 200, headerAlign: "center", align: "center" },
+    { field: "type_of_employment", headerName: "نوع استخدام", width: 200, headerAlign: "center", align: "center" },
+    { field: "description", headerName: "توضیحات", width: 200, headerAlign: "center", align: "center" },
+    { 
+      field: "user", 
+      headerName: "کاربر", 
+      width: 200, 
+      headerAlign: "center", 
+      align: "center", 
+      renderCell: (params) => {
+        const user = params.row?.user;
+        return <span>{user ? `${user.first_name} ${user.last_name}` : "نامشخص"}</span>;
+      }
+    },
+    { field: "created_at", headerName: "تاریخ ایجاد", width: 200, headerAlign: "center", align: "center" },
+    { field: "start_date", headerName: "تاریخ شروع", width: 200, headerAlign: "center", align: "center" },
+    { field: "end_date", headerName: "تاریخ پایان", width: 200, headerAlign: "center", align: "center" },
   ];
+
+  console.log(rows);
 
   if (isPending) {
     return (
@@ -63,13 +109,12 @@ const PositionsTable = () => {
       <DataGrid
         rows={rows}
         columns={columns}
+        sx={tableStyles}
         onRowClick={(params) => setSelectedRow(params.row)}
         onRowSelectionModelChange={(newSelectionModel) => {
           if (newSelectionModel.length > 0) {
             const selectedId = newSelectionModel[0];
-            const selectedRow = rows.find(
-              (row: PositionData) => row.id === selectedId
-            );
+            const selectedRow = rows.find((row: RowType) => row.id === selectedId);
             if (selectedRow) {
               setSelectedRow(selectedRow);
             }
@@ -89,16 +134,11 @@ const PositionsTable = () => {
         disableColumnMenu
         filterMode="client"
         localeText={localeText}
-        sx={{
-          "& .Mui-selected": {
-            backgroundColor: "rgba(25, 118, 210, 0.08) !important",
-          },
-        }}
         slots={{
           toolbar: (props) => (
             <CustomDataGridToolbar
               {...props}
-              data={positions}
+              data={positions as unknown as Record<string, unknown>[]}
               fileName="گزارش-پرداخت"
               showExcelExport={true}
               actions={{
