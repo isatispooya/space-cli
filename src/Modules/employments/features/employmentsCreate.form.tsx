@@ -23,7 +23,7 @@ const EmploymentsCreateForm = () => {
     gender: yup.string(),
     expiration_date: yup.string(),
     is_active: yup.boolean(),
-    picture: yup.mixed()
+    picture: yup.mixed(),
   });
 
   const kindOfJobs = [
@@ -122,12 +122,7 @@ const EmploymentsCreateForm = () => {
 
     Object.keys(values).forEach((key) => {
       const value = values[key as keyof EmploymentsPostTypes];
-      if (
-        key === "logo" ||
-        key === "letterhead" ||
-        key === "signature" ||
-        key === "seal"
-      ) {
+      if (key === "picture") {
         const fileInput = document.querySelector(
           `input[name="${key}"]`
         ) as HTMLInputElement;
@@ -140,7 +135,7 @@ const EmploymentsCreateForm = () => {
 
     postJobOffer(formData, {
       onSuccess: () => {
-        toast.success("شرکت با موفقیت ایجاد شد");
+        toast.success("آگهی شغلی با موفقیت ایجاد شد");
       },
       onSettled: () => {
         setSubmitting(false);

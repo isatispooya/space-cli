@@ -25,7 +25,7 @@ const useEmployments = {
 
     return useMutation<EmploymentsTypes, AxiosError, FormData>({
       mutationKey: ["postJobOffer"],
-      mutationFn: employmentServices.postJobOffer,
+      mutationFn: (data: FormData) => employmentServices.postJobOffer(data),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["employments"] });
       },
