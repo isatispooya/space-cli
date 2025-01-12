@@ -3,7 +3,6 @@ import { usePositionData } from "../hooks";
 import { useState, useCallback } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
-import { ModalLayout } from "../../../layouts";
 import { PositionUpdate } from "./";
 import toast from "react-hot-toast";
 import { deletePosition } from "../services";
@@ -11,6 +10,8 @@ import { useUserPermissions } from "../../permissions";
 import { LoaderLg } from "../../../components";
 import { tableStyles } from "../../../ui";
 import moment from 'moment-jalaali';
+import { PositionData } from "../types";
+import { useNavigate } from "react-router-dom";
 
 
 type RowType = {
@@ -18,7 +19,7 @@ type RowType = {
   name: string;
   company: number;
   parent: number;
-  type_of_employment: number;
+  type_of_employment: string;
   description: string;
   user: {
     first_name: string;
@@ -27,9 +28,14 @@ type RowType = {
   created_at: string;
   start_date: string;
   end_date: string;
-  sender: string;
-  first_name: string;
-  last_name: string;
+};
+
+const typeOfEmploymentTranslations: Record<string, string> = {
+  full_time: "تمام وقت",
+  part_time: "پاره وقت",
+  contract: "قراردادی",
+  freelance: "فریلنسر",
+  internship: "کارآموزی",
 };
 
 const PositionsTable = () => {
@@ -37,6 +43,7 @@ const PositionsTable = () => {
   const [selectedRow, setSelectedRow] = useState<RowType | null>(null);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const { checkPermission } = useUserPermissions();   
+  const navigate = useNavigate();
 
 
   const handleEdit = useCallback(() => {
@@ -44,8 +51,8 @@ const PositionsTable = () => {
       toast.error("لطفا یک نقش را انتخاب کنید");
       return;
     }
-    setIsUpdateOpen(true);
-  }, [selectedRow]);
+    navigate(`/positions/update/${selectedRow.id}`);
+  }, [selectedRow, navigate]);
 
   const handleDelete = useCallback(() => {
     if (!selectedRow) {
@@ -59,9 +66,9 @@ const PositionsTable = () => {
   const rows = positions ? positions.map((position) => ({
     id: position.id,
     name: position.name,
-    company: position.company,
+    company: position.company_detail.name,
     parent: position.parent,
-    type_of_employment: position.type_of_employment,
+    type_of_employment: typeOfEmploymentTranslations[position.type_of_employment] || "",
     description: position.description,
     user: {
       first_name: position.user.first_name,
@@ -73,8 +80,7 @@ const PositionsTable = () => {
   })) : [];
   const columns: GridColDef[] = [
     { field: "name", headerName: "نام نقش", width: 200, headerAlign: "center", align: "center" },
-    { field: "company", headerName: "نام شرکت", width: 130, headerAlign: "center", align: "center" },
-    { field: "parent", headerName: "نام نقش", width: 200, headerAlign: "center", align: "center" },
+    { field: "company", headerName: "نام شرکت", width: 200, headerAlign: "center", align: "center" },
     { field: "type_of_employment", headerName: "نوع استخدام", width: 200, headerAlign: "center", align: "center" },
     { field: "description", headerName: "توضیحات", width: 200, headerAlign: "center", align: "center" },
     { 
@@ -84,7 +90,7 @@ const PositionsTable = () => {
       headerAlign: "center", 
       align: "center", 
       renderCell: (params) => {
-        const user = params.row?.user;
+        const user = params.row.user as { first_name: string; last_name: string };
         return <span>{user ? `${user.first_name} ${user.last_name}` : "نامشخص"}</span>;
       }
     },
@@ -103,7 +109,6 @@ const PositionsTable = () => {
 
   return (
     <>
-
       <DataGrid
         rows={rows}
         columns={columns}
@@ -164,23 +169,15 @@ const PositionsTable = () => {
         }}
       />
 
-      <ModalLayout
-        isOpen={isUpdateOpen}
-        onClose={() => {
-          setIsUpdateOpen(false);
-          setSelectedRow(null);
-        }}
-      >
-        {selectedRow && (
-          <PositionUpdate
-            data={selectedRow}
-            onClose={() => {
-              setIsUpdateOpen(false);
-              setSelectedRow(null);
-            }}
-          />
-        )}
-      </ModalLayout>
+      {isUpdateOpen && selectedRow && (
+        <PositionUpdate
+          data={selectedRow as unknown as PositionData}
+          onClose={() => {
+            setIsUpdateOpen(false);
+            setSelectedRow(null);
+          }}
+        />
+      )}
     </>
   );
 };

@@ -3,7 +3,6 @@ import { useRoutes } from "react-router-dom";
 import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../Modules/dashboard/pages/dashboard.page";
-import { UpdateUnderWritingPage } from "../Modules/shareholdrs";
 import { TimeFlowTable } from "../Modules/timeflow/featuers";
 
 const LoginPage = lazy(() => import("../pages/login.page"));
@@ -80,11 +79,23 @@ const PositionMainPage = lazy(() =>
     default: module.PositionMainPage,
   }))
 );
+
 const PositionsTablePage = lazy(() =>
   import("../Modules/positions").then((module) => ({
     default: module.PositionsTablePage,
   }))
 );
+
+const PositionUpdatePage = lazy(() =>
+  import("../Modules/positions").then((module) => ({
+    default: module.PositionUpdatePage,
+  }))
+);
+
+
+
+
+
 
 const ShareholdersPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
@@ -254,6 +265,12 @@ const UnderwritingViewPage = lazy(() =>
 const UnderwritingPrintPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.PrintUnderwritingPage,
+  }))
+);
+
+const UpdateUnderWritingPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.UpdateUnderWritingPage,
   }))
 );
 
@@ -481,6 +498,16 @@ export default function Router() {
             </Suspense>
           ),
         },
+        {
+          path: "update/:id",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PositionUpdatePage />
+            </Suspense>
+          ),
+        },
+
+
       ],
     },
     {
@@ -865,6 +892,7 @@ export default function Router() {
         },
       ],
     },
+   
   ]);
   return routes;
 }
