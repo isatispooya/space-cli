@@ -208,7 +208,7 @@ const DashboardChart = () => {
                       tick={false}
                       axisLine={{ stroke: "#e5e7eb" }}
                       tickLine={false}
-                      tickFormatter={(value) => <text className="text-center">{value}</text>}
+                      tickFormatter={(value) => value.toString()}
                     />
                   </>
                 ) : (
@@ -218,7 +218,7 @@ const DashboardChart = () => {
                       tick={false}
                       axisLine={{ stroke: "#e5e7eb" }}
                       tickLine={false}
-                      tickFormatter={(value) => <text className="text-center">{value}</text>}
+                      tickFormatter={(value) => value.toString()}
                     />
                     <YAxis tick={false} axisLine={{ stroke: "#e5e7eb" }} />
                   </>
