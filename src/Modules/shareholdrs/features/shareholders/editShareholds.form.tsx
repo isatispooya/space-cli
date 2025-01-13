@@ -3,24 +3,23 @@ import Forms from "../../../../components/forms";
 
 import { ShareholdersTypes } from "../../types";
 import * as yup from "yup";
-import { useShareHoldersStore } from "../../store";
 import { useShareholders } from "../../hooks";
-import { useUserData } from "../../../users/hooks";
 import {  useCompany } from "../../../companies/hooks";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EditShareholdForm: React.FC = () => {
   const { mutate } = useShareholders.useUpdate();
-  const { id } = useShareHoldersStore();
+  const { id } = useParams();
 
   const navigate = useNavigate();
   const { data: shareholders } = useShareholders.useGet();
-  const { data: users } = useUserData();
   const { data: companies } = useCompany.useGet();
 
-  const shareholder = shareholders?.find(
-    (item: ShareholdersTypes) => item.id === Number(id)
-  );
+
+  const shareholder = shareholders?.find((item) => item.id === Number(id))
+  console.log('shareholder', shareholder);
+  
+
 
   if (!shareholder && !id) {
     navigate("/shareholders/table");
@@ -49,27 +48,25 @@ const EditShareholdForm: React.FC = () => {
       options:
         companies?.map((company: { name: string; id: number }) => ({
           label: company.name,
-          value: company.id.toString(),
+          value: company.id,
         })) || [],
     },
     {
       name: "user",
       label: "کاربر",
       type: "select" as const,
-      options:
-        users?.map(
-          (user: { first_name: string; last_name: string; id: number }) => ({
-            label: `${user.first_name} ${user.last_name}`,
-            value: user.id.toString(),
-          })
-        ) || [],
+
+      options: [{
+        value: shareholder?.user || '',
+        label: shareholder?.user.toString() || ''
+      }]
     },
   ];
 
   const initialValues: ShareholdersTypes = {
     number_of_shares: shareholder?.number_of_shares || 0,
-    company: parseInt(shareholder?.company.toString() || "0"),
-    user: parseInt(shareholder?.user.toString() || "0"),
+    company: shareholder?.company || 0,
+    user: shareholder?.user || 0,
     id: shareholder?.id || 0,
   };
 

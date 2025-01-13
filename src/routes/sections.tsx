@@ -600,7 +600,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <ShareholdersUpdatePage />
@@ -668,7 +668,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <PercendenceUpdatePage />
@@ -728,7 +728,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <DisplacementUpdatePage />

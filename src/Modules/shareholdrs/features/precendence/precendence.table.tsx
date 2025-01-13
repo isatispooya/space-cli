@@ -8,7 +8,6 @@ import { tableStyles } from "../../../../ui";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Popup from "../../../../components/popup";
-import { usePrecendenceStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
@@ -26,7 +25,6 @@ const PrecendenceTable: React.FC = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { checkPermission } = useUserPermissions();
   const [selectedRow, setSelectedRow] = useState<PrecedenceTypes | null>(null);
-  const { setId } = usePrecendenceStore();
   const columns: GridColDef[] = [
     {
       field: "name",
@@ -93,8 +91,7 @@ const PrecendenceTable: React.FC = () => {
       toast.error("لطفا یک سهم را انتخاب کنید");
       return;
     }
-    setId(selectedRow.id);
-    navigate("/precendence/update");
+    navigate(`/precendence/update/${selectedRow.id}`);
   };
 
   const handleDelete = () => {

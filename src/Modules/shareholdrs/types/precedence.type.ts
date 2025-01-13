@@ -1,8 +1,18 @@
 export interface PrecedenceTypes {
   id: number;
   company: number;
-  precedence: number;
-  used_precedence?: number;
+  company_detail?: {
+    id: number;
+    name: string;
+  };
   user: number;
-  updated_at?: string;
+  user_detail?: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    uniqueIdentifier: string;
+  };
+  precedence: number;
+  used_precedence: number;
+  updated_at: string;
 }
