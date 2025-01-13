@@ -142,12 +142,12 @@ export const menuItems: MenuItem[] = [
     title: "همکاری با ما",
     path: "/employments",
     icon: FaUserTie,
-    codename: ["allow-any"],
+    codename: ["allow-anyy"],
     submenu: [
       {
         title: "فرصت های همکاری با ما",
         path: "/employments/table",
-        codename: ["allow_any"],
+        codename: ["allow_anyy"],
       },
     ],
   },
@@ -155,9 +155,9 @@ export const menuItems: MenuItem[] = [
     title: "فرایند استخدامی",
     path: "/employmentsprocess",
     icon: FaUserTie,
-    codename: ["allow_any"],
+    codename: ["allow_anyy"],
     submenu: [
-      { title: "فرایند های", path: "/employmentsprocess/table", codename: ["allow_any"] },
+      { title: "فرایند های", path: "/employmentsprocess/table", codename: ["allow_anyy"] },
     ],
   },
   {
