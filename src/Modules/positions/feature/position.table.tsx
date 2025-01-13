@@ -11,7 +11,7 @@ import { LoaderLg } from "../../../components";
 import { tableStyles } from "../../../ui";
 import moment from 'moment-jalaali';
 import { PositionData } from "../types";
-import { useNavigate } from "react-router-dom";
+import { useUpdatePositionStore } from "../store/updatePosition";
 
 
 type RowType = {
@@ -40,19 +40,21 @@ const typeOfEmploymentTranslations: Record<string, string> = {
 
 const PositionsTable = () => {
   const { data: positions, isPending, refetch } = usePositionData();
+  const { setId } = useUpdatePositionStore();
   const [selectedRow, setSelectedRow] = useState<RowType | null>(null);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const { checkPermission } = useUserPermissions();   
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
+ 
 
-  const handleEdit = useCallback(() => {
+  const handleEdit = () => {
     if (!selectedRow) {
       toast.error("لطفا یک نقش را انتخاب کنید");
       return;
     }
-    navigate(`/positions/update/${selectedRow.id}`);
-  }, [selectedRow, navigate]);
+    setId(selectedRow.id);
+  };
 
   const handleDelete = useCallback(() => {
     if (!selectedRow) {
@@ -98,6 +100,13 @@ const PositionsTable = () => {
     { field: "start_date", headerName: "تاریخ شروع", width: 200, headerAlign: "center", align: "center" },
     { field: "end_date", headerName: "تاریخ پایان", width: 200, headerAlign: "center", align: "center" },
   ];
+
+  const hasPermission = (permissions: string[]) => {
+    return checkPermission ? checkPermission(permissions) : false;
+  };
+
+  const canEdit = hasPermission(["change_position"]);
+  const canDelete = hasPermission(["delete_position"]);
 
   if (isPending) {
     return (
@@ -146,13 +155,13 @@ const PositionsTable = () => {
               showExcelExport={true}
               actions={{
                 edit: {
-                  show: checkPermission(["change_position"]),
+                  show: canEdit,
                   label: "ویرایش",
                   onClick: handleEdit,
                   icon: <FaEdit />,
                 },
                 delete: {
-                  show: checkPermission(["delete_position"]),
+                  show: canDelete,
                   label: "حذف",
                   onClick: handleDelete,
                   icon: <FaTrash />,

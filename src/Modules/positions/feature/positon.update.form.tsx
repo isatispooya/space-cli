@@ -1,16 +1,14 @@
 import * as Yup from "yup";
 import Forms from "../../../components/forms";
-import { useUserData } from "../../users/hooks";
-import { useCompany } from "../../companies/hooks";
+
 import { usePositionData, useUpdatePosition } from "../hooks";
 import { PositionData, PositionFormValues } from "../types";
 import { FormField } from "../../companies/types";
 import { CompanyData } from "../../companies/types/companyData.type";
 import { UserData } from "../../users/types";
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetUpdatePosition } from "../hooks/usegetupdate";
-import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 import moment from "moment-jalaali";
+import { useUpdatePositionStore } from "../store/updatePosition";
 
 
 const validationSchema = Yup.object().shape({
@@ -31,40 +29,42 @@ const typeOfEmploymentTranslations: Record<string, string> = {
 };
 
 const PositionUpdate = () => {
-  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { id } = useUpdatePositionStore();
   const { mutate: updatePosition } = useUpdatePosition(Number(id));
-  const { data: companies } = useCompany.useGet();
-  const { data: users } = useUserData();
-  const { data: positions } = usePositionData();
+  const { data: getUpdatePosition, isPending } = usePositionData();
 
-  const { data: getUpdatePosition } = useGetUpdatePosition(Number(id));
-
-  console.log(users);
+  const position = getUpdatePosition?.find(
+    (item: PositionData) => item.id === Number(id)
+  );
+  console.log(position);
   
 
-  
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
   const formFields: FormField[] = [
     { name: "name", label: "نام نقش", type: "text" },
     {
       name: "company",
       label: "شرکت",
       type: "select",
-      options:
-        companies?.map((company: CompanyData) => ({
-          value: company.id,
-          label: company.name,
-        })) || [],
+      options: [{
+        value: position?.company_detail?.id || '',
+        label: position?.company_detail?.name || '',
+      }],
     },
     {
       name: "user",
       label: "کاربر",
       type: "select",
-      options:
-        users?.map((user: UserData) => ({
-          value: user.id,
-          label: `${user.first_name || ''} ${user.last_name || ''} | ${user.uniqueIdentifier || ''}`,
-        })) || [],
+      options: Array.isArray(position?.user)
+        ? position.user.map((user: UserData) => ({
+            value: user.id,
+            label: `${user.first_name || ''} ${user.last_name || ''} | ${user.uniqueIdentifier || ''}`,
+          }))
+        : [],
     },
     {
       name: "start_date",
@@ -84,7 +84,7 @@ const PositionUpdate = () => {
       label: "ارشد",
       type: "select",
       options:
-        positions?.results?.map((position: PositionData) => ({
+          position?.parent_position?.map((position: PositionData) => ({
           value: position.id,
           label: position.name,
         })) || [],
@@ -102,22 +102,17 @@ const PositionUpdate = () => {
     },
 
   ];
-console.log(getUpdatePosition);
 
   const initialValues: PositionFormValues = {
-    name: getUpdatePosition?.name,
-    company: getUpdatePosition?.company_detail?.id,
-    user: getUpdatePosition?.user?.id,
-    parent: getUpdatePosition?.parent,
-    type_of_employment: getUpdatePosition?.type_of_employment,
-    description: getUpdatePosition?.description,
-    start_date: getUpdatePosition?.start_date ? moment(getUpdatePosition.start_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD') : "",
-    end_date: getUpdatePosition?.end_date ? moment(getUpdatePosition.end_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD') : "",
+    name: position?.name || "",
+    company: position?.company_detail?.id || "",
+    user: position?.user?.id || "",
+    parent: position?.parent || "",
+    type_of_employment: position?.type_of_employment || "",
+    description: position?.description || "",
+    start_date: position?.start_date ? moment(position.start_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD') : "",
+    end_date: position?.end_date ? moment(position.end_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD') : "",
   };
-
-  if (!getUpdatePosition) {
-    return <div>در حال بارگذاری...</div>;
-  }
 
 
 

@@ -1,4 +1,5 @@
 interface CompanyDetail {
+  id: number;
   name: string;
 }
 
@@ -13,7 +14,7 @@ export interface PositionData {
   user: {
     first_name: string;
     last_name: string;
-  };
+  }[];
   created_at: string;
   start_date: string;
   end_date: string;
