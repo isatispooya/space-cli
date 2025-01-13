@@ -16,7 +16,7 @@ type RowType = {
   id: number;
   name: string;
   company: string;
-  parent: number;
+  parent: { id: number; name: string; } | null;
   type_of_employment: string;
   description: string;
   user: {

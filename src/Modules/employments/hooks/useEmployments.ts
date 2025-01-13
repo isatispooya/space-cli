@@ -29,11 +29,7 @@ const useEmployments = {
         const data = Object.fromEntries(
           formData
         ) as unknown as EmploymentsPostTypes;
-        return employmentServices.postJobOffer(data, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+        return employmentServices.postJobOffer(data);
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["employments"] });
