@@ -6,8 +6,9 @@ import { FormField } from "../../companies/types";
 import { UseEmProcess } from "../hooks";
 import { EmProcessPostTypes } from "../types";
 
-const EmploymentsProcessCreate = () => {
-  const { mutate: postEmprocess } = UseEmProcess.usePost();
+
+const EmploymentsProcessUpdate = () => {
+  const { mutate: updateEmprocess } = UseEmProcess.useUpdate();
 
   const validationSchema = yup.object({
     job_title: yup.string().required("عنوان شغل الزامی است"),
@@ -80,7 +81,7 @@ const EmploymentsProcessCreate = () => {
     values: EmProcessPostTypes,
     { setSubmitting, resetForm }: FormikHelpers<EmProcessPostTypes>
   ) => {
-    postEmprocess(values, {
+    updateEmprocess(values, {
       onSuccess: () => {
         toast.success(" فرایند با موفقیت ایجاد شد");
         resetForm();
@@ -111,4 +112,4 @@ const EmploymentsProcessCreate = () => {
   );
 };
 
-export default EmploymentsProcessCreate;
+export default EmploymentsProcessUpdate;
