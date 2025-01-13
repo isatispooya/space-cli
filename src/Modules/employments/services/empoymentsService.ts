@@ -10,7 +10,6 @@ const employmentServices = {
     const response = await api.post("/positions/job-offers/", data, {
       headers: {
         "Content-Type": "multipart/form-data",
-        
       },
     });
     return response.data;

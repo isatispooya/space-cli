@@ -1,1 +1,1 @@
-export { default as TimeFlowPage } from "./page/timeflow.page";
+export * from "./page";

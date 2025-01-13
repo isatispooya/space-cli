@@ -93,7 +93,6 @@ export const menuItems: MenuItem[] = [
     ],
   },
 
-  
   {
     title: "مدیریت نقش‌ها",
     path: "/positions",
@@ -157,7 +156,11 @@ export const menuItems: MenuItem[] = [
     icon: FaUserTie,
     codename: ["allow_anyy"],
     submenu: [
-      { title: "فرایند های", path: "/employmentsprocess/table", codename: ["allow_anyy"] },
+      {
+        title: "فرایند های",
+        path: "/employmentsprocess/table",
+        codename: ["allow_anyy"],
+      },
     ],
   },
   {
@@ -167,7 +170,7 @@ export const menuItems: MenuItem[] = [
     codename: ["time_flow"],
     submenu: [
       {
-        title: "ورود و خروج کاربران",
+        title: "گزارش تردد",
         path: "/timeflow/table",
         codename: ["allow_any"],
       },

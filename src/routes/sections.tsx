@@ -3,7 +3,6 @@ import { useRoutes } from "react-router-dom";
 import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../Modules/dashboard/pages/dashboard.page";
-import { TimeFlowTable } from "../Modules/timeflow/featuers";
 
 const LoginPage = lazy(() => import("../pages/login.page"));
 
@@ -97,8 +96,6 @@ const LicensePage = lazy(() =>
     default: module.LicensePage,
   }))
 );
-
-
 
 const ShareholdersPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
@@ -331,8 +328,6 @@ const MarketingPage = lazy(() =>
   }))
 );
 
-
-
 const MarketingTablePage = lazy(() =>
   import("../Modules/marketing").then((module) => ({
     default: module.MarketingTablePage,
@@ -351,12 +346,27 @@ const MarketingListTablePage = lazy(() =>
   }))
 );
 
-const TimeFlowPage = lazy(() =>
+const TimeFlowMainPage = lazy(() =>
   import("../Modules/timeflow").then((module) => ({
-    default: module.TimeFlowPage,
+    default: module.TimeFlowMainPage,
   }))
 );
 
+const TimeFlowTablePage = lazy(() =>
+  import("../Modules/timeflow").then((module) => ({
+    default: module.TimeFlowTablePage,
+  }))
+);
+const TimeFlowApproachPage = lazy(() =>
+  import("../Modules/timeflow").then((module) => ({
+    default: module.TimeFlowApproachPage,
+  }))
+);
+const TimeFlowLeaveTablePage = lazy(() =>
+  import("../Modules/timeflow").then((module) => ({
+    default: module.TimeFlowLeaveTablePage,
+  }))
+);
 const EmploymentsMainPage = lazy(() =>
   import("../Modules/employments").then((module) => ({
     default: module.EmploymentsMainPage,
@@ -545,8 +555,6 @@ export default function Router() {
             </Suspense>
           ),
         },
-
-
       ],
     },
     {
@@ -788,8 +796,6 @@ export default function Router() {
           ),
         },
 
-   
-
         {
           path: "license",
           element: (
@@ -893,15 +899,31 @@ export default function Router() {
       path: "/timeflow",
       element: (
         <Suspense fallback={<Loader />}>
-          <TimeFlowPage />
+          <TimeFlowMainPage />
         </Suspense>
       ),
       children: [
         {
+          path: "approach",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <TimeFlowApproachPage />
+            </Suspense>
+          ),
+        },
+        {
           path: "table",
           element: (
             <Suspense fallback={<Loader />}>
-              <TimeFlowTable />
+              <TimeFlowTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "leave",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <TimeFlowLeaveTablePage />
             </Suspense>
           ),
         },

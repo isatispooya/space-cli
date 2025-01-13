@@ -7,37 +7,37 @@ import useTimeFlow from "../hooks/usetimeflow";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useUserPermissions } from "../../permissions";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
+import "moment/locale/fa";
 
 const TimeFlowTable = () => {
   const [selectedRow, setSelectedRow] = useState<TimeFlowTypes | null>(null);
   const { checkPermission } = useUserPermissions();
-
-
   const { data = {} as TimeFlowResponse, isLoading } = useTimeFlow.useGet();
 
-
-  const rows = Object.entries(data).map(([date, log]) => {
-    if (!log) return null;
-    return {
-      id: date,
-      date: moment(date).format('jYYYY/jMM/jDD'),
-      firstLoginTime: log.login?.time,
-      ip: log.login?.ip,
-      device: log.login?.device,
-      browser: log.login?.browser,
-      os: log.login?.os,
-      intermediate_logs: log.intermediate_logs,
-      last_logout: log.logout?.time,
-      logout_ip: log.logout?.ip,
-      logout_device: log.logout?.device,
-      logout_browser: log.logout?.browser,
-      logout_os: log.logout?.os,
-      fullName: log.user?.full_name,
-      duration: log.duration,
-      username: log.user?.username,
-    };
-  }).filter(row => row !== null);
+  const rows = Object.entries(data)
+    .map(([date, log]) => {
+      if (!log) return null;
+      return {
+        id: date,
+        date: moment(date).format("jYYYY/jMM/jDD"),
+        firstLoginTime: log.login?.time,
+        ip: log.login?.ip,
+        device: log.login?.device,
+        browser: log.login?.browser,
+        os: log.login?.os,
+        intermediate_logs: log.intermediate_logs,
+        last_logout: log.logout?.time,
+        logout_ip: log.logout?.ip,
+        logout_device: log.logout?.device,
+        logout_browser: log.logout?.browser,
+        logout_os: log.logout?.os,
+        fullName: log.user?.full_name,
+        duration: log.duration,
+        username: log.user?.username,
+      };
+    })
+    .filter((row) => row !== null);
 
   const columns: GridColDef[] = [
     {
@@ -53,6 +53,11 @@ const TimeFlowTable = () => {
       width: 150,
       align: "center",
       headerAlign: "center",
+      renderCell: (params) => {
+        return moment(params)
+          .locale("fa")
+          .format("jYYYY/jMM/jDD");
+      },
     },
     {
       field: "username",
@@ -67,6 +72,11 @@ const TimeFlowTable = () => {
       width: 150,
       align: "center",
       headerAlign: "center",
+      renderCell: (params) => {
+        return moment(params)
+          .locale("fa")
+          .format("jYYYY/jMM/jDD");
+      },
     },
     {
       field: "ip",
@@ -88,6 +98,11 @@ const TimeFlowTable = () => {
       width: 150,
       align: "center",
       headerAlign: "center",
+      renderCell: (params) => {
+        return moment(params)
+          .locale("fa")
+          .format("jYYYY/jMM/jDD/hh:mm:ss");
+      },
     },
     {
       field: "logout_ip",
@@ -111,10 +126,7 @@ const TimeFlowTable = () => {
       align: "center",
       headerAlign: "center",
     },
-
   ];
-
-
 
   if (isLoading) {
     return (
@@ -146,9 +158,7 @@ const TimeFlowTable = () => {
         onRowSelectionModelChange={(newSelectionModel) => {
           if (newSelectionModel.length > 0) {
             const selectedId = newSelectionModel[0];
-            const selectedRow = rows.find(
-              (row) => row.id === selectedId
-            );
+            const selectedRow = rows.find((row) => row.id === selectedId);
             if (selectedRow) {
               setSelectedRow(selectedRow);
             }

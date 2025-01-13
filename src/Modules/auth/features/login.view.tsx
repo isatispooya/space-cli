@@ -110,16 +110,6 @@ const Login: React.FC = () => {
         {...fadeIn(0.05, 0, 0.4)}
         className="w-full md:w-1/2 xl:w-[30%] md:ml-auto px-4 md:px-8 py-8 relative"
       >
-        <a
-          href="https://profilesejam.csdiran.ir/"
-          className="fixed text-center left-1/2 -translate-x-1/2 sm:left-auto sm:right-10 md:right-10 lg:right-40 xl:right-24 bottom-8 text-blue-600 px-6 py-3 transition-all duration-300 text-lg font-medium flex items-center gap-2"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span>ثبت نام در سجام</span>
-          <HiExternalLink className="w-5 h-5" />
-        </a>
-
         <div className="w-full max-w-[350px] mx-auto">
           <div className="rounded-lg  p-4 md:p-6">
             <motion.div {...fadeIn(0.05, 10)}>
@@ -138,6 +128,28 @@ const Login: React.FC = () => {
                       ثبت‌نام کنید
                     </button>
                   </div>
+                  <a
+                    href="https://profilesejam.csdiran.ir/"
+                    className="fixed text-center 
+            // Mobile (default)
+            bottom-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[280px]
+            // Tablet and up
+            sm:w-auto sm:left-auto sm:right-4
+            md:right-6 lg:right-8 xl:right-16 sm:bottom-6
+            // Styling
+            rounded-lg sm:rounded-none
+            text-blue-600 px-3 py-2 sm:px-4
+            transition-all duration-300 
+            text-sm sm:text-base font-medium 
+            flex items-center justify-center sm:justify-start gap-1
+           sm:shadow-none
+             "
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>ثبت نام در سجام</span>
+                    <HiExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </a>
                 </>
               )}
               {activeComponent === "signup" && (

@@ -6,14 +6,30 @@ import { LuTable } from "react-icons/lu";
 
 const TimeFlowPage = () => {
   const toolbarButtons = [
-
     {
       icon: LuTable,
       text: "جدول",
       permission: ["allow_any"],
       path: "table",
     },
-
+    {
+      icon: LuTable,
+      text: "ثبت تردد",
+      permission: ["allow_any"],
+      path: "approach",
+    },
+    {
+      icon: LuTable,
+      text: "لیست مرخصی",
+      permission: ["allow_any"],
+      path: "leave",
+    },
+    {
+      icon: LuTable,
+      text: "ثبت مرخصی",
+      permission: ["allow_any"],
+      path: "addleave",
+    },
   ];
   return (
     <MainLayout>
