@@ -80,13 +80,11 @@ const PositionUpdateForm = () => {
       name: "start_date",
       label: "تاریخ شروع",
       type: "date",
-      headerClassName: "col-span-2 sm:col-span-1",
     },
     {
       name: "end_date",
       label: "تاریخ پایان",
       type: "date",
-      headerClassName: "col-span-2 sm:col-span-1",
     },
     { name: "description", label: "توضیحات", type: "text" },
     {
@@ -115,7 +113,7 @@ const PositionUpdateForm = () => {
     name: specificUser?.name || "",
     company: specificUser?.company_detail?.id || "",
     user: specificUser?.user?.id || "",
-    parent: specificUser?.parent || null,
+    parent: specificUser?.parent?.id || null,
     type_of_employment: specificUser?.type_of_employment || null,
     description: specificUser?.description || "",
     start_date: specificUser?.start_date ? moment(specificUser.start_date).format('jYYYY/jMM/jDD') : "",
@@ -141,10 +139,17 @@ const PositionUpdateForm = () => {
         try {
           const formattedValues = {
             ...values,
-            start_date: values.start_date ? formatDate(values.start_date) : null,
-            end_date: values.end_date ? formatDate(values.end_date) : null,
-            parent: values.parent || null,
+            start_date: values.start_date ? formatDate(values.start_date) : specificUser?.start_date,
+            end_date: values.end_date ? formatDate(values.end_date) : specificUser?.end_date,
+            parent: values.parent ? values.parent.toString() : null,
           };
+
+          if (formattedValues.start_date === "NaN-NaN-NaN") {
+            formattedValues.start_date = specificUser?.start_date;
+          }
+          if (formattedValues.end_date === "NaN-NaN-NaN") {
+            formattedValues.end_date = specificUser?.end_date;
+          }
 
           await updatePosition({
             id: Number(id),

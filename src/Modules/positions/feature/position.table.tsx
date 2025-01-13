@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { usePositionData } from "../hooks";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import toast from "react-hot-toast";
@@ -9,8 +9,7 @@ import { useUserPermissions } from "../../permissions";
 import { LoaderLg } from "../../../components";
 import { tableStyles } from "../../../ui";
 import moment from 'moment-jalaali';
-import { useUpdatePositionStore } from "../store/updatePosition";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 type RowType = {
@@ -39,7 +38,7 @@ const typeOfEmploymentTranslations: Record<string, string> = {
 
 const PositionsTable = () => {
   const { data: positions, isPending, refetch } = usePositionData();
-  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedRow, setSelectedRow] = useState<RowType | null>(null);
   const { checkPermission } = useUserPermissions();  
   const navigate = useNavigate();
 
