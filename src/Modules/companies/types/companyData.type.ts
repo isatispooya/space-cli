@@ -16,5 +16,8 @@ export interface CompanyData {
   type_of_activity?: string;
   website?: string;
   file?: File;
+  logo?: File;
+  seal?: File;
+  signature?: File;
  
 }
