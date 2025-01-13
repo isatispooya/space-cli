@@ -74,7 +74,7 @@ const SeeCompany = ({ data }: SeeCompanyProps) => {
               <label className="text-sm font-medium text-gray-500">
                 {field.label}
               </label>
-              {field.value ? (
+              {field.value && typeof field.value === 'string' ? (
                 <motion.img
                   whileHover={{ scale: 1.05 }}
                   src={field.value}

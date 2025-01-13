@@ -81,27 +81,33 @@ const EmploymentsProcessUpdate = () => {
     values: EmProcessPostTypes,
     { setSubmitting, resetForm }: FormikHelpers<EmProcessPostTypes>
   ) => {
-    updateEmprocess(values, {
-      onSuccess: () => {
-        toast.success(" فرایند با موفقیت ایجاد شد");
-        resetForm();
+    updateEmprocess(
+      { 
+        id: values.id || 0,
+        data: values 
       },
-      onSettled: () => {
-        setSubmitting(false);
-        resetForm();
-      },
-      onError: () => {
-        toast.error("خطایی پیش آمده است");
-        setSubmitting(false);
-      },
-    });
+      {
+        onSuccess: () => {
+          toast.success(" فرایند با موفقیت ایجاد شد");
+          resetForm();
+        },
+        onSettled: () => {
+          setSubmitting(false);
+          resetForm();
+        },
+        onError: () => {
+          toast.error("خطایی پیش آمده است");
+          setSubmitting(false);
+        },
+      }
+    );
   };
 
   return (
     <Forms
       formFields={formFields}
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={validationSchema as yup.ObjectSchema<EmProcessPostTypes>}
       colors="text-[#29D2C7]"
       buttonColors="bg-[#29D2C7] hover:bg-[#29D2C7]"
       showCloseButton={true}

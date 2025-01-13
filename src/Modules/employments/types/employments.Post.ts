@@ -7,7 +7,7 @@ export interface EmploymentsPostTypes {
   kind_of_job: string;
   company: string;
   gender: string;
-  is_active: boolean;
   expiration_date: string;
+  is_active: boolean;
   picture: File | null;
 }

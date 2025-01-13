@@ -35,6 +35,7 @@ const validationSchema = Yup.object().shape({
   letterhead: Yup.string(),
   seal: Yup.string(),
   signature: Yup.string(),
+  file: Yup.mixed().required(),
 });
 
 const COMPANY_TYPES: CompanyTypeOption[] = [
@@ -102,7 +103,7 @@ const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
       <Forms
         formFields={formFields}
         initialValues={initialValues}
-        validationSchema={validationSchema}
+        validationSchema={validationSchema as Yup.ObjectSchema<CompanyData>}
         showCloseButton={true}
         onClose={onClose}
         colors="text-[#5677BC]"
