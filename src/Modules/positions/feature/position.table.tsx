@@ -1,23 +1,20 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { usePositionData } from "../hooks";
 import { useState, useCallback } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
-import { PositionUpdate } from "./";
 import toast from "react-hot-toast";
 import { deletePosition } from "../services";
 import { useUserPermissions } from "../../permissions";
 import { LoaderLg } from "../../../components";
 import { tableStyles } from "../../../ui";
 import moment from 'moment-jalaali';
-import { PositionData } from "../types";
-import { useNavigate } from "react-router-dom";
 
 
 type RowType = {
   id: number;
   name: string;
-  company: number;
+  company: string;
   parent: number;
   type_of_employment: string;
   description: string;
@@ -40,19 +37,20 @@ const typeOfEmploymentTranslations: Record<string, string> = {
 
 const PositionsTable = () => {
   const { data: positions, isPending, refetch } = usePositionData();
+  // const { setId } = useUpdatePositionStore();
   const [selectedRow, setSelectedRow] = useState<RowType | null>(null);
-  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const { checkPermission } = useUserPermissions();   
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
+ 
 
-  const handleEdit = useCallback(() => {
-    if (!selectedRow) {
-      toast.error("لطفا یک نقش را انتخاب کنید");
-      return;
-    }
-    navigate(`/positions/update/${selectedRow.id}`);
-  }, [selectedRow, navigate]);
+  // const handleEdit = () => {
+  //   if (!selectedRow) {
+  //     toast.error("لطفا یک نقش را انتخاب کنید");
+  //     return;
+  //   }
+  //   setId(selectedRow.id);
+  // };
 
   const handleDelete = useCallback(() => {
     if (!selectedRow) {
@@ -66,13 +64,13 @@ const PositionsTable = () => {
   const rows = positions ? positions.map((position) => ({
     id: position.id,
     name: position.name,
-    company: position.company_detail.name,
+    company: position.company_detail?.name || "نامشخص",
     parent: position.parent,
     type_of_employment: typeOfEmploymentTranslations[position.type_of_employment] || "",
     description: position.description,
     user: {
-      first_name: position.user.first_name,
-      last_name: position.user.last_name,
+      first_name:typeOfEmploymentTranslations[position.user?.first_name || "نامشخص"] ,
+      last_name: typeOfEmploymentTranslations[position.user?.last_name || "نامشخص"],
     },
     created_at: moment(position.created_at).format('jYYYY/jMM/jDD'),
     start_date: moment(position.start_date).format('jYYYY/jMM/jDD'),
@@ -98,6 +96,13 @@ const PositionsTable = () => {
     { field: "start_date", headerName: "تاریخ شروع", width: 200, headerAlign: "center", align: "center" },
     { field: "end_date", headerName: "تاریخ پایان", width: 200, headerAlign: "center", align: "center" },
   ];
+
+  const hasPermission = (permissions: string[]) => {
+    return checkPermission ? checkPermission(permissions) : false;
+  };
+
+  // const canEdit = hasPermission(["change_position"]);
+  const canDelete = hasPermission(["delete_position"]);
 
   if (isPending) {
     return (
@@ -145,14 +150,14 @@ const PositionsTable = () => {
               fileName="گزارش-پرداخت"
               showExcelExport={true}
               actions={{
-                edit: {
-                  show: checkPermission(["change_position"]),
-                  label: "ویرایش",
-                  onClick: handleEdit,
-                  icon: <FaEdit />,
-                },
+                // edit: {
+                //   show: canEdit,
+                //   label: "ویرایش",
+                //   onClick: handleEdit,
+                //   icon: <FaEdit />,
+                // },
                 delete: {
-                  show: checkPermission(["delete_position"]),
+                  show: canDelete,
                   label: "حذف",
                   onClick: handleDelete,
                   icon: <FaTrash />,
@@ -169,15 +174,6 @@ const PositionsTable = () => {
         }}
       />
 
-      {isUpdateOpen && selectedRow && (
-        <PositionUpdate
-          data={selectedRow as unknown as PositionData}
-          onClose={() => {
-            setIsUpdateOpen(false);
-            setSelectedRow(null);
-          }}
-        />
-      )}
     </>
   );
 };

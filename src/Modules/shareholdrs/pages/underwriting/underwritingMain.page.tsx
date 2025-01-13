@@ -20,6 +20,12 @@ const UnderwritingMain = () => {
       path: "description",
     },
     {
+      icon: MdOutlineShoppingBag,
+      text: "مجوز پذیره نویسی", 
+      permission: ["unused_precedence_process"],
+      path: "license",
+    },
+    {
       icon: FaBusinessTime,
       text: "طرح کسب و کار",
       permission: ["unused_precedence_process"],

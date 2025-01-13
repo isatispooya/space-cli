@@ -4,3 +4,4 @@ export * from "./capitalIncreasement";
 export * from "./precendence";
 export * from "./stocktransfer";
 export * from "./shareholders";
+export * from "./license";

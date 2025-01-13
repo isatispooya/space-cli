@@ -37,3 +37,9 @@ export interface EmploymentsTypes {
         year_of_establishment: number;
       };
 }
+
+export interface EmploymentsPostTypes extends FormData {
+  job_title: string;
+  job_location: string;
+  // ... other fields
+}

@@ -92,8 +92,11 @@ const PositionUpdatePage = lazy(() =>
   }))
 );
 
-
-
+const LicensePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.LicensePage,
+  }))
+);
 
 
 
@@ -328,6 +331,8 @@ const MarketingPage = lazy(() =>
   }))
 );
 
+
+
 const MarketingTablePage = lazy(() =>
   import("../Modules/marketing").then((module) => ({
     default: module.MarketingTablePage,
@@ -533,7 +538,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update/:id",
+          path: "update",
           element: (
             <Suspense fallback={<Loader />}>
               <PositionUpdatePage />
@@ -783,6 +788,16 @@ export default function Router() {
           ),
         },
 
+   
+
+        {
+          path: "license",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <LicensePage />
+            </Suspense>
+          ),
+        },
         {
           path: "description",
           element: (

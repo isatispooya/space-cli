@@ -1,4 +1,5 @@
 interface CompanyDetail {
+  id: number;
   name: string;
 }
 
@@ -11,8 +12,10 @@ export interface PositionData {
   type_of_employment: string;
   description: string;
   user: {
+    id: number;
     first_name: string;
     last_name: string;
+    uniqueIdentifier?: string;
   };
   created_at: string;
   start_date: string;
