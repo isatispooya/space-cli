@@ -59,23 +59,30 @@ const PositionsTable = () => {
     }
     deletePosition(selectedRow.id);
     refetch();
+    window.location.reload();
   }, [selectedRow, refetch]);  
 
-  const rows = positions ? positions.map((position) => ({
-    id: position.id,
-    name: position.name,
-    company: position.company_detail?.name || "نامشخص",
-    parent: position.parent,
-    type_of_employment: typeOfEmploymentTranslations[position.type_of_employment] || "",
-    description: position.description,
-    user: {
-      first_name:typeOfEmploymentTranslations[position.user?.first_name || "نامشخص"] ,
-      last_name: typeOfEmploymentTranslations[position.user?.last_name || "نامشخص"],
-    },
-    created_at: moment(position.created_at).format('jYYYY/jMM/jDD'),
-    start_date: moment(position.start_date).format('jYYYY/jMM/jDD'),
-    end_date: moment(position.end_date).format('jYYYY/jMM/jDD'),
-  })) : [];
+  const rows = positions ? positions.map((position) => {
+    console.log("Original created_at:", position.created_at);
+    console.log("Original start_date:", position.start_date);
+    console.log("Original end_date:", position.end_date);
+
+    return {
+      id: position.id,
+      name: position.name,
+      company: position.company_detail?.name || "نامشخص",
+      parent: position.parent,
+      type_of_employment: typeOfEmploymentTranslations[position.type_of_employment] || "",
+      description: position.description,
+      user: {
+        first_name: position.user?.first_name || "نامشخص",
+        last_name: position.user?.last_name || "نامشخص",
+      },
+      created_at: moment(position.created_at, 'YYYY-MM-DD').format('jYYYY/jMM/jDD'),
+      start_date: moment(position.start_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD'),
+      end_date: moment(position.end_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD'),
+    };
+  }) : [];
   const columns: GridColDef[] = [
     { field: "name", headerName: "نام نقش", width: 200, headerAlign: "center", align: "center" },
     { field: "company", headerName: "نام شرکت", width: 200, headerAlign: "center", align: "center" },
