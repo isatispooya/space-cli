@@ -357,8 +357,40 @@ const TimeFlowPage = lazy(() =>
   }))
 );
 
+const EmploymentsMainPage = lazy(() =>
+  import("../Modules/employments").then((module) => ({
+    default: module.EmploymentsMainPage,
+  }))
+);
+const EmploymentsTablePage = lazy(() =>
+  import("../Modules/employments").then((module) => ({
+    default: module.EmploymentsTablePage,
+  }))
+);
 
+const EmploymentsCreatePage = lazy(() =>
+  import("../Modules/employments").then((module) => ({
+    default: module.EmploymentsCreatePage,
+  }))
+);
 
+const EmploymentsProcessMainPage = lazy(() =>
+  import("../Modules/employmentsprocess").then((module) => ({
+    default: module.EmploymentsProcessMainPage,
+  }))
+);
+
+const EmploymentsProcessTablePage = lazy(() =>
+  import("../Modules/employmentsprocess").then((module) => ({
+    default: module.EmploymentsProcessTablePage,
+  }))
+);
+
+const EmploymentsProcessCreatePage = lazy(() =>
+  import("../Modules/employmentsprocess").then((module) => ({
+    default: module.EmploymentsProcessCreatePage,
+  }))
+);
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -909,7 +941,58 @@ export default function Router() {
         },
       ],
     },
-   
+    {
+      path: "/employments",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <EmploymentsMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <EmploymentsTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <EmploymentsCreatePage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+    {
+      path: "/employmentsprocess",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <EmploymentsProcessMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <EmploymentsProcessTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <EmploymentsProcessCreatePage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
   ]);
   return routes;
 }
