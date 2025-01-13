@@ -367,6 +367,12 @@ const TimeFlowLeaveTablePage = lazy(() =>
     default: module.TimeFlowLeaveTablePage,
   }))
 );
+const TimeFlowCreatePage = lazy(() =>
+  import("../Modules/timeflow").then((module) => ({
+    default: module.LeaveCreatePage,
+  }))
+);
+
 const EmploymentsMainPage = lazy(() =>
   import("../Modules/employments").then((module) => ({
     default: module.EmploymentsMainPage,
@@ -927,7 +933,15 @@ export default function Router() {
             </Suspense>
           ),
         },
-      ],
+        {
+          path: "addleave",
+          element: (
+            <Suspense fallback={<LoaderLg />}>
+              <TimeFlowCreatePage />
+            </Suspense>
+          ),
+        },
+      ],  
     },
     {
       path: "/marketing",

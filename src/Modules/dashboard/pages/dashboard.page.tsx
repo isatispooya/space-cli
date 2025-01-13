@@ -8,6 +8,7 @@ import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
 import DashboardBimeStat from "../components/dashboardBime.stat";
 import DashboardBorsStat from "../components/dashboardBors.stat";
+import { TimeflowUserCom } from "../../timeflow/components";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
@@ -36,6 +37,7 @@ const DashboardPage = () => {
               <div className="md:col-span-2 ">
                 <DashboardChart />
               </div>
+              <TimeflowUserCom/>
               <div className="md:col-span-1 ">
                 <DashboardMarketingStat />
               </div>
