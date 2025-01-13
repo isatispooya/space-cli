@@ -3,27 +3,26 @@ import * as yup from "yup";
 import { EmploymentsPostTypes } from "../types";
 import { useCompany } from "../../companies";
 import { useEmployments } from "../hooks";
-import { FormField } from "../../companies/types";
-import { useState } from "react";
 import { FormikHelpers } from "formik";
 import toast from "react-hot-toast";
+import { FormField } from "../../companies/types";
 
 const EmploymentsCreateForm = () => {
   const { data: companies } = useCompany.useGet();
   const { mutate: postJobOffer } = useEmployments.usePostJobOffer();
 
   const validationSchema = yup.object({
-    job_title: yup.string(),
-    job_location: yup.string(),
-    job_description: yup.string(),
-    eligibility_criteria: yup.string(),
-    experience: yup.string(),
-    kind_of_job: yup.string(),
-    company: yup.string(),
-    gender: yup.string(),
-    expiration_date: yup.string(),
-    is_active: yup.boolean(),
-    picture: yup.mixed(),
+    job_title: yup.string().required("عنوان شغل الزامی است"),
+    job_location: yup.string().required("مکان شغل الزامی است"),
+    job_description: yup.string().required("شرح شغل الزامی است"),
+    eligibility_criteria: yup.string().required("شرایط احزار الزامی است"),
+    experience: yup.string().required("سابقه کار الزامی است"),
+    kind_of_job: yup.string().required("نوع شغل الزامی است"),
+    company: yup.string().required("شرکت الزامی است"),
+    gender: yup.string().required("جنسیت الزامی است"),
+    expiration_date: yup.string().required("تاریخ انقضا الزامی است"),
+    is_active: yup.boolean().required("وضعیت الزامی است"),
+    picture: yup.mixed<File>().required("عکس الزامی است"),
   });
 
   const kindOfJobs = [
@@ -33,9 +32,8 @@ const EmploymentsCreateForm = () => {
     { label: "کارآموزی", value: "work_study" },
     { label: "بین المللی", value: "intership" },
   ];
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const formFields: FormField = [
+  const formFields: FormField[] = [
     {
       name: "job_title",
       label: "عنوان شغل",
@@ -72,7 +70,6 @@ const EmploymentsCreateForm = () => {
       label: "سابقه کار",
       type: "text" as const,
     },
-
     {
       name: "company",
       label: "شرکت",
@@ -149,8 +146,8 @@ const EmploymentsCreateForm = () => {
         formFields={formFields}
         initialValues={initialValues}
         validationSchema={validationSchema}
-        colors="text-[#5677BC]"
-        buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
+        colors="text-[#29D2C7]"
+        buttonColors="bg-[#29D2C7] hover:bg-[#29D2C7]"
         showCloseButton={true}
         onSubmit={handleSubmit}
         submitButtonText={{ default: "ثبت", loading: "در حال ثبت..." }}
