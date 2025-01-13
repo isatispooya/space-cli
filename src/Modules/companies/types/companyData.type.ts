@@ -10,12 +10,9 @@ export interface CompanyData {
   postal_code: string;
   national_id: string;
   description?: string;
-  logo?: string;
   letterhead?: string;
   registered_capital?: number;
   registration_number?: number;
-  seal?: string;
-  signature?: string;
   type_of_activity?: string;
   website?: string;
   file?: File;

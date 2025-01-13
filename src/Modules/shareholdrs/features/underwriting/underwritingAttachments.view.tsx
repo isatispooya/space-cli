@@ -8,6 +8,7 @@ interface AppendixItem {
   name: string;
   status: string;
   created_at: string;
+  link?: string;
 }
 
 const UnderwritingAttachmentsView = () => {
@@ -55,7 +56,7 @@ const UnderwritingAttachmentsView = () => {
                   }`}
                 >
                   <span className="font-extrabold text-xl tracking-wider">
-                    {getFileFormat(item.file)}
+                    {item.link ? "link" : getFileFormat(item.file)}
                   </span>
                 </div>
               </div>
@@ -70,15 +71,28 @@ const UnderwritingAttachmentsView = () => {
               </div>
             </div>
 
-            <a
-              href={item.file}
-              download
-              className="flex items-center gap-2 text-slate-700 bg-slate-100 hover:bg-indigo-500 hover:text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FiDownload className="w-5 h-5" />
-              <span className="text-sm font-bold">دانلود</span>
-            </a>
+            {item.link ? (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-slate-700 bg-slate-100 hover:bg-indigo-500 hover:text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <FiFileText className="w-5 h-5" />
+                <span className="text-sm font-bold">مشاهده</span>
+              </a>
+            ) : (
+              <a
+                href={item.file}
+                download
+                className="flex items-center gap-2 text-slate-700 bg-slate-100 hover:bg-indigo-500 hover:text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <FiDownload className="w-5 h-5" />
+                <span className="text-sm font-bold">دانلود</span>
+              </a>
+            )}
           </motion.div>
         ))}
       </div>

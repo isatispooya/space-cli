@@ -25,6 +25,7 @@ export interface FormField {
     required?: boolean;
     disabled?: boolean;
     error?: string;
+    onChange?: (value: unknown) => void;
   };
   viewFileProps?: {
     url?: string;

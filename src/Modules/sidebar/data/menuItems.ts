@@ -14,7 +14,7 @@ export interface MenuItem {
   path?: string;
   icon?: IconType;
   submenu?: MenuItem[];
-  codename?:  string[];
+  codename?: string[];
 }
 
 export const menuItems: MenuItem[] = [
@@ -92,6 +92,8 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
+
+  
   {
     title: "مدیریت نقش‌ها",
     path: "/positions",
@@ -110,7 +112,9 @@ export const menuItems: MenuItem[] = [
     path: "/contact",
     codename: ["allow_any"],
     icon: FaPhone,
-    submenu: [{ title: "تماس با ما", path: "/contact", codename: ["allow_any"] }],
+    submenu: [
+      { title: "تماس با ما", path: "/contact", codename: ["allow_any"] },
+    ],
   },
   {
     title: "دسترسی ها",
@@ -134,7 +138,28 @@ export const menuItems: MenuItem[] = [
       { title: "مدیریت گروه ها", path: "/groups", codename: ["view_group"] },
     ],
   },
-
+  {
+    title: "همکاری با ما",
+    path: "/employments",
+    icon: FaUserTie,
+    codename: ["allow-anyy"],
+    submenu: [
+      {
+        title: "فرصت های همکاری با ما",
+        path: "/employments/table",
+        codename: ["allow_anyy"],
+      },
+    ],
+  },
+  {
+    title: "فرایند استخدامی",
+    path: "/employmentsprocess",
+    icon: FaUserTie,
+    codename: ["allow_anyy"],
+    submenu: [
+      { title: "فرایند های", path: "/employmentsprocess/table", codename: ["allow_anyy"] },
+    ],
+  },
   {
     title: "تردد",
     path: "/timeflow",
@@ -148,7 +173,6 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-
   {
     title: "باشگاه مشتریان",
     path: "/marketing",

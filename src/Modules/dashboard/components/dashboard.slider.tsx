@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../styles/slider.css";
+import { FaShareAlt } from "react-icons/fa";
 
 export interface SlideItem {
   id: number;
@@ -32,9 +33,30 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleShare = async (slide: SlideItem) => {
+    try {
+      const shareData = {
+        title: slide.title,
+        text: `${slide.title}\n\nhttps://my.isatispooya.com/underwriting/description`,
+        url: `https://my.isatispooya.com/underwriting/description`,
+      };
+
+      if (navigator.share) {
+        await navigator.share(shareData);
+        console.log("Shared successfully");
+      } else {
+        console.log("Web Share API not supported");
+      }
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
+
   if (!slides || slides.length === 0) {
     return null;
   }
+
+  console.log(slides, "slides");
 
   return (
     <div className="relative w-full h-full">
@@ -58,6 +80,14 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
         className="!absolute inset-0 rounded-lg overflow-hidden"
         initialSlide={0}
         breakpoints={{
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 5,
+          },
+          480: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
           640: {
             slidesPerView: 1,
             spaceBetween: 10,
@@ -96,6 +126,17 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
                 </button>
               </div>
             </a>
+            <div className="absolute bottom-5 left-5 right-0 p-3 sm:p-4 z-10 text-left flex items-center justify-start">
+              <div className="flex items-center bg-green-500/10 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-green-500/20 transition-all duration-300">
+                <FaShareAlt className="text-base sm:text-lg md:text-xl text-green-700 group-hover:text-green-400 transition-colors duration-300" />
+                <button
+                  onClick={() => handleShare(slide)}
+                  className="text-xs sm:text-sm md:text-base text-green-900 group-hover:text-green-400 transition-colors duration-300 mr-2 font-medium"
+                >
+                  اشتراک‌گذاری
+                </button>
+              </div>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

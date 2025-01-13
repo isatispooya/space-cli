@@ -5,11 +5,21 @@ export interface PositionData {
   parent: number;
   type_of_employment: number;
   description: string;
-  user: number;
+  user: {
+    first_name: string;
+    last_name: string;
+    id: number;
+  };
   start_date: string;
   end_date: string;
   created_at: string;
   sender: string;
+  first_name: string;
+  last_name: string;
+  company_detail?: {
+    id: number | string;
+    name: string;
+  };
 }
 
 export interface PositionFormValues {
@@ -21,6 +31,7 @@ export interface PositionFormValues {
   description: string;
   start_date: string;
   end_date: string;
+
 }
 
 export interface PatchPositionParams {

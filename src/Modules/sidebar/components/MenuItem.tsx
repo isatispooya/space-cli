@@ -33,6 +33,10 @@ const CustomMenuItem: React.FC<MenuItemProps> = ({ item }) => {
     }
   }, [search]);
 
+  if (item.submenu?.every(subItem => subItem.codename && !checkPermission(subItem.codename))) {
+    return null;
+  }
+
   if (!filteredSubmenu || filteredSubmenu.length === 0) {
     return (
       <div className="w-full">

@@ -25,6 +25,10 @@ const DashboardMarketingStat = () => {
   const { data: invitedUsers } = useInvitation.useGetList();
 
   const allNames = [...(invitedUsers || [])];
+
+  console.log(invitedUsers);
+  console.log(invitation);
+  
   
 
   const [visibleIndices, setVisibleIndices] = useState<number[]>([]);
@@ -34,14 +38,15 @@ const DashboardMarketingStat = () => {
     if (allNames.length >= 1) indices.push(0);
     if (allNames.length >= 2) indices.push(1);
     if (allNames.length >= 3) indices.push(2);
+    if (allNames.length >= 4) indices.push(3);
     setVisibleIndices(indices);
 
-    if (allNames.length > 3) {
+    if (allNames.length > 4) {
       const interval = setInterval(() => {
         setVisibleIndices((prevIndices) => {
           return prevIndices.map((index) => (index + 1) % allNames.length);
         });
-      }, 2000);
+      }, 3000);
 
       return () => clearInterval(interval);
     }
@@ -92,7 +97,7 @@ const DashboardMarketingStat = () => {
             animate={{ scale: 1 }}
             className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans"
           >
-            {invitation?.length || 0}
+            {invitation?.[0]?.invited_users_count || 0}
             <span className="text-sm text-[#D2042D] font-iranSans mr-2">
               نفر
             </span>
@@ -105,7 +110,7 @@ const DashboardMarketingStat = () => {
           </h4>
           <div
             className="flex flex-col gap-1 overflow-hidden"
-            style={{ height: "150px" }}
+            style={{ height: "180px" }}
           >
             {visibleIndices.map((index) => {
               const userDetail = allNames[index]?.invited_user_detail;

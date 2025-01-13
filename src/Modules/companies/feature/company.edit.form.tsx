@@ -103,7 +103,7 @@ const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
       <Forms
         formFields={formFields}
         initialValues={initialValues}
-        validationSchema={validationSchema}
+        validationSchema={validationSchema as Yup.ObjectSchema<CompanyData>}
         showCloseButton={true}
         onClose={onClose}
         colors="text-[#5677BC]"

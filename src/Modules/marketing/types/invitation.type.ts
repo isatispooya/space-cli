@@ -12,4 +12,5 @@ export interface InvitationTypes {
     code: string;
   };
   created_at: string;
+  invited_users_count: number;
 }

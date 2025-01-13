@@ -3,7 +3,6 @@ import { useRoutes } from "react-router-dom";
 import LoaderLg from "../components/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../Modules/dashboard/pages/dashboard.page";
-import { UpdateUnderWritingPage } from "../Modules/shareholdrs";
 import { TimeFlowTable } from "../Modules/timeflow/featuers";
 
 const LoginPage = lazy(() => import("../pages/login.page"));
@@ -80,11 +79,26 @@ const PositionMainPage = lazy(() =>
     default: module.PositionMainPage,
   }))
 );
+
 const PositionsTablePage = lazy(() =>
   import("../Modules/positions").then((module) => ({
     default: module.PositionsTablePage,
   }))
 );
+
+const PositionUpdatePage = lazy(() =>
+  import("../Modules/positions").then((module) => ({
+    default: module.PositionUpdatePage,
+  }))
+);
+
+const LicensePage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.LicensePage,
+  }))
+);
+
+
 
 const ShareholdersPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
@@ -257,6 +271,12 @@ const UnderwritingPrintPage = lazy(() =>
   }))
 );
 
+const UpdateUnderWritingPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.UpdateUnderWritingPage,
+  }))
+);
+
 const ProjectProgressPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.ProjectProgressPage,
@@ -311,6 +331,8 @@ const MarketingPage = lazy(() =>
   }))
 );
 
+
+
 const MarketingTablePage = lazy(() =>
   import("../Modules/marketing").then((module) => ({
     default: module.MarketingTablePage,
@@ -335,6 +357,40 @@ const TimeFlowPage = lazy(() =>
   }))
 );
 
+const EmploymentsMainPage = lazy(() =>
+  import("../Modules/employments").then((module) => ({
+    default: module.EmploymentsMainPage,
+  }))
+);
+const EmploymentsTablePage = lazy(() =>
+  import("../Modules/employments").then((module) => ({
+    default: module.EmploymentsTablePage,
+  }))
+);
+
+const EmploymentsCreatePage = lazy(() =>
+  import("../Modules/employments").then((module) => ({
+    default: module.EmploymentsCreatePage,
+  }))
+);
+
+const EmploymentsProcessMainPage = lazy(() =>
+  import("../Modules/employmentsprocess").then((module) => ({
+    default: module.EmploymentsProcessMainPage,
+  }))
+);
+
+const EmploymentsProcessTablePage = lazy(() =>
+  import("../Modules/employmentsprocess").then((module) => ({
+    default: module.EmploymentsProcessTablePage,
+  }))
+);
+
+const EmploymentsProcessCreatePage = lazy(() =>
+  import("../Modules/employmentsprocess").then((module) => ({
+    default: module.EmploymentsProcessCreatePage,
+  }))
+);
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -481,6 +537,16 @@ export default function Router() {
             </Suspense>
           ),
         },
+        {
+          path: "update",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PositionUpdatePage />
+            </Suspense>
+          ),
+        },
+
+
       ],
     },
     {
@@ -722,6 +788,16 @@ export default function Router() {
           ),
         },
 
+   
+
+        {
+          path: "license",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <LicensePage />
+            </Suspense>
+          ),
+        },
         {
           path: "description",
           element: (
@@ -860,6 +936,58 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <MarketingListTablePage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+    {
+      path: "/employments",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <EmploymentsMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <EmploymentsTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <EmploymentsCreatePage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+    {
+      path: "/employmentsprocess",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <EmploymentsProcessMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <EmploymentsProcessTablePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <EmploymentsProcessCreatePage />
             </Suspense>
           ),
         },

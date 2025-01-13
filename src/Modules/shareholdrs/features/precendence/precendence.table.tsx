@@ -19,6 +19,9 @@ const PrecendenceTable: React.FC = () => {
   const { data, refetch, isPending } = usePrecendence.useGet();
   const navigate = useNavigate();
 
+  console.log(data);
+  
+
   const { mutate: deletePrecendence } = usePrecendence.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { checkPermission } = useUserPermissions();
@@ -30,49 +33,58 @@ const PrecendenceTable: React.FC = () => {
       headerName: "نام",
       width: 100,
       renderCell: (params) => {
-        return params.row.user_detail.first_name;
+        return <div className="text-center">{params.row.user_detail.first_name}</div>;
       },
+      headerAlign: 'center',
+      align: 'center',
     },
     {
       field: "last_name",
       headerName: "نام خانوادگی",
-      width: 100,
+      width: 200,
       renderCell: (params) => {
-        return params.row.user_detail.last_name;
+        return <div className="text-center">{params.row.user_detail.last_name}</div>;
       },
+      headerAlign: 'center',
+      align: 'center',
     },
     {
       field: "uniqueIdentifier",
       headerName: "کدملی",
-      width: 100,
+      width: 200,
       renderCell: (params) => {
-        return params.row.user_detail.uniqueIdentifier;
+        return <div className="text-center">{params.row.user_detail.uniqueIdentifier}</div>;
       },
+      headerAlign: 'center',
+      align: 'center',
     },
     {
       field: "company",
       headerName: "شرکت",
-      width: 100,
+      width: 200,
       renderCell: (params) => {
-        return params.row.company_detail.name;
+        return <div className="text-center">{params.row.company_detail.name}</div>;
       },
+      headerAlign: 'center',
+      align: 'center',
     },
-    { field: "precedence", headerName: "حق تقدم", width: 100 },
-
+    { field: "precedence", headerName: "حق تقدم", width: 100, headerAlign: 'center', align: 'center' },
     {
-      field: "total_precedence",
+      field: "total_amount",
       headerName: "حق تقدم استفاده شده",
-      width: 100,
+      width: 200,
+      headerAlign: 'center',
+      align: 'center',
     },
     {
       field: "updated_at",
       headerName: "تاریخ بروزرسانی",
       width: 180,
       renderCell: (params) => {
-        return moment(params.row.updated_at)
-          .locale("fa")
-          .format("jYYYY/jMM/jDD");
+        return <div className="text-center">{moment(params.row.updated_at).locale("fa").format("jYYYY/jMM/jDD")}</div>;
       },
+      headerAlign: 'center',
+      align: 'center',
     },
   ];
 
