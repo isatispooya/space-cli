@@ -1,7 +1,7 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { usePositionData } from "../hooks";
-import { useState, useCallback } from "react";
-import { FaTrash } from "react-icons/fa";
+import { useState, useCallback, useEffect } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import toast from "react-hot-toast";
 import { deletePosition } from "../services";
@@ -9,6 +9,8 @@ import { useUserPermissions } from "../../permissions";
 import { LoaderLg } from "../../../components";
 import { tableStyles } from "../../../ui";
 import moment from 'moment-jalaali';
+import { useUpdatePositionStore } from "../store/updatePosition";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 type RowType = {
@@ -37,20 +39,20 @@ const typeOfEmploymentTranslations: Record<string, string> = {
 
 const PositionsTable = () => {
   const { data: positions, isPending, refetch } = usePositionData();
-  // const { setId } = useUpdatePositionStore();
-  const [selectedRow, setSelectedRow] = useState<RowType | null>(null);
-  const { checkPermission } = useUserPermissions();   
-  // const navigate = useNavigate();
+  const [selectedRow, setSelectedRow] = useState(null);
+  const { checkPermission } = useUserPermissions();  
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    if (!selectedRow) {
+      toast.error("لطفا یک نقش را انتخاب کنید");
+      return;
+    }
+    navigate(`/positions/update/${selectedRow.id}`);
+
+  };
 
  
-
-  // const handleEdit = () => {
-  //   if (!selectedRow) {
-  //     toast.error("لطفا یک نقش را انتخاب کنید");
-  //     return;
-  //   }
-  //   setId(selectedRow.id);
-  // };
 
   const handleDelete = useCallback(() => {
     if (!selectedRow) {
@@ -59,7 +61,6 @@ const PositionsTable = () => {
     }
     deletePosition(selectedRow.id);
     refetch();
-    window.location.reload();
   }, [selectedRow, refetch]);  
 
   const rows = positions ? positions.map((position) => {
@@ -108,7 +109,7 @@ const PositionsTable = () => {
     return checkPermission ? checkPermission(permissions) : false;
   };
 
-  // const canEdit = hasPermission(["change_position"]);
+  const canEdit = hasPermission(["change_position"]);
   const canDelete = hasPermission(["delete_position"]);
 
   if (isPending) {
@@ -157,12 +158,12 @@ const PositionsTable = () => {
               fileName="گزارش-پرداخت"
               showExcelExport={true}
               actions={{
-                // edit: {
-                //   show: canEdit,
-                //   label: "ویرایش",
-                //   onClick: handleEdit,
-                //   icon: <FaEdit />,
-                // },
+                edit: {
+                  show: canEdit,
+                  label: "ویرایش",
+                  onClick: handleEdit,
+                  icon: <FaEdit />,
+                },
                 delete: {
                   show: canDelete,
                   label: "حذف",
@@ -179,6 +180,7 @@ const PositionsTable = () => {
             quickFilterProps: { debounceMs: 500 },
           },
         }}
+        
       />
 
     </>

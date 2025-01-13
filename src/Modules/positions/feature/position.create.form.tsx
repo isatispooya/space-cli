@@ -184,7 +184,6 @@ const PositionCreate = () => {
           };
           await createPosition(formData as PositionFormValues);
           navigate("/positions/table");
-          window.location.reload(); 
           refetch();
         } catch (error) {
           console.error("Error creating position:", error);
