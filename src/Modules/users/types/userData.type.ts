@@ -45,3 +45,13 @@ export interface UserData {
     updated_at: string;
     user_permissions: Permission[];
 }
+
+
+export interface UserLiteData {
+    id: number;
+    username: string;
+    first_name: string;
+    last_name: string;
+    mobile: string;
+    uniqueIdentifier: string;
+}

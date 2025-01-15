@@ -19,6 +19,7 @@ const ShareholdTable: React.FC = () => {
   const [selectedRow, setSelectedRow] = useState<ShareholdersTypes | null>(
     null
   );
+  
   const { mutate: deleteShareholder } = useShareholders.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const navigate = useNavigate();
@@ -26,20 +27,16 @@ const ShareholdTable: React.FC = () => {
 
   const columns: GridColDef[] = [
     {
-      field: "company",
+      field: "company_name",
       headerName: "شرکت",
-      width: 150,
-      renderCell: (params) => {
-        const company = params.row.company_detail;
-        return company && typeof company === "object" ? company.name : "";
-      },
+      width: 150
     },
     {
       field: "company_type",
       headerName: "نوع شرکت",
       width: 150,
       renderCell: (params) => {
-        const company = params.row.company_detail;
+        const company = params.row.company_type;
         if (!company || typeof company !== "object") return "";
 
         const companyType = companyTypes.find(
@@ -54,31 +51,19 @@ const ShareholdTable: React.FC = () => {
       width: 100,
     },
     {
-      field: "user",
+      field: "first_name",
       headerName: "نام",
       width: 150,
-      renderCell: (params) => {
-        const user = params.row.user_detail;
-        return user && typeof user === "object" ? user.first_name : "";
-      },
     },
     {
       field: "last_name",
       headerName: "نام خانوادگی",
       width: 150,
-      renderCell: (params) => {
-        const user = params.row.user_detail;
-        return user && typeof user === "object" ? user.last_name : "";
-      },
     },
     {
       field: "uniqueIdentifier",
       headerName: "کدملی ",
       width: 150,
-      renderCell: (params) => {
-        const user = params.row.user_detail;
-        return user && typeof user === "object" ? user.uniqueIdentifier : "";
-      },
     },
     {
       field: "updated_at",
@@ -112,6 +97,11 @@ const ShareholdTable: React.FC = () => {
 
   const processedData = shareholdersData.map((row: ShareholdersTypes) => ({
     ...row,
+    company_name: row?.company_detail?.name,
+    company_type: row?.company_detail?.company_type,
+    first_name: row?.user_detail?.first_name,
+    last_name: row?.user_detail?.last_name,
+    uniqueIdentifier: row?.user_detail?.uniqueIdentifier,
     id: row.id || Math.random(),
   }));
 
