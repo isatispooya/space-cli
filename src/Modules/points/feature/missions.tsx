@@ -6,14 +6,14 @@ import { server } from "../../../api";
 const Missions = () => {
   const navigate = useNavigate();
 
-  const { data: missionss } = useMissions();
+  const { data: missionss } = useMissions.useGetMissions();
 
   const missionsData = [
     ...(Array.isArray(missionss)
       ? missionss.map((mission) => ({
           point_2: mission.point_2,
           point_1: mission.point_1,
-          display_name: mission.title,
+          display_name: mission.title || "Default Title",
           description: mission.description,
           onNavigate: () => {
             navigate("/");
@@ -21,6 +21,8 @@ const Missions = () => {
           image: server + mission.image,
           link: mission.link,
           user_attempts: mission.user_attempts,
+          id: mission.id,
+          status: mission.status,
         }))
       : []),
   ];
