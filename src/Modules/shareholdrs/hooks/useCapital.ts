@@ -4,7 +4,8 @@ import {
   UseMutationResult,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { CapitalIncreaseTypes, CapitalIncreaseCreate } from "../types";
+import {  CapitalIncreaseCreate } from "../types/capitalCreate.type";
+import { CapitalIncreaseTypes } from "../types/capitalIncrease.type";
 import { capitalServices } from "../services";
 
 const useCapital = {

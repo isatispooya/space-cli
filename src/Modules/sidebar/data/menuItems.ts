@@ -178,13 +178,26 @@ export const menuItems: MenuItem[] = [
   },
   {
     title: "باشگاه مشتریان",
-    path: "/marketing",
+    path: "/invitation",
     icon: FaUserTie,
     codename: ["allow_any"],
     submenu: [
       {
         title: " کاربران دعوت شده",
-        path: "/marketing",
+        path: "/invitation",
+        codename: ["allow_any"],
+      },
+    ],
+  },
+  {
+    title: "امتیازات",
+    path: "/points",
+    icon: FaUserTie,
+    codename: ["allow_any"],
+    submenu: [
+      {
+        title: "ماموریت ها",
+        path: "/points/missions",
         codename: ["allow_any"],
       },
     ],

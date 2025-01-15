@@ -12,17 +12,17 @@ const ContactUsBox = () => {
 
   return (
     <div className="relative">
-      <motion.div
-        className={`w-14 h-16 z-10 rounded-l-full flex justify-center bg-[#0f1e47] items-center fixed bottom-5 right-0 shadow-lg cursor-pointer`}
-        style={{
-          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-          opacity: isOpen ? 0 : 1,
-          pointerEvents: isOpen ? "none" : "auto",
-        }}
-        onClick={toggleBox}
-      >
-        <FaPhone className="text-white text-2xl" />
-      </motion.div>
+      {!isOpen && (
+        <motion.div
+          className="w-14 h-16 z-10 rounded-l-full flex justify-center bg-[#0f1e47] items-center fixed bottom-5 right-0 shadow-lg cursor-pointer"
+          style={{
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+          }}
+          onClick={toggleBox}
+        >
+          <FaPhone className="text-white text-2xl" />
+        </motion.div>
+      )}
 
       {isOpen ? (
         <motion.div

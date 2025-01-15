@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import Forms from "../../../../components/forms";
-import { stockTransferTypes } from "../../types";
+import { stockTransferTypes } from "../../types/stockTransfer.type";
 import * as yup from "yup";
 import { useStockTransfer } from "../../hooks";
 import { useStockTransferStore } from "../../store";

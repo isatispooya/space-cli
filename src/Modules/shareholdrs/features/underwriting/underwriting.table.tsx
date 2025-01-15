@@ -5,7 +5,7 @@ import {
   formatNumber,
   localeText,
 } from "../../../../utils";
-import { underwritingTypes } from "../../types";
+import { underwritingTypes } from "../../types/underwriting.type";
 import { tableStyles } from "../../../../ui";
 import { useState } from "react";
 import toast from "react-hot-toast";

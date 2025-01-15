@@ -1,5 +1,6 @@
 import { api } from "../../../api";
-import { CapitalIncreaseCreate, CapitalIncreaseTypes } from "../types";
+import {  CapitalIncreaseTypes } from "../types/capitalIncrease.type";
+import { CapitalIncreaseCreate } from "../types/capitalCreate.type";
 
 const capitalServices = {
   get: async () => {

@@ -6,10 +6,9 @@ import moment from "moment-jalaali";
 import "moment/locale/fa";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { DisplacementPrecendenceTypes } from "../../types";
+import { DisplacementPrecendenceTypes } from "../../types/displacementPrecendence.type";
 import { tableStyles } from "../../../../ui";
 import Popup from "../../../../components/popup";
-import { useDisplacementStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../permissions";
 import { LoaderLg } from "../../../../components";
@@ -18,7 +17,6 @@ const DisplacementTable = () => {
   const { data, refetch, isPending } = useDisplacement.useGet();
   const { mutate: deleteDisplacement } = useDisplacement.useDelete();
   const { checkPermission } = useUserPermissions();
-  const { setId } = useDisplacementStore();
   const navigate = useNavigate();
   const [selectedRow, setSelectedRow] =
     useState<DisplacementPrecendenceTypes | null>(null);
@@ -112,8 +110,7 @@ const DisplacementTable = () => {
       toast.error("لطفا یک حق تقدم را انتخاب کنید");
       return;
     }
-    setId(selectedRow.id);
-    navigate("/displacement/update");
+    navigate(`/displacement/update/${selectedRow.id}`);
   };
 
   const handleDelete = () => {
@@ -174,7 +171,6 @@ const DisplacementTable = () => {
                 actions={{
                   edit: {
                     label: "ویرایش",
-
                     onClick: handleEdit,
                     show: checkPermission(["change_displacementprecedence"]),
                     icon: <FaEdit />,

@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { stockTransferTypes } from "../../types";
+import { stockTransferTypes } from "../../types/stockTransfer.type";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useStockTransfer } from "../../hooks";
 import { CustomDataGridToolbar, localeText } from "../../../../utils";

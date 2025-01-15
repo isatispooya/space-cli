@@ -5,6 +5,7 @@ import { useCompany } from "../hooks";
 import Forms from "../../../components/forms";
 import toast from "react-hot-toast";
 import { FormField } from "../types";
+import { useParams } from "react-router-dom";
 
 interface CompanyTypeOption {
   value: string;
@@ -71,44 +72,41 @@ const formFields: FormField[] = [
   { name: "employees", label: "تعداد کارمندان", type: "text" },
 ];
 
-interface EditCompanyFormProps {
-  data: CompanyData | null;
-  onClose: () => void;
-}
 
-const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
+const EditCompanyForm = () => {
   const { mutate: updateCompany } = useCompany.useUpdate();
-  if (!data) return null;
+  const { data } = useCompany.useGet();
+  const { id } = useParams();
 
+  const specificCompany = data?.find((company) => company.id === Number(id));
+  
   const initialValues: CompanyData = {
-    id: data.id,
-    name: data.name || "",
-    company_type: data.company_type || "",
-    year_of_establishment: Number(data.year_of_establishment) || 0,
-    phone: data.phone || "",
-    postal_code: data.postal_code || "",
-    national_id: data.national_id || "",
-    description: data.description || "",
-    registered_capital: Number(data.registered_capital) || 0,
-    registration_number: Number(data.registration_number) || 0,
-    type_of_activity: data.type_of_activity || "",
-    website: data.website || "",
-    email: data.email || "",
-    address: data.address || "",
-    employees: Number(data.employees) || 0,
+    id: specificCompany?.id || 0,
+    name: specificCompany?.name || "",
+    company_type: specificCompany?.company_type || "",
+    year_of_establishment: Number(specificCompany?.year_of_establishment) || 0,
+    phone: specificCompany?.phone || "",
+    postal_code: specificCompany?.postal_code || "",
+    national_id: specificCompany?.national_id || "",
+    description: specificCompany?.description || "",
+    registered_capital: Number(specificCompany?.registered_capital) || 0,
+    registration_number: Number(specificCompany?.registration_number) || 0,
+    type_of_activity: specificCompany?.type_of_activity || "",
+    website: specificCompany?.website || "",
+    email: specificCompany?.email || "",
+    address: specificCompany?.address || "",
+    employees: Number(specificCompany?.employees) || 0,
   };
 
   return (
-    <>
+    <div className="container mx-auto mt-8 p-4">
+      <h2 className="text-2xl font-bold text-center mb-4">ویرایش شرکت</h2>
       <Forms
+        title="ویرایش شرکت"
         formFields={formFields}
         initialValues={initialValues}
         validationSchema={validationSchema as Yup.ObjectSchema<CompanyData>}
-        showCloseButton={true}
-        onClose={onClose}
-        colors="text-[#5677BC]"
         buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
-        title="ویرایش شرکت"
         submitButtonText={{
           default: "ذخیره تغییرات",
           loading: "در حال ارسال...",
@@ -136,7 +134,7 @@ const EditCompanyForm = ({ data, onClose }: EditCompanyFormProps) => {
           }
         }}
       />
-    </>
+    </div>
   );
 };
 

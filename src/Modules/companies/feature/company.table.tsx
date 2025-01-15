@@ -13,15 +13,14 @@ import { tableStyles } from "../../../ui";
 import { useUserPermissions } from "../../permissions";
 import useCompany from "../hooks/useCompany";
 import Spinner from "../../../components/spinner";
+import { useNavigate } from "react-router-dom";
 
 
 const CompanyTable = () => {
   const { data, isPending } = useCompany.useGet();
   const { mutate: deleteCompanyMutation } = useCompany.useDelete();
   const { checkPermission } = useUserPermissions();
-
-
-
+  const navigate = useNavigate(); 
   const rows = data || [];
   const [selectedRow, setSelectedRow] = useState<CompanyData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -33,8 +32,8 @@ const CompanyTable = () => {
       toast.error("لطفا یک شرکت را انتخاب کنید");
       return;
     }
-    setIsEditOpen(true);
-  }, [selectedRow]);
+      navigate(`/companies/edit/${selectedRow.id}`);
+  }, [selectedRow, navigate]);
 
   const handleView = useCallback(() => {
     if (!selectedRow) {
@@ -164,13 +163,7 @@ const CompanyTable = () => {
           }}
         >
           {selectedRow && (
-            <EditCompanyForm
-              data={selectedRow}
-              onClose={() => {
-                setIsEditOpen(false);
-                setSelectedRow(null);
-              }}
-            />
+            <EditCompanyForm/>
           )}
         </ModalLayout>
         {selectedRow && (

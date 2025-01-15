@@ -118,25 +118,33 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
                 {slide.title}
               </h2>
 
-              <div className="absolute bottom-0 left-0 right-5 p-4 z-10 text-right">
-                <button className="mb-5 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 py-1 bg-green-600 text-white rounded-lg font-medium text-sm sm:text-base md:text-lg relative block mx-auto">
-                  <span className="before:content-[''] before:hidden sm:before:block before:absolute before:left-4 sm:before:left-8 md:before:left-12 font-bold before:top-1/2 before:w-8 sm:before:w-12 md:before:w-16 before:border-t-2 before:border-white before:transform before:-translate-y-1/2 after:content-[''] after:hidden sm:after:block after:absolute after:right-4 sm:after:right-8 md:after:right-12 after:top-1/2 after:w-8 sm:after:w-12 md:after:w-16 after:border-t-2 after:border-white after:transform after:-translate-y-1/2">
+              <div className="absolute hover bottom-0 left-0 right-5 p-4 z-10 text-right">
+                <button
+                  onClick={() => (window.location.href = slide.link)}
+                  className="mb-5 w-full sm:w-3/4  md:w-2/3 lg:w-1/2 py-1 bg-green-600 text-white rounded-lg font-medium text-sm sm:text-base md:text-lg relative block mx-auto"
+                >
+                  <span className="before:content-['']  before:hidden sm:before:block before:absolute before:left-4 sm:before:left-8 md:before:left-12 font-bold before:top-1/2 before:w-8 sm:before:w-12 md:before:w-16 before:border-t-2 before:border-white before:transform before:-translate-y-1/2 after:content-[''] after:hidden sm:after:block after:absolute after:right-4 sm:after:right-8 md:after:right-12 after:top-1/2 after:w-8 sm:after:w-12 md:after:w-16 after:border-t-2 after:border-white after:transform after:-translate-y-1/2">
                     امکان سرمایه‌گذاری آنلاین
                   </span>
                 </button>
-              </div>
-            </a>
-            <div className="absolute bottom-5 left-5 right-0 p-3 sm:p-4 z-10 text-left flex items-center justify-start">
-              <div className="flex items-center bg-green-500/10 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-green-500/20 transition-all duration-300">
-                <FaShareAlt className="text-base sm:text-lg md:text-xl text-green-700 group-hover:text-green-400 transition-colors duration-300" />
+
+                
+               <div className="absolute bottom-5 left-5 right-0 p-3 sm:p-4  text-left flex items-center justify-start">
+              <div className="flex items-center bg-green-500/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                <FaShareAlt className="text-base sm:text-lg md:text-xl text-green-700  " />
                 <button
                   onClick={() => handleShare(slide)}
-                  className="text-xs sm:text-sm md:text-base text-green-900 group-hover:text-green-400 transition-colors duration-300 mr-2 font-medium"
+                  className="text-xs sm:text-sm md:text-base mr-2 font-medium"
                 >
-                  اشتراک‌گذاری
+                  اشتراک‌ گذاری
                 </button>
               </div>
             </div>
+              </div>
+           
+            </a>
+
+            
           </SwiperSlide>
         ))}
       </Swiper>

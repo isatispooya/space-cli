@@ -1,66 +1,56 @@
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useInvitation } from "../hooks";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { useState } from "react";
+import { InvitationTypes } from "../types";
 import { tableStyles } from "../../../ui";
 import { useUserPermissions } from "../../permissions";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
+import { TableParamsTypes } from "../types/tableParams.type";
 import { LoaderLg } from "../../../components";
-import { InvitationTypes } from "../types";
 
-
-
-type TableRow = Omit<InvitationTypes, "invitation_code_detail">;
-
-const MarketingListTable = () => {
-  const [selectedRow, setSelectedRow] = useState<TableRow | null>(null);
+const InvitationTable = () => {
+  const [selectedRow, setSelectedRow] = useState<InvitationTypes | null>(null);
   const { checkPermission } = useUserPermissions();
-
-
-  const columns: GridColDef[] = [
+  const columns = [
     {
-      field: "first_name",
-      headerName: "نام",
-      width: 150,
+      field: "code",
+      headerName: "کد معرف",
+      width: 230,
       align: "center",
       headerAlign: "center",
     },
     {
-      field: "last_name",
-      headerName: "نام خانوادگی",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "mobile_number",
-      headerName: "شماره موبایل",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-    },
-
-    {
-      field: "invitation_date",
-      headerName: "تاریخ دعوت",
+      field: "description",
+      headerName: "توضیحات",
       width: 200,
       align: "center",
       headerAlign: "center",
-      renderCell: (params: GridRenderCellParams) =>
-        moment(params.row.invitation_date).locale("fa").format("jYYYY/jMM/jDD"),
     },
     {
-      field: "invitation_code",
-      headerName: "کد دعوت",
-      width: 150,
+      field: "invited_users_count",
+      headerName: "تعداد دعوت ها",
+      width: 200,
       align: "center",
       headerAlign: "center",
     },
+    {
+      field: "created_at",
+      headerName: "تاریخ ایجاد",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: TableParamsTypes) => {
+        return moment(params.row.created_at)
+          .locale("fa")
+          .format("jYYYY/jMM/jDD");
+      },
+    },
   ];
 
-  const { data, isPending } = useInvitation.useGetList();
+  const { data, isPending } = useInvitation.useGetCodes();
 
   if (isPending) {
     return (
@@ -71,53 +61,33 @@ const MarketingListTable = () => {
   }
 
   const handleEdit = () => {
-    if (selectedRow) {
-      console.log("edit", selectedRow);
-    }
+    console.log("edit");
   };
 
   const handleDelete = () => {
-    if (selectedRow) {
-      console.log("delete", selectedRow);
-    }
+    console.log("delete");
   };
 
   const rows = (data || []).map((row) => ({
-    id: row.id,
-    invited_user_detail: row.invited_user_detail,
-    code: row.invitation_code_detail?.code,
-    created_at: row.created_at,
-    first_name: row.invited_user_detail.first_name,
-    last_name: row.invited_user_detail.last_name,
-    mobile_number: row.invited_user_detail.mobile,
-    national_code: row.invited_user_detail.uniqueIdentifier,
-    invitation_date: row.created_at,
-    invitation_code: row.invitation_code_detail?.code,
+    ...row,
+    code: `my.isatispooya.com?rf=${row.code}`,
   }));
-
-  
-
-  if (isPending) {
-    return (
-      <div className="flex justify-center mb-10 items-center h-full">
-        <LoaderLg />
-      </div>
-    );
-  }
 
   return (
     <div className="w-full bg-gray-100 shadow-md relative" dir="rtl">
       <DataGrid
-        columns={columns}
+        columns={columns as unknown as GridColDef[]}
         rows={rows}
         localeText={localeText}
         onRowClick={(params) => setSelectedRow(params.row)}
         onRowSelectionModelChange={(newSelectionModel) => {
           if (newSelectionModel.length > 0) {
             const selectedId = newSelectionModel[0];
-            const selectedRow = rows.find((row) => row.id === selectedId);
+            const selectedRow = rows.find(
+              (row: (typeof rows)[0]) => row.id === selectedId
+            );
             if (selectedRow) {
-              setSelectedRow(selectedRow as unknown as TableRow);
+              setSelectedRow(selectedRow);
             }
           } else {
             setSelectedRow(null);
@@ -170,4 +140,4 @@ const MarketingListTable = () => {
   );
 };
 
-export default MarketingListTable;
+export default InvitationTable;

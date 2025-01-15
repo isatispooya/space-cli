@@ -2,21 +2,19 @@ import toast from "react-hot-toast";
 import Forms from "../../../../components/forms";
 import { usePrecendence } from "../../hooks";
 import * as yup from "yup";
-import { PrecedenceTypes } from "../../types";
-import { usePrecendenceStore } from "../../store";
-import { useCompany } from "../../../companies/hooks";
-import { useNavigate } from "react-router-dom";
-import { useUserData } from "../../../users/hooks";
+import { PrecedenceTypes } from "../../types/precedence.type";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EditPrecendenceForm: React.FC = () => {
   const { mutate: updatePrecendence } = usePrecendence.useUpdate();
-  const { id } = usePrecendenceStore();
+  const { id } = useParams();
   const { data } = usePrecendence.useGet();
-  const precedence = data?.find((item: PrecedenceTypes) => item.id === id);
-  const { data: users } = useUserData();
+  const precedence = data?.find((item: PrecedenceTypes) => item.id === Number(id));
 
   const navigate = useNavigate();
-  const { data: companies } = useCompany.useGet();
+
+  console.log(precedence);
+  
 
   if (!precedence && !id) {
     navigate("/precendence/table");
@@ -30,6 +28,8 @@ const EditPrecendenceForm: React.FC = () => {
     updated_at: yup.string().optional(),
     user: yup.number().required("کاربر الزامی است"),
     used_precedence: yup.number().required("حق تقدم استفاده شده الزامی است"),
+    company_detail: yup.object().optional(),
+    user_detail: yup.object().optional(),
   }) as yup.ObjectSchema<PrecedenceTypes>;
 
   const formFields = [
@@ -37,11 +37,10 @@ const EditPrecendenceForm: React.FC = () => {
       name: "company",
       label: "شرکت",
       type: "select" as const,
-      options:
-        companies?.map((company: { name: string; id: number }) => ({
-          label: company.name,
-          value: company.id.toString(),
-        })) || [],
+      options: [{
+        value: precedence?.company_detail?.id || '',
+        label: precedence?.company_detail?.name || '',
+      }],
     },
     {
       name: "precedence",
@@ -50,15 +49,12 @@ const EditPrecendenceForm: React.FC = () => {
     },
     {
       name: "user",
-      label: "کاربر",
+      label: "کاربر", 
       type: "select" as const,
-      options:
-        users?.map(
-          (user: { first_name: string; last_name: string; id: number }) => ({
-            label: `${user.first_name} ${user.last_name}`,
-            value: user.id.toString(),
-          })
-        ) || [],
+      options: [{
+        value: precedence?.user_detail?.id || '',
+        label: `${precedence?.user_detail?.first_name || ''} ${precedence?.user_detail?.last_name || ''} `
+      }]
     },
   ];
 

@@ -8,7 +8,6 @@ import { FaTrash } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { useShareHoldersStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import Popup from "../../../../components/popup";
 import { useUserPermissions } from "../../../permissions";
@@ -22,7 +21,6 @@ const ShareholdTable: React.FC = () => {
   );
   const { mutate: deleteShareholder } = useShareholders.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const { setId } = useShareHoldersStore();
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
 
@@ -98,8 +96,7 @@ const ShareholdTable: React.FC = () => {
       toast.error("لطفا یک شرکت را انتخاب کنید");
       return;
     }
-    setId(selectedRow.id);
-    navigate("/shareholders/update");
+    navigate(`/shareholders/update/${selectedRow.id}`);
   };
 
   const handleDelete = () => {

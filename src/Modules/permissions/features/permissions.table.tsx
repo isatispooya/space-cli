@@ -10,12 +10,13 @@ import ModalLayout from "../../../layouts/ModalLayout";
 import EditPermissionForm from "./editpermissions.form";
 import { PaginatedResponse } from "../../../types/paginated";
 import { LoaderLg } from "../../../components";
+import { useNavigate } from "react-router-dom";
 
 const PermissionsTable: React.FC = () => {
   const { data, isPending  } = usePermissionList();
   const [selectedRow, setSelectedRow] = useState<PermissionData | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
-
+  const navigate = useNavigate();
 
 
   const columns = [
@@ -29,8 +30,8 @@ const PermissionsTable: React.FC = () => {
       toast.error("لطفا یک شرکت را انتخاب کنید");
       return;
     }
-    setIsEditOpen(true);
-  }, [selectedRow]);
+    navigate(`/permissions/edit/${selectedRow.id}`);
+  }, [selectedRow, navigate]);
 
   if (isPending) {
     return (

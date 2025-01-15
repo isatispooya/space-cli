@@ -53,6 +53,13 @@ const CompanyCreatePage = lazy(() =>
     default: module.CompanyCreatePage,
   }))
 );
+
+const CompanyEditPage = lazy(() =>
+  import("../Modules/companies").then((module) => ({
+    default: module.CompanyEditPage,
+  }))
+);
+
 const CorrespondencePage = lazy(() =>
   import("../Modules/correspondence").then((module) => ({
     default: module.CorrespondencePage,
@@ -232,6 +239,12 @@ const GroupsTablePage = lazy(() =>
   }))
 );
 
+const PermissionEditPage = lazy(() =>
+  import("../Modules/permissions").then((module) => ({
+    default: module.PermissionEditPage,
+  }))
+);
+
 const UnderWritingTablePage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.UnderWritingTablePage,
@@ -322,27 +335,45 @@ const StockTransferUpdatePage = lazy(() =>
   }))
 );
 
-const MarketingPage = lazy(() =>
+const InvitationMainPage = lazy(() =>
   import("../Modules/marketing").then((module) => ({
-    default: module.MarketingMainPage,
+    default: module.InvitationMainPage,
   }))
 );
 
-const MarketingTablePage = lazy(() =>
-  import("../Modules/marketing").then((module) => ({
-    default: module.MarketingTablePage,
+const InvitationTablePage = lazy(() =>
+  import("../Modules/invitation").then((module) => ({
+    default: module.InvitationTablePage,
   }))
 );
 
-const MarketingCreatePage = lazy(() =>
-  import("../Modules/marketing").then((module) => ({
-    default: module.MarketingCreatePage,
+const InvitationCreatePage = lazy(() =>
+  import("../Modules/invitation").then((module) => ({
+    default: module.InvitationCreatePage,
   }))
 );
 
-const MarketingListTablePage = lazy(() =>
-  import("../Modules/marketing").then((module) => ({
-    default: module.MarketingListTablePage,
+const InvitationListTablePage = lazy(() =>
+  import("../Modules/invitation").then((module) => ({
+    default: module.InvitationListTablePage,
+  }))
+);
+
+const PointsMainPage = lazy(() =>
+  import("../Modules/points").then((module) => ({
+    default: module.PointsMainPage,
+  }))
+);
+
+const PointsMissionsPage = lazy(() =>
+  import("../Modules/points").then((module) => ({
+    default: module.MissionsPage,
+  }))
+);
+
+const PointsGiftsPage = lazy(() =>
+  import("../Modules/points").then((module) => ({
+    default: module.GiftsPage,
   }))
 );
 
@@ -501,6 +532,14 @@ export default function Router() {
             </Suspense>
           ),
         },
+        {
+          path: "edit/:id",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CompanyEditPage />
+            </Suspense>
+          ),
+        },
       ],
     },
     {
@@ -524,6 +563,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <PermissionsCreatePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "edit/:id",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PermissionEditPage />
             </Suspense>
           ),
         },
@@ -554,7 +601,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <PositionUpdatePage />
@@ -614,7 +661,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <ShareholdersUpdatePage />
@@ -682,7 +729,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <PercendenceUpdatePage />
@@ -742,7 +789,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <DisplacementUpdatePage />
@@ -944,10 +991,10 @@ export default function Router() {
       ],  
     },
     {
-      path: "/marketing",
+      path: "/invitation",
       element: (
         <Suspense fallback={<Loader />}>
-          <MarketingPage />
+          <InvitationMainPage />
         </Suspense>
       ),
       children: [
@@ -955,7 +1002,7 @@ export default function Router() {
           path: "table",
           element: (
             <Suspense fallback={<Loader />}>
-              <MarketingTablePage />
+              <InvitationTablePage />
             </Suspense>
           ),
         },
@@ -963,7 +1010,7 @@ export default function Router() {
           path: "create",
           element: (
             <Suspense fallback={<Loader />}>
-              <MarketingCreatePage />
+              <InvitationCreatePage />
             </Suspense>
           ),
         },
@@ -971,7 +1018,7 @@ export default function Router() {
           path: "list",
           element: (
             <Suspense fallback={<Loader />}>
-              <MarketingListTablePage />
+              <InvitationListTablePage />
             </Suspense>
           ),
         },
@@ -1026,6 +1073,32 @@ export default function Router() {
               <EmploymentsProcessCreatePage />
             </Suspense>
           ),
+        },
+      ],
+    },
+    {
+      path: "/points",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <PointsMainPage />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "missions",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PointsMissionsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "gifts",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PointsGiftsPage />
+            </Suspense>
+          ),  
         },
       ],
     },

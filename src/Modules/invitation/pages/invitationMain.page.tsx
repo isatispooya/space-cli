@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../components";
 import { LuPlus, LuTable } from "react-icons/lu";
 
-const MarketingMainPage = () => {
+const InvitationMainPage = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
@@ -49,4 +49,4 @@ const MarketingMainPage = () => {
   );
 };
 
-export default MarketingMainPage;
+export default InvitationMainPage;
