@@ -8,7 +8,7 @@ import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
 import DashboardBimeStat from "../components/dashboardBime.stat";
 import DashboardBorsStat from "../components/dashboardBors.stat";
-import { TimeflowUserCom } from "../../timeflow/components";
+import TimeflowVerify from "../../timeflow/components/timeflow.verify";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
@@ -26,7 +26,7 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 py-2">
+      <div className="container mx-auto px-4 py-2 relative">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
           <div className="lg:col-span-3 space-y-4 lg:space-y-6">
             <div className="h-[250px] sm:h-[300px] lg:h-[24vh]">
@@ -37,13 +37,11 @@ const DashboardPage = () => {
               <div className="md:col-span-2 ">
                 <DashboardChart />
               </div>
-              <TimeflowUserCom/>
               <div className="md:col-span-1 ">
                 <DashboardMarketingStat />
               </div>
             </div>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 lg:gap-4">
             <div>
               <DashboardCrowdStat />
@@ -57,6 +55,7 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
+      <TimeflowVerify />
     </MainLayout>
   );
 };

@@ -12,7 +12,7 @@ import { useCorrespondencesData } from '../notification/hook/notification.get';
 import Notification from '../notification/notification';
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "../../Modules/userManagment";
-
+import { CgProfile } from "react-icons/cg";
 initTWE({ Collapse, Ripple });
 
 const Header = () => {

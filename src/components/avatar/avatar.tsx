@@ -68,7 +68,7 @@ const Avatar = () => {
           boxShadow: "0 4px 12px rgba(86, 119, 188, 0.3)",
         }}
         whileTap={{ scale: 0.95 }}
-        className="text-2xl cursor-pointer text-[#5677BC] border-2 border-[#5677BC] rounded-xl p-2 transition-all duration-300 hover:bg-[#5677BC]/10"
+        className="text-3xl cursor-pointer text-[#5677BC]  rounded-xl p-1 transition-all duration-300 hover:bg-[#5677BC]/10"
       >
         <CgProfile />
       </motion.div>

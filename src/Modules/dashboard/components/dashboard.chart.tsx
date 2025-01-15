@@ -172,7 +172,7 @@ const DashboardChart = () => {
         ></path>
       </svg>
 
-      <div className="w-full h-[400px] lg:h-[400px] md:h-[300px] xs:h-[500px] xs:h-[600px] p-4 sm:p-2">
+      <div className="w-full h-[400px] lg:h-[400px] md:h-[300px] xs:h-[500px]  p-4 sm:p-2">
         <h3 className="text-base sm:text-[8px] md:text-[14px] lg:text-sm font-bold text-gray-800 text-center font-iranSans">
           درصد سهام شما در شرکت های گروه مالی و سرمایه گذاری ایساتیس پویا
         </h3>
@@ -245,7 +245,7 @@ const DashboardChart = () => {
           )}
         </div>
       </div>
-      <div className="flex justify-center mt-20 p-4 z-10">
+      <div className="flex justify-center mt-20 p-4 ">
         {hasShareholdersAccess && (
           <motion.button
             whileHover={{ scale: 1.02 }}

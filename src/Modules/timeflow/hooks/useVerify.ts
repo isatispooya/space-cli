@@ -1,17 +1,27 @@
-import { verifyTimeFlow } from "../service";
+import { timeflowService } from "../service";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { VerifyPatchTypes } from "../types/verify.type";
 
 const useVerify = {
   useGet: () => {
     return useQuery({
       queryKey: ["timeflow"],
-      queryFn: () => verifyTimeFlow.get(),
+      queryFn: () => timeflowService.get(),
     });
   },
-  usePost: () => {
+
+  useGetVerify: () => {
+    return useQuery({
+      queryKey: ["timeflow-verify"],
+      queryFn: () => timeflowService.getVerify(),
+    });
+  },
+
+  usePostVerify: () => {
     return useMutation({
-      mutationKey: ["verify-timeflow"],
-      mutationFn: (data) => verifyTimeFlow.post(data),
+      mutationKey: ["timeflow-verify"],
+      mutationFn: ({ id, data }: VerifyPatchTypes) =>
+        timeflowService.postVerify(id, data),
     });
   },
 };
