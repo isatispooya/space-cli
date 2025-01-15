@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import Forms from "../../../../components/forms";
 import { useCapital } from "../../hooks";
-import { CapitalIncreaseTypes } from "../../types";
+import { CapitalIncreaseTypes } from "../../types/capitalIncrease.type";
 import * as yup from "yup";
 import { useCapitalStore } from "../../store";
 import { FormField } from "../../../companies/types";
@@ -43,9 +43,9 @@ const EditCapitalForm: React.FC = () => {
 
   const initialValues = {
     id: capital?.id || 0,
-    company: capital?.company || 0,
+    company: capital?.company || "",
     number_of_shares: capital?.number_of_shares || 0,
-    position: capital?.position || 0,
+    position: capital?.position || "",
     price: capital?.price || 0,
     created_at: capital?.created_at || "",
     updated_at: capital?.updated_at || "",
@@ -54,14 +54,14 @@ const EditCapitalForm: React.FC = () => {
 
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
-    company: yup.number().required("شرکت الزامی است"),
+    company: yup.string().required("شرکت الزامی است"),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
-    position: yup.number().required("موقعیت الزامی است"),
+    position: yup.string().required("موقعیت الزامی است"),
     price: yup.number().required("قیمت الزامی است"),
-    document: yup.string().default("").nullable(),
+    document: yup.mixed().nullable(),
     created_at: yup.string().required(),
     updated_at: yup.string().required(),
-  }) as yup.ObjectSchema<CapitalIncreaseTypes>;
+  });
 
   const onSubmit = (values: CapitalIncreaseTypes) => {
     if (capital?.id) {
@@ -82,8 +82,8 @@ const EditCapitalForm: React.FC = () => {
   return (
     <Forms
       formFields={formFields as FormField[]}
-      initialValues={initialValues}
-      validationSchema={validationSchema}
+      initialValues={initialValues as unknown as CapitalIncreaseTypes}
+      validationSchema={validationSchema as unknown as yup.ObjectSchema<CapitalIncreaseTypes>}
       colors="text-[#5677BC]"
       buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
       showCloseButton={true}

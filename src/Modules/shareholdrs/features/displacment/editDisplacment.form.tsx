@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import Forms from "../../../../components/forms";
-import { DisplacementPrecendenceTypes } from "../../types";
+import { DisplacementPrecendenceTypes } from "../../types/displacementPrecendence.type";
 import * as yup from "yup";
 import { useDisplacement } from "../../hooks";
 import { useUserData } from "../../../users/hooks";

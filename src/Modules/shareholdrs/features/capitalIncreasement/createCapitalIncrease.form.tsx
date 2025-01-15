@@ -5,7 +5,7 @@ import { useCapital } from "../../hooks";
 import * as Yup from "yup";
 import { FormField } from "../../../companies/types";
 import toast from "react-hot-toast";
-import { CapitalIncreaseCreate } from "../../types";
+import { CapitalIncreaseCreate } from "../../types/capitalCreate.type";
 
 const CreateCapitalIncreaseForm = () => {
   const { mutate: postCapitalIncrease } = useCapital.useCreate();

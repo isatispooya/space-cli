@@ -61,7 +61,6 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
   const initialValues: FormValues = {
     user_id: specificUser?.id || 0,
     permission_id: specificUser?.id ? [specificUser.id] : [],
-    user: specificUser?.id || '',
   };
 
   const validationSchema = yup.object({

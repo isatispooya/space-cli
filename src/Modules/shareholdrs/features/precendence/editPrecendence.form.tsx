@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import Forms from "../../../../components/forms";
 import { usePrecendence } from "../../hooks";
 import * as yup from "yup";
-import { PrecedenceTypes } from "../../types";
+import { PrecedenceTypes } from "../../types/precedence.type";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditPrecendenceForm: React.FC = () => {

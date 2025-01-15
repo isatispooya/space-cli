@@ -3,7 +3,7 @@ import { usePrecendence } from "../../hooks";
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../../utils";
-import { PrecedenceTypes } from "../../types";
+import { PrecedenceTypes } from "../../types/precedence.type";
 import { tableStyles } from "../../../../ui";
 import { useState } from "react";
 import toast from "react-hot-toast";

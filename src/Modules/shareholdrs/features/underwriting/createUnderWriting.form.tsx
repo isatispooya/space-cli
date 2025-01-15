@@ -1,5 +1,6 @@
 import * as Yup from "yup";
-import { underwritingCreateTypes, underwritingTypes } from "../../types";
+import { underwritingCreateTypes } from "../../types/underwritingCreate.type";
+import { underwritingTypes } from "../../types/underwriting.type";
 import { useUnderwriting, useUnusedProcess } from "../../hooks";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";

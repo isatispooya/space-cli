@@ -6,7 +6,7 @@ import moment from "moment-jalaali";
 import "moment/locale/fa";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { DisplacementPrecendenceTypes } from "../../types";
+import { DisplacementPrecendenceTypes } from "../../types/displacementPrecendence.type";
 import { tableStyles } from "../../../../ui";
 import Popup from "../../../../components/popup";
 import { useNavigate } from "react-router-dom";

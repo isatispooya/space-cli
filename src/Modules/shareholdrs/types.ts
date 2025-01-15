@@ -1,4 +1,5 @@
-interface ShareholdersTypes {
+
+export interface ShareholdersTypes {
   id: number;
   number_of_shares: number;
   company: number;
@@ -7,3 +8,5 @@ interface ShareholdersTypes {
   updated_at?: string;
   created_at?: string;
 } 
+
+

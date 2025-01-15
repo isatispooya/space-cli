@@ -30,7 +30,9 @@ const EditShareholdForm: React.FC = () => {
     number_of_shares: yup.number().required("سهام الزامی است"),
     company: yup.number().required("شرکت الزامی است"),
     user: yup.number().required("کاربر الزامی است"),
-    name: yup.string().required("نام الزامی است"),
+    user_name: yup.string().optional(),
+    company_detail: yup.object().optional(),
+    user_detail: yup.object().optional(),
     updated_at: yup.string().optional(),
     created_at: yup.string().optional(),
   }) as yup.ObjectSchema<ShareholdersTypes>;

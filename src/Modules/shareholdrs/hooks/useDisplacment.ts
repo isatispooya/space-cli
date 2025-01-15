@@ -5,7 +5,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import displacementServices from "../services/displacmentServices";
-import { DisplacementPrecendenceTypes } from "../types";
+import { DisplacementPrecendenceTypes } from "../types/displacementPrecendence.type";
 
 const useDisplacement = {
   useGet: (): UseQueryResult<DisplacementPrecendenceTypes[]> => {

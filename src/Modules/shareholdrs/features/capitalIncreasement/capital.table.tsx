@@ -3,7 +3,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import toast from "react-hot-toast";
 import { CustomDataGridToolbar, localeText } from "../../../../utils";
 import { useState } from "react";
-import { CapitalIncreaseTypes } from "../../types";
+import { CapitalIncreaseTypes } from "../../types/capitalIncrease.type";
 import { tableStyles } from "../../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
