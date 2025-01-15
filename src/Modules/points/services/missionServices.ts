@@ -6,5 +6,4 @@ const missionServices = {
     return response.data;
   },
 };
-
 export default missionServices;

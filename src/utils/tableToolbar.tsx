@@ -8,8 +8,16 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 
+import {
+  FaDownload,
+  FaEdit,
+  FaEye,
+  FaPlus,
+  FaPrint,
+  FaTrash,
+} from "react-icons/fa";
 
-import { FaDownload, FaEdit, FaEye, FaPlus, FaPrint, FaTrash } from "react-icons/fa";
+import * as XLSX from "xlsx";
 
 interface PaginatedResponse<T> {
   count: number;
@@ -50,13 +58,17 @@ const CustomDataGridToolbar = <T extends Record<string, unknown>>({
   const handleExport = useCallback(() => {
     try {
       const dataToExport = Array.isArray(data) ? data : data?.results;
-      
-      if (!dataToExport || !Array.isArray(dataToExport) || dataToExport.length === 0) {
+
+      if (
+        !dataToExport ||
+        !Array.isArray(dataToExport) ||
+        dataToExport.length === 0
+      ) {
         console.error("No valid data available for export");
         return;
       }
 
-      if (!dataToExport.every(item => item && typeof item === 'object')) {
+      if (!dataToExport.every((item) => item && typeof item === "object")) {
         console.error("Invalid data format for export");
         return;
       }
@@ -70,7 +82,11 @@ const CustomDataGridToolbar = <T extends Record<string, unknown>>({
         return;
       }
 
-     
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+      XLSX.writeFile(workbook, `${fileName}.xlsx`);
     } catch (error) {
       console.error("Error in export:", error);
     }
@@ -144,7 +160,6 @@ const CustomDataGridToolbar = <T extends Record<string, unknown>>({
             {actions.print.label}
           </button>
         )}
-
         {showExcelExport && (
           <button
             onClick={handleExport}

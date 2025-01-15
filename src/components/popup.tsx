@@ -54,6 +54,7 @@ const Popup = ({
               >
                 انصراف
               </button>
+              <input type="number" placeholder="تعداد"  />
             </div>
           </div>
         </div>

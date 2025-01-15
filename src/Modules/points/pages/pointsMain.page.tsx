@@ -17,6 +17,12 @@ const PointsMainPage = () => {
       permission: ["add_permission"],
       path: "gifts",
     },
+    {
+      icon: FaGift,
+      text: "درخواست ها",
+      permission: ["add_permission"],
+      path: "tasks",
+    },
   ];
   return (
     <>
