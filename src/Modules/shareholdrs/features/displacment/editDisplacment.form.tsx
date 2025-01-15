@@ -1,23 +1,22 @@
 import toast from "react-hot-toast";
 import Forms from "../../../../components/forms";
-import { DisplacementPrecendenceTypes } from "../../types";
+import { DisplacementPrecendenceTypes } from "../../types/displacementPrecendence.type";
 import * as yup from "yup";
 import { useDisplacement } from "../../hooks";
-import { useDisplacementStore } from "../../store";
 import { useUserData } from "../../../users/hooks";
 import { useCompany } from "../../../companies/hooks";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EditDisplacmentForm: React.FC = () => {
   const { mutate } = useDisplacement.useUpdate();
   const { data: displacementData } = useDisplacement.useGet();
   const { data: users } = useUserData();
   const { data: companies } = useCompany.useGet();
-  const { id } = useDisplacementStore();
+  const { id } = useParams();
 
   const navigate = useNavigate();
   const displacement = displacementData?.find(
-    (item: DisplacementPrecendenceTypes) => item.id === id
+    (item: DisplacementPrecendenceTypes) => item.id === Number(id)
   );
 
   if (!displacement && !id) {
@@ -73,9 +72,9 @@ const EditDisplacmentForm: React.FC = () => {
 
   const initialValues: DisplacementPrecendenceTypes = {
     id: displacement?.id || 0,
-    buyer: parseInt(displacement?.buyer.toString() || "0"),
-    seller: parseInt(displacement?.seller.toString() || "0"),
-    company: parseInt(displacement?.company.toString() || "0"),
+    buyer: displacement?.buyer || 0,
+    seller: displacement?.seller || 0,
+    company: displacement?.company || 0,
     number_of_shares: displacement?.number_of_shares || 0,
     price: displacement?.price || 0,
   };

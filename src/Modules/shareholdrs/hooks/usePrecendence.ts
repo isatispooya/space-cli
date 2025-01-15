@@ -5,7 +5,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import precendenceServices from "../services/precendenceServices";
-import { PrecedenceTypes } from "../types";
+import { PrecedenceTypes } from "../types/precedence.type";
 
 const usePrecendence = {
   useGet: (): UseQueryResult<PrecedenceTypes[]> => {

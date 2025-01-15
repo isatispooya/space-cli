@@ -1,6 +1,6 @@
 import { api } from "../../../api";
 
-import { stockTransferTypes } from "../types";
+import { stockTransferTypes } from "../types/stockTransfer.type";
 
 const stockTransferServices = {
   get: async () => {

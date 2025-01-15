@@ -8,7 +8,10 @@ export interface PositionData {
   name: string;
   company: number;
   company_detail: CompanyDetail;
-  parent: number;
+  parent: {
+    id: number;
+    name: string;
+  } | null;
   type_of_employment: string;
   description: string;
   user: {
@@ -18,6 +21,17 @@ export interface PositionData {
     uniqueIdentifier?: string;
   };
   created_at: string;
+  start_date: string;
+  end_date: string;
+}
+
+export interface PositionFormValues {
+  name: string;
+  company: string;
+  user: string;
+  parent: string | null;
+  type_of_employment: string | null;
+  description: string;
   start_date: string;
   end_date: string;
 } 

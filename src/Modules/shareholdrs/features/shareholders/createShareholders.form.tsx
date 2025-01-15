@@ -1,7 +1,7 @@
 import Forms from "../../../../components/forms";
 
 import * as Yup from "yup";
-import { CreateShareholderDTO } from "../../types";
+import { CreateShareholderDTO } from "../../types/shareholders.type";
 import { FormField } from "../../../companies/types";
 import {  useCompany } from "../../../companies/hooks";
 import { useUserData } from "../../../users/hooks";

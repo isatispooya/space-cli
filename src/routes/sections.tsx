@@ -53,6 +53,14 @@ const CompanyCreatePage = lazy(() =>
     default: module.CompanyCreatePage,
   }))
 );
+
+const CompanyEditPage = lazy(() =>
+  import("../Modules/companies").then((module) => ({
+    default: module.CompanyEditPage,
+  }))
+);
+
+
 const CorrespondencePage = lazy(() =>
   import("../Modules/correspondence").then((module) => ({
     default: module.CorrespondencePage,
@@ -229,6 +237,12 @@ const GroupsMainPage = lazy(() =>
 const GroupsTablePage = lazy(() =>
   import("../Modules/permissions").then((module) => ({
     default: module.GroupsTablePage,
+  }))
+);
+
+const PermissionEditPage = lazy(() =>
+  import("../Modules/permissions").then((module) => ({
+    default: module.PermissionEditPage,
   }))
 );
 
@@ -495,6 +509,14 @@ export default function Router() {
             </Suspense>
           ),
         },
+        {
+          path: "edit/:id",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <CompanyEditPage />
+            </Suspense>
+          ),
+        },
       ],
     },
     {
@@ -518,6 +540,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <PermissionsCreatePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "edit/:id",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PermissionEditPage />
             </Suspense>
           ),
         },
@@ -548,7 +578,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <PositionUpdatePage />
@@ -608,7 +638,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <ShareholdersUpdatePage />
@@ -676,7 +706,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <PercendenceUpdatePage />
@@ -736,7 +766,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <DisplacementUpdatePage />

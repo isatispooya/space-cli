@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { PermissionData } from "../types/permissionData";
 import { useUserData } from "../../users/hooks";
 import { useSetPermission } from "../hooks";
+import { useParams } from "react-router-dom";
 
 interface FormValues {
   user_id: number;
@@ -23,6 +24,8 @@ interface FormField {
   type: FormFieldType;
   multiple?: boolean;
   inputMode?: string;
+  options?: { value: string | number; label: string }[];
+  user?: string;
 }
 
 interface EditPermissionFormProps {
@@ -30,9 +33,13 @@ interface EditPermissionFormProps {
   onClose?: () => void;
 }
 
-const EditPermissionForm: React.FC<EditPermissionFormProps> = ({ data }) => {
+const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
   const { data: users } = useUserData();
   const { mutate: setPermission } = useSetPermission();
+  const { id } = useParams<{ id: string }>();
+  const specificUser = users?.find((user: { id: number }) => user.id === Number(id));
+
+  console.log('specificUser', specificUser);
 
   const formFields: FormField[] = [
     {
@@ -41,17 +48,19 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = ({ data }) => {
       type: "text",
     },
     {
-      name: "permission_id",
-      label: "شناسه دسترسی",
+      name: "user",
+      label: "کاربر",
       type: "select",
-      multiple: true,
-      inputMode: "numeric",
+      options: users?.map((user: { id: number, first_name: string, last_name: string, uniqueIdentifier: string }) => ({
+        value: user.id,
+        label: `${user.first_name || ""} ${user.last_name || ""} | ${user.uniqueIdentifier || ""}`,
+      })),
     },
   ];
 
-  const initialValues = {
-    user_id: users?.id || 0,
-    permission_id: data?.id ? [data.id] : [],
+  const initialValues: FormValues = {
+    user_id: specificUser?.id || 0,
+    permission_id: specificUser?.id ? [specificUser.id] : [],
   };
 
   const validationSchema = yup.object({
@@ -73,7 +82,7 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = ({ data }) => {
         groups: [],
         ids: values.permission_id,
         user_id: values.user_id,
-        name: "",
+        name: specificUser?.first_name || ""
       },
     });
   };

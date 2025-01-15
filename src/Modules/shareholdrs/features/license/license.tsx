@@ -8,7 +8,7 @@ const LicenseView: FC = () => {
 
   const handleDownload = () => {
     toast.success("در حال دانلود فایل");
-    window.open("/public/license.pdf", "_blank");
+    window.open("/license.pdf", "_blank");
   };
 
   return (

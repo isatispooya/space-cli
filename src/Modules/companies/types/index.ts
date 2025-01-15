@@ -14,4 +14,5 @@ export interface FormField {
     | "transferList"
     | "number";
   options?: { value: string; label: string }[];
+  headerClassName?: string;
 }

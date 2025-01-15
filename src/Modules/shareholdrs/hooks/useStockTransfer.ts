@@ -5,7 +5,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import stockTransferServices from "../services/stockTransferServices";
-import { stockTransferTypes } from "../types";
+import { stockTransferTypes } from "../types/stockTransfer.type";
 
 const useStockTransfer = {
   useGet: (): UseQueryResult<stockTransferTypes[]> => {

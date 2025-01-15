@@ -3,7 +3,7 @@ import { useUnderwriting } from "../../hooks";
 import Forms from "../../../../components/forms";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { underwritingTypes } from "../../types";
+import { underwritingTypes } from "../../types/underwriting.type";
 import moment from "moment-jalaali";
 import { FormField } from "../../../companies/types";
 import toast from "react-hot-toast";

@@ -1,5 +1,5 @@
 import { api } from "../../../api";
-import { DisplacementPrecendenceTypes } from "../types";
+import { DisplacementPrecendenceTypes } from "../types/displacementPrecendence.type";
 
 const displacmentServices = {
   get: async () => {

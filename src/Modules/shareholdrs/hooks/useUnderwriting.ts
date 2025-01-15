@@ -5,7 +5,8 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { underwritingServices } from "../services";
-import { underwritingCreateTypes, underwritingTypes } from "../types";
+import { underwritingTypes } from "../types/underwriting.type";
+import { underwritingCreateTypes } from "../types/underwritingCreate.type";
 
 const useUnderwriting = {
   useGet: (): UseQueryResult<underwritingTypes[]> => {

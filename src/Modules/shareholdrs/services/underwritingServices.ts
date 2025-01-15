@@ -1,5 +1,6 @@
 import { api } from "../../../api";
-import { underwritingCreateTypes, underwritingTypes } from "../types";
+import { underwritingTypes } from "../types/underwriting.type";
+import { underwritingCreateTypes } from "../types/underwritingCreate.type";
 
 const underwritingServices = {
   get: async () => {
