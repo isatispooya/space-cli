@@ -14,6 +14,8 @@ interface ViewDownloadProps {
   toastMessage?: string;
   toastError?: string;
   target: string;
+  isImg?: boolean;
+  img?: File | string;
 }
 
 const ViewDownload: FC<ViewDownloadProps> = ({
@@ -23,6 +25,8 @@ const ViewDownload: FC<ViewDownloadProps> = ({
   regulatorLogo,
   regulatorText,
   downloadLink,
+  isImg,
+  img,
   downloadButtonText = "دانلود طرح کسب و کار",
   onDownload,
   toastMessage,
@@ -95,9 +99,30 @@ const ViewDownload: FC<ViewDownloadProps> = ({
             </p>
           </motion.div>
 
-          {downloadLink && (
+          {isImg && downloadLink && (
+            <motion.img
+              src={downloadLink}
+              alt="download"
+              className="w-full h-auto object-contain rounded shadow-lg"
+            />
+          )}
+
+          {img && (
+            <motion.img
+              src={typeof img === "string" ? img : URL.createObjectURL(img)}
+              alt="download"
+              className="w-full h-auto object-contain rounded shadow-lg"
+            />
+          )}
+
+          {!isImg && (
             <div className="w-full text-center">
-              <a href={downloadLink} target={target} rel="noopener noreferrer" onClick={handleDownload}>
+              <a
+                href={downloadLink}
+                target={target}
+                rel="noopener noreferrer"
+                onClick={handleDownload}
+              >
                 <motion.button
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}

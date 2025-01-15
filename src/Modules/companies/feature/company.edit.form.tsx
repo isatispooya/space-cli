@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
   letterhead: Yup.string(),
   seal: Yup.string(),
   signature: Yup.string(),
-  file: Yup.mixed().required(),
+  file: Yup.mixed(),
 });
 
 const COMPANY_TYPES: CompanyTypeOption[] = [

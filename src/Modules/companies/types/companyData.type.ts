@@ -17,6 +17,7 @@ export interface CompanyData {
   website?: string;
   file?: File;
   logo?: File;
-  signature?: File;
   seal?: File;
+  signature?: File;
+ 
 }

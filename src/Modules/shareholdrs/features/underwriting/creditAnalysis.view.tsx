@@ -31,6 +31,7 @@ const CreditAnalysisView: FC = () => {
           regulatorLogo={item?.validation_regulator_logo}
           regulatorText={item?.validation_regulator}
           downloadLink={item?.validation}
+          isImg={true}
           toastMessage="در حال دانلود فایل"
           toastError="در حال حاضر فایلی برای دانلود وجود ندارد"
           onDownload={handleDownload}
