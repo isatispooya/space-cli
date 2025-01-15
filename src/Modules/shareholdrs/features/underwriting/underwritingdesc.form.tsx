@@ -75,7 +75,7 @@ const UnderwritingDescForm: FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           key={index}
-          className="relative w-full max-w-none p-4 sm:p-8 mx-auto bg-white rounded-xl shadow-xl border-4 border-double border-gray-200"
+          className="relative w-full max-w-none mx-auto bg-white rounded-xl shadow-xl border-4 border-double border-gray-200"
         >
           <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-[#5677BC] rounded-tl-lg" />
           <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-[#5677BC] rounded-tr-lg" />
@@ -83,7 +83,7 @@ const UnderwritingDescForm: FC = () => {
           <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-[#5677BC] rounded-br-lg" />
           <motion.div className="flex flex-col items-center">
             <motion.div
-              className="w-full h-48 sm:h-96 mb-4 sm:mb-6"
+              className="w-full h-full mb-4 sm:mb-6"
               whileHover={{ scale: 1.02 }}
             >
               <img
@@ -116,7 +116,6 @@ const UnderwritingDescForm: FC = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                {item?.description}
               </motion.p>
               <motion.div
                 className="flex items-center justify-center mt-4 space-x-2 text-gray-600 group cursor-pointer"
