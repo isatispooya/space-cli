@@ -3,7 +3,7 @@ import { FaDownload, FaMapMarkerAlt, FaShare } from "react-icons/fa";
 
 import { motion } from "framer-motion";
 import { useUnusedProcess } from "../../hooks";
-import { useInvitation } from "../../../marketing/hooks";
+import { useInvitation } from "../../../invitation/hooks";
 
 const UnderwritingDescForm: FC = () => {
   const { data: unusedProcessData } = useUnusedProcess.useGetList();
@@ -115,8 +115,7 @@ const UnderwritingDescForm: FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-              >
-              </motion.p>
+              ></motion.p>
               <motion.div
                 className="flex items-center justify-center mt-4 space-x-2 text-gray-600 group cursor-pointer"
                 whileHover={{ scale: 1.02 }}

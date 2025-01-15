@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { useInvitation } from "../../marketing/hooks";
+import { useInvitation } from "../../invitation/hooks";
 import { motion } from "framer-motion";
 import { RiUserReceived2Line } from "react-icons/ri";
 import "moment/locale/fa";
@@ -28,8 +28,6 @@ const DashboardMarketingStat = () => {
 
   console.log(invitedUsers);
   console.log(invitation);
-  
-  
 
   const [visibleIndices, setVisibleIndices] = useState<number[]>([]);
 
@@ -68,8 +66,9 @@ const DashboardMarketingStat = () => {
   const getMotionDivStyles = () => ({
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
-    className: "relative bg-white rounded-xl shadow-lg p-6 h-auto sm:h-[520px] md:h-[520px] lg:h-[550px] transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105 ",
-    style: { zIndex: 2 }
+    className:
+      "relative bg-white rounded-xl shadow-lg p-6 h-auto sm:h-[520px] md:h-[520px] lg:h-[550px] transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105 ",
+    style: { zIndex: 2 },
   });
 
   return (
@@ -149,9 +148,7 @@ const DashboardMarketingStat = () => {
         <div className="relative mt-[120px] z-20">
           <div className="flex items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
             <p className="flex-1 text-[13px] text-[#D2042D] font-iranSans truncate">
-              {`my.isatispooya.com/login?rf=${
-                invitation?.[0]?.code || ""
-              }`}
+              {`my.isatispooya.com/login?rf=${invitation?.[0]?.code || ""}`}
             </p>
             <motion.button
               whileTap={{ scale: 0.95 }}

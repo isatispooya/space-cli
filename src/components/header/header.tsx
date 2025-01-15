@@ -5,13 +5,15 @@ import LogoWhite from "../../assets/Artboard 1 copy 17.png";
 import LogoText from "../../assets/textLogo.png";
 import { useSidebarStore } from "../../Modules/sidebar/store/sidebar.store";
 import { FiMenu } from "react-icons/fi";
-import Badge from '@mui/material/Badge';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { useState, useRef, useEffect } from 'react';
-import { useCorrespondencesData } from '../notification/hook/notification.get';
-import Notification from '../notification/notification';
+import Badge from "@mui/material/Badge";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { useState, useRef, useEffect } from "react";
+import { useCorrespondencesData } from "../notification/hook/notification.get";
+import Notification from "../notification/notification";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "../../Modules/userManagment";
+import { GiTwoCoins } from "react-icons/gi";
+import { FaGem } from "react-icons/fa";
 
 initTWE({ Collapse, Ripple });
 
@@ -24,7 +26,9 @@ const Header = () => {
   const notificationIconRef = useRef<SVGSVGElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
   const { data: notifications } = useCorrespondencesData();
-  const unreadCount = notifications?.filter(notification => notification.read === false).length ?? 0;
+  const unreadCount =
+    notifications?.filter((notification) => notification.read === false)
+      .length ?? 0;
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
@@ -46,8 +50,6 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-
 
   return (
     <header>
@@ -86,7 +88,6 @@ const Header = () => {
                     alt="logo text"
                   />
                 </motion.div>
-                
               </div>
             </div>
           </div>
@@ -94,23 +95,37 @@ const Header = () => {
             className="!visible hidden grow basis-[100%] items-center text-center lg:!flex lg:basis-auto lg:text-left"
             id="navbarSupportedContentY"
             data-twe-collapse-item
-          >
+          ></div>
+          <span className="mr-4 ml-4 text-gray-700">
+            {profileData?.first_name} {profileData?.last_name}
+          </span>
+          <div className="flex items-start justify-start ml-8 relative">
+            <div className="flex flex-col items-center">
+              <span className="flex items-center text-gray-700 mr-2 mb-2">
+                <span className="text-gray-700 text-sm">10,000</span>
+                <GiTwoCoins
+                  className="w-5 h-5 mr-1 ml-4 mb-1 text-5xl"
+                  color="#5677BC"
+                />
+              </span>
+              <span className="flex items-center text-gray-700 mr-2">
+                <span className="text-gray-700 text-sm">10,000</span>
+                <FaGem
+                  className="w-5 h-5 mr-1 ml-4 mb-1 text-1xl"
+                  color="#5677BC"
+                />
+              </span>
+            </div>
 
-            
-          </div>
-          <div className="flex items-center ml-8 relative">
-            <span className="mr-4 text-gray-700">
-              {profileData?.first_name} {profileData?.last_name}
-            </span>
-            <Badge 
+            <Badge
               sx={{
-                position: "relative", 
-                zIndex: 1, 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center'
-              }} 
-              badgeContent={unreadCount} 
+                position: "relative",
+                zIndex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              badgeContent={unreadCount}
               color="primary"
             >
               <NotificationsNoneIcon
@@ -118,19 +133,17 @@ const Header = () => {
                 onClick={toggleNotifications}
                 sx={{
                   transform: "scale(1.1)",
-                  transition: "transform 0.2s", 
+                  transition: "transform 0.2s",
                   borderRadius: "50%",
                   padding: "2px",
                   fontSize: "2.3rem",
                   cursor: "pointer",
                   color: "#5677BC",
-                  marginLeft: "10px"
+                  marginLeft: "10px",
                 }}
               />
             </Badge>
-            {showNotifications && (
-              <Notification ref={notificationRef} />
-            )}
+            {showNotifications && <Notification ref={notificationRef} />}
             <Avatar />
           </div>
         </div>

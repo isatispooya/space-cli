@@ -5,7 +5,7 @@ import { InvitationPostTypes } from "../types";
 import { useInvitation } from "../hooks";
 import toast from "react-hot-toast";
 
-const MarketingCreateForm = () => {
+const InvitationCreateForm = () => {
   const { mutate: postInvitation } = useInvitation.useCreateCodes();
   const validationSchema = Yup.object().shape({
     description: Yup.string().required("توضیحات الزامی است"),
@@ -59,4 +59,4 @@ const MarketingCreateForm = () => {
   );
 };
 
-export default MarketingCreateForm;
+export default InvitationCreateForm;
