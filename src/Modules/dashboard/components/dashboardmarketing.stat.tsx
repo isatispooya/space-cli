@@ -5,6 +5,7 @@ import { RiUserReceived2Line } from "react-icons/ri";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { GiTwoCoins } from "react-icons/gi";
+import { useRemainPoints } from "../../points";
 
 export interface StatsProps {
   title: string;
@@ -22,6 +23,7 @@ export interface StatsProps {
 
 const DashboardMarketingStat = () => {
   const [copied, setCopied] = useState(false);
+  const { data: remainPoints } = useRemainPoints();
   const { data: invitation } = useInvitation.useGetCodes();
   const { data: invitedUsers } = useInvitation.useGetList();
 
@@ -105,7 +107,7 @@ const DashboardMarketingStat = () => {
               
               <div className="flex flex-col items-center mr-8 ">
                 <span className="flex items-center text-white mb-1">
-                  <span className="text-[#A0001C] text-xl font-bold">10,000</span>
+                  <span className="text-[#A0001C] text-xl font-bold">{remainPoints?.point_1}</span>
                   <GiTwoCoins
                     className="w-5 h-5 mx-1 text-5xl"
                     // color="#f1c40f"
@@ -114,7 +116,7 @@ const DashboardMarketingStat = () => {
                   <span className="text-sm text-[#D2042D]">(طلایی)</span>
                 </span>
                 <span className="flex items-center text-white">
-                  <span className="text-[#A0001C] text-xl font-bold">10,000</span>
+                  <span className="text-[#A0001C] text-xl font-bold">{remainPoints?.point_2}</span>
                   <GiTwoCoins
                     className="w-5 h-5 mx-1 text-1xl"
                     // color="#707b7c"
@@ -126,7 +128,6 @@ const DashboardMarketingStat = () => {
             </span>
           </motion.p>
         </div>
-
         <div className="mt-6 mb-4 flex-grow">
           <h4 className="text-gray-600 font-iranSans mb-3 text-sm">
             لیست کاربران دعوت شده
