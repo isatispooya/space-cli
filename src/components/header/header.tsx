@@ -1,5 +1,5 @@
 import { Collapse, Ripple, initTWE } from "tw-elements";
-import { Avatar } from "../avatar";
+import { UserAvatar } from "../avatar";
 import { motion } from "framer-motion";
 import LogoWhite from "../../assets/Artboard 1 copy 17.png";
 import LogoText from "../../assets/textLogo.png";
@@ -8,11 +8,11 @@ import { FiMenu } from "react-icons/fi";
 import Badge from "@mui/material/Badge";
 import { useState, useRef, useEffect } from "react";
 import { useCorrespondencesData } from "../notification/hook/notification.get";
-import Notification from "../notification/notification";
 import { useNavigate } from "react-router-dom";
 import { GiTwoCoins } from "react-icons/gi";
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { Divider } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 
 initTWE({ Collapse, Ripple });
 
@@ -116,40 +116,39 @@ const Header = () => {
                 fontSize: "2.2rem",
                 cursor: "pointer",
                 color: "#041685",
+                paddingLeft: "10px",
               }}
             />
           </Badge>
 
-          <div
-            style={{
-              width: "2px",
-              backgroundColor: "#eaeaea",
-              height: "40px",
-              marginLeft: "10px",
-              marginRight: "10px",
-            }}
-          ></div>
+        
 
-          <div className="flex items-start justify-start ml-8 relative ">
-            <div className="flex flex-col items-center">
-              <span className="flex items-center text-white mr-2 mb-1">
-                <span className="text-blue-900 text-sm font-bold">10,000</span>
-                <GiTwoCoins
-                  className="w-5 h-5 mr-1 ml-4 mb-1 text-5xl"
-                  color="#f1c40f"
-                />
-              </span>
-              <span className="flex items-center text-white mr-2">
-                <span className="text-blue-900 text-sm font-bold">10,000</span>
-                <GiTwoCoins
-                  className="w-5 h-5 mr-1 ml-4 mb-1 text-1xl"
-                  color="#707b7c"
-                />
-              </span>
+          <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
+
+          <div className="flex items-center justify-start ml-8 relative ">
+            <div className="flex flex-col items-center hover:cursor-pointer">
+              <Tooltip title="طلایی" placement="bottom" arrow>
+                <span className="flex items-center text-white mr-2 mb-1" onClick={() => navigate('/points/missions')}>
+                  <span className="text-blue-900 text-sm font-bold">10,000</span>
+                  <GiTwoCoins
+                    className="w-5 h-5 mr-1 ml-4 mb-1 text-5xl"
+                    color="#f1c40f"
+                  />
+                </span>
+              </Tooltip>
+              <Tooltip title="نقره ای" placement="bottom" arrow>
+                <span className="flex items-center text-white mr-2" onClick={() => navigate('/points/missions')}>
+                  <span className="text-blue-900 text-sm font-bold">10,000</span>
+                  <GiTwoCoins
+                    className="w-5 h-5 mr-1 ml-4 mb-1 text-1xl"
+                    color="#707b7c"
+                  />
+                </span>
+              </Tooltip>
             </div>
-
-            {showNotifications && <Notification ref={notificationRef} />}
-              <Avatar/>
+            <div className="flex items-center ml-4">
+              <UserAvatar />
+            </div>
           </div>
         </div>
       </nav>

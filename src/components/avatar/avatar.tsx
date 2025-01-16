@@ -1,15 +1,20 @@
 import { useState, useEffect, useRef } from "react";
-import { CgProfile } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "../../Modules/userManagment/hooks/useProfile";
 import { getCookie } from "../../api/cookie";
 import useLogout from "./hooks/useLogout";
 import { removeCookie } from "../../api/cookie";
+import { Avatar } from "@mui/material";
+import { server } from "../../api/server";
 
-const Avatar = () => {
+const UserAvatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: profileData } = useProfile();
+
+  console.log(profileData);
+  
+  
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
@@ -30,6 +35,7 @@ const Avatar = () => {
   }, []);
 
   const { data } = useProfile();
+
   const logout = useLogout();
 
   const profileInfo = data
@@ -69,19 +75,11 @@ const Avatar = () => {
       </span>
 
       <div className="relative" ref={dropdownRef}>
-        <motion.div
-          whileHover={{
-            scale: 1.05,
-            rotate: 3,
-            color: "#041685",
-            borderColor: "#041685",
-            boxShadow: "0 4px 12px #041685",
-          }}
-          whileTap={{ scale: 0.95 }}
-          className="text-3xl cursor-pointer text-[#041685]  rounded-xl p-1 transition-all duration-300 hover:bg-[#041685]/10"
-        >
-          <CgProfile />
-        </motion.div>
+        <Avatar
+          alt="Remy Sharp"
+          src={profileData?.profile_image ? server + profileData?.profile_image : null}
+          sx={{ backgroundColor: "#041685" }}
+        />
 
         <AnimatePresence>
           {isOpen && (
@@ -128,4 +126,4 @@ const Avatar = () => {
   );
 };
 
-export default Avatar;
+export default UserAvatar;
