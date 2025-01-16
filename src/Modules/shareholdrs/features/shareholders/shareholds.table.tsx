@@ -14,18 +14,22 @@ import { useUserPermissions } from "../../../permissions";
 import { companyTypes } from "../../data/companyTypes";
 import { useShareholders } from "../../hooks";
 import { LoaderLg } from "../../../../components";
-
+import CustomPagination from "../../../../utils/paginationTable";
 
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, refetch, isPending } = useShareholders.useGet();
   const [selectedRow, setSelectedRow] = useState<ShareholdersTypes | null>(
     null
   );
-
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
   const { mutate: deleteShareholder } = useShareholders.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
+  const [pageSizeOptions] = useState([10 , 20 , 50 , 100]);
 
   const columns: GridColDef[] = [
     {
@@ -118,15 +122,22 @@ const ShareholdTable: React.FC = () => {
   return (
     <>
       <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
-        <DataGrid
+      <DataGrid
           columns={columns}
           rows={processedData}
           localeText={localeText}
-          onRowClick={(params) => setSelectedRow(params.row)}
+          onRowClick={(params) => {
+            if (!selectedRow) {
+              setSelectedRow(params.row);
+            }
+          }}
+          isRowSelectable={(params) => {
+            return !selectedRow || params.row.id === selectedRow.id;
+          }}
           onRowSelectionModelChange={(newSelectionModel) => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
-              const selectedRow = shareholdersData.find(
+              const selectedRow = processedData.find(
                 (row: ShareholdersTypes) => row.id === selectedId
               );
               if (selectedRow) {
@@ -146,26 +157,49 @@ const ShareholdTable: React.FC = () => {
             },
           }}
           pageSizeOptions={[10]}
+          pagination
+          paginationModel={paginationModel}
+          onPaginationModelChange={(newPaginationModel) => {
+            setPaginationModel(newPaginationModel);
+          }}
           disableColumnMenu
           filterMode="client"
-
           slots={{
+            pagination: (props) => (
+              <CustomPagination
+                rows={processedData}
+                pageSize={paginationModel.pageSize}
+                paginationModel={paginationModel}
+                onPageChange={(_, newPage) => {
+                  setPaginationModel((prev) => ({ ...prev, page: newPage }));
+                }}
+                pageSizeOptions={pageSizeOptions}
+                onPageSizeChange={(newSize) => {
+                  setPaginationModel((prev) => ({
+                    ...prev,
+                    pageSize: newSize,
+                    page: 0,
+                  }));
+                }}
+                {...props}
+              />
+            ),
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
-                data={shareholdersData as unknown as Record<string, unknown>[]}
+                data={processedData as unknown as Record<string, unknown>[]}
                 fileName="گزارش-پرداخت"
                 showExcelExport={true}
                 actions={{
                   edit: {
                     label: "ویرایش",
-                    show: checkPermission(["change_shareholders"]),
+                    show: checkPermission(["change_precedence"]),
                     onClick: handleEdit,
                     icon: <FaEdit />,
                   },
                   delete: {
                     label: "حذف",
-                    show: checkPermission(["delete_shareholders"]),
+                    show: checkPermission(["delete_precedence"]),
                     onClick: handleDelete,
                     icon: <FaTrash />,
                   },
