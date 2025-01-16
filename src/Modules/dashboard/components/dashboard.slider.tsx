@@ -104,7 +104,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <div className="absolute top-4 right-4 z-10">
+            <div className="absolute  top-4 right-4 z-10">
               <button
                 onClick={() => handleShare(slide)}
                 className="flex items-center bg-green-500/10 backdrop-blur-sm px-4 py-2 rounded-full"
