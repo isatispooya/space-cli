@@ -63,7 +63,7 @@ const PositionUpdateForm = () => {
       label: "شرکت",
       type: "select",
       options: [{
-        value: specificUser?.company_detail?.id || '',
+        value: specificUser?.company_detail?.id.toString() || '',
         label: specificUser?.company_detail?.name || '',
       }],
     },
@@ -72,7 +72,7 @@ const PositionUpdateForm = () => {
       label: "کاربر", 
       type: "select",
       options: [{
-        value: specificUser?.user?.id || '',
+        value: specificUser?.user?.id.toString() || '',
         label: `${specificUser?.user?.first_name || ''} ${specificUser?.user?.last_name || ''}`
       }]
     },
@@ -92,7 +92,7 @@ const PositionUpdateForm = () => {
       label: "ارشد", 
       type: "select",
       options: [{
-        value: specificUser?.parent?.id || '',
+        value: specificUser?.parent?.id.toString() || '',
         label: specificUser?.parent?.name || '',
       }],
     },

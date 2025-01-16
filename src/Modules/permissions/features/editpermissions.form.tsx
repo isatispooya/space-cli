@@ -4,28 +4,11 @@ import { PermissionData } from "../types/permissionData";
 import { useUserData } from "../../users/hooks";
 import { useSetPermission } from "../hooks";
 import { useParams } from "react-router-dom";
+import { FormField } from "../../companies/types";
 
 interface FormValues {
   user_id: number;
   permission_id: number[];
-}
-
-type FormFieldType =
-  | "text"
-  | "select"
-  | "email"
-  | "password"
-  | "checkbox"
-  | "transferList";
-
-interface FormField {
-  name: string;
-  label: string;
-  type: FormFieldType;
-  multiple?: boolean;
-  inputMode?: string;
-  options?: { value: string | number; label: string }[];
-  user?: string;
 }
 
 interface EditPermissionFormProps {
@@ -37,9 +20,11 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
   const { data: users } = useUserData();
   const { mutate: setPermission } = useSetPermission();
   const { id } = useParams<{ id: string }>();
-  const specificUser = users?.find((user: { id: number }) => user.id === Number(id));
+  const specificUser = users?.find(
+    (user: { id: number }) => user.id === Number(id)
+  );
 
-  console.log('specificUser', specificUser);
+  console.log("specificUser", specificUser);
 
   const formFields: FormField[] = [
     {
@@ -51,10 +36,19 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
       name: "user",
       label: "کاربر",
       type: "select",
-      options: users?.map((user: { id: number, first_name: string, last_name: string, uniqueIdentifier: string }) => ({
-        value: user.id,
-        label: `${user.first_name || ""} ${user.last_name || ""} | ${user.uniqueIdentifier || ""}`,
-      })),
+      options: users?.map(
+        (user: {
+          id: number;
+          first_name: string;
+          last_name: string;
+          uniqueIdentifier: string;
+        }) => ({
+          value: user.id.toString(),
+          label: `${user.first_name || ""} ${user.last_name || ""} | ${
+            user.uniqueIdentifier || ""
+          }`,
+        })
+      ),
     },
   ];
 
@@ -82,14 +76,14 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
         groups: [],
         ids: values.permission_id,
         user_id: values.user_id,
-        name: specificUser?.first_name || ""
+        name: specificUser?.first_name || "",
       },
     });
   };
 
   return (
     <Forms
-      formFields={formFields}
+      formFields={formFields as FormField[]}
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
