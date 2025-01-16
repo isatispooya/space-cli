@@ -8,7 +8,7 @@ import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
 import DashboardBimeStat from "../components/dashboardBime.stat";
 import DashboardBorsStat from "../components/dashboardBors.stat";
-import TimeflowVerify from "../../timeflow/components/timeflow.verify";
+// import TimeflowVerify from "../../timeflow/components/timeflow.verify";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
@@ -55,7 +55,7 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-      <TimeflowVerify />
+      {/* <TimeflowVerify /> */}
     </MainLayout>
   );
 };

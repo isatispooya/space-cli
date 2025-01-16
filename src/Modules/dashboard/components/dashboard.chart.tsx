@@ -11,9 +11,9 @@ import { useDashboard } from "../hooks";
 import { motion } from "framer-motion";
 import { server } from "../../../api/server";
 import { useEffect, useState } from "react";
-import { menuItems } from "../../sidebar/data/menuItems";
 import { IoIosArrowBack } from "react-icons/io";
 import Spinner from "../../../components/spinner";
+import { useUserPermissions } from "../../permissions";
 
 interface TooltipProps {
   active?: boolean;
@@ -44,11 +44,11 @@ interface barPropsTypes {
 const DashboardChart = () => {
   const { data: statsChart, isLoading } = useDashboard.useGetStats();
   const [isVertical, setIsVertical] = useState(false);
+  const { data:permissions } = useUserPermissions();
 
-  const hasShareholdersAccess = menuItems.some((item) =>
-    item.submenu?.some((subItem) =>
-      subItem.codename?.includes("view_shareholders")
-    )
+  
+  const hasPermission = Array.isArray(permissions) && permissions.some((perm) =>
+    perm.codename === "shareholder"
   );
 
   useEffect(() => {
@@ -90,10 +90,6 @@ const DashboardChart = () => {
     }
     return null;
   };
-
-  // if (isLoading) {
-  //   return <Spinner />;
-  // }
 
   const CustomBar = (props: barPropsTypes) => {
     const { x = 0, y = 0, width = 0, height = 0, payload } = props;
@@ -154,6 +150,7 @@ const DashboardChart = () => {
       </motion.g>
     );
   };
+
 
   return (
     <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl relative">
@@ -246,13 +243,13 @@ const DashboardChart = () => {
         </div>
       </div>
       <div className="flex justify-center mt-20 p-4 ">
-        {hasShareholdersAccess && (
+        {hasPermission && (
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => (window.location.href = "/shareholders/table")}
             className="w-96 font-bold bg-indigo-900 hover:bg-indigo-700 text-white py-1 px-1 rounded-md 
-                       font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
+               font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
           >
             مدیریت سهام
             <IoIosArrowBack className="w-3 h-3" />

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { RiUserReceived2Line } from "react-icons/ri";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
+import { GiTwoCoins } from "react-icons/gi";
 
 export interface StatsProps {
   title: string;
@@ -90,15 +91,38 @@ const DashboardMarketingStat = () => {
           </div>
         </div>
 
-        <div className="flex-grow flex flex-col items-center justify-center">
+        <div className="flex-grow flex flex-col items-center justify-center mt-10">
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans"
           >
-            {invitation?.[0]?.invited_users_count || 0}
-            <span className="text-sm text-[#D2042D] font-iranSans mr-2">
-              نفر
+            <span className="flex items-center">
+              {invitation?.[0]?.invited_users_count || 0}
+              <span className="text-sm text-[#D2042D] font-iranSans mx-2">
+                نفر
+              </span>
+              
+              <div className="flex flex-col items-center mr-8 ">
+                <span className="flex items-center text-white mb-1">
+                  <span className="text-[#A0001C] text-xl font-bold">10,000</span>
+                  <GiTwoCoins
+                    className="w-5 h-5 mx-1 text-5xl"
+                    // color="#f1c40f"
+                    color="#D2042D"
+                  />
+                  <span className="text-sm text-[#D2042D]">(طلایی)</span>
+                </span>
+                <span className="flex items-center text-white">
+                  <span className="text-[#A0001C] text-xl font-bold">10,000</span>
+                  <GiTwoCoins
+                    className="w-5 h-5 mx-1 text-1xl"
+                    // color="#707b7c"
+                    color="#D2042D"
+                  />
+                  <span className="text-sm text-[#D2042D]">(نقره ای)</span>
+                </span>
+              </div>
             </span>
           </motion.p>
         </div>
@@ -145,7 +169,7 @@ const DashboardMarketingStat = () => {
           </div>
         </div>
 
-        <div className="relative mt-[120px] z-20">
+        <div className="relative mt-[80px] z-20">
           <div className="flex items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
             <p className="flex-1 text-[13px] text-[#D2042D] font-iranSans truncate">
               {`my.isatispooya.com/login?rf=${invitation?.[0]?.code || ""}`}
