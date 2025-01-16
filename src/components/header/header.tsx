@@ -13,11 +13,15 @@ import { GiTwoCoins } from "react-icons/gi";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Divider } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
+import { useRemainPoints } from "../../Modules/points";
 
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
   const { toggleSidebar } = useSidebarStore();
+  const { data: remainPoints } = useRemainPoints();
+
+  console.log(remainPoints, "1234567890");
 
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -121,15 +125,18 @@ const Header = () => {
             />
           </Badge>
 
-        
-
           <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
 
           <div className="flex items-center justify-start ml-8 relative ">
             <div className="flex flex-col items-center hover:cursor-pointer">
               <Tooltip title="طلایی" placement="bottom" arrow>
-                <span className="flex items-center text-white mr-2 mb-1" onClick={() => navigate('/points/missions')}>
-                  <span className="text-blue-900 text-sm font-bold">10,000</span>
+                <span
+                  className="flex items-center text-white mr-2 mb-1"
+                  onClick={() => navigate("/points/missions")}
+                >
+                  <span className="text-blue-900 text-sm font-bold">
+                    {remainPoints?.point_1}
+                  </span>
                   <GiTwoCoins
                     className="w-5 h-5 mr-1 ml-4 mb-1 text-5xl"
                     color="#f1c40f"
@@ -137,8 +144,13 @@ const Header = () => {
                 </span>
               </Tooltip>
               <Tooltip title="نقره ای" placement="bottom" arrow>
-                <span className="flex items-center text-white mr-2" onClick={() => navigate('/points/missions')}>
-                  <span className="text-blue-900 text-sm font-bold">10,000</span>
+                <span
+                  className="flex items-center text-white mr-2"
+                  onClick={() => navigate("/points/missions")}
+                >
+                  <span className="text-blue-900 text-sm font-bold">
+                    {remainPoints?.point_2}
+                  </span>
                   <GiTwoCoins
                     className="w-5 h-5 mr-1 ml-4 mb-1 text-1xl"
                     color="#707b7c"

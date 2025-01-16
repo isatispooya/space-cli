@@ -1,15 +1,17 @@
-import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import { MenuItem, Select, FormControl } from "@mui/material";
 import "../styles/pagination.css";
+import { MdArrowBackIosNew } from "react-icons/md";
+import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 interface CustomPaginationProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rows: any[]; // Adjust type as necessary
+  rows: any[]; 
   pageSize: number;
-  paginationModel: { page: number; pageSize: number }; // Add this line
-  onPageChange: (newPage: number) => void; // Add this line
-  pageSizeOptions: number[]; // Add this line
-  onPageSizeChange: (newSize: number) => void; // Add this line
-  // ... other props
+  paginationModel: { page: number; pageSize: number };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onPageChange: (event: any, newPage: number) => void; 
+  pageSizeOptions: number[];
+  onPageSizeChange: (newSize: number) => void;
 }
 
 const CustomPagination: React.FC<CustomPaginationProps> = ({
@@ -21,29 +23,28 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   onPageSizeChange,
   ...props
 }) => {
- 
-
   const currentPage = paginationModel.page;
   const pageCount =
     rows.length > 0 ? Math.ceil(rows.length / paginationModel.pageSize) : 1;
 
-  const handlePageChange = (newPage: number) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handlePageChange = (event: any, newPage: number) => {
     if (newPage >= 0 && newPage < pageCount) {
-      onPageChange(newPage);
+      onPageChange(event, newPage);
     }
   };
 
   return (
-    <div className="custom-pagination" {...props}>
-      <FormControl variant="outlined" size="small" className="page-size-select">
-        <InputLabel id="page-size-label">Page Size</InputLabel>
+    <div className="flex items-center justify-between ml-[100px]" {...props}>
+      <FormControl variant="outlined" size="small" className="ml-3">
         <Select
           labelId="page-size-label"
           value={pageSize}
           onChange={(e) => onPageSizeChange(e.target.value as number)}
+          className="border border-gray-100  focus:ring focus:ring-blue-500"
         >
           {pageSizeOptions.map((size) => (
-            <MenuItem key={size} value={size}>
+            <MenuItem key={size} value={size} className="hover:bg-gray-200">
               {size}
             </MenuItem>
           ))}
@@ -51,21 +52,21 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
       </FormControl>
 
       <button
-        onClick={() => handlePageChange(currentPage - 1)}
+        onClick={(event) => handlePageChange(event, currentPage - 1)}
         disabled={currentPage === 0}
-        className="pagination-button"
+        className=" text-black  hover:text-blue-600 disabled:opacity-50"
       >
-        قبلی
+        <MdOutlineArrowForwardIos />
       </button>
-      <span className="pagination-info">
+      <span className="mx-4 text-gray-700">
         صفحه {currentPage + 1} از {pageCount}
       </span>
       <button
-        onClick={() => handlePageChange(currentPage + 1)}
+        onClick={(event) => handlePageChange(event, currentPage + 1)}
         disabled={currentPage >= pageCount - 1}
-        className="pagination-button"
+        className=" text-black  hover:text-blue-600 disabled:opacity-50"
       >
-        بعدی
+        <MdArrowBackIosNew />
       </button>
     </div>
   );

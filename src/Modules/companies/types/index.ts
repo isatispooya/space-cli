@@ -12,7 +12,15 @@ export interface FormField {
     | "select"
     | "checkbox"
     | "transferList"
-    | "number";
+    | "number"
+    | "viewFile"
+    | "date"
+    | "file";
+
+  viewFileProps?: { showPreview: boolean; url: string; fileType: string };
+
   options?: { value: string; label: string }[];
   headerClassName?: string;
+  disabled?: boolean;
+  value?: unknown;
 }

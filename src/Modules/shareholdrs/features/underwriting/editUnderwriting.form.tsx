@@ -29,7 +29,6 @@ const EditUnderWritingForm = () => {
     process: yup.number().required(),
     status: yup.string().required("ثبت وضعیت الزامی است"),
   }) as yup.ObjectSchema<underwritingTypes>;
-  
 
   const formFields: FormField[] = [
     {
@@ -46,6 +45,7 @@ const EditUnderWritingForm = () => {
         { label: "تایید شده", value: "approved" },
         { label: "رد شده", value: "rejected" },
         { label: "در انتظار تایید", value: "pending" },
+        { label: "تایید نهایی", value: "final_approved" },
       ],
     },
     {
@@ -79,7 +79,7 @@ const EditUnderWritingForm = () => {
       type: "viewFile",
       viewFileProps: {
         showPreview: true,
-        url: server +"/"+ process?.document || "",
+        url: server + "/" + process?.document || "",
         fileType: process?.document_type || "",
       },
     },

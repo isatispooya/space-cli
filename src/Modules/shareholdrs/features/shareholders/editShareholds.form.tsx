@@ -1,11 +1,11 @@
 import toast from "react-hot-toast";
 import Forms from "../../../../components/forms";
-
 import { ShareholdersTypes } from "../../types";
 import * as yup from "yup";
 import { useShareholders } from "../../hooks";
-import {  useCompany } from "../../../companies/hooks";
+import { useCompany } from "../../../companies/hooks";
 import { useNavigate, useParams } from "react-router-dom";
+import { FormField } from "../../../companies/types";
 
 const EditShareholdForm: React.FC = () => {
   const { mutate } = useShareholders.useUpdate();
@@ -15,11 +15,8 @@ const EditShareholdForm: React.FC = () => {
   const { data: shareholders } = useShareholders.useGet();
   const { data: companies } = useCompany.useGet();
 
-
-  const shareholder = shareholders?.find((item) => item.id === Number(id))
-  console.log('shareholder', shareholder);
-  
-
+  const shareholder = shareholders?.find((item) => item.id === Number(id));
+  console.log("shareholder", shareholder);
 
   if (!shareholder && !id) {
     navigate("/shareholders/table");
@@ -58,10 +55,12 @@ const EditShareholdForm: React.FC = () => {
       label: "کاربر",
       type: "select" as const,
 
-      options: [{
-        value: shareholder?.user || '',
-        label: shareholder?.user.toString() || ''
-      }]
+      options: [
+        {
+          value: shareholder?.user || "",
+          label: shareholder?.user.toString() || "",
+        },
+      ],
     },
   ];
 
@@ -99,7 +98,7 @@ const EditShareholdForm: React.FC = () => {
   return (
     <>
       <Forms
-        formFields={formFields}
+        formFields={formFields as FormField[]}
         initialValues={initialValues}
         validationSchema={validationSchema}
         colors="text-[#5677BC]"
