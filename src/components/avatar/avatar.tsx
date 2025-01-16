@@ -12,7 +12,6 @@ const UserAvatar = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: profileData } = useProfile();
 
-  console.log(profileData);
   
   
 

@@ -99,13 +99,13 @@ const ViewDownload: FC<ViewDownloadProps> = ({
             </p>
           </motion.div>
 
-          {isImg && downloadLink && (
+          {/* {isImg && downloadLink && (
             <motion.img
               src={downloadLink}
               alt="download"
               className="w-full h-auto object-contain rounded shadow-lg"
             />
-          )}
+          )} */}
 
           {img && (
             <motion.img
