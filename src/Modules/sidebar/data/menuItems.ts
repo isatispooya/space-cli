@@ -187,16 +187,8 @@ export const menuItems: MenuItem[] = [
         path: "/invitation",
         codename: ["allow_any"],
       },
-    ],
-  },
-  {
-    title: "امتیازات",
-    path: "/points",
-    icon: FaUserTie,
-    codename: ["allow_any"],
-    submenu: [
       {
-        title: "ماموریت ها",
+        title: "امتیازات",
         path: "/points/missions",
         codename: ["allow_any"],
       },

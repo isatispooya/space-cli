@@ -31,6 +31,8 @@ const Popup = ({
             <div className="relative border-t border-slate-200 py-4 leading-normal text-slate-600 font-light">
               {text}
             </div>
+            <input type="number" placeholder="تعداد" />
+
             <div className="flex shrink-0 flex-wrap items-center pt-4 justify-end">
               <button
                 onClick={() => {
@@ -54,7 +56,6 @@ const Popup = ({
               >
                 انصراف
               </button>
-              <input type="number" placeholder="تعداد"  />
             </div>
           </div>
         </div>

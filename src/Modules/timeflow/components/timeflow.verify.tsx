@@ -6,15 +6,22 @@ import { VerifyType } from "../types/verify.type";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
-
 const TimeflowVerify = () => {
   const [isVisible, setIsVisible] = useState(true);
   const { mutate: verify } = useVerify.usePostVerify();
   const { data: verifyData, refetch } = useVerify.useGetVerify();
 
   useEffect(() => {
+    const verificationStatus = localStorage.getItem("verificationCompleted");
+    if (verificationStatus === "true") {
+      setIsVisible(false);
+    }
+  }, []);
+
+  useEffect(() => {
     if (verifyData && !verifyData.login?.length && !verifyData.logout?.length) {
       setIsVisible(false);
+      localStorage.setItem("verificationCompleted", "true");
     }
   }, [verifyData]);
 

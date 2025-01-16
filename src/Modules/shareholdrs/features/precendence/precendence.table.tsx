@@ -13,76 +13,98 @@ import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { useUserPermissions } from "../../../permissions";
 import { LoaderLg } from "../../../../components";
+import CustomPagination from "../../../../utils/paginationTable";
 
 const PrecendenceTable: React.FC = () => {
   const { data, refetch, isPending } = usePrecendence.useGet();
   const navigate = useNavigate();
-
-  console.log(data);
-  
-
   const { mutate: deletePrecendence } = usePrecendence.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { checkPermission } = useUserPermissions();
   const [selectedRow, setSelectedRow] = useState<PrecedenceTypes | null>(null);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const [pageSizeOptions] = useState([10, 20, 50, 100]);
   const columns: GridColDef[] = [
     {
       field: "name",
       headerName: "نام",
       width: 100,
       renderCell: (params) => {
-        return <div className="text-center">{params.row.user_detail.first_name}</div>;
+        return (
+          <div className="text-center">{params.row.user_detail.first_name}</div>
+        );
       },
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "last_name",
       headerName: "نام خانوادگی",
       width: 200,
       renderCell: (params) => {
-        return <div className="text-center">{params.row.user_detail.last_name}</div>;
+        return (
+          <div className="text-center">{params.row.user_detail.last_name}</div>
+        );
       },
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "uniqueIdentifier",
       headerName: "کدملی",
       width: 200,
       renderCell: (params) => {
-        return <div className="text-center">{params.row.user_detail.uniqueIdentifier}</div>;
+        return (
+          <div className="text-center">
+            {params.row.user_detail.uniqueIdentifier}
+          </div>
+        );
       },
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "company",
       headerName: "شرکت",
       width: 200,
       renderCell: (params) => {
-        return <div className="text-center">{params.row.company_detail.name}</div>;
+        return (
+          <div className="text-center">{params.row.company_detail.name}</div>
+        );
       },
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
     },
-    { field: "precedence", headerName: "حق تقدم", width: 100, headerAlign: 'center', align: 'center' },
+    {
+      field: "precedence",
+      headerName: "حق تقدم",
+      width: 100,
+      headerAlign: "center",
+      align: "center",
+    },
     {
       field: "total_amount",
       headerName: "حق تقدم استفاده شده",
       width: 200,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "updated_at",
       headerName: "تاریخ بروزرسانی",
       width: 180,
       renderCell: (params) => {
-        return <div className="text-center">{moment(params.row.updated_at).locale("fa").format("jYYYY/jMM/jDD")}</div>;
+        return (
+          <div className="text-center">
+            {moment(params.row.updated_at).locale("fa").format("jYYYY/jMM/jDD")}
+          </div>
+        );
       },
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
     },
   ];
 
@@ -150,9 +172,33 @@ const PrecendenceTable: React.FC = () => {
             },
           }}
           pageSizeOptions={[10]}
+          pagination
+          paginationModel={paginationModel}
+          onPaginationModelChange={(newPaginationModel) => {
+            setPaginationModel(newPaginationModel);
+          }}
           disableColumnMenu
           filterMode="client"
           slots={{
+            pagination: (props) => (
+              <CustomPagination
+                rows={rows}
+                pageSize={paginationModel.pageSize}
+                paginationModel={paginationModel}
+                onPageChange={(newPage) => {
+                  setPaginationModel((prev) => ({ ...prev, page: newPage }));
+                }}
+                pageSizeOptions={pageSizeOptions}
+                onPageSizeChange={(newSize) => {
+                  setPaginationModel((prev) => ({
+                    ...prev,
+                    pageSize: newSize,
+                    page: 0,
+                  }));
+                }}
+                {...props}
+              />
+            ),
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}

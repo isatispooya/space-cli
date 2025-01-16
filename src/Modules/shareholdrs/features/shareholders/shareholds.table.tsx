@@ -14,12 +14,14 @@ import { useUserPermissions } from "../../../permissions";
 import { companyTypes } from "../../data/companyTypes";
 import { useShareholders } from "../../hooks";
 import { LoaderLg } from "../../../../components";
+
+
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, refetch, isPending } = useShareholders.useGet();
   const [selectedRow, setSelectedRow] = useState<ShareholdersTypes | null>(
     null
   );
-  
+
   const { mutate: deleteShareholder } = useShareholders.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ const ShareholdTable: React.FC = () => {
     {
       field: "company_name",
       headerName: "شرکت",
-      width: 150
+      width: 150,
     },
     {
       field: "company_type",
@@ -146,6 +148,7 @@ const ShareholdTable: React.FC = () => {
           pageSizeOptions={[10]}
           disableColumnMenu
           filterMode="client"
+
           slots={{
             toolbar: (props) => (
               <CustomDataGridToolbar
