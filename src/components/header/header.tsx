@@ -14,6 +14,8 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Divider } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { useRemainPoints } from "../../Modules/points";
+import NotificationComponent from "../notification/notification";
+import { Notification } from "../notification";
 
 initTWE({ Collapse, Ripple });
 
@@ -21,7 +23,7 @@ const Header = () => {
   const { toggleSidebar } = useSidebarStore();
   const { data: remainPoints } = useRemainPoints();
 
-  console.log(remainPoints, "1234567890");
+  console.log(remainPoints, "1");
 
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -31,6 +33,7 @@ const Header = () => {
   const unreadCount =
     notifications?.filter((notification) => notification.read === false)
       .length ?? 0;
+      
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
@@ -158,6 +161,8 @@ const Header = () => {
                 </span>
               </Tooltip>
             </div>
+            {showNotifications && <NotificationComponent ref={notificationRef} />}
+
             <div className="flex items-center ml-4">
               <UserAvatar />
             </div>

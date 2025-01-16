@@ -22,7 +22,7 @@ interface NotificationMessage {
 
 
 
-const Notification = React.forwardRef<HTMLDivElement>((_props, ref) => {
+const NotificationComponent = React.forwardRef<HTMLDivElement, React.PropsWithChildren<{}>>((props, ref) => {
   const { data } = useCorrespondencesData();
   const markAsReadMutation = useMarkAsRead();
 
@@ -108,8 +108,8 @@ const Notification = React.forwardRef<HTMLDivElement>((_props, ref) => {
               maxWidth: "320px",
               minWidth: "300px",
               left: "80px",
-              top: "80px",
-              maxHeight: "80vh",
+              top: "100px",
+              maxHeight: "100vh",
               overflowY: "auto",
             }}
           >
@@ -223,4 +223,4 @@ const Notification = React.forwardRef<HTMLDivElement>((_props, ref) => {
     )
 });
 
-export default Notification;
+export default NotificationComponent;
