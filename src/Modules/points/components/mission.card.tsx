@@ -5,52 +5,47 @@ import { MissionTypes } from "../types";
 
 const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-12">
       {missions.map((item, index) => (
         <motion.div
-          className="flex border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white"
+          className="flex bg-with border rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300"
+          style={{ width: '90%' }}
           key={index}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
         >
-          <div className="w-1/3">
+          <div className=" mb-[-40px]">
             <img
               src={item.image}
               alt="Mission"
-              className="w-full h-full object-cover rounded-l-lg"
+              className="w-[130px] h-[130px] rounded-xl object-cover m-2"
             />
           </div>
-          <div className="flex flex-col justify-between p-4 w-2/3">
-            <h2 className="text-lg font-bold text-gray-800 mb-2">
+          <div className="flex flex-col justify-between p-2  w-2/3 text-right">
+            <h2 className="text-lg font-bold text-gray-800 mb-1">
               {item.display_name}
             </h2>
-            <p className="text-gray-700 text-sm mb-4">{item.description}</p>
-            <div className="flex items-center space-x-4 mb-4">
+            <p className="text-gray-600 text-sm mb-1">{item.description}</p>
+            <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <GiTwoCoins className="text-yellow-500 text-lg" />
-                <span className="text-sm font-bold text-gray-800">
-                  {item.point_1} طلا
-                </span>
+                <span className="font-bold">{item.point_1} طلا</span>
               </div>
               <div className="flex items-center space-x-2">
                 <FaGem className="text-gray-500 text-lg" />
-                <span className="text-sm font-bold text-gray-800">
-                  {item.point_2} الماس
-                </span>
+                <span className="font-bold">{item.point_2} الماس</span>
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-gray-800">
-                تکرار ماموریت {item.user_attempts}
-              </span>
+            <div className="flex justify-center">
+              <a href={item.link} target="_blank">
+                <button className="mt-2 bg-gray-200 text-gray-800 py-2 px-2 rounded-lg text-sm hover:bg-gray-300 transition-colors duration-300 w-[330px]">
+                  رفتن به ماموریت
+                </button>
+              </a>
             </div>
-            <a href={item.link} target="_blank">
-              <button className="bg-[#5677BC] text-white py-2 px-4 rounded-lg text-sm hover:bg-blue-300 transition-colors duration-300 w-full">
-                رفتن به ماموریت
-              </button>
-            </a>
           </div>
+          
         </motion.div>
+
+        
       ))}
     </div>
   );
