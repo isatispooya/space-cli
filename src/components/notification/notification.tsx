@@ -24,6 +24,7 @@ const NotificationComponent = React.forwardRef<
   HTMLDivElement,
   React.PropsWithChildren<unknown>
 >((props, ref) => {
+  console.log(props);
   const { data } = useCorrespondencesData();
   const markAsReadMutation = useMarkAsRead();
 
