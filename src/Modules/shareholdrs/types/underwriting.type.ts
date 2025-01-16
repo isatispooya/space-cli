@@ -1,3 +1,4 @@
+import { PaymentDetail } from "./paymentDetail";
 export interface underwritingTypes {
   id?: number;
   amount?: number;
@@ -16,10 +17,15 @@ export interface underwritingTypes {
   description?: string;
   agreement_text?: string;
   document_type?: string;
+  first_name?: string;
+  last_name?: string;
   user_detail?: {
     first_name: string;
     last_name: string;
     id: number;
   };
+  payment_detail?: PaymentDetail;
+  type_peyment?: string;
+
 }
 

@@ -436,7 +436,7 @@ const CreateUnderWritingForm = () => {
                     <div className="flex items-center justify-between border-t border-gray-300 pt-4">
                       <p className="text-sm font-medium text-gray-800">نام بانک:</p>
                       <p className="text-sm text-gray-900">
-                      بانک صادرات جمهوری اسلامی ایران 
+                      بانک صادرات شعبه صنعتی یزد 
                       </p>
                     </div>
                   </div>

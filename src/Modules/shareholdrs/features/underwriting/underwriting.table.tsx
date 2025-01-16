@@ -38,30 +38,14 @@ const UnderWritingTable: React.FC = () => {
     window.open(`/underwriting/print/${selectedRow.id}`, "_blank");
   };
 
-  const statusNames = [
-    {
-      value: "pending",
-      label: "در انتظار",
-    },
-    {
-      value: "approved",
-      label: "تایید شده",
-    },
-    {
-      value: "rejected",
-      label: "رد شده",
-    },
-  ];
+
   const columns: GridColDef[] = [
     {
-      field: "type",
+      field: "type_peyment",
       headerName: "نوع",
       width: 100,
       align: "center",
       headerAlign: "center",
-      renderCell: (params) => {
-        return params.row.type === "2" ? "درگاه پرداخت" : "فیش بانکی";
-      },
     },
     {
       field: "price",
@@ -78,20 +62,20 @@ const UnderWritingTable: React.FC = () => {
       width: 150,
       align: "center",
       headerAlign: "center",
-      renderCell: (params) => {
-        return params.row.payment_detail?.track_id || "ندارد";
-      },
     },
     {
-      field: "user_detail",
-      headerName: "نام کاربر",
+      field: "first_name",
+      headerName: "نام",
       width: 200,
       align: "center",
       headerAlign: "center",
-      renderCell: (params) => {
-        const user = params.row.user_detail;
-        return user ? `${user.first_name} ${user.last_name}` : "نامشخص";
-      },
+    },
+    {
+      field: "last_name",
+      headerName: "نام خانوادگی",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "requested_amount",
@@ -99,6 +83,7 @@ const UnderWritingTable: React.FC = () => {
       width: 130,
       align: "center",
       headerAlign: "center",
+      renderCell: (params) => formatNumber(params.row.price),
     },
     {
       field: "created_at",
@@ -118,15 +103,18 @@ const UnderWritingTable: React.FC = () => {
       width: 130,
       align: "center",
       headerAlign: "center",
-      renderCell: (params) => {
-        const status = params.row.status;
-        const statusObj = statusNames.find((s) => s.value === status);
-        return statusObj ? statusObj.label : "نامشخص";
-      },
     },
   ];
 
   const rows = data || [];
+  const rows_flat = data?.map((item) => ({... item,
+    type_peyment: item.payment_detail?.type === "2" ? "درگاه پرداخت" : "فیش بانکی",
+    track_id: item.payment_detail?.track_id,
+    first_name: item.user_detail?.first_name,
+    last_name: item.user_detail?.last_name,
+    status: item.status==='approved' ? 'تایید شده' : item.status==='rejected' ? 'رد شده' :item.status==='success' ? 'تایید نهایی' : 'در انتظار',
+  })) || [];
+  
 
   if (isPending) {
     return (
@@ -153,7 +141,7 @@ const UnderWritingTable: React.FC = () => {
       >
         <DataGrid
           columns={columns}
-          rows={rows}
+          rows={rows_flat}
           localeText={localeText}
           onRowClick={(params) => setSelectedRow(params.row)}
           onRowSelectionModelChange={(newSelectionModel) => {
