@@ -185,7 +185,7 @@ const PrecendenceTable: React.FC = () => {
                 rows={rows}
                 pageSize={paginationModel.pageSize}
                 paginationModel={paginationModel}
-                onPageChange={(newPage) => {
+                onPageChange={(event, newPage) => {
                   setPaginationModel((prev) => ({ ...prev, page: newPage }));
                 }}
                 pageSizeOptions={pageSizeOptions}
