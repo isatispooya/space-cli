@@ -8,6 +8,13 @@ import { AgreementPopup } from "../../components";
 import { formatNumber } from "../../../../utils";
 import Sep from "../../../../../public/assets/sep.png";
 import {  toast } from 'react-hot-toast';
+import { AxiosError } from "axios";
+
+
+
+interface ErrorResponse {
+  error: string;
+}
 
 
 interface SelectOption {
@@ -110,8 +117,9 @@ const CreateUnderWritingForm = () => {
               }
               toast.success("عملیات با موفقیت انجام شد");
             },
-            onError: (error) => {
-              toast.error(`خطا در انجام عملیات: ${error.message}`);
+            onError: (error: AxiosError<unknown>) => {
+              const errorMessage = (error.response?.data as ErrorResponse)?.error;
+              toast.error(errorMessage || "خطایی رخ داده است");
             },
            
           });

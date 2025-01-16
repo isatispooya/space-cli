@@ -7,6 +7,7 @@ import {
 import { underwritingServices } from "../services";
 import { underwritingTypes } from "../types/underwriting.type";
 import { underwritingCreateTypes } from "../types/underwritingCreate.type";
+import { AxiosError } from "axios";
 
 const useUnderwriting = {
   useGet: (): UseQueryResult<underwritingTypes[]> => {
@@ -18,8 +19,9 @@ const useUnderwriting = {
 
   useCreate: (): UseMutationResult<
     { redirect_url?: string },
-    Error,
+    AxiosError<unknown>,
     underwritingCreateTypes
+
   > => {
     return useMutation({
       mutationKey: ["createUnderwriting"],
