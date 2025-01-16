@@ -9,11 +9,17 @@ import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { LoaderLg } from "../../../components";
 import { InvitationTypes } from "../types";
+import CustomPagination from "../../../utils/paginationTable";
 
 type TableRow = Omit<InvitationTypes, "invitation_code_detail">;
 
 const InvitationListTable = () => {
   const [selectedRow, setSelectedRow] = useState<TableRow | null>(null);
+  const [pageSizeOptions] = useState([10, 20, 50, 100]);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
   const { checkPermission } = useUserPermissions();
 
   const columns: GridColDef[] = [
@@ -128,9 +134,33 @@ const InvitationListTable = () => {
           },
         }}
         pageSizeOptions={[10]}
+        pagination
+        paginationModel={paginationModel}
+        onPaginationModelChange={(newPaginationModel) => {
+          setPaginationModel(newPaginationModel);
+        }}
         disableColumnMenu
         filterMode="client"
         slots={{
+          pagination: (props) => (
+            <CustomPagination
+              rows={rows}
+              pageSize={paginationModel.pageSize}
+              paginationModel={paginationModel}
+              onPageChange={(_, newPage) => {
+                setPaginationModel((prev) => ({ ...prev, page: newPage }));
+              }}
+              pageSizeOptions={pageSizeOptions}
+              onPageSizeChange={(newSize) => {
+                setPaginationModel((prev) => ({
+                  ...prev,
+                  pageSize: newSize,
+                  page: 0,
+                }));
+              }}
+              {...props}
+            />
+          ),
           toolbar: (props) => (
             <CustomDataGridToolbar
               {...props}

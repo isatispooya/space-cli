@@ -104,6 +104,14 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
+            <div className="absolute top-4 right-4 z-10">
+              <button
+                onClick={() => handleShare(slide)}
+                className="flex items-center bg-green-500/10 backdrop-blur-sm px-4 py-2 rounded-full"
+              >
+                <FaShareAlt className="text-base sm:text-lg md:text-xl  text-white  " />
+              </button>
+            </div>
             <a href={slide.link} className="relative w-full h-full block group">
               <img
                 src={slide.picture}
@@ -127,24 +135,8 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
                     امکان سرمایه‌گذاری آنلاین
                   </span>
                 </button>
-
-                
-               <div className="absolute bottom-5 left-5 right-0 p-3 sm:p-4  text-left flex items-center justify-start">
-              <div className="flex items-center bg-green-500/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                <FaShareAlt className="text-base sm:text-lg md:text-xl text-green-700  " />
-                <button
-                  onClick={() => handleShare(slide)}
-                  className="text-xs sm:text-sm md:text-base mr-2 font-medium"
-                >
-                  اشتراک‌ گذاری
-                </button>
               </div>
-            </div>
-              </div>
-           
             </a>
-
-            
           </SwiperSlide>
         ))}
       </Swiper>

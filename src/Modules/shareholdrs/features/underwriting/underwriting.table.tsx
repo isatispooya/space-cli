@@ -17,11 +17,17 @@ import "moment/locale/fa";
 import Popup from "../../../../components/popup";
 import { LoaderLg } from "../../../../components";
 import { useUnderwritingStore } from "../../store";
+import CustomPagination from "../../../../utils/paginationTable";
 
 const UnderWritingTable: React.FC = () => {
   const { data, refetch, isPending } = useUnderwriting.useGet();
   const { setId } = useUnderwritingStore();
+  const [pageSizeOptions] = useState([10, 20, 50, 100]);
 
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
   const { mutate: deletePurchasePrecendense } = useUnderwriting.useDelete();
@@ -163,6 +169,12 @@ const UnderWritingTable: React.FC = () => {
             height: "100%",
           }}
           checkboxSelection
+          pageSizeOptions={[10]}
+          pagination
+          paginationModel={paginationModel}
+          onPaginationModelChange={(newPaginationModel) => {
+            setPaginationModel(newPaginationModel);
+          }}
           rowSelectionModel={selectedRow?.id ? [selectedRow.id] : []}
           disableMultipleRowSelection
           initialState={{
@@ -170,10 +182,28 @@ const UnderWritingTable: React.FC = () => {
               paginationModel: { pageSize: 10, page: 0 },
             },
           }}
-          pageSizeOptions={[10]}
           disableColumnMenu
           filterMode="client"
           slots={{
+            pagination: (props) => (
+              <CustomPagination
+                rows={rows}
+                pageSize={paginationModel.pageSize}
+                paginationModel={paginationModel}
+                onPageChange={(_, newPage) => {
+                  setPaginationModel((prev) => ({ ...prev, page: newPage }));
+                }}
+                pageSizeOptions={pageSizeOptions}
+                onPageSizeChange={(newSize) => {
+                  setPaginationModel((prev) => ({
+                    ...prev,
+                    pageSize: newSize,
+                    page: 0,
+                  }));
+                }}
+                {...props}
+              />
+            ),
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
@@ -194,7 +224,7 @@ const UnderWritingTable: React.FC = () => {
                     icon: <FaPrint />,
                   },
                 }}
-              />  
+              />
             ),
           }}
           slotProps={{
