@@ -6,6 +6,7 @@ import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { GiTwoCoins } from "react-icons/gi";
 import { useRemainPoints } from "../../points";
+import { useNavigate } from "react-router-dom";
 
 export interface StatsProps {
   title: string;
@@ -26,6 +27,8 @@ const DashboardMarketingStat = () => {
   const { data: remainPoints } = useRemainPoints();
   const { data: invitation } = useInvitation.useGetCodes();
   const { data: invitedUsers } = useInvitation.useGetList();
+
+  const navigate = useNavigate();
 
   const allNames = [...(invitedUsers || [])];
 
@@ -100,31 +103,39 @@ const DashboardMarketingStat = () => {
             className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans"
           >
             <span className="flex items-center">
-              {invitation?.[0]?.invited_users_count || 0}
-              <span className="text-sm text-[#D2042D] font-iranSans mx-2">
-                نفر
-              </span>
-              
-              <div className="flex flex-col items-center mr-8 ">
-                <span className="flex items-center text-white mb-1">
-                  <span className="text-[#A0001C] text-xl font-bold">{remainPoints?.point_1}</span>
-                  <GiTwoCoins
-                    className="w-5 h-5 mx-1 text-5xl"
-                    // color="#f1c40f"
-                    color="#D2042D"
-                  />
-                  <span className="text-sm text-[#D2042D]">(طلایی)</span>
+              <button onClick={() => navigate("/invitation/list")}>
+                {invitation?.[0]?.invited_users_count || 0}
+                <span className="text-sm text-[#D2042D] font-iranSans mx-2">
+                  نفر
                 </span>
-                <span className="flex items-center text-white">
-                  <span className="text-[#A0001C] text-xl font-bold">{remainPoints?.point_2}</span>
-                  <GiTwoCoins
-                    className="w-5 h-5 mx-1 text-1xl"
-                    // color="#707b7c"
-                    color="#D2042D"
-                  />
-                  <span className="text-sm text-[#D2042D]">(نقره ای)</span>
-                </span>
-              </div>
+              </button>
+
+              <button onClick={() => navigate("/points/missions")}>
+                <div className="flex flex-col items-center mr-8 ">
+                  <span className="flex items-center text-white mb-1">
+                    <span className="text-[#A0001C] text-xl font-bold">
+                      {remainPoints?.point_1}
+                    </span>
+                    <GiTwoCoins
+                      className="w-5 h-5 mx-1 text-5xl"
+                      // color="#f1c40f"
+                      color="#D2042D"
+                    />
+                    <span className="text-sm text-[#D2042D]">(طلایی)</span>
+                  </span>
+                  <span className="flex items-center text-white">
+                    <span className="text-[#A0001C] text-xl font-bold">
+                      {remainPoints?.point_2}
+                    </span>
+                    <GiTwoCoins
+                      className="w-5 h-5 mx-1 text-1xl"
+                      // color="#707b7c"
+                      color="#D2042D"
+                    />
+                    <span className="text-sm text-[#D2042D]">(نقره ای)</span>
+                  </span>
+                </div>
+              </button>
             </span>
           </motion.p>
         </div>
