@@ -76,15 +76,15 @@ const GiftCard = ({
                 className="w-[130px] h-[130px] rounded-xl object-cover m-2"
               />
               <p className="text-xs text-gray-600 mb-1">{item.description}</p>
-              <div className="flex flex-col space-y-1">
-                <div className="flex items-center space-x-4 space-y-2">
-                  <BsSafeFill className="text-yellow-500 text-sm" />
+              <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center space-x-4 space-y-2">
+                  <BsSafeFill className="text-yellow-500 text-sm ml-2" />
                   <span className="font-bold text-sm">
                     {formatNumber(item.point_1)} گاوصندوق
                   </span>
                 </div>
                 <div className="flex items-center space-x-4 space-y-2">
-                  <FaPiggyBank className="text-gray-500 text-sm" />
+                  <FaPiggyBank className="text-gray-500 text-sm ml-2" />
                   <span className="font-bold text-sm">
                     {formatNumber(item.point_2)} قلک
                   </span>
