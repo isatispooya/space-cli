@@ -242,7 +242,7 @@ const DashboardChart = () => {
           )}
         </div>
       </div>
-      <div className="flex justify-center mt-20 p-4 ">
+      <div className="flex justify-center mt-20 p-4 z-10">
         {hasPermission && (
           <motion.button
             whileHover={{ scale: 1.02 }}
