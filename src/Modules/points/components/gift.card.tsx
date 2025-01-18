@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
-import { FaGem } from "react-icons/fa";
-import { GiTwoCoins } from "react-icons/gi";
 import { GiftTypes } from "../types";
 import Popup from "../../../components/popup";
 import { useState } from "react";
+import { FaPiggyBank } from "react-icons/fa";
+import { BsSafeFill } from "react-icons/bs";
+import { useRemainPoints } from "../hooks";
+import { CiLock } from "react-icons/ci";
 
 const GiftCard = ({
   gifts,
@@ -17,6 +19,9 @@ const GiftCard = ({
     id: string;
     description: string;
   } | null>(null);
+  const { data: remainPoints } = useRemainPoints();
+
+  console.log(remainPoints);
 
   const handleMutate = (id: string, description: string) => {
     setSelectedGift({ id, description });
@@ -35,49 +40,81 @@ const GiftCard = ({
     }
   };
 
+  const formatNumber = (num: number | undefined) => {
+    if (num === undefined) return "";
+    if (num >= 1000000000) {
+      return `${(num / 1000000000).toFixed(1)}B`;
+    } else if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`;
+    } else if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`;
+    } else {
+      return num.toString();
+    }
+  };
+
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-        {gifts.map((item, index) => (
-          <motion.div
-            className="flex bg-gray-100 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-            key={index}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <div className="w-1/3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 z-10 p-12">
+        {gifts.map((item, index) => {
+          const isButtonDisabled = remainPoints?.point_1 < item.point_1;
+
+          return (
+            <motion.div
+              className={`relative flex flex-col items-center bg-white border-2 border-gray-300 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 ${
+                item.point_1 !== 0 ? "bg-gray-200" : ""
+              }`}
+              style={{ width: "100%", height: "auto" }}
+              key={index}
+            >
+              <h2 className="text-sm font-bold text-gray-800 mb-2 text-center">
+                {item.display_name}
+              </h2>
               <img
                 src={item.image}
                 alt="Gift"
-                className="w-full h-full object-cover "
+                className="w-[130px] h-[130px] rounded-xl object-cover m-2"
               />
-            </div>
-            <div className="flex flex-col justify-between p-6 w-2/3 text-right">
-              <h2 className="text-lg font-bold text-gray-800 mb-2">
-                {item.display_name}
-              </h2>
-              <p className="text-gray-600 text-sm mb-4">{item.description}</p>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <GiTwoCoins className="text-yellow-500 text-lg" />
-                  <span className="font-bold">{item.point_1} طلا</span>
+              <p className="text-xs text-gray-600 mb-1">{item.description}</p>
+              <div className="flex flex-col space-y-1">
+                <div className="flex items-center space-x-4 space-y-2">
+                  <BsSafeFill className="text-yellow-500 text-sm" />
+                  <span className="font-bold text-sm">
+                    {formatNumber(item.point_1)} گاوصندوق
+                  </span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <FaGem className="text-gray-500 text-lg" />
-                  <span className="font-bold">{item.point_2} الماس</span>
+                <div className="flex items-center space-x-4 space-y-2">
+                  <FaPiggyBank className="text-gray-500 text-sm" />
+                  <span className="font-bold text-sm">
+                    {formatNumber(item.point_2)} قلک
+                  </span>
                 </div>
               </div>
-              <button
-                onClick={() =>
-                  handleMutate(item.id.toString(), item.description)
-                }
-                className="mt-4 bg-[#5677BC] text-white py-2 px-4 rounded-lg text-sm hover:bg-blue-300 transition-colors duration-300 w-full"
-              >
-                دریافت هدیه
-              </button>
-            </div>
-          </motion.div>
-        ))}
+              <div className="flex justify-center">
+                <button
+                  onClick={() =>
+                    handleMutate(item.id.toString(), item.description)
+                  }
+                  className={`mt-2 py-2 px-4 rounded-lg text-sm w-full ${
+                    isButtonDisabled
+                      ? "bg-gray-300"
+                      : "bg-gray-200 hover:bg-gray-200"
+                  }`}
+                  disabled={isButtonDisabled}
+                >
+                  {isButtonDisabled ? (
+                    <>
+                      <CiLock  className="mr-2 text-xl text-gray-900 inline" />
+                      <span>امتیاز کافی نیست</span>
+                    </>
+                  ) : (
+                    <span>دریافت هدیه</span>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
       <Popup
