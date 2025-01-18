@@ -90,12 +90,12 @@ const GiftCard = ({
                   </span>
                 </div>
               </div>
-              <div className="flex justify-center">
+              <div className="flex justify-center w-full">
                 <button
                   onClick={() =>
                     handleMutate(item.id.toString(), item.description)
                   }
-                  className={`mt-2 py-2 px-4 rounded-lg text-sm w-full ${
+                  className={`mt-2 py-2 px-4 rounded-lg text-sm w-full sm:w-auto ${
                     isButtonDisabled
                       ? "bg-gray-300"
                       : "bg-gray-200 hover:bg-gray-200"
@@ -104,7 +104,7 @@ const GiftCard = ({
                 >
                   {isButtonDisabled ? (
                     <>
-                      <CiLock  className="mr-2 text-xl text-gray-900 inline" />
+                      <CiLock className="mr-2 text-xl text-gray-900 inline" />
                       <span>امتیاز کافی نیست</span>
                     </>
                   ) : (
