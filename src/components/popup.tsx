@@ -19,7 +19,7 @@ const Popup = ({
         <div
           data-dialog-backdrop="dialog-xs"
           data-dialog-backdrop-close="true"
-          className="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm"
+          className="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60"
         >
           <div
             data-dialog="dialog-xs"

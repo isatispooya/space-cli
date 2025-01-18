@@ -45,7 +45,7 @@ const EditUnderWritingForm = () => {
         { label: "تایید شده", value: "approved" },
         { label: "رد شده", value: "rejected" },
         { label: "در انتظار تایید", value: "pending" },
-        { label: "تایید نهایی", value: "final_approved" },
+        { label: "تایید نهایی", value: "success" },
       ],
     },
     {
