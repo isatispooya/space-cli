@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { useUnusedProcess } from "../../hooks";
-import { ViewDownload } from "../../../../components";
-import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 
 interface ICreditAnalysis {
   validation_description: string;
@@ -13,32 +12,42 @@ interface ICreditAnalysis {
 const CreditAnalysisView: FC = () => {
   const { data } = useUnusedProcess.useGetList();
 
-  const handleDownload = () => {
-    toast.success("در حال دانلود فایل");
-  };
-
   if (!data || data.length === 0) {
     return <div>No data available</div>;
   }
 
   return (
     <div>
-      {data?.map((item: ICreditAnalysis, index: number) => (
-        <ViewDownload
-          key={index}
-          title="اعتبار سنجی بانکی"
-          description={item?.validation_description}
-          regulatorLogo={item?.validation_regulator_logo}
-          regulatorText={item?.validation_regulator}
-          downloadLink={item?.validation}
-          isImg={true}
-          toastMessage="در حال دانلود فایل"
-          toastError="در حال حاضر فایلی برای دانلود وجود ندارد"
-          onDownload={handleDownload}
-          downloadButtonText="دانلود اعتبار سنجی بانکی"
-          target="_blank"
-        />
-      ))}
+      <div className="py-8 w-full">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="w-full mx-auto p-4 sm:p-8"
+        >
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="w-full bg-white rounded-lg p-8 sm:p-12 border-2 border-gray-200 relative"
+          >
+            <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-[#5677BC] rounded-tl-lg" />
+            <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-[#5677BC] rounded-tr-lg" />
+            <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-[#5677BC] rounded-bl-lg" />
+            <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-[#5677BC] rounded-br-lg" />
+
+            {data?.map((item: ICreditAnalysis, index: number) => (
+              <div key={index}>
+                <div className="flex flex-col">
+                    <img
+                      src={item?.validation}
+                      alt="اعتبار سنجی"
+                      style={{ width: "100%" }}
+                    />
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 };
