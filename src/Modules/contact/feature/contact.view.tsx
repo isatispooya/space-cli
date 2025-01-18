@@ -46,7 +46,7 @@ const ContactView: React.FC = () => {
         variants={itemVariants}
         className="flex items-center gap-3 mb-8"
       >
-        <div className="bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow">
+        <div className="bg-white/90  p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow">
           <FaCloud className="text-3xl text-[#02205F]" />
         </div>
         <h1 className="text-3xl md:text-4xl font-bold text-[#02205F]">
@@ -57,7 +57,7 @@ const ContactView: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
 
         <motion.div variants={itemVariants} className="space-y-4">
-          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg space-y-4">
+          <div className="bg-white/90  rounded-xl p-4 shadow-lg space-y-4">
    
             {[
               {
@@ -127,7 +127,7 @@ const ContactView: React.FC = () => {
           </div>
           <motion.div
             variants={itemVariants}
-            className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg"
+            className="bg-white/90  rounded-xl p-4 shadow-lg"
           >
             <h3 className="text-base font-semibold mb-2 text-[#02205F]">
               توضیحات
@@ -140,7 +140,7 @@ const ContactView: React.FC = () => {
         </motion.div>
 
         <motion.div variants={itemVariants}>
-          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg space-y-4 mb-4">
+          <div className="bg-white/90  rounded-xl p-4 shadow-lg space-y-4 mb-4">
             <h3 className="text-base font-semibold text-[#02205F]">
               سوالات متداول
             </h3>
@@ -177,7 +177,7 @@ const ContactView: React.FC = () => {
           </div>
           <motion.div
             variants={itemVariants}
-            className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg"
+            className="bg-white/90 rounded-xl p-4 shadow-lg"
           >
             <h3 className="text-base font-semibold mb-3 text-[#02205F]">
               مسیریابی
