@@ -63,7 +63,7 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
                 {item.user_attempts === 0
                   ? formatNumber(item.point_2)
                   : formatNumber(item.point_2 * item.user_attempts)}{" "}
-                قلک
+                بذر
               </span>
               <span className="text-gray-400">|</span>
               <span className="text-sm text-gray-600">
