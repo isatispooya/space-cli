@@ -8,7 +8,7 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
       {missions.map((item, index) => (
         <motion.div
           className="flex flex-col items-center bg-with border rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4"
-          style={{ width: '100%', height: 'auto' }}
+          style={{ width: "100%", height: "auto" }}
           key={index}
         >
           <h2 className="text-sm font-bold text-gray-800 mb-2 text-center">
@@ -21,6 +21,11 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
           />
           <p className="text-xs text-gray-600 mb-1">{item.description}</p>
           <div className="flex flex-col items-center space-y-1">
+            <div className="flex items-center space-x-2">
+              <span className="font-bold text-sm space-x-2">
+                {item.user_attempts}دریافت ها
+              </span>
+            </div>
             <div className="flex items-center space-x-2">
               <GiTwoCoins className="text-yellow-500 text-sm" />
               <span className="font-bold text-sm">{item.point_1} طلایی</span>
@@ -38,8 +43,6 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
             </a>
           </div>
         </motion.div>
-
-        
       ))}
     </div>
   );

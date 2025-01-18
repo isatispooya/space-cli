@@ -13,13 +13,13 @@ const Missions = () => {
       ? missionss.map((mission) => ({
           point_2: mission.point_2,
           point_1: mission.point_1,
-          display_name: mission.title || "Default Title",
+          display_name: mission.display_name || "Default Title",
           description: mission.description,
           onNavigate: () => {
             navigate("/");
           },
           image: server + mission.image,
-          link: mission.link,
+          link: mission.link, 
           user_attempts: mission.user_attempts,
           id: mission.id,
           status: mission.status,

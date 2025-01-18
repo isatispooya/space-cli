@@ -15,7 +15,7 @@ const Gifts = () => {
           point_2: mission.point_2,
           point_1: mission.point_1,
           id: mission.id,
-          display_name: mission.title || "Default Title",
+          display_name: mission.display_name || "Default Title",
           description: mission.description,
           onNavigate: () => {
             navigate("/");
