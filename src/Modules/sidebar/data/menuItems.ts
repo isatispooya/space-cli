@@ -41,7 +41,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "مدیریت حق تقدم",
-        codename: ["add_precedence"],
+        codename: ["add_precedence" , "precedence" ],
         path: "/precendence/table",
       },
       {
