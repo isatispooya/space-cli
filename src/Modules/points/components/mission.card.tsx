@@ -23,16 +23,24 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
           <div className="flex flex-col items-center space-y-1">
             <div className="flex items-center space-x-2">
               <span className="font-bold text-sm space-x-2">
-                {item.user_attempts}دریافت ها
+                {item.user_attempts === 0 ? (
+                  <span className="text-red-500">انجام نشده</span>
+                ) : (
+                  `${item.user_attempts} دریافت ها`
+                )}
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <GiTwoCoins className="text-yellow-500 text-sm" />
-              <span className="font-bold text-sm">{item.point_1} طلایی</span>
+              <span className="font-bold text-sm">
+                {item.user_attempts === 0 ? item.point_1 : item.point_1 * item.user_attempts} طلایی
+              </span>
             </div>
             <div className="flex items-center space-x-2">
               <GiTwoCoins className="text-gray-500 text-sm" />
-              <span className="font-bold text-sm">{item.point_2} نقره ای </span>
+              <span className="font-bold text-sm">
+                {item.user_attempts === 0 ? item.point_2 : item.point_2 * item.user_attempts} نقره ای 
+              </span>
             </div>
           </div>
           <div className="flex justify-center">
@@ -49,3 +57,4 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
 };
 
 export default MissionCard;
+
