@@ -7,14 +7,14 @@ import { useEffect, useState } from "react";
 import { AgreementPopup } from "../../components";
 import { formatNumber } from "../../../../utils";
 import Sep from "../../../../../public/assets/sep.png";
-import {  toast } from 'react-hot-toast';
+import { ErrorIcon, toast } from "react-hot-toast";
 import { AxiosError } from "axios";
-
-
+import { FaCheckCircle } from "react-icons/fa";
 
 interface ErrorResponse {
   error: string;
 }
+
 
 
 interface SelectOption {
@@ -37,12 +37,10 @@ const CreateUnderWritingForm = () => {
 
   const typeOptions = [
     { label: "فیش", value: "1" },
-    { label: "درگاه", value: "2" }, 
+    { label: "درگاه", value: "2" },
   ];
 
   console.log(unusedPrecedenceProcess);
-  
-
 
   useEffect(() => {
     setShowPopup(true);
@@ -92,17 +90,20 @@ const CreateUnderWritingForm = () => {
             formData.append("document", values.document);
           }
 
-          await postPrecendence(formData as unknown as underwritingCreateTypes, {
-            onSuccess: (response) => {
-              if (response.redirect_url) {
-                window.open(response.redirect_url, "_blank");
-              }
-              toast.success("عملیات با موفقیت انجام شد");
-            },
-            onError: (error) => {
-              toast.error(`خطا در انجام عملیات: ${error.message}`);
-            },
-          });
+          await postPrecendence(
+            formData as unknown as underwritingCreateTypes,
+            {
+              onSuccess: (response) => {
+                if (response.redirect_url) {
+                  window.open(response.redirect_url, "_blank");
+                }
+                toast.success("عملیات با موفقیت انجام شد");
+              },
+              onError: (error) => {
+                toast.error(`خطا در انجام عملیات: ${error.message}`);
+              },
+            }
+          );
         } else {
           const purchaseData: underwritingCreateTypes = {
             amount: Number(values.amount),
@@ -115,13 +116,51 @@ const CreateUnderWritingForm = () => {
               if (response.redirect_url) {
                 window.open(response.redirect_url, "_blank");
               }
-              toast.success("عملیات با موفقیت انجام شد");
+              toast.custom((t) => (
+                <div
+                  className={`${
+                    t.visible ? "animate-enter" : "animate-leave"
+                  } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                >
+                  <div className="flex-1 w-0 p-4">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 pt-0.5">
+                       <FaCheckCircle className="h-10 w-10 rounded-full bg-green-500 text-white" />
+                      </div>
+                      <p>عملیات با موفقیت انجام شد</p>
+                    </div>
+                  </div>
+                  <div className="flex border-l border-gray-200">
+                    <button
+                      onClick={() => toast.dismiss(t.id)}
+                      className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              ));
             },
             onError: (error: AxiosError<unknown>) => {
-              const errorMessage = (error.response?.data as ErrorResponse)?.error;
-              toast.error(errorMessage || "خطایی رخ داده است");
+              const errorMessage = (error.response?.data as ErrorResponse)
+                ?.error;
+              toast.custom((t) => (
+                <div
+                  className={`${
+                    t.visible ? "animate-enter" : "animate-leave"
+                  } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                >
+                  <div className="flex-1 w-0 p-4">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 pt-0.5">
+                        <ErrorIcon className="h-10 w-10 rounded-full" />
+                      </div>
+                      <p>{errorMessage || "خطایی رخ داده است"}</p>
+                    </div>
+                  </div>
+                </div>
+              ));
             },
-           
           });
         }
       } catch (error) {
@@ -168,11 +207,13 @@ const CreateUnderWritingForm = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('/api/user');
+        const response = await fetch("/api/user");
         const userData = await response.json();
 
         if (isChequeType && userData.accounts.length > 0) {
-          const defaultAccount = userData.accounts.find((account: UserAccount) => account.is_default);
+          const defaultAccount = userData.accounts.find(
+            (account: UserAccount) => account.is_default
+          );
           if (defaultAccount) {
             formik.setFieldValue("iban", defaultAccount.sheba_number);
           }
@@ -346,7 +387,9 @@ const CreateUnderWritingForm = () => {
                 value={formik.values.type}
                 className="w-full p-4  text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-[#29D2C7] focus:border-transparent"
               >
-                <option className="p-6" value="">انتخاب کنید</option>
+                <option className="p-6" value="">
+                  انتخاب کنید
+                </option>
                 {typeOptions.map((option: SelectOption) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -376,8 +419,6 @@ const CreateUnderWritingForm = () => {
                 />
               </div>
             )}
-
-           
           </div>
 
           {!isGatewayType && (
@@ -406,7 +447,8 @@ const CreateUnderWritingForm = () => {
           <div className="space-y-3">
             {isGatewayType && (
               <p className="text-red-500 text-xs">
-                . قبل از اتصال به درگاه بانکی از قطع بودن فیلترشکن خود مطمئن شوید
+                . قبل از اتصال به درگاه بانکی از قطع بودن فیلترشکن خود مطمئن
+                شوید
               </p>
             )}
             {isGatewayType && (
@@ -418,38 +460,44 @@ const CreateUnderWritingForm = () => {
                 />
               </div>
             )}
-              {isChequeType && (
-                <div className="bg-gray-50 border border-gray-300 rounded-lg p-6 shadow-md">
-                  <div className="flex flex-col space-y-4">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold text-gray-800">
-                        شماره شبا:
-                      </p>
-                      <p className="text-sm font-medium text-gray-900 bg-white px-4 py-2 rounded-md shadow-inner">
-                        {unusedPrecedenceProcess?.[0]?.sheba_number}
-                      </p>
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(unusedPrecedenceProcess?.[0]?.sheba_number || '');
-                          toast.success('شماره شبا با موفقیت کپی شد');
-                          setIsCopied(true);
-                          setTimeout(() => setIsCopied(false), 2000);
-                        }}
-                        className={`px-4 py-2 ${isCopied ? 'bg-green-500' : 'bg-[#29D2C7]'} text-white rounded-md shadow hover:bg-[#25b2a8] transition-colors text-xs flex items-center`}
-                      >
-                        {isCopied ? 'کپی شد!' : 'کپی شماره شبا'}
-                      </button>
-                    </div>
-                    
-                    <div className="flex items-center justify-between border-t border-gray-300 pt-4">
-                      <p className="text-sm font-medium text-gray-800">نام بانک:</p>
-                      <p className="text-sm text-gray-900">
-                      بانک صادرات شعبه صنعتی یزد 
-                      </p>
-                    </div>
+            {isChequeType && (
+              <div className="bg-gray-50 border border-gray-300 rounded-lg p-6 shadow-md">
+                <div className="flex flex-col space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-gray-800">
+                      شماره شبا:
+                    </p>
+                    <p className="text-sm font-medium text-gray-900 bg-white px-4 py-2 rounded-md shadow-inner">
+                      {unusedPrecedenceProcess?.[0]?.sheba_number}
+                    </p>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          unusedPrecedenceProcess?.[0]?.sheba_number || ""
+                        );
+                        toast.success("شماره شبا با موفقیت کپی شد");
+                        setIsCopied(true);
+                        setTimeout(() => setIsCopied(false), 2000);
+                      }}
+                      className={`px-4 py-2 ${
+                        isCopied ? "bg-green-500" : "bg-[#29D2C7]"
+                      } text-white rounded-md shadow hover:bg-[#25b2a8] transition-colors text-xs flex items-center`}
+                    >
+                      {isCopied ? "کپی شد!" : "کپی شماره شبا"}
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-gray-300 pt-4">
+                    <p className="text-sm font-medium text-gray-800">
+                      نام بانک:
+                    </p>
+                    <p className="text-sm text-gray-900">
+                      بانک صادرات شعبه صنعتی یزد
+                    </p>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
             <button
               type="submit"
               disabled={formik.isSubmitting}
@@ -458,11 +506,7 @@ const CreateUnderWritingForm = () => {
               {formik.isSubmitting ? "در حال ارسال..." : "ثبت  پذیره نویسی"}
             </button>
           </div>
-
-        
         </form>
-
-        
       </div>
 
       {showPopup && (

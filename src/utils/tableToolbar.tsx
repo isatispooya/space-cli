@@ -75,7 +75,11 @@ const CustomDataGridToolbar = <T extends Record<string, unknown>>({
 
       const excelData = customExcelData
         ? customExcelData(dataToExport)
-        : dataToExport;
+        : dataToExport.map((item) => ({
+            نام: item.first_name || item.user_detail?.first_name || "",
+            "نام خانوادگی": item.last_name || item.user_detail?.last_name || "",
+            ...item,
+          }));
 
       if (!excelData || !Array.isArray(excelData) || excelData.length === 0) {
         console.error("No valid data after processing");
