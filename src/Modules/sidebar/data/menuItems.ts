@@ -4,7 +4,6 @@ import {
   FaEnvelope,
   FaHome,
   FaPhone,
-  // FaUser,
   FaUserTie,
 } from "react-icons/fa";
 import { FaClockRotateLeft } from "react-icons/fa6";
