@@ -8,16 +8,15 @@ const PointsMainPage = () => {
     {
       icon: BiTask,
       text: "ماموریت ها",
-      permission: ["view_permission"],
+      permission: ["allow-any"],
       path: "missions",
     },
     {
       icon: FaGift,
       text: "هدایا",
-      permission: ["add_permission"],
+      permission: ["allow-any"],
       path: "gifts",
     },
-
   ];
   return (
     <>
