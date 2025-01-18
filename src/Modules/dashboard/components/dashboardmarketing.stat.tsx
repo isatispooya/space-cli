@@ -112,8 +112,8 @@ const DashboardMarketingStat = () => {
               </button>
 
               <button onClick={() => navigate("/points/missions")}>
-                <div className="flex flex-col items-center mr-8">
-                  <div className="flex items-center text-white mb-2">
+                <div className="flex flex-col items-start mr-8">
+                  <div className="flex items-start text-white mb-2">
                     <span className="text-[#A0001C] text-xl font-bold">
                       {remainPoints?.point_1}
                     </span>
@@ -123,7 +123,7 @@ const DashboardMarketingStat = () => {
                     />
                     <span className="text-sm text-[#D2042D]">(گاوصندوق)</span>
                   </div>
-                  <div className="flex items-center text-white">
+                  <div className="flex items-start text-white">
                     <span className="text-[#A0001C] text-xl font-bold">
                       {remainPoints?.point_2}
                     </span>
