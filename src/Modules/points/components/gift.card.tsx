@@ -12,9 +12,10 @@ const GiftCard = ({
   postGift,
 }: {
   gifts: GiftTypes[];
-  postGift: (data: { id: string; gift: string; description: string }) => void;
+  postGift: (data: { id: string; gift: string; description: string; amount: number }) => void;
 }) => {
   const [open, setOpen] = useState(false);
+  const [amount, setAmount] = useState<number>(0);
   const [selectedGift, setSelectedGift] = useState<{
     id: string;
     description: string;
@@ -36,6 +37,7 @@ const GiftCard = ({
         id: selectedGift.id,
         gift: selectedGift.id,
         description: selectedGift.description,
+        amount: amount
       };
       postGift(data);
       setOpen(false);
@@ -59,7 +61,7 @@ const GiftCard = ({
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 z-10 p-12">
         {gifts.map((item, index) => {
-          const isButtonDisabled = 30000000 < item.point_1;
+          const isButtonDisabled = remainPoints?.point_1 < item.point_1;
 
           return (
             <motion.div
@@ -126,7 +128,19 @@ const GiftCard = ({
         onConfirm={confirmMutation}
         onCancel={() => setOpen(false)}
         onClose={() => setOpen(false)}
-      />
+      >
+        <div className="mt-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            مقدار مورد نظر را وارد کنید
+          </label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(Number(e.target.value))}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+      </Popup>
     </>
   );
 };

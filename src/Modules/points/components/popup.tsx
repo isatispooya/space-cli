@@ -1,3 +1,13 @@
+interface PopupProps {
+  isOpen: boolean;
+  label: string;
+  text: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  onClose: () => void;
+  children?: React.ReactNode;
+}
+
 const Popup = ({
   isOpen,
   label,
@@ -5,14 +15,7 @@ const Popup = ({
   onConfirm,
   onCancel,
   onClose,
-}: {
-  isOpen: boolean;
-  label: string;
-  text: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-  onClose: () => void;
-}) => {
+}: PopupProps) => {
   return (
     <>
       {isOpen && (
