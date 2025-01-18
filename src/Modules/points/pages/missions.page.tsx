@@ -1,8 +1,7 @@
-import ComingSoon from "../../../components/comingSoon";
-// import { Missions } from "../feature";
+import { Missions } from "../feature";
 
 const MissionsPage = () => {
-  return <ComingSoon />;
+  return <Missions />;
 };
 
 export default MissionsPage;
