@@ -25,10 +25,10 @@ const CapitalMainPage: React.FC = () => {
       <div className="min-h-screen flex flex-col">
         <div className="bg-white p-3">
           <h1 className="text-2xl font-bold text-center text-indigo-600 mb-1">
-            سامانه مدیریت سود پرداختی
+            پرداخت حق تقدم
           </h1>
           <p className="text-gray-600 text-center text-sm">
-            مدیریت و پیگیری سود پرداختی به صورت هوشمند
+            مدیریت و پیگیری پرداخت حق تقدم  
           </p>
         </div>
         <div className="flex-grow flex flex-col">

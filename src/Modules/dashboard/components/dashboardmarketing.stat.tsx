@@ -33,9 +33,6 @@ const DashboardMarketingStat = () => {
 
   const allNames = [...(invitedUsers || [])];
 
-  console.log(invitedUsers);
-  console.log(invitation);
-
   const [visibleIndices, setVisibleIndices] = useState<number[]>([]);
 
   useEffect(() => {
@@ -110,7 +107,6 @@ const DashboardMarketingStat = () => {
                   نفر
                 </span>
               </button>
-
               <button onClick={() => navigate("/points/missions")}>
                 <div className="flex flex-col items-start mr-8">
                   <div className="flex items-start text-white mb-2">
