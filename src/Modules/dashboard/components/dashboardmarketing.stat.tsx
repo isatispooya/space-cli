@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import { RiUserReceived2Line } from "react-icons/ri";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
-import { GiTwoCoins } from "react-icons/gi";
 import { useRemainPoints } from "../../points";
 import { useNavigate } from "react-router-dom";
+import { BsSafeFill } from "react-icons/bs";
+import { FaPiggyBank } from "react-icons/fa6";
 
 export interface StatsProps {
   title: string;
@@ -111,29 +112,27 @@ const DashboardMarketingStat = () => {
               </button>
 
               <button onClick={() => navigate("/points/missions")}>
-                <div className="flex flex-col items-center mr-8 ">
-                  <span className="flex items-center text-white mb-1">
+                <div className="flex flex-col items-start mr-8">
+                  <div className="flex items-start text-white mb-2">
                     <span className="text-[#A0001C] text-xl font-bold">
                       {remainPoints?.point_1}
                     </span>
-                    <GiTwoCoins
-                      className="w-5 h-5 mx-1 text-5xl"
-                      // color="#f1c40f"
+                    <BsSafeFill
+                      className="w-5 h-5 mx-2 text-5xl"
                       color="#D2042D"
                     />
-                    <span className="text-sm text-[#D2042D]">(طلایی)</span>
-                  </span>
-                  <span className="flex items-center text-white">
+                    <span className="text-sm text-[#D2042D]">(گاوصندوق)</span>
+                  </div>
+                  <div className="flex items-start text-white">
                     <span className="text-[#A0001C] text-xl font-bold">
                       {remainPoints?.point_2}
                     </span>
-                    <GiTwoCoins
-                      className="w-5 h-5 mx-1 text-1xl"
-                      // color="#707b7c"
+                    <FaPiggyBank
+                      className="w-5 h-5 mx-2 text-1xl"
                       color="#D2042D"
                     />
-                    <span className="text-sm text-[#D2042D]">(نقره ای)</span>
-                  </span>
+                    <span className="text-sm text-[#D2042D]">(قلک)</span>
+                  </div>
                 </div>
               </button>
             </span>

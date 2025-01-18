@@ -9,12 +9,17 @@ import Badge from "@mui/material/Badge";
 import { useState, useRef, useEffect } from "react";
 import { useCorrespondencesData } from "../notification/hook/notification.get";
 import { useNavigate } from "react-router-dom";
-import { GiTwoCoins } from "react-icons/gi";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Divider } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { useRemainPoints } from "../../Modules/points";
 import NotificationComponent from "../notification/notification";
+import { BsSafeFill } from "react-icons/bs";
+import { FaPiggyBank } from "react-icons/fa6";
+
+
+
+
 
 initTWE({ Collapse, Ripple });
 
@@ -134,7 +139,7 @@ const Header = () => {
 
           <div className="flex items-center justify-start relative xs:mr-1 lg:mx-4">
             <div className="flex flex-col items-center hover:cursor-pointer">
-              <Tooltip title="طلایی" placement="bottom" arrow>
+              <Tooltip title="گاوصندوق" placement="bottom" arrow>
                 <span
                   className="flex items-center text-white mb-1"
                   onClick={() => navigate("/points/missions")}
@@ -148,7 +153,8 @@ const Header = () => {
                       ? `${(remainPoints.point_1 / 1000).toFixed(1)}K`
                       : remainPoints?.point_1}
                   </span>
-                  <GiTwoCoins
+                  <BsSafeFill
+
                     className="w-5 h-5 mr-1 ml-4 mb-1"
                     style={{
                       fontSize: "1.5rem",
@@ -158,7 +164,7 @@ const Header = () => {
                 </span>
               </Tooltip>
 
-              <Tooltip title="نقره ای" placement="bottom" arrow>
+              <Tooltip title="قلک" placement="bottom" arrow>
                 <span
                   className="flex items-center text-white"
                   onClick={() => navigate("/points/missions")}
@@ -172,7 +178,9 @@ const Header = () => {
                       ? `${(remainPoints.point_2 / 1000).toFixed(1)}K`
                       : remainPoints?.point_2}
                   </span>
-                  <GiTwoCoins
+                  <FaPiggyBank
+
+
                     className="w-5 h-5 mr-1 ml-4 mb-1"
                     style={{
                       fontSize: "1rem",
