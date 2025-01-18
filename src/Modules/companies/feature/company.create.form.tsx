@@ -1,13 +1,11 @@
 import Forms from "../../../components/forms";
-import { CompanyData } from "../types/companyData.type";
+import { CompanyTypes } from "../types";
 import { FormField } from "../types";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FormikHelpers } from "formik";
 import { useCompany } from "../hooks";
-import * as Yup from 'yup';
-
-
+import * as Yup from "yup";
 
 const COMPANY_TYPES = [
   { value: "private_joint_stock", label: "سهامی خاص" },
@@ -43,30 +41,37 @@ const formFields: FormField[] = [
   { name: "letterhead", label: "سربرگ", type: "file" },
   { name: "signature", label: "امضا", type: "file" },
   { name: "seal", label: "مهر", type: "file" },
-  
 ];
 
 const validationSchema = Yup.object().shape({
   id: Yup.number(),
   employees: Yup.number(),
   file: Yup.mixed(),
-  name: Yup.string().required('نام شرکت الزامی است'),
-  company_type: Yup.string().required('نوع شرکت الزامی است'),
-  address: Yup.string().required('آدرس الزامی است'),
-  year_of_establishment: Yup.number().transform(value => Number(value) || undefined).required('سال تاسیس الزامی است'),
-  phone: Yup.string().required('تلفن الزامی است'),
-  postal_code: Yup.string().required('کد پستی الزامی است'),
-  national_id: Yup.string().required('کد شناسه الزامی است'),
+  name: Yup.string().required("نام شرکت الزامی است"),
+  company_type: Yup.string().required("نوع شرکت الزامی است"),
+  address: Yup.string().required("آدرس الزامی است"),
+  year_of_establishment: Yup.number()
+    .transform((value) => Number(value) || undefined)
+    .required("سال تاسیس الزامی است"),
+  phone: Yup.string().required("تلفن الزامی است"),
+  postal_code: Yup.string().required("کد پستی الزامی است"),
+  national_id: Yup.string().required("کد شناسه الزامی است"),
   description: Yup.string(),
-  registered_capital: Yup.number().transform(value => Number(value) || undefined).required('سرمایه ثبتی الزامی است'),
-  registration_number: Yup.number().transform(value => Number(value) || undefined).required('تعداد سرمایه ثبتی الزامی است'),
-  type_of_activity: Yup.string().required('نوع فعالیت الزامی است'),
-  website: Yup.string().url('وبسایت باید یک URL معتبر باشد'),
-  email: Yup.string().email('ایمیل باید معتبر باشد').required('ایمیل الزامی است'),
-  logo: Yup.mixed().required('لوگو الزامی است'),
-  letterhead: Yup.mixed().required('سربرگ الزامی است'),
-  signature: Yup.mixed().required('امضا الزامی است'),
-  seal: Yup.mixed().required('مهر الزامی است'),
+  registered_capital: Yup.number()
+    .transform((value) => Number(value) || undefined)
+    .required("سرمایه ثبتی الزامی است"),
+  registration_number: Yup.number()
+    .transform((value) => Number(value) || undefined)
+    .required("تعداد سرمایه ثبتی الزامی است"),
+  type_of_activity: Yup.string().required("نوع فعالیت الزامی است"),
+  website: Yup.string().url("وبسایت باید یک URL معتبر باشد"),
+  email: Yup.string()
+    .email("ایمیل باید معتبر باشد")
+    .required("ایمیل الزامی است"),
+  logo: Yup.mixed().required("لوگو الزامی است"),
+  letterhead: Yup.mixed().required("سربرگ الزامی است"),
+  signature: Yup.mixed().required("امضا الزامی است"),
+  seal: Yup.mixed().required("مهر الزامی است"),
 });
 
 const CreateCompanyForm = () => {
@@ -85,18 +90,25 @@ const CreateCompanyForm = () => {
     { setSubmitting }: FormikHelpers<CompanyData>
   ) => {
     const formData = new FormData();
-  
+
     Object.keys(values).forEach((key) => {
       const value = values[key as keyof CompanyData];
-      if (key === 'logo' || key === 'letterhead' || key === 'signature' || key === 'seal') {
-        const fileInput = document.querySelector(`input[name="${key}"]`) as HTMLInputElement;
+      if (
+        key === "logo" ||
+        key === "letterhead" ||
+        key === "signature" ||
+        key === "seal"
+      ) {
+        const fileInput = document.querySelector(
+          `input[name="${key}"]`
+        ) as HTMLInputElement;
         const file = fileInput?.files?.[0];
         if (file) formData.append(key, file);
       } else if (value) {
         formData.append(key, String(value));
       }
     });
-  
+
     createCompany(formData, {
       onSuccess: () => {
         toast.success("شرکت با موفقیت ایجاد شد");
@@ -107,7 +119,6 @@ const CreateCompanyForm = () => {
       },
     });
   };
-  
 
   return (
     <Forms<CompanyData>

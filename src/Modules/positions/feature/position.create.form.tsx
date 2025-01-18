@@ -5,7 +5,7 @@ import { useUserData } from "../../users/hooks";
 import { usePositionData } from "../hooks";
 import Forms from "../../../components/forms";
 import { useCompany } from "../../companies/feature";
-import { CompanyData } from "../../companies/types/companyData.type";
+import { CompanyData } from "../../companies/types/company.type";
 import { useNavigate } from "react-router-dom";
 
 interface FormField {
@@ -39,8 +39,8 @@ interface Position {
 const formatDate = (date: Date | string): string => {
   const d = new Date(date);
   const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
@@ -62,8 +62,6 @@ const PositionCreate = () => {
     type_of_employment: Yup.string().nullable().default(null),
     user: Yup.number().required("کاربر الزامی است"),
   });
-
-
 
   const typeOfEmploymentOptions = [
     "full_time",
@@ -106,7 +104,9 @@ const PositionCreate = () => {
       options:
         users?.map((user: User) => ({
           value: user.id,
-          label: `${user.first_name || ''} ${user.last_name || ''} | ${user.uniqueIdentifier || ''}`,
+          label: `${user.first_name || ""} ${user.last_name || ""} | ${
+            user.uniqueIdentifier || ""
+          }`,
         })) || [],
     },
     {
@@ -132,10 +132,11 @@ const PositionCreate = () => {
       label: "ارشد",
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
-      options: positions?.map((position: Position) => ({
-        value: position.id.toString(),
-        label: position.name,
-      })) || [],
+      options:
+        positions?.map((position: Position) => ({
+          value: position.id.toString(),
+          label: position.name,
+        })) || [],
     },
     {
       name: "type_of_employment",
@@ -173,13 +174,14 @@ const PositionCreate = () => {
         loading: "در حال ارسال...",
       }}
       onSubmit={async (values, { setSubmitting }) => {
-        
         try {
           const formData = {
             ...values,
             parent: values.parent,
             type_of_employment: values.type_of_employment || null,
-            start_date: values.start_date ? formatDate(values.start_date) : null,
+            start_date: values.start_date
+              ? formatDate(values.start_date)
+              : null,
             end_date: values.end_date ? formatDate(values.end_date) : null,
           };
           await createPosition(formData as PositionFormValues);

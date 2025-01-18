@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { CompanyData } from "../types/companyData.type";
+import { CompanyData } from "../types/company.type";
 
 import { useCompany } from "../hooks";
 import Forms from "../../../components/forms";
@@ -72,14 +72,13 @@ const formFields: FormField[] = [
   { name: "employees", label: "تعداد کارمندان", type: "text" },
 ];
 
-
 const EditCompanyForm = () => {
   const { mutate: updateCompany } = useCompany.useUpdate();
   const { data } = useCompany.useGet();
   const { id } = useParams();
 
   const specificCompany = data?.find((company) => company.id === Number(id));
-  
+
   const initialValues: CompanyData = {
     id: specificCompany?.id || 0,
     name: specificCompany?.name || "",

@@ -5,16 +5,17 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { companiesService } from "../services";
-import { CompanyData } from "../types/companyData.type";
+import { companypostTypes, CompanyTypes } from "../types";
+import { AxiosError } from "axios";
 
 const useCompany = {
-  useGet: (): UseQueryResult<CompanyData[]> => {
+  useGet: (): UseQueryResult<CompanyTypes[], AxiosError> => {
     return useQuery({
       queryKey: ["companies"],
       queryFn: companiesService.get,
     });
   },
-  useCreate: (): UseMutationResult<CompanyData, Error, FormData> => {
+  useCreate: (): UseMutationResult<companypostTypes, Error, FormData> => {
     return useMutation({
       mutationKey: ["createCompany"],
       mutationFn: (data: FormData) => companiesService.create(data),
@@ -23,11 +24,11 @@ const useCompany = {
       },
     });
   },
-  
+
   useUpdate: (): UseMutationResult<
-    CompanyData,
+    companypostTypes,
     Error,
-    { id: number; data: CompanyData }
+    { id: number; data: companypostTypes }
   > => {
     return useMutation({
       mutationKey: ["updateCompany"],
