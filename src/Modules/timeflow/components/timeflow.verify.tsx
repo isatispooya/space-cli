@@ -84,7 +84,7 @@ const TimeflowVerify = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto"
+      className="fixed inset-0 bg-black/50 z-50 overflow-y-auto"
     >
       <div className="min-h-screen bg-gradient-to-b from-gray-50/95 to-gray-100/95">
         <div className="container mx-auto px-4 py-8">

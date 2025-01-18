@@ -107,7 +107,7 @@ const NotificationComponent = React.forwardRef<HTMLDivElement, React.PropsWithCh
               width: "100%",
               maxWidth: "320px",
               minWidth: "300px",
-              left: "80px",
+              left: "40px",
               top: "100px",
               maxHeight: "100vh",
               overflowY: "auto",

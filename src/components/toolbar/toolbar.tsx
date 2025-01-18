@@ -30,7 +30,7 @@ const Toolbar = ({ buttons }: ToolbarProps) => {
     >
       <div className="relative right-0">
         <ul
-          className="relative flex flex-wrap gap-2 p-2 list-none rounded-xl bg-white/10 backdrop-blur-sm shadow-lg border border-slate-200/20"
+          className="relative flex flex-wrap gap-2 p-2 list-none rounded-xl bg-white/10  shadow-lg border border-slate-200/20"
           data-tabs="tabs"
           role="list"
         >

@@ -22,7 +22,6 @@ const Header = () => {
   const { toggleSidebar } = useSidebarStore();
   const { data: remainPoints } = useRemainPoints();
 
-
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationIconRef = useRef<SVGSVGElement>(null);
@@ -31,7 +30,7 @@ const Header = () => {
   const unreadCount =
     notifications?.filter((notification) => notification.read === false)
       .length ?? 0;
-      
+
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
@@ -67,7 +66,7 @@ const Header = () => {
               <div className="flex bg- h-full items-center justify-center  ">
                 <p
                   onClick={toggleSidebar}
-                  className="text-4xl cursor-pointer text-blue-900 hover:text-blue-900 transition-colors duration-200"
+                  className="text-4xl lg:text-4xl md:text-3xl xs:text-2xl cursor-pointer text-blue-900 hover:text-blue-900 transition-colors duration-200"
                 >
                   <FiMenu />
                 </p>
@@ -99,7 +98,6 @@ const Header = () => {
             id="navbarSupportedContentY"
             data-twe-collapse-item
           ></div>
-
           <Badge
             sx={{
               position: "relative",
@@ -107,6 +105,7 @@ const Header = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              marginRight: "-4px",
             }}
             badgeContent={unreadCount}
             color="error"
@@ -118,50 +117,77 @@ const Header = () => {
                 transform: "scale(1.1)",
                 transition: "transform 0.2s",
                 borderRadius: "50%",
-                fontSize: "2.2rem",
+
                 cursor: "pointer",
                 color: "#041685",
-                paddingLeft: "10px",
               }}
             />
           </Badge>
 
-          <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{
+              mx: "4px",
+            }}
+          />
 
-          <div className="flex items-center justify-start ml-8 relative ">
+          <div className="flex items-center justify-start relative xs:mr-1 lg:mx-4">
             <div className="flex flex-col items-center hover:cursor-pointer">
               <Tooltip title="طلایی" placement="bottom" arrow>
                 <span
-                  className="flex items-center text-white mr-2 mb-1"
+                  className="flex items-center text-white mb-1"
                   onClick={() => navigate("/points/missions")}
                 >
                   <span className="text-blue-900 text-sm font-bold">
-                    {remainPoints?.point_1}
+                    {remainPoints?.point_1 >= 1000000000
+                      ? `${(remainPoints.point_1 / 1000000000).toFixed(1)}B`
+                      : remainPoints?.point_1 >= 1000000
+                      ? `${(remainPoints.point_1 / 1000000).toFixed(1)}M`
+                      : remainPoints?.point_1 >= 1000
+                      ? `${(remainPoints.point_1 / 1000).toFixed(1)}K`
+                      : remainPoints?.point_1}
                   </span>
                   <GiTwoCoins
-                    className="w-5 h-5 mr-1 ml-4 mb-1 text-5xl"
-                    color="#f1c40f"
+                    className="w-5 h-5 mr-1 ml-4 mb-1"
+                    style={{
+                      fontSize: "1.5rem",
+                      color: "#f1c40f",
+                    }}
                   />
                 </span>
               </Tooltip>
+
               <Tooltip title="نقره ای" placement="bottom" arrow>
                 <span
-                  className="flex items-center text-white mr-2"
+                  className="flex items-center text-white"
                   onClick={() => navigate("/points/missions")}
                 >
                   <span className="text-blue-900 text-sm font-bold">
-                    {remainPoints?.point_2}
+                    {remainPoints?.point_2 >= 1000000000
+                      ? `${(remainPoints.point_2 / 1000000000).toFixed(1)}B`
+                      : remainPoints?.point_2 >= 1000000
+                      ? `${(remainPoints.point_2 / 1000000).toFixed(1)}M`
+                      : remainPoints?.point_2 >= 1000
+                      ? `${(remainPoints.point_2 / 1000).toFixed(1)}K`
+                      : remainPoints?.point_2}
                   </span>
                   <GiTwoCoins
-                    className="w-5 h-5 mr-1 ml-4 mb-1 text-1xl"
-                    color="#707b7c"
+                    className="w-5 h-5 mr-1 ml-4 mb-1"
+                    style={{
+                      fontSize: "1rem",
+                      color: "#707b7c",
+                    }}
                   />
                 </span>
               </Tooltip>
             </div>
-            {showNotifications && <NotificationComponent ref={notificationRef} />}
 
-            <div className="flex items-center ml-4">
+            {showNotifications && (
+              <NotificationComponent ref={notificationRef} />
+            )}
+
+            <div className="flex items-center">
               <UserAvatar />
             </div>
           </div>

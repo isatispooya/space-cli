@@ -30,7 +30,7 @@ const UnderwritingAttachmentsView = () => {
   };
 
   return (
-    <div className="relative w-full  mx-auto flex-col rounded-2xl bg-gradient-to-br from-slate-50/80 to-white/90 p-8 backdrop-blur-sm">
+    <div className="relative w-full  mx-auto flex-col rounded-2xl bg-gradient-to-br from-slate-50/80 to-white/90 p-8 ">
       <div className="grid grid-cols-3 gap-6">
         {appendixItems.map((item: AppendixItem, index: number) => (
           <motion.div

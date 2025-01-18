@@ -66,7 +66,7 @@ const Login: React.FC = () => {
           <motion.div
             key={`text-${currentAnnouncement?.id}`}
             {...fadeIn(0.05, 40)}
-            className="bg-black/30 backdrop-blur-sm rounded-lg p-6"
+            className="bg-black/30  rounded-lg p-6"
           >
             <div className="flex justify-between items-start">
               <div>

@@ -107,7 +107,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
             <div className="absolute  top-4 right-4 z-10">
               <button
                 onClick={() => handleShare(slide)}
-                className="flex items-center bg-green-500/10 backdrop-blur-sm px-4 py-2 rounded-full"
+                className="flex items-center bg-green-500/10 px-4 py-2 rounded-full"
               >
                 <FaShareAlt className="text-base sm:text-lg md:text-xl  text-white  " />
               </button>
