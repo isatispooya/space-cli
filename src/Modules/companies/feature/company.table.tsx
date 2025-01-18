@@ -7,7 +7,7 @@ import { CompanyData } from "../types/companyData.type";
 import { ModalLayout } from "../../../layouts";
 import toast from "react-hot-toast";
 import SeeCompany from "./company.details";
-import Popup from "../../../components/popup";
+import Popup from "../../points/components/popup";
 import EditCompanyForm from "./company.edit.form";
 import { tableStyles } from "../../../ui";
 import { useUserPermissions } from "../../permissions";

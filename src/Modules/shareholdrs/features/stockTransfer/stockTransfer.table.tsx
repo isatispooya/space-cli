@@ -10,7 +10,7 @@ import ModalLayout from "../../../../layouts/ModalLayout";
 import { Button } from "@headlessui/react";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
-import Popup from "../../../../components/popup";
+import Popup from "../../../points/components/popup";
 import { useStockTransferStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../permissions";

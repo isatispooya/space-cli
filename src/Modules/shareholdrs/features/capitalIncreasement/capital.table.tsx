@@ -8,7 +8,7 @@ import { tableStyles } from "../../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
-import Popup from "../../../../components/popup";
+import Popup from "../../../points/components/popup";
 import { useCapitalStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../permissions";

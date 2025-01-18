@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { GiftTypes } from "../types";
-import Popup from "../../../components/popup";
+import Popup from "./popup";
 import { useState } from "react";
 import { FaPiggyBank } from "react-icons/fa";
 import { BsSafeFill } from "react-icons/bs";
@@ -22,6 +22,8 @@ const GiftCard = ({
   const { data: remainPoints } = useRemainPoints();
 
   console.log(remainPoints);
+
+  
 
   const handleMutate = (id: string, description: string) => {
     setSelectedGift({ id, description });
@@ -57,7 +59,7 @@ const GiftCard = ({
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 z-10 p-12">
         {gifts.map((item, index) => {
-          const isButtonDisabled = remainPoints?.point_1 < item.point_1;
+          const isButtonDisabled = 30000000 < item.point_1;
 
           return (
             <motion.div
