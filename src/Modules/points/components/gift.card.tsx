@@ -2,10 +2,12 @@ import { motion } from "framer-motion";
 import { GiftTypes } from "../types";
 import Popup from "./popup";
 import { useState } from "react";
-import { FaPiggyBank } from "react-icons/fa";
-import { BsSafeFill } from "react-icons/bs";
 import { useRemainPoints } from "../hooks";
 import { CiLock } from "react-icons/ci";
+import { LuCoins } from "react-icons/lu";
+import { TbSeeding } from "react-icons/tb";
+
+
 
 const GiftCard = ({
   gifts,
@@ -82,15 +84,17 @@ const GiftCard = ({
               <p className="text-xs text-gray-600 mb-1">{item.description}</p>
               <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center space-x-4 space-y-2">
-                  <BsSafeFill className="text-yellow-500 text-sm ml-2" />
+                  <LuCoins
+                  className="text-yellow-500 text-[25px] font-bold  ml-2" />
                   <span className="font-bold text-sm">
-                    {formatNumber(item.point_1)} گاوصندوق
+                    {formatNumber(item.point_1)} سکه
                   </span>
                 </div>
                 <div className="flex items-center space-x-4 space-y-2">
-                  <FaPiggyBank className="text-gray-500 text-sm ml-2" />
+                  <TbSeeding  
+                  className="text-green-500 text-[25px] font-bold ml-2" />
                   <span className="font-bold text-sm">
-                    {formatNumber(item.point_2)} قلک
+                    {formatNumber(item.point_2)} بذر
                   </span>
                 </div>
               </div>

@@ -14,12 +14,8 @@ import { Divider } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { useRemainPoints } from "../../Modules/points";
 import NotificationComponent from "../notification/notification";
-import { BsSafeFill } from "react-icons/bs";
-import { FaPiggyBank } from "react-icons/fa6";
-
-
-
-
+import { TbSeeding } from "react-icons/tb";
+import { LuCoins } from "react-icons/lu";
 
 initTWE({ Collapse, Ripple });
 
@@ -35,6 +31,18 @@ const Header = () => {
   const unreadCount =
     notifications?.filter((notification) => notification.read === false)
       .length ?? 0;
+
+  const formatNumber = (num: number | undefined) => {
+    if (num === undefined) return "";
+    if (num >= 1000000000) {
+      return `${(num / 1000000000).toFixed(1)}B`;
+    } else if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`;
+    } else if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`;
+    }
+    return num.toString();
+  };
 
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
@@ -138,55 +146,28 @@ const Header = () => {
           />
 
           <div className="flex items-center justify-start relative xs:mr-1 lg:mx-4">
-            <div className="flex flex-col items-center hover:cursor-pointer">
-              <Tooltip title="گاوصندوق" placement="bottom" arrow>
+            <div className="flex flex-col items-end hover:cursor-pointer">
+              <Tooltip title="سکه" placement="bottom" arrow>
                 <span
                   className="flex items-center text-white mb-1"
                   onClick={() => navigate("/points/missions")}
                 >
                   <span className="text-blue-900 text-sm font-bold">
-                    {remainPoints?.point_1 >= 1000000000
-                      ? `${(remainPoints.point_1 / 1000000000).toFixed(1)}B`
-                      : remainPoints?.point_1 >= 1000000
-                      ? `${(remainPoints.point_1 / 1000000).toFixed(1)}M`
-                      : remainPoints?.point_1 >= 1000
-                      ? `${(remainPoints.point_1 / 1000).toFixed(1)}K`
-                      : remainPoints?.point_1}
+                    {formatNumber(remainPoints?.point_1)}
                   </span>
-                  <BsSafeFill
-
-                    className="w-5 h-5 mr-1 ml-4 mb-1"
-                    style={{
-                      fontSize: "1.5rem",
-                      color: "#f1c40f",
-                    }}
-                  />
+                  <LuCoins className="text-yellow-500 text-[25px] font-bold  ml-2" />
                 </span>
               </Tooltip>
 
-              <Tooltip title="قلک" placement="bottom" arrow>
+              <Tooltip title="بذر" placement="bottom" arrow>
                 <span
                   className="flex items-center text-white"
                   onClick={() => navigate("/points/missions")}
                 >
                   <span className="text-blue-900 text-sm font-bold">
-                    {remainPoints?.point_2 >= 1000000000
-                      ? `${(remainPoints.point_2 / 1000000000).toFixed(1)}B`
-                      : remainPoints?.point_2 >= 1000000
-                      ? `${(remainPoints.point_2 / 1000000).toFixed(1)}M`
-                      : remainPoints?.point_2 >= 1000
-                      ? `${(remainPoints.point_2 / 1000).toFixed(1)}K`
-                      : remainPoints?.point_2}
+                    {formatNumber(remainPoints?.point_2)}
                   </span>
-                  <FaPiggyBank
-
-
-                    className="w-5 h-5 mr-1 ml-4 mb-1"
-                    style={{
-                      fontSize: "1rem",
-                      color: "#707b7c",
-                    }}
-                  />
+                  <TbSeeding className="text-green-500 text-[25px] font-bold ml-2" />
                 </span>
               </Tooltip>
             </div>

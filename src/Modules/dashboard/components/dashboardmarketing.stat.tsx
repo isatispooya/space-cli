@@ -6,8 +6,8 @@ import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { useRemainPoints } from "../../points";
 import { useNavigate } from "react-router-dom";
-import { BsSafeFill } from "react-icons/bs";
-import { FaPiggyBank } from "react-icons/fa6";
+import { TbSeeding } from "react-icons/tb";
+import { LuCoins } from "react-icons/lu";
 
 export interface StatsProps {
   title: string;
@@ -32,6 +32,19 @@ const DashboardMarketingStat = () => {
   const navigate = useNavigate();
 
   const allNames = [...(invitedUsers || [])];
+
+  const formatNumber = (num: number | undefined) => {
+    if (num === undefined) return "";
+    if (num >= 1000000000) {
+      return `${(num / 1000000000).toFixed(1)}B`;
+    } else if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`;
+    } else if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`;
+    } else {
+      return num.toString();
+    }
+  };
 
   console.log(invitedUsers);
   console.log(invitation);
@@ -112,26 +125,21 @@ const DashboardMarketingStat = () => {
               </button>
 
               <button onClick={() => navigate("/points/missions")}>
-                <div className="flex flex-col items-start mr-8">
+                <div className="flex flex-col items-center mr-8">
                   <div className="flex items-start text-white mb-2">
                     <span className="text-[#A0001C] text-xl font-bold">
-                      {remainPoints?.point_1}
+                      {formatNumber(remainPoints?.point_1)}
                     </span>
-                    <BsSafeFill
-                      className="w-5 h-5 mx-2 text-5xl"
-                      color="#D2042D"
-                    />
-                    <span className="text-sm text-[#D2042D]">(گاوصندوق)</span>
+
+                    <LuCoins className="text-yellow-500 text-[25px] font-bold  ml-2" />
+                    <span className="text-sm text-[#D2042D]">(سکه)</span>
                   </div>
                   <div className="flex items-start text-white">
                     <span className="text-[#A0001C] text-xl font-bold">
-                      {remainPoints?.point_2}
+                      {formatNumber(remainPoints?.point_2)}
                     </span>
-                    <FaPiggyBank
-                      className="w-5 h-5 mx-2 text-1xl"
-                      color="#D2042D"
-                    />
-                    <span className="text-sm text-[#D2042D]">(قلک)</span>
+                    <TbSeeding className="text-green-500 text-[25px] font-bold ml-2" />
+                    <span className="text-sm text-[#D2042D]">(بذر)</span>
                   </div>
                 </div>
               </button>
