@@ -123,7 +123,6 @@ const DashboardMarketingStat = () => {
                   نفر
                 </span>
               </button>
-
               <button onClick={() => navigate("/points/missions")}>
                 <div className="flex flex-col items-center mr-8">
                   <div className="flex items-start text-white mb-2">

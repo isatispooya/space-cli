@@ -73,32 +73,71 @@ const CustomDataGridToolbar = <T extends Record<string, unknown>>({
         return;
       }
 
-      const excelData = customExcelData //+
-        ? customExcelData(dataToExport) //+
-        : dataToExport.map((item) => ({
-            //+
-            نام:
-              (
-                item as T & {
-                  first_name?: string;
-                  user_detail?: { first_name?: string };
-                }
-              ).first_name || //+
-              (item as T & { user_detail?: { first_name?: string } })
-                .user_detail?.first_name ||
-              "", //+
-            "نام خانوادگی":
-              (
-                item as T & {
-                  last_name?: string;
-                  user_detail?: { last_name?: string };
-                }
-              ).last_name || //+
-              (item as T & { user_detail?: { last_name?: string } }).user_detail
-                ?.last_name ||
-              "", //+
-            ...item, //+
-          })); //
+      const excelData = customExcelData
+        ? customExcelData(dataToExport)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        : dataToExport.map((item: any) => {
+            const {
+              status,
+              state,
+              process_status,
+              وضعیت,
+              Status,
+              STATUS,
+              ...cleanedItem
+            } = item;
+
+            const statusValue =
+              status || state || process_status || وضعیت || Status || STATUS;
+
+            let translatedStatus = "در انتظار";
+
+            if (statusValue) {
+              switch (String(statusValue).toLowerCase()) {
+                case "approved":
+                case "تایید شده":
+                  translatedStatus = "تایید شده";
+                  break;
+                case "rejected":
+                case "رد شده":
+                  translatedStatus = "رد شده";
+                  break;
+                case "pending":
+                case "در انتظار":
+                  translatedStatus = "در انتظار";
+                  break;
+                case "success":
+                case "تایید نهایی":
+                  translatedStatus = "تایید نهایی";
+                  break;
+              }
+            }
+
+            return {
+              نام:
+                (
+                  item as T & {
+                    first_name?: string;
+                    user_detail?: { first_name?: string };
+                  }
+                ).first_name ||
+                (item as T & { user_detail?: { first_name?: string } })
+                  .user_detail?.first_name ||
+                "",
+              "نام خانوادگی":
+                (
+                  item as T & {
+                    last_name?: string;
+                    user_detail?: { last_name?: string };
+                  }
+                ).last_name ||
+                (item as T & { user_detail?: { last_name?: string } })
+                  .user_detail?.last_name ||
+                "",
+              وضعیت: translatedStatus,
+              ...cleanedItem,
+            };
+          });
 
       if (!excelData || !Array.isArray(excelData) || excelData.length === 0) {
         console.error("No valid data after processing");

@@ -4,7 +4,6 @@ import {
   FaEnvelope,
   FaHome,
   FaPhone,
-  // FaUser,
   FaUserTie,
 } from "react-icons/fa";
 import { FaClockRotateLeft } from "react-icons/fa6";
@@ -41,7 +40,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "مدیریت حق تقدم",
-        codename: ["add_precedence"],
+        codename: ["add_precedence" , "precedence" ],
         path: "/precendence/table",
       },
       {

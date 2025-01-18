@@ -21,6 +21,7 @@ const InvitationListTable = () => {
     pageSize: 10,
   });
   const { checkPermission } = useUserPermissions();
+  const { data, isPending } = useInvitation.useGetList();
 
   const columns: GridColDef[] = [
     {
@@ -36,6 +37,15 @@ const InvitationListTable = () => {
       width: 150,
       align: "center",
       headerAlign: "center",
+    },
+    {
+      field: "introducer",
+      headerName: "معرف",
+      width: 250,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params: GridRenderCellParams) =>
+        params.row.introducer || "-",
     },
     {
       field: "mobile_number",
@@ -63,7 +73,7 @@ const InvitationListTable = () => {
     },
   ];
 
-  const { data, isPending } = useInvitation.useGetList();
+
 
   if (isPending) {
     return (
@@ -96,7 +106,11 @@ const InvitationListTable = () => {
     national_code: row.invited_user_detail.uniqueIdentifier,
     invitation_date: row.created_at,
     invitation_code: row.invitation_code_detail?.code,
+    introducer: row.invitation_code_detail?.introducer_user_detail
+      ? `${row.invitation_code_detail.introducer_user_detail.first_name} ${row.invitation_code_detail.introducer_user_detail.last_name}`
+      : "-",
   }));
+
 
   if (isPending) {
     return (

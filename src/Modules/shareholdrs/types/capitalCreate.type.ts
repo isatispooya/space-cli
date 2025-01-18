@@ -1,7 +1,7 @@
 export interface CapitalIncreaseCreate {
     company: string;
-    number_of_shares: string;
-    price: string;
+    amount: string;
+    value: string;
     user: string;
   }
   
