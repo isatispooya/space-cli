@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { DisplacementPrecendenceTypes } from "../../types/displacementPrecendence.type";
 import { tableStyles } from "../../../../ui";
-import Popup from "../../../../components/popup";
+import Popup from "../../../points/components/popup";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../permissions";
 import { LoaderLg } from "../../../../components";

@@ -9,7 +9,7 @@ import { FaEdit } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Popup from "../../../../components/popup";
+import Popup from "../../../points/components/popup";
 import { useUserPermissions } from "../../../permissions";
 import { companyTypes } from "../../data/companyTypes";
 import { useShareholders } from "../../hooks";

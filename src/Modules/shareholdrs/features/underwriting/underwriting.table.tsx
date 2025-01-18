@@ -14,7 +14,7 @@ import { useUnderwriting } from "../../hooks";
 import { useUserPermissions } from "../../../permissions";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import Popup from "../../../../components/popup";
+import Popup from "../../../points/components/popup";
 import { LoaderLg } from "../../../../components";
 import { useUnderwritingStore } from "../../store";
 import CustomPagination from "../../../../utils/paginationTable";

@@ -11,7 +11,7 @@ import "moment/locale/fa";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import Popup from "../../../components/popup";
+import Popup from "../../points/components/popup";
 
 const EmploymentsProcessTable = () => {
   const { data, isLoading, refetch } = UseEmProcess.useGet();
