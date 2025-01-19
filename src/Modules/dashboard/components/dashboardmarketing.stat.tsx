@@ -114,31 +114,34 @@ const DashboardMarketingStat = () => {
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
-            className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans"
+            className="text-xl sm:text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans mt-8 sm:mt-0"
           >
-            <span className="flex items-center">
+            <span className="flex flex-col sm:flex-row items-center">
               <button onClick={() => navigate("/invitation/list")}>
                 {invitation?.[0]?.invited_users_count || 0}
-                <span className="text-sm text-[#D2042D] font-iranSans mx-2">
+                <span className="text-[10px] sm:text-sm text-[#D2042D] font-iranSans mx-2">
                   نفر
                 </span>
               </button>
               <button onClick={() => navigate("/points/missions")}>
-                <div className="flex flex-col items-center mr-8">
-                  <div className="flex items-start text-white mb-2">
-                    <span className="text-[#A0001C] text-xl font-bold">
+                <div className="flex flex-col items-center sm:mr-8 mt-6 sm:mt-0">
+                  <div className="flex items-start text-white mb-3">
+                    <span className="text-[#A0001C] text-base sm:text-xl font-bold">
                       {formatNumber(remainPoints?.point_1)}
                     </span>
-
-                    <LuCoins className="text-yellow-500 text-[25px] font-bold  ml-2" />
-                    <span className="text-sm text-[#D2042D]">(سکه)</span>
+                    <LuCoins className="text-yellow-500 text-[16px] sm:text-[25px] font-bold ml-2" />
+                    <span className="text-[10px] sm:text-sm text-[#D2042D]">
+                      (سکه)
+                    </span>
                   </div>
                   <div className="flex items-start text-white">
-                    <span className="text-[#A0001C] text-xl font-bold">
+                    <span className="text-[#A0001C] text-base sm:text-xl font-bold">
                       {formatNumber(remainPoints?.point_2)}
                     </span>
-                    <TbSeeding className="text-green-500 text-[25px] font-bold ml-2" />
-                    <span className="text-sm text-[#D2042D]">(بذر)</span>
+                    <TbSeeding className="text-green-500 text-[16px] sm:text-[25px] font-bold ml-2" />
+                    <span className="text-[10px] sm:text-sm text-[#D2042D]">
+                      (بذر)
+                    </span>
                   </div>
                 </div>
               </button>
@@ -187,7 +190,7 @@ const DashboardMarketingStat = () => {
           </div>
         </div>
 
-        <div className="relative mt-[80px] z-20">
+        <div className="relative z-20 py-8 md:py-4 sm:py-[10px] xs:py-0 ">
           <div className="flex items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
             <p className="flex-1 text-[13px] text-[#D2042D] font-iranSans truncate">
               {`my.isatispooya.com/login?rf=${invitation?.[0]?.code || ""}`}
@@ -204,10 +207,13 @@ const DashboardMarketingStat = () => {
               {copied ? "کپی شد!" : "کپی لینک"}
             </motion.button>
           </div>
+          <p className="text-[12px] font-bold text-white mt-2  text-center font-iranSans  p-2 rounded-md ">
+            ⚠️ برخی مرورگرها در کپی کردن لینک محدودیت دارند
+          </p>
         </div>
 
         <svg
-          className="absolute bottom-0 rounded-xl left-0 w-full h-32 md:h-48"
+          className="absolute bottom-0 rounded-xl left-0 w-full  lg:h-56 xl:h-64 sm:h-48 md:h-56  xs:h-60"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
