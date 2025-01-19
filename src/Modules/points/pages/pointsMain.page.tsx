@@ -6,7 +6,6 @@ import { BiTask } from "react-icons/bi";
 import { RiFileList3Line } from "react-icons/ri";
 
 const PointsMainPage = () => {
-
   const toolbarButtons = [
     {
       icon: BiTask,
@@ -22,22 +21,16 @@ const PointsMainPage = () => {
     },
     {
       icon: RiFileList3Line,
-      text: "درخواست های من", 
+      text: "درخواست های من",
       permission: ["allow_any"],
       path: "requests",
     },
-
   ];
 
   return (
     <>
       <MainLayout>
         <div className="min-h-screen flex flex-col">
-          <div className="bg-white p-3">
-            <h1 className="text-2xl font-bold text-center text-indigo-600 mb-1">
-              امتیازات
-            </h1>
-          </div>
           <div className="flex-grow flex flex-col">
             <div className="px-6 py-3">
               <Toolbar buttons={toolbarButtons} />

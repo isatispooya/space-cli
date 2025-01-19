@@ -30,6 +30,16 @@ const Gifts = () => {
 
   return (
     <div>
+      <div>
+        <div className="bg-white p-4 rounded-xl  ">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            سهام شرکت صنایع مفتول ایساتیس پویا
+          </h2>
+          <p className="text-gray-600 text-center max-w-3xl mx-auto leading-relaxed">
+              شما می‌توانید در باشگاه مشتریان صنایع مفتول ایساتیس پویا امتیازات کسب شده تا کنون را در موارد پیشنهادی زیر مورد استفاده قرار دهید.
+          </p>
+        </div>
+      </div>
       <GiftCard gifts={giftsData} postGift={postGift} />
     </div>
   );
