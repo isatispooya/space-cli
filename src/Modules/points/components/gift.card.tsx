@@ -103,7 +103,7 @@ const GiftCard = ({
                   onClick={() =>
                     handleMutate(item.id.toString(), item.description)
                   }
-                  className={`mt-2 py-2 px-4 rounded-lg text-sm w-full sm:w-auto ${
+                  className={`mt-2 py-2 px-4 rounded-lg text-sm w-full ${
                     isButtonDisabled
                       ? "bg-gray-300"
                       : "bg-gray-200 hover:bg-gray-200"
