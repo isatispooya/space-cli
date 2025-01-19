@@ -12,8 +12,9 @@ import { server } from "../../../../api";
 
 const EditUnderWritingForm = () => {
   const { id } = useUnderwritingStore();
-  const { data: processData } = useUnderwriting.useGet();
+  const { data: processData,refetch:refetchProcess } = useUnderwriting.useGet();
   const { mutate: update } = useUnderwriting.useUpdate();
+
   const navigate = useNavigate();
 
   const process = processData?.find(
@@ -103,6 +104,7 @@ const EditUnderWritingForm = () => {
       { id: process?.id, status: values.status },
       {
         onSuccess: () => {
+          refetchProcess();
           toast.success("پرداخت با موفقیت ویرایش شد");
           navigate("/underwriting/table");
         },
