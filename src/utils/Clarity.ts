@@ -1,5 +1,4 @@
 import Clarity from '@microsoft/clarity';
-import { string } from 'prop-types';
 
 const projectId = "pvs08hnwmz"
 
@@ -8,7 +7,6 @@ interface IdentifyUserProps {
     customSessionId?: string;
     customPageId?: string;
     friendlyName?:string;
-
 }
 
 export const startClarity = (): void => {
