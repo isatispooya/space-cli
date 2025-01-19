@@ -76,6 +76,7 @@ const CreatePrecendenceForm = () => {
                 user: Number(values.user),
                 id: 0,
                 used_precedence: 0,
+                total_amount: 0,
                 updated_at: new Date().toISOString()
               },
               {
