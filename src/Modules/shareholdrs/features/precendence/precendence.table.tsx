@@ -15,28 +15,46 @@ import { useUserPermissions } from "../../../permissions";
 import { LoaderLg } from "../../../../components";
 import CustomPagination from "../../../../utils/paginationTable";
 
+interface FlattenedPrecedenceRow {
+  id: number;
+  first_name: string;
+  last_name: string;
+  uniqueIdentifier: string;
+  company_name: string;
+  precedence: number;
+  total_amount: number;
+  updated_at: string;
+}
+
 const PrecendenceTable: React.FC = () => {
   const { data, refetch, isPending } = usePrecendence.useGet();
   const navigate = useNavigate();
   const { mutate: deletePrecendence } = usePrecendence.useDelete();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { checkPermission } = useUserPermissions();
-  const [selectedRow, setSelectedRow] = useState<PrecedenceTypes | null>(null);
+  const [selectedRow, setSelectedRow] = useState<FlattenedPrecedenceRow | null>(null);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
   });
   const [pageSizeOptions] = useState([10, 20, 50, 100]);
+
+  const flattenedRows: FlattenedPrecedenceRow[] = data?.map((row: PrecedenceTypes) => ({
+    id: row.id,
+    first_name: (row.user_detail as { first_name: string }).first_name,
+    last_name: (row.user_detail as { last_name: string }).last_name,
+    uniqueIdentifier: (row.user_detail as { uniqueIdentifier: string }).uniqueIdentifier,
+    company_name: (row.company_detail as { name: string }).name,
+    precedence: row.precedence,
+    total_amount: row.total_amount,
+    updated_at: row.updated_at
+  })) || [];
+
   const columns: GridColDef[] = [
     {
-      field: "name",
+      field: "first_name",
       headerName: "نام",
       width: 100,
-      renderCell: (params) => {
-        return (
-          <div className="text-center">{params.row.user_detail.first_name}</div>
-        );
-      },
       headerAlign: "center",
       align: "center",
     },
@@ -44,11 +62,6 @@ const PrecendenceTable: React.FC = () => {
       field: "last_name",
       headerName: "نام خانوادگی",
       width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="text-center">{params.row.user_detail.last_name}</div>
-        );
-      },
       headerAlign: "center",
       align: "center",
     },
@@ -56,25 +69,13 @@ const PrecendenceTable: React.FC = () => {
       field: "uniqueIdentifier",
       headerName: "کدملی",
       width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="text-center">
-            {params.row.user_detail.uniqueIdentifier}
-          </div>
-        );
-      },
       headerAlign: "center",
       align: "center",
     },
     {
-      field: "company",
+      field: "company_name",
       headerName: "شرکت",
       width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="text-center">{params.row.company_detail.name}</div>
-        );
-      },
       headerAlign: "center",
       align: "center",
     },
@@ -124,7 +125,7 @@ const PrecendenceTable: React.FC = () => {
     setIsDeleteOpen(true);
   };
 
-  const rows = data || [];
+  const rows = flattenedRows;
 
   if (isPending) {
     return (
@@ -153,7 +154,7 @@ const PrecendenceTable: React.FC = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = rows.find(
-                (row: PrecedenceTypes) => row.id === selectedId
+                (row) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);

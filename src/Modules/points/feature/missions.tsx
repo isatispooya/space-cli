@@ -19,7 +19,7 @@ const Missions = () => {
             navigate("/");
           },
           image: server + mission.image,
-          link: mission.link, 
+          link: mission.link,
           user_attempts: mission.user_attempts,
           id: mission.id,
           status: mission.status,
@@ -29,6 +29,18 @@ const Missions = () => {
 
   return (
     <div>
+      <div>
+        <div className="bg-white p-6 ">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            باشگاه مشتریان ایساتیس پویا
+          </h2>
+          <p className="text-gray-600 text-center max-w-3xl mx-auto leading-relaxed">
+            شمامی‌توانید در باشگاه مشتریان ایساتیس پویا از طریق کارت‌های ماموریت
+            برای خود سکه و بذر جمع‌آوری کرده و در بخش هدایا دارایی خود را به
+            جایزه مورد نظر تبدیل کنید
+          </p>
+        </div>
+      </div>
       <MissionCard missions={missionsData} />
     </div>
   );

@@ -46,23 +46,13 @@ const GiftCard = ({
     }
   };
 
-  const formatNumber = (num: number | undefined) => {
-    if (num === undefined) return "";
-    if (num >= 1000000000) {
-      return `${(num / 1000000000).toFixed(1)}B`;
-    } else if (num >= 1000000) {
-      return `${(num / 1000000).toFixed(1)}M`;
-    } else if (num >= 1000) {
-      return `${(num / 1000).toFixed(1)}K`;
-    } else {
-      return num.toString();
-    }
-  };
 
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 z-10 p-12">
-        {gifts.map((item, index) => {
+        {gifts
+          .filter(item => !(item.point_1 === 0 && item.point_2 === 0))
+          .map((item, index) => {
           const isButtonDisabled = remainPoints?.point_1 < item.point_1;
 
           return (
@@ -82,22 +72,34 @@ const GiftCard = ({
                 className="w-[130px] h-[130px] rounded-xl object-cover m-2"
               />
               <p className="text-xs text-gray-600 mb-1">{item.description}</p>
-              <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
-              <div className="flex items-center space-x-4 space-y-2">
-                  <LuCoins
-                  className="text-yellow-500 text-[25px] font-bold  ml-2" />
-                  <span className="font-bold text-sm">
-                    {formatNumber(item.point_1)} سکه
-                  </span>
+              {!(item.point_1 === 0 && item.point_2 === 0) && (
+                <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
+                  {item.point_1 !== 0 && (
+                    <div className="flex items-center space-x-4 space-y-2">
+                      <LuCoins className="text-yellow-500 text-[25px] font-bold  ml-2" />
+                      <span className="font-bold text-sm">
+                        {item.point_1} سکه
+                      </span>
+                      <span className="text-gray-400">|</span>
+                      <span className="text-sm text-gray-600">
+                        دریافتی: {item.point_1 * (item.user_attempts || 0)}
+                      </span>
+                    </div>
+                  )}
+                  {item.point_2 !== 0 && (
+                    <div className="flex items-center space-x-4 space-y-2">
+                      <TbSeeding className="text-green-500 text-[25px] font-bold ml-2" />
+                      <span className="font-bold text-sm">
+                        {item.point_2} بذر
+                      </span>
+                      <span className="text-gray-400">|</span>
+                      <span className="text-sm text-gray-600">
+                        دریافتی: {item.point_2 * (item.user_attempts || 0)}
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <div className="flex items-center space-x-4 space-y-2">
-                  <TbSeeding  
-                  className="text-green-500 text-[25px] font-bold ml-2" />
-                  <span className="font-bold text-sm">
-                    {formatNumber(item.point_2)} بذر
-                  </span>
-                </div>
-              </div>
+              )}
               <div className="flex justify-center w-full">
                 <button
                   onClick={() =>

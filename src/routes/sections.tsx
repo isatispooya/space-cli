@@ -377,6 +377,12 @@ const PointsGiftsPage = lazy(() =>
   }))
 );
 
+const PointsRequestsPage = lazy(() =>
+  import("../Modules/points").then((module) => ({
+    default: module.RequestPage,
+  }))
+);
+
 const TimeFlowMainPage = lazy(() =>
   import("../Modules/timeflow").then((module) => ({
     default: module.TimeFlowMainPage,
@@ -988,7 +994,7 @@ export default function Router() {
             </Suspense>
           ),
         },
-      ],  
+      ],
     },
     {
       path: "/invitation",
@@ -1098,7 +1104,15 @@ export default function Router() {
             <Suspense fallback={<Loader />}>
               <PointsGiftsPage />
             </Suspense>
-          ),  
+          ),
+        },
+        {
+          path: "requests",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PointsRequestsPage />
+            </Suspense>
+          ),
         },
       ],
     },
