@@ -10,6 +10,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Toaster } from "react-hot-toast";
 import loadWidget from "./components/chatBox";
 import ContactUsBox from "./components/contactUsBox";
+import { startClarity } from "./utils";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 const queryClient = new QueryClient();
@@ -29,6 +30,8 @@ const rfValue = url.searchParams.get('rf');
 if (rfValue) {
     localStorage.setItem('rf', rfValue);
 }
+
+startClarity();
 
 loadWidget();
 
