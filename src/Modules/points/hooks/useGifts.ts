@@ -7,6 +7,7 @@ import {
 import { giftServices } from "../services";
 import { GiftsPost, GiftTypes } from "../types";
 import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 const useGifts = {
   useGetGifts: (): UseQueryResult<GiftTypes[]> => {
@@ -24,6 +25,14 @@ const useGifts = {
       mutationKey: ["postGift"],
       mutationFn: (data: { id: string; gift: string; description: string }) =>
         giftServices.postGift(data),
+      onSuccess: (response) => {
+        console.log("پیام موفقیت:", response.message);
+        toast.success(response.message);
+      },
+      onError: (error: AxiosError<{error: string}>) => {
+        const errorMessage = error.response?.data?.error || "خطایی رخ داده است";
+        toast.error(errorMessage);
+      },
     });
   },
 };

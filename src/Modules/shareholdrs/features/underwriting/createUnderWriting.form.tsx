@@ -15,8 +15,6 @@ interface ErrorResponse {
   error: string;
 }
 
-
-
 interface SelectOption {
   label: string;
   value: string;
@@ -86,6 +84,7 @@ const CreateUnderWritingForm = () => {
           formData.append("amount", values.amount);
           formData.append("type", values.type);
           formData.append("process", values.company);
+          formData.append("document_track_id", values.transaction_id);
           if (values.document) {
             formData.append("document", values.document);
           }
@@ -99,8 +98,25 @@ const CreateUnderWritingForm = () => {
                 }
                 toast.success("عملیات با موفقیت انجام شد");
               },
-              onError: (error) => {
-                toast.error(`خطا در انجام عملیات: ${error.message}`);
+              onError: (error: AxiosError<unknown>) => {
+                const errorMessage = (error.response?.data as ErrorResponse)
+                  ?.error;
+                toast.custom((t) => (
+                  <div
+                    className={`${
+                      t.visible ? "animate-enter" : "animate-leave"
+                    } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                  >
+                    <div className="flex-1 w-0 p-4">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0 pt-0.5">
+                          <ErrorIcon className="h-10 w-10 rounded-full" />
+                        </div>
+                        <p>{errorMessage || "خطایی رخ داده است"}</p>
+                      </div>
+                    </div>
+                  </div>
+                ));
               },
             }
           );
@@ -125,7 +141,7 @@ const CreateUnderWritingForm = () => {
                   <div className="flex-1 w-0 p-4">
                     <div className="flex items-start">
                       <div className="flex-shrink-0 pt-0.5">
-                       <FaCheckCircle className="h-10 w-10 rounded-full bg-green-500 text-white" />
+                        <FaCheckCircle className="h-10 w-10 rounded-full bg-green-500 text-white" />
                       </div>
                       <p>عملیات با موفقیت انجام شد</p>
                     </div>

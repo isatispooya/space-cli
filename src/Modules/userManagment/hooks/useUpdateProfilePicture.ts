@@ -1,7 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { profileService } from "../services";
+import { PostProfileTypes } from "../types";
+import { AxiosError } from "axios";
 
-export const useUpdateProfilePicture = () => {
+export const useUpdateProfilePicture = (): UseMutationResult<
+  PostProfileTypes,
+  AxiosError,
+  FormData
+> => {
   return useMutation({
     mutationKey: ["updateProfilePicture"],
     mutationFn: profileService.updateImage,

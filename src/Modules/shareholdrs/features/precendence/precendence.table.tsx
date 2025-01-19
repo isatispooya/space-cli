@@ -7,7 +7,7 @@ import { PrecedenceTypes } from "../../types/precedence.type";
 import { tableStyles } from "../../../../ui";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import Popup from "../../../../components/popup";
+import Popup from "../../../points/components/popup";
 import { useNavigate } from "react-router-dom";
 import "moment/locale/fa";
 import moment from "moment-jalaali";

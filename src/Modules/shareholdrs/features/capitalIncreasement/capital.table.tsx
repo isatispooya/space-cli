@@ -8,7 +8,7 @@ import { tableStyles } from "../../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
-import Popup from "../../../../components/popup";
+import Popup from "../../../points/components/popup";
 import { useCapitalStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../permissions";
@@ -17,21 +17,51 @@ import { LoaderLg } from "../../../../components";
 
 const CapitalTable: React.FC = () => {
   const { data, isPending } = useCapital.useGet();
-
   const { setId } = useCapitalStore();
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
   const { mutate: deleteCapital } = useCapital.useDelete();
+
   const [selectedRow, setSelectedRow] = useState<CapitalIncreaseTypes | null>(
     null
   );
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const rows = data || [];
 
+  console.log(data);
+
   const columns: GridColDef[] = [
-    { field: "company", headerName: "شرکت", width: 100 },
-    { field: "number_of_shares", headerName: "تعداد سهام", width: 120 },
-    { field: "price", headerName: "قیمت", width: 100 },
+
+    { field: "amount", headerName: "تعداد سهام", width: 120 },
+    { field: "value", headerName: "قیمت", width: 100 },
+    {
+      field: "name",
+      headerName: "نام",
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <div className="text-center">
+            {params.row?.precedence?.user_detail?.first_name || "-"}
+          </div>
+        );
+      },
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "last_name",
+      headerName: "نام خانوادگی",
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <div className="text-center">
+            {params.row?.precedence?.user_detail?.last_name || "-"}
+          </div>
+        );
+      },
+      headerAlign: "center",
+      align: "center",
+    },
     {
       field: "updated_at",
       headerName: "تاریخ بروزرسانی",

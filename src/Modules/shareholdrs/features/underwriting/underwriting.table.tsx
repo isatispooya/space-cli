@@ -14,7 +14,7 @@ import { useUnderwriting } from "../../hooks";
 import { useUserPermissions } from "../../../permissions";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import Popup from "../../../../components/popup";
+import Popup from "../../../points/components/popup";
 import { LoaderLg } from "../../../../components";
 import { useUnderwritingStore } from "../../store";
 import CustomPagination from "../../../../utils/paginationTable";
@@ -43,7 +43,6 @@ const UnderWritingTable: React.FC = () => {
     }
     window.open(`/underwriting/print/${selectedRow.id}`, "_blank");
   };
-
 
   const columns: GridColDef[] = [
     {
@@ -113,14 +112,25 @@ const UnderWritingTable: React.FC = () => {
   ];
 
   const rows = data || [];
-  const rows_flat = data?.map((item) => ({... item,
-    type_peyment: item.payment_detail?.type === "2" ? "درگاه پرداخت" : "فیش بانکی",
-    track_id: item.payment_detail?.track_id,
-    first_name: item.user_detail?.first_name,
-    last_name: item.user_detail?.last_name,
-    status: item.status==='approved' ? 'تایید شده' : item.status==='rejected' ? 'رد شده' :item.status==='success' ? 'تایید نهایی' : 'در انتظار',
-  })) || [];
-  
+  const rows_flat =
+    data?.map((item) => ({
+      ...item,
+      type_peyment:
+        item.payment_detail?.type === "2" ? "درگاه پرداخت" : "فیش بانکی",
+      track_id: item.payment_detail?.track_id,
+      first_name: item.user_detail?.first_name,
+      last_name: item.user_detail?.last_name,
+      status:
+        item.status === "approved"
+          ? "تایید شده"
+          : item.status === "rejected"
+          ? "رد شده"
+          : item.status === "pending"
+          ? "در انتظار"
+          : item.status === "success"
+          ? "تایید نهایی"
+          : "در انتظار",
+    })) || [];
 
   if (isPending) {
     return (

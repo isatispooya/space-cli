@@ -13,8 +13,8 @@ const CreateCapitalIncreaseForm = () => {
   const { data: users } = useUserData();
 
   const formFields: FormField[] = [
-    { name: "number_of_shares", label: "تعداد سهام", type: "text" as const },
-    { name: "price", label: "قیمت", type: "text" as const },
+    { name: "amount", label: "تعداد سهام", type: "text" as const },
+    { name: "value", label: "قیمت", type: "text" as const },
     {
       name: "company",
       label: "شرکت",
@@ -41,17 +41,17 @@ const CreateCapitalIncreaseForm = () => {
 
   const initialValues = {
     company: "",
-    number_of_shares: "",
-    price: "",
+    amount: "",
+    value: "",
     user: "",
   };
 
   const validationSchema = Yup.object().shape({
     company: Yup.string().required("شرکت الزامی است"),
-    number_of_shares: Yup.string()
+    amount: Yup.string()
       .required("تعداد سهام الزامی است")
       .matches(/^\d+$/, "فقط عدد مجاز است"),
-    price: Yup.string()
+    value: Yup.string()
       .required("قیمت الزامی است")
       .matches(/^\d+$/, "فقط عدد مجاز است"),
     user: Yup.string().required("کاربر الزامی است"),
@@ -66,7 +66,7 @@ const CreateCapitalIncreaseForm = () => {
       colors="text-[#29D2C7]"
       buttonColors="bg-[#29D2C7] hover:bg-[#008282]"
       submitButtonText={{
-        default: "ثبت سود پرداختی",
+        default: "ثبت ",
         loading: "در حال ارسال...",
       }}
       onSubmit={async (

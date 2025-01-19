@@ -1,20 +1,23 @@
 import { motion } from "framer-motion";
 import { GiftTypes } from "../types";
-import Popup from "../../../components/popup";
+import Popup from "./popup";
 import { useState } from "react";
-import { FaPiggyBank } from "react-icons/fa";
-import { BsSafeFill } from "react-icons/bs";
 import { useRemainPoints } from "../hooks";
 import { CiLock } from "react-icons/ci";
+import { LuCoins } from "react-icons/lu";
+import { TbSeeding } from "react-icons/tb";
+
+
 
 const GiftCard = ({
   gifts,
   postGift,
 }: {
   gifts: GiftTypes[];
-  postGift: (data: { id: string; gift: string; description: string }) => void;
+  postGift: (data: { id: string; gift: string; description: string; amount: number }) => void;
 }) => {
   const [open, setOpen] = useState(false);
+  const [amount, setAmount] = useState<number>(0);
   const [selectedGift, setSelectedGift] = useState<{
     id: string;
     description: string;
@@ -22,6 +25,8 @@ const GiftCard = ({
   const { data: remainPoints } = useRemainPoints();
 
   console.log(remainPoints);
+
+  
 
   const handleMutate = (id: string, description: string) => {
     setSelectedGift({ id, description });
@@ -34,6 +39,7 @@ const GiftCard = ({
         id: selectedGift.id,
         gift: selectedGift.id,
         description: selectedGift.description,
+        amount: amount
       };
       postGift(data);
       setOpen(false);
@@ -76,17 +82,19 @@ const GiftCard = ({
                 className="w-[130px] h-[130px] rounded-xl object-cover m-2"
               />
               <p className="text-xs text-gray-600 mb-1">{item.description}</p>
-              <div className="flex flex-col space-y-1">
-                <div className="flex items-center space-x-4 space-y-2">
-                  <BsSafeFill className="text-yellow-500 text-sm" />
+              <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center space-x-4 space-y-2">
+                  <LuCoins
+                  className="text-yellow-500 text-[25px] font-bold  ml-2" />
                   <span className="font-bold text-sm">
-                    {formatNumber(item.point_1)} گاوصندوق
+                    {formatNumber(item.point_1)} سکه
                   </span>
                 </div>
                 <div className="flex items-center space-x-4 space-y-2">
-                  <FaPiggyBank className="text-gray-500 text-sm" />
+                  <TbSeeding  
+                  className="text-green-500 text-[25px] font-bold ml-2" />
                   <span className="font-bold text-sm">
-                    {formatNumber(item.point_2)} قلک
+                    {formatNumber(item.point_2)} بذر
                   </span>
                 </div>
               </div>
@@ -95,7 +103,7 @@ const GiftCard = ({
                   onClick={() =>
                     handleMutate(item.id.toString(), item.description)
                   }
-                  className={`mt-2 py-2 px-4 rounded-lg text-sm w-full sm:w-auto ${
+                  className={`mt-2 py-2 px-4 rounded-lg text-sm w-full ${
                     isButtonDisabled
                       ? "bg-gray-300"
                       : "bg-gray-200 hover:bg-gray-200"
@@ -124,7 +132,19 @@ const GiftCard = ({
         onConfirm={confirmMutation}
         onCancel={() => setOpen(false)}
         onClose={() => setOpen(false)}
-      />
+      >
+        <div className="mt-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            مقدار مورد نظر را وارد کنید
+          </label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(Number(e.target.value))}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+      </Popup>
     </>
   );
 };
