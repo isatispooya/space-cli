@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { MenuItem as MenuItemType } from "../data/menuItems";
 import { Link } from "react-router-dom";
-import { useSearchStore } from "../store";
+import { useSearchStore, useSidebarStore } from "../store";
 import { useUserPermissions } from "../../permissions";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { motion } from "framer-motion";
@@ -15,6 +15,7 @@ const CustomMenuItem: React.FC<MenuItemProps> = ({ item }) => {
   const { search } = useSearchStore();
   const [isOpen, setIsOpen] = useState(false);
   const { checkPermission } = useUserPermissions();
+  const { toggleSidebar } = useSidebarStore();
 
   const filteredSubmenu = useMemo(() => {
     return item.submenu?.filter((subItem) => {
@@ -87,6 +88,7 @@ const CustomMenuItem: React.FC<MenuItemProps> = ({ item }) => {
                 <Link
                   to={subItem.path}
                   className="flex items-center p-2 text-white hover:bg-blue-800 rounded-lg transition-all duration-200"
+                  onClick={toggleSidebar}
                 >
                   {subItem.title}
                 </Link>
