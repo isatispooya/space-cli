@@ -26,8 +26,7 @@ const useGifts = {
       mutationFn: (data: { id: string; gift: string; description: string }) =>
         giftServices.postGift(data),
       onSuccess: (response) => {
-        console.log("پیام موفقیت:", response.message);
-        toast.success(response.message);
+        toast.success(response.message || "دریافت هدیه با موفقیت انجام شد");
       },
       onError: (error: AxiosError<{error: string}>) => {
         const errorMessage = error.response?.data?.error || "خطایی رخ داده است";

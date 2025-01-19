@@ -9,6 +9,7 @@ import { underwritingTypes } from "../types/underwriting.type";
 import { underwritingCreateTypes } from "../types/underwritingCreate.type";
 import { AxiosError } from "axios";
 
+
 const useUnderwriting = {
   useGet: (): UseQueryResult<underwritingTypes[]> => {
     return useQuery({

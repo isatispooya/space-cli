@@ -113,24 +113,30 @@ const UnderWritingTable: React.FC = () => {
 
   const rows = data || [];
   const rows_flat =
-    data?.map((item) => ({
-      ...item,
-      type_peyment:
-        item.payment_detail?.type === "2" ? "درگاه پرداخت" : "فیش بانکی",
-      track_id: item.payment_detail?.track_id,
-      first_name: item.user_detail?.first_name,
-      last_name: item.user_detail?.last_name,
-      status:
-        item.status === "approved"
-          ? "تایید شده"
-          : item.status === "rejected"
-          ? "رد شده"
-          : item.status === "pending"
-          ? "در انتظار"
-          : item.status === "success"
-          ? "تایید نهایی"
-          : "در انتظار",
-    })) || [];
+    data?.map((item) => {
+      return {
+        ...item,
+        type_peyment:
+          item.type === "2"
+            ? "درگاه پرداخت"
+            : item.type === "1"
+            ? "فیش بانکی"
+            : "نامشخص",
+        track_id: item.payment_detail?.track_id,
+        first_name: item.user_detail?.first_name,
+        last_name: item.user_detail?.last_name,
+        status:
+          item.status === "approved"
+            ? "تایید شده"
+            : item.status === "rejected"
+            ? "رد شده"
+            : item.status === "pending"
+            ? "در انتظار"
+            : item.status === "success"
+            ? "تایید نهایی"
+            : "در انتظار",
+      };
+    }) || [];
 
   if (isPending) {
     return (
@@ -151,10 +157,7 @@ const UnderWritingTable: React.FC = () => {
 
   return (
     <>
-      <div
-        className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden h-[600px]"
-        style={{ maxWidth: "100%" }}
-      >
+      <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
         <DataGrid
           columns={columns}
           rows={rows_flat}
@@ -173,13 +176,9 @@ const UnderWritingTable: React.FC = () => {
               setSelectedRow(null);
             }
           }}
-          sx={{
-            ...tableStyles,
-            width: "100%",
-            height: "100%",
-          }}
+          sx={{ tableStyles }}
           checkboxSelection
-          pageSizeOptions={[10]}
+          pageSizeOptions={pageSizeOptions}
           pagination
           paginationModel={paginationModel}
           onPaginationModelChange={(newPaginationModel) => {

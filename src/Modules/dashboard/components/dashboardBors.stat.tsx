@@ -42,7 +42,7 @@ const DashboardBorsStat = () => {
       >
         <div className="flex items-center space-x-4">
           <img
-            src="public/assets/Artboard 1 copy 16.png"
+            src="/assets/Artboard 1 copy 16.png"
             alt="بورس آیکن"
             className="w-10 h-10"
           />
