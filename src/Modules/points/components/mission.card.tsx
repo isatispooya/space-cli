@@ -73,9 +73,9 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
           </div>
 
           {item.link && (
-            <div className="flex justify-center">
-              <a href={item.link} target="_blank" rel="noopener noreferrer">
-                <button className="mt-2 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg text-sm hover:bg-gray-300 transition-colors duration-300 w-full sm:w-[50px] md:w-[100px] lg:w-[330px]">
+            <div className="flex justify-center w-full">
+              <a href={item.link} target="_blank" rel="noopener noreferrer" className="w-full">
+                <button className="mt-2 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg text-sm hover:bg-gray-300 transition-colors duration-300 w-full">
                   رفتن به ماموریت
                 </button>
               </a>
