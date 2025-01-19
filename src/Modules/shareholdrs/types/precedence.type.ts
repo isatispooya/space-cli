@@ -14,5 +14,6 @@ export interface PrecedenceTypes {
   };
   precedence: number;
   used_precedence: number;
+  total_amount: number;
   updated_at: string;
 }

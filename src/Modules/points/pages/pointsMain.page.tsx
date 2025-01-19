@@ -3,6 +3,8 @@ import { MainLayout } from "../../../layouts";
 import { Outlet } from "react-router-dom";
 import { FaGift } from "react-icons/fa6";
 import { BiTask } from "react-icons/bi";
+import { RiFileList3Line } from "react-icons/ri";
+
 const PointsMainPage = () => {
 
   const toolbarButtons = [
@@ -18,6 +20,13 @@ const PointsMainPage = () => {
       permission: ["allow_any"],
       path: "gifts",
     },
+    {
+      icon: RiFileList3Line,
+      text: "درخواست های من", 
+      permission: ["allow_any"],
+      path: "requests",
+    },
+
   ];
 
   return (

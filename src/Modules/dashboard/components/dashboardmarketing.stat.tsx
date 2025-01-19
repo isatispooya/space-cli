@@ -8,6 +8,7 @@ import { useRemainPoints } from "../../points";
 import { useNavigate } from "react-router-dom";
 import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
+import { useProfile } from "../../userManagment";
 
 export interface StatsProps {
   title: string;
@@ -28,10 +29,16 @@ const DashboardMarketingStat = () => {
   const { data: remainPoints } = useRemainPoints();
   const { data: invitation } = useInvitation.useGetCodes();
   const { data: invitedUsers } = useInvitation.useGetList();
+  const { data: profile } = useProfile();
+
+  const invitedUserFiltered = invitedUsers?.filter(
+    (item: any) =>
+      item.invited_user_detail.uniqueIdentifier === profile?.uniqueIdentifier
+  );
 
   const navigate = useNavigate();
 
-  const allNames = [...(invitedUsers || [])];
+  const allNames = [...(invitedUserFiltered || [])];
 
   const formatNumber = (num: number | undefined) => {
     if (num === undefined) return "";
@@ -45,9 +52,6 @@ const DashboardMarketingStat = () => {
       return num.toString();
     }
   };
-
-  console.log(invitedUsers);
-  console.log(invitation);
 
   const [visibleIndices, setVisibleIndices] = useState<number[]>([]);
 
@@ -118,7 +122,7 @@ const DashboardMarketingStat = () => {
           >
             <span className="flex flex-col sm:flex-row items-center">
               <button onClick={() => navigate("/invitation/list")}>
-                {invitation?.[0]?.invited_users_count || 0}
+                {invitedUserFiltered?.length || 0}
                 <span className="text-[10px] sm:text-sm text-[#D2042D] font-iranSans mx-2">
                   نفر
                 </span>
