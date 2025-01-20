@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import loadWidget from "./components/chatBox";
 import ContactUsBox from "./components/contactUsBox";
 import { startClarity } from "./utils";
+import "tabulator-tables/dist/css/tabulator_bulma.min.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 const queryClient = new QueryClient();

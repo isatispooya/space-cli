@@ -1,8 +1,7 @@
-import { useUnderwritingStore } from "../../store";
 import { useUnderwriting } from "../../hooks";
 import Forms from "../../../../components/forms";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { underwritingTypes } from "../../types/underwriting.type";
 import moment from "moment-jalaali";
 import { FormField } from "../../../../types";
@@ -11,17 +10,18 @@ import { formatNumber } from "../../../../utils";
 import { server } from "../../../../api";
 
 const EditUnderWritingForm = () => {
-  const { id } = useUnderwritingStore();
-  const { data: processData,refetch:refetchProcess } = useUnderwriting.useGet();
+  const { id: urlId } = useParams();
+  const { data: processData, refetch: refetchProcess } =
+    useUnderwriting.useGet();
   const { mutate: update } = useUnderwriting.useUpdate();
 
   const navigate = useNavigate();
 
   const process = processData?.find(
-    (item: underwritingTypes) => item.id === id
+    (item: underwritingTypes) => item.id === Number(urlId)
   );
 
-  if (!process && !id) {
+  if (!process && !urlId) {
     navigate("/underwriting/table");
   }
 
