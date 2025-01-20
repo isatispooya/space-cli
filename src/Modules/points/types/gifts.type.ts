@@ -9,4 +9,5 @@ export interface GiftTypes {
   title?: string;
   status: string;
   user_attempts: number;
+  is_repetitive: boolean;
 }

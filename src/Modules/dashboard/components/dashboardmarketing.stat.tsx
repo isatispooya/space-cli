@@ -111,7 +111,7 @@ const DashboardMarketingStat = () => {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     className:
-      "relative bg-white rounded-xl shadow-lg p-6 h-auto sm:h-[520px] md:h-[520px] lg:h-[550px] transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105 ",
+      "relative bg-white rounded-xl shadow-lg p-4 sm:p-6 min-h-[450px] sm:min-h-[520px] transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
     style: { zIndex: 2 },
   });
 
@@ -120,34 +120,34 @@ const DashboardMarketingStat = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative isolate"
+      className="relative isolate w-full"
     >
       <div className="background"></div>
 
       <motion.div {...getMotionDivStyles()}>
-        <div className="flex flex-col md:flex-row items-center justify-between space-x-4 ">
+        <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row items-center justify-between sm:space-x-4">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center">
-              <RiUserReceived2Line className="w-5 h-6 text-[#D2042D] " />
-              <h3 className="text-sm text-[#D2042D] font-bold font-iranSans mr-2">
+              <RiUserReceived2Line className="w-4 h-4 sm:w-5 sm:h-6 text-[#D2042D]" />
+              <h3 className="text-xs sm:text-sm text-[#D2042D] font-bold font-iranSans mr-2">
                 باشگاه مشتریان
               </h3>
             </div>
             <button
               onClick={() => navigate("/points/missions")}
-              className="flex items-center gap-2 text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-3 py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
+              className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
             >
-              <LuCoins className="w-4 h-4" />
+              <LuCoins className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>امتیازات</span>
             </button>
           </div>
         </div>
 
-        <div className="flex-grow flex flex-col items-center justify-center mt-10">
+        <div className="flex-grow flex flex-col items-center justify-center mt-6 sm:mt-10">
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
-            className="text-xl sm:text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans mt-8 sm:mt-0"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans mt-4 sm:mt-0"
           >
             <span className="flex flex-col sm:flex-row items-center">
               <button onClick={() => navigate("/invitation/list")}>
@@ -181,22 +181,19 @@ const DashboardMarketingStat = () => {
             </span>
           </motion.p>
         </div>
-        <div className="mt-6 mb-4 flex-grow">
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="text-gray-600 font-iranSans text-sm">
+        <div className="mt-4 sm:mt-6 mb-4 flex-grow">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <h4 className="text-gray-600 font-iranSans text-xs sm:text-sm">
               لیست کاربران دعوت شده
             </h4>
             <button
               onClick={() => navigate("/invitation/list")}
-              className="text-xs text-gray-600 hover:text-[#D2042D] transition-colors"
+              className="text-[10px] sm:text-xs text-gray-600 hover:text-[#D2042D] transition-colors"
             >
               مشاهده بیشتر
             </button>
           </div>
-          <div
-            className="flex flex-col gap-1 overflow-hidden"
-            style={{ height: "180px" }}
-          >
+          <div className="flex flex-col gap-1 overflow-hidden h-[140px] sm:h-[180px]">
             {visibleIndices.map((index) => {
               const userDetail = allNames[index]?.invited_user_detail;
               return (
@@ -231,9 +228,9 @@ const DashboardMarketingStat = () => {
           </div>
         </div>
 
-        <div className="relative z-20 py-8 md:py-4 sm:py-[10px] xs:py-0 ">
+        <div className="relative z-20 py-4 sm:py-8">
           <div className="flex items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
-            <p className="flex-1 text-[13px] text-[#D2042D] font-iranSans truncate">
+            <p className="flex-1 text-[11px] sm:text-[13px] text-[#D2042D] font-iranSans truncate">
               {`my.isatispooya.com/login?rf=${
                 invitedUserFilteredCode?.[0]?.code || ""
               }`}
@@ -241,7 +238,7 @@ const DashboardMarketingStat = () => {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={handleCopy}
-              className={`px-2 rounded-md text-[12px] font-medium transition-all duration-200 ${
+              className={`px-2 py-1 rounded-md text-[10px] sm:text-[12px] font-medium transition-all duration-200 ${
                 copied
                   ? "bg-[#D2042D] text-[#ffffff]"
                   : "bg-[#D2042D] text-white hover:bg-[#E57350]"
@@ -253,7 +250,7 @@ const DashboardMarketingStat = () => {
         </div>
 
         <svg
-          className="absolute bottom-0 rounded-xl left-0 w-full  lg:h-56 xl:h-64 sm:h-48 md:h-56  xs:h-60"
+          className="absolute bottom-0 rounded-xl left-0 w-full h-32 sm:h-48 md:h-56 lg:h-64"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
