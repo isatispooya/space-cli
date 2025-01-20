@@ -7,8 +7,6 @@ const TimeFlowApproachList = () => {
 
   const img = data?.profile_image;
 
-  console.log(img);
-
   const items = [
     {
       id: "1",

@@ -60,10 +60,6 @@ const PositionsTable = () => {
 
   const rows = positions
     ? positions.map((position) => {
-        console.log("Original created_at:", position.created_at);
-        console.log("Original start_date:", position.start_date);
-        console.log("Original end_date:", position.end_date);
-
         return {
           id: position.id,
           name: position.name,

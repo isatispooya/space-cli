@@ -14,9 +14,6 @@ const EditPrecendenceForm: React.FC = () => {
 
   const navigate = useNavigate();
 
-  console.log(precedence);
-  
-
   if (!precedence && !id) {
     navigate("/precendence/table");
   }

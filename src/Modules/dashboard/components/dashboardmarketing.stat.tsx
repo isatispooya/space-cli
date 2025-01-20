@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ReactNode, useEffect, useState, useMemo } from "react";
 import { useInvitation } from "../../invitation/hooks";
 import { motion } from "framer-motion";
 import { RiUserReceived2Line } from "react-icons/ri";
@@ -31,18 +32,29 @@ const DashboardMarketingStat = () => {
   const { data: invitedUsers } = useInvitation.useGetList();
   const { data: profile } = useProfile();
 
-  const invitedUserFiltered = invitedUsers?.filter(
-    (item: any) =>
-      item.invitation_code_detail?.introducer_user_detail?.uniqueIdentifier === profile?.uniqueIdentifier
-  );
+  const invitedUserFiltered = useMemo(() => {
+    if (!Array.isArray(invitedUsers) || !profile?.uniqueIdentifier) {
+      return [];
+    }
 
-  // introducer_user_detail
-  console.log(invitedUserFiltered);
+    return invitedUsers.filter(
+      (item: any) =>
+        item.invitation_code_detail?.introducer_user_detail
+          ?.uniqueIdentifier === profile.uniqueIdentifier
+    );
+  }, [invitedUsers, profile]);
 
-  const invitedUserFilteredCode = invitation?.filter(
-    (item: any) =>
-      item.introducer_user_detail.uniqueIdentifier === profile?.uniqueIdentifier
-  );
+  const invitedUserFilteredCode = useMemo(() => {
+    if (!Array.isArray(invitation) || !profile?.uniqueIdentifier) {
+      return [];
+    }
+
+    return invitation.filter(
+      (item: any) =>
+        item.introducer_user_detail.uniqueIdentifier ===
+        profile.uniqueIdentifier
+    );
+  }, [invitation, profile]);
 
   const navigate = useNavigate();
 
@@ -114,11 +126,20 @@ const DashboardMarketingStat = () => {
 
       <motion.div {...getMotionDivStyles()}>
         <div className="flex flex-col md:flex-row items-center justify-between space-x-4 ">
-          <div className="flex items-center">
-            <RiUserReceived2Line className="w-5 h-6 text-[#D2042D] " />
-            <h3 className="text-sm text-[#D2042D] font-bold font-iranSans mr-2">
-              باشگاه مشتریان
-            </h3>
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center">
+              <RiUserReceived2Line className="w-5 h-6 text-[#D2042D] " />
+              <h3 className="text-sm text-[#D2042D] font-bold font-iranSans mr-2">
+                باشگاه مشتریان
+              </h3>
+            </div>
+            <button
+              onClick={() => navigate("/points/missions")}
+              className="flex items-center gap-2 text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-3 py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
+            >
+              <LuCoins className="w-4 h-4" />
+              <span>امتیازات</span>
+            </button>
           </div>
         </div>
 
@@ -137,21 +158,21 @@ const DashboardMarketingStat = () => {
               </button>
               <button onClick={() => navigate("/points/missions")}>
                 <div className="flex flex-col items-center sm:mr-8 mt-6 sm:mt-0">
-                  <div className="flex items-start text-white mb-3">
-                    <span className="text-[#A0001C] text-base sm:text-xl font-bold">
+                  <div className="flex items-center mb-3">
+                    <span className="text-[#A0001C] text-base sm:text-xl font-bold w-20 text-left">
                       {formatNumber(remainPoints?.point_1)}
                     </span>
                     <LuCoins className="text-yellow-500 text-[16px] sm:text-[25px] font-bold ml-2" />
-                    <span className="text-[10px] sm:text-sm text-[#D2042D]">
+                    <span className="text-[10px] sm:text-sm text-[#D2042D] w-16">
                       (سکه)
                     </span>
                   </div>
-                  <div className="flex items-start text-white">
-                    <span className="text-[#A0001C] text-base sm:text-xl font-bold">
+                  <div className="flex items-center">
+                    <span className="text-[#A0001C] text-base sm:text-xl font-bold w-20 text-left">
                       {formatNumber(remainPoints?.point_2)}
                     </span>
                     <TbSeeding className="text-green-500 text-[16px] sm:text-[25px] font-bold ml-2" />
-                    <span className="text-[10px] sm:text-sm text-[#D2042D]">
+                    <span className="text-[10px] sm:text-sm text-[#D2042D] w-16">
                       (بذر)
                     </span>
                   </div>
@@ -161,9 +182,17 @@ const DashboardMarketingStat = () => {
           </motion.p>
         </div>
         <div className="mt-6 mb-4 flex-grow">
-          <h4 className="text-gray-600 font-iranSans mb-3 text-sm">
-            لیست کاربران دعوت شده
-          </h4>
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-gray-600 font-iranSans text-sm">
+              لیست کاربران دعوت شده
+            </h4>
+            <button
+              onClick={() => navigate("/invitation/list")}
+              className="text-xs text-gray-600 hover:text-[#D2042D] transition-colors"
+            >
+              مشاهده بیشتر
+            </button>
+          </div>
           <div
             className="flex flex-col gap-1 overflow-hidden"
             style={{ height: "180px" }}
@@ -221,9 +250,6 @@ const DashboardMarketingStat = () => {
               {copied ? "کپی شد!" : "کپی لینک"}
             </motion.button>
           </div>
-          <p className="text-[12px] font-bold text-white mt-2  text-center font-iranSans  p-2 rounded-md ">
-            ⚠️ برخی مرورگرها در کپی کردن لینک محدودیت دارند
-          </p>
         </div>
 
         <svg

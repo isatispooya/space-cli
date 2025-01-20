@@ -15,12 +15,14 @@ const DashboardPage = () => {
 
   const sliderData = useMemo(
     () =>
-      shortcuts?.map((shortcut: SlideItem) => ({
-        id: shortcut.id,
-        picture: shortcut.picture,
-        title: shortcut.title,
-        link: shortcut.link,
-      })) || [],
+      Array.isArray(shortcuts)
+        ? shortcuts.map((shortcut: SlideItem) => ({
+            id: shortcut.id,
+            picture: shortcut.picture,
+            title: shortcut.title,
+            link: shortcut.link,
+          }))
+        : [],
     [shortcuts]
   );
 

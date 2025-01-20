@@ -16,7 +16,6 @@ const EditShareholdForm: React.FC = () => {
   const { data: companies } = useCompany.useGet();
 
   const shareholder = shareholders?.find((item) => item.id === Number(id));
-  console.log("shareholder", shareholder);
 
   if (!shareholder && !id) {
     navigate("/shareholders/table");

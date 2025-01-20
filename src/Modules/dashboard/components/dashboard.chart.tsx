@@ -10,7 +10,7 @@ import {
 import { useDashboard } from "../hooks";
 import { motion } from "framer-motion";
 import { server } from "../../../api/server";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Spinner from "../../../components/spinner";
 import { useUserPermissions } from "../../permissions";
@@ -44,12 +44,11 @@ interface barPropsTypes {
 const DashboardChart = () => {
   const { data: statsChart, isLoading } = useDashboard.useGetStats();
   const [isVertical, setIsVertical] = useState(false);
-  const { data:permissions } = useUserPermissions();
+  const { data: permissions } = useUserPermissions();
 
-  
-  const hasPermission = Array.isArray(permissions) && permissions.some((perm) =>
-    perm.codename === "shareholder"
-  );
+  const hasPermission =
+    Array.isArray(permissions) &&
+    permissions.some((perm) => perm.codename === "shareholder");
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,17 +60,19 @@ const DashboardChart = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const data = [
-    ...(statsChart?.companies
-      ? statsChart.companies
-          .sort((a: barTypes, b: barTypes) => b.shares - a.shares)
-          .map((company: barTypes) => ({
-            name: company.name,
-            value: company.shares,
-            logo: company.logo,
-          }))
-      : []),
-  ];
+  const data = useMemo(() => {
+    if (!statsChart?.companies || !Array.isArray(statsChart.companies)) {
+      return [];
+    }
+
+    return statsChart.companies
+      .sort((a: barTypes, b: barTypes) => b.shares - a.shares)
+      .map((company: barTypes) => ({
+        name: company.name,
+        value: company.shares,
+        logo: company.logo,
+      }));
+  }, [statsChart]);
 
   const chartMargins = isVertical
     ? { top: 20, right: 70, left: 20, bottom: 15 }
@@ -150,7 +151,6 @@ const DashboardChart = () => {
       </motion.g>
     );
   };
-
 
   return (
     <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl relative">
