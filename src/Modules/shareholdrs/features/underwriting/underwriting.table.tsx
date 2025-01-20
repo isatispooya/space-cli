@@ -8,7 +8,7 @@ import { useUnderwriting } from "../../hooks";
 import { LoaderLg } from "../../../../components";
 import moment from "moment-jalaali";
 import { formatNumber } from "../../../../utils";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { ActionMenu } from "../../../../components/tableaction/tableaction";
 import { TableStyles } from "../../../../components/tabularStyle.tsx";
@@ -20,7 +20,7 @@ const UnderWritingTable: React.FC = () => {
   const { mutate: updateUnderwriting, isPending: isUpdating } =
     useUnderwriting.useUpdate();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
 
   const hasEditPermission = checkPermission(["change_underwriting"]);
@@ -36,7 +36,7 @@ const UnderWritingTable: React.FC = () => {
     formatter: () => `<button class="action-btn">⋮</button>`,
     cellClick: function (e: any, cell: any) {
       e.stopPropagation();
-      const rowData = cell.getRow().getData();
+      // const rowData = cell.getRow().getData();
 
       if (e.target.classList.contains("action-btn")) {
         const existingMenu = document.querySelector(".popup-menu");
@@ -47,16 +47,16 @@ const UnderWritingTable: React.FC = () => {
 
         const rect = e.target.getBoundingClientRect();
         const menuItems = [
-          ...(hasEditPermission
-            ? [
-                {
-                  icon: "fas fa-edit",
-                  label: "ویرایش",
-                  onClick: () => navigate(`/underwriting/update/${rowData.id}`),
-                  color: "#2563EB",
-                },
-              ]
-            : []),
+          // ...(hasEditPermission
+          //   ? [
+          //       {
+          //         icon: "fas fa-edit",
+          //         label: "ویرایش",
+          //         onClick: () => navigate(`/underwriting/update/${rowData.id}`),
+          //         color: "#2563EB",
+          //       },
+          //     ]
+          //   : []),
           {
             icon: "fas fa-print",
             label: "چاپ",
