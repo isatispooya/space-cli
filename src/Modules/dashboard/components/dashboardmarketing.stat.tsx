@@ -33,7 +33,15 @@ const DashboardMarketingStat = () => {
 
   const invitedUserFiltered = invitedUsers?.filter(
     (item: any) =>
-      item.invited_user_detail.uniqueIdentifier === profile?.uniqueIdentifier
+      item.invitation_code_detail?.introducer_user_detail?.uniqueIdentifier === profile?.uniqueIdentifier
+  );
+
+  // introducer_user_detail
+  console.log(invitedUserFiltered);
+
+  const invitedUserFilteredCode = invitation?.filter(
+    (item: any) =>
+      item.introducer_user_detail.uniqueIdentifier === profile?.uniqueIdentifier
   );
 
   const navigate = useNavigate();
@@ -75,7 +83,7 @@ const DashboardMarketingStat = () => {
   }, [allNames.length]);
 
   const handleCopy = async () => {
-    const code = invitation?.[0]?.code;
+    const code = invitedUserFilteredCode?.[0]?.code;
     if (code) {
       await navigator.clipboard.writeText(
         `my.isatispooya.com/login?rf=${code}`
@@ -197,7 +205,9 @@ const DashboardMarketingStat = () => {
         <div className="relative z-20 py-8 md:py-4 sm:py-[10px] xs:py-0 ">
           <div className="flex items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
             <p className="flex-1 text-[13px] text-[#D2042D] font-iranSans truncate">
-              {`my.isatispooya.com/login?rf=${invitation?.[0]?.code || ""}`}
+              {`my.isatispooya.com/login?rf=${
+                invitedUserFilteredCode?.[0]?.code || ""
+              }`}
             </p>
             <motion.button
               whileTap={{ scale: 0.95 }}
