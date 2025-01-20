@@ -34,7 +34,7 @@ const UnderWritingTable: React.FC = () => {
     hozAlign: "center" as const,
     headerHozAlign: "center" as const,
     formatter: () => `<button class="action-btn">⋮</button>`,
-    cellClick: function (e: any, cell: any) {
+    cellClick: function (e: any) {
       e.stopPropagation();
       // const rowData = cell.getRow().getData();
       
