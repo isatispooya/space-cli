@@ -119,13 +119,16 @@ const Login: React.FC = () => {
               {activeComponent === "login" && (
                 <>
                   <LoginForm handleComponentChange={handleComponentChange} />
-                  <div className=" text-center text-sm mt-4">
-                    <span className="text-gray-600">حساب کاربری ندارید؟ </span>
+                  <div className="flex items-center justify-center gap-2 mt-6 py-3 border-t border-gray-100">
+                    <span className="text-gray-500 dark:text-gray-600">
+                      حساب کاربری ندارید؟
+                    </span>
                     <button
                       onClick={() => handleComponentChange("signup")}
-                      className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
+                      className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 relative group"
                     >
                       ثبت‌نام کنید
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-200"></span>
                     </button>
                   </div>
                   <a
@@ -155,15 +158,16 @@ const Login: React.FC = () => {
               {activeComponent === "signup" && (
                 <>
                   <SignupForm />
-                  <div className="mt-4 text-center text-sm">
-                    <span className="text-gray-600">
-                      قبلاً ثبت‌نام کرده‌اید؟{" "}
+                  <div className="flex items-center justify-center gap-2 mt-6 py-3 border-t border-gray-100">
+                    <span className="text-gray-500 dark:text-gray-600">
+                      قبلاً ثبت‌نام کرده‌اید؟
                     </span>
                     <button
                       onClick={() => handleComponentChange("login")}
-                      className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
+                      className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 relative group"
                     >
                       وارد شوید
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-200"></span>
                     </button>
                   </div>
                 </>
@@ -180,9 +184,10 @@ const Login: React.FC = () => {
                   <div className="mt-4 text-center text-sm">
                     <button
                       onClick={() => handleComponentChange("login")}
-                      className="text-blue-600 hover:text-blue-700 hover:underline mr-1 text-md"
+                      className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 relative group"
                     >
                       بازگشت به صفحه ورود
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-200"></span>
                     </button>
                   </div>
                 </>
