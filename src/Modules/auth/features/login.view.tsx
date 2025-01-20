@@ -10,7 +10,7 @@ import ForgetPassForm from "./forget_pass.form";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
 import { HiExternalLink } from "react-icons/hi";
-
+import LoginTour from "../../../tour";
 initTWE({ Input, Ripple });
 
 const Login: React.FC = () => {
@@ -19,6 +19,9 @@ const Login: React.FC = () => {
   >("login");
 
   const [isSmsVerified, setIsSmsVerified] = React.useState(false);
+  const [runTour] = React.useState(() => {
+    return !localStorage.getItem("loginTourCompleted");
+  });
   const { data: announcements, isLoading } = useAnnouncements();
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] =
     React.useState(0);
@@ -51,6 +54,7 @@ const Login: React.FC = () => {
       dir="rtl"
       className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-white dark:bg-white"
     >
+      <LoginTour runTour={runTour} />
       <div className="hidden md:block md:w-1/2 xl:w-[70%] h-screen fixed left-0">
         <motion.img
           key={currentAnnouncement?.id}
@@ -125,7 +129,7 @@ const Login: React.FC = () => {
                     </span>
                     <button
                       onClick={() => handleComponentChange("signup")}
-                      className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 relative group"
+                      className="text-blue-600 tour-signup-button hover:text-blue-700 font-medium transition-colors duration-200 relative group"
                     >
                       ثبت‌نام کنید
                       <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-200"></span>
@@ -133,7 +137,7 @@ const Login: React.FC = () => {
                   </div>
                   <a
                     href="https://profilesejam.csdiran.ir/"
-                    className="fixed text-center 
+                    className="tour-sejam-link fixed text-center 
             // Mobile (default)
             bottom-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[280px]
             // Tablet and up
