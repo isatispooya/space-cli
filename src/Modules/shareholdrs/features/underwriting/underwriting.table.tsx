@@ -24,18 +24,30 @@ const UnderWritingTable: React.FC = () => {
 
   const handleDownloadExcel = () => {
     if (!data) return;
-    
+
     const exportData = data.map((item: underwritingTypes) => ({
-      نوع: item.type === "2" ? "درگاه پرداخت" : item.type === "1" ? "فیش بانکی" : "نامشخص",
+      نوع:
+        item.type === "2"
+          ? "درگاه پرداخت"
+          : item.type === "1"
+          ? "فیش بانکی"
+          : "نامشخص",
       مبلغ: item.price || 0,
-      'شماره پیگیری': item.payment_detail?.track_id,
+      "شماره پیگیری": item.payment_detail?.track_id,
       نام: item.user_detail?.first_name,
-      'نام خانوادگی': item.user_detail?.last_name,
-      'تعداد درخواستی': item.requested_amount,
-      'تاریخ ایجاد': moment(item.created_at).locale("fa").format("HH:mm - jYYYY/jMM/jDD"),
-      وضعیت: item.status === 'approved' ? 'تایید شده' : 
-             item.status === 'rejected' ? 'رد شده' :
-             item.status === 'pending' ? 'در انتظار' : 'تایید نهایی'
+      "نام خانوادگی": item.user_detail?.last_name,
+      "تعداد درخواستی": item.requested_amount,
+      "تاریخ ایجاد": moment(item.created_at)
+        .locale("fa")
+        .format("HH:mm - jYYYY/jMM/jDD"),
+      وضعیت:
+        item.status === "approved"
+          ? "تایید شده"
+          : item.status === "rejected"
+          ? "رد شده"
+          : item.status === "pending"
+          ? "در انتظار"
+          : "تایید نهایی",
     }));
 
     const workbook = XLSX.utils.book_new();
@@ -61,7 +73,6 @@ const UnderWritingTable: React.FC = () => {
     cellClick: function (e: any) {
       e.stopPropagation();
       // const rowData = cell.getRow().getData();
-      
 
       if (e.target.classList.contains("action-btn")) {
         const existingMenu = document.querySelector(".popup-menu");
@@ -190,6 +201,15 @@ const UnderWritingTable: React.FC = () => {
           title: "وضعیت",
           field: "status",
           headerFilter: true,
+          headerFilterParams: {
+            values: {
+              approved: "تایید شده",
+              rejected: "رد شده",
+              pending: "در انتظار",
+              success: "تایید نهایی",
+            },
+          },
+
           hozAlign: "center" as const,
           headerHozAlign: "center" as const,
           editor: hasEditPermission ? ("list" as const) : undefined,
@@ -209,7 +229,7 @@ const UnderWritingTable: React.FC = () => {
             updateUnderwriting({
               id: rowData.id,
               status: newValue,
-              requested_amount: rowData.requested_amount || 0
+              requested_amount: rowData.requested_amount || 0,
             });
           },
           formatter: function (cell) {
@@ -276,7 +296,15 @@ const UnderWritingTable: React.FC = () => {
       <div className="w-full min-h-screen bg-white shadow-xl rounded-3xl relative p-8 flex flex-col">
         <div className="mb-8 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex gap-4">
-            <button onClick={handleDownloadExcel} className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-xl text-sm font-medium flex items-center gap-3 transition-all duration-300 hover:shadow-lg hover:scale-105 transform">
+            <button
+              onClick={handleDownloadExcel}
+              disabled={isPending}
+              className={`bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-xl text-sm font-medium flex items-center gap-3 transition-all duration-300 ${
+                isUpdating
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:shadow-lg hover:scale-105 transform"
+              }`}
+            >
               <i className="fas fa-download"></i>
               دانلود اکسل
             </button>
