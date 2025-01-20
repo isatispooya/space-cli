@@ -4,7 +4,7 @@ import { usePrecendence } from "../../hooks";
 import * as yup from "yup";
 import { PrecedenceTypes } from "../../types/precedence.type";
 import { useNavigate, useParams } from "react-router-dom";
-import { FormField } from "../../../companies/types";
+import { FormField } from "../../../../types";
 
 const EditPrecendenceForm: React.FC = () => {
   const { mutate: updatePrecendence } = usePrecendence.useUpdate();

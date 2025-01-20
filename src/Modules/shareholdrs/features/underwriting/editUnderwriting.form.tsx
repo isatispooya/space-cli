@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { underwritingTypes } from "../../types/underwriting.type";
 import moment from "moment-jalaali";
-import { FormField } from "../../../companies/types";
+import { FormField } from "../../../../types";
 import toast from "react-hot-toast";
 import { formatNumber } from "../../../../utils";
 import { server } from "../../../../api";

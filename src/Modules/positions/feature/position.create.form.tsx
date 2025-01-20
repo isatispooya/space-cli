@@ -1,40 +1,13 @@
-import useCreatePos from "../hooks/useCreatePos";
 import * as Yup from "yup";
-import { PositionFormValues } from "../types";
+import { usePosition } from "../hooks";
 import { useUserData } from "../../users/hooks";
-import { usePositionData } from "../hooks";
 import Forms from "../../../components/forms";
-import { useCompany } from "../../companies/feature";
-import { CompanyData } from "../../companies/types/company.type";
+import { useCompany } from "../../companies/hooks";
+import { CompanyTypes } from "../../companies/types";
 import { useNavigate } from "react-router-dom";
-
-interface FormField {
-  name: keyof PositionFormValues;
-  label: string;
-  type:
-    | "text"
-    | "email"
-    | "password"
-    | "select"
-    | "checkbox"
-    | "transferList"
-    | "date";
-  options?: { value: string; label: string }[];
-  headerClassName?: string;
-  headerAlign?: string;
-}
-
-interface User {
-  id: number;
-  first_name?: string;
-  last_name?: string;
-  uniqueIdentifier?: string;
-}
-
-interface Position {
-  id: number;
-  name: string;
-}
+import { PositionPostTypes, PositionTypes } from "../types";
+import { FormField } from "../../../types";
+import { UserData } from "../../users/types";
 
 const formatDate = (date: Date | string): string => {
   const d = new Date(date);
@@ -47,21 +20,27 @@ const formatDate = (date: Date | string): string => {
 const PositionCreate = () => {
   const navigate = useNavigate();
   const { data: companies } = useCompany.useGet();
-  const { refetch } = usePositionData();
+  const { refetch } = usePosition.useGet();
   const { data: users } = useUserData();
-  const { data: positions } = usePositionData();
-  const { mutate: createPosition } = useCreatePos();
+  const { data: positions } = usePosition.useGet();
+  const { mutate: createPosition } = usePosition.useCreate();
 
-  const validationSchema: Yup.ObjectSchema<PositionFormValues> = Yup.object({
+  const validationSchema = Yup.object({
     name: Yup.string().required("نام نقش الزامی است"),
-    company: Yup.string().required("شرکت الزامی است"),
-    start_date: Yup.string().required("تاریخ شروع الزامی است"),
-    end_date: Yup.string().required("تاریخ پایان الزامی است"),
-    description: Yup.string().default(""),
-    parent: Yup.string().nullable().default(null),
-    type_of_employment: Yup.string().nullable().default(null),
-    user: Yup.number().required("کاربر الزامی است"),
-  });
+    company: Yup.number().required("شرکت الزامی است"),
+    start_date: Yup.string().required(),
+    end_date: Yup.string().required(),
+    description: Yup.string().required(),
+    parent: Yup.object().nullable(),
+    type_of_employment: Yup.string().required(),
+    user: Yup.object().required(),
+    id: Yup.number().optional(),
+    created_at: Yup.string().optional(),
+    sender: Yup.string().optional(),
+    first_name: Yup.string().optional(),
+    last_name: Yup.string().optional(),
+    company_detail: Yup.object().optional(),
+  }) as Yup.ObjectSchema<PositionTypes>;
 
   const typeOfEmploymentOptions = [
     "full_time",
@@ -91,7 +70,7 @@ const PositionCreate = () => {
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
       options:
-        companies?.map((company: CompanyData) => ({
+        companies?.map((company: CompanyTypes) => ({
           value: company.id.toString(),
           label: company.name,
         })) || [],
@@ -102,7 +81,7 @@ const PositionCreate = () => {
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
       options:
-        users?.map((user: User) => ({
+        users?.map((user: UserData) => ({
           value: user.id,
           label: `${user.first_name || ""} ${user.last_name || ""} | ${
             user.uniqueIdentifier || ""
@@ -133,7 +112,7 @@ const PositionCreate = () => {
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
       options:
-        positions?.map((position: Position) => ({
+        positions?.map((position: PositionTypes) => ({
           value: position.id.toString(),
           label: position.name,
         })) || [],
@@ -150,15 +129,24 @@ const PositionCreate = () => {
     },
   ];
 
-  const initialValues: PositionFormValues = {
+  const initialValues: PositionTypes = {
     name: "",
-    company: "",
-    user: 0,
+    company: 0,
+    user: {
+      first_name: "",
+      last_name: "",
+      id: 0,
+    },
     parent: null,
     type_of_employment: "",
     description: "",
     start_date: "",
     end_date: "",
+    id: 0,
+    created_at: "",
+    sender: "",
+    first_name: "",
+    last_name: "",
   };
 
   return (
@@ -184,7 +172,7 @@ const PositionCreate = () => {
               : null,
             end_date: values.end_date ? formatDate(values.end_date) : null,
           };
-          await createPosition(formData as PositionFormValues);
+          await createPosition(formData as unknown as PositionPostTypes);
           navigate("/positions/table");
           refetch();
         } catch (error) {

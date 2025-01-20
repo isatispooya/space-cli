@@ -1,6 +1,6 @@
 import Forms from "../../../components/forms";
+import { FormField } from "../../../types";
 import { CompanyTypes } from "../types";
-import { FormField } from "../types";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FormikHelpers } from "formik";
@@ -47,6 +47,7 @@ const validationSchema = Yup.object().shape({
   id: Yup.number(),
   employees: Yup.number(),
   file: Yup.mixed(),
+  total_shares: Yup.number(),
   name: Yup.string().required("نام شرکت الزامی است"),
   company_type: Yup.string().required("نوع شرکت الزامی است"),
   address: Yup.string().required("آدرس الزامی است"),
@@ -77,22 +78,22 @@ const validationSchema = Yup.object().shape({
 const CreateCompanyForm = () => {
   const { mutate: createCompany } = useCompany.useCreate();
   const navigate = useNavigate();
-  const initialValues: CompanyData = formFields.reduce(
+  const initialValues: CompanyTypes = formFields.reduce(
     (acc, field) => ({
       ...acc,
       [field.name]: "",
     }),
-    {} as CompanyData
+    {} as CompanyTypes
   );
 
   const handleSubmit = async (
-    values: CompanyData,
-    { setSubmitting }: FormikHelpers<CompanyData>
+    values: CompanyTypes,
+    { setSubmitting }: FormikHelpers<CompanyTypes>
   ) => {
     const formData = new FormData();
 
     Object.keys(values).forEach((key) => {
-      const value = values[key as keyof CompanyData];
+      const value = values[key as keyof CompanyTypes];
       if (
         key === "logo" ||
         key === "letterhead" ||
@@ -121,10 +122,12 @@ const CreateCompanyForm = () => {
   };
 
   return (
-    <Forms<CompanyData>
+    <Forms<CompanyTypes>
       formFields={formFields}
       initialValues={initialValues}
-      validationSchema={validationSchema as Yup.ObjectSchema<CompanyData>}
+      validationSchema={
+        validationSchema as unknown as Yup.ObjectSchema<CompanyTypes>
+      }
       title="ثبت اطلاعات شرکت"
       colors="text-[#29D2C7]"
       buttonColors="bg-[#29D2C7] hover:bg-[#008282]"

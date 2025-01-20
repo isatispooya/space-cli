@@ -14,6 +14,5 @@ export interface companypostTypes {
   address?: string;
   website?: string;
   email: string;
-  employees: number;
 }
 

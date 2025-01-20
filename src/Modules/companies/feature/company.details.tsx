@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { CompanyData } from "../types/company.type";
+import { CompanyTypes } from "../types";
 
 interface SeeCompanyProps {
-  data: CompanyData;
+  data: CompanyTypes;
 }
 
 const SeeCompany = ({ data }: SeeCompanyProps) => {
