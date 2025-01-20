@@ -24,9 +24,15 @@ const Gifts = () => {
           link: mission.link,
           status: mission.status,
           user_attempts: mission.user_attempts,
+          is_repetitive: mission.is_repetitive,
         }))
       : []),
   ];
+
+  console.log(
+    "Mapped gifts data:",
+    giftsData.map((g) => ({ id: g.id, is_repetitive: g.is_repetitive }))
+  );
 
   return (
     <div>
@@ -36,7 +42,8 @@ const Gifts = () => {
             سهام شرکت صنایع مفتول ایساتیس پویا
           </h2>
           <p className="text-gray-600 text-center max-w-3xl mx-auto leading-relaxed">
-              شما می‌توانید در باشگاه مشتریان صنایع مفتول ایساتیس پویا امتیازات کسب شده تا کنون را در موارد پیشنهادی زیر مورد استفاده قرار دهید.
+            شما می‌توانید در باشگاه مشتریان صنایع مفتول ایساتیس پویا امتیازات
+            کسب شده تا کنون را در موارد پیشنهادی زیر مورد استفاده قرار دهید.
           </p>
         </div>
       </div>
