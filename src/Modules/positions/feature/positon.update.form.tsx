@@ -1,10 +1,10 @@
 import * as Yup from "yup";
 import Forms from "../../../components/forms";
-import { usePositionData, useUpdatePosition } from "../hooks";
-import { PositionFormValues } from "../types";
-import { FormField } from "../../companies/types";
+import { usePosition } from "../hooks";
+import { FormField } from "../../../types";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment-jalaali";
+import { PositionPostTypes } from "../types";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("نام نقش الزامی است"),
@@ -22,39 +22,36 @@ const typeOfEmploymentTranslations: Record<string, string> = {
   freelance: "فریلنسر",
   internship: "کارآموزی",
 };
-
 const PositionUpdateForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  
-  const { mutate: updatePosition } = useUpdatePosition(Number(id));
-  const { data: getUpdatePosition, isPending } = usePositionData();
+
+  const { mutate: updatePosition } = usePosition.useUpdate(Number(id));
+  const { data: getUpdatePosition, isPending } = usePosition.useGet();
 
   const formatDate = (date: Date | string): string => {
     const d = new Date(date);
     const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
-  
-  
+
   if (isPending) {
     return <div>Loading...</div>;
   }
-  
-  const specificUser = getUpdatePosition?.find((position) => position.id === Number(id))
-  
-  
-  
-  
+
+  const specificUser = getUpdatePosition?.find(
+    (position) => position.id === Number(id)
+  );
+
   if (!getUpdatePosition) {
     return <div>Position not found</div>;
   }
-  
-  console.log('ID', id);
-  console.log('LIST', getUpdatePosition);
-  console.log('DETALI', specificUser);
+
+  console.log("ID", id);
+  console.log("LIST", getUpdatePosition);
+  console.log("DETALI", specificUser);
 
   const formFields: FormField[] = [
     { name: "name", label: "نام نقش", type: "text" },
@@ -62,19 +59,25 @@ const PositionUpdateForm = () => {
       name: "company",
       label: "شرکت",
       type: "select",
-      options: [{
-        value: specificUser?.company_detail?.id.toString() || '',
-        label: specificUser?.company_detail?.name || '',
-      }],
+      options: [
+        {
+          value: specificUser?.company_detail?.id.toString() || "",
+          label: specificUser?.company_detail?.name || "",
+        },
+      ],
     },
     {
       name: "user",
-      label: "کاربر", 
+      label: "کاربر",
       type: "select",
-      options: [{
-        value: specificUser?.user?.id.toString() || '',
-        label: `${specificUser?.user?.first_name || ''} ${specificUser?.user?.last_name || ''}`
-      }]
+      options: [
+        {
+          value: specificUser?.user?.id.toString() || "",
+          label: `${specificUser?.user?.first_name || ""} ${
+            specificUser?.user?.last_name || ""
+          }`,
+        },
+      ],
     },
     {
       name: "start_date",
@@ -89,12 +92,14 @@ const PositionUpdateForm = () => {
     { name: "description", label: "توضیحات", type: "text" },
     {
       name: "parent",
-      label: "ارشد", 
+      label: "ارشد",
       type: "select",
-      options: [{
-        value: specificUser?.parent?.id.toString() || '',
-        label: specificUser?.parent?.name || '',
-      }],
+      options: [
+        {
+          value: specificUser?.parent?.id.toString() || "",
+          label: specificUser?.parent?.name || "",
+        },
+      ],
     },
     {
       name: "type_of_employment",
@@ -109,15 +114,19 @@ const PositionUpdateForm = () => {
     },
   ];
 
-  const initialValues: PositionFormValues = {
+  const initialValues: PositionPostTypes = {
     name: specificUser?.name || "",
-    company: specificUser?.company_detail?.id || "",
-    user: specificUser?.user?.id || "",
-    parent: specificUser?.parent?.id || null,
-    type_of_employment: specificUser?.type_of_employment || null,
+    company: Number(specificUser?.company_detail?.id) || 0,
+    user: specificUser?.user?.id || 0,
+    parent: specificUser?.parent?.id || 0,
+    type_of_employment: specificUser?.type_of_employment || "",
     description: specificUser?.description || "",
-    start_date: specificUser?.start_date ? moment(specificUser.start_date).format('jYYYY/jMM/jDD') : "",
-    end_date: specificUser?.end_date ? moment(specificUser.end_date).format('jYYYY/jMM/jDD') : "",
+    start_date: specificUser?.start_date
+      ? moment(specificUser.start_date).format("jYYYY/jMM/jDD")
+      : "",
+    end_date: specificUser?.end_date
+      ? moment(specificUser.end_date).format("jYYYY/jMM/jDD")
+      : "",
   };
 
   return (
@@ -125,7 +134,7 @@ const PositionUpdateForm = () => {
       formFields={formFields}
       initialValues={initialValues}
       validationSchema={
-        validationSchema as Yup.ObjectSchema<PositionFormValues>
+        validationSchema as unknown as Yup.ObjectSchema<PositionPostTypes>
       }
       showCloseButton={false}
       title="بروزرسانی نقش"
@@ -139,8 +148,12 @@ const PositionUpdateForm = () => {
         try {
           const formattedValues = {
             ...values,
-            start_date: values.start_date ? formatDate(values.start_date) : specificUser?.start_date,
-            end_date: values.end_date ? formatDate(values.end_date) : specificUser?.end_date,
+            start_date: values.start_date
+              ? formatDate(values.start_date)
+              : specificUser?.start_date,
+            end_date: values.end_date
+              ? formatDate(values.end_date)
+              : specificUser?.end_date,
             parent: values.parent ? values.parent.toString() : null,
           };
 
@@ -152,8 +165,14 @@ const PositionUpdateForm = () => {
           }
 
           await updatePosition({
-            id: Number(id),
-            data: formattedValues,
+            data: {
+              ...formattedValues,
+              parent: formattedValues.parent
+                ? Number(formattedValues.parent)
+                : null,
+              start_date: formattedValues.start_date || "",
+              end_date: formattedValues.end_date || "",
+            },
           });
           navigate(`/positions/table/`);
         } catch (error) {
@@ -168,4 +187,3 @@ const PositionUpdateForm = () => {
 };
 
 export default PositionUpdateForm;
-

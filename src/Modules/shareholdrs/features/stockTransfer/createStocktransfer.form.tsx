@@ -1,7 +1,7 @@
 import Forms from "../../../../components/forms";
 import { useStockTransfer } from "../../hooks";
 import * as Yup from "yup";
-import { FormField } from "../../../companies/types";
+import { FormField } from "../../../../types";
 import { useCompany } from "../../../companies/hooks";
 import { useUserData } from "../../../users/hooks";
 import toast from "react-hot-toast";

@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useShareholders } from "../../hooks";
 import { useCompany } from "../../../companies/hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { FormField } from "../../../companies/types";
+import { FormField } from "../../../../types";
 
 const EditShareholdForm: React.FC = () => {
   const { mutate } = useShareholders.useUpdate();

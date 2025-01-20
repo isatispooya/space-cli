@@ -3,7 +3,7 @@ import CustomDataGridToolbar from "../../../utils/tableToolbar";
 import { localeText } from "../../../utils/localtext";
 import { useCallback, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
-import { CompanyData } from "../types/companyData.type";
+import { CompanyTypes } from "../types";
 import { ModalLayout } from "../../../layouts";
 import toast from "react-hot-toast";
 import SeeCompany from "./company.details";
@@ -15,14 +15,13 @@ import useCompany from "../hooks/useCompany";
 import Spinner from "../../../components/spinner";
 import { useNavigate } from "react-router-dom";
 
-
 const CompanyTable = () => {
   const { data, isPending } = useCompany.useGet();
   const { mutate: deleteCompanyMutation } = useCompany.useDelete();
   const { checkPermission } = useUserPermissions();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const rows = data || [];
-  const [selectedRow, setSelectedRow] = useState<CompanyData | null>(null);
+  const [selectedRow, setSelectedRow] = useState<CompanyTypes | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -32,7 +31,7 @@ const CompanyTable = () => {
       toast.error("لطفا یک شرکت را انتخاب کنید");
       return;
     }
-      navigate(`/companies/edit/${selectedRow.id}`);
+    navigate(`/companies/edit/${selectedRow.id}`);
   }, [selectedRow, navigate]);
 
   const handleView = useCallback(() => {
@@ -52,24 +51,87 @@ const CompanyTable = () => {
     setIsDeleteOpen(true);
   }, [selectedRow, deleteCompanyMutation]);
 
-  const columns: GridColDef<CompanyData>[] = [
-    { field: "name", headerName: "نام شرکت", width: 130, headerAlign: 'center', align: 'center', type: 'string' },
-    { field: "company_type", headerName: "نوع شرکت", width: 200, headerAlign: 'center', align: 'center', type: 'string' },
-    { field: "year_of_establishment", headerName: "سال تاسیس", width: 90, headerAlign: 'center', align: 'center', type: 'number' },
-    { field: "phone", headerName: "تلفن", width: 90, headerAlign: 'center', align: 'center' },
-    { field: "postal_code", headerName: "کد پستی", width: 150, headerAlign: 'center', align: 'center' },
-    { field: "national_id", headerName: "کد شناسه", width: 90, headerAlign: 'center', align: 'center' },
-    { field: "description", headerName: "توضیحات", width: 200, headerAlign: 'center', align: 'center' },
-    { field: "registered_capital", headerName: "سرمایه ثبتی", width: 200, headerAlign: 'center', align: 'center' },
+  const columns: GridColDef<CompanyTypes>[] = [
+    {
+      field: "name",
+      headerName: "نام شرکت",
+      width: 130,
+      headerAlign: "center",
+      align: "center",
+      type: "string",
+    },
+    {
+      field: "company_type",
+      headerName: "نوع شرکت",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      type: "string",
+    },
+    {
+      field: "year_of_establishment",
+      headerName: "سال تاسیس",
+      width: 90,
+      headerAlign: "center",
+      align: "center",
+      type: "number",
+    },
+    {
+      field: "phone",
+      headerName: "تلفن",
+      width: 90,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "postal_code",
+      headerName: "کد پستی",
+      width: 150,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "national_id",
+      headerName: "کد شناسه",
+      width: 90,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "description",
+      headerName: "توضیحات",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "registered_capital",
+      headerName: "سرمایه ثبتی",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
     {
       field: "registration_number",
       headerName: "تعداد سرمایه ثبتی",
       width: 200,
-      headerAlign: 'center',
-      align: 'center'
+      headerAlign: "center",
+      align: "center",
     },
-    { field: "type_of_activity", headerName: "نوع فعالیت", width: 90, headerAlign: 'center', align: 'center' },
-    { field: "website", headerName: "وبسایت", width: 250, headerAlign: 'center', align: 'center' },
+    {
+      field: "type_of_activity",
+      headerName: "نوع فعالیت",
+      width: 90,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "website",
+      headerName: "وبسایت",
+      width: 250,
+      headerAlign: "center",
+      align: "center",
+    },
   ];
 
   if (isPending) {
@@ -87,7 +149,7 @@ const CompanyTable = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = rows.find(
-                (row: CompanyData) => row.id === selectedId
+                (row: CompanyTypes) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);
@@ -162,9 +224,7 @@ const CompanyTable = () => {
             setSelectedRow(null);
           }}
         >
-          {selectedRow && (
-            <EditCompanyForm/>
-          )}
+          {selectedRow && <EditCompanyForm />}
         </ModalLayout>
         {selectedRow && (
           <Popup

@@ -3,7 +3,7 @@ import { useCompany } from "../../../companies/hooks";
 import { useUserData } from "../../../users/hooks";
 import { useDisplacement } from "../../hooks";
 import * as Yup from "yup";
-import { FormField } from "../../../companies/types";
+import { FormField } from "../../../../types";
 import toast from "react-hot-toast";
 
 const CreateDisplacementForm = () => {

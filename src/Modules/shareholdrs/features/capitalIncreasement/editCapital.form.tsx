@@ -4,7 +4,7 @@ import { useCapital } from "../../hooks";
 import { CapitalIncreaseTypes } from "../../types/capitalIncrease.type";
 import * as yup from "yup";
 import { useCapitalStore } from "../../store";
-import { FormField } from "../../../companies/types";
+import { FormField } from "../../../../types";
 
 const EditCapitalForm: React.FC = () => {
   const { mutate } = useCapital.useUpdate();
