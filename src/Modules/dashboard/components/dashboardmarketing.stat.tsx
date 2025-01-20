@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ReactNode, useEffect, useState, useMemo } from "react";
 import { useInvitation } from "../../invitation/hooks";
 import { motion } from "framer-motion";
 import { RiUserReceived2Line } from "react-icons/ri";
@@ -31,18 +32,30 @@ const DashboardMarketingStat = () => {
   const { data: invitedUsers } = useInvitation.useGetList();
   const { data: profile } = useProfile();
 
-  const invitedUserFiltered = invitedUsers?.filter(
-    (item: any) =>
-      item.invitation_code_detail?.introducer_user_detail?.uniqueIdentifier === profile?.uniqueIdentifier
-  );
+  const invitedUserFiltered = useMemo(() => {
+    if (!Array.isArray(invitedUsers) || !profile?.uniqueIdentifier) {
+      return [];
+    }
 
-  // introducer_user_detail
-  console.log(invitedUserFiltered);
+    return invitedUsers.filter(
+      (item: any) =>
+        item.invitation_code_detail?.introducer_user_detail
+          ?.uniqueIdentifier === profile.uniqueIdentifier
+    );
+  }, [invitedUsers, profile]);
 
-  const invitedUserFilteredCode = invitation?.filter(
-    (item: any) =>
-      item.introducer_user_detail.uniqueIdentifier === profile?.uniqueIdentifier
-  );
+
+  const invitedUserFilteredCode = useMemo(() => {
+    if (!Array.isArray(invitation) || !profile?.uniqueIdentifier) {
+      return [];
+    }
+
+    return invitation.filter(
+      (item: any) =>
+        item.introducer_user_detail.uniqueIdentifier ===
+        profile.uniqueIdentifier
+    );
+  }, [invitation, profile]);
 
   const navigate = useNavigate();
 

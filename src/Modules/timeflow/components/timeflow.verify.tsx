@@ -25,7 +25,6 @@ const TimeflowVerify = () => {
     }
   }, [verifyData]);
 
-  console.log(verifyData);
 
   const handleVerify = (id: number) => {
     if (id) {

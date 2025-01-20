@@ -24,7 +24,7 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
     (user: { id: number }) => user.id === Number(id)
   );
 
-  console.log("specificUser", specificUser);
+
 
   const formFields: FormField[] = [
     {

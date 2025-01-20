@@ -28,7 +28,7 @@ const CapitalTable: React.FC = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const rows = data || [];
 
-  console.log(data);
+  
 
   const columns: GridColDef[] = [
 

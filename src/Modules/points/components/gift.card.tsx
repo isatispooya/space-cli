@@ -24,7 +24,7 @@ const GiftCard = ({
   } | null>(null);
   const { data: remainPoints } = useRemainPoints();
 
-  console.log(remainPoints);
+
 
   
 

@@ -38,7 +38,7 @@ const PrintUnderwriting: FC = () => {
   if (!underwritingPrint) {
     return <div>اطلاعاتی یافت نشد</div>;
   }
-  console.log(underwritingPrint);
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-8 rtl print:p-0">

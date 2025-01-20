@@ -22,7 +22,6 @@ interface DashboardSliderProps {
 
 const DashboardSlider = ({ slides }: DashboardSliderProps) => {
   const swiperRef = useRef<SwiperClass>();
-
   useEffect(() => {
     const timer = setTimeout(() => {
       if (swiperRef.current) {
@@ -32,6 +31,10 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  if (!Array.isArray(slides) || slides.length === 0) {
+    return null;
+  }
 
   const handleShare = async (slide: SlideItem) => {
     try {
@@ -51,12 +54,6 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
       console.error("Error sharing:", error);
     }
   };
-
-  if (!slides || slides.length === 0) {
-    return null;
-  }
-
-  console.log(slides, "slides");
 
   return (
     <div className="relative w-full h-full">

@@ -49,9 +49,7 @@ const PositionUpdateForm = () => {
     return <div>Position not found</div>;
   }
 
-  console.log("ID", id);
-  console.log("LIST", getUpdatePosition);
-  console.log("DETALI", specificUser);
+
 
   const formFields: FormField[] = [
     { name: "name", label: "نام نقش", type: "text" },

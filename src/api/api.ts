@@ -36,7 +36,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry && !originalRequest.url.includes('/token/refresh/')) {
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/token/refresh/")
+    ) {
       originalRequest._retry = true;
 
       if (!isRefreshing) {
@@ -58,12 +62,15 @@ api.interceptors.response.use(
         } catch (refreshError) {
           isRefreshing = false;
           refreshSubscribers = [];
-          
+
           removeCookie("access_token");
           removeCookie("refresh_token");
-          
-          if (!window.location.pathname.includes('/login')) {
-            window.location.href = "/login";
+
+          if (!window.location.pathname.includes("/login")) {
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 100);
+            return Promise.reject(refreshError);
           }
           return Promise.reject(refreshError);
         }

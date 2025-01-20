@@ -38,7 +38,6 @@ const CreateUnderWritingForm = () => {
     { label: "درگاه", value: "2" },
   ];
 
-  console.log(unusedPrecedenceProcess);
 
   useEffect(() => {
     setShowPopup(true);
