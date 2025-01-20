@@ -5,7 +5,7 @@ import { useCompany } from "../../companies";
 import { useEmployments } from "../hooks";
 import { FormikHelpers } from "formik";
 import toast from "react-hot-toast";
-import { FormField } from "../../companies/types";
+import { FormField } from "../../../types";
 
 const EmploymentsCreateForm = () => {
   const { data: companies } = useCompany.useGet();

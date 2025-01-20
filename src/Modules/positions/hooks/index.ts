@@ -1,3 +1,2 @@
-export { default as usePositionData } from "./usePositionData";
-export { default as useCreatePos } from "./useCreatePos";
-export { default as useUpdatePosition } from "./useUpdatePosition";
+export { default as usePosition } from "./usePosition";
+

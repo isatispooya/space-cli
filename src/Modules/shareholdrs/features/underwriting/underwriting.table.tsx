@@ -60,7 +60,6 @@ const UnderWritingTable: React.FC = () => {
       headerAlign: "center",
       renderCell: (params) => formatNumber(params.row.price),
     },
-
     {
       field: "track_id",
       headerName: "شماره پیگیری",

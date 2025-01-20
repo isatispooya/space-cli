@@ -3,7 +3,7 @@ import Forms from "../../../components/forms";
 import { useUpdateCorrespondence } from "../hooks/useUpdateCorrespondence";
 import { CorrespondenceTypes } from "../types";
 import toast from "react-hot-toast";
-import { FormField } from "../../companies/types";
+import { FormField } from "../../../types";
 
 const validationSchema = Yup.object().shape({
   subject: Yup.string().required("موضوع الزامی است"),

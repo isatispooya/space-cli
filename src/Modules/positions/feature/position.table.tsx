@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { usePositionData } from "../hooks";
+import { usePosition } from "../hooks";
 import { useState, useCallback } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
@@ -8,15 +8,14 @@ import { deletePosition } from "../services";
 import { useUserPermissions } from "../../permissions";
 import { LoaderLg } from "../../../components";
 import { tableStyles } from "../../../ui";
-import moment from 'moment-jalaali';
+import moment from "moment-jalaali";
 import { useNavigate } from "react-router-dom";
-
 
 type RowType = {
   id: number;
   name: string;
   company: string;
-  parent: { id: number; name: string; } | null;
+  parent: { id: number; name: string } | null;
   type_of_employment: string;
   description: string;
   user: {
@@ -37,9 +36,9 @@ const typeOfEmploymentTranslations: Record<string, string> = {
 };
 
 const PositionsTable = () => {
-  const { data: positions, isPending, refetch } = usePositionData();
+  const { data: positions, isPending, refetch } = usePosition.useGet();
   const [selectedRow, setSelectedRow] = useState<RowType | null>(null);
-  const { checkPermission } = useUserPermissions();  
+  const { checkPermission } = useUserPermissions();
   const navigate = useNavigate();
 
   const handleEdit = () => {
@@ -48,10 +47,7 @@ const PositionsTable = () => {
       return;
     }
     navigate(`/positions/update/${selectedRow.id}`);
-
   };
-
- 
 
   const handleDelete = useCallback(() => {
     if (!selectedRow) {
@@ -60,48 +56,107 @@ const PositionsTable = () => {
     }
     deletePosition(selectedRow.id);
     refetch();
-  }, [selectedRow, refetch]);  
+  }, [selectedRow, refetch]);
 
-  const rows = positions ? positions.map((position) => {
-    console.log("Original created_at:", position.created_at);
-    console.log("Original start_date:", position.start_date);
-    console.log("Original end_date:", position.end_date);
+  const rows = positions
+    ? positions.map((position) => {
+        console.log("Original created_at:", position.created_at);
+        console.log("Original start_date:", position.start_date);
+        console.log("Original end_date:", position.end_date);
 
-    return {
-      id: position.id,
-      name: position.name,
-      company: position.company_detail?.name || "نامشخص",
-      parent: position.parent,
-      type_of_employment: typeOfEmploymentTranslations[position.type_of_employment] || "",
-      description: position.description,
-      user: {
-        first_name: position.user?.first_name || "نامشخص",
-        last_name: position.user?.last_name || "نامشخص",
-      },
-      created_at: moment(position.created_at, 'YYYY-MM-DD').format('jYYYY/jMM/jDD'),
-      start_date: moment(position.start_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD'),
-      end_date: moment(position.end_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD'),
-    };
-  }) : [];
+        return {
+          id: position.id,
+          name: position.name,
+          company: position.company_detail?.name || "نامشخص",
+          parent: position.parent,
+          type_of_employment: position.type_of_employment
+            ? typeOfEmploymentTranslations[position.type_of_employment]
+            : "",
+          description: position.description,
+          user: {
+            first_name: position.user?.first_name || "نامشخص",
+            last_name: position.user?.last_name || "نامشخص",
+          },
+          created_at: moment(position.created_at, "YYYY-MM-DD").format(
+            "jYYYY/jMM/jDD"
+          ),
+          start_date: moment(position.start_date, "YYYY-MM-DD").format(
+            "jYYYY/jMM/jDD"
+          ),
+          end_date: moment(position.end_date, "YYYY-MM-DD").format(
+            "jYYYY/jMM/jDD"
+          ),
+        };
+      })
+    : [];
   const columns: GridColDef[] = [
-    { field: "name", headerName: "نام نقش", width: 200, headerAlign: "center", align: "center" },
-    { field: "company", headerName: "نام شرکت", width: 200, headerAlign: "center", align: "center" },
-    { field: "type_of_employment", headerName: "نوع استخدام", width: 200, headerAlign: "center", align: "center" },
-    { field: "description", headerName: "توضیحات", width: 200, headerAlign: "center", align: "center" },
-    { 
-      field: "user", 
-      headerName: "کاربر", 
-      width: 200, 
-      headerAlign: "center", 
-      align: "center", 
-      renderCell: (params) => {
-        const user = params.row.user as { first_name: string; last_name: string };
-        return <span>{user ? `${user.first_name} ${user.last_name}` : "نامشخص"}</span>;
-      }
+    {
+      field: "name",
+      headerName: "نام نقش",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
     },
-    { field: "created_at", headerName: "تاریخ ایجاد", width: 200, headerAlign: "center", align: "center" },
-    { field: "start_date", headerName: "تاریخ شروع", width: 200, headerAlign: "center", align: "center" },
-    { field: "end_date", headerName: "تاریخ پایان", width: 200, headerAlign: "center", align: "center" },
+    {
+      field: "company",
+      headerName: "نام شرکت",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "type_of_employment",
+      headerName: "نوع استخدام",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "description",
+      headerName: "توضیحات",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "user",
+      headerName: "کاربر",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        const user = params.row.user as {
+          first_name: string;
+          last_name: string;
+        };
+        return (
+          <span>
+            {user ? `${user.first_name} ${user.last_name}` : "نامشخص"}
+          </span>
+        );
+      },
+    },
+    {
+      field: "created_at",
+      headerName: "تاریخ ایجاد",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "start_date",
+      headerName: "تاریخ شروع",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "end_date",
+      headerName: "تاریخ پایان",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+    },
   ];
 
   const hasPermission = (permissions: string[]) => {
@@ -129,7 +184,9 @@ const PositionsTable = () => {
         onRowSelectionModelChange={(newSelectionModel) => {
           if (newSelectionModel.length > 0) {
             const selectedId = newSelectionModel[0];
-            const selectedRow = rows.find((row: RowType) => row.id === selectedId);
+            const selectedRow = rows.find(
+              (row: RowType) => row.id === selectedId
+            );
             if (selectedRow) {
               setSelectedRow(selectedRow);
             }
@@ -179,9 +236,7 @@ const PositionsTable = () => {
             quickFilterProps: { debounceMs: 500 },
           },
         }}
-        
       />
-
     </>
   );
 };

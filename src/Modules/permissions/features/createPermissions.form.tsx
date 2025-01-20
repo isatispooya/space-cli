@@ -2,7 +2,7 @@ import Forms from "../../../components/forms";
 import * as Yup from "yup";
 import { CreatePermissionData } from "../types";
 import { useCreatePermission } from "../hooks/permissionPost";
-import { FormField } from "../../companies/types";
+import { FormField } from "../../../types";
 
 const validationSchema = Yup.object({
   groups: Yup.array().required("گروه الزامی است"),

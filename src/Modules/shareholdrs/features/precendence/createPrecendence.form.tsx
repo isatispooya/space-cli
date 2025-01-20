@@ -1,7 +1,7 @@
 import Forms from "../../../../components/forms";
 import { usePrecendence } from "../../hooks";
 import * as Yup from "yup";
-import { FormField } from "../../../companies/types";
+import { FormField } from "../../../../types";
 import { useUserData } from "../../../users/hooks";
 import { useCompany } from "../../../companies/hooks";
 import toast from "react-hot-toast";
@@ -76,8 +76,8 @@ const CreatePrecendenceForm = () => {
                 user: Number(values.user),
                 id: 0,
                 used_precedence: 0,
+                updated_at: new Date().toISOString(),
                 total_amount: 0,
-                updated_at: new Date().toISOString()
               },
               {
                 onSuccess: () => {

@@ -1,4 +1,4 @@
-export interface CompanyFormValues {
+export interface companypostTypes {
   [key: string]: unknown;
   id?: number;
   name: string;
@@ -14,15 +14,5 @@ export interface CompanyFormValues {
   address?: string;
   website?: string;
   email: string;
-  employees: number;
 }
-export interface CompanyType {
-  value: string;
-  label: string;
-}
-export interface FormField {
-  name: keyof CompanyFormValues;
-  label: string;
-  type: string;
-  options?: readonly CompanyType[];
-}
+
