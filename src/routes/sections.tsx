@@ -847,7 +847,7 @@ export default function Router() {
           ),
         },
         {
-          path: "update",
+          path: "update/:id",
           element: (
             <Suspense fallback={<Loader />}>
               <UpdateUnderWritingPage />

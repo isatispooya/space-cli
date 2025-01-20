@@ -1,119 +1,83 @@
-import { GridColDef, DataGrid } from "@mui/x-data-grid";
-import { FaEdit, FaPrint } from "react-icons/fa";
-import {
-  CustomDataGridToolbar,
-  formatNumber,
-  localeText,
-} from "../../../../utils";
-import { underwritingTypes } from "../../types/underwriting.type";
-import { tableStyles } from "../../../../ui";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { TabulatorFull as Tabulator } from "tabulator-tables";
+import { useEffect, useRef } from "react";
 import { useUnderwriting } from "../../hooks";
-import { useUserPermissions } from "../../../permissions";
-import moment from "moment-jalaali";
-import "moment/locale/fa";
-import Popup from "../../../points/components/popup";
 import { LoaderLg } from "../../../../components";
-import { useUnderwritingStore } from "../../store";
-import CustomPagination from "../../../../utils/paginationTable";
+import moment from "moment-jalaali";
+import { formatNumber } from "../../../../utils";
+import { useNavigate } from "react-router-dom";
+import ReactDOM from "react-dom";
+import { ActionMenu } from "../../../../components/tableaction/tableaction";
+import { TableStyles } from "../../../../components/tabularStyle.tsx";
 
 const UnderWritingTable: React.FC = () => {
-  const { data, refetch, isPending } = useUnderwriting.useGet();
-  const { setId } = useUnderwritingStore();
-  const [pageSizeOptions] = useState([10, 20, 50, 100]);
-
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 10,
-  });
+  const tableRef = useRef<HTMLDivElement>(null);
+  const { data, isPending } = useUnderwriting.useGet();
   const navigate = useNavigate();
-  const { checkPermission } = useUserPermissions();
-  const { mutate: deletePurchasePrecendense } = useUnderwriting.useDelete();
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<underwritingTypes | null>(
-    null
-  );
+  const hasStatusEditPermission = false;
 
-  const handlePrint = () => {
-    if (!selectedRow) {
-      toast.error("لطفا یک مورد را انتخاب کنید");
-      return;
-    }
-    window.open(`/underwriting/print/${selectedRow.id}`, "_blank");
-  };
+  const renderActionColumn = () => ({
+    title: "عملیات",
+    field: "actions",
+    headerSort: false,
+    headerFilter: false,
+    width: 100,
+    hozAlign: "center",
+    headerHozAlign: "center",
+    formatter: () => `<button class="action-btn">⋮</button>`,
+    cellClick: function (e: any, cell: any) {
+      e.stopPropagation();
+      const rowData = cell.getRow().getData();
 
-  const columns: GridColDef[] = [
-    {
-      field: "type_peyment",
-      headerName: "نوع",
-      width: 100,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "price",
-      headerName: "مبلغ",
-      width: 120,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => formatNumber(params.row.price),
-    },
-    {
-      field: "track_id",
-      headerName: "شماره پیگیری",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "first_name",
-      headerName: "نام",
-      width: 200,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "last_name",
-      headerName: "نام خانوادگی",
-      width: 200,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "requested_amount",
-      headerName: "تعداد درخواستی",
-      width: 130,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => formatNumber(params.row.price),
-    },
-    {
-      field: "created_at",
-      headerName: "تاریخ ایجاد",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => {
-        return moment(params.row.created_at)
-          .locale("fa")
-          .format("jYYYY/jMM/jDD");
-      },
-    },
-    {
-      field: "status",
-      headerName: "وضعیت",
-      width: 130,
-      align: "center",
-      headerAlign: "center",
-    },
-  ];
+      if (e.target.classList.contains("action-btn")) {
+        const existingMenu = document.querySelector(".popup-menu");
+        if (existingMenu) {
+          existingMenu.remove();
+          return;
+        }
 
-  const rows = data || [];
-  const rows_flat =
-    data?.map((item) => {
-      return {
+        const rect = e.target.getBoundingClientRect();
+        const menuItems = [
+          {
+            icon: "fas fa-edit",
+            label: "ویرایش",
+            onClick: () => navigate(`/underwriting/update/${rowData.id}`),
+            color: "#2563EB",
+          },
+          {
+            icon: "fas fa-print",
+            label: "چاپ",
+            onClick: () => console.log("Print clicked"),
+            color: "#DC2626",
+          },
+        ];
+
+        const menuPosition = {
+          x: rect.left - rect.left + 20,
+          y: rect.bottom - rect.top + 85,
+        };
+
+        const menuContainer = document.createElement("div");
+        e.target.closest(".tabulator-cell").appendChild(menuContainer);
+
+        ReactDOM.render(
+          <ActionMenu
+            items={menuItems}
+            position={menuPosition}
+            onClose={() => menuContainer.remove()}
+          />,
+          menuContainer
+        );
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!tableRef.current || !data) return;
+
+    console.log("Data received:", data);
+
+    const table = new Tabulator(tableRef.current, {
+      data: data.map((item) => ({
         ...item,
         type_peyment:
           item.type === "2"
@@ -134,8 +98,129 @@ const UnderWritingTable: React.FC = () => {
             : item.status === "success"
             ? "تایید نهایی"
             : "در انتظار",
-      };
-    }) || [];
+      })),
+      columns: [
+        {
+          title: "نوع",
+          field: "type_peyment",
+          headerFilter: true,
+          hozAlign: "center",
+          headerHozAlign: "center",
+        },
+        {
+          title: "مبلغ",
+          field: "price",
+          formatter: (cell) => formatNumber(cell.getValue()),
+          headerFilter: true,
+          hozAlign: "center",
+          headerHozAlign: "center",
+        },
+        {
+          title: "شماره پیگیری",
+          field: "track_id",
+          headerFilter: true,
+          hozAlign: "center",
+          headerHozAlign: "center",
+        },
+        {
+          title: "نام",
+          field: "first_name",
+          headerFilter: true,
+          hozAlign: "center",
+          headerHozAlign: "center",
+        },
+        {
+          title: "نام خانوادگی",
+          field: "last_name",
+          headerFilter: true,
+          hozAlign: "center",
+          headerHozAlign: "center",
+        },
+        {
+          title: "تعداد درخواستی",
+          field: "requested_amount",
+          formatter: (cell) => formatNumber(cell.getValue()),
+          headerFilter: true,
+          hozAlign: "center",
+          headerHozAlign: "center",
+        },
+        {
+          title: "تاریخ ایجاد",
+          field: "created_at",
+          formatter: (cell) => {
+            const date = moment(cell.getValue());
+            return date.isValid()
+              ? date.locale("fa").format("HH:mm - jYYYY/jMM/jDD")
+              : "تاریخ نامعتبر";
+          },
+          headerFilter: true,
+          hozAlign: "center",
+          headerHozAlign: "center",
+        },
+        {
+          title: "وضعیت",
+          field: "status",
+          headerFilter: true,
+          hozAlign: "center",
+          headerHozAlign: "center",
+          editor: hasStatusEditPermission ? "list" : false,
+          editorParams: {
+            values: {
+              "approved": "تایید شده",
+              "rejected": "رد شده",
+              "pending": "در انتظار",
+              "success": "تایید نهایی"
+            }
+          },
+          formatter: function(cell) {
+            const value = cell.getValue();
+            const statusMap: { [key: string]: string } = {
+              "approved": "تایید شده",
+              "rejected": "رد شده",
+              "pending": "در انتظار",
+              "success": "تایید نهایی"
+            };
+            return statusMap[value] || "در انتظار";
+          }
+        },
+        renderActionColumn(),
+      ],
+      layout: "fitColumns",
+      pagination: true,
+      paginationSize: 10,
+      paginationSizeSelector: [10, 20, 100],
+      paginationButtonCount: 5,
+      paginationAddRow: "page",
+      paginationMode: "local",
+      selectable: 1,
+      rtl: true,
+      rowClick: (e, row) => {
+        navigate(`/underwriting/update/${row.getData().id}`);
+      },
+      headerVisible: true,
+      movableColumns: true,
+      printAsHtml: true,
+      printStyled: true,
+      downloadConfig: {
+        columnHeaders: true,
+        columnGroups: false,
+        rowGroups: false,
+        columnCalcs: false,
+        dataTree: false,
+      },
+      rowFormatter: function (row) {
+        row.getElement().style.transition = "all 0.3s ease";
+      },
+    });
+
+    table.on("tableBuilt", function () {
+      console.log("Table fully built");
+    });
+
+    return () => {
+      table.destroy();
+    };
+  }, [data, hasStatusEditPermission]);
 
   if (isPending) {
     return (
@@ -145,130 +230,26 @@ const UnderWritingTable: React.FC = () => {
     );
   }
 
-  const handleEdit = () => {
-    if (!selectedRow || !selectedRow.id) {
-      toast.error("لطفا یک مورد را انتخاب کنید");
-      return;
-    }
-    setId(selectedRow.id);
-    navigate("/underwriting/update");
-  };
-
   return (
     <>
-      <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
-        <DataGrid
-          columns={columns}
-          rows={rows_flat}
-          localeText={localeText}
-          onRowClick={(params) => setSelectedRow(params.row)}
-          onRowSelectionModelChange={(newSelectionModel) => {
-            if (newSelectionModel.length > 0) {
-              const selectedId = newSelectionModel[0];
-              const selectedRow = rows.find(
-                (row: underwritingTypes) => row.id === selectedId
-              );
-              if (selectedRow) {
-                setSelectedRow(selectedRow);
-              }
-            } else {
-              setSelectedRow(null);
-            }
-          }}
-          sx={{ tableStyles }}
-          checkboxSelection
-          pageSizeOptions={pageSizeOptions}
-          pagination
-          paginationModel={paginationModel}
-          onPaginationModelChange={(newPaginationModel) => {
-            setPaginationModel(newPaginationModel);
-          }}
-          rowSelectionModel={selectedRow?.id ? [selectedRow.id] : []}
-          disableMultipleRowSelection
-          initialState={{
-            pagination: {
-              paginationModel: { pageSize: 10, page: 0 },
-            },
-          }}
-          disableColumnMenu
-          filterMode="client"
-          slots={{
-            pagination: (props) => (
-              <CustomPagination
-                rows={rows}
-                pageSize={paginationModel.pageSize}
-                paginationModel={paginationModel}
-                onPageChange={(_, newPage) => {
-                  setPaginationModel((prev) => ({ ...prev, page: newPage }));
-                }}
-                pageSizeOptions={pageSizeOptions}
-                onPageSizeChange={(newSize) => {
-                  setPaginationModel((prev) => ({
-                    ...prev,
-                    pageSize: newSize,
-                    page: 0,
-                  }));
-                }}
-                {...props}
-              />
-            ),
-            toolbar: (props) => (
-              <CustomDataGridToolbar
-                {...props}
-                data={rows as unknown as Record<string, unknown>[]}
-                fileName="گزارش-پذیره‌نویسی"
-                showExcelExport={true}
-                actions={{
-                  edit: {
-                    label: "ویرایش",
-                    show: checkPermission(["change_underwriting"]),
-                    onClick: handleEdit,
-                    icon: <FaEdit />,
-                  },
-                  print: {
-                    label: "چاپ",
-                    show: checkPermission(["allow_any"]),
-                    onClick: handlePrint,
-                    icon: <FaPrint />,
-                  },
-                }}
-              />
-            ),
-          }}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
+      <TableStyles />
+      <div className="w-full min-h-screen bg-white shadow-xl rounded-3xl relative p-8 flex flex-col">
+        <div className="mb-8 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl shadow-sm border border-gray-100">
+          <div className="flex gap-4">
+            <button className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-xl text-sm font-medium flex items-center gap-3 transition-all duration-300 hover:shadow-lg hover:scale-105 transform">
+              <i className="fas fa-download"></i>
+              دانلود اکسل
+            </button>
+          </div>
+        </div>
+
+        <div
+          ref={tableRef}
+          className="flex-1 rounded-2xl overflow-hidden shadow-md border border-gray-100 [&_.tabulator-header]:!bg-gray-50 [&_.tabulator-header_.tabulator-col]:!border-gray-200 [&_.tabulator-row]:!border-gray-100 [&_.tabulator-row.tabulator-row-even]:!bg-gray-50/30 [&_.tabulator-row]:hover:!bg-blue-50/50 [&_.tabulator-footer]:!bg-gray-50 [&_.tabulator]:!border-gray-200"
         />
       </div>
-
-      {selectedRow && (
-        <Popup
-          isOpen={isDeleteOpen}
-          onClose={() => setIsDeleteOpen(false)}
-          label="حذف پذیره‌نویسی"
-          text="آیا از حذف پذیره‌نویسی مطمئن هستید؟"
-          onConfirm={() => {
-            deletePurchasePrecendense(Number(selectedRow.id), {
-              onSuccess: () => {
-                toast.success("پذیره‌نویسی با موفقیت حذف شد");
-                refetch();
-              },
-              onError: () => {
-                toast.error("خطا در برقراری ارتباط");
-              },
-            });
-            setIsDeleteOpen(false);
-            setSelectedRow(null);
-          }}
-          onCancel={() => {
-            setIsDeleteOpen(false);
-          }}
-        />
-      )}
     </>
   );
 };
+
 export default UnderWritingTable;
