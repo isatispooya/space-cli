@@ -37,6 +37,7 @@ const UnderWritingTable: React.FC = () => {
     cellClick: function (e: any, cell: any) {
       e.stopPropagation();
       // const rowData = cell.getRow().getData();
+      
 
       if (e.target.classList.contains("action-btn")) {
         const existingMenu = document.querySelector(".popup-menu");
