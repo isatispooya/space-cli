@@ -6,12 +6,21 @@ import useLogout from "./hooks/useLogout";
 import { removeCookie } from "../../api/cookie";
 import { Avatar } from "@mui/material";
 import { server } from "../../api/server";
+import { identifyUser } from "../../utils";
 
 const UserAvatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { data: profileData } = useProfile();
+  const { data: profileData,isSuccess } = useProfile();
 
+  useEffect(() => {
+    if (isSuccess) {
+      identifyUser({
+        customId: profileData?.uniqueIdentifier,
+        friendlyName: profileData?.first_name + " " + profileData?.last_name,
+      });
+    }
+  }, [isSuccess, profileData]);
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   useEffect(() => {
