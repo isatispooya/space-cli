@@ -4,7 +4,7 @@ import { PermissionData } from "../types/permissionData";
 import { useUserData } from "../../users/hooks";
 import { useSetPermission } from "../hooks";
 import { useParams } from "react-router-dom";
-import { FormField } from "../../companies/types";
+import { FormField } from "../../../types";
 
 interface FormValues {
   user_id: number;

@@ -17,13 +17,13 @@ const useEmployments = {
     });
   },
   usePostJobOffer: (): UseMutationResult<
-    EmploymentsTypes,
+    EmploymentsPostTypes,
     AxiosError,
     FormData
   > => {
     const queryClient = useQueryClient();
 
-    return useMutation<EmploymentsTypes, AxiosError, FormData>({
+    return useMutation({
       mutationKey: ["postJobOffer"],
       mutationFn: (formData: FormData) => {
         const data = Object.fromEntries(

@@ -1,6 +1,6 @@
 import { Forms } from "../../../components";
 import * as Yup from "yup";
-import { FormField } from "../../companies/types";
+import { FormField } from "../../../types";
 import { InvitationPostTypes } from "../types";
 import { useInvitation } from "../hooks";
 import toast from "react-hot-toast";

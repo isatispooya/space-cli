@@ -2,7 +2,7 @@ import { Formik, Form, Field, FieldProps, FormikValues } from "formik";
 import { motion } from "framer-motion";
 import SelectInput from "./selectInput";
 import FormInput from "./formInput";
-import { FormField } from "../Modules/companies/types";
+import { FormField } from "../types";
 import { FormikHelpers } from "formik";
 import { AnyObject, Maybe, ObjectSchema } from "yup";
 import { RiCloseLargeLine } from "react-icons/ri";

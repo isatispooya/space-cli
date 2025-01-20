@@ -2,7 +2,7 @@ import { Forms } from "../../../components";
 import * as yup from "yup";
 import { FormikHelpers } from "formik";
 import toast from "react-hot-toast";
-import { FormField } from "../../companies/types";
+import { FormField } from "../../../types";
 import { UseEmProcess } from "../hooks";
 import { EmProcessPostTypes } from "../types";
 

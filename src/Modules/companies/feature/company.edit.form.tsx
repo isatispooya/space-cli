@@ -1,10 +1,10 @@
 import * as Yup from "yup";
-import { CompanyData } from "../types/companyData.type";
+import { CompanyTypes } from "../types";
 
 import { useCompany } from "../hooks";
 import Forms from "../../../components/forms";
 import toast from "react-hot-toast";
-import { FormField } from "../types";
+import { FormField } from "../../../types";
 import { useParams } from "react-router-dom";
 
 interface CompanyTypeOption {
@@ -72,30 +72,28 @@ const formFields: FormField[] = [
   { name: "employees", label: "تعداد کارمندان", type: "text" },
 ];
 
-
 const EditCompanyForm = () => {
   const { mutate: updateCompany } = useCompany.useUpdate();
   const { data } = useCompany.useGet();
   const { id } = useParams();
 
   const specificCompany = data?.find((company) => company.id === Number(id));
-  
-  const initialValues: CompanyData = {
+
+  const initialValues: CompanyTypes = {
     id: specificCompany?.id || 0,
     name: specificCompany?.name || "",
     company_type: specificCompany?.company_type || "",
     year_of_establishment: Number(specificCompany?.year_of_establishment) || 0,
-    phone: specificCompany?.phone || "",
-    postal_code: specificCompany?.postal_code || "",
-    national_id: specificCompany?.national_id || "",
+    phone: specificCompany?.phone || null,
+    postal_code: Number(specificCompany?.postal_code) || null,
+    national_id: specificCompany?.national_id || null,
     description: specificCompany?.description || "",
     registered_capital: Number(specificCompany?.registered_capital) || 0,
-    registration_number: Number(specificCompany?.registration_number) || 0,
+    registration_number: specificCompany?.registration_number || null,
     type_of_activity: specificCompany?.type_of_activity || "",
     website: specificCompany?.website || "",
     email: specificCompany?.email || "",
     address: specificCompany?.address || "",
-    employees: Number(specificCompany?.employees) || 0,
   };
 
   return (
@@ -105,7 +103,9 @@ const EditCompanyForm = () => {
         title="ویرایش شرکت"
         formFields={formFields}
         initialValues={initialValues}
-        validationSchema={validationSchema as Yup.ObjectSchema<CompanyData>}
+        validationSchema={
+          validationSchema as unknown as Yup.ObjectSchema<CompanyTypes>
+        }
         buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
         submitButtonText={{
           default: "ذخیره تغییرات",
@@ -116,7 +116,15 @@ const EditCompanyForm = () => {
             await updateCompany(
               {
                 id: values.id,
-                data: values,
+                data: {
+                  ...values,
+                  year_of_establishment: String(values.year_of_establishment),
+                  registered_capital: String(values.registered_capital),
+                  registration_number: String(values.registration_number),
+                  phone: String(values.phone),
+                  postal_code: String(values.postal_code),
+                  national_id: String(values.national_id),
+                },
               },
               {
                 onSuccess: () => {

@@ -12,9 +12,6 @@ const UserAvatar = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: profileData } = useProfile();
 
-  
-  
-
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   useEffect(() => {
@@ -81,13 +78,18 @@ const UserAvatar = () => {
       >
         {profileData?.first_name && profileData?.first_name.length > 14
           ? `${profileData.first_name.slice(0, 14)}...`
-          : profileData?.first_name} {profileData?.last_name}
+          : profileData?.first_name}{" "}
+        {profileData?.last_name}
       </span>
 
       <div className="relative" ref={dropdownRef}>
         <Avatar
           alt="Remy Sharp"
-          src={profileData?.profile_image ? server + profileData?.profile_image : null}
+          src={
+            profileData?.profile_image
+              ? server + profileData?.profile_image
+              : undefined
+          }
           sx={{ backgroundColor: "#041685" }}
         />
 
