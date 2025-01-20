@@ -29,6 +29,7 @@ const EditPrecendenceForm: React.FC = () => {
     updated_at: yup.string().optional(),
     user: yup.number().required("کاربر الزامی است"),
     used_precedence: yup.number().required("حق تقدم استفاده شده الزامی است"),
+    total_amount: yup.number().required("مقدار کل الزامی است"),
     company_detail: yup.object().optional(),
     user_detail: yup.object().optional(),
   }) as yup.ObjectSchema<PrecedenceTypes>;
@@ -66,6 +67,7 @@ const EditPrecendenceForm: React.FC = () => {
     updated_at: precedence?.updated_at || "",
     user: parseInt(precedence?.user.toString() || "0"),
     used_precedence: precedence?.used_precedence || 0,
+    total_amount: precedence?.total_amount || 0
   };
 
   const onSubmit = (values: PrecedenceTypes) => {
