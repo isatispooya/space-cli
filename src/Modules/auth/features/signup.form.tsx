@@ -13,7 +13,7 @@ import { ErrorResponse } from "../../../types";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useCaptcha } from "../hooks";
-
+import LoginTour from "../../../tour";
 const validationSchema = Yup.object({
   nationalCode: Yup.string()
     .required("کد ملی الزامی است")
@@ -32,6 +32,10 @@ const validationSchema = Yup.object({
 
 const SignupForm = () => {
   const [showOtpInput, setShowOtpInput] = useState<boolean>(false);
+  const [runTour] = useState(() => {
+    return !localStorage.getItem("signupTourCompleted");
+  });
+
   const { mutate: signupMutate, isPending: signupPending } =
     useApplyNationalCode();
   const { mutate: register, isPending: registerPending } = useRegister();
@@ -112,7 +116,8 @@ const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form className="tour-signup-form" onSubmit={formik.handleSubmit}>
+      <LoginTour runTour={runTour} />
       <InputLogin
         type="text"
         label="کدملی"
