@@ -1,4 +1,8 @@
-import { TabulatorFull as Tabulator } from "tabulator-tables";
+import {
+  TabulatorFull as Tabulator,
+  ColumnDefinition,
+  CellComponent,
+} from "tabulator-tables";
 import { useEffect, useRef } from "react";
 import { useUnderwriting } from "../../hooks";
 import { LoaderLg } from "../../../../components";
@@ -8,21 +12,27 @@ import { useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { ActionMenu } from "../../../../components/tableaction/tableaction";
 import { TableStyles } from "../../../../components/tabularStyle.tsx";
+import { useUserPermissions } from "../../../permissions/index.ts";
 
 const UnderWritingTable: React.FC = () => {
   const tableRef = useRef<HTMLDivElement>(null);
   const { data, isPending } = useUnderwriting.useGet();
-  const navigate = useNavigate();
-  const hasStatusEditPermission = false;
+  const { mutate: updateUnderwriting, isPending: isUpdating } =
+    useUnderwriting.useUpdate();
 
-  const renderActionColumn = () => ({
+  const navigate = useNavigate();
+  const { checkPermission } = useUserPermissions();
+
+  const hasEditPermission = checkPermission(["change_underwriting"]);
+
+  const renderActionColumn = (): ColumnDefinition => ({
     title: "عملیات",
     field: "actions",
     headerSort: false,
-    headerFilter: false,
+    headerFilter: false as any,
     width: 100,
-    hozAlign: "center",
-    headerHozAlign: "center",
+    hozAlign: "center" as const,
+    headerHozAlign: "center" as const,
     formatter: () => `<button class="action-btn">⋮</button>`,
     cellClick: function (e: any, cell: any) {
       e.stopPropagation();
@@ -37,12 +47,16 @@ const UnderWritingTable: React.FC = () => {
 
         const rect = e.target.getBoundingClientRect();
         const menuItems = [
-          {
-            icon: "fas fa-edit",
-            label: "ویرایش",
-            onClick: () => navigate(`/underwriting/update/${rowData.id}`),
-            color: "#2563EB",
-          },
+          ...(hasEditPermission
+            ? [
+                {
+                  icon: "fas fa-edit",
+                  label: "ویرایش",
+                  onClick: () => navigate(`/underwriting/update/${rowData.id}`),
+                  color: "#2563EB",
+                },
+              ]
+            : []),
           {
             icon: "fas fa-print",
             label: "چاپ",
@@ -88,61 +102,51 @@ const UnderWritingTable: React.FC = () => {
         track_id: item.payment_detail?.track_id,
         first_name: item.user_detail?.first_name,
         last_name: item.user_detail?.last_name,
-        status:
-          item.status === "approved"
-            ? "تایید شده"
-            : item.status === "rejected"
-            ? "رد شده"
-            : item.status === "pending"
-            ? "در انتظار"
-            : item.status === "success"
-            ? "تایید نهایی"
-            : "در انتظار",
       })),
       columns: [
         {
           title: "نوع",
           field: "type_peyment",
           headerFilter: true,
-          hozAlign: "center",
-          headerHozAlign: "center",
+          hozAlign: "center" as const,
+          headerHozAlign: "center" as const,
         },
         {
           title: "مبلغ",
           field: "price",
           formatter: (cell) => formatNumber(cell.getValue()),
           headerFilter: true,
-          hozAlign: "center",
-          headerHozAlign: "center",
+          hozAlign: "center" as const,
+          headerHozAlign: "center" as const,
         },
         {
           title: "شماره پیگیری",
           field: "track_id",
           headerFilter: true,
-          hozAlign: "center",
-          headerHozAlign: "center",
+          hozAlign: "center" as const,
+          headerHozAlign: "center" as const,
         },
         {
           title: "نام",
           field: "first_name",
           headerFilter: true,
-          hozAlign: "center",
-          headerHozAlign: "center",
+          hozAlign: "center" as const,
+          headerHozAlign: "center" as const,
         },
         {
           title: "نام خانوادگی",
           field: "last_name",
           headerFilter: true,
-          hozAlign: "center",
-          headerHozAlign: "center",
+          hozAlign: "center" as const,
+          headerHozAlign: "center" as const,
         },
         {
           title: "تعداد درخواستی",
           field: "requested_amount",
           formatter: (cell) => formatNumber(cell.getValue()),
           headerFilter: true,
-          hozAlign: "center",
-          headerHozAlign: "center",
+          hozAlign: "center" as const,
+          headerHozAlign: "center" as const,
         },
         {
           title: "تاریخ ایجاد",
@@ -154,34 +158,45 @@ const UnderWritingTable: React.FC = () => {
               : "تاریخ نامعتبر";
           },
           headerFilter: true,
-          hozAlign: "center",
-          headerHozAlign: "center",
+          hozAlign: "center" as const,
+          headerHozAlign: "center" as const,
         },
         {
           title: "وضعیت",
           field: "status",
           headerFilter: true,
-          hozAlign: "center",
-          headerHozAlign: "center",
-          editor: hasStatusEditPermission ? "list" : false,
-          editorParams: {
-            values: {
-              "approved": "تایید شده",
-              "rejected": "رد شده",
-              "pending": "در انتظار",
-              "success": "تایید نهایی"
-            }
+          hozAlign: "center" as const,
+          headerHozAlign: "center" as const,
+          editor: hasEditPermission ? ("list" as const) : undefined,
+          editorParams: hasEditPermission
+            ? {
+                values: {
+                  approved: "تایید شده",
+                  rejected: "رد شده",
+                  pending: "در انتظار",
+                  success: "تایید نهایی",
+                },
+              }
+            : undefined,
+          cellEdited: function (cell: CellComponent) {
+            const rowData = cell.getRow().getData();
+            const newValue = cell.getValue();
+            updateUnderwriting({
+              id: rowData.id,
+              status: newValue,
+            });
           },
-          formatter: function(cell) {
+          formatter: function (cell) {
             const value = cell.getValue();
             const statusMap: { [key: string]: string } = {
-              "approved": "تایید شده",
-              "rejected": "رد شده",
-              "pending": "در انتظار",
-              "success": "تایید نهایی"
+              approved: "تایید شده",
+              rejected: "رد شده",
+              pending: "در انتظار",
+              success: "تایید نهایی",
             };
-            return statusMap[value] || "در انتظار";
-          }
+            console.log(value);
+            return isUpdating ? "در حال ویرایش" : statusMap[value];
+          },
         },
         renderActionColumn(),
       ],
@@ -193,10 +208,9 @@ const UnderWritingTable: React.FC = () => {
       paginationAddRow: "page",
       paginationMode: "local",
       selectable: 1,
-      rtl: true,
-      rowClick: (e, row) => {
-        navigate(`/underwriting/update/${row.getData().id}`);
-      },
+      // rowDblClick: (row: RowComponent ) => {
+      //   navigate(`/underwriting/update/${row.getData().id}`);
+      // },
       headerVisible: true,
       movableColumns: true,
       printAsHtml: true,
@@ -220,7 +234,7 @@ const UnderWritingTable: React.FC = () => {
     return () => {
       table.destroy();
     };
-  }, [data, hasStatusEditPermission]);
+  }, [data, hasEditPermission]);
 
   if (isPending) {
     return (
