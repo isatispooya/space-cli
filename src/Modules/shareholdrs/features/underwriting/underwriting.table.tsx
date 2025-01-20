@@ -139,6 +139,7 @@ const UnderWritingTable: React.FC = () => {
         track_id: item.payment_detail?.track_id,
         first_name: item.user_detail?.first_name,
         last_name: item.user_detail?.last_name,
+        uniqueIdentifier: item.user_detail?.uniqueIdentifier,
       })),
       columns: [
         {
@@ -149,8 +150,9 @@ const UnderWritingTable: React.FC = () => {
           headerHozAlign: "center" as const,
           headerFilterParams: {
             values: {
-              "1": "فیش بانکی",
-              "2": "درگاه پرداخت",
+              "درگاه پرداخت": "درگاه پرداخت",
+              "فیش بانکی": "فیش بانکی",
+              نامشخص: "نامشخص",
             },
           },
         },
@@ -189,12 +191,6 @@ const UnderWritingTable: React.FC = () => {
           headerFilter: true,
           hozAlign: "center" as const,
           headerHozAlign: "center" as const,
-          headerFilterParams: {
-            values: {
-              "1": "فیش بانکی",
-              "2": "درگاه پرداخت",
-            },
-          },
         },
         {
           title: "تعداد درخواستی",
