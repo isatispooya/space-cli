@@ -72,7 +72,7 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
             border: "none",
             background: "transparent",
             cursor: "pointer",
-            borderRadius: index === 0 ? "12px 12px 0 0" : index === items.length - 1 ? "0 0 12px 12px" : undefined,
+            borderRadius: index === 0 ? "12px 12px 0 0" : index === items.length - 1 ? "0 0 12px 12px" : "0",
           }}
           onClick={item.onClick}
         >

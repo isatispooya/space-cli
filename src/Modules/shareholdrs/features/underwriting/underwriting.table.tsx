@@ -49,7 +49,7 @@ const UnderWritingTable: React.FC = () => {
     "تاریخ ایجاد": moment(item.created_at)
       .locale("fa")
       .format("HH:mm - jYYYY/jMM/jDD"),
-    وضعیت: formatStatus(item.status),
+    وضعیت: formatStatus(item.status || ""),
   });
 
   const formatStatus = (status: string) => {
