@@ -32,6 +32,8 @@ const DashboardMarketingStat = () => {
   const { data: invitedUsers } = useInvitation.useGetList();
   const { data: profile } = useProfile();
 
+  
+
   const invitedUserFiltered = useMemo(() => {
     if (!Array.isArray(invitedUsers) || !profile?.uniqueIdentifier) {
       return [];

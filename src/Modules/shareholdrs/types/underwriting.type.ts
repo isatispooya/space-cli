@@ -23,6 +23,7 @@ export interface underwritingTypes {
     first_name: string;
     last_name: string;
     id: number;
+    uniqueIdentifier: string;
   };
   payment_detail?: PaymentDetail;
   type_peyment?: string;

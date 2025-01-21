@@ -444,6 +444,12 @@ const EmploymentsProcessCreatePage = lazy(() =>
     default: module.EmploymentsProcessCreatePage,
   }))
 );
+
+const UsersMainPage = lazy(() =>
+  import("../Modules/users").then((module) => ({
+    default: module.UsersMainPage,
+  }))
+);
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -1115,6 +1121,14 @@ export default function Router() {
           ),
         },
       ],
+    },
+    {
+      path: "/users",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <UsersMainPage />
+        </Suspense>
+      ),
     },
   ]);
   return routes;

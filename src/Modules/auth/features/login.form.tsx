@@ -41,33 +41,37 @@ const LoginForm = ({
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <InputBase
-          type="text"
-          name="username"
-          label="کدملی"
-          placeholder="کدملی"
-          value={nationalCode}
-          onChange={(e) => setNationalCode(e.target.value)}
-        />
-        <PassInput
-          type="password"
-          name="password"
-          label="رمز عبور"
-          placeholder="رمز عبور"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <form onSubmit={handleSubmit} className="tour-login-form">
+        <div className="tour-username">
+          <InputBase
+            type="text"
+            name="username"
+            label="کدملی"
+            placeholder="کدملی"
+            value={nationalCode}
+            onChange={(e) => setNationalCode(e.target.value)}
+          />
+        </div>
+        <div className="tour-password">
+          <PassInput
+            type="password"
+            name="password"
+            label="رمز عبور"
+            placeholder="رمز عبور"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
         <button
-          className="inline-block w-full mt-5 rounded px-4 py-3 text-md font-medium uppercase bg-blue-950 leading-normal text-white shadow-md transition duration-150 ease-in-out"
+          className="tour-login-button inline-block w-full mt-5 rounded px-4 py-3 text-md font-medium uppercase bg-blue-950 leading-normal text-white shadow-md transition duration-150 ease-in-out"
           type="submit"
           data-twe-ripple-init
           data-twe-ripple-color="light"
         >
           {isPending ? <Spinner /> : "ورود"}
         </button>
-        <div className="flex items-center justify-start gap-2 mt-4 py-3">
+        <div className="tour-forget-password flex items-center justify-start gap-2 mt-4 py-3">
           <button
             onClick={() => handleComponentChange("forgetpass")}
             className="text-gray-500 hover:text-red-600 font-medium transition-colors duration-200 relative group"

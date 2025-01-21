@@ -24,6 +24,18 @@ export const menuItems: MenuItem[] = [
     submenu: [{ title: "داشبورد", path: "/", codename: ["allow_any"] }],
   },
   {
+    title: "کاربران",
+    icon: FaUserTie,
+    codename: ["allow_any"],
+    submenu: [
+      {
+        title: "کاربران",
+        path: "/users",
+        codename: ["allow_any"],
+      },
+    ],
+  },
+  {
     title: "امور سهامدارن",
     icon: FaUserTie,
 
@@ -40,7 +52,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "مدیریت حق تقدم",
-        codename: ["add_precedence" , "precedence" ],
+        codename: ["add_precedence", "precedence"],
         path: "/precendence/table",
       },
       {
@@ -91,7 +103,6 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-
   {
     title: "مدیریت نقش‌ها",
     path: "/positions",
@@ -166,12 +177,12 @@ export const menuItems: MenuItem[] = [
     title: "تردد",
     path: "/timeflow",
     icon: FaClockRotateLeft,
-    codename: ["time_flow"],
+    codename: ["position"],
     submenu: [
       {
         title: "گزارش تردد",
         path: "/timeflow/table",
-        codename: ["allow_any"],
+        codename: ["position"],
       },
     ],
   },

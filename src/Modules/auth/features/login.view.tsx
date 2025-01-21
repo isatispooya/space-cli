@@ -10,7 +10,7 @@ import ForgetPassForm from "./forget_pass.form";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
 import { HiExternalLink } from "react-icons/hi";
-
+import LoginTour from "../../../tour";
 initTWE({ Input, Ripple });
 
 const Login: React.FC = () => {
@@ -19,6 +19,16 @@ const Login: React.FC = () => {
   >("login");
 
   const [isSmsVerified, setIsSmsVerified] = React.useState(false);
+
+  const [runTour, setRunTour] = React.useState(() => {
+    return !localStorage.getItem("loginTourCompleted");
+  });
+
+  const handleTourEnd = React.useCallback(() => {
+    setRunTour(false);
+    localStorage.setItem("loginTourCompleted", "true");
+  }, []);
+
   const { data: announcements, isLoading } = useAnnouncements();
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] =
     React.useState(0);
@@ -51,6 +61,7 @@ const Login: React.FC = () => {
       dir="rtl"
       className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-white dark:bg-white"
     >
+      <LoginTour runTour={runTour} onTourEnd={handleTourEnd} />
       <div className="hidden md:block md:w-1/2 xl:w-[70%] h-screen fixed left-0">
         <motion.img
           key={currentAnnouncement?.id}
@@ -125,7 +136,7 @@ const Login: React.FC = () => {
                     </span>
                     <button
                       onClick={() => handleComponentChange("signup")}
-                      className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 relative group"
+                      className="text-blue-600 tour-signup-button hover:text-blue-700 font-medium transition-colors duration-200 relative group"
                     >
                       ثبت‌نام کنید
                       <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-200"></span>
@@ -133,25 +144,19 @@ const Login: React.FC = () => {
                   </div>
                   <a
                     href="https://profilesejam.csdiran.ir/"
-                    className="fixed text-center 
-            // Mobile (default)
-            bottom-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[280px]
-            // Tablet and up
-            sm:w-auto sm:left-auto sm:right-4
-            md:right-6 lg:right-8 xl:right-16 sm:bottom-6
-            // Styling
-            rounded-lg sm:rounded-none
-            text-blue-600 px-3 py-2 sm:px-4
-            transition-all duration-300 
-            text-sm sm:text-base font-medium 
-            flex items-center justify-center sm:justify-start gap-1
-           sm:shadow-none
-             "
+                    className="tour-sejam-link fixed text-center 
+                      bottom-2 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[200px]
+                      sm:w-auto sm:left-auto sm:right-4 sm:bottom-4
+                      rounded-lg sm:rounded-none
+                      text-blue-600 px-2 py-1.5
+                      transition-all duration-300 
+                      text-sm font-medium 
+                      flex items-center justify-center sm:justify-start gap-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <span>ثبت نام در سجام</span>
-                    <HiExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <HiExternalLink className="w-3.5 h-3.5" />
                   </a>
                 </>
               )}

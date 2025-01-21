@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import PassInput from "../components/passInput";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../types";
+import Spinner from "../../../components/spinner";
 
 const validationSchema = Yup.object().shape({
   smsCode: Yup.string()
@@ -13,7 +14,8 @@ const validationSchema = Yup.object().shape({
     .min(4, "کد تایید باید حداقل 4 کاراکتر باشد"),
   newPass: Yup.string()
     .required("رمز عبور جدید الزامی است")
-    .min(8, "رمز عبور باید حداقل 8 کاراکتر باشد"),
+    .min(8, "رمز عبور باید حداقل 8 کاراکتر باشد")
+    .max(14, "رمز عبور باید حداکثر 14 کاراکتر باشد"),
   confirmNewPass: Yup.string()
     .required("تایید رمز عبور الزامی است")
     .oneOf([Yup.ref("newPass")], "رمز عبور و تایید آن باید یکسان باشند"),
@@ -41,7 +43,7 @@ const ForgetPassForm = () => {
             onError: (error: AxiosError<unknown>) => {
               const errorMessage = (error.response?.data as ErrorResponse)
                 ?.error;
-            
+
               toast.error(errorMessage || "خطایی رخ داده است");
             },
           });
@@ -72,6 +74,7 @@ const ForgetPassForm = () => {
                 type="password"
                 label="رمز عبور جدید"
                 placeholder="رمز عبور جدید"
+                maxLength={14}
                 {...getFieldProps("newPass")}
               />
               {errors.newPass && touched.newPass && (
@@ -86,6 +89,7 @@ const ForgetPassForm = () => {
                 type="password"
                 label="تایید رمز عبور جدید"
                 placeholder="تایید رمز عبور جدید"
+                maxLength={14}
                 {...getFieldProps("confirmNewPass")}
               />
               {errors.confirmNewPass && touched.confirmNewPass && (
@@ -98,9 +102,8 @@ const ForgetPassForm = () => {
             <button
               className="inline-block w-full mt-5 rounded px-4 py-3 text-md font-medium uppercase bg-blue-950 leading-normal text-white shadow-md transition duration-150 ease-in-out"
               type="submit"
-              disabled={isSubmitting}
             >
-              {isSubmitting ? "در حال ارسال..." : "ثبت"}
+              {isSubmitting ? <Spinner /> : "ثبت"}
             </button>
           </Form>
         )}

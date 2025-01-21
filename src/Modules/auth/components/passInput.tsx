@@ -9,6 +9,7 @@ interface InputLineProps extends HTMLMotionProps<"div"> {
   label: string;
   name?: string;
   value?: string;
+  maxLength?: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   disabled?: boolean;
@@ -21,6 +22,7 @@ const PassInput: React.FC<InputLineProps> = ({
   onBlur,
   disabled,
   name,
+  maxLength,
   ...motionProps
 }) => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -52,6 +54,7 @@ const PassInput: React.FC<InputLineProps> = ({
         placeholder=" "
         aria-label={label}
         disabled={disabled}
+        maxLength={maxLength}
       />
       <label
         className={`absolute cursor-text px-1 pt-1 right-2.5 text-slate-400 text-sm transition-all transform origin-right
