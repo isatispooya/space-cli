@@ -9,7 +9,9 @@ console.log(data);
 
     return (
         <div>
-            <h1>Privileges</h1>
+            <h1>درحال بروز رسانی سایت هستیم 
+                از صبرو شکیبایی شما سپاس گذاریم 
+            </h1>
         </div>
     )
 }
