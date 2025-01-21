@@ -40,7 +40,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "مدیریت حق تقدم",
-        codename: ["add_precedence" , "precedence" ],
+        codename: ["add_precedence", "precedence"],
         path: "/precendence/table",
       },
       {
@@ -166,12 +166,12 @@ export const menuItems: MenuItem[] = [
     title: "تردد",
     path: "/timeflow",
     icon: FaClockRotateLeft,
-    codename: ["time_flow"],
+    codename: ["view_time_flow"],
     submenu: [
       {
         title: "گزارش تردد",
         path: "/timeflow/table",
-        codename: ["allow_any"],
+        codename: ["view_time_flow"],
       },
     ],
   },
