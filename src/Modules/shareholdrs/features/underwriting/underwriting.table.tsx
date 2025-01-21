@@ -85,6 +85,7 @@ const UnderWritingTable: React.FC = () => {
         existingMenu.remove();
         return;
       }
+      
       const rect = e.target.getBoundingClientRect();
       const menuItems = [
         {
