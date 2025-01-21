@@ -450,6 +450,13 @@ const UsersMainPage = lazy(() =>
     default: module.UsersMainPage,
   }))
 );
+
+const UserProTablePage = lazy(() =>
+  import("../Modules/users").then((module) => ({
+    default: module.UserProTablePage,
+  }))
+);
+
 const Loader = () => <LoaderLg />;
 
 export default function Router() {
@@ -1129,6 +1136,12 @@ export default function Router() {
           <UsersMainPage />
         </Suspense>
       ),
+      children: [
+        {
+          path: "table",
+          element: <UserProTablePage />,
+        },
+      ],
     },
   ]);
   return routes;

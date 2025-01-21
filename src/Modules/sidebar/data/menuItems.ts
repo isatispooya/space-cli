@@ -177,12 +177,12 @@ export const menuItems: MenuItem[] = [
     title: "تردد",
     path: "/timeflow",
     icon: FaClockRotateLeft,
-    codename: ["view_time_flow"],
+    codename: ["position"],
     submenu: [
       {
         title: "گزارش تردد",
         path: "/timeflow/table",
-        codename: ["view_time_flow"],
+        codename: ["position"],
       },
     ],
   },
