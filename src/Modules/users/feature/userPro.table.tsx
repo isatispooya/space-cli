@@ -1,70 +1,11 @@
 import { useUserPro } from "../hooks";
-import { TabulatorFull as Tabulator, ColumnDefinition } from "tabulator-tables";
-import "tabulator-tables/dist/css/tabulator.min.css";
-
-import { TableStyles } from "../../../components/tabulator/tabularStyle";
-import { useEffect, useRef } from "react";
+import { ColumnDefinition } from "tabulator-tables";
 import { LoaderLg } from "../../../components";
 import { userProType } from "../types";
-
+import TabulatorTable from "../../../components/table/table.com";
 
 const UserProTable: React.FC = () => {
   const { data, isPending } = useUserPro();
-  const tableRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!tableRef.current || !data) return;
-    const table = new Tabulator(tableRef.current, {
-      data: data.map((item: userProType) => ({
-        first_name: item.first_name,
-        last_name: item.last_name,
-        national_code: item.uniqueIdentifier,
-        phone_number: item.mobile,
-        email: item.email,
-        registration_number: item.refrence_number,
-        gender: item.gender,
-        birth_date: item.birth_date,
-        place_of_birth: item.place_of_birth,
-        age: item.age,
-        city: item.address?.city,
-        point_1: item.points.point_1,
-        points_2: item.points.point_2,
-      })),
-      rowHeight: 40,
-      layout: window.innerWidth <= 768 ? "fitDataTable" : "fitColumns",
-      responsiveLayout: false,
-      columns: columns(),
-      pagination: true,
-      paginationSize: 10,
-      paginationSizeSelector: [10, 20, 100, 1000],
-      paginationButtonCount: 5,
-      paginationAddRow: "page",
-      paginationMode: "local",
-      selectable: 1,
-      headerVisible: true,
-      movableColumns: true,
-      printAsHtml: true,
-      printStyled: true,
-      downloadConfig: {
-        columnHeaders: true,
-        columnGroups: false,
-        rowGroups: false,
-        columnCalcs: false,
-        dataTree: false,
-      },
-      rowFormatter: (row) => {
-        row.getElement().style.transition = "all 0.3s ease";
-      },
-    });
-
-    table.on("tableBuilt", () => {
-      console.log("Table fully built");
-    });
-
-    return () => {
-      table.destroy();
-    };
-  }, [data]);
 
   if (isPending) return <LoaderLg />;
 
@@ -139,34 +80,60 @@ const UserProTable: React.FC = () => {
     },
   ];
 
+  const mappedData = data?.map((item: userProType) => ({
+    first_name: item.first_name,
+    last_name: item.last_name,
+    national_code: item.uniqueIdentifier,
+    phone_number: item.mobile,
+    email: item.email,
+    registration_number: item.refrence_number,
+    gender: item.gender,
+    birth_date: item.birth_date,
+    place_of_birth: item.place_of_birth,
+    age: item.age,
+    city: item.address?.city,
+    point_1: item.points.point_1,
+    point_2: item.points.point_2,
+  }));
+
+  const ExelData = (item: userProType) => ({
+    نام: item.first_name,
+    "نام خانوادگی": item.last_name,
+    "کد ملی": item.national_code,
+    "شماره تماس": item.phone_number,
+    سکه: item.point_1,
+    بذر: item.point_2,
+    ایمیل: item.email,
+    "شماره ثبت": item.registration_number,
+    جنسیت: item.gender === "M" ? "مرد" : "زن",
+    "تاریخ تولد": item.birth_date,
+    "محل تولد": item.place_of_birth,
+    سن: item.age,
+    شهر: item.city,
+  });
+
+  const customMenuItems = [
+    {
+      label: "ویرایش",
+      icon: "⚡",
+      action: () => console.log("Custom action:"),
+    },
+    // ... more menu items
+  ];
+
   return (
-    <>
-      <TableStyles />
-      <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
-        <div className="mb-8 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex gap-4">
-            {/* <button
-              onClick={handleDownloadExcel}
-              disabled={isPending}
-              className={`bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-xl text-sm font-medium flex items-center gap-3 transition-all duration-300 ${
-                isUpdating
-                  ? "opacity-50 cursor-not-allowed"
-                  : "hover:shadow-lg hover:scale-105 transform"
-              }`}
-            >
-              <i className="fas fa-download"></i>
-              دانلود اکسل
-            </button> */}
-          </div>
-        </div>
-        <div className="overflow-x-auto">
-          <div
-            ref={tableRef}
-            className="flex-1 rounded-2xl overflow-hidden shadow-md border border-gray-100 [&_.tabulator-header]:!bg-gray-50 [&_.tabulator-header_.tabulator-col]:!border-gray-200 [&_.tabulator-row]:!border-gray-100 [&_.tabulator-row.tabulator-row-even]:!bg-gray-50/30 [&_.tabulator-row]:hover:!bg-blue-50/50 [&_.tabulator-footer]:!bg-gray-50 [&_.tabulator]:!border-gray-200 [&_.tabulator-footer]:!overflow-x-auto [&_.tabulator-paginator]:!min-w-[600px]"
-          />
-        </div>
+    <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
+      <div className="overflow-x-auto">
+        <TabulatorTable
+          data={mappedData || []}
+          columns={columns()}
+          menuItems={customMenuItems}
+          title="اطلاعات کاربران"
+          showActions={true}
+          formatExportData={ExelData}
+        />
       </div>
-    </>
+    </div>
   );
 };
 
