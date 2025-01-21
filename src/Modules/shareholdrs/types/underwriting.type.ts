@@ -23,9 +23,26 @@ export interface underwritingTypes {
     first_name: string;
     last_name: string;
     id: number;
+    uniqueIdentifier: string;
   };
   payment_detail?: PaymentDetail;
   type_peyment?: string;
+  requested_amount?: number;
+}
 
+export interface UnderwritingTypes {
+  id: number;
+  type: string;
+  price: number;
+  requested_amount: number;
+  status: string;
+  created_at: string;
+  payment_detail?: {
+    track_id: string;
+  };
+  user_detail?: {
+    first_name: string;
+    last_name: string;
+  };
 }
 
