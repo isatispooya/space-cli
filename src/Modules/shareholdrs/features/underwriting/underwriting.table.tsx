@@ -9,8 +9,8 @@ import { LoaderLg } from "../../../../components";
 import moment from "moment-jalaali";
 import { formatNumber } from "../../../../utils";
 import ReactDOM from "react-dom";
-import { ActionMenu } from "../../../../components/tabulator/tableaction.tsx";
-import { TableStyles } from "../../../../components/tabulator/tabularStyle.tsx";
+import { ActionMenu } from "../../../../components/table/tableaction.tsx";
+import { TableStyles } from "../../../../components/table/tabularStyle.tsx";
 import { useUserPermissions } from "../../../permissions/index.ts";
 import * as XLSX from "xlsx";
 import { underwritingTypes } from "../../types/underwriting.type";
@@ -84,6 +84,7 @@ const UnderWritingTable: React.FC = () => {
         existingMenu.remove();
         return;
       }
+
       const rect = e.target.getBoundingClientRect();
       const menuItems = [
         {

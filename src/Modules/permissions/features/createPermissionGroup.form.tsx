@@ -1,10 +1,10 @@
 import Forms from "../../../components/forms";
-import { usePostGroups, usePermissionList } from "../hooks";
-import { CreatePermissionData } from "../types";
+import {usePostGroups, usePermissionList} from "../hooks";
+import {CreatePermissionData} from "../types";
 import * as Yup from "yup";
 import TransferList from "../../../components/transferList";
-import { useState } from "react";
-import { FormField } from "../../../types";
+import {useState} from "react";
+import {FormField} from "../../../types";
 
 interface Permission {
   id: number;
@@ -13,7 +13,7 @@ interface Permission {
 }
 
 const CreatePermissionGroupForm = () => {
-  const { data: permissions = [], isLoading } = usePermissionList();
+  const {data: permissions = [], isLoading} = usePermissionList();
   const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>(
     []
   );
@@ -31,10 +31,10 @@ const CreatePermissionGroupForm = () => {
   };
 
   const formFields: FormField[] = [
-    { name: "name", label: "نام", type: "text" as const },
+    {name: "name", label: "نام", type: "text" as const},
   ];
 
-  const { mutate: createPermissionGroup } = usePostGroups();
+  const {mutate: createPermissionGroup} = usePostGroups();
 
   const handleTransferChange = (_left: Permission[], right: Permission[]) => {
     setSelectedPermissions(right);
@@ -53,6 +53,7 @@ const CreatePermissionGroupForm = () => {
   if (isLoading) {
     return <div>Loading permissions...</div>;
   }
+
 
   return (
     <>
