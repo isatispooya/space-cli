@@ -14,14 +14,12 @@ import { TableStyles } from "../../../../components/tabulator/tabularStyle.tsx";
 import { useUserPermissions } from "../../../permissions/index.ts";
 import * as XLSX from "xlsx";
 import { underwritingTypes } from "../../types/underwriting.type";
-import { useNavigate } from "react-router-dom";
 
 const UnderWritingTable: React.FC = () => {
   const tableRef = useRef<HTMLDivElement>(null);
   const { data, isPending } = useUnderwriting.useGet();
   const { mutate: updateUnderwriting, isPending: isUpdating } =
     useUnderwriting.useUpdate();
-  const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
   const hasEditPermission = checkPermission(["change_underwriting"]);
 
