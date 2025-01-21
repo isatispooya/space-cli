@@ -5,7 +5,6 @@ import { LuCoins } from "react-icons/lu";
 import { TbSeeding } from "react-icons/tb";
 
 const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 z-10 p-12">
       {missions.map((item, index) => (
@@ -15,14 +14,12 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
           key={index}
         >
           {item.user_attempts !== 0 && (
-            <div className="absolute justify-end top-0 left-0 mt-2 ml-2">
-              <div className="relative flex justify-center items-center w-[80px] h-[80px]">
-                <PiSealCheckDuotone className="text-green-700 text-6xl" />
-              </div>
+            <div className="flex justify-center items-center w-full mb-2">
+              <PiSealCheckDuotone className="text-green-700 text-6xl" />
             </div>
           )}
 
-          <h2 className="text-sm font-bold text-gray-800 mb-2 text-center">
+          <h2 className="text-sm font-bold text-gray-800 mb-2 text-center break-words flex-wrap">
             {item.display_name}
           </h2>
           <img
@@ -66,7 +63,7 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
                 rel="noopener noreferrer"
                 className="w-full"
               >
-                <button className="mt-2 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg text-sm hover:bg-gray-300 transition-colors duration-300 w-full">
+                <button className="mt-2 bg-[#58d68d] text-white font-bold py-2 px-4 rounded-lg text-sm hover:bg-[#2ecc71] transition-colors duration-300 w-full">
                   رفتن به ماموریت
                 </button>
               </a>

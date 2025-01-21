@@ -103,7 +103,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                 style={{ width: "100%", height: "auto" }}
                 key={index}
               >
-                <h2 className="text-sm font-bold text-gray-800 mb-2 text-center">
+                <h2 className="text-sm  font-bold text-gray-800 mb-2 text-center">
                   {item.display_name}
                 </h2>
                 <img
@@ -139,10 +139,10 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                         item.is_repetitive
                       )
                     }
-                    className={`mt-2 py-2 px-4 rounded-lg text-sm w-full ${
+                    className={`mt-2 py-2 font-bold text-white px-4 rounded-lg text-sm w-full ${
                       isButtonDisabled
-                        ? "bg-gray-300"
-                        : "bg-gray-200 hover:bg-gray-200"
+                        ? "bg-[#abebc6]"
+                        : "bg-[#58d68d] hover:bg-[#2ecc71]"
                     }`}
                     disabled={isButtonDisabled}
                   >
