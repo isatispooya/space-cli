@@ -115,9 +115,13 @@ const SignupForm = () => {
     formik.setFieldValue("nationalCode", value);
   };
 
+  const handleTourEnd = () => {
+    // handle tour end in signup form
+  };
+
   return (
     <form className="tour-signup-form" onSubmit={formik.handleSubmit}>
-      <LoginTour runTour={runTour} />
+      <LoginTour runTour={runTour} onTourEnd={handleTourEnd} />
       <InputLogin
         type="text"
         label="کدملی"
