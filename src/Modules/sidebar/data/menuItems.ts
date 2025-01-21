@@ -24,6 +24,18 @@ export const menuItems: MenuItem[] = [
     submenu: [{ title: "داشبورد", path: "/", codename: ["allow_any"] }],
   },
   {
+    title: "کاربران",
+    icon: FaUserTie,
+    codename: ["allow_any"],
+    submenu: [
+      {
+        title: "کاربران",
+        path: "/users",
+        codename: ["allow_any"],
+      },
+    ],
+  },
+  {
     title: "امور سهامدارن",
     icon: FaUserTie,
 
@@ -91,7 +103,6 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-
   {
     title: "مدیریت نقش‌ها",
     path: "/positions",
