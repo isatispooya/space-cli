@@ -13,10 +13,12 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
           style={{ width: "100%", height: "auto" }}
           key={index}
         >
-          {item.user_attempts !== 0 && (
+          {item.user_attempts !== 0 ? (
             <div className="flex justify-center items-center w-full mb-2">
               <PiSealCheckDuotone className="text-green-700 text-6xl" />
             </div>
+          ) : (
+            <div className="h-20" />
           )}
 
           <h2 className="text-sm font-bold text-gray-800 mb-2 text-center break-words flex-wrap">
