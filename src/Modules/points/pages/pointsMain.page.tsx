@@ -4,9 +4,17 @@ import { Outlet } from "react-router-dom";
 import { FaGift } from "react-icons/fa6";
 import { BiTask } from "react-icons/bi";
 import { RiFileList3Line } from "react-icons/ri";
+import { FaCoins } from "react-icons/fa6";
 
 const PointsMainPage = () => {
   const toolbarButtons = [
+    {
+      icon: FaCoins,
+      text: " امتیازات من",
+      permission: ["allow_any"],
+      path: "privileges",
+    },
+
     {
       icon: BiTask,
       text: "ماموریت ها",

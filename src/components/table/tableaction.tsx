@@ -50,7 +50,8 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
         background: "white",
         border: "1px solid #E5E7EB",
         borderRadius: "12px",
-        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        boxShadow:
+          "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
         minWidth: "150px",
         zIndex: 9999,
       }}
@@ -72,7 +73,12 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
             border: "none",
             background: "transparent",
             cursor: "pointer",
-            borderRadius: index === 0 ? "12px 12px 0 0" : index === items.length - 1 ? "0 0 12px 12px" : "0",
+            borderRadius:
+              index === 0
+                ? "12px 12px 0 0"
+                : index === items.length - 1
+                ? "0 0 12px 12px"
+                : "0",
           }}
           onClick={item.onClick}
         >

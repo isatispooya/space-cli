@@ -3,6 +3,7 @@ import {
   useMutation,
   UseQueryResult,
   UseMutationResult,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { underwritingServices } from "../services";
 import { underwritingTypes } from "../types/underwriting.type";
@@ -16,7 +17,7 @@ const useUnderwriting = {
       queryKey: ["underwriting"],
       queryFn: underwritingServices.get,
     });
-  },
+    },
 
   useCreate: (): UseMutationResult<
     { redirect_url?: string },
@@ -36,10 +37,15 @@ const useUnderwriting = {
     Error,
     underwritingTypes
   > => {
+    const queryClient = useQueryClient();
     return useMutation({
       mutationKey: ["updateUnderwriting"],
       mutationFn: (data: underwritingTypes) =>
         underwritingServices.update(data),
+      
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ["underwriting"] });
+      }
     });
   },
 

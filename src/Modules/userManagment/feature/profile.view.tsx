@@ -11,6 +11,9 @@ const ProfileView: React.FC = () => {
     profile?.profile_image ?? ""
   );
 
+  console.log(profile);
+  
+
   React.useEffect(() => {
     if (profile?.profile_image) {
       setAvatarUrl(profile.profile_image);
@@ -64,6 +67,14 @@ const ProfileView: React.FC = () => {
     { label: "محل صدور", value: profile?.place_of_issue || "نامشخص" },
   ];
 
+  const bankInfo = [
+    { label: "شماره حساب", value: profile?.accounts?.[0]?.account_number || "نامشخص" },
+    { label: "نام بانک", value: profile?.accounts?.[0]?.bank || "نامشخص" },
+    { label: "کد شعبه", value: profile?.accounts?.[0]?.branch_code || "نامشخص" },
+    { label: "نام شعبه", value: profile?.accounts?.[0]?.branch_name || "نامشخص" },
+    { label: "شماره شبا", value: profile?.accounts?.[0]?.sheba_number || "نامشخص" },
+  ];
+
   const contactInfo = [
     { label: "شماره موبایل", value: profile?.mobile || "نامشخص" },
     { label: "ایمیل", value: profile?.email || "نامشخص" },
@@ -102,6 +113,7 @@ const ProfileView: React.FC = () => {
       <div className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-2/3 flex flex-col gap-6">
           {renderInfoBox("اطلاعات شناسنامه", idInfo)}
+          {renderInfoBox("اطلاعات بانکی", bankInfo)}
           {renderInfoBox("اطلاعات تماس", contactInfo)}
           {renderInfoBox("آدرس", addressInfo)}
         </div>
