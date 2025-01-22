@@ -5,6 +5,8 @@ import Joyride, {
   TooltipRenderProps,
 } from "react-joyride";
 import "../../../styles/tour.css";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { IoCheckmark } from "react-icons/io5";
 
 interface LoginTourProps {
   runTour: boolean;
@@ -24,31 +26,82 @@ const Tooltip = ({
 }: TooltipRenderProps) => (
   <div
     {...tooltipProps}
-    className="rtl bg-white p-3 sm:p-4 rounded-lg shadow-lg max-w-[90vw] sm:max-w-md md:max-w-lg w-full"
+    className="rtl bg-white p-3 sm:p-4 rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.15)] max-w-[92vw] sm:max-w-[360px] md:max-w-[400px] w-full mx-auto border border-blue-100"
   >
-    <div className="text-gray-700 text-xs sm:text-sm font-iranSans break-words">
-      {step.content}
+    {/* Header */}
+    <div className="flex items-center gap-2 mb-2.5 sm:mb-3">
+      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-50 flex items-center justify-center">
+        <svg
+          className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+      <div>
+        <h3 className="text-xs sm:text-sm font-bold text-gray-800 font-iranSans">
+          راهنمای {index + 1} از {size}
+        </h3>
+        <p className="text-[10px] sm:text-[11px] text-gray-500 font-iranSans">
+          برای آشنایی بیشتر با امکانات، راهنما را دنبال کنید
+        </p>
+      </div>
     </div>
-    <div className="mt-3 sm:mt-4 flex flex-wrap sm:flex-nowrap gap-1.5 sm:gap-2 justify-start">
+
+    {/* Content */}
+    <div className="bg-blue-50 p-2.5 sm:p-3 rounded-md mb-3 sm:mb-4">
+      <div className="text-gray-700 text-xs sm:text-sm font-iranSans leading-5 sm:leading-6">
+        {step.content}
+      </div>
+    </div>
+
+    {/* Progress Bar */}
+    <div className="w-full bg-gray-100 rounded-full h-0.5 mb-3">
+      <div
+        className="bg-blue-500 h-0.5 rounded-full transition-all duration-300 ease-in-out"
+        style={{ width: `${((index + 1) / size) * 100}%` }}
+      />
+    </div>
+
+    {/* Buttons */}
+    <div className="flex flex-wrap sm:flex-nowrap gap-1.5 sm:gap-2 justify-start">
       {index > 0 && (
         <button
           {...backProps}
-          className="w-full sm:w-auto px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-200 rounded-md text-gray-700 hover:bg-gray-50 text-xs sm:text-sm font-iranSans"
+          className="w-full sm:w-auto min-w-[70px] px-2.5 sm:px-3 py-1.5 sm:py-2 border border-gray-200 rounded-md text-gray-700 hover:bg-gray-50 active:bg-gray-100 text-xs sm:text-sm font-iranSans transition-all duration-200 flex items-center justify-center gap-1"
         >
+          <MdKeyboardArrowRight className=" text-lg" />
           قبلی
         </button>
       )}
       {continuous ? (
         <button
           {...primaryProps}
-          className="w-full sm:w-auto px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-xs sm:text-sm font-iranSans"
+          className="w-full sm:w-auto min-w-[70px] px-2.5 sm:px-3 py-1.5 sm:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 active:bg-blue-700 text-xs sm:text-sm font-iranSans transition-all duration-200 flex items-center justify-center gap-1"
         >
-          {index === size - 1 ? "پایان" : "بعدی"}
+          {index === size - 1 ? (
+            <>
+              پایان
+              <IoCheckmark />
+            </>
+          ) : (
+            <>
+              بعدی
+              <MdKeyboardArrowLeft className=" text-lg" />
+            </>
+          )}
         </button>
       ) : (
         <button
           {...closeProps}
-          className="w-full sm:w-auto px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-xs sm:text-sm font-iranSans"
+          className="w-full sm:w-auto min-w-[70px] px-2.5 sm:px-3 py-1.5 sm:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 active:bg-blue-700 text-xs sm:text-sm font-iranSans transition-all duration-200 flex items-center justify-center gap-1"
         >
           بستن
         </button>
@@ -56,7 +109,7 @@ const Tooltip = ({
       {index < size - 1 && (
         <button
           {...skipProps}
-          className="w-full sm:w-auto px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-200 rounded-md text-gray-700 hover:bg-gray-50 text-xs sm:text-sm font-iranSans"
+          className="w-full sm:w-auto min-w-[70px] px-2.5 sm:px-3 py-1.5 sm:py-2 border border-gray-200 rounded-md text-gray-700 hover:bg-gray-50 active:bg-gray-100 text-xs sm:text-sm font-iranSans transition-all duration-200"
         >
           رد کردن
         </button>
@@ -119,6 +172,14 @@ const SidebarTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
         options: {
           zIndex: 10000,
           primaryColor: "#3B82F6",
+          overlayColor: "rgba(0, 0, 0, 0.5)",
+          backgroundColor: "#ffffff",
+          arrowColor: "#ffffff",
+          textColor: "#4B5563",
+        },
+        spotlight: {
+          borderRadius: "8px",
+          backgroundColor: "transparent",
         },
       }}
     />

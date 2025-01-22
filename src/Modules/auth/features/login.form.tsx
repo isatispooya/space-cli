@@ -41,8 +41,9 @@ const LoginForm = ({
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="tour-login-form">
-        <div className="tour-username">
+      <form onSubmit={handleSubmit} >
+        <div className="tour-login-form">
+        <div className="tour-username ">
           <InputBase
             type="text"
             name="username"
@@ -71,6 +72,8 @@ const LoginForm = ({
         >
           {isPending ? <Spinner /> : "ورود"}
         </button>
+          </div>
+
         <div className="tour-forget-password flex items-center justify-start gap-2 mt-4 py-3">
           <button
             onClick={() => handleComponentChange("forgetpass")}
