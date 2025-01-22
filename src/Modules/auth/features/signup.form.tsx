@@ -13,7 +13,7 @@ import { ErrorResponse } from "../../../types";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useCaptcha } from "../hooks";
-import LoginTour from "../../../tour";
+import LoginTour from "./loginTour";
 const validationSchema = Yup.object({
   nationalCode: Yup.string()
     .required("کد ملی الزامی است")

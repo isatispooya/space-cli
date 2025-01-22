@@ -4,19 +4,25 @@ import { menuItems } from "../data/menuItems";
 import CustomMenuItem from "../components/MenuItem";
 import { motion } from "framer-motion";
 import bothLogo from "../../../../public/bothLogo.svg";
-import { useCallback, useState } from "react";
-import DashboardTour from "../components/sideTour";
+import { useCallback, useState, useEffect } from "react";
+import { SidebarTour } from "../components";
 
 const SideBar = () => {
   const { isOpen, toggleSidebar } = useSidebarStore();
   const { search, setSearch } = useSearchStore();
   const [runTour, setRunTour] = useState(() => {
-    return !localStorage.getItem("dashboardTourCompleted");
+    return !localStorage.getItem("sidebarTourCompleted");
   });
+
+  useEffect(() => {
+    if (!localStorage.getItem("sidebarTourCompleted") && !isOpen) {
+      toggleSidebar();
+    }
+  }, [isOpen, toggleSidebar]);
 
   const handleTourEnd = useCallback(() => {
     setRunTour(false);
-    localStorage.setItem("dashboardTourCompleted", "true");
+    localStorage.setItem("sidebarTourCompleted", "true");
   }, []);
 
   const filteredMenuItems = menuItems.filter(
@@ -32,18 +38,18 @@ const SideBar = () => {
   return (
     <div
       onClick={handleOverlayClick}
-      className={`fixed  top-0 .custom-scrollbar right-0 h-full w-full z-50 transition-transform duration-700 ease-in-out ${
+      className={`fixed  top-0  right-0 h-full w-full z-50 transition-transform duration-700 ease-in-out ${
         isOpen ? "bg-transparent" : "pointer-events-none"
       } ${isOpen ? "translate-x-0" : "translate-x-full"}`}
     >
-      {isOpen && <DashboardTour runTour={runTour} onTourEnd={handleTourEnd} />}
+      {isOpen && <SidebarTour runTour={runTour} onTourEnd={handleTourEnd} />}
 
       <div
         className={`h-full w-[320px] overflow-y-auto bg-gradient-to-br from-[#5677BC] to-[#02205F] rounded-l-xl shadow-lg transition-all duration-700 transform ml-auto ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } custom-scrollbar`}
       >
-        <div className="flex items-center  justify-between p-4 border-b border-blue-800">
+        <div className="flex items-center .custom-scrollbar  justify-between p-4 border-b border-blue-800">
           <img src={bothLogo} alt="لوگو" className="h-16 w-auto" />
           <motion.button
             className="text-2xl text-white p-2 rounded-full hover:bg-white/20 hover:rotate-90 active:scale-90 transition-all duration-300 close-menu-button"
@@ -67,7 +73,7 @@ const SideBar = () => {
             className="w-full p-2 tour-search-input bg-blue-50 text-black rounded-lg border border-blue-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all duration-300 tour-search-input"
           />
         </div>
-        <div className="flex flex-col p-4 space-y-2 tour-menu-items">
+        <div className="flex flex-col p-4  space-y-2 tour-menu-items">
           {filteredMenuItems.length > 0 ? (
             filteredMenuItems.map((item, index) => (
               <CustomMenuItem

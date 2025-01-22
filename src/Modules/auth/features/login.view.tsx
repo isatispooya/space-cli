@@ -10,7 +10,7 @@ import ForgetPassForm from "./forget_pass.form";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
 import { HiExternalLink } from "react-icons/hi";
-import LoginTour from "../../../tour";
+import LoginTour from "./loginTour";
 initTWE({ Input, Ripple });
 
 const Login: React.FC = () => {

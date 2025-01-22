@@ -4,9 +4,9 @@ import Joyride, {
   CallBackProps,
   TooltipRenderProps,
 } from "react-joyride";
-import "./styles/tour.css";
+import "../../../styles/tour.css";
 
-interface LoginTourProps {
+interface TourProps {
   runTour: boolean;
   onTourEnd: () => void;
 }
@@ -65,34 +65,50 @@ const Tooltip = ({
   </div>
 );
 
-const LoginTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
+const DashboardTour: React.FC<TourProps> = ({ runTour, onTourEnd }) => {
   const steps: Step[] = [
     {
-      target: ".tour-login-form",
-      content: "از این قسمت می‌توانید وارد حساب کاربری خود شوید",
-      placement: "bottom",
-    },
-    {
-      target: ".tour-forget-password",
-      content: "در صورت فراموشی رمز عبور، از اینجا بازیابی کنید",
-      placement: "bottom",
-    },
-    {
-      target: ".tour-signup-form",
-      content: "از این قسمت می‌توانید ثبت‌نام کنید",
+      target: ".tour-slider",
+      content: "دسترسی به فرصت های سرمایه گذاری از طریق قسمت میانبر",
       placement: "bottom",
       disableBeacon: true,
     },
     {
-      target: ".tour-signup-button",
-      content: "برای ثبت‌نام کلیک کنید",
-      placement: "bottom",
+      target: ".tour-share-dashboard",
+      content: "اشتراک گذاری فرصت های سرمایه گذاری",
+      disableBeacon: true,
     },
     {
-      target: ".tour-sejam-link",
+      target: ".tour-stock-chart",
+      content: " نمای کلی درصد سهام شما",
+      disableBeacon: true,
+    },
+    {
+      target: ".tour-marketing-stat",
+      content: "باشگاه مشتریان و امتیازات شما",
+      disableBeacon: true,
+    },
+
+    {
+      target: ".tour-marketing-share",
       content:
-        "برای ورود به برنامه باید در سامانه سجام ثبت‌نام کرده باشید. اگر هنوز ثبت‌نام نکرده‌اید، از این لینک استفاده کنید",
-      placement: "top",
+        "با اشتراک گذاری این لینک دوستان خود را دعوت کیند و امتیاز کسب کنید",
+      disableBeacon: true,
+    },
+    {
+      target: ".tour-crowd",
+      content: "دسترسی سریع به پنل ایساتیس کراد شما ",
+      disableBeacon: true,
+    },
+    {
+      target: ".tour-bime",
+      content: "پنل بیمه شما",
+      disableBeacon: true,
+    },
+    {
+      target: ".tour-bors",
+      content:
+        "نمای سهام های شما در کاگزاری ایساتیس پویا و ورود به پنل کارگزاری",
       disableBeacon: true,
     },
   ];
@@ -114,6 +130,10 @@ const LoginTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
       showProgress={true}
       callback={handleJoyrideCallback}
       tooltipComponent={Tooltip}
+      disableOverlayClose={true}
+      spotlightClicks={false}
+      disableOverlay={false}
+      hideBackButton={false}
       locale={{
         back: "قبلی",
         close: "بستن",
@@ -131,5 +151,4 @@ const LoginTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
   );
 };
 
-export default LoginTour;
-
+export default DashboardTour;

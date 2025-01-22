@@ -4,7 +4,7 @@ import Joyride, {
   CallBackProps,
   TooltipRenderProps,
 } from "react-joyride";
-import "../../../styles/tour.css";
+
 
 interface LoginTourProps {
   runTour: boolean;
@@ -65,25 +65,39 @@ const Tooltip = ({
   </div>
 );
 
-const SidebarTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
+const LoginTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
   const steps: Step[] = [
     {
-      target: ".tour-search-input",
-      content: "با استفاده از این قسمت می‌توانید در منوها جستجو کنید",
+      target: ".tour-login-form",
+      content: "از این قسمت می‌توانید وارد حساب کاربری خود شوید",
       placement: "bottom",
       disableBeacon: true,
     },
     {
-      target: ".custom-scrollbar",
-      content:
-        "در این قسمت می‌توانید به بخش‌های مختلف داشبورد دسترسی داشته باشید",
+      target: ".tour-forget-password",
+      content: "در صورت فراموشی رمز عبور، از اینجا بازیابی کنید",
+      placement: "bottom",
       disableBeacon: true,
     },
     {
-      target: ".close-menu-button",
-      content: "برای بستن منو از این دکمه استفاده کنید",
+      target: ".tour-signup-form",
+      content: "از این قسمت می‌توانید ثبت‌نام کنید",
+      placement: "bottom",
+      disableBeacon: true,
+    },
+    {
+      target: ".tour-signup-button",
+      content: "برای ثبت‌نام کلیک کنید",
+      placement: "bottom",
+      disableBeacon: true,
+    },
+    {
+      target: ".tour-sejam-link",
+      content:
+        "برای ورود به برنامه باید در سامانه سجام ثبت‌نام کرده باشید. اگر هنوز ثبت‌نام نکرده‌اید، از این لینک استفاده کنید",
       placement: "top",
       disableBeacon: true,
+      
     },
   ];
 
@@ -102,11 +116,11 @@ const SidebarTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
       scrollToFirstStep={true}
       showSkipButton={true}
       showProgress={true}
+      disableOverlayClose={true} // اضافه کردن این گزینه
+      spotlightClicks={false} // اضافه کردن این گزینه
+      disableOverlay={false} 
       callback={handleJoyrideCallback}
       tooltipComponent={Tooltip}
-      disableOverlayClose={true}
-      spotlightClicks={false}
-      disableOverlay={false}
       hideBackButton={false}
       locale={{
         back: "قبلی",
@@ -125,4 +139,5 @@ const SidebarTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
   );
 };
 
-export default SidebarTour;
+export default LoginTour;
+
