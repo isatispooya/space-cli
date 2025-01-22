@@ -87,7 +87,7 @@ body {
 /* styles.css */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #5677BC #02205F;
+  scrollbar-color: #5677bc #02205f;
   border-radius: 10px;
 }
 
@@ -97,13 +97,12 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #02205F;
+  background: #02205f;
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #5677BC;
+  background-color: #5677bc;
   border-radius: 10px;
-  border: 2px solid #02205F;
+  border: 2px solid #02205f;
 }
-
