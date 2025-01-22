@@ -1,9 +1,9 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { pointServices } from "../services";
-import { MissionTypes } from "../types";
+import { PrivilegesTypes } from "../types";
 
 const usePoint = {
-  useGetPoint: (): UseQueryResult<MissionTypes[]> => {
+  useGetPoint: (): UseQueryResult<PrivilegesTypes[]> => {
     return useQuery({
       queryKey: ["point"],
       queryFn: pointServices.getPoint,
