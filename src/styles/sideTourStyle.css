@@ -1,0 +1,17 @@
+.custom-Side-tour__button--next::after {
+    content: "بعدی" !important;
+    font-family: IRANSans, system-ui !important;
+  }
+  
+  .custom-Side-tour__button--next span {
+    display: none !important;
+  }
+  
+  .custom-Side-tour__step-count::after {
+    content: "گام " attr(data-current) " از " attr(data-total) !important;
+    font-family: IRANSans, system-ui !important;
+  }
+  
+  .custom-Side-tour__step-count span {
+    display: none !important;
+  }
