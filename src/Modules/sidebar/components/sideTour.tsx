@@ -4,7 +4,7 @@ import Joyride, {
   CallBackProps,
   TooltipRenderProps,
 } from "react-joyride";
-import "./styles/tour.css";
+import "../../../styles/tour.css";
 
 interface LoginTourProps {
   runTour: boolean;
@@ -65,36 +65,25 @@ const Tooltip = ({
   </div>
 );
 
-const LoginTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
+
+
+ const DashboardTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
   const steps: Step[] = [
     {
-      target: ".tour-login-form",
-      content: "از این قسمت می‌توانید وارد حساب کاربری خود شوید",
+      target: ".tour-search-input",
+      content: "با استفاده از این قسمت می‌توانید در منوها جستجو کنید",
       placement: "bottom",
     },
     {
-      target: ".tour-forget-password",
-      content: "در صورت فراموشی رمز عبور، از اینجا بازیابی کنید",
-      placement: "bottom",
+      target: ".custom-scrollbar",
+      content: "در این قسمت می‌توانید به بخش‌های مختلف داشبورد دسترسی داشته باشید",
+      placement: "left",
     },
     {
-      target: ".tour-signup-form",
-      content: "از این قسمت می‌توانید ثبت‌نام کنید",
-      placement: "bottom",
-      disableBeacon: true,
-    },
-    {
-      target: ".tour-signup-button",
-      content: "برای ثبت‌نام کلیک کنید",
-      placement: "bottom",
-    },
-    {
-      target: ".tour-sejam-link",
-      content:
-        "برای ورود به برنامه باید در سامانه سجام ثبت‌نام کرده باشید. اگر هنوز ثبت‌نام نکرده‌اید، از این لینک استفاده کنید",
-      placement: "top",
-      disableBeacon: true,
-    },
+      target: ".close-menu-button",
+      content: "برای بستن منو از این دکمه استفاده کنید",
+      placement: "left",
+    }
   ];
 
   const handleJoyrideCallback = (data: CallBackProps) => {
@@ -131,5 +120,5 @@ const LoginTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
   );
 };
 
-export default LoginTour;
 
+export default DashboardTour;

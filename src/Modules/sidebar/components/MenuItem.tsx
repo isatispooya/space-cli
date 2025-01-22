@@ -34,7 +34,11 @@ const CustomMenuItem: React.FC<MenuItemProps> = ({ item }) => {
     }
   }, [search]);
 
-  if (item.submenu?.every(subItem => subItem.codename && !checkPermission(subItem.codename))) {
+  if (
+    item.submenu?.every(
+      (subItem) => subItem.codename && !checkPermission(subItem.codename)
+    )
+  ) {
     return null;
   }
 
@@ -64,7 +68,7 @@ const CustomMenuItem: React.FC<MenuItemProps> = ({ item }) => {
         {item.icon && <item.icon className="text-xl" />}
         <span>{item.title}</span>
         {item.submenu && (
-          <motion.span 
+          <motion.span
             className="ml-auto"
             animate={{ rotate: isOpen ? 180 : 0 }}
             transition={{ duration: 0.3 }}
