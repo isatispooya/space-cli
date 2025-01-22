@@ -383,6 +383,12 @@ const PointsRequestsPage = lazy(() =>
   }))
 );
 
+const PrivilegesPage = lazy(() =>
+  import("../Modules/points").then((module) => ({
+    default: module.PrivilegesPage,
+  }))
+);
+
 const TimeFlowMainPage = lazy(() =>
   import("../Modules/timeflow").then((module) => ({
     default: module.TimeFlowMainPage,
@@ -1124,6 +1130,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <PointsRequestsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "privileges",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <PrivilegesPage />
             </Suspense>
           ),
         },

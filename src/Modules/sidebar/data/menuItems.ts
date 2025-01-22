@@ -199,7 +199,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "امتیازات",
-        path: "/points/missions",
+        path: "/points/privileges",
         codename: ["allow_any"],
       },
     ],
