@@ -88,7 +88,6 @@ const DashboardTour: React.FC<TourProps> = ({ runTour, onTourEnd }) => {
       content: "باشگاه مشتریان و امتیازات شما",
       disableBeacon: true,
     },
-
     {
       target: ".tour-marketing-share",
       content:

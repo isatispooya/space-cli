@@ -32,8 +32,6 @@ const DashboardMarketingStat = () => {
   const { data: invitedUsers } = useInvitation.useGetList();
   const { data: profile } = useProfile();
 
-  
-
   const invitedUserFiltered = useMemo(() => {
     if (!Array.isArray(invitedUsers) || !profile?.uniqueIdentifier) {
       return [];
@@ -231,7 +229,7 @@ const DashboardMarketingStat = () => {
         </div>
 
         <div className="relative z-20 py-4 sm:py-8">
-          <div className="flex items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
+          <div className="flex tour-marketing-share items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
             <p className="flex-1 text-[11px] sm:text-[13px] text-[#D2042D] font-iranSans truncate">
               {`my.isatispooya.com/login?rf=${
                 invitedUserFilteredCode?.[0]?.code || ""
@@ -240,7 +238,7 @@ const DashboardMarketingStat = () => {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={handleCopy}
-              className={`px-2 py-1 rounded-md text-[10px] sm:text-[12px] font-medium transition-all duration-200 ${
+              className={`px-2 py-1 rounded-md  text-[10px] sm:text-[12px] font-medium transition-all duration-200 ${
                 copied
                   ? "bg-[#D2042D] text-[#ffffff]"
                   : "bg-[#D2042D] text-white hover:bg-[#E57350]"

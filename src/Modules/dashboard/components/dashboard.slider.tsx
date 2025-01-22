@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import {  useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Swiper as SwiperClass } from "swiper/types";
@@ -8,6 +8,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../styles/slider.css";
 import { FaShareAlt } from "react-icons/fa";
+
+
 
 export interface SlideItem {
   id: number;
@@ -20,8 +22,10 @@ interface DashboardSliderProps {
   slides: SlideItem[];
 }
 
-const DashboardSlider = ({ slides }: DashboardSliderProps) => {
+const DashboardSlider = ({ slides  }: DashboardSliderProps) => {
+
   const swiperRef = useRef<SwiperClass>();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (swiperRef.current) {
@@ -57,6 +61,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
 
   return (
     <div className="relative w-full h-full">
+ 
       <Swiper
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
@@ -104,7 +109,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
             <div className="absolute  top-4 right-4 z-10">
               <button
                 onClick={() => handleShare(slide)}
-                className="flex items-center bg-green-500/10 px-4 py-2 rounded-full"
+                className="flex items-center bg-green-500/10 px-4 py-2 rounded-full tour-share-dashboard"
               >
                 <FaShareAlt className="text-base sm:text-lg md:text-xl  text-white  " />
               </button>
