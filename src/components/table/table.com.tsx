@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import { RowComponent, TabulatorFull as Tabulator } from "tabulator-tables";
 import type { Options as TabulatorOptions } from "tabulator-tables";
-import "tabulator-tables/dist/css/tabulator.min.css";
 import { TableStyles } from "./tabularStyle";
 import * as XLSX from "xlsx";
 
@@ -36,7 +35,7 @@ const defaultTableOptions: Partial<TabulatorOptions> = {
   layout: (window.innerWidth <= 768 ? "fitDataTable" : "fitColumns") as
     | "fitDataTable"
     | "fitColumns",
-  responsiveLayout: false,
+  responsiveLayout: window.innerWidth <= 768 ? "collapse" : false,
   paginationSizeSelector: [10, 20, 100, 1000],
   paginationButtonCount: 5,
   paginationAddRow: "page",
@@ -62,14 +61,13 @@ const TabulatorTable: React.FC<TableProps> = ({
   data,
   columns,
   options = {},
-  height = "400px",
+  height = "fitData",
   layout = "fitColumns",
   pagination = true,
   paginationSize = 10,
   title = "Table",
   showActions = true,
   formatExportData,
-  menuItems = [],
 }) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const tabulator = useRef<any>(null);
@@ -103,67 +101,9 @@ const TabulatorTable: React.FC<TableProps> = ({
 
   useEffect(() => {
     if (tableRef.current) {
-      // Add this function to close all existing menus
-      const closeAllMenus = () => {
-        const existingMenus = document.querySelectorAll(".popup-menu");
-        existingMenus.forEach((menu) => {
-          document.body.removeChild(menu);
-        });
-      };
-
-      const columnsWithMenu = [
-        ...columns,
-        {
-          title: "عملیات",
-          formatter: () => {
-            return '<button class="action-btn">⋮</button>';
-          },
-          hozAlign: "center",
-          headerSort: false,
-          width: 60,
-          cellClick: function (e: Event, cell: any) {
-            e.stopPropagation();
-            // Close any existing menus first
-            closeAllMenus();
-
-            const row = cell.getRow();
-            const menu = document.createElement("div");
-            menu.className = "popup-menu";
-
-            menuItems.forEach((item) => {
-              const menuItem = document.createElement("button");
-              menuItem.className = "menu-item";
-              menuItem.innerHTML = `${item.icon} ${item.label}`;
-              menuItem.onclick = () => {
-                item.action(row);
-                closeAllMenus();
-              };
-              menu.appendChild(menuItem);
-            });
-
-            // Position menu
-            const rect = cell.getElement().getBoundingClientRect();
-            menu.style.left = `${rect.left + window.scrollX}px`;
-            menu.style.top = `${rect.bottom + window.scrollY}px`;
-
-            // Add menu to body and handle outside clicks
-            document.body.appendChild(menu);
-            setTimeout(() => {
-              const closeMenu = (e: MouseEvent) => {
-                if (!menu.contains(e.target as Node)) {
-                  closeAllMenus();
-                  document.removeEventListener("click", closeMenu);
-                }
-              };
-              document.addEventListener("click", closeMenu);
-            }, 0);
-          },
-        },
-      ];
-
       tabulator.current = new Tabulator(tableRef.current, {
         data: mappedData,
-        columns: columnsWithMenu,
+        columns: columns,
         layout: layout,
         height: height,
         pagination: pagination,
@@ -187,7 +127,6 @@ const TabulatorTable: React.FC<TableProps> = ({
     paginationSize,
     options,
     mappedData,
-    menuItems,
   ]);
 
   return (

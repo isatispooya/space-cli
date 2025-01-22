@@ -3,11 +3,19 @@ import { ColumnDefinition } from "tabulator-tables";
 import { LoaderLg } from "../../../components";
 import { userProType } from "../types";
 import TabulatorTable from "../../../components/table/table.com";
+import { CellComponent } from "tabulator-tables";
 
 const UserProTable: React.FC = () => {
   const { data, isPending } = useUserPro();
 
   if (isPending) return <LoaderLg />;
+
+  const closeAllMenus = () => {
+    const existingMenus = document.querySelectorAll(".popup-menu");
+    existingMenus.forEach((menu) => {
+      document.body.removeChild(menu);
+    });
+  };
 
   const columns = (): ColumnDefinition[] => [
     {
@@ -78,6 +86,72 @@ const UserProTable: React.FC = () => {
       field: "city",
       headerFilter: true,
     },
+    {
+      title: "عملیات",
+      formatter: () => {
+        return '<button class="action-btn">⋮</button>';
+      },
+      hozAlign: "center",
+      headerSort: false,
+      width: 60,
+      cellClick: function (e: Event, cell: CellComponent) {
+        e.stopPropagation();
+
+        const existingMenu = document.querySelector(
+          `.popup-menu[data-cell="${cell
+            .getElement()
+            .getAttribute("tabulator-field")}"]`
+        );
+
+        if (existingMenu) {
+          closeAllMenus();
+          return;
+        }
+
+        closeAllMenus();
+
+        const menu = document.createElement("div");
+        menu.className = "popup-menu";
+        menu.setAttribute(
+          "data-cell",
+          cell.getElement().getAttribute("tabulator-field") || ""
+        );
+
+        customMenuItems.forEach((item) => {
+          const menuItem = document.createElement("button");
+          menuItem.className = "menu-item";
+          menuItem.innerHTML = `${item.icon} ${item.label}`;
+          menuItem.onclick = () => {
+            item.action();
+            closeAllMenus();
+          };
+          menu.appendChild(menuItem);
+        });
+
+        const rect = cell.getElement().getBoundingClientRect();
+        menu.style.left = `${rect.left + window.scrollX}px`;
+        menu.style.top = `${rect.bottom + window.scrollY}px`;
+
+        document.body.appendChild(menu);
+
+        const handleScroll = () => {
+          closeAllMenus();
+          window.removeEventListener("scroll", handleScroll);
+        };
+        window.addEventListener("scroll", handleScroll);
+
+        setTimeout(() => {
+          const closeMenu = (e: MouseEvent) => {
+            if (!menu.contains(e.target as Node)) {
+              closeAllMenus();
+              document.removeEventListener("click", closeMenu);
+              window.removeEventListener("scroll", handleScroll);
+            }
+          };
+          document.addEventListener("click", closeMenu);
+        }, 0);
+      },
+    },
   ];
 
   const mappedData = data?.map((item: userProType) => ({
@@ -118,7 +192,6 @@ const UserProTable: React.FC = () => {
       icon: "⚡",
       action: () => console.log("Custom action:"),
     },
-    // ... more menu items
   ];
 
   return (
@@ -127,7 +200,6 @@ const UserProTable: React.FC = () => {
         <TabulatorTable
           data={mappedData || []}
           columns={columns()}
-          menuItems={customMenuItems}
           title="اطلاعات کاربران"
           showActions={true}
           formatExportData={ExelData}
