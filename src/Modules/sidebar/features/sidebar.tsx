@@ -38,18 +38,18 @@ const SideBar = () => {
   return (
     <div
       onClick={handleOverlayClick}
-      className={`fixed  top-0  right-0 h-full w-full z-50 transition-transform duration-700 ease-in-out ${
+      className={`fixed  top-0  right-0 h-full .custom-scrollbar overflow-y-auto  w-full z-50 transition-transform duration-700 ease-in-out ${
         isOpen ? "bg-transparent" : "pointer-events-none"
       } ${isOpen ? "translate-x-0" : "translate-x-full"}`}
     >
       {isOpen && <SidebarTour runTour={runTour} onTourEnd={handleTourEnd} />}
 
       <div
-        className={`h-full w-[320px] overflow-y-auto bg-gradient-to-br from-[#5677BC] to-[#02205F] rounded-l-xl shadow-lg transition-all duration-700 transform ml-auto ${
+        className={`h-full w-[320px]  bg-gradient-to-br from-[#5677BC] to-[#02205F] rounded-l-xl shadow-lg transition-all duration-700 transform ml-auto ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } custom-scrollbar`}
       >
-        <div className="flex items-center .custom-scrollbar  justify-between p-4 border-b border-blue-800">
+        <div className="flex items-center justify-between p-4 border-b border-blue-800">
           <img src={bothLogo} alt="لوگو" className="h-16 w-auto" />
           <motion.button
             className="text-2xl text-white p-2 rounded-full hover:bg-white/20 hover:rotate-90 active:scale-90 transition-all duration-300 close-menu-button"
@@ -64,27 +64,29 @@ const SideBar = () => {
             <IoClose className="w-6 h-6" />
           </motion.button>
         </div>
-        <div className="p-4">
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            type="text"
-            placeholder="جستجو..."
-            className="w-full p-2 tour-search-input bg-blue-50 text-black rounded-lg border border-blue-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all duration-300 tour-search-input"
-          />
-        </div>
-        <div className="flex flex-col p-4  space-y-2 tour-menu-items">
-          {filteredMenuItems.length > 0 ? (
-            filteredMenuItems.map((item, index) => (
-              <CustomMenuItem
-                key={index}
-                item={item}
-                className="flex items-center p-2 text-white hover:bg-blue-600 rounded-lg transition-colors duration-300"
-              />
-            ))
-          ) : (
-            <p className="text-white text-center">نتیجه‌ای یافت نشد</p>
-          )}
+        <div className="flex flex-col h-[calc(100%-100px)]">
+          <div className="p-4">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              type="text"
+              placeholder="جستجو..."
+              className="w-full p-2 tour-search-input bg-blue-50 text-black rounded-lg border border-blue-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all duration-300"
+            />
+          </div>
+          <div className="flex-1 overflow-y-auto p-4 space-y-2 tour-menu-items custom-scrollbar">
+            {filteredMenuItems.length > 0 ? (
+              filteredMenuItems.map((item, index) => (
+                <CustomMenuItem
+                  key={index}
+                  item={item}
+                  className="flex items-center p-2 text-white hover:bg-blue-600 rounded-lg transition-colors duration-300"
+                />
+              ))
+            ) : (
+              <p className="text-white text-center">نتیجه‌ای یافت نشد</p>
+            )}
+          </div>
         </div>
       </div>
     </div>
