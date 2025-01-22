@@ -146,7 +146,7 @@ const Header = () => {
           />
 
           <div className="flex items-center justify-start relative xs:mr-1 lg:mx-4">
-            <div className="flex flex-col items-end hover:cursor-pointer">
+            <div className="flex flex-col items-end hover:cursor-pointer tour-header-points">
               <Tooltip title="سکه" placement="bottom" arrow>
                 <span
                   className="flex items-center text-white mb-1"
@@ -171,12 +171,13 @@ const Header = () => {
                 </span>
               </Tooltip>
             </div>
-
+         
             {showNotifications && (
-              <NotificationComponent ref={notificationRef} />
-            )}
+                <NotificationComponent ref={notificationRef} />
+              )}
+         
 
-            <div className="flex items-center">
+            <div className="flex items-center tour-header-profile">
               <UserAvatar />
             </div>
           </div>

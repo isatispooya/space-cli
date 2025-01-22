@@ -96,7 +96,7 @@ const NotificationComponent = React.forwardRef<
   };
 
   return (
-    <div ref={ref}>
+    <div ref={ref} >
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, height: 0 }}
@@ -114,7 +114,7 @@ const NotificationComponent = React.forwardRef<
             overflowY: "auto",
           }}
         >
-          <div className="p-4 sm:p-6">
+          <div className="p-4 sm:p-6 tour-header-notification">
             <div className="flex justify-between items-center mb-4 sm:mb-6 px-2 sm:px-4">
               <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900">
                 اعلان‌ها
