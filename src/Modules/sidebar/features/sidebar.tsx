@@ -4,7 +4,7 @@ import { menuItems } from "../data/menuItems";
 import CustomMenuItem from "../components/MenuItem";
 import { motion } from "framer-motion";
 import bothLogo from "../../../../public/bothLogo.svg";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { SidebarTour } from "../components";
 
 const SideBar = () => {
@@ -13,12 +13,6 @@ const SideBar = () => {
   const [runTour, setRunTour] = useState(() => {
     return !localStorage.getItem("sidebarTourCompleted");
   });
-
-  useEffect(() => {
-    if (!localStorage.getItem("sidebarTourCompleted") && !isOpen) {
-      toggleSidebar();
-    }
-  }, [isOpen, toggleSidebar]);
 
   const handleTourEnd = useCallback(() => {
     setRunTour(false);
