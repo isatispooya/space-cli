@@ -4,20 +4,20 @@ import { menuItems } from "../data/menuItems";
 import CustomMenuItem from "../components/MenuItem";
 import { motion } from "framer-motion";
 import bothLogo from "../../../../public/bothLogo.svg";
-import { useCallback, useState } from "react";
-import { SidebarTour } from "../components";
+// import { useCallback, useState } from "react";
+// import { SidebarTour } from "../components";
 
 const SideBar = () => {
   const { isOpen, toggleSidebar } = useSidebarStore();
   const { search, setSearch } = useSearchStore();
-  const [runTour, setRunTour] = useState(() => {
-    return !localStorage.getItem("sidebarTourCompleted");
-  });
+  // const [runTour, setRunTour] = useState(() => {
+  //   return !localStorage.getItem("sidebarTourCompleted");
+  // });
 
-  const handleTourEnd = useCallback(() => {
-    setRunTour(false);
-    localStorage.setItem("sidebarTourCompleted", "true");
-  }, []);
+  // const handleTourEnd = useCallback(() => {
+  //   setRunTour(false);
+  //   localStorage.setItem("sidebarTourCompleted", "true");
+  // }, []);
 
   const filteredMenuItems = menuItems.filter(
     (item) => item.title?.toLowerCase().includes(search.toLowerCase()) ?? false
@@ -36,7 +36,7 @@ const SideBar = () => {
         isOpen ? "bg-transparent" : "pointer-events-none"
       } ${isOpen ? "translate-x-0" : "translate-x-full"}`}
     >
-      {isOpen && <SidebarTour runTour={runTour} onTourEnd={handleTourEnd} />}
+      {/* {isOpen && <SidebarTour runTour={runTour} onTourEnd={handleTourEnd} />} */}
 
       <div
         className={`h-full w-[320px]  bg-gradient-to-br from-[#5677BC] to-[#02205F] rounded-l-xl shadow-lg transition-all duration-700 transform ml-auto ${
