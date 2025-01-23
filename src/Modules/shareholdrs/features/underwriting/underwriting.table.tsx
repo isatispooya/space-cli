@@ -8,12 +8,13 @@ import { useUnderwriting } from "../../hooks";
 import { LoaderLg } from "../../../../components";
 import moment from "moment-jalaali";
 import { formatNumber } from "../../../../utils";
-import ReactDOM from "react-dom";
 import { ActionMenu } from "../../../../components/table/tableaction.tsx";
 import { TableStyles } from "../../../../components/table/tabularStyle.tsx";
 import { useUserPermissions } from "../../../permissions/index.ts";
 import * as XLSX from "xlsx";
 import { underwritingTypes } from "../../types/underwriting.type";
+import { server } from "../../../../api/server.ts";
+import { createRoot } from "react-dom/client";
 
 const UnderWritingTable: React.FC = () => {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -86,28 +87,44 @@ const UnderWritingTable: React.FC = () => {
       }
 
       const rect = e.target.getBoundingClientRect();
+      const rowData = cell.getRow().getData();
       const menuItems = [
         {
           icon: "fas fa-print",
           label: "چاپ",
           onClick: () => {
-            const rowData = cell.getRow().getData();
             window.open(`/underwriting/print/${rowData.id}`, "_blank");
           },
           color: "#DC2626",
         },
+        ...(rowData.document
+          ? [
+              {
+                icon: "fas fa-edit",
+                label: "مشاهده فیش ",
+                onClick: () => {
+                  window.open(`${server}${rowData.document}`, "_blank");
+                },
+                color: "#DC2626",
+              },
+            ]
+          : []),
       ];
       const menuPosition = { x: rect.left, y: rect.bottom };
       const menuContainer = document.createElement("div");
       menuContainer.className = "popup-menu";
       document.body.appendChild(menuContainer);
-      ReactDOM.render(
+
+      const root = createRoot(menuContainer);
+      root.render(
         <ActionMenu
           items={menuItems}
           position={menuPosition}
-          onClose={() => menuContainer.remove()}
-        />,
-        menuContainer
+          onClose={() => {
+            root.unmount();
+            menuContainer.remove();
+          }}
+        />
       );
     }
   };
