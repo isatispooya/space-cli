@@ -9,7 +9,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   Button,
   TextField,
   ButtonGroup,
@@ -31,6 +30,22 @@ interface SelectedGift {
   is_repetitive: boolean;
 }
 
+const COLORS = {
+  primary: {
+    main: "#5677BC",
+    light: "#94A3B8",
+  },
+  success: {
+    main: "#58d68d",
+    light: "#abebc6",
+    dark: "#2ecc71",
+  },
+  text: {
+    primary: "#2c3e50",
+    secondary: "#64748b",
+  },
+} as const;
+
 const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<string>("");
@@ -48,8 +63,20 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
       description,
       is_repetitive: Boolean(isRepetitive),
     });
-    setAmount(isRepetitive ? "1" : "");
+    setAmount(isRepetitive ? "0" : "");
     setOpen(true);
+  };
+
+  const formatNumber = (num: number | undefined) => {
+    if (num === undefined) return "";
+    if (num >= 1000000000) {
+      return `${(num / 1000000000).toFixed(1)}B`;
+    } else if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`;
+    } else if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`;
+    }
+    return num.toString();
   };
 
   const confirmMutation = () => {
@@ -61,6 +88,23 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
         amount: selectedGift.is_repetitive ? 1 : Number(amount),
       });
       setOpen(false);
+    }
+  };
+
+  const convertAll = () => {
+    if (selectedGift) {
+      const totalAmount = selectedGift.is_repetitive
+        ? remainPoints?.point_1 || 0
+        : remainPoints?.point_2 || 0;
+
+      const gift = gifts.find((g) => g.id.toString() === selectedGift.id);
+
+      const requiredAmount = selectedGift.is_repetitive
+        ? gift?.point_1 || 1
+        : gift?.point_2 || 1;
+
+      const dividedAmount = Math.floor(totalAmount / requiredAmount);
+      setAmount(dividedAmount.toString());
     }
   };
 
@@ -103,7 +147,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
     <>
       <div
         dir="rtl"
-        className="mb-8 flex items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-2xl shadow-sm border border-gray-100"
+        className="mb-8 flex items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-2xl shadow-lg border border-gray-200"
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -121,9 +165,9 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                 padding: "8px 24px",
                 fontWeight: "bold",
                 border: "none",
-                background: "#94A3B8",
+                background: COLORS.primary.light,
                 "&.selected": {
-                  background: "#5677BC",
+                  background: COLORS.primary.main,
                   boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.15)",
                   opacity: 1,
                 },
@@ -131,29 +175,22 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                   opacity: 0.95,
                 },
                 "&:hover": {
-                  background: "#5677BC",
+                  background: COLORS.primary.main,
                   transform: "translateY(-1px)",
                 },
                 transition: "all 0.2s ease",
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
-                borderRadius: "0",
               },
               "& .MuiButtonGroup-grouped:not(:last-of-type)": {
                 borderRight: "1px solid rgba(255, 255, 255, 0.2)",
               },
               "& .MuiButton-root:first-of-type": {
-                borderTopLeftRadius: "0",
-                borderBottomLeftRadius: "0",
-                borderTopRightRadius: "12px",
-                borderBottomRightRadius: "12px",
+                borderRadius: "0 12px 12px 0",
               },
               "& .MuiButton-root:last-of-type": {
-                borderTopRightRadius: "0",
-                borderBottomRightRadius: "0",
-                borderTopLeftRadius: "12px",
-                borderBottomLeftRadius: "12px",
+                borderRadius: "12px 0 0 12px",
               },
             }}
           >
@@ -189,13 +226,16 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
 
           return (
             <motion.div
-              className={`relative flex flex-col items-center bg-white border-2 border-gray-300 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 ${
-                item.point_1 !== 0 ? "bg-gray-200" : ""
-              }`}
-              style={{ width: "100%", height: "auto" }}
               key={index}
+              className={`
+                relative flex flex-col items-center 
+                bg-white border-2 border-gray-300 rounded-2xl 
+                shadow-lg hover:shadow-xl transition-shadow duration-300 
+                p-6 w-full h-auto
+                ${item.point_1 !== 0 ? "bg-gray-200" : ""}
+              `}
             >
-              <h2 className="text-sm  font-bold text-gray-800 mb-2 text-center">
+              <h2 className="text-lg font-bold text-gray-800 mb-2 text-center">
                 {item.display_name}
               </h2>
               <img
@@ -223,11 +263,15 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                       item.is_repetitive
                     )
                   }
-                  className={`mt-2 py-2 font-bold text-white px-4 rounded-lg text-sm w-full ${
-                    isButtonDisabled
-                      ? "bg-[#abebc6]"
-                      : "bg-[#58d68d] hover:bg-[#2ecc71]"
-                  }`}
+                  className={`
+                    mt-2 py-2 px-4 rounded-lg text-sm w-full font-bold text-white
+                    transition-all duration-200
+                    ${
+                      isButtonDisabled
+                        ? "bg-gray-300 cursor-not-allowed"
+                        : "bg-green-500 hover:bg-green-600"
+                    }
+                  `}
                   disabled={isButtonDisabled}
                 >
                   {isButtonDisabled ? (
@@ -247,116 +291,114 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
-        aria-labelledby="gift-dialog-title"
         dir="rtl"
         PaperProps={{
-          style: {
+          sx: {
             borderRadius: "16px",
-            padding: "8px",
-            maxWidth: "500px",
             width: "90%",
-            background: "linear-gradient(to bottom, #ffffff, #f8f9fa)",
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            maxWidth: "400px",
+            bgcolor: "#ffffff",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
           },
         }}
       >
         <DialogTitle
-          id="gift-dialog-title"
-          style={{
+          sx={{
             textAlign: "center",
             fontSize: "1.5rem",
-            fontWeight: "bold",
+            fontWeight: 600,
             color: "#2c3e50",
-            borderBottom: "1px solid #eee",
-            padding: "16px 24px",
+            py: 3,
           }}
         >
           دریافت هدیه
         </DialogTitle>
 
-        <DialogContent style={{ padding: "24px" }}>
-          <p className="text-base text-gray-600 mb-6 text-center leading-relaxed">
+        <DialogContent sx={{ p: 4 }}>
+          <p className="text-gray-600 text-center mb-6">
             آیا مطمئن هستید که می‌خواهید این هدیه را دریافت کنید؟
           </p>
 
-          {selectedGift && !selectedGift.is_repetitive && (
+          <div className="flex items-center justify-between mb-6 bg-gray-50 p-4 rounded-lg">
+            <span className="text-gray-700 flex items-center gap-2">
+              {selectedGift?.is_repetitive ? (
+                <>
+                  <LuCoins className="text-yellow-500 text-xl" />
+                  تعداد سکه شما:
+                </>
+              ) : (
+                <>
+                  <TbSeeding className="text-green-500 text-xl" />
+                  تعداد بذر شما:
+                </>
+              )}
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-gray-900">
+                {formatNumber(
+                  selectedGift?.is_repetitive
+                    ? remainPoints?.point_1
+                    : remainPoints?.point_2
+                )}
+              </span>
+              {selectedGift?.is_repetitive ? (
+                <Button
+                  onClick={convertAll}
+                  size="small"
+                  sx={{
+                    bgcolor: "#f8fafc",
+                    color: "#5677BC",
+                    "&:hover": { bgcolor: "#f1f5f9" },
+                  }}
+                >
+                  تبدیل همه
+                </Button>
+              ) : null}
+            </div>
+          </div>
+
+          {selectedGift && selectedGift.is_repetitive === true && (
             <TextField
               autoFocus
-              margin="dense"
-              label="مقدار مورد نظر را وارد کنید"
-              type="number"
               fullWidth
-              variant="outlined"
+              label="مقدار مورد نظر"
+              type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              InputProps={{
-                inputProps: { min: 0 },
-                style: { borderRadius: "8px" },
-              }}
               sx={{
                 "& .MuiOutlinedInput-root": {
-                  "&:hover fieldset": { borderColor: "#3498db" },
-                  "&.Mui-focused fieldset": { borderColor: "#2980b9" },
+                  borderRadius: 2,
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#5677BC",
+                  },
                 },
-                "& label.Mui-focused": { color: "#2980b9" },
-                marginTop: "16px",
               }}
             />
           )}
-        </DialogContent>
 
-        <DialogActions
-          style={{
-            justifyContent: "center",
-            padding: "16px 24px",
-            gap: "16px",
-            borderTop: "1px solid #eee",
-          }}
-        >
-          <Button
-            onClick={confirmMutation}
-            variant="contained"
-            color="primary"
-            style={{
-              borderRadius: "8px",
-              padding: "8px 32px",
-              fontSize: "1rem",
-              background: "linear-gradient(45deg, #2980b9, #3498db)",
-              boxShadow: "0 4px 12px rgba(52, 152, 219, 0.2)",
-              transition: "all 0.3s ease",
-            }}
-            sx={{
-              "&:hover": {
-                background: "linear-gradient(45deg, #2473a3, #2980b9)",
-                boxShadow: "0 6px 16px rgba(52, 152, 219, 0.3)",
-                transform: "translateY(-1px)",
-              },
-            }}
-          >
-            تایید
-          </Button>
-          <Button
-            onClick={() => setOpen(false)}
-            variant="outlined"
-            style={{
-              borderRadius: "8px",
-              padding: "8px 32px",
-              fontSize: "1rem",
-              borderColor: "#cbd5e1",
-              color: "#64748b",
-              transition: "all 0.3s ease",
-            }}
-            sx={{
-              "&:hover": {
-                backgroundColor: "#f1f5f9",
-                borderColor: "#94a3b8",
-                transform: "translateY(-1px)",
-              },
-            }}
-          >
-            انصراف
-          </Button>
-        </DialogActions>
+          <div className="flex justify-end gap-3 mt-8">
+            <Button
+              onClick={() => setOpen(false)}
+              sx={{
+                color: "#64748b",
+                "&:hover": { bgcolor: "#f1f5f9" },
+              }}
+            >
+              انصراف
+            </Button>
+            <Button
+              onClick={confirmMutation}
+              variant="contained"
+              sx={{
+                bgcolor: "#5677BC",
+                "&:hover": { bgcolor: "#4C6AAF" },
+                boxShadow: "none",
+              }}
+            >
+              تایید
+            </Button>
+          </div>
+        </DialogContent>
       </Dialog>
     </>
   );
