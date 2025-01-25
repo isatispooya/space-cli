@@ -1,4 +1,4 @@
-import {  useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Swiper as SwiperClass } from "swiper/types";
@@ -8,8 +8,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../styles/slider.css";
 import { FaShareAlt } from "react-icons/fa";
-
-
 
 export interface SlideItem {
   id: number;
@@ -22,8 +20,7 @@ interface DashboardSliderProps {
   slides: SlideItem[];
 }
 
-const DashboardSlider = ({ slides  }: DashboardSliderProps) => {
-
+const DashboardSlider = ({ slides }: DashboardSliderProps) => {
   const swiperRef = useRef<SwiperClass>();
 
   useEffect(() => {
@@ -61,7 +58,6 @@ const DashboardSlider = ({ slides  }: DashboardSliderProps) => {
 
   return (
     <div className="relative w-full h-full">
- 
       <Swiper
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
@@ -106,36 +102,38 @@ const DashboardSlider = ({ slides  }: DashboardSliderProps) => {
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <div className="absolute  top-4 right-4 z-10">
-              <button
-                onClick={() => handleShare(slide)}
-                className="flex items-center bg-green-500/10 px-4 py-2 rounded-full tour-share-dashboard"
-              >
-                <FaShareAlt className="text-base sm:text-lg md:text-xl  text-white  " />
-              </button>
-            </div>
             <a href={slide.link} className="relative w-full h-full block group">
               <img
                 src={slide.picture}
                 alt={slide.title}
-                className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                className="absolute inset-0 w-full h-full object-contain object-left rounded-lg"
                 loading="lazy"
               />
 
               <div className="absolute inset-0 " />
 
-              <h2 className="absolute top-4 left-0 right-0 mr-4 sm:mr-8 md:mr-16 lg:mr-32 text-base sm:text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1 p-2 sm:p-3 md:p-4 z-10">
+              <h2 className="absolute top-4 left-0 right-0 mx-4 sm:mx-8 md:mx-8 lg:mx-32 text-base sm:text-sm md:text-xl lg:text-3xl font-bold text-white mb-1 p-2 sm:p-3 md:p-4 z-10">
                 {slide.title}
               </h2>
 
-              <div className="absolute hover bottom-0 left-0 right-5 p-4 z-10 text-right">
+              <div className="absolute hover bottom-4 sm:bottom-4 md:bottom-2 lg:bottom-0 left-0 right-5 p-4 md:p-2 z-10 text-right flex justify-center">
                 <button
                   onClick={() => (window.location.href = slide.link)}
-                  className="mb-5 w-full sm:w-3/4  md:w-2/3 lg:w-1/2 py-1 bg-green-600 text-white rounded-lg font-medium text-sm sm:text-base md:text-lg relative block mx-auto"
+                  className="mb-5 w-full sm:w-3/4 md:w-2/4 lg:w-1/2 py-2 bg-green-600 text-white rounded-lg font-medium text-xs sm:text-sm md:text-sm lg:text-lg relative block mx-auto"
                 >
-                  <span className="before:content-['']  before:hidden sm:before:block before:absolute before:left-4 sm:before:left-8 md:before:left-12 font-bold before:top-1/2 before:w-8 sm:before:w-12 md:before:w-16 before:border-t-2 before:border-white before:transform before:-translate-y-1/2 after:content-[''] after:hidden sm:after:block after:absolute after:right-4 sm:after:right-8 md:after:right-12 after:top-1/2 after:w-8 sm:after:w-12 md:after:w-16 after:border-t-2 after:border-white after:transform after:-translate-y-1/2">
+                  <span className="before:content-['']  before:hidden sm:before:block before:absolute before:left-4 sm:before:left-8 md:before:left-12 font-bold before:top-1/2 before:w-8 sm:before:w-12 md:before:w-12 before:border-t-2 before:border-white before:transform before:-translate-y-1/2 after:content-[''] after:hidden sm:after:block after:absolute after:right-4 sm:after:right-8 md:after:right-12 after:top-1/2 after:w-8 sm:after:w-12 md:after:w-12 after:border-t-2 after:border-white after:transform after:-translate-y-1/2">
                     امکان سرمایه‌گذاری آنلاین
                   </span>
+                </button>
+              </div>
+
+              <div className="absolute bottom-2 right-0 left-0 lg:left-5 lg:right-5 lg:bottom-8 md:bottom-8 md:left-4 md:right-4 sm:left-3 sm:right-3 z-10 flex justify-center lg:justify-start md:justify-start sm:justify-start space-x-4">
+                <button
+                  onClick={() => handleShare(slide)}
+                  className="flex items-center bg-white px-3 py-1 rounded-full tour-share-dashboard "
+                >
+                  <FaShareAlt className="text-base sm:text-lg md:text-xl text-green-600" />
+                  اشتراک گذاری
                 </button>
               </div>
             </a>

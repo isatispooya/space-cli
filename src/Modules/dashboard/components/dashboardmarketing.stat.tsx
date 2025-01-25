@@ -147,9 +147,9 @@ const DashboardMarketingStat = () => {
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans mt-4 sm:mt-0"
+            className="text-3xl sm:text-4xl md:text-xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans mt-4 sm:mt-0"
           >
-            <span className="flex flex-col sm:flex-row items-center">
+            <span className="flex flex-col sm:flex-row items-center  ">
               <button onClick={() => navigate("/invitation/list")}>
                 {invitedUserFiltered?.length || 0}
                 <span className="text-[10px] sm:text-sm text-[#D2042D] font-iranSans mx-2">
@@ -157,21 +157,21 @@ const DashboardMarketingStat = () => {
                 </span>
               </button>
               <button onClick={() => navigate("/points/missions")}>
-                <div className="flex flex-col items-center sm:mr-8 mt-6 sm:mt-0">
+                <div className="flex flex-col items-center sm:mr-8 md:mr-0 mt-6 sm:mt-0">
                   <div className="flex items-center mb-3">
-                    <span className="text-[#A0001C] text-base sm:text-xl font-bold w-20 text-left">
+                    <span className="text-[#A0001C] text-base sm:text-xl font-bold w-20 md:w-10 text-left">
                       {formatNumber(remainPoints?.point_1)}
                     </span>
-                    <LuCoins className="text-yellow-500 text-[16px] sm:text-[25px] font-bold ml-2" />
+                    <LuCoins className="text-yellow-500 text-[16px] sm:text-[25px] font-bold ml-2 md:ml-0" />
                     <span className="text-[10px] sm:text-sm text-[#D2042D] w-16">
                       (سکه)
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <span className="text-[#A0001C] text-base sm:text-xl font-bold w-20 text-left">
+                    <span className="text-[#A0001C] text-base sm:text-xl font-bold w-20 md:w-10 text-left">
                       {formatNumber(remainPoints?.point_2)}
                     </span>
-                    <TbSeeding className="text-green-500 text-[16px] sm:text-[25px] font-bold ml-2" />
+                    <TbSeeding className="text-green-500 text-[16px] sm:text-[25px] font-bold ml-2 md:ml-0" />
                     <span className="text-[10px] sm:text-sm text-[#D2042D] w-16">
                       (بذر)
                     </span>
