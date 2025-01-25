@@ -33,7 +33,13 @@ const PositionCreate = () => {
     description: Yup.string(),
     parent: Yup.number().nullable(),
     type_of_employment: Yup.string().required(),
-    user: Yup.number().required(),
+    user: Yup.object()
+      .shape({
+        first_name: Yup.string().required("نام کاربر الزامی است"),
+        last_name: Yup.string().required("نام خانوادگی کاربر الزامی است"),
+        id: Yup.number().required("شناسه کاربر الزامی است"),
+      })
+      .required("کاربر الزامی است"),
     id: Yup.number().optional(),
     created_at: Yup.string().optional(),
     sender: Yup.string().optional(),
@@ -143,7 +149,7 @@ const PositionCreate = () => {
     start_date: "",
     end_date: "",
     id: 0,
-  
+
     sender: "",
     first_name: "",
     last_name: "",

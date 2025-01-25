@@ -15,7 +15,7 @@ export interface PositionTypes {
   };
   start_date: string;
   end_date: string;
-  created_at: string;
+  created_at?: string;
   sender: string;
   first_name: string;       
   last_name: string;
