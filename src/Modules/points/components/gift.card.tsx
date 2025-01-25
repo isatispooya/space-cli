@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { GiftTypes } from "../types";
 import { useState } from "react";
 import { useRemainPoints } from "../hooks";
-import { CiLock } from "react-icons/ci";
 import { LuCoins } from "react-icons/lu";
 import { TbSeeding } from "react-icons/tb";
 import {
@@ -266,19 +265,15 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                   className={`
                     mt-2 py-2 px-4 rounded-lg text-sm w-full font-bold text-white
                     transition-all duration-200
-                    ${
-                      isButtonDisabled
-                        ? "bg-gray-300 cursor-not-allowed"
-                        : "bg-green-500 hover:bg-green-600"
+                    ${isButtonDisabled || !item.status
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "bg-green-500 hover:bg-green-600"
                     }
                   `}
-                  disabled={isButtonDisabled}
+                  disabled={isButtonDisabled || !item.status}
                 >
-                  {isButtonDisabled ? (
-                    <>
-                      <CiLock className="mr-2 text-xl text-gray-900 inline" />
-                      <span>امتیاز کافی نیست</span>
-                    </>
+                  {isButtonDisabled || !item.status ? (
+                    <span>به زودی</span>
                   ) : (
                     <span>دریافت هدیه</span>
                   )}
