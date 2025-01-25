@@ -27,7 +27,7 @@ const PositionUpdateForm = () => {
   const { id } = useParams();
 
   const { mutate: updatePosition } = usePosition.useUpdate(Number(id));
-  const { data: getUpdatePosition, isPending } = usePosition.useGet();
+  const { data: getUpdatePosition, isPending, refetch } = usePosition.useGet();
 
   const formatDate = (date: Date | string): string => {
     const d = new Date(date);
@@ -48,8 +48,6 @@ const PositionUpdateForm = () => {
   if (!getUpdatePosition) {
     return <div>Position not found</div>;
   }
-
-
 
   const formFields: FormField[] = [
     { name: "name", label: "نام نقش", type: "text" },
@@ -172,6 +170,7 @@ const PositionUpdateForm = () => {
               end_date: formattedValues.end_date || "",
             },
           });
+          refetch();
           navigate(`/positions/table/`);
         } catch (error) {
           console.error("Error updating position:", error);

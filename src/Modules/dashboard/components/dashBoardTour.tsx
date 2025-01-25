@@ -132,6 +132,11 @@ const DashboardTour: React.FC<TourProps> = ({ runTour, onTourEnd }) => {
       disableBeacon: true,
     },
     {
+      target: ".tour-dashboard-menu",
+      content: "دسترسی به قسمت های مختلف پنل",
+      disableBeacon: true,
+    },
+    {
       target: ".tour-header-profile",
       content: "پروفایل شما و تنظیمات حساب کاربری",
       disableBeacon: true,
