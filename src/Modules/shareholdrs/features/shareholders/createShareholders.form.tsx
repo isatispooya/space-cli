@@ -1,9 +1,12 @@
 import Forms from "../../../../components/forms";
 
 import * as Yup from "yup";
-import { CreateShareholderDTO } from "../../types/shareholders.type";
+import {
+  CreateShareholderDTO,
+  ShareholdersTypes,
+} from "../../types/shareholders.type";
 import { FormField } from "../../../../types";
-import {  useCompany } from "../../../companies/hooks";
+import { useCompany } from "../../../companies/hooks";
 import { useUserData } from "../../../users/hooks";
 import { FormikHelpers } from "formik";
 import toast from "react-hot-toast";
@@ -27,12 +30,17 @@ const CreateShareholdersPost = () => {
         })) || [],
     },
     {
-      name: "user", 
+      name: "user",
       label: "کاربر",
       type: "select" as const,
       options:
         users?.map(
-          (user: { first_name: string; last_name: string; id: number; uniqueIdentifier: string }) => ({
+          (user: {
+            first_name: string;
+            last_name: string;
+            id: number;
+            uniqueIdentifier: string;
+          }) => ({
             label: `${user.first_name} ${user.last_name} | ${user.uniqueIdentifier}`,
             value: user.id.toString(),
           })
@@ -40,7 +48,7 @@ const CreateShareholdersPost = () => {
     },
   ];
 
-  const initialValues: CreateShareholderDTO = {
+  const initialValues: ShareholdersTypes = {
     number_of_shares: 0,
     company: 0,
     user: 0,
@@ -55,11 +63,29 @@ const CreateShareholdersPost = () => {
     user: Yup.number().required("کاربر الزامی است"),
     updated_at: Yup.string().optional(),
     created_at: Yup.string().optional(),
+    id: Yup.number().optional(),
+    company_detail: Yup.object()
+      .shape({
+        name: Yup.string().required("نام شرکت الزامی است"),
+        company_type: Yup.string().required("نوع شرکت الزامی است"),
+        address: Yup.string().optional(),
+        description: Yup.string().optional(),
+        email: Yup.string().optional(),
+        id: Yup.number().required("شناسه شرکت الزامی است"),
+      })
+      .optional(),
+    user_detail: Yup.object()
+      .shape({
+        first_name: Yup.string().required("نام کاربر الزامی است"),
+        last_name: Yup.string().required("نام خانوادگی کاربر الزامی است"),
+        uniqueIdentifier: Yup.string().required("شناسه کاربر الزامی است"),
+      })
+      .optional(),
   });
 
   const onSubmit = async (
     values: CreateShareholderDTO,
-    { setSubmitting , resetForm }: FormikHelpers<CreateShareholderDTO>
+    { setSubmitting, resetForm }: FormikHelpers<CreateShareholderDTO>
   ) => {
     try {
       await postShareholders(
@@ -88,7 +114,6 @@ const CreateShareholdersPost = () => {
   };
 
   return (
-      
     <Forms
       formFields={formFields}
       initialValues={initialValues}

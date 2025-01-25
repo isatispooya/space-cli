@@ -1,5 +1,5 @@
 import { usePrecendence } from "../../hooks";
-import { PrecedenceTypes } from "../../types"; 
+import { PrecedenceTypes } from "../../types/precedence.type";
 import { useNavigate } from "react-router-dom";
 import "moment/locale/fa";
 import { LoaderLg } from "../../../../components";

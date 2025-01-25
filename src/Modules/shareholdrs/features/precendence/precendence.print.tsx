@@ -4,7 +4,7 @@ import { usePrecendence } from "../../hooks";
 import moment from "jalali-moment";
 import "moment/locale/fa";
 import { useParams } from "react-router-dom";
-import { PrecedenceTypes } from "../../types";
+import { PrecedenceTypes } from "../../types/precedence.type";
 
 const PrintPrecendence: FC = () => {
   const handlePrint = () => {

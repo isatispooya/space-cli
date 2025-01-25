@@ -5,7 +5,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import shareServices from "../services/shareServices";
-import { ShareholdersTypes } from "../types";
+import { ShareholdersTypes } from "../types/shareholders.type";
 
 const useShareholders = {
   useGet: (): UseQueryResult<ShareholdersTypes[]> => {

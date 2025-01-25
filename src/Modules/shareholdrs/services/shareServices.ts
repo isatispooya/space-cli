@@ -1,5 +1,5 @@
 import { api } from "../../../api";
-import { ShareholdersTypes } from "../types";
+import { ShareholdersTypes } from "../types/shareholders.type";
 
 const shareServices = {
   get: async () => {

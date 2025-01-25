@@ -1,7 +1,7 @@
 import "moment/locale/fa";
 import moment from "moment-jalaali";
-import { ShareholdersTypes } from "../../types";
-import { useNavigate } from "react-router-dom";
+import { ShareholdersTypes } from "../../types/shareholders.type";
+  import { useNavigate } from "react-router-dom";
 // import { companyTypes } from "../../data/companyTypes";
 import { useShareholders } from "../../hooks";
 import { LoaderLg } from "../../../../components";

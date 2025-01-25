@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import Forms from "../../../../components/forms";
-import { ShareholdersTypes } from "../../types";
+import { ShareholdersTypes } from "../../types/shareholders.type";
 import * as yup from "yup";
 import { useShareholders } from "../../hooks";
 import { useCompany } from "../../../companies/hooks";
@@ -23,14 +23,15 @@ const EditShareholdForm: React.FC = () => {
 
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
-    number_of_shares: yup.number().required("سهام الزامی است"),
-    company: yup.number().required("شرکت الزامی است"),
+    number_of_shares: yup.number().required("تعداد سهام الزامی است"),
+    company: yup.number().required("نام شرکت الزامی است"),
     user: yup.number().required("کاربر الزامی است"),
     user_name: yup.string().optional(),
     company_detail: yup.object().optional(),
     user_detail: yup.object().optional(),
     updated_at: yup.string().optional(),
     created_at: yup.string().optional(),
+    name: yup.string().required("نام الزامی است"),
   }) as yup.ObjectSchema<ShareholdersTypes>;
 
   const formFields = [
@@ -56,8 +57,8 @@ const EditShareholdForm: React.FC = () => {
 
       options: [
         {
-          value: shareholder?.user || "",
-          label: shareholder?.user.toString() || "",
+          value: shareholder?.user ?? "",
+          label: shareholder?.user?.toString() || "",
         },
       ],
     },
@@ -75,8 +76,8 @@ const EditShareholdForm: React.FC = () => {
       const formattedValues = {
         ...values,
         company: parseInt(values.company.toString()),
-        user: parseInt(values.user.toString()),
-        number_of_shares: parseInt(values.number_of_shares.toString()),
+        user: parseInt(values.user?.toString() || "0"),
+        number_of_shares: parseInt(values.number_of_shares?.toString() || "0"),
       };
 
       mutate(
