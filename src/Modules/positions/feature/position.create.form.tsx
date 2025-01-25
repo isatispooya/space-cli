@@ -30,10 +30,10 @@ const PositionCreate = () => {
     company: Yup.number().required("شرکت الزامی است"),
     start_date: Yup.string().required(),
     end_date: Yup.string().required(),
-    description: Yup.string().required(),
-    parent: Yup.object().nullable(),
+    description: Yup.string(),
+    parent: Yup.number().nullable(),
     type_of_employment: Yup.string().required(),
-    user: Yup.object().required(),
+    user: Yup.number().required(),
     id: Yup.number().optional(),
     created_at: Yup.string().optional(),
     sender: Yup.string().optional(),
@@ -143,7 +143,7 @@ const PositionCreate = () => {
     start_date: "",
     end_date: "",
     id: 0,
-    created_at: "",
+  
     sender: "",
     first_name: "",
     last_name: "",
@@ -168,9 +168,11 @@ const PositionCreate = () => {
             parent: values.parent,
             type_of_employment: values.type_of_employment || null,
             start_date: values.start_date
-              ? formatDate(values.start_date)
+              ? formatDate(new Date(values.start_date).toISOString())
               : null,
-            end_date: values.end_date ? formatDate(values.end_date) : null,
+            end_date: values.end_date
+              ? formatDate(new Date(values.end_date).toISOString())
+              : null,
           };
           await createPosition(formData as unknown as PositionPostTypes);
           navigate("/positions/table");

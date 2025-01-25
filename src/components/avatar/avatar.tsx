@@ -11,7 +11,7 @@ import { identifyUser } from "../../utils";
 const UserAvatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { data: profileData,isSuccess } = useProfile();
+  const { data: profileData, isSuccess } = useProfile();
 
   useEffect(() => {
     if (isSuccess) {
@@ -75,21 +75,23 @@ const UserAvatar = () => {
       onClick={toggleDropdown}
       className="flex items-center cursor-pointer border-2 border-gray-100 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50 p-1 rounded-lg shadow-lg hover:bg-[#041685]/10 transition-all duration-300"
     >
-      <span
-        className="mr-4 ml-4 text-[#041685] font-semibold text-sm"
-        style={{
-          display: "inline-block",
-          maxWidth: "100px",
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis",
-        }}
-      >
-        {profileData?.first_name && profileData?.first_name.length > 14
-          ? `${profileData.first_name.slice(0, 14)}...`
-          : profileData?.first_name}{" "}
-        {profileData?.last_name}
-      </span>
+      {window.innerWidth >= 768 ? (
+        <span
+          className="mr-4 ml-4 text-[#041685] font-semibold text-sm"
+          style={{
+            display: "inline-block",
+            maxWidth: "100px",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {profileData?.first_name && profileData?.first_name.length > 14
+            ? `${profileData.first_name.slice(0, 14)}...`
+            : profileData?.first_name}{" "}
+          {profileData?.last_name}
+        </span>
+      ) : null}
 
       <div className="relative" ref={dropdownRef}>
         <Avatar
