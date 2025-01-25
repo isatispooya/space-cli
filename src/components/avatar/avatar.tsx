@@ -7,11 +7,12 @@ import { removeCookie } from "../../api/cookie";
 import { Avatar } from "@mui/material";
 import { server } from "../../api/server";
 import { identifyUser } from "../../utils";
+import { toast } from "react-hot-toast";
 
 const UserAvatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { data: profileData,isSuccess } = useProfile();
+  const { data: profileData, isSuccess } = useProfile();
 
   useEffect(() => {
     if (isSuccess) {
@@ -64,10 +65,21 @@ const UserAvatar = () => {
   const handleLogout = () => {
     const refresh_token = getCookie("refresh_token");
     if (refresh_token) {
-      logout.mutate(refresh_token);
+      logout.mutate(refresh_token, {
+        onSuccess: () => {
+          removeCookie("access_token");
+          removeCookie("refresh_token");
+          toast.success("خروج با موفقیت انجام شد");
+        },
+        onError: (error) => {
+          toast.error("خطا در خروج از سیستم");
+          console.error("خطای خروج:", error);
+        },
+      });
+    } else {
+      removeCookie("access_token");
+      removeCookie("refresh_token");
     }
-    removeCookie("access_token");
-    removeCookie("refresh_token");
   };
 
   return (
