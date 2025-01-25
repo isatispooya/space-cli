@@ -194,10 +194,10 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                 borderRight: "1px solid rgba(255, 255, 255, 0.2)",
               },
               "& .MuiButton-root:first-of-type": {
-                borderRadius: "0 12px 12px 0",
+                borderRadius: "12px 0 0 12px",
               },
               "& .MuiButton-root:last-of-type": {
-                borderRadius: "12px 0 0 12px",
+                borderRadius: "0 12px 12px 0",
               },
             }}
           >
