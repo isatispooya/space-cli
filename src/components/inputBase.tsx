@@ -12,6 +12,7 @@ interface InputLineProps extends HTMLMotionProps<"div"> {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   maxLength?: number;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const InputBase: React.FC<InputLineProps> = ({
@@ -20,6 +21,7 @@ const InputBase: React.FC<InputLineProps> = ({
   value,
   name,
   onChange,
+  onBlur,
   disabled,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   error,
@@ -27,18 +29,22 @@ const InputBase: React.FC<InputLineProps> = ({
   maxLength,
   ...motionProps
 }) => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
   return (
     <motion.div
       {...fadeIn(0.4, -20, 0.4)}
       className="relative mb-3"
       data-twe-input-wrapper-init
+      onClick={() => inputRef.current?.focus()}
       {...motionProps}
     >
       <input
         type={type}
+        ref={inputRef}
         value={value}
         onChange={onChange}
         name={name}
+        onBlur={onBlur}
         className="peer px-7 w-full bg-gray-100 placeholder:text-slate-400 text-slate-700 text-sm rounded-lg transition duration-300 ease focus:outline-none py-4 focus:border-slate-400 hover:border-slate-300 shadow-inner focus:shadow"
         placeholder=" "
         aria-label={label}

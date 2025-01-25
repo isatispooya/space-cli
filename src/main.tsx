@@ -4,7 +4,12 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./app";
 import "./index.css";
 import "tw-elements";
-import "./fonts.css"
+import "./fonts.css";
+
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+import { prefixer } from "stylis";
+import rtlPlugin from "stylis-plugin-rtl";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Toaster } from "react-hot-toast";
@@ -26,10 +31,15 @@ const theme = createTheme({
   direction: "rtl",
 });
 
+const rtlCache = createCache({
+  key: "muirtl",
+  stylisPlugins: [prefixer, rtlPlugin],
+});
+
 const url = new URL(window.location.href);
-const rfValue = url.searchParams.get('rf');
+const rfValue = url.searchParams.get("rf");
 if (rfValue) {
-    localStorage.setItem('rf', rfValue);
+  localStorage.setItem("rf", rfValue);
 }
 
 startClarity();
@@ -40,11 +50,13 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <Toaster />
-          <App />
-          <ContactUsBox />
-        </ThemeProvider>
+        <CacheProvider value={rtlCache}>
+          <ThemeProvider theme={theme}>
+            <Toaster />
+            <App />
+            <ContactUsBox />
+          </ThemeProvider>
+        </CacheProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>

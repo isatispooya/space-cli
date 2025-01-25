@@ -73,8 +73,6 @@ const PrintPrecendence: FC = () => {
               </div>
             </div>
           )}
-
-          {/* Print Button */}
         </div>
 
         <style>{`
