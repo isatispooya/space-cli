@@ -54,6 +54,7 @@
     "react-router-dom": "^6.27.0",
     "react-tabulator": "^0.21.0",
     "recharts": "^2.15.0",
+    "stories-react": "^1.1.2",
     "styled-components": "^6.1.13",
     "swiper": "^11.2.0",
     "tabulator-tables": "^6.3.1",
@@ -83,5 +84,3 @@
     "vite": "^5.4.9"
   }
 }
-
-

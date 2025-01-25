@@ -152,35 +152,43 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
+          className="w-full max-w-md"
         >
           <ButtonGroup
             variant="contained"
             aria-label="filter buttons"
             size="large"
+            fullWidth
             disableElevation
             sx={{
               "& .MuiButton-root": {
-                fontSize: "1rem",
-                padding: "8px 24px",
+                fontSize: "1.25rem",
+                padding: "10px 30px",
                 fontWeight: "bold",
                 border: "none",
                 background: COLORS.primary.light,
+                minHeight: "60px",
                 "&.selected": {
                   background: COLORS.primary.main,
-                  boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.15)",
+                  boxShadow: "inset 0 3px 6px rgba(0, 0, 0, 0.2)",
                   opacity: 1,
+                  transform: "scale(1.02)",
                 },
                 "&:not(.selected)": {
-                  opacity: 0.95,
+                  opacity: 0.9,
                 },
                 "&:hover": {
                   background: COLORS.primary.main,
-                  transform: "translateY(-1px)",
+                  transform: "translateY(-2px) scale(1.01)",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
                 },
-                transition: "all 0.2s ease",
+                transition: "all 0.3s ease",
                 display: "flex",
                 alignItems: "center",
-                gap: "8px",
+                gap: "12px",
+                "& svg": {
+                  fontSize: "1.75rem",
+                },
               },
               "& .MuiButtonGroup-grouped:not(:last-of-type)": {
                 borderRight: "1px solid rgba(255, 255, 255, 0.2)",
@@ -206,13 +214,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             >
               <LuCoins className="text-xl" />
               سکه
-            </Button>
-            <Button
-              onClick={() => setFilterType("all")}
-              className={filterType === "all" ? "selected" : ""}
-            >
-              <span className="text-xl">&#x2022;&#x2022;&#x2022;</span>
-              همه
             </Button>
           </ButtonGroup>
         </motion.div>
@@ -265,9 +266,10 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                   className={`
                     mt-2 py-2 px-4 rounded-lg text-sm w-full font-bold text-white
                     transition-all duration-200
-                    ${isButtonDisabled || !item.status
-                      ? "bg-gray-300 cursor-not-allowed"
-                      : "bg-green-500 hover:bg-green-600"
+                    ${
+                      isButtonDisabled || !item.status
+                        ? "bg-gray-300 cursor-not-allowed"
+                        : "bg-green-500 hover:bg-green-600"
                     }
                   `}
                   disabled={isButtonDisabled || !item.status}

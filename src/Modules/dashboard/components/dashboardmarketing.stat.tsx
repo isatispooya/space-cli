@@ -134,7 +134,7 @@ const DashboardMarketingStat = () => {
               </h3>
             </div>
             <button
-              onClick={() => navigate("/points/missions")}
+              onClick={() => navigate("/points/privileges")}
               className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
             >
               <LuCoins className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -149,7 +149,7 @@ const DashboardMarketingStat = () => {
             animate={{ scale: 1 }}
             className="text-3xl sm:text-4xl md:text-xl lg:text-8xl text-center font-bold text-[#A0001C] font-iranSans mt-4 sm:mt-0"
           >
-            <span className="flex flex-col sm:flex-row items-center  ">
+            <span className="flex flex-col sm:flex-row items-center">
               <button onClick={() => navigate("/invitation/list")}>
                 {invitedUserFiltered?.length || 0}
                 <span className="text-[10px] sm:text-sm text-[#D2042D] font-iranSans mx-2">
@@ -157,22 +157,22 @@ const DashboardMarketingStat = () => {
                 </span>
               </button>
               <button onClick={() => navigate("/points/missions")}>
-                <div className="flex flex-col items-center sm:mr-8 md:mr-0 mt-6 sm:mt-0">
-                  <div className="flex items-center mb-3">
-                    <span className="text-[#A0001C] text-base sm:text-xl font-bold w-20 md:w-10 text-left">
+                <div className="flex flex-col items-center sm:mr-8 md:mr-12 mt-6 sm:mt-0">
+                  <div className="flex items-center justify-start w-full mb-3">
+                    <span className="text-[#A0001C] text-base sm:text-xl font-bold min-w-[60px] text-left">
                       {formatNumber(remainPoints?.point_1)}
                     </span>
-                    <LuCoins className="text-yellow-500 text-[16px] sm:text-[25px] font-bold ml-2 md:ml-0" />
-                    <span className="text-[10px] sm:text-sm text-[#D2042D] w-16">
+                    <LuCoins className="text-yellow-500 text-[16px] sm:text-[25px] font-bold mx-2" />
+                    <span className="text-[10px] sm:text-sm text-[#D2042D] min-w-[40px]">
                       (سکه)
                     </span>
                   </div>
-                  <div className="flex items-center">
-                    <span className="text-[#A0001C] text-base sm:text-xl font-bold w-20 md:w-10 text-left">
+                  <div className="flex items-center justify-start w-full">
+                    <span className="text-[#A0001C] text-base sm:text-xl font-bold min-w-[60px] text-left">
                       {formatNumber(remainPoints?.point_2)}
                     </span>
-                    <TbSeeding className="text-green-500 text-[16px] sm:text-[25px] font-bold ml-2 md:ml-0" />
-                    <span className="text-[10px] sm:text-sm text-[#D2042D] w-16">
+                    <TbSeeding className="text-green-500 text-[16px] sm:text-[25px] font-bold mx-2" />
+                    <span className="text-[10px] sm:text-sm text-[#D2042D] min-w-[40px]">
                       (بذر)
                     </span>
                   </div>
@@ -228,7 +228,7 @@ const DashboardMarketingStat = () => {
           </div>
         </div>
 
-        <div className="relative z-20 py-4 sm:py-8">
+        <div className="relative z-20 py-2 sm:py-4">
           <div className="flex tour-marketing-share items-center gap-1 bg-[#ffffff] p-1.5 rounded-lg shadow-inner hover:bg-gray-200 transition-colors duration-200">
             <p className="flex-1 text-[11px] sm:text-[13px] text-[#D2042D] font-iranSans truncate">
               {`my.isatispooya.com/login?rf=${
@@ -250,7 +250,7 @@ const DashboardMarketingStat = () => {
         </div>
 
         <svg
-          className="absolute bottom-0 rounded-xl left-0 w-full h-32 sm:h-48 md:h-56 lg:h-64"
+          className="absolute bottom-0 rounded-xl left-0 w-full h-48 "
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
