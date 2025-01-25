@@ -22,7 +22,6 @@ initTWE({ Collapse, Ripple });
 const Header = () => {
   const { toggleSidebar } = useSidebarStore();
   const { data: remainPoints } = useRemainPoints();
-
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationIconRef = useRef<SVGSVGElement>(null);
@@ -79,7 +78,7 @@ const Header = () => {
               <div className="flex bg- h-full items-center justify-center  ">
                 <p
                   onClick={toggleSidebar}
-                  className="text-4xl lg:text-4xl md:text-3xl xs:text-2xl cursor-pointer text-blue-900 hover:text-blue-900 transition-colors duration-200"
+                  className="text-4xl tour-dashboard-menu lg:text-4xl md:text-3xl xs:text-2xl cursor-pointer text-blue-900 hover:text-blue-900 transition-colors duration-200"
                 >
                   <FiMenu />
                 </p>
