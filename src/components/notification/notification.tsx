@@ -49,7 +49,7 @@ const NotificationComponent = React.forwardRef<
 
   const filteredMessages = messages
     .filter((msg) => (activeTab === "unread" ? !msg.read : true))
-    .sort((a, b) => Number(a.read) - Number(b.read));
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   const handleReadAll = () => {
     const unreadMessages = messages.filter((msg) => !msg.read);
