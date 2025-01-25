@@ -185,6 +185,11 @@ const PercendenceUpdatePage = lazy(() =>
   }))
 );
 
+const PrecendencePrintPage = lazy(() =>
+  import("../Modules/shareholdrs").then((module) => ({
+    default: module.PrecendencePrintPage,
+  }))
+);
 const CapitalMainPage = lazy(() =>
   import("../Modules/shareholdrs").then((module) => ({
     default: module.CapitalMainPage,
@@ -762,6 +767,15 @@ export default function Router() {
           ),
         },
       ],
+      
+    },
+    {
+      path: "/precendence/print/:id",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <PrecendencePrintPage />
+        </Suspense>
+      ),
     },
     {
       path: "/capital",

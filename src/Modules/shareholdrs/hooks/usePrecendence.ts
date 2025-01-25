@@ -15,6 +15,13 @@ const usePrecendence = {
     });
   },
 
+  useGetById: (id: number): UseQueryResult<PrecedenceTypes> => {
+    return useQuery({
+      queryKey: ["precedence", id],
+      queryFn: () => precendenceServices.getById(id),
+    });
+  },
+
   useCreate: (): UseMutationResult<PrecedenceTypes, Error, PrecedenceTypes> => {
     return useMutation({
       mutationKey: ["createPrecedence"],

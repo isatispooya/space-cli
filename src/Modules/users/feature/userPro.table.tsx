@@ -152,6 +152,7 @@ const UserProTable: React.FC = () => {
         }, 0);
       },
     },
+    
   ];
 
   const mappedData = data?.map((item: userProType) => ({

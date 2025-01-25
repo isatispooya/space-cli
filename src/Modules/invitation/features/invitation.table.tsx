@@ -30,8 +30,28 @@ const InvitationTable = () => {
       headerAlign: "center",
     },
     {
+      field: "userFirstName",
+      headerName: "نام",
+      width: 100,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "userLastName",
+      headerName: "نام خانوادگی",
+      width: 100,
+      align: "center",
+    },
+    {
       field: "invited_users_count",
       headerName: "تعداد دعوت ها",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "uniqueIdentifier",
+      headerName: "کد ملی",
       width: 200,
       align: "center",
       headerAlign: "center",
@@ -71,6 +91,10 @@ const InvitationTable = () => {
   const rows = (data || []).map((row) => ({
     ...row,
     code: `my.isatispooya.com?rf=${row.code}`,
+
+    userFirstName: row.introducer_user_detail?.first_name,
+    userLastName: row.introducer_user_detail?.last_name,
+    uniqueIdentifier: row.introducer_user_detail?.uniqueIdentifier,
   }));
 
   return (

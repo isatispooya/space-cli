@@ -12,6 +12,7 @@ import {
   DialogActions,
   Button,
   TextField,
+  ButtonGroup,
 } from "@mui/material";
 
 interface GiftCardProps {
@@ -34,6 +35,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<string>("");
   const [selectedGift, setSelectedGift] = useState<SelectedGift | null>(null);
+  const [filterType, setFilterType] = useState<"all" | "coin" | "seed">("all");
   const { data: remainPoints } = useRemainPoints();
 
   const handleMutate = (
@@ -85,82 +87,163 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
     );
   };
 
+  const filteredGifts = gifts.filter((item) => {
+    if (item.point_1 === 0 && item.point_2 === 0) return false;
+    switch (filterType) {
+      case "coin":
+        return item.point_1 > 0;
+      case "seed":
+        return item.point_2 > 0;
+      default:
+        return true;
+    }
+  });
+
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 z-10 p-12">
-        {gifts
-          .filter((item) => !(item.point_1 === 0 && item.point_2 === 0))
-          .map((item, index) => {
-            const isButtonDisabled =
-              remainPoints?.point_1 < item.point_1 ||
-              remainPoints?.point_2 < item.point_2;
-
-            return (
-              <motion.div
-                className={`relative flex flex-col items-center bg-white border-2 border-gray-300 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 ${
-                  item.point_1 !== 0 ? "bg-gray-200" : ""
-                }`}
-                style={{ width: "100%", height: "auto" }}
-                key={index}
-              >
-                <h2 className="text-sm  font-bold text-gray-800 mb-2 text-center">
-                  {item.display_name}
-                </h2>
-                <img
-                  src={item.image}
-                  alt="Gift"
-                  className="w-[130px] h-[130px] rounded-xl object-cover m-2"
-                />
-                <p className="text-xs text-gray-600 mb-1">{item.description}</p>
-
-                {!(item.point_1 === 0 && item.point_2 === 0) && (
-                  <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
-                    {item.point_1 !== 0 &&
-                      renderPointsInfo(
-                        item.point_1,
-                        "coin",
-                        item.user_attempts
-                      )}
-                    {item.point_2 !== 0 &&
-                      renderPointsInfo(
-                        item.point_2,
-                        "seed",
-                        item.user_attempts
-                      )}
-                  </div>
-                )}
-
-                <div className="flex justify-center w-full">
-                  <button
-                    onClick={() =>
-                      handleMutate(
-                        item.id.toString(),
-                        item.description,
-                        item.is_repetitive
-                      )
-                    }
-                    className={`mt-2 py-2 font-bold text-white px-4 rounded-lg text-sm w-full ${
-                      isButtonDisabled
-                        ? "bg-[#abebc6]"
-                        : "bg-[#58d68d] hover:bg-[#2ecc71]"
-                    }`}
-                    disabled={isButtonDisabled}
-                  >
-                    {isButtonDisabled ? (
-                      <>
-                        <CiLock className="mr-2 text-xl text-gray-900 inline" />
-                        <span>امتیاز کافی نیست</span>
-                      </>
-                    ) : (
-                      <span>دریافت هدیه</span>
-                    )}
-                  </button>
-                </div>
-              </motion.div>
-            );
-          })}
+      <div
+        dir="rtl"
+        className="mb-8 flex items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-2xl shadow-sm border border-gray-100"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <ButtonGroup
+            variant="contained"
+            aria-label="filter buttons"
+            size="large"
+            disableElevation
+            sx={{
+              "& .MuiButton-root": {
+                fontSize: "1rem",
+                padding: "8px 24px",
+                fontWeight: "bold",
+                border: "none",
+                background: "#94A3B8",
+                "&.selected": {
+                  background: "#5677BC",
+                  boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.15)",
+                  opacity: 1,
+                },
+                "&:not(.selected)": {
+                  opacity: 0.95,
+                },
+                "&:hover": {
+                  background: "#5677BC",
+                  transform: "translateY(-1px)",
+                },
+                transition: "all 0.2s ease",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                borderRadius: "0",
+              },
+              "& .MuiButtonGroup-grouped:not(:last-of-type)": {
+                borderRight: "1px solid rgba(255, 255, 255, 0.2)",
+              },
+              "& .MuiButton-root:first-of-type": {
+                borderTopLeftRadius: "0",
+                borderBottomLeftRadius: "0",
+                borderTopRightRadius: "12px",
+                borderBottomRightRadius: "12px",
+              },
+              "& .MuiButton-root:last-of-type": {
+                borderTopRightRadius: "0",
+                borderBottomRightRadius: "0",
+                borderTopLeftRadius: "12px",
+                borderBottomLeftRadius: "12px",
+              },
+            }}
+          >
+            <Button
+              onClick={() => setFilterType("seed")}
+              className={filterType === "seed" ? "selected" : ""}
+            >
+              <TbSeeding className="text-xl" />
+              بذر
+            </Button>
+            <Button
+              onClick={() => setFilterType("coin")}
+              className={filterType === "coin" ? "selected" : ""}
+            >
+              <LuCoins className="text-xl" />
+              سکه
+            </Button>
+            <Button
+              onClick={() => setFilterType("all")}
+              className={filterType === "all" ? "selected" : ""}
+            >
+              <span className="text-xl">&#x2022;&#x2022;&#x2022;</span>
+              همه
+            </Button>
+          </ButtonGroup>
+        </motion.div>
       </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 z-10 p-12">
+        {filteredGifts.map((item, index) => {
+          const isButtonDisabled =
+            remainPoints?.point_1 < item.point_1 ||
+            remainPoints?.point_2 < item.point_2;
 
+          return (
+            <motion.div
+              className={`relative flex flex-col items-center bg-white border-2 border-gray-300 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 ${
+                item.point_1 !== 0 ? "bg-gray-200" : ""
+              }`}
+              style={{ width: "100%", height: "auto" }}
+              key={index}
+            >
+              <h2 className="text-sm  font-bold text-gray-800 mb-2 text-center">
+                {item.display_name}
+              </h2>
+              <img
+                src={item.image}
+                alt="Gift"
+                className="w-[130px] h-[130px] rounded-xl object-cover m-2"
+              />
+              <p className="text-xs text-gray-600 mb-1">{item.description}</p>
+
+              {!(item.point_1 === 0 && item.point_2 === 0) && (
+                <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
+                  {item.point_1 !== 0 &&
+                    renderPointsInfo(item.point_1, "coin", item.user_attempts)}
+                  {item.point_2 !== 0 &&
+                    renderPointsInfo(item.point_2, "seed", item.user_attempts)}
+                </div>
+              )}
+
+              <div className="flex justify-center w-full">
+                <button
+                  onClick={() =>
+                    handleMutate(
+                      item.id.toString(),
+                      item.description,
+                      item.is_repetitive
+                    )
+                  }
+                  className={`mt-2 py-2 font-bold text-white px-4 rounded-lg text-sm w-full ${
+                    isButtonDisabled
+                      ? "bg-[#abebc6]"
+                      : "bg-[#58d68d] hover:bg-[#2ecc71]"
+                  }`}
+                  disabled={isButtonDisabled}
+                >
+                  {isButtonDisabled ? (
+                    <>
+                      <CiLock className="mr-2 text-xl text-gray-900 inline" />
+                      <span>امتیاز کافی نیست</span>
+                    </>
+                  ) : (
+                    <span>دریافت هدیه</span>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
       <Dialog
         open={open}
         onClose={() => setOpen(false)}

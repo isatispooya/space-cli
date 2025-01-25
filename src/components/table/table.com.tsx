@@ -132,7 +132,8 @@ const TabulatorTable: React.FC<TableProps> = ({
   return (
     <>
       <TableStyles />
-      <div className="tabulator-wrapper">
+
+      <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
         {showActions && (
           <div className="mb-8 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl shadow-sm border border-gray-100">
             <div className="flex gap-4">
@@ -146,7 +147,10 @@ const TabulatorTable: React.FC<TableProps> = ({
             </div>
           </div>
         )}
-        <div ref={tableRef} />
+        <div
+          ref={tableRef}
+          className="flex-1 rounded-2xl overflow-hidden shadow-md border border-gray-100 [&_.tabulator-header]:!bg-gray-50 [&_.tabulator-header_.tabulator-col]:!border-gray-200 [&_.tabulator-row]:!border-gray-100 [&_.tabulator-row.tabulator-row-even]:!bg-gray-50/30 [&_.tabulator-row]:hover:!bg-blue-50/50 [&_.tabulator-footer]:!bg-gray-50 [&_.tabulator]:!border-gray-200 [&_.tabulator-footer]:!overflow-x-auto [&_.tabulator-paginator]:!min-w-[600px]"
+        />
       </div>
     </>
   );

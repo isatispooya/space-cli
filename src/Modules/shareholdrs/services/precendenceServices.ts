@@ -6,6 +6,10 @@ const precendenceServices = {
     const response = await api.get("/stock_affairs/precedence/");
     return response.data;
   },
+  getById: async (id: number) => {
+    const response = await api.get(`/stock_affairs/precedence/${id}/`);
+    return response.data;
+  },
   create: async (data: PrecedenceTypes) => {
     const response = await api.post("/stock_affairs/precedence/", data);
     return response.data;

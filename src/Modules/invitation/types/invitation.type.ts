@@ -11,11 +11,15 @@ export interface InvitationTypes {
   invitation_code_detail: {
     code: string;
     description: string;
-    introducer_user_detail : {
+    introducer_user_detail: {
       first_name: string;
       last_name: string;
-
     };
+  };
+  introducer_user_detail: {
+    first_name: string;
+    last_name: string;
+    uniqueIdentifier: string;
   };
   created_at: string;
   invited_users_count: number;

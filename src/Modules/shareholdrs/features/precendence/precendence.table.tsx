@@ -1,131 +1,121 @@
-import { GridColDef, DataGrid } from "@mui/x-data-grid";
 import { usePrecendence } from "../../hooks";
-import { FaEdit } from "react-icons/fa";
-import { FaTrash } from "react-icons/fa";
-import { CustomDataGridToolbar, localeText } from "../../../../utils";
-import { PrecedenceTypes } from "../../types/precedence.type";
-import { tableStyles } from "../../../../ui";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import Popup from "../../../points/components/popup";
+import { PrecedenceTypes } from "../../types"; 
 import { useNavigate } from "react-router-dom";
 import "moment/locale/fa";
-import moment from "moment-jalaali";
-import { useUserPermissions } from "../../../permissions";
 import { LoaderLg } from "../../../../components";
-import CustomPagination from "../../../../utils/paginationTable";
-
-interface FlattenedPrecedenceRow {
-  id: number;
-  first_name: string;
-  last_name: string;
-  uniqueIdentifier: string;
-  company_name: string;
-  precedence: number;
-  total_amount: number;
-  updated_at: string;
-}
+import TabulatorTable from "../../../../components/table/table.com";
+import { ColumnDefinition } from "tabulator-tables";
+import { createRoot } from "react-dom/client";
+import { ActionMenu } from "../../../../components/table/tableaction";
+import { CellComponent } from "tabulator-tables";
 
 const PrecendenceTable: React.FC = () => {
-  const { data, refetch, isPending } = usePrecendence.useGet();
+  const { data, isPending } = usePrecendence.useGet();
   const navigate = useNavigate();
-  const { mutate: deletePrecendence } = usePrecendence.useDelete();
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const { checkPermission } = useUserPermissions();
-  const [selectedRow, setSelectedRow] = useState<FlattenedPrecedenceRow | null>(null);
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 10,
-  });
-  const [pageSizeOptions] = useState([10, 20, 50, 100]);
 
-  const flattenedRows: FlattenedPrecedenceRow[] = data?.map((row: PrecedenceTypes) => ({
-    id: row.id,
-    first_name: (row.user_detail as { first_name: string }).first_name,
-    last_name: (row.user_detail as { last_name: string }).last_name,
-    uniqueIdentifier: (row.user_detail as { uniqueIdentifier: string }).uniqueIdentifier,
-    company_name: (row.company_detail as { name: string }).name,
-    precedence: row.precedence,
-    total_amount: row.total_amount,
-    updated_at: row.updated_at
-  })) || [];
+  const mappedData =
+    data?.map((item: PrecedenceTypes) => ({
+      id: item.id,
+      first_name: (item.user_detail as { first_name: string }).first_name,
+      last_name: (item.user_detail as { last_name: string }).last_name,
+      uniqueIdentifier: (item.user_detail as { uniqueIdentifier: string })
+        .uniqueIdentifier,
+      company_name: (item.company_detail as { name: string }).name,
+      precedence: item.precedence,
+      total_amount: item.total_amount,
+      updated_at: item.updated_at,
+    })) || [];
 
-  const columns: GridColDef[] = [
+  const columns = (): ColumnDefinition[] => [
     {
       field: "first_name",
-      headerName: "نام",
+      title: "نام",
       width: 100,
-      headerAlign: "center",
-      align: "center",
+      headerFilter: true,
     },
     {
       field: "last_name",
-      headerName: "نام خانوادگی",
+      title: "نام خانوادگی",
       width: 200,
-      headerAlign: "center",
-      align: "center",
+      headerFilter: true,
     },
     {
       field: "uniqueIdentifier",
-      headerName: "کدملی",
-      width: 200,
-      headerAlign: "center",
-      align: "center",
+      title: "کدملی",
+      headerFilter: true,
     },
     {
       field: "company_name",
-      headerName: "شرکت",
-      width: 200,
-      headerAlign: "center",
-      align: "center",
+      title: "شرکت",
+      headerFilter: true,
     },
     {
       field: "precedence",
-      headerName: "حق تقدم",
-      width: 100,
-      headerAlign: "center",
-      align: "center",
+      title: "حق تقدم",
+      headerFilter: true,
     },
     {
       field: "total_amount",
-      headerName: "حق تقدم استفاده شده",
-      width: 200,
-      headerAlign: "center",
-      align: "center",
+      title: "حق تقدم استفاده شده",
+      headerFilter: true,
     },
     {
       field: "updated_at",
-      headerName: "تاریخ بروزرسانی",
-      width: 180,
-      renderCell: (params) => {
-        return (
-          <div className="text-center">
-            {moment(params.row.updated_at).locale("fa").format("jYYYY/jMM/jDD")}
-          </div>
-        );
-      },
-      headerAlign: "center",
-      align: "center",
+      title: "تاریخ بروزرسانی",
+      headerFilter: true,
+    },
+    {
+      field: "عملیات",
+      title: "عملیات",
+      headerSort: false,
+      headerFilter: undefined,
+      width: 100,
+      hozAlign: "center" as const,
+      headerHozAlign: "center" as const,
+      formatter: () => `<button class="action-btn">⋮</button>`,
+      cellClick: handleCellClick,
     },
   ];
 
-  const handleEdit = () => {
-    if (!selectedRow) {
-      toast.error("لطفا یک سهم را انتخاب کنید");
-      return;
-    }
-    navigate(`/precendence/update/${selectedRow.id}`);
-  };
+  const handleCellClick = (e: UIEvent, cell: CellComponent) => {
+    e.stopPropagation();
+    if ((e.target as HTMLElement).classList.contains("action-btn")) {
+      const existingMenu = document.querySelector(".popup-menu");
+      if (existingMenu) {
+        existingMenu.remove();
+        return;
+      }
 
-  const handleDelete = () => {
-    if (!selectedRow) {
-      toast.error("لطفا یک سهم را انتخاب کنید");
-      return;
-    }
-    setIsDeleteOpen(true);
-  };
+      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const rowData = cell.getRow().getData();
+      const menuItems = [
+        {
+          icon: "fas fa-print",
+          label: "چاپ",
+          onClick: () => {
+            navigate(`/precendence/print/${rowData.id}`);
+          },
+          color: "#DC2626",
+        },
+      ];
+      const menuPosition = { x: rect.left, y: rect.bottom };
+      const menuContainer = document.createElement("div");
+      menuContainer.className = "popup-menu";
+      document.body.appendChild(menuContainer);
 
-  const rows = flattenedRows;
+      const root = createRoot(menuContainer);
+      root.render(
+        <ActionMenu
+          items={menuItems}
+          position={menuPosition}
+          onClose={() => {
+            root.unmount();
+            menuContainer.remove();
+          }}
+        />
+      );
+    }
+  };
 
   if (isPending) {
     return (
@@ -135,127 +125,29 @@ const PrecendenceTable: React.FC = () => {
     );
   }
 
+  const ExelData = (item: PrecedenceTypes) => ({
+    شناسه: item.id,
+    نام: (item.user_detail as { first_name: string }).first_name,
+    "نام خانوادگی": (item.user_detail as { last_name: string }).last_name,
+    کدملی: (item.user_detail as { uniqueIdentifier: string }).uniqueIdentifier,
+    "نام شرکت": (item.company_detail as { name: string }).name,
+    "حق تقدم": item.precedence,
+    "مبلغ کل": item.total_amount,
+    "تاریخ ویرایش": item.updated_at,
+  });
+
   return (
     <>
-      <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
-        <DataGrid
-          columns={columns}
-          rows={rows}
-          localeText={localeText}
-          onRowClick={(params) => {
-            if (!selectedRow) {
-              setSelectedRow(params.row);
-            }
-          }}
-          isRowSelectable={(params) => {
-            return !selectedRow || params.row.id === selectedRow.id;
-          }}
-          onRowSelectionModelChange={(newSelectionModel) => {
-            if (newSelectionModel.length > 0) {
-              const selectedId = newSelectionModel[0];
-              const selectedRow = rows.find(
-                (row) => row.id === selectedId
-              );
-              if (selectedRow) {
-                setSelectedRow(selectedRow);
-              }
-            } else {
-              setSelectedRow(null);
-            }
-          }}
-          sx={tableStyles}
-          checkboxSelection
-          rowSelectionModel={selectedRow ? [selectedRow.id] : []}
-          disableMultipleRowSelection
-          initialState={{
-            pagination: {
-              paginationModel: { pageSize: 10, page: 0 },
-            },
-          }}
-          pageSizeOptions={[10]}
-          pagination
-          paginationModel={paginationModel}
-          onPaginationModelChange={(newPaginationModel) => {
-            setPaginationModel(newPaginationModel);
-          }}
-          disableColumnMenu
-          filterMode="client"
-          slots={{
-            pagination: (props) => (
-              <CustomPagination
-                rows={rows}
-                pageSize={paginationModel.pageSize}
-                paginationModel={paginationModel}
-                onPageChange={(_, newPage) => {
-                  setPaginationModel((prev) => ({ ...prev, page: newPage }));
-                }}
-                pageSizeOptions={pageSizeOptions}
-                onPageSizeChange={(newSize) => {
-                  setPaginationModel((prev) => ({
-                    ...prev,
-                    pageSize: newSize,
-                    page: 0,
-                  }));
-                }}
-                {...props}
-              />
-            ),
-            toolbar: (props) => (
-              <CustomDataGridToolbar
-                {...props}
-                data={rows as unknown as Record<string, unknown>[]}
-                fileName="گزارش-پرداخت"
-                showExcelExport={true}
-                actions={{
-                  edit: {
-                    label: "ویرایش",
-                    show: checkPermission(["change_precedence"]),
-                    onClick: handleEdit,
-                    icon: <FaEdit />,
-                  },
-                  delete: {
-                    label: "حذف",
-                    show: checkPermission(["delete_precedence"]),
-                    onClick: handleDelete,
-                    icon: <FaTrash />,
-                  },
-                }}
-              />
-            ),
-          }}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
-        />
-
-        {selectedRow && (
-          <Popup
-            isOpen={isDeleteOpen}
-            onClose={() => setIsDeleteOpen(false)}
-            label="حذف سهم"
-            text="آیا از حذف شرکت مطمئن هستید؟"
-            onConfirm={() => {
-              deletePrecendence(selectedRow.id.toString(), {
-                onSuccess: () => {
-                  setIsDeleteOpen(false);
-                  setSelectedRow(null);
-
-                  toast.success("سهم با موفقیت حذف شد");
-                  refetch();
-                },
-                onError: () => {
-                  toast.error("خطایی رخ داده است");
-                },
-              });
-            }}
-            onCancel={() => {
-              setIsDeleteOpen(false);
-            }}
+      <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
+        <div className="overflow-x-auto">
+          <TabulatorTable
+            data={mappedData || []}
+            columns={columns()}
+            title="اطلاعات کاربران"
+            showActions={true}
+            formatExportData={ExelData}
           />
-        )}
+        </div>
       </div>
     </>
   );

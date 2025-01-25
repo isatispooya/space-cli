@@ -6,23 +6,21 @@ import "moment/locale/fa";
 import moment from "moment-jalaali";
 
 const PrivilegesComponent = () => {
-
-    
   const { data } = usePoint.useGetPoint();
 
   const columns = (): ColumnDefinition[] => [
+    { title: "نام", field: "user_first_name" },
+    { title: "نام خانوادگی", field: "user_last_name" },
+    { title: "شماره تماس", field: "user_phone" },
     { title: "ماموریت", field: "mission" },
+    { title: "توضیحات", field: "description" },
     { title: "سکه", field: "point_1" },
     { title: "بذر", field: "point_2" },
-    { title: "شماره تماس", field: "user_phone" },
     {
       title: "تاریخ ایجاد",
       field: "created_at",
       formatter: (cell) => moment(cell.getValue()).format("jYYYY/jMM/jDD"),
     },
-    { title: "کاربر", field: "user" },
-    { title: "توضیحات", field: "description" },
-    { title: "شناسه", field: "id" },
   ];
 
   const mappedData = data?.map((item: PrivilegesTypes) => ({
@@ -32,7 +30,8 @@ const PrivilegesComponent = () => {
     description: item.description,
     id: item.id,
     mission: item.mission_detail.display_name,
-    user: item.user_detail?.first_name + " " + item.user_detail?.last_name,
+    user_first_name: item.user_detail?.first_name,
+    user_last_name: item.user_detail?.last_name,
     user_phone: item?.user_detail?.mobile,
   }));
 
@@ -47,8 +46,6 @@ const PrivilegesComponent = () => {
     سکه: item?.mission_detail.point_1 * item.amount,
     بذر: item?.mission_detail.point_2 * item.amount,
   });
-
-
 
   return (
     <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
