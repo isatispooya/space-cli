@@ -15,19 +15,21 @@ const COLORS = {
 } as const;
 
 const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
-  const [filterType, setFilterType] = useState<"all" | "coin" | "seed">("all");
+  const [filterType, setFilterType] = useState<"all" | "coin" | "seed">("coin");
 
-  const filteredMissions = missions.filter((item) => {
-    if (item.point_1 === 0 && item.point_2 === 0) return false;
-    switch (filterType) {
-      case "coin":
-        return item.point_1 > 0;
-      case "seed":
-        return item.point_2 > 0;
-      default:
-        return true;
-    }
-  });
+  const filteredMissions = missions
+    .filter((item) => {
+      if (item.point_1 === 0 && item.point_2 === 0) return false;
+      switch (filterType) {
+        case "coin":
+          return item.point_1 > 0;
+        case "seed":
+          return item.point_2 > 0;
+        default:
+          return true;
+      }
+    })
+    .sort((a, b) => b.point_1 - a.point_1);
 
   return (
     <>
@@ -89,18 +91,18 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
             }}
           >
             <Button
-              onClick={() => setFilterType("seed")}
-              className={filterType === "seed" ? "selected" : ""}
-            >
-              <TbSeeding className="text-xl" />
-              بذر
-            </Button>
-            <Button
               onClick={() => setFilterType("coin")}
               className={filterType === "coin" ? "selected" : ""}
             >
               <LuCoins className="text-xl" />
               سکه
+            </Button>
+            <Button
+              onClick={() => setFilterType("seed")}
+              className={filterType === "seed" ? "selected" : ""}
+            >
+              <TbSeeding className="text-xl" />
+              بذر
             </Button>
           </ButtonGroup>
         </motion.div>
@@ -134,18 +136,6 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
 
             <div className="flex flex-col flex-grow">
               <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200 flex-grow">
-                {item.point_1 !== 0 && (
-                  <div className="flex items-center space-x-3">
-                    <LuCoins className="text-yellow-500 text-[25px] font-bold ml-2" />
-                    <span className="font-medium text-gray-800 ml-2">
-                      {item.point_1} سکه
-                    </span>
-                    <span className="text-gray-400">|</span>
-                    <span className="text-sm text-gray-600">
-                      دریافتی: {formatNumber(item.point_1 * item.user_attempts)}
-                    </span>
-                  </div>
-                )}
                 {item.point_2 !== 0 && (
                   <div className="flex items-center space-x-3">
                     <TbSeeding className="text-green-500 text-[25px] font-bold ml-2" />
@@ -155,6 +145,18 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
                     <span className="text-gray-400">|</span>
                     <span className="text-sm text-gray-600">
                       دریافتی: {item.point_2 * item.user_attempts}
+                    </span>
+                  </div>
+                )}
+                {item.point_1 !== 0 && (
+                  <div className="flex items-center space-x-3">
+                    <LuCoins className="text-yellow-500 text-[25px] font-bold ml-2" />
+                    <span className="font-medium text-gray-800 ml-2">
+                      {item.point_1} سکه
+                    </span>
+                    <span className="text-gray-400">|</span>
+                    <span className="text-sm text-gray-600">
+                      دریافتی: {formatNumber(item.point_1 * item.user_attempts)}
                     </span>
                   </div>
                 )}

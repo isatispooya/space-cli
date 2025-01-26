@@ -59,8 +59,11 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<string>("");
   const [selectedGift, setSelectedGift] = useState<SelectedGift | null>(null);
-  const [filterType, setFilterType] = useState<
-    "all" | "coin" | "seed" | "ipmill" | "crowd"
+  const [filterTypeSeed, setFilterTypeSeed] = useState<"all" | "coin" | "seed">(
+    "seed"
+  );
+  const [filterTypeCoin, setFilterTypeCoin] = useState<
+    "all" | "crowd" | "ipmill"
   >("all");
   const { data: remainPoints } = useRemainPoints();
   const [openMenu, setOpenMenu] = React.useState(false);
@@ -152,23 +155,25 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
 
   const filteredGifts = gifts.filter((item) => {
     if (item.point_1 === 0 && item.point_2 === 0) return false;
-    switch (filterType) {
-      case "all":
-        return true;
-      case "crowd":
-        return false;
-      case "ipmill":
-        return item.id === 1 || item.id === 6;
-      default:
-        return true;
-    }
+
+    const seedFilter =
+      filterTypeSeed === "all" ||
+      (filterTypeSeed === "coin" && item.point_1 > 0) ||
+      (filterTypeSeed === "seed" && item.point_2 > 0);
+
+    const coinFilter =
+      filterTypeCoin === "all" ||
+      (filterTypeCoin === "crowd" && item.id === 1) ||
+      (filterTypeCoin === "ipmill" && item.id === 6);
+
+    return seedFilter && coinFilter;
   });
 
   console.log(filteredGifts);
 
   const handleMenuItemClick = (index: number) => {
     setSelectedIndex(index);
-    setFilterType(optionTypes[index] as "all" | "crowd" | "ipmill");
+    setFilterTypeCoin(optionTypes[index] as "all" | "crowd" | "ipmill");
     setOpenMenu(false);
   };
 
@@ -246,15 +251,15 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                 }}
               >
                 <Button
-                  onClick={() => setFilterType("seed")}
-                  className={filterType === "seed" ? "selected" : ""}
+                  onClick={() => setFilterTypeSeed("seed")}
+                  className={filterTypeSeed === "seed" ? "selected" : ""}
                 >
                   <TbSeeding className="text-xl" />
                   بذر
                 </Button>
                 <Button
-                  onClick={() => setFilterType("coin")}
-                  className={filterType === "coin" ? "selected" : ""}
+                  onClick={() => setFilterTypeSeed("coin")}
+                  className={filterTypeSeed === "coin" ? "selected" : ""}
                 >
                   <LuCoins className="text-xl" />
                   سکه
@@ -284,7 +289,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             >
               <Button
                 onClick={() =>
-                  setFilterType(
+                  setFilterTypeCoin(
                     optionTypes[selectedIndex] as "all" | "crowd" | "ipmill"
                   )
                 }
