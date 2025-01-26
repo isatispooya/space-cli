@@ -3,6 +3,7 @@ import MissionCard from "../components/mission.card";
 import { useMissions } from "../hooks";
 import { server } from "../../../api";
 
+
 const Missions = () => {
   const navigate = useNavigate();
 

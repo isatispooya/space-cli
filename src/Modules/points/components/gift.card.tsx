@@ -20,6 +20,7 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import { formatNumber } from "../../../utils";
 
 interface GiftCardProps {
   gifts: GiftTypes[];
@@ -82,7 +83,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
     setOpen(true);
   };
 
-  const formatNumber = (num: number | undefined) => {
+  const formatNumbers = (num: number | undefined) => {
     if (num === undefined) return "";
     if (num >= 1000000000) {
       return `${(num / 1000000000).toFixed(1)}B`;
@@ -140,7 +141,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
         </span>
         <span className="text-gray-400">|</span>
         <span className="text-sm text-gray-600">
-          دریافتی: {points * (attempts || 0)}
+          دریافتی: {formatNumber(points * (attempts || 0))}
         </span>
       </div>
     );
@@ -384,17 +385,17 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                     mt-2 py-2 px-4 rounded-lg text-sm w-full font-bold text-white
                     transition-all duration-200
                     ${
-                      isButtonDisabled || !item.status
+                      isButtonDisabled || !item?.status
                         ? "bg-gray-300 cursor-not-allowed"
                         : "bg-green-500 hover:bg-green-600"
                     }
                   `}
-                  disabled={isButtonDisabled || !item.status}
+                  disabled={isButtonDisabled || !item?.status}
                 >
-                  {isButtonDisabled || !item.status ? (
-                    <span>به زودی</span>
-                  ) : (
+                  {item?.status ? (
                     <span>دریافت هدیه</span>
+                  ) : (
+                    <span>به زودی</span>
                   )}
                 </button>
               </div>
@@ -449,7 +450,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             </span>
             <div className="flex items-center gap-2">
               <span className="font-bold text-gray-900">
-                {formatNumber(
+                {formatNumbers(
                   selectedGift?.is_repetitive
                     ? remainPoints?.point_1
                     : remainPoints?.point_2
