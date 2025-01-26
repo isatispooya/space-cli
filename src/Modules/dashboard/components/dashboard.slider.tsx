@@ -120,7 +120,6 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
                 <button
                   onClick={() => (window.location.href = slide.link)}
                   className="mb-5 w-full sm:w-3/4 md:w-2/4 lg:w-1/2 py-2 bg-green-600 text-white rounded-lg font-medium text-xs sm:text-sm md:text-sm lg:text-lg relative block mx-auto"
-                  style={{ bottom: '15px' }}
                 >
                   <span className="before:content-['']  before:hidden sm:before:block before:absolute before:left-4 sm:before:left-8 md:before:left-12 font-bold before:top-1/2 before:w-8 sm:before:w-12 md:before:w-12 before:border-t-2 before:border-white before:transform before:-translate-y-1/2 after:content-[''] after:hidden sm:after:block after:absolute after:right-4 sm:after:right-8 md:after:right-12 after:top-1/2 after:w-8 sm:after:w-12 md:after:w-12 after:border-t-2 after:border-white after:transform after:-translate-y-1/2">
                     امکان سرمایه‌گذاری آنلاین
@@ -129,7 +128,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
               </div>
             </a>
 
-            <div className="absolute bottom-2 right-0 left-0 lg:left-5 lg:right-5 lg:bottom-12 md:bottom-12 md:left-4 md:right-4 sm:left-3 sm:right-3 z-10 flex justify-center lg:justify-start md:justify-start sm:justify-start space-x-4">
+            <div className="absolute bottom-2 right-0 left-0 lg:left-5 lg:right-5 lg:bottom-2 md:bottom-2 md:left-4 md:right-4 sm:left-3 sm:right-3 z-10 flex justify-center lg:justify-start md:justify-start sm:justify-start ">
               <button
                 onClick={() => handleShare(slide)}
                 className="flex items-center bg-white px-3 py-1 rounded-full tour-share-dashboard "
