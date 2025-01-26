@@ -24,6 +24,7 @@ const Missions = () => {
           user_attempts: mission.user_attempts,
           id: mission.id,
           status: mission.status,
+          comming_soon: mission.comming_soon,
         }))
       : []),
   ];
