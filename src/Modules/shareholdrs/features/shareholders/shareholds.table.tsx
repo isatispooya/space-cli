@@ -36,8 +36,6 @@ const ShareholdTable: React.FC = () => {
       title: "تعداد سهام",
       headerFilter: true,
     },
-
-    { field: "value", title: "قیمت", width: 100 },
     {
       field: "first_name",
       title: "نام",
@@ -62,11 +60,6 @@ const ShareholdTable: React.FC = () => {
       field: "total_amount",
       title: "حق تقدم استفاده شده",
       headerFilter: true,
-    },
-
-    {
-      field: "document",
-      title: "سند",
     },
 
     {
