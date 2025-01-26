@@ -2,29 +2,26 @@ import Stories from "stories-react";
 import "stories-react/dist/index.css";
 import { useState } from "react";
 
-const storyData = [
-  {
-    url: "https://example.com/image1.jpg",
-    type: "image",
-    duration: 5000,
-    heading: "کاربر ۱",
-    subheading: "۲ ساعت پیش",
-    profileImage: "https://example.com/profile1.jpg",
-  },
-  {
-    url: "https://example.com/image2.jpg",
-    type: "image",
-    duration: 5000,
-    heading: "کاربر ۲",
-    subheading: "۵ ساعت پیش",
-    profileImage: "https://example.com/profile2.jpg",
-  },
-];
+interface StoryProps {
+  storyData: {
+    url: string;
+    type: string;
+    duration: number;
+    heading: string;
+    subheading: string;
+    profileImage: string;
+    description: string;
+  }[];
+}
 
-const Story = () => {
+const Story: React.FC<StoryProps> = ({ storyData }) => {
   const [showStories, setShowStories] = useState(false);
 
   const handleStoriesEnd = () => {
+    setShowStories(false);
+  };
+
+  const handleBackgroundClick = () => {
     setShowStories(false);
   };
 
@@ -68,6 +65,7 @@ const Story = () => {
       </div>
       {showStories && (
         <div
+          onClick={handleBackgroundClick}
           style={{
             position: "fixed",
             top: 0,
@@ -82,28 +80,13 @@ const Story = () => {
           }}
         >
           <div
+            onClick={(e) => e.stopPropagation()}
             style={{
               position: "relative",
               width: "100%",
               maxWidth: "400px",
             }}
           >
-            <button
-              onClick={() => setShowStories(false)}
-              style={{
-                position: "absolute",
-                top: "-40px",
-                right: "10px",
-                background: "none",
-                border: "none",
-                color: "white",
-                fontSize: "24px",
-                cursor: "pointer",
-                zIndex: 1001,
-              }}
-            >
-              ✕
-            </button>
             <Stories
               stories={storyData}
               width="100%"
@@ -115,6 +98,9 @@ const Story = () => {
                 overflow: "hidden",
               }}
             />
+            <div style={{ color: "white", marginTop: "10px", textAlign: "center" }}>
+              {storyData[0].description}
+            </div>
           </div>
         </div>
       )}

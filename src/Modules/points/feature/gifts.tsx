@@ -37,13 +37,20 @@ const Gifts = () => {
   return (
     <div>
       <div>
-        <div className="bg-white p-4 rounded-xl  ">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        <div className="bg-white p-4 rounded-xl">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
             سهام شرکت صنایع مفتول ایساتیس پویا
           </h2>
-          <p className="text-gray-600 text-center max-w-3xl mx-auto leading-relaxed">
-            شما می‌توانید در باشگاه مشتریان صنایع مفتول ایساتیس پویا امتیازات
-            کسب شده تا کنون را در موارد پیشنهادی زیر مورد استفاده قرار دهید.
+          <p className="text-gray-700 text-center max-w-3xl mx-auto leading-relaxed">
+            با توجه به عضویت شما و انجام ماموریت‌ها می‌توانید امتیازات کسب شده
+            سکه یا بذر خود را به هدایای زیر تبدیل کنید
+          </p>
+          <p className="text-green-500 font-semibold text-center max-w-2xl mx-auto leading-relaxed border border-green-300 p-1 rounded-md">
+            توجه: بذرها و سکه‌های شما هرگز از بین نمی‌روند و می‌توانید در آینده
+            از آن‌ها بهره‌برداری کنید!
+          </p>
+          <p className="text-gray-500 text-center max-w-3xl mx-auto leading-relaxed italic">
+            با افزایش امتیازات خود، می‌توانید به جوایز جذاب‌تری دست یابید!
           </p>
         </div>
       </div>

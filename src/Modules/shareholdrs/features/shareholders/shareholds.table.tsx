@@ -1,8 +1,7 @@
 import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { ShareholdersTypes } from "../../types/shareholders.type";
-  import { useNavigate } from "react-router-dom";
-// import { companyTypes } from "../../data/companyTypes";
+import { useNavigate } from "react-router-dom";
 import { useShareholders } from "../../hooks";
 import { LoaderLg } from "../../../../components";
 import { CellComponent, ColumnDefinition } from "tabulator-tables";
@@ -13,6 +12,8 @@ import { ActionMenu } from "../../../../components/table/tableaction";
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, isPending } = useShareholders.useGet();
   const navigate = useNavigate();
+
+  console.log(shareholders);
 
   const mappedData = shareholders?.map((row: ShareholdersTypes) => ({
     ...row,
@@ -28,46 +29,49 @@ const ShareholdTable: React.FC = () => {
     {
       field: "company_name",
       title: "شرکت",
-      width: 150,
+      headerFilter: true,
     },
-    // {
-    //   field: "company_type",
-    //   title: "نوع شرکت",
-    //   width: 150,
-    //   formatter: (params) => {
-    //     const company = params.row.company_type;
-    //     if (!company || typeof company !== "object") return "";
-
-    //     const companyType = companyTypes.find(
-    //       (type) => type.value === company.company_type
-    //     );
-    //     return companyType?.label || company.company_type;
-    //   },
-    // },
     {
       field: "number_of_shares",
       title: "تعداد سهام",
-      width: 100,
+      headerFilter: true,
     },
+
+    { field: "value", title: "قیمت", width: 100 },
     {
       field: "first_name",
       title: "نام",
-      width: 150,
+      headerFilter: true,
     },
     {
       field: "last_name",
       title: "نام خانوادگی",
-      width: 150,
+      headerFilter: true,
     },
     {
       field: "uniqueIdentifier",
       title: "کدملی ",
-      width: 150,
+      headerFilter: true,
     },
+    {
+      field: "precedence_count",
+      title: "حق تقدم",
+      headerFilter: true,
+    },
+    {
+      field: "total_amount",
+      title: "حق تقدم استفاده شده",
+      headerFilter: true,
+    },
+
+    {
+      field: "document",
+      title: "سند",
+    },
+
     {
       field: "updated_at",
       title: "تاریخ ویرایش",
-      width: 150,
       formatter: (cell: CellComponent) => {
         const rowData = cell.getRow().getData();
         return moment(rowData.updated_at).locale("fa").format("jYYYY/jMM/jDD");
@@ -78,7 +82,6 @@ const ShareholdTable: React.FC = () => {
       title: "عملیات",
       headerSort: false,
       headerFilter: undefined,
-      width: 100,
       hozAlign: "center" as const,
       headerHozAlign: "center" as const,
       formatter: () => `<button class="action-btn">⋮</button>`,

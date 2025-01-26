@@ -26,12 +26,12 @@ export const menuItems: MenuItem[] = [
   {
     title: "کاربران",
     icon: FaUserTie,
-    codename: ["allow_any"],
+    codename: ["view_user"],
     submenu: [
       {
         title: "کاربران",
         path: "/users",
-        codename: ["allow_any"],
+        codename: ["view_user"],
       },
     ],
   },
@@ -50,11 +50,11 @@ export const menuItems: MenuItem[] = [
         codename: ["view_stocktransfer"],
         path: "/transferstock/table",
       },
-      {
-        title: "مدیریت حق تقدم",
-        codename: ["add_precedence", "precedence"],
-        path: "/precendence/table",
-      },
+      // {
+      //   title: "مدیریت حق تقدم",
+      //   codename: ["add_precedence", "precedence"],
+      //   path: "/precendence/table",
+      // },
       {
         title: "نقل و انتقال حق تقدم",
         codename: ["view_displacementprecedence"],
@@ -65,11 +65,11 @@ export const menuItems: MenuItem[] = [
         codename: ["view_paid_precedence"],
         path: "/purchacePrecendence/table",
       },
-      {
-        title: "تبدیل حق تقدم به سهم",
-        codename: ["view_capitalincreasepayment"],
-        path: "/capital/table",
-      },
+      // {
+      //   title: "تبدیل حق تقدم به سهم",
+      //   codename: ["view_capitalincreasepayment"],
+      //   path: "/capital/table",
+      // },
       {
         title: "پذیره نویسی",
         codename: ["unused_precedence_process"],

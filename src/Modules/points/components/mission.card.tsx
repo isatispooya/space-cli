@@ -162,7 +162,7 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
                   className="w-full"
                 >
                   <button className="mt-2 bg-[#58d68d] text-white font-bold py-2 px-4 rounded-lg text-sm hover:bg-[#2ecc71] transition-colors duration-300 w-full">
-                    رفتن به ماموریت
+                    {item.status ? "رفت به ماموریت" : "به زودی"}
                   </button>
                 </a>
               </div>

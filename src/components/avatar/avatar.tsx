@@ -99,6 +99,7 @@ const UserAvatar = () => {
       profileImage: profileData?.profile_image
         ? server + profileData.profile_image
         : "",
+      description: "این یک توضیح برای استوری است"
     },
     {
       url: profileData?.profile_image ? server + profileData.profile_image : "",
@@ -109,6 +110,7 @@ const UserAvatar = () => {
       profileImage: profileData?.profile_image
         ? server + profileData.profile_image
         : "",
+      description: "این یک توضیح برای استوری است"
     },
 
     {
@@ -120,6 +122,7 @@ const UserAvatar = () => {
       profileImage: profileData?.profile_image
         ? server + profileData.profile_image
         : "",
+      description: "این یک توضیح برای استوری است"
     },
   ];
 
@@ -216,6 +219,7 @@ const UserAvatar = () => {
 
       {showStories && (
         <div
+          onClick={handleStoriesEnd}
           style={{
             position: "fixed",
             top: 0,
@@ -230,28 +234,13 @@ const UserAvatar = () => {
           }}
         >
           <div
+            onClick={(e) => e.stopPropagation()}
             style={{
               position: "relative",
               width: "100%",
               maxWidth: "400px",
             }}
           >
-            <button
-              onClick={() => setShowStories(false)}
-              style={{
-                position: "absolute",
-                top: "-40px",
-                right: "10px",
-                background: "none",
-                border: "none",
-                color: "white",
-                fontSize: "24px",
-                cursor: "pointer",
-                zIndex: 1001,
-              }}
-            >
-              ✕
-            </button>
             <Stories
               stories={storyData}
               width="100%"
