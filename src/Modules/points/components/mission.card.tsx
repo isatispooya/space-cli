@@ -5,6 +5,7 @@ import { LuCoins } from "react-icons/lu";
 import { TbSeeding } from "react-icons/tb";
 import { useState } from "react";
 import { Button, ButtonGroup } from "@mui/material";
+import { formatNumber } from "../../../utils"; 
 
 const COLORS = {
   primary: {
@@ -135,7 +136,7 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
                   </span>
                   <span className="text-gray-400">|</span>
                   <span className="text-sm text-gray-600">
-                    دریافتی: {item.point_1 * item.user_attempts}
+                    دریافتی: {formatNumber(item.point_1 * item.user_attempts)}
                   </span>
                 </div>
               )}

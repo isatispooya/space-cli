@@ -150,7 +150,7 @@ const Header = () => {
               <Tooltip title="سکه" placement="bottom" arrow>
                 <span
                   className="flex items-center text-white mb-1"
-                  onClick={() => navigate("/points/missions")}
+                  onClick={() => navigate("/points/privileges")}
                 >
                   <span className="text-blue-900 text-sm font-bold">
                     {formatNumber(remainPoints?.point_1)}
