@@ -9,6 +9,7 @@ import Popup from "./popup";
 import { useUserPermissions } from "../../permissions";
 import toast from "react-hot-toast";
 import useGiftsUser from "../hooks/useGiftsUser";
+import { formatNumber } from "../../../utils";
 
 interface RequestType {
   id: number;
@@ -21,51 +22,69 @@ interface RequestType {
   };
   status: "pending" | "approved" | "rejected";
   created_at: string;
+  amount: number;
 }
 
 const Request = () => {
   const { checkPermission } = useUserPermissions();
   const [selectedRow, setSelectedRow] = useState<RequestType | null>(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const { data: giftsUser } = useGiftsUser.useGetGifts(); 
-  
-  const rows: RequestType[] = giftsUser?.map((item: any) => ({
-    id: item.id,
-    title: item.gift_detail.display_name,
-    description: item.gift_detail.description,
-    points: item.gift_detail.point_1,
-    user: {
-      first_name: item.user_detail.first_name,
-      last_name: item.user_detail.last_name
-    },
-    status: item.status,
-    created_at: item.created_at
-  })) || [];
+  const { data: giftsUser } = useGiftsUser.useGetGifts();
+
+  const rows: RequestType[] =
+    giftsUser?.map((item: any) => ({
+      id: item.id,
+      title: item.gift_detail.display_name,
+      description: item.gift_detail.description,
+      points: item.gift_detail.point_1,
+      user: {
+        first_name: item.user_detail.first_name,
+        last_name: item.user_detail.last_name,
+      },
+      status: item.status,
+      created_at: item.created_at,
+      amount: item.amount,
+    })) || [];
 
   const columns: GridColDef[] = [
-    { 
-      field: "title", 
-      headerName: "عنوان", 
+    {
+      field: "title",
+      headerName: "عنوان",
       width: 150,
       headerAlign: "center",
-      align: "center"
+      align: "center",
     },
-    { 
-      field: "description", 
-      headerName: "توضیحات", 
+    {
+      field: "description",
+      headerName: "توضیحات",
       width: 200,
       headerAlign: "center",
-      align: "center"
+      align: "center",
     },
-    { 
-      field: "points", 
-      headerName: "امتیاز", 
+    {
+      field: "points",
+      headerName: "امتیاز",
       width: 100,
       headerAlign: "center",
       align: "center",
       renderCell: (params) => {
         return <div className="text-center">{params.row.points}</div>;
-      }
+      },
+    },
+
+    {
+      field: "total_points",
+      headerName: "کل دریافتی",
+      width: 100,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <div className="text-center">
+            {formatNumber(params.row.points * params.row.amount)}
+          </div>
+        );
+      },
     },
     {
       field: "status",
@@ -77,17 +96,23 @@ const Request = () => {
         const statusMap = {
           pending: "در انتظار",
           approved: "تایید شده",
-          rejected: "رد شده"
+          rejected: "رد شده",
         };
         const statusColors = {
           pending: "text-yellow-600",
           approved: "text-green-600",
-          rejected: "text-red-600"
+          rejected: "text-red-600",
         };
-        return <div className={`text-center ${statusColors[params.row.status as keyof typeof statusColors]}`}>
-          {statusMap[params.row.status as keyof typeof statusMap]}
-        </div>;
-      }
+        return (
+          <div
+            className={`text-center ${
+              statusColors[params.row.status as keyof typeof statusColors]
+            }`}
+          >
+            {statusMap[params.row.status as keyof typeof statusMap]}
+          </div>
+        );
+      },
     },
     {
       field: "user",
@@ -101,7 +126,7 @@ const Request = () => {
             {params.row.user.first_name} {params.row.user.last_name}
           </div>
         );
-      }
+      },
     },
     {
       field: "created_at",
@@ -110,9 +135,11 @@ const Request = () => {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => {
-        return <div className="text-center w-full">
-          {moment(params.row.created_at).locale("fa").format("jYYYY/jMM/jDD")}
-        </div>;
+        return (
+          <div className="text-center w-full">
+            {moment(params.row.created_at).locale("fa").format("jYYYY/jMM/jDD")}
+          </div>
+        );
       },
     },
   ];
@@ -224,4 +251,3 @@ const Request = () => {
 };
 
 export default Request;
-
