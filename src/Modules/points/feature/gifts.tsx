@@ -46,8 +46,7 @@ const Gifts = () => {
             سکه یا بذر خود را به هدایای زیر تبدیل کنید
           </p>
           <p className="text-green-500 font-semibold text-center max-w-2xl mx-auto leading-relaxed border border-green-300 p-1 rounded-md">
-            توجه: بذرها و سکه‌های شما هرگز از بین نمی‌روند و می‌توانید در آینده
-            از آن‌ها بهره‌برداری کنید!
+             توجه: بذرها و سکه‌های شما هرگز از بین نمی‌روند و می‌توانید در آینده از کارت‌های جدید نیز بهره‌مند شوید !
           </p>
           <p className="text-gray-500 text-center max-w-3xl mx-auto leading-relaxed italic">
             با افزایش امتیازات خود، می‌توانید به جوایز جذاب‌تری دست یابید!
