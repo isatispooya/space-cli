@@ -21,6 +21,7 @@ import Paper from "@mui/material/Paper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { formatNumber } from "../../../utils";
+import { Link } from "react-router-dom";
 
 interface GiftCardProps {
   gifts: GiftTypes[];
@@ -65,6 +66,8 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [openMenu, setOpenMenu] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  console.log(remainPoints, "123456789");
 
   const options = ["همه", "کراد", "صنایع مفتول"];
   const optionTypes = ["all", "crowd", "ipmill"] as const;
@@ -336,73 +339,102 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
           </div>
         </motion.div>
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 z-10 p-12">
         {filteredGifts.map((item, index) => {
           const isButtonDisabled =
             remainPoints?.point_1 < item.point_1 ||
             remainPoints?.point_2 < item.point_2;
 
+          const buttonText = isButtonDisabled
+            ? "برای دریافت این هدیه به امتیاز بیشتری نیاز دارید"
+            : item?.status
+            ? "دریافت هدیه"
+            : "به زودی";
+
           return (
-            <motion.div
-              key={index}
-              className={`
-                relative flex flex-col items-center 
-                bg-white border-2 border-gray-300 rounded-2xl 
-                shadow-lg hover:shadow-xl transition-shadow duration-300 
-                p-6 w-full h-auto
-                ${item.point_1 !== 0 ? "bg-gray-200" : ""}
-              `}
-            >
-              <h2 className="text-lg font-bold text-gray-800 mb-2 text-center">
-                {item.display_name}
-              </h2>
-              <img
-                src={item.image}
-                alt="Gift"
-                className="w-[130px] h-[130px] rounded-xl object-cover m-2"
-              />
-              <p className="text-xs text-gray-600 mb-1">{item.description}</p>
-
-              {!(item.point_1 === 0 && item.point_2 === 0) && (
-                <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
-                  {item.point_1 !== 0 &&
-                    renderPointsInfo(item.point_1, "coin", item.user_attempts)}
-                  {item.point_2 !== 0 &&
-                    renderPointsInfo(item.point_2, "seed", item.user_attempts)}
+            <>
+              <motion.div
+                key={index}
+                className="relative flex flex-col items-center bg-white border-2 border-gray-300 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 w-full h-auto flex-grow min-h-[300px]"
+              >
+                {/* First div - Gift details */}
+                <div className="flex mb-10 flex-col items-center">
+                  <h2 className="text-lg font-bold text-gray-800 mb-2 text-center">
+                    {item.display_name}
+                  </h2>
+                  <img
+                    src={item.image}
+                    alt="Gift"
+                    className="w-[130px] h-[130px] rounded-xl object-cover m-2"
+                  />
+                  <p className="text-xs text-gray-600 mb-1">
+                    {item.description}
+                  </p>
                 </div>
-              )}
 
-              <div className="flex justify-center w-full">
-                <button
-                  onClick={() =>
-                    handleMutate(
-                      item.id.toString(),
-                      item.description,
-                      item.is_repetitive
-                    )
-                  }
-                  className={`
-                    mt-2 py-2 px-4 rounded-lg text-sm w-full font-bold text-white
-                    transition-all duration-200
-                    ${
-                      isButtonDisabled || !item?.status
-                        ? "bg-gray-300 cursor-not-allowed"
-                        : "bg-green-500 hover:bg-green-600"
-                    }
-                  `}
-                  disabled={isButtonDisabled || !item?.status}
-                >
-                  {item?.status ? (
-                    <span>دریافت هدیه</span>
-                  ) : (
-                    <span>به زودی</span>
+                {/* Second div - Points and button */}
+                <div className="flex mt-10 flex-col flex-grow">
+                  {!(item.point_1 === 0 && item.point_2 === 0) && (
+                    <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
+                      {item.point_1 !== 0 &&
+                        renderPointsInfo(
+                          item.point_1,
+                          "coin",
+                          item.user_attempts
+                        )}
+                      {item.point_2 !== 0 &&
+                        renderPointsInfo(
+                          item.point_2,
+                          "seed",
+                          item.user_attempts
+                        )}
+                    </div>
                   )}
-                </button>
-              </div>
-            </motion.div>
+
+                  <div className="flex justify-center w-full mt-auto">
+                    {isButtonDisabled ? (
+                      <Link to="/points/missions" className="w-full">
+                        <button
+                          className={`
+                            mt-2 py-2 px-4 rounded-lg text-sm w-full font-bold text-white
+                            bg-gray-400 hover:bg-gray-500
+                          `}
+                        >
+                          <span>{buttonText}</span>
+                        </button>
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          handleMutate(
+                            item.id.toString(),
+                            item.description,
+                            item.is_repetitive
+                          )
+                        }
+                        className={`
+                          mt-2 py-2 px-4 rounded-lg text-sm w-full font-bold text-white
+                          transition-all duration-200
+                          ${
+                            isButtonDisabled || !item?.status
+                              ? "bg-gray-300 cursor-not-allowed"
+                              : "bg-green-500 hover:bg-green-600"
+                          }
+                        `}
+                        disabled={isButtonDisabled || !item?.status}
+                      >
+                        <span>{buttonText}</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            </>
           );
         })}
       </div>
+
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
