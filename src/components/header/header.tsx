@@ -16,6 +16,7 @@ import { useRemainPoints } from "../../Modules/points";
 import NotificationComponent from "../notification/notification";
 import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
+// import Story from "../story/story";
 
 initTWE({ Collapse, Ripple });
 
@@ -66,6 +67,18 @@ const Header = () => {
     };
   }, []);
 
+  // const storyData = [
+  //   {
+  //     url: "",
+  //     type: "image",
+  //     duration: 5000,
+  //     heading: "عنوان",
+  //     subheading: "هم اکنون",
+  //     profileImage: LogoWhite,
+  //     description: "این یک توضیح برای استوری است"
+  //   }
+  // ];
+
   return (
     <header>
       <nav
@@ -111,6 +124,9 @@ const Header = () => {
             id="navbarSupportedContentY"
             data-twe-collapse-item
           ></div>
+
+          {/* <Story storyData={storyData} /> */}
+
           <Badge
             sx={{
               position: "relative",
@@ -171,11 +187,10 @@ const Header = () => {
                 </span>
               </Tooltip>
             </div>
-         
+
             {showNotifications && (
-                <NotificationComponent ref={notificationRef} />
-              )}
-         
+              <NotificationComponent ref={notificationRef} />
+            )}
 
             <div className="flex items-center tour-header-profile">
               <UserAvatar />

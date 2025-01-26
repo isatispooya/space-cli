@@ -8,14 +8,14 @@ import { Avatar } from "@mui/material";
 import { server } from "../../api/server";
 import { identifyUser } from "../../utils";
 import { toast } from "react-hot-toast";
-import Stories from "stories-react";
+// import Stories from "stories-react";
 import "stories-react/dist/index.css";
 
 const UserAvatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: profileData, isSuccess } = useProfile();
-  const [showStories, setShowStories] = useState(false);
+  // const [showStories, setShowStories] = useState(false);
 
   useEffect(() => {
     if (isSuccess) {
@@ -85,46 +85,46 @@ const UserAvatar = () => {
     }
   };
 
-  const handleStoriesEnd = () => {
-    setShowStories(false);
-  };
+  // const handleStoriesEnd = () => {
+  //   setShowStories(false);
+  // };
 
-  const storyData = [
-    {
-      url: profileData?.profile_image ? server + profileData.profile_image : "",
-      type: "image",
-      duration: 5000,
-      heading: `${profileData?.first_name} ${profileData?.last_name}`,
-      subheading: "هم اکنون",
-      profileImage: profileData?.profile_image
-        ? server + profileData.profile_image
-        : "",
-      description: "این یک توضیح برای استوری است"
-    },
-    {
-      url: profileData?.profile_image ? server + profileData.profile_image : "",
-      type: "image",
-      duration: 5000,
-      heading: `${profileData?.first_name} ${profileData?.last_name}`,
-      subheading: "هم اکنون",
-      profileImage: profileData?.profile_image
-        ? server + profileData.profile_image
-        : "",
-      description: "این یک توضیح برای استوری است"
-    },
+  // const storyData = [
+  //   {
+  //     url: profileData?.profile_image ? server + profileData.profile_image : "",
+  //     type: "image",
+  //     duration: 5000,
+  //     heading: `${profileData?.first_name} ${profileData?.last_name}`,
+  //     subheading: "هم اکنون",
+  //     profileImage: profileData?.profile_image
+  //       ? server + profileData.profile_image
+  //       : "",
+  //     description: "این یک توضیح برای استوری است"
+  //   },
+  //   {
+  //     url: profileData?.profile_image ? server + profileData.profile_image : "",
+  //     type: "image",
+  //     duration: 5000,
+  //     heading: `${profileData?.first_name} ${profileData?.last_name}`,
+  //     subheading: "هم اکنون",
+  //     profileImage: profileData?.profile_image
+  //       ? server + profileData.profile_image
+  //       : "",
+  //     description: "این یک توضیح برای استوری است"
+  //   },
 
-    {
-      url: profileData?.profile_image ? server + profileData.profile_image : "",
-      type: "image",
-      duration: 5000,
-      heading: `${profileData?.first_name} ${profileData?.last_name}`,
-      subheading: "هم اکنون",
-      profileImage: profileData?.profile_image
-        ? server + profileData.profile_image
-        : "",
-      description: "این یک توضیح برای استوری است"
-    },
-  ];
+  //   {
+  //     url: profileData?.profile_image ? server + profileData.profile_image : "",
+  //     type: "image",
+  //     duration: 5000,
+  //     heading: `${profileData?.first_name} ${profileData?.last_name}`,
+  //     subheading: "هم اکنون",
+  //     profileImage: profileData?.profile_image
+  //       ? server + profileData.profile_image
+  //       : "",
+  //     description: "این یک توضیح برای استوری است"
+  //   },
+  // ];
 
   return (
     <>
@@ -151,7 +151,7 @@ const UserAvatar = () => {
         ) : null}
 
         <div className="relative" ref={dropdownRef}>
-          <div
+          {/* <div
             style={{
               border: "3px solid #e1306c",
               borderRadius: "50%",
@@ -160,19 +160,21 @@ const UserAvatar = () => {
             }}
             onClick={(e) => {
               e.stopPropagation();
-              setShowStories(true);
+              // setShowStories(true);
             }}
           >
-            <Avatar
-              alt="Remy Sharp"
-              src={
-                profileData?.profile_image
-                  ? server + profileData?.profile_image
-                  : undefined
-              }
-              sx={{ backgroundColor: "#041685" }}
-            />
-          </div>
+           
+          </div> */}
+
+          <Avatar
+            alt="Remy Sharp"
+            src={
+              profileData?.profile_image
+                ? server + profileData?.profile_image
+                : undefined
+            }
+            sx={{ backgroundColor: "#041685" }}
+          />
 
           <AnimatePresence>
             {isOpen && (
@@ -216,7 +218,7 @@ const UserAvatar = () => {
           </AnimatePresence>
         </div>
       </div>
-
+      {/* 
       {showStories && (
         <div
           onClick={handleStoriesEnd}
@@ -254,7 +256,7 @@ const UserAvatar = () => {
             />
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };
