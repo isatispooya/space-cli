@@ -5,7 +5,7 @@ import { LuCoins } from "react-icons/lu";
 import { TbSeeding } from "react-icons/tb";
 import { useState } from "react";
 import { Button, ButtonGroup } from "@mui/material";
-import { formatNumber } from "../../../utils"; 
+import { formatNumber } from "../../../utils";
 
 const COLORS = {
   primary: {
@@ -31,7 +31,10 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
 
   return (
     <>
-      <div dir="rtl" className="mb-8 flex items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-2xl shadow-lg border border-gray-200">
+      <div
+        dir="rtl"
+        className="mb-8 flex items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-2xl shadow-lg border border-gray-200"
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -154,20 +157,25 @@ const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
               )}
             </div>
 
-            {item.link && (
-              <div className="flex justify-center w-full">
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full"
+            <div className="flex justify-center w-full">
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full"
+              >
+                <button
+                  disabled={item.comming_soon}
+                  className={`mt-2 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors duration-300 w-full ${
+                    item.comming_soon
+                      ? "bg-gray-400 hover:bg-gray-400"
+                      : "bg-[#58d68d] hover:bg-[#2ecc71]"
+                  }`}
                 >
-                  <button className="mt-2 bg-[#58d68d] text-white font-bold py-2 px-4 rounded-lg text-sm hover:bg-[#2ecc71] transition-colors duration-300 w-full">
-                    {item.status ? "رفت به ماموریت" : "به زودی"}
-                  </button>
-                </a>
-              </div>
-            )}
+                  {item.comming_soon ? "به زودی" : "رفتن به ماموریت"}
+                </button>
+              </a>
+            </div>
           </motion.div>
         ))}
       </div>

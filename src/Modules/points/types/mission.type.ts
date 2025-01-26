@@ -9,4 +9,5 @@ export interface MissionTypes {
   link: string;
   status: string;
   user_attempts: number;
+  comming_soon: boolean;
 }
