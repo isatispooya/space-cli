@@ -101,7 +101,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
         id: selectedGift.id,
         gift: selectedGift.id,
         description: selectedGift.description,
-        amount: selectedGift.is_repetitive ? 1 : Number(amount),
+        amount: selectedGift.is_repetitive ? Number(amount) : 1,
       });
       setOpen(false);
     }
