@@ -70,8 +70,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  console.log(remainPoints, "123456789");
-
   const options = ["همه", "کراد", "صنایع مفتول"];
   const optionTypes = ["all", "crowd", "ipmill"] as const;
 
@@ -163,8 +161,8 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
 
     const coinFilter =
       filterTypeCoin === "all" ||
-      (filterTypeCoin === "crowd" && item.id === 1) ||
-      (filterTypeCoin === "ipmill" && item.id === 6);
+      (filterTypeCoin === "crowd" && false) ||
+      (filterTypeCoin === "ipmill" && (item.id === 6 || item.id === 1));
 
     return seedFilter && coinFilter;
   });

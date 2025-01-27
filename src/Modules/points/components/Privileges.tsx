@@ -48,7 +48,7 @@ const PrivilegesComponent = () => {
   });
 
   return (
-    <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
+    <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
       <div className="overflow-x-auto">
         <TabulatorTable
           data={mappedData || []}
