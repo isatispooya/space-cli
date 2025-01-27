@@ -23,9 +23,10 @@ const PrivilegesComponent = () => {
     },
   ];
 
+
   const mappedData = data?.map((item: PrivilegesTypes) => ({
-    point_1: item?.mission_detail.point_1 * item.amount,
-    point_2: item?.mission_detail.point_2 * item.amount,
+    point_1: item?.mission_detail?.point_1 * item.amount,
+    point_2: item?.mission_detail?.point_2 * item.amount,
     created_at: item.created_at,
     description: item.description,
     id: item.id,
@@ -43,8 +44,8 @@ const PrivilegesComponent = () => {
     ماموریت: item.mission,
     کاربر: item.user_detail?.first_name,
     شماره_تماس: item?.user_detail?.mobile,
-    سکه: item?.mission_detail.point_1 * item.amount,
-    بذر: item?.mission_detail.point_2 * item.amount,
+    سکه: item.mission_detail?.point_1 * item.amount,
+    بذر: item.mission_detail?.point_2 * item.amount,
   });
 
   return (
