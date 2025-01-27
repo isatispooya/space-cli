@@ -421,6 +421,24 @@ const TimeFlowCreatePage = lazy(() =>
   }))
 );
 
+const BuyInsuranceMain = lazy(() =>
+  import("../Modules/insurance").then((module) => ({
+    default: module.BuyInsuranceMain,
+  }))
+);
+
+const BuyInsuranceTable = lazy(() =>
+  import("../Modules/insurance").then((module) => ({
+    default: module.BuyInsuranceTable,
+  }))
+);
+
+const BuyInsuranceCreate = lazy(() =>
+  import("../Modules/insurance").then((module) => ({
+    default: module.BuyInsurancePage,
+  }))
+);
+
 const EmploymentsMainPage = lazy(() =>
   import("../Modules/employments").then((module) => ({
     default: module.EmploymentsMainPage,
@@ -767,7 +785,6 @@ export default function Router() {
           ),
         },
       ],
-      
     },
     {
       path: "/precendence/print/:id",
@@ -1110,6 +1127,33 @@ export default function Router() {
           element: (
             <Suspense fallback={<Loader />}>
               <EmploymentsProcessCreatePage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+
+    {
+      path: "/insurance",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <BuyInsuranceMain />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <BuyInsuranceTable />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <BuyInsuranceCreate />
             </Suspense>
           ),
         },

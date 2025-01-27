@@ -164,12 +164,12 @@ export const menuItems: MenuItem[] = [
     title: "فرایند استخدامی",
     path: "/employmentsprocess",
     icon: FaUserTie,
-    codename: ["allow_anyy"],
+    codename: ["allow_any"],
     submenu: [
       {
         title: "فرایند های",
         path: "/employmentsprocess/table",
-        codename: ["allow_anyy"],
+        codename: ["allow_any"],
       },
     ],
   },
@@ -186,6 +186,26 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
+
+  {
+    title: "درخواست خرید بیمه ",
+    path: "/insurance",
+    icon: FaClockRotateLeft,
+    codename: ["allow_any"],
+    submenu: [
+      {
+        title: "مدیریت درخواست بیمه ",
+        path: "/insurance",
+        codename: ["allow_any"],
+      },
+      // {
+      //   title: "درخواست بیمه ",
+      //   path: "/insurance/requestinsurance",
+      //   codename: ["allow_any"],
+      // },
+    ],
+  },
+
   {
     title: "باشگاه مشتریان",
     path: "/invitation",
