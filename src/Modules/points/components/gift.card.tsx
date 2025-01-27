@@ -616,18 +616,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             }}
           >
             قرارداد
-            <Button
-              onClick={handleCloseContractDialog}
-              sx={{
-                position: "absolute",
-                right: 16,
-                top: 16,
-                color: "#64748b",
-                "&:hover": { bgcolor: "#f1f5f9" },
-              }}
-            >
-              بستن
-            </Button>
           </DialogTitle>
           <DialogContent sx={{ p: 4 }}>
             <p className="text-gray-600">
