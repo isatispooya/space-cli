@@ -8,6 +8,8 @@ import moment from "moment-jalaali";
 const PrivilegesComponent = () => {
   const { data } = usePoint.useGetPoint();
 
+  console.log("Raw Data from API:", data);
+
   const columns = (): ColumnDefinition[] => [
     { title: "نام", field: "user_first_name" },
     { title: "نام خانوادگی", field: "user_last_name" },
@@ -23,30 +25,36 @@ const PrivilegesComponent = () => {
     },
   ];
 
-
-  const mappedData = data?.map((item: PrivilegesTypes) => ({
-    point_1: item?.mission_detail?.point_1 * item.amount,
-    point_2: item?.mission_detail?.point_2 * item.amount,
-    created_at: item.created_at,
-    description: item.description,
-    id: item.id,
-    mission: item.mission_detail.display_name,
-    user_first_name: item.user_detail?.first_name,
-    user_last_name: item.user_detail?.last_name,
-    user_phone: item?.user_detail?.mobile,
-  }));
-
-  const ExelData = (item: PrivilegesTypes) => ({
-    مقدار: item.amount,
-    تاریخ_ایجاد: item.created_at,
-    توضیحات: item.description,
-    شناسه: item.id,
-    ماموریت: item.mission,
-    کاربر: item.user_detail?.first_name,
-    شماره_تماس: item?.user_detail?.mobile,
-    سکه: item.mission_detail?.point_1 * item.amount,
-    بذر: item.mission_detail?.point_2 * item.amount,
+  const mappedData = data?.map((item: PrivilegesTypes) => {
+    console.log("Mapping Item:", item);
+    return {
+      point_1: (item?.mission_detail?.point_1 || 0) * (item.amount || 0),
+      point_2: (item?.mission_detail?.point_2 || 0) * (item.amount || 0),
+      created_at: item.created_at,
+      description: item.description,
+      id: item.id,
+      mission: item.mission_detail.display_name,
+      user_first_name: item.user_detail?.first_name,
+      user_last_name: item.user_detail?.last_name,
+      user_phone: item?.user_detail?.mobile,
+    };
   });
+  console.log("Mapped Data:", mappedData);
+
+  const ExelData = (item: PrivilegesTypes) => {
+    console.log("Formatting Item for Excel:", item);
+    return {
+      مقدار: item.amount || 0,
+      تاریخ_ایجاد: item.created_at || "نامشخص",
+      توضیحات: item.description || "بدون توضیحات",
+      شناسه: item.id || "نامشخص",
+      ماموریت: item.mission || "نامشخص",
+      کاربر: item.user_detail?.first_name || "نامشخص",
+      شماره_تماس: item?.user_detail?.mobile || "نامشخص",
+      سکه: Number(item.mission_detail?.point_1 || 0) * Number(item.amount || 0),
+      بذر: Number(item.mission_detail?.point_2 || 0) * Number(item.amount || 0),
+    };
+  };
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
