@@ -12,6 +12,8 @@ import {
   TextField,
   ButtonGroup,
   Popper,
+  DialogActions,
+  Snackbar,
 } from "@mui/material";
 import * as React from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -22,6 +24,8 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { formatNumber } from "../../../utils";
 import { Link } from "react-router-dom";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+
 
 interface GiftCardProps {
   gifts: GiftTypes[];
@@ -37,6 +41,7 @@ interface SelectedGift {
   id: string;
   description: string;
   is_repetitive: boolean;
+  contract: string;
 }
 
 const COLORS = {
@@ -55,6 +60,14 @@ const COLORS = {
   },
 } as const;
 
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<string>("");
@@ -69,22 +82,27 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [openMenu, setOpenMenu] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-
   const options = ["همه", "کراد", "صنایع مفتول"];
   const optionTypes = ["all", "crowd", "ipmill"] as const;
+  const [openContractDialog, setOpenContractDialog] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
 
   const handleMutate = (
     id: string,
-    description: string,
+    _description: string,
     isRepetitive: boolean
   ) => {
-    setSelectedGift({
-      id,
-      description,
-      is_repetitive: Boolean(isRepetitive),
-    });
-    setAmount(isRepetitive ? "0" : "");
-    setOpen(true);
+    const gift = gifts.find((g) => g.id.toString() === id);
+    if (gift) {
+      setSelectedGift({
+        id: gift.id.toString(),
+        description: gift.description,
+        is_repetitive: Boolean(isRepetitive),
+        contract: gift.contract,
+      });
+      setAmount(isRepetitive ? "0" : "");
+      setOpen(true);
+    }
   };
 
   const formatNumbers = (num: number | undefined) => {
@@ -187,6 +205,22 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
       return;
     }
     setOpenMenu(false);
+  };
+
+  const handleOpenContractDialog = () => {
+    setOpenContractDialog(true);
+  };
+
+  const handleCloseContractDialog = () => {
+    setOpenContractDialog(false);
+  };
+
+  const handleConfirmClick = () => {
+    if (openContractDialog) {
+      setOpenToast(true);
+    } else {
+      confirmMutation();
+    }
   };
 
   return (
@@ -361,7 +395,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                 key={index}
                 className="relative flex flex-col items-center bg-white border-2 border-gray-300 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 w-full h-auto flex-grow min-h-[300px]"
               >
-                {/* First div - Gift details */}
                 <div className="flex mb-10 flex-col items-center">
                   <h2 className="text-lg font-bold text-gray-800 mb-2 text-center">
                     {item.display_name}
@@ -375,8 +408,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                     {item.description}
                   </p>
                 </div>
-
-                {/* Second div - Points and button */}
                 <div className="flex mt-10 flex-col flex-grow">
                   {!(item.point_1 === 0 && item.point_2 === 0) && (
                     <div className="flex flex-col space-y-3 p-4 bg-white rounded-lg shadow-md hover:shadow-md transition-shadow duration-200">
@@ -437,7 +468,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
           );
         })}
       </div>
-
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
@@ -526,6 +556,16 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             />
           )}
 
+          {selectedGift?.contract && (
+            <Button
+              onClick={handleOpenContractDialog}
+              variant="outlined"
+              sx={{ mt: 2 }}
+            >
+              نمایش قرارداد
+            </Button>
+          )}
+
           <div className="flex justify-end gap-3 mt-8">
             <Button
               onClick={() => setOpen(false)}
@@ -537,18 +577,80 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
               انصراف
             </Button>
             <Button
-              onClick={confirmMutation}
+              onClick={handleConfirmClick}
               variant="contained"
               sx={{
                 bgcolor: "#5677BC",
                 "&:hover": { bgcolor: "#4C6AAF" },
                 boxShadow: "none",
               }}
+              disabled={openContractDialog}
             >
               تایید
             </Button>
           </div>
         </DialogContent>
+
+        {/* Contract Dialog */}
+        <Dialog
+          open={openContractDialog}
+          onClose={handleCloseContractDialog}
+          dir="rtl"
+          PaperProps={{
+            sx: {
+              borderRadius: "16px",
+              width: "90%",
+              maxWidth: "600px",
+              bgcolor: "#ffffff",
+              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{
+              textAlign: "center",
+              fontSize: "1.25rem",
+              fontWeight: 600,
+              color: "#2c3e50",
+              py: 3,
+            }}
+          >
+            قرارداد
+            <Button
+              onClick={handleCloseContractDialog}
+              sx={{
+                position: "absolute",
+                right: 16,
+                top: 16,
+                color: "#64748b",
+                "&:hover": { bgcolor: "#f1f5f9" },
+              }}
+            >
+              بستن
+            </Button>
+          </DialogTitle>
+          <DialogContent sx={{ p: 4 }}>
+            <p className="text-gray-600">
+              {selectedGift?.contract || "قراردادی برای این هدیه موجود نیست."}
+            </p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseContractDialog} color="primary">
+              بستن
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Toast notification for contract reminder */}
+        <Snackbar
+          open={openToast}
+          autoHideDuration={3000}
+          onClose={() => setOpenToast(false)}
+        >
+          <Alert onClose={() => setOpenToast(false)} severity="info">
+            لطفا قرارداد را بخوانید.
+          </Alert>
+        </Snackbar>
       </Dialog>
     </>
   );

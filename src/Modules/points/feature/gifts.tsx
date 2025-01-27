@@ -25,14 +25,12 @@ const Gifts = () => {
           status: mission.status,
           user_attempts: mission.user_attempts,
           is_repetitive: mission.is_repetitive,
-        }))
+          contract: mission.contract,
+        }))   
       : []),
   ];
 
-  console.log(
-    "Mapped gifts data:",
-    giftsData.map((g) => ({ id: g.id, is_repetitive: g.is_repetitive }))
-  );
+  console.log(gifts, "#######");
 
   return (
     <div>
