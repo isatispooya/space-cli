@@ -10,6 +10,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from "@mui/icons-material/Pending";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import "./style.css";
 
 interface NotificationMessage {
   id: number;
@@ -49,7 +50,10 @@ const NotificationComponent = React.forwardRef<
 
   const filteredMessages = messages
     .filter((msg) => (activeTab === "unread" ? !msg.read : true))
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
 
   const handleReadAll = () => {
     const unreadMessages = messages.filter((msg) => !msg.read);
@@ -96,7 +100,7 @@ const NotificationComponent = React.forwardRef<
   };
 
   return (
-    <div ref={ref} >
+    <div ref={ref}>
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, height: 0 }}
@@ -151,6 +155,7 @@ const NotificationComponent = React.forwardRef<
               </button>
             </div>
             <ul
+              className="custom-scrollbar"
               style={{
                 minHeight: "300px",
                 maxHeight: "300px",
