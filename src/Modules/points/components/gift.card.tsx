@@ -26,7 +26,6 @@ import { formatNumber } from "../../../utils";
 import { Link } from "react-router-dom";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
-
 interface GiftCardProps {
   gifts: GiftTypes[];
   postGift: (data: {
@@ -60,7 +59,6 @@ const COLORS = {
   },
 } as const;
 
-
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
   ref
@@ -86,6 +84,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const optionTypes = ["all", "crowd", "ipmill"] as const;
   const [openContractDialog, setOpenContractDialog] = useState(false);
   const [openToast, setOpenToast] = useState(false);
+  const [isButtonVisible, setIsButtonVisible] = useState(false);
 
   const handleMutate = (
     id: string,
@@ -185,8 +184,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
     return seedFilter && coinFilter;
   });
 
-  console.log(filteredGifts);
-
   const handleMenuItemClick = (index: number) => {
     setSelectedIndex(index);
     setFilterTypeCoin(optionTypes[index] as "all" | "crowd" | "ipmill");
@@ -207,19 +204,22 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
     setOpenMenu(false);
   };
 
-  const handleOpenContractDialog = () => {
-    setOpenContractDialog(true);
-  };
+  const handleOpenContractDialog = () => {};
 
   const handleCloseContractDialog = () => {
     setOpenContractDialog(false);
   };
 
   const handleConfirmClick = () => {
-    if (openContractDialog) {
-      setOpenToast(true);
+    if (isButtonVisible) {
+      if (openContractDialog) {
+        setOpenToast(true);
+      } else {
+        confirmMutation();
+      }
     } else {
-      confirmMutation();
+      setIsButtonVisible(true);
+      setOpenContractDialog(true);
     }
   };
 
