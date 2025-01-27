@@ -11,20 +11,20 @@ import {
   Button,
   TextField,
   ButtonGroup,
-  Popper,
+
   DialogActions,
   Snackbar,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+
 } from "@mui/material";
 import * as React from "react";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
 import { formatNumber } from "../../../utils";
 import { Link } from "react-router-dom";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 interface GiftCardProps {
   gifts: GiftTypes[];
@@ -77,8 +77,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
     "all" | "crowd" | "ipmill"
   >("all");
   const { data: remainPoints } = useRemainPoints();
-  const [openMenu, setOpenMenu] = React.useState(false);
-  const anchorRef = React.useRef<HTMLDivElement>(null);
+
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const options = ["همه", "کراد", "صنایع مفتول"];
   const optionTypes = ["all", "crowd", "ipmill"] as const;
@@ -187,24 +186,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const handleMenuItemClick = (index: number) => {
     setSelectedIndex(index);
     setFilterTypeCoin(optionTypes[index] as "all" | "crowd" | "ipmill");
-    setOpenMenu(false);
   };
-
-  const handleToggle = () => {
-    setOpenMenu((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event: Event) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-    setOpenMenu(false);
-  };
-
-  const handleOpenContractDialog = () => {};
 
   const handleCloseContractDialog = () => {
     setOpenContractDialog(false);
@@ -227,153 +209,101 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
     <>
       <div
         dir="rtl"
-        className="mb-8 flex items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-2xl shadow-lg border border-gray-200"
+        className="mb-8 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-2xl shadow-lg border border-gray-200"
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="w-full max-w-md mx-auto"
+          className="flex-grow flex justify-center"
         >
-          <div className="flex justify-center">
-            <div className="flex justify-center w-full">
-              <ButtonGroup
-                variant="contained"
-                aria-label="filter buttons"
-                size="large"
-                disableElevation
-                sx={{
-                  "& .MuiButton-root": {
-                    fontSize: "1.25rem",
-                    padding: "10px 30px",
-                    fontWeight: "bold",
-                    border: "none",
-                    background: COLORS.primary.light,
-                    minHeight: "60px",
-                    "&.selected": {
-                      background: COLORS.primary.main,
-                      boxShadow: "inset 0 3px 6px rgba(0, 0, 0, 0.2)",
-                      opacity: 1,
-                      transform: "scale(1.02)",
-                    },
-                    "&:not(.selected)": {
-                      opacity: 0.9,
-                    },
-                    "&:hover": {
-                      background: COLORS.primary.main,
-                      transform: "translateY(-2px) scale(1.01)",
-                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                    },
-                    transition: "all 0.3s ease",
-                    display: "flex",
-                    alignItems: "center",
-                    "& svg": {
-                      fontSize: "1.75rem",
-                    },
-                  },
-                  "& .MuiButtonGroup-grouped:not(:last-of-type)": {
-                    borderRight: "1px solid rgba(255, 255, 255, 0.2)",
-                  },
-                  "& .MuiButton-root:first-of-type": {
-                    borderRadius: "12px 0 0 12px",
-                  },
-                  "& .MuiButton-root:last-of-type": {
-                    borderRadius: "0 12px 12px 0",
-                  },
-                }}
-              >
-                <Button
-                  onClick={() => setFilterTypeSeed("seed")}
-                  className={filterTypeSeed === "seed" ? "selected" : ""}
-                >
-                  <TbSeeding className="text-xl" />
-                  بذر
-                </Button>
-                <Button
-                  onClick={() => setFilterTypeSeed("coin")}
-                  className={filterTypeSeed === "coin" ? "selected" : ""}
-                >
-                  <LuCoins className="text-xl" />
-                  سکه
-                </Button>
-              </ButtonGroup>
-            </div>
-          </div>
+          <ButtonGroup
+            variant="contained"
+            aria-label="filter buttons"
+            size="large"
+            disableElevation
+            sx={{
+              "& .MuiButton-root": {
+                fontSize: "1.25rem",
+                padding: "10px 30px",
+                fontWeight: "bold",
+                border: "none",
+                background: COLORS.primary.light,
+                minHeight: "60px",
+                "&.selected": {
+                  background: COLORS.primary.main,
+                  boxShadow: "inset 0 3px 6px rgba(0, 0, 0, 0.2)",
+                  opacity: 1,
+                  transform: "scale(1.02)",
+                },
+                "&:not(.selected)": {
+                  opacity: 0.9,
+                },
+                "&:hover": {
+                  background: COLORS.primary.main,
+                  transform: "translateY(-2px) scale(1.01)",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                },
+                transition: "all 0.3s ease",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                "& svg": {
+                  fontSize: "1.75rem",
+                },
+              },
+              "& .MuiButtonGroup-grouped:not(:last-of-type)": {
+                borderRight: "1px solid rgba(255, 255, 255, 0.2)",
+              },
+              "& .MuiButton-root:first-of-type": {
+                borderRadius: "12px 0 0 12px",
+              },
+              "& .MuiButton-root:last-of-type": {
+                borderRadius: "0 12px 12px 0",
+              },
+            }}
+          >
+            <Button
+              onClick={() => setFilterTypeSeed("coin")}
+              className={filterTypeSeed === "coin" ? "selected" : ""}
+            >
+              <LuCoins className="text-xl" />
+              سکه
+            </Button>
+            <Button
+              onClick={() => setFilterTypeSeed("seed")}
+              className={filterTypeSeed === "seed" ? "selected" : ""}
+            >
+              <TbSeeding className="text-xl" />
+              بذر
+            </Button>
+          </ButtonGroup>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="w-full max-w-md"
+          className="flex justify-start flex-wrap"
         >
-          <div className="flex justify-end">
-            <ButtonGroup
-              variant="outlined"
-              ref={anchorRef}
-              aria-label="Button group with a nested menu"
-              sx={{
-                "& .MuiButton-root": {
-                  fontSize: "1rem",
-                  fontWeight: "bold",
-                },
+          <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+            <InputLabel id="filter-select-label">نوع فیلتر</InputLabel>
+            <Select
+              labelId="filter-select-label"
+              value={options[selectedIndex]}
+              onChange={(event: SelectChangeEvent) => {
+                const index = options.indexOf(event.target.value);
+                handleMenuItemClick(index);
               }}
+              label="نوع فیلتر"
             >
-              <Button
-                onClick={() =>
-                  setFilterTypeCoin(
-                    optionTypes[selectedIndex] as "all" | "crowd" | "ipmill"
-                  )
-                }
-              >
-                {options[selectedIndex]}
-              </Button>
-              <Button
-                size="small"
-                aria-controls={openMenu ? "split-button-menu" : undefined}
-                aria-expanded={openMenu ? "true" : undefined}
-                aria-label="select filter type"
-                aria-haspopup="menu"
-                onClick={handleToggle}
-              >
-                <ArrowDropDownIcon />
-              </Button>
-            </ButtonGroup>
-            <Popper
-              sx={{ zIndex: 1 }}
-              open={openMenu}
-              anchorEl={anchorRef.current}
-              role={undefined}
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === "bottom" ? "center top" : "center bottom",
-                  }}
-                >
-                  <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList id="split-button-menu" autoFocusItem>
-                        {options.map((option, index) => (
-                          <MenuItem
-                            key={option}
-                            selected={index === selectedIndex}
-                            onClick={() => handleMenuItemClick(index)}
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
-          </div>
+              {options.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </motion.div>
       </div>
 
@@ -554,16 +484,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
                 },
               }}
             />
-          )}
-
-          {selectedGift?.contract && (
-            <Button
-              onClick={handleOpenContractDialog}
-              variant="outlined"
-              sx={{ mt: 2 }}
-            >
-              نمایش قرارداد
-            </Button>
           )}
 
           <div className="flex justify-end gap-3 mt-8">
