@@ -134,7 +134,7 @@ const Header = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              marginRight: "-4px",
+              marginRight: "10px",
             }}
             badgeContent={unreadCount}
             color="error"
