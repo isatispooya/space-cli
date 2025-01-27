@@ -1,13 +1,17 @@
-import { useEffect, useRef } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useMemo, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Swiper as SwiperClass } from "swiper/types";
+
 import "swiper/css/autoplay";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../styles/slider.css";
 import { FaShareAlt } from "react-icons/fa";
+import { useInvitation } from "../../invitation/hooks";
+import { useProfile } from "../../userManagment";
 
 export interface SlideItem {
   id: number;
@@ -22,6 +26,25 @@ interface DashboardSliderProps {
 
 const DashboardSlider = ({ slides }: DashboardSliderProps) => {
   const swiperRef = useRef<SwiperClass>();
+
+  const { data: invitation } = useInvitation.useGetCodes();
+  const { data: profile } = useProfile();
+
+  console.log("invitation", invitation);
+
+  const filteredInvitationCode = useMemo(() => {
+    if (!Array.isArray(invitation) || !profile?.uniqueIdentifier) {
+      return null;
+    }
+
+    const foundInvitation = invitation.find(
+      (item: any) =>
+        item.introducer_user_detail?.uniqueIdentifier ===
+        profile.uniqueIdentifier
+    );
+
+    return foundInvitation ? foundInvitation.code : null;
+  }, [invitation, profile]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -38,11 +61,18 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
   }
 
   const handleShare = async (slide: SlideItem) => {
+    const code = filteredInvitationCode;
+
+    if (!code) {
+      console.error("Invitation code is undefined");
+      return;
+    }
+
     try {
       const shareData = {
         title: slide.title,
-        text: `${slide.title}\n\nhttps://my.isatispooya.com/underwriting/description`,
-        url: `https://my.isatispooya.com/underwriting/description`,
+        text: `${slide.title}\n\nmy.isatispooya.com/login?rf=${code}`,
+        url: `my.isatispooya.com/login?rf=${code}`,
       };
 
       if (navigator.share) {
@@ -131,7 +161,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
             <div className="absolute bottom-2 right-0 left-0 lg:left-5 lg:right-5 lg:bottom-2 md:bottom-2 md:left-4 md:right-4 sm:left-3 sm:right-3 z-10 flex justify-center lg:justify-start md:justify-start sm:justify-start ">
               <button
                 onClick={() => handleShare(slide)}
-                className="flex items-center bg-white px-3 py-1 rounded-full tour-share-dashboard "
+                className="flex items-center bg-white px-3 py-1 rounded-full tour-share-dashboard cursor-pointer"
               >
                 <FaShareAlt className="text-base sm:text-lg md:text-xl text-green-600" />
                 اشتراک گذاری

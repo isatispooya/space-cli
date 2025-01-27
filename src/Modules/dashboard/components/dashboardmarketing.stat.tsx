@@ -29,8 +29,8 @@ const DashboardMarketingStat = () => {
   const [copied, setCopied] = useState(false);
   const { data: remainPoints } = useRemainPoints();
   const { data: invitation } = useInvitation.useGetCodes();
-  const { data: invitedUsers } = useInvitation.useGetList();
   const { data: profile } = useProfile();
+  const { data: invitedUsers } = useInvitation.useGetList();
 
   const invitedUserFiltered = useMemo(() => {
     if (!Array.isArray(invitedUsers) || !profile?.uniqueIdentifier) {
