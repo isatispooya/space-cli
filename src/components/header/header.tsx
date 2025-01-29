@@ -10,20 +10,18 @@ import { useState, useRef, useEffect } from "react";
 import { useCorrespondencesData } from "../notification/hook/notification.get";
 import { useNavigate } from "react-router-dom";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import { Divider } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { useRemainPoints } from "../../Modules/points";
 import NotificationComponent from "../notification/notification";
 import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
-// import Story from "../story/story";
 
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
   const { toggleSidebar } = useSidebarStore();
-  const { data: remainPoints } = useRemainPoints();
 
+  const { data: remainPoints } = useRemainPoints();
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationIconRef = useRef<SVGSVGElement>(null);
@@ -67,18 +65,6 @@ const Header = () => {
     };
   }, []);
 
-  // const storyData = [
-  //   {
-  //     url: "",
-  //     type: "image",
-  //     duration: 5000,
-  //     heading: "عنوان",
-  //     subheading: "هم اکنون",
-  //     profileImage: LogoWhite,
-  //     description: "این یک توضیح برای استوری است"
-  //   }
-  // ];
-
   return (
     <header>
       <nav
@@ -90,12 +76,14 @@ const Header = () => {
           <div className="flex items-center">
             <div className="max-w-xs h-14 flex items-center">
               <div className="flex bg- h-full items-center justify-center  ">
-                <p
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={toggleSidebar}
-                  className="text-4xl lg:text-4xl md:text-3xl xs:text-2xl cursor-pointer text-blue-900 hover:text-blue-900 transition-colors duration-200"
+                  className="text-4xl tour-dashboard-menu lg:text-4xl md:text-3xl xs:text-2xl cursor-pointer text-blue-900 hover:text-blue-900 transition-colors duration-200"
                 >
                   <FiMenu />
-                </p>
+                </motion.div>
               </div>
               <div className="max-w-xs h-14 flex items-center">
                 <motion.div
@@ -105,11 +93,7 @@ const Header = () => {
                   className="flex items-center cursor-pointer"
                   onClick={() => navigate("/")}
                 >
-                  <img
-                    src={LogoWhite}
-                    className="w-20 hidden lg:block"
-                    alt="logo"
-                  />
+                  <img src={LogoWhite} className="w-20" alt="logo" />
                   <img
                     src={LogoText}
                     className="w-40 hidden lg:block"
@@ -124,44 +108,37 @@ const Header = () => {
             id="navbarSupportedContentY"
             data-twe-collapse-item
           ></div>
-
-          {/* <Story storyData={storyData} /> */}
-
-          <Badge
-            sx={{
-              position: "relative",
-              zIndex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginRight: "10px",
-            }}
-            badgeContent={unreadCount}
-            color="error"
-          >
-            <NotificationsNoneIcon
-              ref={notificationIconRef}
-              onClick={toggleNotifications}
-              sx={{
-                transform: "scale(1.1)",
-                transition: "transform 0.2s",
-                borderRadius: "50%",
-
-                cursor: "pointer",
-                color: "#041685",
-              }}
-            />
-          </Badge>
-
-          <Divider
-            orientation="vertical"
-            flexItem
-            sx={{
-              mx: "4px",
-            }}
-          />
-
           <div className="flex items-center justify-start relative xs:mr-1 lg:mx-4">
+            <Badge
+              sx={{
+                position: "relative",
+                zIndex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: "8px",
+              }}
+              badgeContent={unreadCount}
+              color="error"
+            >
+              <NotificationsNoneIcon
+                ref={notificationIconRef}
+                onClick={toggleNotifications}
+                sx={{
+                  transform: "scale(1.1)",
+                  transition: "transform 0.2s",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                  color: "#041685",
+                }}
+              />
+            </Badge>
+
+            <div className="mr-5">
+              {showNotifications && (
+                <NotificationComponent ref={notificationRef} />
+              )}
+            </div>
             <div className="flex flex-col items-end hover:cursor-pointer tour-header-points">
               <Tooltip title="سکه" placement="bottom" arrow>
                 <span
@@ -187,10 +164,6 @@ const Header = () => {
                 </span>
               </Tooltip>
             </div>
-
-            {showNotifications && (
-              <NotificationComponent ref={notificationRef} />
-            )}
 
             <div className="flex items-center tour-header-profile">
               <UserAvatar />
