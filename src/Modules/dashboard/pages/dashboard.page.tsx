@@ -36,8 +36,8 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
-      <DashboardTour runTour={runTour} onTourEnd={handleTourEnd} />      <TimeFlowList items={[]} />
-
+      <DashboardTour runTour={runTour} onTourEnd={handleTourEnd} />{" "}
+      <TimeFlowList items={[]} />
       <div className="container mx-auto px-4 py-2 relative">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
           <div className="lg:col-span-3 space-y-4 lg:space-y-6">
