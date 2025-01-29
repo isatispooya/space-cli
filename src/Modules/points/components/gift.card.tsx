@@ -70,9 +70,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<string>("");
   const [selectedGift, setSelectedGift] = useState<SelectedGift | null>(null);
-  const [filterTypeSeed, setFilterTypeSeed] = useState<"all" | "coin" | "seed">(
-    "seed"
-  );
+  const [filterTypeSeed, setFilterTypeSeed] = useState<string | null>(null);
   const [filterTypeCoin, setFilterTypeCoin] = useState<
     "all" | "crowd" | "ipmill"
   >("all");
@@ -83,9 +81,10 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [openContractDialog, setOpenContractDialog] = useState(false);
   const [openToast, setOpenToast] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<{ [key: string]: boolean }>(
-    {}
-  );
+  const [openDropdown, setOpenDropdown] = useState({
+    coin: false,
+    seed: false,
+  });
   const anchorRefCoin = React.useRef<HTMLButtonElement>(null);
   const anchorRefSeed = React.useRef<HTMLButtonElement>(null);
 
@@ -293,75 +292,85 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
               </Button>
             </ButtonGroup>
 
-            <Popper
-              open={openDropdown.coin}
-              anchorEl={anchorRefCoin.current}
-              transition
-            >
-              {({ TransitionProps }) => (
-                <Grow {...TransitionProps} timeout={350}>
-                  <Paper>
-                    <ClickAwayListener
-                      onClickAway={() =>
-                        setOpenDropdown((prev) => ({ ...prev, coin: false }))
-                      }
-                    >
-                      <MenuList>
-                        {options.map((option, index) => (
-                          <MenuItem
-                            key={option}
-                            onClick={() => {
-                              handleMenuItemClick(index);
-                              setOpenDropdown((prev) => ({
-                                ...prev,
-                                coin: false,
-                              }));
-                            }}
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
+            {filterTypeSeed && (
+              <>
+                <Popper
+                  open={openDropdown.coin}
+                  anchorEl={anchorRefCoin.current}
+                  transition
+                >
+                  {({ TransitionProps }) => (
+                    <Grow {...TransitionProps} timeout={350}>
+                      <Paper>
+                        <ClickAwayListener
+                          onClickAway={() =>
+                            setOpenDropdown((prev) => ({
+                              ...prev,
+                              coin: false,
+                            }))
+                          }
+                        >
+                          <MenuList>
+                            {options.map((option, index) => (
+                              <MenuItem
+                                key={option}
+                                onClick={() => {
+                                  handleMenuItemClick(index);
+                                  setOpenDropdown((prev) => ({
+                                    ...prev,
+                                    coin: false,
+                                  }));
+                                }}
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
 
-            <Popper
-              open={openDropdown.seed}
-              anchorEl={anchorRefSeed.current}
-              transition
-            >
-              {({ TransitionProps }) => (
-                <Grow {...TransitionProps} timeout={350}>
-                  <Paper>
-                    <ClickAwayListener
-                      onClickAway={() =>
-                        setOpenDropdown((prev) => ({ ...prev, seed: false }))
-                      }
-                    >
-                      <MenuList>
-                        {options.map((option, index) => (
-                          <MenuItem
-                            key={option}
-                            onClick={() => {
-                              handleMenuItemClick(index);
-                              setOpenDropdown((prev) => ({
-                                ...prev,
-                                seed: false,
-                              }));
-                            }}
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
+                <Popper
+                  open={openDropdown.seed}
+                  anchorEl={anchorRefSeed.current}
+                  transition
+                >
+                  {({ TransitionProps }) => (
+                    <Grow {...TransitionProps} timeout={350}>
+                      <Paper>
+                        <ClickAwayListener
+                          onClickAway={() =>
+                            setOpenDropdown((prev) => ({
+                              ...prev,
+                              seed: false,
+                            }))
+                          }
+                        >
+                          <MenuList>
+                            {options.map((option, index) => (
+                              <MenuItem
+                                key={option}
+                                onClick={() => {
+                                  handleMenuItemClick(index);
+                                  setOpenDropdown((prev) => ({
+                                    ...prev,
+                                    seed: false,
+                                  }));
+                                }}
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </>
+            )}
           </div>
         </motion.div>
       </div>
