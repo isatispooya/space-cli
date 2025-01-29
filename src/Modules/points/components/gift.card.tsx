@@ -11,20 +11,20 @@ import {
   Button,
   TextField,
   ButtonGroup,
-
   DialogActions,
   Snackbar,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
-
+  Popper,
+  Grow,
+  Paper,
+  ClickAwayListener,
+  MenuList,
 } from "@mui/material";
 import * as React from "react";
 import { formatNumber } from "../../../utils";
 import { Link } from "react-router-dom";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { SelectChangeEvent } from "@mui/material/Select";
+import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 
 interface GiftCardProps {
   gifts: GiftTypes[];
@@ -70,20 +70,23 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<string>("");
   const [selectedGift, setSelectedGift] = useState<SelectedGift | null>(null);
-  const [filterTypeSeed, setFilterTypeSeed] = useState<"all" | "coin" | "seed">(
-    "seed"
-  );
+  const [filterTypeSeed, setFilterTypeSeed] = useState<string | null>(null);
   const [filterTypeCoin, setFilterTypeCoin] = useState<
     "all" | "crowd" | "ipmill"
   >("all");
   const { data: remainPoints } = useRemainPoints();
 
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const options = ["همه", "کراد", "صنایع مفتول"];
   const optionTypes = ["all", "crowd", "ipmill"] as const;
   const [openContractDialog, setOpenContractDialog] = useState(false);
   const [openToast, setOpenToast] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState({
+    coin: false,
+    seed: false,
+  });
+  const anchorRefCoin = React.useRef<HTMLButtonElement>(null);
+  const anchorRefSeed = React.useRef<HTMLButtonElement>(null);
 
   const handleMutate = (
     id: string,
@@ -184,7 +187,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   });
 
   const handleMenuItemClick = (index: number) => {
-    setSelectedIndex(index);
     setFilterTypeCoin(optionTypes[index] as "all" | "crowd" | "ipmill");
   };
 
@@ -217,93 +219,159 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="flex-grow flex justify-center"
         >
-          <ButtonGroup
-            variant="contained"
-            aria-label="filter buttons"
-            size="large"
-            disableElevation
-            sx={{
-              "& .MuiButton-root": {
-                fontSize: "1.25rem",
-                padding: "10px 30px",
-                fontWeight: "bold",
-                border: "none",
-                background: COLORS.primary.light,
-                minHeight: "60px",
-                "&.selected": {
-                  background: COLORS.primary.main,
-                  boxShadow: "inset 0 3px 6px rgba(0, 0, 0, 0.2)",
-                  opacity: 1,
-                  transform: "scale(1.02)",
+          <div className="relative">
+            <ButtonGroup
+              variant="contained"
+              aria-label="filter buttons"
+              size="large"
+              disableElevation
+              sx={{
+                "& .MuiButton-root": {
+                  fontSize: "1.25rem",
+                  padding: "10px 30px",
+                  fontWeight: "bold",
+                  border: "none",
+                  background: COLORS.primary.light,
+                  minHeight: "60px",
+                  "&.selected": {
+                    background: COLORS.primary.main,
+                    boxShadow: "inset 0 3px 6px rgba(0, 0, 0, 0.2)",
+                    opacity: 1,
+                    transform: "scale(1.02)",
+                  },
+                  "&:not(.selected)": {
+                    opacity: 0.9,
+                  },
+                  "&:hover": {
+                    background: COLORS.primary.main,
+                    transform: "translateY(-2px) scale(1.01)",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  },
+                  transition: "all 0.3s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  "& svg": {
+                    fontSize: "1.75rem",
+                  },
                 },
-                "&:not(.selected)": {
-                  opacity: 0.9,
+                "& .MuiButtonGroup-grouped:not(:last-of-type)": {
+                  borderRight: "1px solid rgba(255, 255, 255, 0.2)",
                 },
-                "&:hover": {
-                  background: COLORS.primary.main,
-                  transform: "translateY(-2px) scale(1.01)",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                "& .MuiButton-root:first-of-type": {
+                  borderRadius: "12px 0 0 12px",
                 },
-                transition: "all 0.3s ease",
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                "& svg": {
-                  fontSize: "1.75rem",
+                "& .MuiButton-root:last-of-type": {
+                  borderRadius: "0 12px 12px 0",
                 },
-              },
-              "& .MuiButtonGroup-grouped:not(:last-of-type)": {
-                borderRight: "1px solid rgba(255, 255, 255, 0.2)",
-              },
-              "& .MuiButton-root:first-of-type": {
-                borderRadius: "12px 0 0 12px",
-              },
-              "& .MuiButton-root:last-of-type": {
-                borderRadius: "0 12px 12px 0",
-              },
-            }}
-          >
-            <Button
-              onClick={() => setFilterTypeSeed("coin")}
-              className={filterTypeSeed === "coin" ? "selected" : ""}
-            >
-              <LuCoins className="text-xl" />
-              سکه
-            </Button>
-            <Button
-              onClick={() => setFilterTypeSeed("seed")}
-              className={filterTypeSeed === "seed" ? "selected" : ""}
-            >
-              <TbSeeding className="text-xl" />
-              بذر
-            </Button>
-          </ButtonGroup>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex justify-start flex-wrap"
-        >
-          <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-            <InputLabel id="filter-select-label">نوع فیلتر</InputLabel>
-            <Select
-              labelId="filter-select-label"
-              value={options[selectedIndex]}
-              onChange={(event: SelectChangeEvent) => {
-                const index = options.indexOf(event.target.value);
-                handleMenuItemClick(index);
               }}
-              label="نوع فیلتر"
             >
-              {options.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              <Button
+                ref={anchorRefCoin}
+                onClick={() => {
+                  setFilterTypeSeed("coin");
+                  setOpenDropdown((prev) => ({ ...prev, coin: !prev.coin }));
+                }}
+                className={filterTypeSeed === "coin" ? "selected" : ""}
+              >
+                <LuCoins className="text-xl" />
+                سکه
+                <ArrowDropDown />
+              </Button>
+              <Button
+                ref={anchorRefSeed}
+                onClick={() => {
+                  setFilterTypeSeed("seed");
+                  setOpenDropdown((prev) => ({ ...prev, seed: !prev.seed }));
+                }}
+                className={filterTypeSeed === "seed" ? "selected" : ""}
+              >
+                <TbSeeding className="text-xl" />
+                بذر
+                <ArrowDropDown />
+              </Button>
+            </ButtonGroup>
+
+            {filterTypeSeed && (
+              <>
+                <Popper
+                  open={openDropdown.coin}
+                  anchorEl={anchorRefCoin.current}
+                  transition
+                >
+                  {({ TransitionProps }) => (
+                    <Grow {...TransitionProps} timeout={350}>
+                      <Paper>
+                        <ClickAwayListener
+                          onClickAway={() =>
+                            setOpenDropdown((prev) => ({
+                              ...prev,
+                              coin: false,
+                            }))
+                          }
+                        >
+                          <MenuList>
+                            {options.map((option, index) => (
+                              <MenuItem
+                                key={option}
+                                onClick={() => {
+                                  handleMenuItemClick(index);
+                                  setOpenDropdown((prev) => ({
+                                    ...prev,
+                                    coin: false,
+                                  }));
+                                }}
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+
+                <Popper
+                  open={openDropdown.seed}
+                  anchorEl={anchorRefSeed.current}
+                  transition
+                >
+                  {({ TransitionProps }) => (
+                    <Grow {...TransitionProps} timeout={350}>
+                      <Paper>
+                        <ClickAwayListener
+                          onClickAway={() =>
+                            setOpenDropdown((prev) => ({
+                              ...prev,
+                              seed: false,
+                            }))
+                          }
+                        >
+                          <MenuList>
+                            {options.map((option, index) => (
+                              <MenuItem
+                                key={option}
+                                onClick={() => {
+                                  handleMenuItemClick(index);
+                                  setOpenDropdown((prev) => ({
+                                    ...prev,
+                                    seed: false,
+                                  }));
+                                }}
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </>
+            )}
+          </div>
         </motion.div>
       </div>
 
@@ -548,8 +616,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             </Button>
           </DialogActions>
         </Dialog>
-
-        {/* Toast notification for contract reminder */}
         <Snackbar
           open={openToast}
           autoHideDuration={3000}
