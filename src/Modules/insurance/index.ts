@@ -1,5 +1,5 @@
-export * from "./page/BuyInsurance";
-export * from "./page/BuyInsurance/BuyInsurance.main";
-export * from "./page/BuyInsurance/BuyInsurance.table";
-export * from "./page/BuyInsurance/buyInsurance.create";
+export * from "./page/Insurance";
+export * from "./page/Insuranceapplication";
+
+
 

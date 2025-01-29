@@ -421,23 +421,45 @@ const TimeFlowCreatePage = lazy(() =>
   }))
 );
 
-const BuyInsuranceMain = lazy(() =>
-  import("../Modules/insurance").then((module) => ({
-    default: module.BuyInsuranceMain,
+const InsuranceMain = lazy(() =>
+  import("../Modules/insurance/page/Insurance").then((module) => ({
+    default: module.InsuranceMain,
   }))
 );
 
-const BuyInsuranceTable = lazy(() =>
-  import("../Modules/insurance").then((module) => ({
-    default: module.BuyInsuranceTable,
+const InsuranceTable = lazy(() =>
+  import("../Modules/insurance/page/Insurance").then((module) => ({
+    default: module.InsuranceTable,
   }))
 );
 
-const BuyInsuranceCreate = lazy(() =>
-  import("../Modules/insurance").then((module) => ({
-    default: module.BuyInsurancePage,
+const InsuranceCreate = lazy(() =>
+  import("../Modules/insurance/features/Insurance").then((module) => ({
+    default: module.InsuranceCreate,
   }))
 );
+
+
+const InsuranceapplicationMain = lazy(() =>
+  import("../Modules/insurance/page/Insuranceapplication").then((module) => ({
+    default: module.InsuranceapplicationMain,
+  }))
+);
+
+const InsuranceapplicationTable = lazy(() =>
+  import("../Modules/insurance/page/Insuranceapplication").then((module) => ({
+    default: module.InsuranceapplicationTable,
+  }))
+);
+
+const InsuranceapplicationCreate = lazy(() =>
+  import("../Modules/insurance/page/Insuranceapplication").then((module) => ({
+    default: module.InsuranceapplicationCreate,
+  }))
+);
+
+
+
 
 const EmploymentsMainPage = lazy(() =>
   import("../Modules/employments").then((module) => ({
@@ -1137,7 +1159,7 @@ export default function Router() {
       path: "/insurance",
       element: (
         <Suspense fallback={<Loader />}>
-          <BuyInsuranceMain />
+          <InsuranceMain />
         </Suspense>
       ),
       children: [
@@ -1145,7 +1167,7 @@ export default function Router() {
           path: "table",
           element: (
             <Suspense fallback={<Loader />}>
-              <BuyInsuranceTable />
+              <InsuranceTable />
             </Suspense>
           ),
         },
@@ -1153,12 +1175,43 @@ export default function Router() {
           path: "create",
           element: (
             <Suspense fallback={<Loader />}>
-              <BuyInsuranceCreate />
+              <InsuranceCreate />
             </Suspense>
           ),
         },
+
       ],
     },
+    {
+      path: "/requestinsurance",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <InsuranceapplicationMain />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <InsuranceapplicationTable />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <InsuranceapplicationCreate />
+            </Suspense>
+          ),
+        },
+        
+      ],
+    },
+
+
+
     {
       path: "/points",
       element: (
@@ -1212,6 +1265,32 @@ export default function Router() {
         {
           path: "table",
           element: <UserProTablePage />,
+        },
+      ],
+    },
+    {
+      path: "/insuranceapplication",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <InsuranceapplicationMain />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: "table",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <InsuranceapplicationTable />
+            </Suspense>
+          ),
+        },
+        {
+          path: "create",
+          element: (
+            <Suspense fallback={<Loader />}>
+              <InsuranceapplicationCreate />
+            </Suspense>
+          ),
         },
       ],
     },

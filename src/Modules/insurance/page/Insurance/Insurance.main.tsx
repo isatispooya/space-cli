@@ -1,21 +1,21 @@
-import { MainLayout } from "../../../layouts";
 import { Outlet } from "react-router-dom";
-import { Toolbar } from "../../../components";
+import { MainLayout } from "../../../../layouts";
+import { Toolbar } from "../../../../components";
 import { LuPlus } from "react-icons/lu";
 import { LuTable } from "react-icons/lu";
 
-const BuyInsurance: React.FC = () => {
+const InsuranceMain: React.FC = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
       text: "جدول",
-      permission: ["view_stocktransfer"],
+      permission: ["allow_any"],
       path: "table",
     },
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: ["add_stocktransfer"],
+      permission: ["allow_any"],
       path: "create",
     },
   ];
@@ -43,4 +43,4 @@ const BuyInsurance: React.FC = () => {
   );
 };
 
-export default BuyInsurance;
+export default InsuranceMain;

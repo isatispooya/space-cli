@@ -188,21 +188,21 @@ export const menuItems: MenuItem[] = [
   },
 
   {
-    title: "درخواست خرید بیمه ",
+    title: "کارگزاری بیمه",
     path: "/insurance",
     icon: FaClockRotateLeft,
     codename: ["allow_any"],
     submenu: [
       {
         title: "مدیریت درخواست بیمه ",
-        path: "/insurance",
+        path: "/insurance/table",
         codename: ["allow_any"],
       },
-      // {
-      //   title: "درخواست بیمه ",
-      //   path: "/insurance/requestinsurance",
-      //   codename: ["allow_any"],
-      // },
+      {
+        title: "درخواست بیمه ",
+        path: "/requestinsurance/table",
+        codename: ["allow_any"],
+      },
     ],
   },
 

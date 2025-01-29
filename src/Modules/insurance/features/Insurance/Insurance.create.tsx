@@ -1,7 +1,7 @@
-import { FormField } from "../../../types";
+import { FormField } from "../../../../types";
 import { useState } from "react";
 
-export const BuyInsuranceCreate: React.FC = () => {
+export const InsuranceCreate: React.FC = () => {
   const [formFields, setFormFields] = useState<FormField[]>([
     { name: "insurance_name", label: "نام بیمه", type: "text" as const },
     { name: "file_titles", label: "عناوین فایل‌ها", type: "text" as const },
@@ -73,4 +73,4 @@ export const BuyInsuranceCreate: React.FC = () => {
   );
 };
 
-export default BuyInsuranceCreate;
+export default InsuranceCreate;

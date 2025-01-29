@@ -1,6 +1,6 @@
-import TabulatorTable from "../../../components/table/table.com";
+import TabulatorTable from "../../../../components/table/table.com";
 
-const BuyInsuranceTable = () => {
+const InsuranceapplicationTable = () => {
   const columns = () => [
     { title: "نام بیمه", field: "insurance_name" },
     { title: "نوع بیمه", field: "insurance_type" },
@@ -152,4 +152,4 @@ const BuyInsuranceTable = () => {
   );
 };
 
-export default BuyInsuranceTable;
+export default InsuranceapplicationTable;
