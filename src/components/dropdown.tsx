@@ -1,17 +1,15 @@
 import { useState, FC } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 interface DropdownItem {
   id?: string | number;
   label: string;
   value: string | number;
 }
 
-
 interface DropdownProps {
   label: string;
-  items: DropdownItem[];  
+  items: DropdownItem[];
 }
 
 const DropdownButton: FC<DropdownProps> = ({ label, items }) => {
@@ -47,9 +45,7 @@ const DropdownButton: FC<DropdownProps> = ({ label, items }) => {
           >
             {/* Add your dropdown items here */}
             {items.map((item: DropdownItem) => (
-              <div key={item.id || item.value}>
-                {item.label}
-              </div>
+              <div key={item.id || item.value}>{item.label}</div>
             ))}
           </motion.div>
         )}

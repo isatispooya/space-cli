@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
-import LoaderLg from "../components/loader-lg";
+import LoaderLg from "../components/loaders/loader-lg";
 import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../Modules/dashboard/pages/dashboard.page";
 
@@ -439,7 +439,6 @@ const InsuranceCreate = lazy(() =>
   }))
 );
 
-
 const InsuranceapplicationMain = lazy(() =>
   import("../Modules/insurance/page/Insuranceapplication").then((module) => ({
     default: module.InsuranceapplicationMain,
@@ -457,9 +456,6 @@ const InsuranceapplicationCreate = lazy(() =>
     default: module.InsuranceapplicationCreate,
   }))
 );
-
-
-
 
 const EmploymentsMainPage = lazy(() =>
   import("../Modules/employments").then((module) => ({
@@ -1179,7 +1175,6 @@ export default function Router() {
             </Suspense>
           ),
         },
-
       ],
     },
     {
@@ -1206,11 +1201,8 @@ export default function Router() {
             </Suspense>
           ),
         },
-        
       ],
     },
-
-
 
     {
       path: "/points",

@@ -10,7 +10,6 @@ import ForgetPassForm from "./forget_pass.form";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
 import { HiExternalLink } from "react-icons/hi";
-// import LoginTour from "./loginTour";
 initTWE({ Input, Ripple });
 
 const Login: React.FC = () => {
@@ -20,14 +19,7 @@ const Login: React.FC = () => {
 
   const [isSmsVerified, setIsSmsVerified] = React.useState(false);
 
-  // const [runTour, setRunTour] = React.useState(() => {
-  //   return !localStorage.getItem("loginTourCompleted");
-  // });
 
-  // const handleTourEnd = React.useCallback(() => {
-  //   setRunTour(false);
-  //   localStorage.setItem("loginTourCompleted", "true");
-  // }, []);
 
   const { data: announcements, isLoading } = useAnnouncements();
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] =
@@ -60,8 +52,8 @@ const Login: React.FC = () => {
     <section
       dir="rtl"
       className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-white dark:bg-white"
-    >
-      {/* <LoginTour runTour={runTour} onTourEnd={handleTourEnd} /> */}
+      >
+  
       <div className="hidden md:block md:w-1/2 xl:w-[70%] h-screen fixed left-0">
         <motion.img
           key={currentAnnouncement?.id}

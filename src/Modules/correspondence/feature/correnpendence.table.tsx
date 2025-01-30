@@ -1,7 +1,7 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useCorrespondencesData } from "../hooks";
 import { CorrespondenceTypes } from "../types";
-import { PaginatedResponse } from "../../../types/paginated"; 
+import { PaginatedResponse } from "../../../types/paginated";
 import { ModalLayout } from "../../../layouts";
 
 import { CustomDataGridToolbar } from "../../../utils";
@@ -9,8 +9,8 @@ import { localeText } from "../utils/localtext";
 import { useCorrespondenceTableStore } from "../store/corrrenTable.store";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
-import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
-import SeeCorrespondence from "./seeCorrespondence";
+import { FaEdit, FaTrash } from "react-icons/fa";
+
 import EditCorrespondence from "./editCorrespondence.form";
 import DeleteCorrespondence from "./deleteCorrespondence";
 import { LoaderLg } from "../../../components";
@@ -20,21 +20,11 @@ const CorrespondenceTable = () => {
   const {
     selectedRow,
     setSelectedRow,
-    isViewOpen,
-    setIsViewOpen,
     isEditOpen,
     setIsEditOpen,
     isDeleteOpen,
     setIsDeleteOpen,
   } = useCorrespondenceTableStore();
-
-  const handleView = useCallback(() => {
-    if (!selectedRow) {
-      toast.error("لطفا یک مکاتبه را انتخاب کنید");
-      return;
-    }
-    setIsViewOpen(true);
-  }, [selectedRow]);
 
   const handleEdit = useCallback(() => {
     if (!selectedRow) {
@@ -53,12 +43,6 @@ const CorrespondenceTable = () => {
   }, [selectedRow]);
 
   const actions = {
-    view: {
-      label: "مشاهده",
-      show: true,
-      onClick: handleView,
-      icon: <FaEye />,
-    },
     edit: {
       label: "ویرایش",
       show: true,
@@ -74,9 +58,11 @@ const CorrespondenceTable = () => {
   };
 
   if (isPending) {
-    return <div className="flex justify-center mb-10 items-center h-full">
-      <LoaderLg />
-    </div>;
+    return (
+      <div className="flex justify-center mb-10 items-center h-full">
+        <LoaderLg />
+      </div>
+    );
   }
 
   const columns: GridColDef<CorrespondenceTypes>[] = [
@@ -184,12 +170,6 @@ const CorrespondenceTable = () => {
           },
         }}
       />
-
-      <ModalLayout isOpen={isViewOpen} onClose={() => setIsViewOpen(false)}>
-        {selectedRow && (
-          <SeeCorrespondence fields={selectedRow} imageFields={[]} />
-        )}
-      </ModalLayout>
 
       <ModalLayout isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
         {selectedRow && (

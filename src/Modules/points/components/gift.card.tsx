@@ -578,8 +578,6 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             </Button>
           </div>
         </DialogContent>
-
-        {/* Contract Dialog */}
         <Dialog
           open={openContractDialog}
           onClose={handleCloseContractDialog}

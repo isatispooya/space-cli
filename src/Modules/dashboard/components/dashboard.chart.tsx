@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { server } from "../../../api/server";
 import { useEffect, useState, useMemo } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import Spinner from "../../../components/spinner";
+import Spinner from "../../../components/loaders/spinner";
 import { useUserPermissions } from "../../permissions";
 
 interface TooltipProps {
@@ -46,7 +46,6 @@ const DashboardChart = () => {
   const [isVertical, setIsVertical] = useState(false);
   const { data: permissions } = useUserPermissions();
   console.log(permissions);
-  
 
   const hasPermission =
     Array.isArray(permissions) &&

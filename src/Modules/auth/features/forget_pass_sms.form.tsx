@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import InputLogin from "../../../components/inputBase";
+import InputLogin from "../../../components/inputs/inputBase";
 import toast from "react-hot-toast";
 import useForgetPassSms from "../hooks/useForgetPassSms";
 import { useLoginStore } from "../stores/loginStore";

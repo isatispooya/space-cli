@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import InputLogin from "../../../components/inputBase";
+import InputLogin from "../../../components/inputs/inputBase";
 import CaptchaImg from "../components/captcha";
 import { useLoginStore } from "../stores/loginStore";
 import { motion } from "framer-motion";
 import useRegister from "../hooks/useRegister";
 import useApplyNationalCode from "../hooks/useOtp";
 import { fadeIn } from "../animations/fadeIn";
-import toast from "react-hot-toast";
-import Spinner from "../../../components/spinner";
+import toast, { ErrorIcon } from "react-hot-toast";
+import Spinner from "../../../components/loaders/spinner";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../types";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useCaptcha } from "../hooks";
-import LoginTour from "./loginTour";
+import { Toast } from "../../../components/toast";
+
 const validationSchema = Yup.object({
   nationalCode: Yup.string()
     .required("کد ملی الزامی است")
@@ -32,16 +33,11 @@ const validationSchema = Yup.object({
 
 const SignupForm = () => {
   const [showOtpInput, setShowOtpInput] = useState<boolean>(false);
-  const [runTour] = useState(() => {
-    return !localStorage.getItem("signupTourCompleted");
-  });
-
   const { mutate: signupMutate, isPending: signupPending } =
     useApplyNationalCode();
   const { mutate: register, isPending: registerPending } = useRegister();
   const { refetch } = useCaptcha();
   const { encryptedResponse, setEncryptedResponse } = useLoginStore();
-
   const urlParams = new URLSearchParams(window.location.search);
   const referral = urlParams.get("rf") || "";
 
@@ -101,7 +97,11 @@ const SignupForm = () => {
         },
         onError: (error: AxiosError<unknown>) => {
           const errorMessage = (error.response?.data as ErrorResponse)?.error;
-          toast.error(errorMessage || "خطایی رخ داده است");
+          Toast(
+            errorMessage || "خطایی رخ داده است",
+            <ErrorIcon />,
+            "bg-red-500"
+          );
           formik.setFieldValue("captchaInput", "");
           setEncryptedResponse("");
           refetch();
@@ -115,13 +115,8 @@ const SignupForm = () => {
     formik.setFieldValue("nationalCode", value);
   };
 
-  const handleTourEnd = () => {
-    // handle tour end in signup form
-  };
-
   return (
-    <form className="tour-signup-form" onSubmit={formik.handleSubmit}>
-      <LoginTour runTour={runTour} onTourEnd={handleTourEnd} />
+    <form onSubmit={formik.handleSubmit}>
       <InputLogin
         type="text"
         label="کدملی"

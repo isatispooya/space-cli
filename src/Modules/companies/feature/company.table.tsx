@@ -12,7 +12,7 @@ import EditCompanyForm from "./company.edit.form";
 import { tableStyles } from "../../../ui";
 import { useUserPermissions } from "../../permissions";
 import useCompany from "../hooks/useCompany";
-import Spinner from "../../../components/spinner";
+import Spinner from "../../../components/loaders/spinner";
 import { useNavigate } from "react-router-dom";
 
 const CompanyTable = () => {

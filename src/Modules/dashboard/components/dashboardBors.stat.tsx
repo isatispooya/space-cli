@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "recharts";
 import { formatNumber } from "../../../utils";
-import Spinner from "../../../components/spinner";
+import Spinner from "../../../components/loaders/spinner";
 
 interface PortfolioItem {
   Symbol: string;

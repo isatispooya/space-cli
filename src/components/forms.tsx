@@ -1,7 +1,7 @@
 import { Formik, Form, Field, FieldProps, FormikValues } from "formik";
 import { motion } from "framer-motion";
-import SelectInput from "./selectInput";
-import FormInput from "./formInput";
+import SelectInput from "./inputs/selectInput";
+import FormInput from "./inputs/formInput";
 import { FormField } from "../types";
 import { FormikHelpers } from "formik";
 import { AnyObject, Maybe, ObjectSchema } from "yup";

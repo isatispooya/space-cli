@@ -1,11 +1,12 @@
 import React, { FormEventHandler } from "react";
 import useLogin from "../../auth/hooks/useLogin";
-import toast from "react-hot-toast";
+import toast, { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import PassInput from "../components/passInput";
-import InputBase from "../../../components/inputBase";
-import Spinner from "../../../components/spinner";
+import InputBase from "../../../components/inputs/inputBase";
+import Spinner from "../../../components/loaders/spinner";
 import { ErrorResponse } from "../../../types";
 import { AxiosError } from "axios";
+import { Toast } from "../../../components/toast";
 const LoginForm = ({
   handleComponentChange,
 }: {
@@ -29,11 +30,15 @@ const LoginForm = ({
       },
       {
         onSuccess: () => {
-          toast.success("ورود با موفقیت انجام شد");
+          Toast("ورود با موفقیت انجام شد", <CheckmarkIcon />, "bg-green-500");
         },
         onError: (error: AxiosError<unknown>) => {
           const errorMessage = (error.response?.data as ErrorResponse)?.error;
-          toast.error(errorMessage || "نام کاربری یا رمز عبور اشتباه است");
+          Toast(
+            errorMessage || "نام کاربری یا رمز عبور اشتباه است",
+            <ErrorIcon />,
+            "bg-red-500"
+          );
         },
       }
     );
@@ -41,38 +46,38 @@ const LoginForm = ({
 
   return (
     <>
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         <div className="tour-login-form">
-        <div className="tour-username ">
-          <InputBase
-            type="text"
-            name="username"
-            label="کدملی"
-            placeholder="کدملی"
-            value={nationalCode}
-            onChange={(e) => setNationalCode(e.target.value)}
-          />
-        </div>
-        <div className="tour-password">
-          <PassInput
-            type="password"
-            name="password"
-            label="رمز عبور"
-            placeholder="رمز عبور"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <button
-          className="tour-login-button inline-block w-full mt-5 rounded px-4 py-3 text-md font-medium uppercase bg-blue-950 leading-normal text-white shadow-md transition duration-150 ease-in-out"
-          type="submit"
-          data-twe-ripple-init
-          data-twe-ripple-color="light"
-        >
-          {isPending ? <Spinner /> : "ورود"}
-        </button>
+          <div className="tour-username ">
+            <InputBase
+              type="text"
+              name="username"
+              label="کدملی"
+              placeholder="کدملی"
+              value={nationalCode}
+              onChange={(e) => setNationalCode(e.target.value)}
+            />
           </div>
+          <div className="tour-password">
+            <PassInput
+              type="password"
+              name="password"
+              label="رمز عبور"
+              placeholder="رمز عبور"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button
+            className="tour-login-button inline-block w-full mt-5 rounded px-4 py-3 text-md font-medium uppercase bg-blue-950 leading-normal text-white shadow-md transition duration-150 ease-in-out"
+            type="submit"
+            data-twe-ripple-init
+            data-twe-ripple-color="light"
+          >
+            {isPending ? <Spinner /> : "ورود"}
+          </button>
+        </div>
 
         <div className="tour-forget-password flex items-center justify-start gap-2 mt-4 py-3">
           <button
