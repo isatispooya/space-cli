@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { CompanyTypes } from "../types";
 import { ModalLayout } from "../../../layouts";
-import toast from "react-hot-toast";
+import { ErrorIcon } from "react-hot-toast";
 import SeeCompany from "./company.details";
 import Popup from "../../points/components/popup";
 import EditCompanyForm from "./company.edit.form";
@@ -14,6 +14,7 @@ import { useUserPermissions } from "../../permissions";
 import useCompany from "../hooks/useCompany";
 import Spinner from "../../../components/loaders/spinner";
 import { useNavigate } from "react-router-dom";
+import { Toast } from "../../../components/toast";
 
 const CompanyTable = () => {
   const { data, isPending } = useCompany.useGet();
@@ -28,7 +29,7 @@ const CompanyTable = () => {
 
   const handleEdit = useCallback(() => {
     if (!selectedRow) {
-      toast.error("لطفا یک شرکت را انتخاب کنید");
+      Toast("لطفا یک شرکت را انتخاب کنید", <ErrorIcon />, "bg-red-500");
       return;
     }
     navigate(`/companies/edit/${selectedRow.id}`);
@@ -36,7 +37,7 @@ const CompanyTable = () => {
 
   const handleView = useCallback(() => {
     if (!selectedRow) {
-      toast.error("لطفا یک شرکت را انتخاب کنید");
+      Toast("لطفا یک شرکت را انتخاب کنید", <ErrorIcon />, "bg-red-500");
       return;
     }
     setIsOpen(true);
@@ -44,7 +45,7 @@ const CompanyTable = () => {
 
   const handleDelete = useCallback(() => {
     if (!selectedRow) {
-      toast.error("لطفا یک شرکت را انتخاب کنید");
+      Toast("لطفا یک شرکت را انتخاب کنید", <ErrorIcon />, "bg-red-500");
       return;
     }
     deleteCompanyMutation(selectedRow.id);

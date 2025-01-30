@@ -1,20 +1,19 @@
 import { MainLayout } from "../../../layouts";
 import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
-import { DashboardMarketingStat, DashboardTour } from "../components";
+import { DashboardMarketingStat } from "../components";
 import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
 import DashboardBimeStat from "../components/dashboardBime.stat";
 import DashboardBorsStat from "../components/dashboardBors.stat";
-import { useDashboardStore } from "../store";
+
 import { TimeFlowList } from "../../timeflow/components";
 import TimeflowVerify from "../../timeflow/components/timeflow.verify";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
-  const { runTour, setRunTour } = useDashboardStore();
 
   const sliderData = useMemo(
     () =>
@@ -29,14 +28,8 @@ const DashboardPage = () => {
     [shortcuts]
   );
 
-  const handleTourEnd = useCallback(() => {
-    setRunTour(false);
-    localStorage.setItem("dashboardTourCompleted", "true");
-  }, [setRunTour]);
-
   return (
     <MainLayout>
-      <DashboardTour runTour={runTour} onTourEnd={handleTourEnd} />{" "}
       <TimeFlowList items={[]} />
       <div className="container mx-auto px-4 py-2 relative">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
