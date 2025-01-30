@@ -2,11 +2,11 @@ import * as React from "react";
 import { Input, Ripple, initTWE } from "tw-elements";
 import { motion } from "framer-motion";
 import { fadeIn } from "../animations/fadeIn";
-import LoginHead from "../components/login-head";
+import LoginHead from "../components/login.logo";
 import LoginForm from "./login.form";
 import SignupForm from "./signup.form";
-import ForgetPassSms from "./forget_pass_sms.form";
-import ForgetPassForm from "./forget_pass.form";
+import ForgetPassSms from "./forgetPassSms.form";
+import ForgetPassForm from "./changePass.form";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
 import { HiExternalLink } from "react-icons/hi";
@@ -18,8 +18,6 @@ const Login: React.FC = () => {
   >("login");
 
   const [isSmsVerified, setIsSmsVerified] = React.useState(false);
-
-
 
   const { data: announcements, isLoading } = useAnnouncements();
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] =
@@ -52,8 +50,7 @@ const Login: React.FC = () => {
     <section
       dir="rtl"
       className="flex flex-col md:flex-row min-h-screen items-center justify-center bg-white dark:bg-white"
-      >
-  
+    >
       <div className="hidden md:block md:w-1/2 xl:w-[70%] h-screen fixed left-0">
         <motion.img
           key={currentAnnouncement?.id}

@@ -1,3 +1,2 @@
-export { default as PassInput } from "./passInput";
-export { default as Captcha } from "./captcha";
-
+export { default as CaptchaField } from "./captcha.field";
+export { default as LoginLogo } from "./login.logo";

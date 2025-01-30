@@ -1,7 +1,7 @@
 import React, { FormEventHandler } from "react";
 import useLogin from "../../auth/hooks/useLogin";
 import toast, { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import PassInput from "../components/passInput";
+import PassInput from "../../../components/inputs/passInput";
 import InputBase from "../../../components/inputs/inputBase";
 import Spinner from "../../../components/loaders/spinner";
 import { ErrorResponse } from "../../../types";

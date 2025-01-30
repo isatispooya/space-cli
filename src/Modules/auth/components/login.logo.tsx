@@ -2,7 +2,7 @@
 import Logo from "../../../components/logo";
 import { fadeIn } from "../animations/fadeIn";
 import { motion } from "framer-motion";
-import typo from "./گروه مالی@2x.png";
+import typo from "../../../assets/logotypography.png";
 
 const LoginHead = () => {
   return (

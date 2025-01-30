@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
-import { fadeIn } from "../animations/fadeIn";
+import { fadeIn } from "../../Modules/auth/animations/fadeIn";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface InputLineProps extends HTMLMotionProps<"div"> {

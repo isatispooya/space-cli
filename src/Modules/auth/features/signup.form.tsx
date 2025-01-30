@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import InputLogin from "../../../components/inputs/inputBase";
-import CaptchaImg from "../components/captcha";
+import CaptchaImg from "../components/captcha.field";
 import { useLoginStore } from "../stores/loginStore";
 import { motion } from "framer-motion";
 import useRegister from "../hooks/useRegister";
