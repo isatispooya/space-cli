@@ -8,6 +8,7 @@ export const InsuranceapplicationCreate: React.FC = () => {
 
   const [insuranceType, setInsuranceType] = useState<string>("");
 
+  console.log(insuranceType);
   const handleInsuranceChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
