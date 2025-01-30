@@ -1,0 +1,1 @@
+export { default as PositionRoutes } from "./position.route";

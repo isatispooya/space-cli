@@ -1,5 +1,1 @@
-export * from "./page/Insurance";
-export * from "./page/Insuranceapplication";
-
-
-
+export * from "./routes";

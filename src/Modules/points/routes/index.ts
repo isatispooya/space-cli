@@ -1,0 +1,1 @@
+export { default as PointsRoutes } from "./points.route";

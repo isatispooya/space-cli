@@ -20,6 +20,8 @@ const PrecendenceMainPage = () => {
     }
   ];
 
+
+
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
