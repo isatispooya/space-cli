@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { GiftTypes } from "../types";
+import { GiftTypes } from "../types/gifts.type";
 import giftUserServices from "../services/giftUserService";
 
 const useGiftsUser = {

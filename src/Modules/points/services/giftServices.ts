@@ -1,5 +1,6 @@
 import { api } from "../../../api";
-import { GiftsPost } from "../types";
+import { GiftsPost } from "../types/giftsPost.type";
+
 
 const giftServices = {
   getGifts: async () => {

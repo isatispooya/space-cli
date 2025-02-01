@@ -1,9 +1,9 @@
 import usePoint from "../hooks/usePoint";
 import TabulatorTable from "../../../components/table/table.com";
-import { PrivilegesTypes } from "../types";
 import { ColumnDefinition } from "tabulator-tables";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
+
 
 const PrivilegesComponent = () => {
   const { data } = usePoint.useGetPoint();
@@ -25,7 +25,7 @@ const PrivilegesComponent = () => {
     },
   ];
 
-  const mappedData = data?.map((item: PrivilegesTypes) => {
+  const mappedData = data?.map((item: any) => {
     console.log("Mapping Item:", item);
     return {
       point_1: (item?.mission_detail?.point_1 || 0) * (item.amount || 0),
@@ -41,7 +41,7 @@ const PrivilegesComponent = () => {
   });
   console.log("Mapped Data:", mappedData);
 
-  const ExelData = (item: PrivilegesTypes) => {
+  const ExelData = (item: any) => {
     console.log("Formatting Item for Excel:", item);
     return {
       مقدار: item.amount || 0,

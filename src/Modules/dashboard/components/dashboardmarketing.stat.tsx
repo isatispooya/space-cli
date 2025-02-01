@@ -147,7 +147,7 @@ const DashboardMarketingStat = () => {
           <div className="mx-2"></div>
 
           <button
-            onClick={() => navigate("/rewards")}
+            onClick={() => navigate("/rewards/table")}
             className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
           >
             <LuCoins className="w-3 h-3 sm:w-4 sm:h-4" />

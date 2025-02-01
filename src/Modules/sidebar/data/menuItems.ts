@@ -220,12 +220,13 @@ export const menuItems: MenuItem[] = [
       {
         title: "امتیازات",
         path: "/points/privileges",
-        codename: ["allow_any"],
+        codename: ["position"],
       },
       {
         title: "رفاهی",
-        path: "/rewards",
-        codename: ["allow_any"],
+        path: "/rewards/table",
+        codename: ["position"],
+
       },
     ],
   },
