@@ -1,55 +1,64 @@
 import TabulatorTable from "../../../components/table/table.com";
-import { PrivilegesTypes } from "../types";
 import { ColumnDefinition } from "tabulator-tables";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
+import useWelfare from "../hooks/useWelfare";
+
+export interface PrivilegesTypes {
+  id: number;
+  name: string;
+  feild_of_activity: string;
+  description: string;
+  percent: number;
+  count: number;
+  status: boolean;
+  telephone: string;
+  address: string;
+  website: string;
+  location: string;
+  start_date: string;
+  end_date: string;
+  created_at: string;
+  field_of_activity: string;
+}
 
 const RewardsTable = () => {
-  const { data } = {
-    data: [
-      {
-        id: 1,
-        amount: 10,
-        created_at: new Date(),
-        description: "توضیحات 1",
-        mission_detail: {
-          point_1: 5,
-          point_2: 3,
-          display_name: "ماموریت 1",
-        },
-        user_detail: {
-          first_name: "علی",
-          last_name: "احمدی",
-          mobile: "09123456789",
-        },
-      },
-      {
-        id: 2,
-        amount: 20,
-        created_at: new Date(),
-        description: "توضیحات 2",
-        mission_detail: {
-          point_1: 2,
-          point_2: 4,
-          display_name: "ماموریت 2",
-        },
-        user_detail: {
-          first_name: "مریم",
-          last_name: "محمدی",
-          mobile: "09198765432",
-        },
-      },
-    ],
-  };
-
+  const { data: Welfare } = useWelfare();
   const columns = (): ColumnDefinition[] => [
-    { title: "نام", field: "user_first_name" },
-    { title: "نام خانوادگی", field: "user_last_name" },
-    { title: "شماره تماس", field: "user_phone" },
-    { title: "ماموریت", field: "mission" },
+    { title: "نام", field: "name" },
+    { title: "زمینه فعالیت", field: "feild_of_activity" },
     { title: "توضیحات", field: "description" },
-    { title: "سکه", field: "point_1" },
-    { title: "بذر", field: "point_2" },
+    { title: "درصد تخفیف", field: "percent" },
+    { title: "تعداد", field: "count" },
+    {
+      title: "وضعیت",
+      field: "status",
+      formatter: (cell) => (cell.getValue() ? "فعال" : "غیرفعال"),
+    },
+    { title: "تلفن", field: "telephone" },
+    { title: "آدرس", field: "address" },
+    {
+      title: "وب‌سایت",
+      field: "website",
+      formatter: (cell) =>
+        `<a href="${cell.getValue()}" target="_blank" class="text-blue-600 hover:underline">${cell.getValue()}</a>`,
+    },
+    {
+      title: "موقعیت",
+      field: "location",
+      formatter: (cell) =>
+        `<a href="${cell.getValue()}" target="_blank" class="text-blue-600 hover:underline">مشاهده نقشه</a>`,
+    },
+    {
+      title: "تاریخ شروع",
+      field: "start_date",
+      formatter: (cell) => moment(cell.getValue()).format("jYYYY/jMM/jDD"),
+    },
+    {
+      title: "تاریخ پایان",
+      field: "end_date",
+      formatter: (cell) => moment(cell.getValue()).format("jYYYY/jMM/jDD"),
+    },
     {
       title: "تاریخ ایجاد",
       field: "created_at",
@@ -57,34 +66,41 @@ const RewardsTable = () => {
     },
   ];
 
-  const mappedData = data?.map((item: PrivilegesTypes | any) => {
-    console.log("Mapping Item:", item);
+  const mappedData = Welfare?.map((item: PrivilegesTypes | any) => {
     return {
-      point_1: (item?.mission_detail?.point_1 || 0) * (item.amount || 0),
-      point_2: (item?.mission_detail?.point_2 || 0) * (item.amount || 0),
-      created_at: item.created_at,
-      description: item.description,
       id: item.id,
-      mission: item.mission_detail.display_name,
-      user_first_name: item.user_detail?.first_name,
-      user_last_name: item.user_detail?.last_name,
-      user_phone: item?.user_detail?.mobile,
+      name: item.name,
+      feild_of_activity: item.feild_of_activity,
+      description: item.description,
+      percent: item.percent,
+      count: item.count,
+      status: item.status,
+      telephone: item.telephone,
+      address: item.address,
+      website: item.website,
+      location: item.location,
+      start_date: item.start_date,
+      end_date: item.end_date,
+      created_at: item.created_at,
     };
   });
   console.log("Mapped Data:", mappedData);
 
   const ExelData = (item: PrivilegesTypes) => {
-    console.log("Formatting Item for Excel:", item);
     return {
-      مقدار: item.amount || 0,
-      تاریخ_ایجاد: item.created_at || "نامشخص",
+      نام: item.name || "نامشخص",
+      زمینه_فعالیت: item.feild_of_activity || "نامشخص",
       توضیحات: item.description || "بدون توضیحات",
-      شناسه: item.id || "نامشخص",
-      ماموریت: item.mission || "نامشخص",
-      کاربر: item.user_detail?.first_name || "نامشخص",
-      شماره_تماس: item?.user_detail?.mobile || "نامشخص",
-      سکه: Number(item.mission_detail?.point_1 || 0) * Number(item.amount || 0),
-      بذر: Number(item.mission_detail?.point_2 || 0) * Number(item.amount || 0),
+      درصد_تخفیف: item.percent || 0,
+      تعداد: item.count || 0,
+      وضعیت: item.status ? "فعال" : "غیرفعال",
+      تلفن: item.telephone || "نامشخص",
+      آدرس: item.address || "نامشخص",
+      وب_سایت: item.website || "نامشخص",
+      موقعیت: item.location || "نامشخص",
+      تاریخ_شروع: moment(item.start_date).format("jYYYY/jMM/jDD"),
+      تاریخ_پایان: moment(item.end_date).format("jYYYY/jMM/jDD"),
+      تاریخ_ایجاد: moment(item.created_at).format("jYYYY/jMM/jDD"),
     };
   };
 
