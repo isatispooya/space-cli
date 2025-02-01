@@ -25,6 +25,16 @@ const PrivilegesPage = lazy(() =>
     default: module.PrivilegesPage,
   }))
 );
+const RewardsPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.RewardsMainPage,
+  }))
+);
+const RewardsTable = lazy(() =>
+  import("..").then((module) => ({
+    default: module.Rewards,
+  }))
+);
 
 const PointsRoutes = [
   {
@@ -46,6 +56,16 @@ const PointsRoutes = [
       {
         path: "privileges",
         element: <PrivilegesPage />,
+      },
+    ],
+  },
+  {
+    path: "/rewards",
+    element: <RewardsPage />,
+    children: [
+      {
+        path: "table",
+        element: <RewardsTable />,
       },
     ],
   },

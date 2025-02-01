@@ -133,16 +133,27 @@ const DashboardMarketingStat = () => {
                 باشگاه ایساتیس
               </h3>
             </div>
-            <button
-              onClick={() => navigate("/points/privileges")}
-              className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
-            >
-              <LuCoins className="w-3 h-3 sm:w-4 sm:h-4" />
-              <span>امتیازات</span>
-            </button>
           </div>
         </div>
+        <div className="flex space-x-4 justify-end mt-4">
+          <button
+            onClick={() => navigate("/points/privileges")}
+            className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
+          >
+            <LuCoins className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span>امتیازات</span>
+          </button>
 
+          <div className="mx-2"></div>
+
+          <button
+            onClick={() => navigate("/rewards")}
+            className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
+          >
+            <LuCoins className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span>رفاهی</span>
+          </button>
+        </div>
         <div className="flex-grow flex flex-col items-center justify-center mt-6 sm:mt-10">
           <motion.p
             initial={{ scale: 0.5 }}
@@ -181,8 +192,8 @@ const DashboardMarketingStat = () => {
             </span>
           </motion.p>
         </div>
-        <div className="mt-4 sm:mt-6 mb-4 flex-grow">
-          <div className="flex items-center justify-between mb-2 sm:mb-3">
+        <div className="mt-4 sm:mt-6 flex-grow mb-[-20px]">
+          <div className="flex items-center justify-between sm:mb-3">
             <h4 className="text-gray-600 font-iranSans text-xs sm:text-sm">
               لیست کاربران دعوت شده
             </h4>

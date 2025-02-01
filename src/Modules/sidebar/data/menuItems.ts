@@ -222,6 +222,11 @@ export const menuItems: MenuItem[] = [
         path: "/points/privileges",
         codename: ["allow_any"],
       },
+      {
+        title: "رفاهی",
+        path: "/rewards",
+        codename: ["allow_any"],
+      },
     ],
   },
 ];
