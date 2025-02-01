@@ -207,7 +207,7 @@ export const menuItems: MenuItem[] = [
   },
 
   {
-    title: "باشگاه مشتریان",
+    title: "باشگاه ایساتیس",
     path: "/invitation",
     icon: FaUserTie,
     codename: ["allow_any"],

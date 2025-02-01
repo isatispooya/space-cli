@@ -130,7 +130,7 @@ const DashboardMarketingStat = () => {
             <div className="flex items-center">
               <RiUserReceived2Line className="w-4 h-4 sm:w-5 sm:h-6 text-[#D2042D]" />
               <h3 className="text-xs sm:text-sm text-[#D2042D] font-bold font-iranSans mr-2">
-                باشگاه مشتریان
+                باشگاه ایساتیس
               </h3>
             </div>
             <button
