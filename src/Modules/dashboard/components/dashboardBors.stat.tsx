@@ -20,9 +20,11 @@ interface PortfolioItem {
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#5677BC"];
 
 const DashboardBorsStat = () => {
-  const { data, isLoading } = useDashboard.useGetStats();
+  const { data, isLoading } = useDashboard.useGetBours();
 
-  const title = data?.title || "کارگزاری ایساتیس پویا (بورس)";
+  console.log(data);
+
+  const title = "کارگزاری ایساتیس پویا (بورس)";
   const pieData = data?.bourse.protfolio
     ? data.bourse.protfolio.map((item: PortfolioItem) => ({
         name: item.Symbol,
@@ -56,11 +58,11 @@ const DashboardBorsStat = () => {
             <div className="w-full h-full flex justify-center items-center">
               <Spinner />
             </div>
-          ) : data?.bourse?.protfolio?.length > 0 ? (
+          ) : data?.bourse?.protfolio ? (
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={pieData}
+                  data={pieData || []}
                   cx="50%"
                   cy="50%"
                   labelLine={false}

@@ -50,13 +50,12 @@ const formatValue = (value: number) => {
 };
 
 const DashboardCrowdStat = () => {
-  const { data: stats } = useDashboard.useGetStats();
+  const { data: stats } = useDashboard.useGetCrowd();
   const { mutate: crowdUUID } = usePostUUID();
 
   const handleCrowdUUID = () => {
     crowdUUID(undefined, {
       onSuccess: (response) => {
-        
         const crowdUUIDLink = `https://app.isatiscrowd.ir/onetimeLogin/${response.uuid}`;
         window.open(crowdUUIDLink, "_blank");
       },
@@ -75,18 +74,18 @@ const DashboardCrowdStat = () => {
           <div className="flex items-center">
             <img src={crowdImg} alt="crowd" className="w-12 h-12" />
             <h3 className="text-sm text-[#4b0082] font-bold font-iranSans">
-              {stats?.crowd?.["title"] || "ایساتیس کراد"}
+              {"ایساتیس کراد"}
             </h3>
           </div>
         </div>
 
-        <div >
+        <div>
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             className="text-[11px] font-bold text-[#4b0082]  font-iranSans"
           >
-            {stats?.crowd?.["total value"] || "مجموع تامین مالی جمعی"}
+            {stats?.["total_value"] || "مجموع تامین مالی جمعی"}
           </motion.p>
           <div className="text-center">
             <motion.p
@@ -94,7 +93,7 @@ const DashboardCrowdStat = () => {
               animate={{ scale: 1 }}
               className="text-4xl md:text-6xl lg:text-8xl font-bold text-[#4b0082] mt-4 font-iranSans overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              {stats?.crowd?.["total value"] === 0 ? (
+              {stats?.["total_value"] === 0 ? (
                 <>
                   0
                   <span className="text-sm text-[#4b0082] font-iranSans">
@@ -103,7 +102,7 @@ const DashboardCrowdStat = () => {
                   </span>
                 </>
               ) : (
-                formatValue(stats?.crowd?.["total value"] || 0)
+                formatValue(stats?.["total_value"] || 0)
               )}
             </motion.p>
           </div>

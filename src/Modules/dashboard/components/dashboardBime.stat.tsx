@@ -6,7 +6,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import bimeImg from "../../../../public/assets/bime.png";
 
 const DashboardBimeStat = () => {
-  const { data: stats } = useDashboard.useGetStats();
+  const { data: stats } = useDashboard.useGetPishkar();
 
   return (
     <motion.div

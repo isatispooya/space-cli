@@ -30,7 +30,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
   const { data: invitation } = useInvitation.useGetCodes();
   const { data: profile } = useProfile();
 
-  console.log("invitation", invitation);
+
 
   const filteredInvitationCode = useMemo(() => {
     if (!Array.isArray(invitation) || !profile?.uniqueIdentifier) {
