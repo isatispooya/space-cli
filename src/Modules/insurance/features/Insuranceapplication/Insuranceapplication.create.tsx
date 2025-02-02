@@ -7,7 +7,7 @@ import { InsurancePostTypes } from "../../types";
 
 export const InsuranceappCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
-  const { mutate: postFields } = useInsurance.usePostFields();
+  const { mutate: postFields } = useInsurance.usePostRequest();
   const [selectedInsurance, setSelectedInsurance] = useState("");
   const [files, setFiles] = useState<{ [key: string]: File }>({});
 
@@ -30,15 +30,15 @@ export const InsuranceappCreate: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const insuranceData: InsurancePostTypes = {
-      name: selectedInsurance,
-      fields: Object.entries(files).map(([fieldId, file]) => ({
-        id: fieldId,
-        file: file,
-      })),
-    };
+    const formData = new FormData();
+    formData.append("insurence", selectedInsurance);
 
-    postFields(insuranceData);
+    Object.entries(files).forEach(([fieldId, file]) => {
+      formData.append(`files[${fieldId}]`, file);
+    });
+
+    console.log("Submitting:", formData);
+    postFields(formData);
   };
 
   const selectedInsuranceFields =

@@ -1,8 +1,12 @@
 import { CellComponent } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
+import { useInsurance } from "../../hooks";
 
 
 const InsuranceappTable = () => {
+  const { data: requests } = useInsurance.useGetRequests();
+
+  console.log("Raw requests data:", requests);
   const columns = () => [
     { title: "نام بیمه", field: "insurance_name" },
     { title: "نوع بیمه", field: "insurance_type" },
