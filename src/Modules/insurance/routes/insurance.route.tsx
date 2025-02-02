@@ -1,19 +1,19 @@
 import { lazy } from "react";
 
 const InsuranceMain = lazy(() =>
-  import("../page/Insurance").then((module) => ({
+  import("..").then((module) => ({
     default: module.InsuranceMain,
   }))
 );
 
 const InsuranceTable = lazy(() =>
-  import("../page/Insurance").then((module) => ({
+  import("..").then((module) => ({
     default: module.InsuranceTable,
   }))
 );
 
 const InsuranceCreate = lazy(() =>
-  import("../page/Insurance").then((module) => ({
+  import("..").then((module) => ({
     default: module.InsurancePage,
   }))
 );

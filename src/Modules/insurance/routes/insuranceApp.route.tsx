@@ -1,19 +1,19 @@
 import { lazy } from "react";
 
 const InsuranceapplicationMain = lazy(() =>
-  import("../page/Insuranceapplication").then((module) => ({
+  import("..").then((module) => ({
     default: module.InsuranceapplicationMain,
   }))
 );
 
 const InsuranceapplicationTable = lazy(() =>
-  import("../page/Insuranceapplication").then((module) => ({
-    default: module.InsuranceapplicationTable,
+  import("../features/Insuranceapplication").then((module) => ({
+    default: module.InsuranceappTable,
   }))
 );
 
 const InsuranceapplicationCreate = lazy(() =>
-  import("../page/Insuranceapplication").then((module) => ({
+  import("..").then((module) => ({
     default: module.InsuranceapplicationCreate,
   }))
 );
@@ -33,7 +33,6 @@ const InsuranceAppRoutes = [
       },
     ],
   },
-
 ];
 
 export default InsuranceAppRoutes;

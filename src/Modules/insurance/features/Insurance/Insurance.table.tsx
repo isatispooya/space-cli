@@ -1,37 +1,43 @@
 import TabulatorTable from "../../../../components/table/table.com";
+import useInsurance from "../../hooks/useInsurance";
+import moment from "moment-jalaali";
+import "moment/locale/fa";
+import { InsuranceTypes } from "../../types";
+import { CellComponent } from "tabulator-tables";
 
 const InsuranceTable = () => {
+  const { data: fields } = useInsurance.useGetFields();
+
+  console.log("Raw fields data:", fields);
+
   const columns = () => [
-    { title: "نام بیمه", field: "insurance_name" },
-    { title: "نوع بیمه", field: "insurance_type" },
-    { title: "قیمت", field: "price" },
-    { title: "تاریخ خرید", field: "purchase_date" },
-    { title: "وضعیت", field: "status" },
+    { title: "بیمه نامه", field: "parent_name" },
+ 
+    {
+      title: "تاریخ ایجاد",
+      field: "created_at",
+      formatter: (cell: CellComponent) =>
+        moment(cell.getValue()).format("jYYYY/jMM/jDD"),
+    },
+    {
+      title: "تاریخ بروزرسانی",
+      field: "updated_at",
+      formatter: (cell: CellComponent) =>
+        moment(cell.getValue()).format("jYYYY/jMM/jDD"),
+    },
   ];
 
-  const data = [
-    {
-      insurance_name: "بیمه عمر",
-      insurance_type: "طولانی مدت",
-      price: 1000000,
-      purchase_date: "1402/01/01",
-      status: "درحال انتظار",
-    },
-    {
-      insurance_name: "بیمه خودرو",
-      insurance_type: "سالانه",
-      price: 500000,
-      purchase_date: "1402/02/01",
-      status: "درحال انتظار",
-    },
-    {
-      insurance_name: "بیمه خودرو",
-      insurance_type: "سالانه",
-      price: 500000,
-      purchase_date: "1402/02/01",
-      status: "درحال انتظار",
-    },
-  ];
+  const processedData =
+    fields?.flatMap(
+      (field: InsuranceTypes) =>
+        field.fields?.map((subField) => ({
+          id: subField.id,
+          name: subField.name,
+          created_at: subField.created_at,
+          updated_at: subField.updated_at,
+          parent_name: field.name,
+        })) || []
+    ) || [];
 
   const renderActionColumn = () => ({
     title: "عملیات",
@@ -42,7 +48,7 @@ const InsuranceTable = () => {
     hozAlign: "center",
     headerHozAlign: "center",
     formatter: () => `<button class="action-btn">⋮</button>`,
-    cellClick: (e: any, cell: any) => {
+    cellClick: (e: MouseEvent, cell: CellComponent) => {
       e.stopPropagation();
       const existingMenu = document.querySelector(
         `.popup-menu[data-cell="${cell
@@ -69,26 +75,6 @@ const InsuranceTable = () => {
           onClick: () => {
             window.open(
               `/insurance/print/${cell.getRow().getData().id}`,
-              "_blank"
-            );
-          },
-        },
-        {
-          label: "ویرایش",
-          icon: "✏️",
-          onClick: () => {
-            window.open(
-              `/insurance/edit/${cell.getRow().getData().id}`,
-              "_blank"
-            );
-          },
-        },
-        {
-          label: "حذف",
-          icon: "🗑️",
-          onClick: () => {
-            window.open(
-              `/insurance/delete/${cell.getRow().getData().id}`,
               "_blank"
             );
           },
@@ -142,7 +128,7 @@ const InsuranceTable = () => {
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
       <div className="overflow-x-auto">
         <TabulatorTable
-          data={data}
+          data={processedData}
           columns={[...columns(), renderActionColumn()]}
           title="اطلاعات بیمه"
           showActions={true}

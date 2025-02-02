@@ -199,7 +199,7 @@ export const menuItems: MenuItem[] = [
         codename: ["allow_any"],
       },
       {
-        title: "درخواست بیمه ",
+        title: "خرید بیمه نامه",
         path: "/requestinsurance/table",
         codename: ["allow_any"],
       },
@@ -226,7 +226,6 @@ export const menuItems: MenuItem[] = [
         title: "رفاهی",
         path: "/rewards/table",
         codename: ["position"],
-
       },
     ],
   },

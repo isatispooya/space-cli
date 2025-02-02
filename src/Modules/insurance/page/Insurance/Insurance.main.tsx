@@ -15,7 +15,7 @@ const InsuranceMain: React.FC = () => {
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: ["allow_any"],
+      permission: ["add_insurancename"],
       path: "create",
     },
   ];

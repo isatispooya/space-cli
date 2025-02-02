@@ -1,94 +1,93 @@
-import { FormField } from "../../../../types";
-import { useState } from "react";
+import React, { useState } from "react";
+import useInsurance from "../../hooks/useInsurance";
+import SelectInput from "../../../../components/inputs/selectInput";
+import { Spinner } from "../../../../components/loaders";
+import FileInput from "../../../../components/inputs/uploadInput";
+import { InsurancePostTypes } from "../../types";
 
-export const InsuranceapplicationCreate: React.FC = () => {
-  const [formFields, setFormFields] = useState<FormField[]>([
-    { name: "file_titles", label: "فایل بارگذاری کرد", type: "file" as const },
-  ]);
+export const InsuranceappCreate: React.FC = () => {
+  const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
+  const { mutate: postFields } = useInsurance.usePostFields();
+  const [selectedInsurance, setSelectedInsurance] = useState("");
+  const [files, setFiles] = useState<{ [key: string]: File }>({});
 
-  const [insuranceType, setInsuranceType] = useState<string>("");
+  const handleInsuranceChange = (value: string) => {
+    console.log("Selected insurance:", value);
+    setSelectedInsurance(value);
+  };
 
-  console.log(insuranceType);
-  const handleInsuranceChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+  const handleFileChange = (
+    fieldId: string,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const selectedInsurance = event.target.value;
-    setInsuranceType(selectedInsurance);
-
-    let newFields: FormField[] = [];
-
-    if (selectedInsurance === "insurance1") {
-      newFields = [
-        ...newFields,
-        ...Array(4)
-          .fill(null)
-          .map((_, index) => ({
-            name: `file_titles_${index}`,
-            label: `عناوین فایل ${index + 1}`,
-            type: "file" as const,
-          })),
-      ];
-    } else if (selectedInsurance === "insurance2") {
-      newFields = [
-        ...newFields,
-        ...Array(2)
-          .fill(null)
-          .map((_, index) => ({
-            name: `file_titles_${index}`,
-            label: `عناوین فایل ${index + 1}`,
-            type: "file" as const,
-          })),
-      ];
+    if (e.target.files?.[0]) {
+      setFiles((prev) => ({
+        ...prev,
+        [fieldId]: e.target.files![0],
+      }));
     }
-
-    setFormFields(newFields);
   };
 
-  const onSubmit = () => {
-    console.log("Form Submitted");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const insuranceData: InsurancePostTypes = {
+      name: selectedInsurance,
+      fields: Object.entries(files).map(([fieldId, file]) => ({
+        id: fieldId,
+        file: file,
+      })),
+    };
+
+    postFields(insuranceData);
   };
+
+  const selectedInsuranceFields =
+    insuranceNames?.find((item) => item.id.toString() === selectedInsurance)
+      ?.fields || [];
+
+  const insuranceOptions =
+    insuranceNames?.map((insurance) => ({
+      value: insurance.id.toString(),
+      label: insurance.name,
+    })) || [];
 
   return (
-    <div className="flex flex-col items-center justify-start p-8 rounded-2xl shadow-2xl bg-white w-full max-w-lg mx-auto">
-      <h2 className="text-3xl font-extrabold mb-8 text-[#29D2C7] drop-shadow-lg">
-        ایجاد بیمه
-      </h2>
-      <div className="w-full space-y-6">
-        <select
-          name="insurance_name"
-          onChange={handleInsuranceChange}
-          className="w-full py-3 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#29D2C7] shadow-sm"
-        >
-          <option value="">انتخاب بیمه</option>
-          <option value="insurance1">بیمه ۱</option>
-          <option value="insurance2">بیمه ۲</option>
-          <option value="insurance3">بیمه ۳</option>
-          <option value="insurance4">بیمه ۴</option>
-          <option value="insurance5">بیمه ۵</option>
-        </select>
-        {formFields.map((field) => (
-          <div
-            key={field.name}
-            className="flex flex-col items-start gap-2 bg-white p-4 rounded-lg  hover:shadow-lg transition-shadow duration-300"
-          >
-            <label className="text-sm font-semibold">{field.label}</label>
-            <input
-              type={field.type}
-              name={field.name}
-              placeholder={field.label}
-              className="w-full py-3 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#29D2C7] shadow-sm"
+    <div
+      className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg"
+      dir="rtl"
+    >
+      <h2 className="text-2xl font-bold text-[#29D2C7] mb-6">ثبت بیمه نامه</h2>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <SelectInput
+            options={insuranceOptions}
+            value={selectedInsurance}
+            onChange={handleInsuranceChange}
+            label="نوع بیمه"
+            placeholder="جستجوی نوع بیمه..."
+          />
+
+          {selectedInsuranceFields.map((field) => (
+            <FileInput
+              key={field.id}
+              label={field.name}
+              onChange={(e) => handleFileChange(field.id.toString(), e)}
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
             />
-          </div>
-        ))}
-        <button
-          onClick={onSubmit}
-          className="w-full bg-[#29D2C7] text-white py-3 rounded-xl shadow-md hover:bg-[#29D2C7] hover:shadow-lg transition-transform duration-300 font-semibold text-lg"
-        >
-          ایجاد بیمه
-        </button>
-      </div>
+          ))}
+
+          <button
+            type="submit"
+            className="w-full py-3 px-4 mt-6 bg-[#29D2C7] hover:bg-[#008282] text-white rounded-md"
+          >
+            ثبت
+          </button>
+        </form>
+      )}
     </div>
   );
 };
 
-export default InsuranceapplicationCreate;
+export default InsuranceappCreate;

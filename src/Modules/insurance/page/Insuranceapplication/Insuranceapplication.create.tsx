@@ -1,6 +1,7 @@
-import { InsuranceapplicationCreate } from "../../features/Insuranceapplication";
+import { InsuranceappCreate } from "../../features/Insuranceapplication";
+
 const InsuranceapplicationCreatePage = () => {
-  return <InsuranceapplicationCreate />;
+  return <InsuranceappCreate />;
 };
 
 export default InsuranceapplicationCreatePage;

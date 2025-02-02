@@ -1,6 +1,8 @@
+import { CellComponent } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 
-const InsuranceTable = () => {
+
+const InsuranceappTable = () => {
   const columns = () => [
     { title: "نام بیمه", field: "insurance_name" },
     { title: "نوع بیمه", field: "insurance_type" },
@@ -11,7 +13,7 @@ const InsuranceTable = () => {
 
   const data = [
     {
-      insurance_name: "بیمه عمر",
+      insurance_name: "fgykygfsfghytjrd",
       insurance_type: "طولانی مدت",
       price: 1000000,
       purchase_date: "1402/01/01",
@@ -42,7 +44,7 @@ const InsuranceTable = () => {
     hozAlign: "center",
     headerHozAlign: "center",
     formatter: () => `<button class="action-btn">⋮</button>`,
-    cellClick: (e: any, cell: any) => {
+    cellClick: (e: CellComponent, cell: CellComponent) => {
       e.stopPropagation();
       const existingMenu = document.querySelector(
         `.popup-menu[data-cell="${cell
@@ -152,4 +154,4 @@ const InsuranceTable = () => {
   );
 };
 
-export default InsuranceTable;
+export default InsuranceappTable;

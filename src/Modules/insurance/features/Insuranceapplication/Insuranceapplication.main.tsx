@@ -4,7 +4,7 @@ import { Toolbar } from "../../../../components";
 import { LuPlus } from "react-icons/lu";
 import { LuTable } from "react-icons/lu";
 
-const Insuranceapplication: React.FC = () => {
+const InsuranceAppMain: React.FC = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
@@ -43,4 +43,4 @@ const Insuranceapplication: React.FC = () => {
   );
 };
 
-export default Insuranceapplication;
+export default InsuranceAppMain;
