@@ -1,4 +1,4 @@
-import Request from "../components/request";
+import Request from "../components/requests";
 
 const RequestPage = () => {
   return <div><Request/></div>;

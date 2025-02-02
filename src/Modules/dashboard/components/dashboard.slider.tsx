@@ -38,7 +38,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
     }
 
     const foundInvitation = invitation.find(
-      (item: any) =>
+      (item) =>
         item.introducer_user_detail?.uniqueIdentifier ===
         profile.uniqueIdentifier
     );

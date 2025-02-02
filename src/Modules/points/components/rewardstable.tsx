@@ -122,7 +122,7 @@ const RewardsTable = () => {
     },
   ];
 
-  const mappedData = Welfare?.map((item: PrivilegesTypes | any) => {
+  const mappedData = Welfare?.map((item: PrivilegesTypes ) => {
     return {
       id: item.id,
       name: item.name,

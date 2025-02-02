@@ -10,6 +10,7 @@ import { useUserPermissions } from "../../permissions";
 import toast from "react-hot-toast";
 import useGiftsUser from "../hooks/useGiftsUser";
 import { formatNumber } from "../../../utils";
+import { RequestTypes } from "../types";
 
 interface RequestType {
   id: number;
@@ -31,8 +32,8 @@ const Request = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { data: giftsUser } = useGiftsUser.useGetGifts();
 
-  const rows: RequestType[] =
-    giftsUser?.map((item: any) => ({
+  const rows: RequestTypes[] =
+    giftsUser?.map((item: RequestTypes) => ({
       id: item.id,
       title: item.gift_detail.display_name,
       description: item.gift_detail.description,
@@ -44,6 +45,16 @@ const Request = () => {
       status: item.status,
       created_at: item.created_at,
       amount: item.amount,
+      gift_detail: {
+        display_name: item.gift_detail.display_name,
+        point_1: item.gift_detail.point_1,
+        point_2: item.gift_detail.point_2,
+        description: item.gift_detail.description,
+      },
+      user_detail: {
+        first_name: item.user_detail.first_name,
+        last_name: item.user_detail.last_name,
+      },
     })) || [];
 
   const columns: GridColDef[] = [

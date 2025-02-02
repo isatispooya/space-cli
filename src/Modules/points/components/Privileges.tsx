@@ -2,13 +2,11 @@ import usePoint from "../hooks/usePoint";
 import TabulatorTable from "../../../components/table/table.com";
 import { ColumnDefinition } from "tabulator-tables";
 import "moment/locale/fa";
+import { PrivilegesTypes } from "../types";
 import moment from "moment-jalaali";
-
 
 const PrivilegesComponent = () => {
   const { data } = usePoint.useGetPoint();
-
-  console.log("Raw Data from API:", data);
 
   const columns = (): ColumnDefinition[] => [
     { title: "نام", field: "user_first_name" },
@@ -25,7 +23,7 @@ const PrivilegesComponent = () => {
     },
   ];
 
-  const mappedData = data?.map((item: any) => {
+  const mappedData = data?.map((item: PrivilegesTypes) => {
     console.log("Mapping Item:", item);
     return {
       point_1: (item?.mission_detail?.point_1 || 0) * (item.amount || 0),
@@ -41,7 +39,7 @@ const PrivilegesComponent = () => {
   });
   console.log("Mapped Data:", mappedData);
 
-  const ExelData = (item: any) => {
+  const ExelData = (item: PrivilegesTypes) => {
     console.log("Formatting Item for Excel:", item);
     return {
       مقدار: item.amount || 0,
