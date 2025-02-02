@@ -3,7 +3,6 @@ import useInsurance from "../../hooks/useInsurance";
 import SelectInput from "../../../../components/inputs/selectInput";
 import { Spinner } from "../../../../components/loaders";
 import FileInput from "../../../../components/inputs/uploadInput";
-import { InsurancePostTypes } from "../../types";
 
 export const InsuranceappCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
