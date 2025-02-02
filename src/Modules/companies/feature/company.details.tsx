@@ -6,6 +6,7 @@ interface SeeCompanyProps {
 }
 
 const SeeCompany = ({ data }: SeeCompanyProps) => {
+  
   const fields = [
     { label: "نام شرکت", value: data.name },
     { label: "نوع شرکت", value: data.company_type },

@@ -1,10 +1,11 @@
 import Forms from "../../../components/forms";
 import * as Yup from "yup";
-import { CorrespondenceTypes } from "../types";
+import { CorrespondencePostType, CorrespondenceTypes } from "../types";
 import { FormikHelpers } from "formik";
+import { useCorrespondences } from "../hooks";
 
 const validationSchema = Yup.object().shape({
-  sender: Yup.object().required("لطفا فرستنده را وارد کنید"),
+  sender: Yup.string().required("لطفا فرستنده را وارد کنید"),
   subject: Yup.string().required("لطفا موضوع را وارد کنید"),
   text: Yup.string().required("لطفا متن مکاتبه را وارد کنید"),
   receiver_internal: Yup.string(),
@@ -112,6 +113,36 @@ interface CreateCorrespondenceFormProps {
 export const CreateCorrespondenceForm: React.FC<
   CreateCorrespondenceFormProps
 > = ({ onSubmit = () => {} }) => {
+  const { mutate } = useCorrespondences.useCreate();
+
+  const handleSubmit = async (
+    values: CorrespondenceTypes,
+    actions: FormikHelpers<CorrespondenceTypes>
+  ) => {
+    const postData: CorrespondencePostType = {
+      sender: values.sender,
+      receiver_internal: values.receiver_internal,
+      receiver_external: values.receiver_external,
+      subject: values.subject,
+      kind_of_correspondence: values.kind_of_correspondence as
+        | "request"
+        | "response"
+        | "letter",
+      confidentiality_level: values.confidentiality_level as
+        | "normal"
+        | "confidential"
+        | "secret",
+    };
+
+    try {
+      await mutate(postData);
+      onSubmit(values, actions);
+    } catch (error) {
+      console.error("Error posting data:", error);
+      actions.setSubmitting(false);
+    }
+  };
+
   return (
     <Forms
       formFields={formFields}
@@ -119,7 +150,7 @@ export const CreateCorrespondenceForm: React.FC<
       validationSchema={
         validationSchema as Yup.ObjectSchema<CorrespondenceTypes>
       }
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       title="ایجاد مکاتبه"
       submitButtonText={{
         default: "ایجاد مکاتبه",

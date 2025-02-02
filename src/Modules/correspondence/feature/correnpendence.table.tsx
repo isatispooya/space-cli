@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useCorrespondencesData } from "../hooks";
+import { useCorrespondences } from "../hooks";
 import { CorrespondenceTypes } from "../types";
 import { PaginatedResponse } from "../../../types/paginated";
 import { ModalLayout } from "../../../layouts";
@@ -16,7 +16,7 @@ import DeleteCorrespondence from "./deleteCorrespondence";
 import { LoaderLg } from "../../../components";
 
 const CorrespondenceTable = () => {
-  const { data, isPending } = useCorrespondencesData();
+  const { data, isPending } = useCorrespondences.useGet();
   const {
     selectedRow,
     setSelectedRow,
@@ -32,7 +32,7 @@ const CorrespondenceTable = () => {
       return;
     }
     setIsEditOpen(true);
-  }, [selectedRow]);
+  }, [selectedRow, setIsEditOpen]);
 
   const handleDelete = useCallback(() => {
     if (!selectedRow) {
@@ -40,7 +40,7 @@ const CorrespondenceTable = () => {
       return;
     }
     setIsDeleteOpen(true);
-  }, [selectedRow]);
+  }, [selectedRow, setIsDeleteOpen]);
 
   const actions = {
     edit: {

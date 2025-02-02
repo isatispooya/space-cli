@@ -1,6 +1,6 @@
 
 export interface CorrespondenceTypes {
-  id?: number;
+  id?: number | undefined;
   uuid?: string;
   sender: string | null;
   receiver_internal: string | null;

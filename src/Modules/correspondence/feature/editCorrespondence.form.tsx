@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import Forms from "../../../components/forms";
-import { useUpdateCorrespondence } from "../hooks/useUpdateCorrespondence";
+import { useCorrespondences } from "../hooks";
 import { CorrespondenceTypes } from "../types";
 import toast from "react-hot-toast";
 import { FormField } from "../../../types";
@@ -90,20 +90,22 @@ interface EditCorrespondenceProps {
 }
 
 const EditCorrespondence = ({ data, onClose }: EditCorrespondenceProps) => {
-  const { mutate: updateCorrespondence } = useUpdateCorrespondence(
-    data.id?.toString() || ""
-  );
+  const { mutate: updateCorrespondence } = useCorrespondences.useUpdate();
 
   const handleSubmit = (values: CorrespondenceTypes) => {
-    updateCorrespondence(values, {
-      onSuccess: () => {
-        toast.success("مکاتبه با موفقیت ویرایش شد");
-        onClose?.();
-      },
-      onError: () => {
-        toast.error("خطا در ویرایش مکاتبه");
-      },
-    });
+    const correspondenceId = data.id!;
+    updateCorrespondence(
+      { id: correspondenceId, data: values },
+      {
+        onSuccess: () => {
+          toast.success("مکاتبه با موفقیت ویرایش شد");
+          onClose?.();
+        },
+        onError: () => {
+          toast.error("خطا در ویرایش مکاتبه");
+        },
+      }
+    );
   };
 
   const initialValues: CorrespondenceTypes = {

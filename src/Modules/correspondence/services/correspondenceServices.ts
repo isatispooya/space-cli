@@ -1,5 +1,5 @@
 import { api } from "../../../api";  
-import { CorrespondenceTypes } from "../types";
+import { CorrespondencePostType, CorrespondenceTypes } from "../types";
 
 
 const correspondenceService = {
@@ -8,7 +8,7 @@ const correspondenceService = {
     return response.data;
   },
 
-  create: async (data: CorrespondenceTypes) => {
+  create: async (data: CorrespondencePostType) => {
     const response = await api.post("/correspondence/", data);
     return response.data;
   },

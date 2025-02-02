@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useDeleteCorrespondence } from "../hooks";
+import { useCorrespondences } from "../hooks";
 import toast from "react-hot-toast";
 import { CorrespondenceTypes } from "../types";
 interface DeleteCorrespondenceProps {
@@ -8,7 +8,7 @@ interface DeleteCorrespondenceProps {
 }
 
 const DeleteCorrespondence = ({ data, onClose }: DeleteCorrespondenceProps) => {
-  const { mutate: deleteCorrespondence, isPending } = useDeleteCorrespondence();
+  const { mutate: deleteCorrespondence, isPending } = useCorrespondences.useDelete();
 
   const handleDelete = async () => {
     if (!data.id) {

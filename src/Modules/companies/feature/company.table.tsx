@@ -52,6 +52,7 @@ const CompanyTable = () => {
     setIsDeleteOpen(true);
   }, [selectedRow, deleteCompanyMutation]);
 
+
   const columns: GridColDef<CompanyTypes>[] = [
     {
       field: "name",
@@ -135,6 +136,7 @@ const CompanyTable = () => {
     },
   ];
 
+  
   if (isPending) {
     return <Spinner />;
   }

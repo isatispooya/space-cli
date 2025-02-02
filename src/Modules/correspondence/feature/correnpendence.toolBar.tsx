@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CreateCorrespondenceForm } from "./correnpondence.create.form";
-import { useCreateCorrespondence } from "../hooks";
+import { useCorrespondences } from "../hooks";
 import ModalLayout from "../../../layouts/modal.layout";
 import { FormikHelpers } from "formik";
 import { CorrespondenceTypes } from "../types";
@@ -10,18 +10,32 @@ const CorrespondenceToolBar = () => {
   const [selectedTool, setSelectedTool] = useState<"create" | "import" | null>(
     null
   );
-  const { mutate, isPending } = useCreateCorrespondence();
+  const { mutate, isPending } = useCorrespondences.useCreate();
 
   const handleSubmit = (
     values: CorrespondenceTypes,
     actions: FormikHelpers<CorrespondenceTypes>
   ) => {
-    mutate(values, {
-      onSuccess: () => {
-        actions.resetForm();
-        setIsOpen(false);
+    const { sender, receiver_internal, receiver_external, ...rest } = values;
+
+    const validSender = sender || "";
+    const validReceiverInternal = receiver_internal || "";
+    const validReceiverExternal = receiver_external || "";
+
+    mutate(
+      {
+        ...rest,
+        sender: validSender,
+        receiver_internal: validReceiverInternal,
+        receiver_external: validReceiverExternal,
       },
-    });
+      {
+        onSuccess: () => {
+          actions.resetForm();
+          setIsOpen(false);
+        },
+      }
+    );
   };
 
   const tools = (tool: string) => {
