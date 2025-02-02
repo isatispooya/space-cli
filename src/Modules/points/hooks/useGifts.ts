@@ -5,10 +5,12 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { giftServices } from "../services";
-import { GiftsPost, GiftTypes } from "../types";
+import { GiftTypes } from "../types/gifts.type";
+import { GiftsPost } from "../types/giftsPost.type";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import useRemainPoints from "./useRemainPoints";
+
 
 const useGifts = {
   useGetGifts: (): UseQueryResult<GiftTypes[]> => {

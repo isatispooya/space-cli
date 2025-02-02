@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GiftTypes } from "../types";
+import { GiftTypes } from "../types/gifts.type";
 import { useState } from "react";
 import { useRemainPoints } from "../hooks";
 import { LuCoins } from "react-icons/lu";

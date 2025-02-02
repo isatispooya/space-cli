@@ -10,10 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
 import { useProfile } from "../../userManagment";
+import { useUserPermissions } from "../../permissions";
+import { MdCardGiftcard } from "react-icons/md";
 
 export interface StatsProps {
   title: string;
   value: string | number;
+
   icon: ReactNode;
   change?: number;
   changeText?: string;
@@ -31,6 +34,11 @@ const DashboardMarketingStat = () => {
   const { data: invitation } = useInvitation.useGetCodes();
   const { data: profile } = useProfile();
   const { data: invitedUsers } = useInvitation.useGetList();
+  const { data: permissions } = useUserPermissions();
+
+  const hasPermission =
+    Array.isArray(permissions) &&
+    permissions.some((perm) => perm.codename === "position");
 
   const invitedUserFiltered = useMemo(() => {
     if (!Array.isArray(invitedUsers) || !profile?.uniqueIdentifier) {
@@ -80,7 +88,6 @@ const DashboardMarketingStat = () => {
     if (allNames.length >= 1) indices.push(0);
     if (allNames.length >= 2) indices.push(1);
     if (allNames.length >= 3) indices.push(2);
-    if (allNames.length >= 4) indices.push(3);
     setVisibleIndices(indices);
 
     if (allNames.length > 4) {
@@ -146,13 +153,15 @@ const DashboardMarketingStat = () => {
 
           <div className="mx-2"></div>
 
-          <button
-            onClick={() => navigate("/rewards")}
-            className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
-          >
-            <LuCoins className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span>رفاهی</span>
-          </button>
+          {hasPermission && (
+            <button
+              onClick={() => navigate("/rewards/table")}
+              className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#D2042D] border-2 border-[#D2042D] rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300 font-medium shadow-sm hover:shadow-md"
+            >
+              <MdCardGiftcard className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span>رفاهی</span>
+            </button>
+          )}
         </div>
         <div className="flex-grow flex flex-col items-center justify-center mt-6 sm:mt-10">
           <motion.p

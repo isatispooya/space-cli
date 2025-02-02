@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { missionServices } from "../services";
-import { MissionTypes } from "../types";
+import { MissionTypes } from "../types/mission.type";
 
 const useMissions = {
   useGetMissions: (): UseQueryResult<MissionTypes[]> => {
