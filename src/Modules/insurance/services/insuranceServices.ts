@@ -28,7 +28,32 @@ const insuranceService = {
     );
     return response.data;
   },
+  getInsuranceCompanies: async () => {
+    const response = await api.get("/insurance/insurance-companies/");
+    return response.data;
+  },
+  getInsurancePayment: async () => {
+    const response = await api.get("/insurance/payment_insurance-request/");
+    return response.data;
+  },
+  postInsurancePayment: async (data: FormData) => {
+    const response = await api.post(
+      "/insurance/payment_insurance-request/",
+      data,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    return response.data;
+  },
+  updateInsurancePayment: async (data: FormData, id: number) => {
+    const response = await api.patch(
+      `/insurance/payment_insurance-request/${id}/`,
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    return response.data;
+  },
 };
-
 
 export default insuranceService;
