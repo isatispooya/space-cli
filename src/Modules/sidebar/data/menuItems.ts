@@ -196,7 +196,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت درخواست بیمه ",
         path: "/insurance/table",
-        codename: ["allow_any"],
+        codename: ["add_insurancename"],
       },
       {
         title: "خرید بیمه نامه",
