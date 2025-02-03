@@ -2,6 +2,7 @@ import { CellComponent } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 import { useInsurance } from "../../hooks";
 import { insuranceStatus } from "../../data/insurance_status";
+import { InsuranceRequest } from "../../types";
 
 const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
@@ -39,8 +40,8 @@ const InsuranceRequestTable = () => {
   ];
 
   const data =
-    requests?.map((request: CellComponent) => ({
-      insurance_name: request.insurance_name_detail,
+    requests?.map((request: InsuranceRequest) => ({
+      insurance_name: request.insurance_name,
       user_detail: request.user_detail,
       price: request.price,
       insurance_status: request.insurance_status,
@@ -55,7 +56,7 @@ const InsuranceRequestTable = () => {
     hozAlign: "center",
     headerHozAlign: "center",
     formatter: () => `<button class="action-btn">⋮</button>`,
-    cellClick: (e: CellComponent, cell: CellComponent) => {
+    cellClick: (e: MouseEvent, cell: CellComponent) => {
       e.stopPropagation();
       const existingMenu = document.querySelector(
         `.popup-menu[data-cell="${cell

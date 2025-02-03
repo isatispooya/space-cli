@@ -67,8 +67,8 @@ const DashboardChart = () => {
     }
 
     return statsChart.companies
-      .sort((a: barTypes, b: barTypes) => b.shares - a.shares)
-      .map((company: barTypes) => ({
+      .sort((a, b) => b.shares - a.shares)
+      .map((company) => ({
         name: company.name,
         value: company.shares,
         logo: company.logo,

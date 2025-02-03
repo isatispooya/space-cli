@@ -3,8 +3,12 @@ import useInsurance from "../../hooks/useInsurance";
 import SelectInput from "../../../../components/inputs/selectInput";
 import { Spinner } from "../../../../components/loaders";
 import FileInput from "../../../../components/inputs/uploadInput";
+import { Toast } from "../../../../components/toast";
+import { AxiosError } from "axios";
+import { ErrorResponse } from "../../../../types";
+import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 
- const InsuranceRequestCreate: React.FC = () => {
+const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
   const { mutate: postFields } = useInsurance.usePostRequest();
   const [selectedInsurance, setSelectedInsurance] = useState<string>("");
@@ -37,20 +41,32 @@ import FileInput from "../../../../components/inputs/uploadInput";
       formData.append(fieldId, file);
     });
 
-    // Append the single description to formData
     formData.append("description", description);
 
-    postFields(formData);
+    postFields(formData, {
+      onSuccess: () => {
+        setSelectedInsurance("");
+        setFiles({});
+        setDescription("");
+        Toast("بیمه نامه با موفقیت ثبت شد", <CheckmarkIcon />, "bg-green-500");
+      },
+
+      onError: (error: AxiosError<unknown>) => {
+        const errorMessage = (error.response?.data as ErrorResponse)?.error;
+        Toast(errorMessage || "خطایی رخ داده است", <ErrorIcon />, "bg-red-500");
+      },
+    });
   };
 
-  const selectedInsuranceFields = insuranceNames?.find(
-    (item) => item.id.toString() === selectedInsurance
-  )?.fields ?? [];
+  const selectedInsuranceFields =
+    insuranceNames?.find((item) => item.id.toString() === selectedInsurance)
+      ?.fields ?? [];
 
-  const insuranceOptions = insuranceNames?.map((insurance) => ({
-    value: insurance.id.toString(),
-    label: insurance.name,
-  })) ?? [];
+  const insuranceOptions =
+    insuranceNames?.map((insurance) => ({
+      value: insurance.id.toString(),
+      label: insurance.name,
+    })) ?? [];
 
   if (isLoading) {
     return (
