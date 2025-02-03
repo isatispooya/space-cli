@@ -28,6 +28,13 @@ const useInsuranceForm = (dataId: InsuranceRequest | undefined) => {
       setSelectedInsurance(dataId.insurance_name.toString());
       setStatus(dataId.insurance_status || "");
       setDescription(dataId.description_detail?.[0]?.description_user || "");
+      if (dataId.insurance_name_file) {
+        const fileUrl =
+          typeof dataId.insurance_name_file === "string"
+            ? dataId.insurance_name_file
+            : URL.createObjectURL(dataId.insurance_name_file);
+        setUploadFile(fileUrl as any);
+      }
     }
   }, [dataId]);
 
@@ -188,7 +195,12 @@ const InsuranceRequestUpdate: React.FC = () => {
   const handleUploadFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      const fileUrl = URL.createObjectURL(file);
       setUploadFile(file);
+      setUploadedFiles((prev) => ({
+        ...prev,
+        insurance_name_file: fileUrl,
+      }));
     }
   };
 
@@ -198,7 +210,7 @@ const InsuranceRequestUpdate: React.FC = () => {
     const formData = new FormData();
 
     formData.append("insurance", selectedInsurance);
-    formData.append("change_insurance_status", status);
+    formData.append("insurance_status", status);
 
     Object.entries(files).forEach(([fieldId, file]) => {
       formData.append(`insurance_name_file[${fieldId}]`, file);
@@ -319,11 +331,41 @@ const InsuranceRequestUpdate: React.FC = () => {
         />
 
         {hasPermission && (
-          <FileInput
-            label="آپلود فایل"
-            onChange={handleUploadFileChange}
-            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-          />
+          <div className="space-y-2">
+            {uploadFile && (
+              <div className="flex items-center justify-between mb-2 p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-600">فایل بیمه نامه:</span>
+                  <a
+                    href={`${server}${uploadFile}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-700 underline text-sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.open(`${server}${uploadFile}`, "_blank");
+                    }}
+                  >
+                    مشاهده فایل
+                  </a>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setUploadFile(null)}
+                  className="px-3 py-1 text-sm text-red-500 hover:text-red-700 border border-red-500 hover:border-red-700 rounded-md"
+                >
+                  تغییر فایل
+                </button>
+              </div>
+            )}
+            {!uploadFile && (
+              <FileInput
+                label="آپلود فایل"
+                onChange={handleUploadFileChange}
+                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              />
+            )}
+          </div>
         )}
 
         <button
