@@ -33,6 +33,10 @@ const insuranceService = {
     );
     return response.data;
   },
+  deleteRequest: async (id: number) => {
+    const response = await api.delete(`/insurance/insurance-request/${id}/`);
+    return response.data;
+  },
   getInsuranceCompanies: async () => {
     const response = await api.get("/insurance/insurance-companies/");
     return response.data;

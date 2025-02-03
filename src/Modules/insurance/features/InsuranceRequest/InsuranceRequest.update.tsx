@@ -28,13 +28,6 @@ const useInsuranceForm = (dataId: InsuranceRequest | undefined) => {
       setSelectedInsurance(dataId.insurance_name.toString());
       setStatus(dataId.insurance_status || "");
       setDescription(dataId.description_detail?.[0]?.description_user || "");
-      if (dataId.insurance_name_file) {
-        const fileUrl =
-          typeof dataId.insurance_name_file === "string"
-            ? dataId.insurance_name_file
-            : URL.createObjectURL(dataId.insurance_name_file);
-        setUploadFile(fileUrl as unknown as File);
-      }
     }
   }, [dataId]);
 
@@ -109,7 +102,7 @@ const FileField: React.FC<{
           onClick={() => handleDeleteFile(field.id.toString())}
           className="px-3 py-1 text-sm text-red-500 hover:text-red-700 border border-red-500 hover:border-red-700 rounded-md"
         >
-          تغییر فایل
+          حذف
         </button>
       </div>
     ) : (
@@ -135,6 +128,7 @@ const InsuranceRequestUpdate: React.FC = () => {
   const { data: currentInsurance, isLoading: isLoadingCurrent } =
     useInsurance.useGetRequests();
   const { mutate: updateFields } = useInsurance.useUpdateRequest(id);
+  const { mutate: deleteRequest } = useInsurance.useDeleteRequest(Number(id));
 
   console.log(currentInsurance);
 
@@ -195,12 +189,7 @@ const InsuranceRequestUpdate: React.FC = () => {
   const handleUploadFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const fileUrl = URL.createObjectURL(file);
       setUploadFile(file);
-      setUploadedFiles((prev) => ({
-        ...prev,
-        insurance_name_file: fileUrl,
-      }));
     }
   };
 
@@ -210,7 +199,7 @@ const InsuranceRequestUpdate: React.FC = () => {
     const formData = new FormData();
 
     formData.append("insurance", selectedInsurance);
-    formData.append("insurance_status", status);
+    formData.append("change_insurance_status", status);
 
     Object.entries(files).forEach(([fieldId, file]) => {
       formData.append(`insurance_name_file[${fieldId}]`, file);
@@ -241,6 +230,42 @@ const InsuranceRequestUpdate: React.FC = () => {
         setIsSubmitting(false);
       },
     });
+  };
+
+  const handleDelete = () => {
+    console.log("Deleting insurance with ID:", id);
+
+    if (!id) {
+      Toast("شناسه درخواست نامعتبر است", <ErrorIcon />, "bg-red-500");
+      return;
+    }
+
+    if (window.confirm("آیا از حذف این درخواست بیمه اطمینان دارید؟")) {
+      try {
+        deleteRequest(Number(id), {
+          onSuccess: () => {
+            Toast(
+              "درخواست بیمه با موفقیت حذف شد",
+              <CheckmarkIcon />,
+              "bg-green-500"
+            );
+            window.history.back();
+          },
+          onError: (error: AxiosError<unknown>) => {
+            console.error("Delete error:", error);
+            const errorMessage = (error.response?.data as ErrorResponse)?.error;
+            Toast(
+              errorMessage || "خطایی در حذف رخ داده است",
+              <ErrorIcon />,
+              "bg-red-500"
+            );
+          },
+        });
+      } catch (error) {
+        console.error("Unexpected error:", error);
+        Toast("خطای غیر منتظره رخ داد", <ErrorIcon />, "bg-red-500");
+      }
+    }
   };
 
   const selectedInsuranceFields =
@@ -284,9 +309,18 @@ const InsuranceRequestUpdate: React.FC = () => {
       className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg"
       dir="rtl"
     >
-      <h2 className="text-2xl font-bold text-[#29D2C7] mb-6">
-        ویرایش بیمه نامه
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-[#29D2C7]">ویرایش بیمه نامه</h2>
+        {hasPermission && (
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md"
+          >
+            حذف درخواست
+          </button>
+        )}
+      </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <SelectInput
@@ -331,41 +365,11 @@ const InsuranceRequestUpdate: React.FC = () => {
         />
 
         {hasPermission && (
-          <div className="space-y-2">
-            {uploadFile && (
-              <div className="flex items-center justify-between mb-2 p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600">فایل بیمه نامه:</span>
-                  <a
-                    href={`${server}${uploadFile}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:text-blue-700 underline text-sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.open(`${server}${uploadFile}`, "_blank");
-                    }}
-                  >
-                    مشاهده فایل
-                  </a>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setUploadFile(null)}
-                  className="px-3 py-1 text-sm text-red-500 hover:text-red-700 border border-red-500 hover:border-red-700 rounded-md"
-                >
-                  تغییر فایل
-                </button>
-              </div>
-            )}
-            {!uploadFile && (
-              <FileInput
-                label="آپلود فایل"
-                onChange={handleUploadFileChange}
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-              />
-            )}
-          </div>
+          <FileInput
+            label="آپلود فایل"
+            onChange={handleUploadFileChange}
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+          />
         )}
 
         <button

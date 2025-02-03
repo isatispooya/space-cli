@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import useInsurance from "../../hooks/useInsurance";
 import SelectInput from "../../../../components/inputs/selectInput";
 import { Spinner } from "../../../../components/loaders";
@@ -8,15 +8,24 @@ import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../../types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { MultiSelect } from "../../../../components/inputs";
+import { useInsuranceStore } from "../../store"; 
 
 const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
   const { mutate: postFields } = useInsurance.usePostRequest();
   const { data: insuranceCompanies } = useInsurance.useGetInsuranceCompanies();
-  const [selectedInsurance, setSelectedInsurance] = useState<string>("");
-  const [files, setFiles] = useState<Record<string, File>>({});
-  const [description, setDescription] = useState<string>("");
-  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+
+  const {
+    selectedInsurance,
+    selectedCompanies,
+    files,
+    description,
+    setSelectedInsurance,
+    setSelectedCompanies,
+    addFile,
+    setDescription,
+    resetStore,
+  } = useInsuranceStore();
 
   const insuranceCompanyOptions =
     insuranceCompanies?.map((company) => ({
@@ -34,10 +43,7 @@ const InsuranceRequestCreate: React.FC = () => {
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFiles((prev) => ({
-        ...prev,
-        [fieldId]: file,
-      }));
+      addFile(fieldId, file);
     }
   };
 
@@ -67,10 +73,7 @@ const InsuranceRequestCreate: React.FC = () => {
 
     postFields(formData, {
       onSuccess: () => {
-        setSelectedInsurance("");
-        setSelectedCompanies([]); 
-        setFiles({});
-        setDescription("");
+        resetStore();
         Toast("بیمه نامه با موفقیت ثبت شد", <CheckmarkIcon />, "bg-green-500");
       },
 
@@ -141,7 +144,6 @@ const InsuranceRequestCreate: React.FC = () => {
           </div>
         )}
 
-       
         <input
           type="text"
           placeholder="توضیحات"

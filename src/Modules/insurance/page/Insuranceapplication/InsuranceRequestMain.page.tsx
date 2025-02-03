@@ -7,13 +7,13 @@ const InsuranceRequestMainPage = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
-      text: "جدول",
+      text: "بیمه های من",
       permission: ["allow_any"],
       path: "table"
     },
     {
       icon: LuPlus,
-      text: "ایجاد",
+      text: "درخواست بیمه نامه",
       permission: ["allow_any"],
       path: "create"
     }

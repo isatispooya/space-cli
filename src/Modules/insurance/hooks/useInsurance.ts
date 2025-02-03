@@ -10,6 +10,7 @@ import {
   InsurancePostTypes,
   InsuranceRequestPostTypes,
   InsuranceTypes,
+  InsuranceUpdateTypes,
 } from "../types";
 
 const useInsurance = {
@@ -55,15 +56,22 @@ const useInsurance = {
 
   useUpdateRequest: (
     id?: string
-  ): UseMutationResult<
-    InsuranceRequestPostTypes,
-    AxiosError<unknown>,
-    FormData
-  > =>
+  ): UseMutationResult<InsuranceUpdateTypes, AxiosError<unknown>, FormData> =>
     useMutation({
       mutationKey: ["insurance-requests", id],
       mutationFn: (data: FormData) =>
         insuranceService.updateRequest(data, id ? Number(id) : 0),
+    }),
+
+  useDeleteRequest: (id : number): UseMutationResult<
+    void,
+    AxiosError<unknown>,
+    number,
+    unknown
+  > =>
+    useMutation({
+      mutationKey: ["insurance-requests", id],
+      mutationFn: (id: number) => insuranceService.deleteRequest(id),
     }),
 
   useGetInsuranceCompanies: (): UseQueryResult<InsuranceTypes[]> =>
