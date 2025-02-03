@@ -41,7 +41,7 @@ const InsuranceRequestTable = () => {
 
   const data =
     requests?.map((request: InsuranceRequest) => ({
-      insurance_name: request.insurance_name,
+      insurance_name: request.insurance_name_detail,
       user_detail: request.user_detail,
       price: request.price,
       insurance_status: request.insurance_status,
