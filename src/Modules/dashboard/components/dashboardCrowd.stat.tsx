@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
-
 import { useDashboard } from "../hooks";
 import { IoIosArrowBack } from "react-icons/io";
-
 import crowdImg from "../../../../public/assets/crowdlogo.png";
 import usePostUUID from "../hooks/useuuidpost";
 import toast from "react-hot-toast";
@@ -53,6 +51,8 @@ const DashboardCrowdStat = () => {
   const { data: stats } = useDashboard.useGetCrowd();
   const { mutate: crowdUUID } = usePostUUID();
 
+  const totalValue = Number(stats?.["total value"]);
+
   const handleCrowdUUID = () => {
     crowdUUID(undefined, {
       onSuccess: (response) => {
@@ -85,7 +85,7 @@ const DashboardCrowdStat = () => {
             animate={{ scale: 1 }}
             className="text-[11px] font-bold text-[#4b0082]  font-iranSans"
           >
-            {stats?.["total_value"] || "مجموع تامین مالی جمعی"}
+            {stats?.["total value"] || "مجموع تامین مالی جمعی"}
           </motion.p>
           <div className="text-center">
             <motion.p
@@ -93,7 +93,7 @@ const DashboardCrowdStat = () => {
               animate={{ scale: 1 }}
               className="text-4xl md:text-6xl lg:text-8xl font-bold text-[#4b0082] mt-4 font-iranSans overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              {stats?.["total_value"] === 0 ? (
+              {!totalValue ? (
                 <>
                   0
                   <span className="text-sm text-[#4b0082] font-iranSans">
@@ -102,7 +102,7 @@ const DashboardCrowdStat = () => {
                   </span>
                 </>
               ) : (
-                formatValue(stats?.["total_value"] || 0)
+                formatValue(totalValue)
               )}
             </motion.p>
           </div>
