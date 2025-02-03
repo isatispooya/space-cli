@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formik, Form, Field, FieldProps, FormikValues } from "formik";
 import { motion } from "framer-motion";
 import SelectInput from "./inputs/selectInput";
@@ -12,6 +13,8 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { useState } from "react";
 import { BiPlus, BiMinus } from "react-icons/bi";
+import FileInput from "./inputs/uploadInput";
+import MultiSelect from "./inputs/multiSelect";
 
 interface FormsProps<T extends Maybe<AnyObject>> {
   formFields: FormField[];
@@ -69,13 +72,23 @@ const Forms = <T extends FormikValues>({
     }));
   };
 
+  const handleFieldChange = (
+    fieldName: string,
+    value: any,
+    setFieldValue: (field: string, value: any) => void,
+    format?: (value: any) => any
+  ) => {
+    const formattedValue = format ? format(value) : value;
+    setFieldValue(fieldName, formattedValue);
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {({ errors, touched, isSubmitting }) => (
+      {({ errors, touched, isSubmitting, setFieldValue }) => (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -115,6 +128,11 @@ const Forms = <T extends FormikValues>({
                                 label={`${field.label} ${index + 1}`}
                                 className="h-12"
                                 disabled={field.disabled}
+                                format={field.format}
+                                onChange={(e) => {
+                                  const newValue = e.target.value;
+                                  setFieldValue(field.name, newValue);
+                                }}
                               />
                             )}
                           </Field>
@@ -155,6 +173,25 @@ const Forms = <T extends FormikValues>({
                       )
                     )}
                   </div>
+                ) : field.type === "file" ? (
+                  <Field name={field.name}>
+                    {() => (
+                      <FileInput
+                        label={field.label}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          handleFieldChange(
+                            field.name,
+                            file,
+                            setFieldValue,
+                            field.format
+                          );
+                        }}
+                        accept={field.fileProps?.accept}
+                        className="w-full"
+                      />
+                    )}
+                  </Field>
                 ) : field.type === "viewFile" ? (
                   <ViewFileInput
                     url={field.viewFileProps?.url}
@@ -173,7 +210,12 @@ const Forms = <T extends FormikValues>({
                         label={field.label}
                         value={value}
                         onChange={(newValue) =>
-                          setFieldValue(field.name.toString(), newValue)
+                          handleFieldChange(
+                            field.name.toString(),
+                            newValue,
+                            setFieldValue,
+                            field.format
+                          )
                         }
                         className="h-5"
                         placeholder={`جستجو ${field.label}...`}
@@ -214,7 +256,12 @@ const Forms = <T extends FormikValues>({
                         <DatePicker
                           value={fieldProps.value}
                           onChange={(date) => {
-                            setFieldValue(field.name, date);
+                            handleFieldChange(
+                              field.name,
+                              date,
+                              setFieldValue,
+                              field.format
+                            );
                             return false;
                           }}
                           calendar={persian}
@@ -227,15 +274,44 @@ const Forms = <T extends FormikValues>({
                       </div>
                     )}
                   </Field>
+                ) : field.type === "multiSelect" ? (
+                  <Field name={field.name}>
+                    {({ field: { value } }: FieldProps) => (
+                      <MultiSelect
+                        options={field.options || []}
+                        selectedValues={value || []}
+                        onChange={(newValue) =>
+                          handleFieldChange(
+                            field.name,
+                            newValue,
+                            setFieldValue,
+                            field.format
+                          )
+                        }
+                        label={field.label}
+                        placeholder={`جستجو ${field.label}...`}
+                        disabled={field.disabled}
+                        maxSelect={field.multiSelectProps?.maxSelect}
+                      />
+                    )}
+                  </Field>
                 ) : (
                   <Field name={field.name}>
-                    {({ field: fieldProps }: FieldProps) => (
+                    {({
+                      field: fieldProps,
+                      form: { setFieldValue },
+                    }: FieldProps) => (
                       <FormInput
                         {...fieldProps}
                         type={field.type}
                         label={field.label}
                         className="h-12"
                         disabled={field.disabled}
+                        format={field.format}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          setFieldValue(field.name, newValue);
+                        }}
                       />
                     )}
                   </Field>

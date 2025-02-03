@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface FormField {
   name: string;
   label: string;
   disabled?: boolean;
   accept?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  defaultValue?: string;
+
   value?: any;
   type:
     | "text"
@@ -15,8 +17,9 @@ export interface FormField {
     | "date"
     | "file"
     | "viewFile"
-    | "dynamic";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | "dynamic"
+    | "multiSelect";
+ 
   options?: { label: string; value: any }[];
   transferListProps?: {
     leftTitle?: React.ReactNode;
@@ -40,8 +43,17 @@ export interface FormField {
     removeButtonText: string;
     maxFields?: number;
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   onChange?: (value: any) => void;
+  fileProps?: {
+    accept?: string;
+    maxSize?: number;
+    allowedTypes?: string[];
+  };
+  multiSelectProps?: {
+    maxSelect?: number;
+  };
+  format?: (value: any) => any;
 }
 
 export interface TransferListItem {

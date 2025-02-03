@@ -13,11 +13,7 @@ const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
   const { mutate: postFields } = useInsurance.usePostRequest();
   const { data: insuranceCompanies } = useInsurance.useGetInsuranceCompanies();
-
-  console.log(insuranceCompanies);
-
   const [selectedInsurance, setSelectedInsurance] = useState<string>("");
-  const [selectedPriority, setSelectedPriority] = useState<string>("");
   const [files, setFiles] = useState<Record<string, File>>({});
   const [description, setDescription] = useState<string>("");
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
@@ -31,10 +27,6 @@ const InsuranceRequestCreate: React.FC = () => {
 
   const handleInsuranceChange = (value: string) => {
     setSelectedInsurance(value);
-  };
-
-  const handlePriorityChange = (value: string) => {
-    setSelectedPriority(value);
   };
 
   const handleFileChange = (
@@ -57,26 +49,29 @@ const InsuranceRequestCreate: React.FC = () => {
     // اضافه کردن نوع بیمه
     formData.append("insurance", selectedInsurance);
 
-    // اضافه کردن اولویت
-    formData.append("priority", selectedPriority);
-
+    let priority = 1;
     // اضافه کردن آرایه شرکت‌های بیمه انتخاب شده
     selectedCompanies.forEach((companyId) => {
-      formData.append("companies[]", companyId);
+      if (priority === 1) {
+        formData.append("first_properties", companyId);
+      } else if (priority === 2) {
+        formData.append("second_properties", companyId);
+      } else if (priority === 3) {
+        formData.append("third_properties", companyId);
+      }
+      priority++;
     });
 
-    // اضافه کردن فایل‌ها
     Object.entries(files).forEach(([fieldId, file]) => {
       formData.append(fieldId, file);
     });
 
-    // اضافه کردن توضیحات
     formData.append("description", description);
 
     postFields(formData, {
       onSuccess: () => {
         setSelectedInsurance("");
-        setSelectedCompanies([]); // ریست کردن شرکت‌های انتخاب شده
+        setSelectedCompanies([]); 
         setFiles({});
         setDescription("");
         Toast("بیمه نامه با موفقیت ثبت شد", <CheckmarkIcon />, "bg-green-500");
@@ -149,7 +144,7 @@ const InsuranceRequestCreate: React.FC = () => {
           </div>
         )}
 
-        {/* Single description input for the selected insurance */}
+       
         <input
           type="text"
           placeholder="توضیحات"
