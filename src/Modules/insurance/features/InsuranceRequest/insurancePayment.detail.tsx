@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useInsurance } from "../../hooks";
 import Forms from "../../../../components/forms";
 import * as yup from "yup";
@@ -13,6 +13,7 @@ import { FishPaymentType, InsuranceRequest } from "../../types";
 const InsurancePayment = () => {
   const { id } = useParams();
   const { data: insurancePayment, isLoading } = useInsurance.useGetRequests();
+  const navigate = useNavigate();
   const { mutate: postFish } = useInsurance.usePostInsurancePaymentFish();
   const selectedPayment = insurancePayment?.find(
     (payment: InsuranceRequest) => payment.id === Number(id)
@@ -89,6 +90,7 @@ const InsurancePayment = () => {
     postFish(formData, {
       onSuccess: () => {
         Toast("پرداخت با موفقیت انجام شد", <CheckmarkIcon />, "bg-green-500");
+        navigate("/requestinsurance/table");
       },
       onError: (error: AxiosError<unknown>) => {
         const errorMessage = (error.response?.data as ErrorResponse)?.error;

@@ -62,7 +62,8 @@ const useInsurance = {
   > =>
     useMutation({
       mutationKey: ["insurance-requests", id],
-      mutationFn: (data: FormData) => insuranceService.updateRequest(data, id),
+      mutationFn: (data: FormData) =>
+        insuranceService.updateRequest(data, id ? Number(id) : 0),
     }),
 
   useGetInsuranceCompanies: (): UseQueryResult<InsuranceTypes[]> =>
@@ -80,14 +81,12 @@ const useInsurance = {
   usePostInsurancePaymentFish: (): UseMutationResult<
     InsurancePostTypes,
     AxiosError<unknown>,
-    InsurancePostTypes
+    FormData
   > =>
     useMutation({
       mutationKey: ["insurance-payment"],
       mutationFn: insuranceService.postInsurancePayment,
     }),
-
-
 };
 
 export default useInsurance;

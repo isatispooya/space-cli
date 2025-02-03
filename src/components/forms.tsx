@@ -86,7 +86,13 @@ const Forms = <T extends FormikValues>({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmit}
+      onSubmit={async (values, actions) => {
+        try {
+          await onSubmit(values, actions);
+        } finally {
+          actions.setSubmitting(false);
+        }
+      }}
     >
       {({ errors, touched, isSubmitting, setFieldValue }) => (
         <motion.div

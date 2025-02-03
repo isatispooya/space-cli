@@ -12,8 +12,7 @@ const InsuranceRequestTable = () => {
     Array.isArray(permissions) &&
     permissions.some((perm) => perm.codename === "add_insurancename");
 
-  console.log(requests);
-  console.log(requests?.[0]?.insurance_status);
+
 
   const statusTranslations: Record<string, StatusTranslation> = {
     pending: {
