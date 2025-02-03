@@ -26,7 +26,6 @@ const InsuranceRequestTable = () => {
       field: "price",
       formatter: (cell: CellComponent) => cell.getValue() || "نامشخص",
     },
-
     {
       title: "وضعیت",
       field: "insurance_status",
@@ -41,6 +40,7 @@ const InsuranceRequestTable = () => {
 
   const data =
     requests?.map((request: InsuranceRequest) => ({
+      id: request.id,
       insurance_name: request.insurance_name_detail,
       user_detail: request.user_detail,
       price: request.price,
@@ -92,8 +92,7 @@ const InsuranceRequestTable = () => {
           icon: "✏️",
           onClick: () => {
             window.open(
-              `/insurance/update/${cell.getRow().getData().id}`,
-              "_blank"
+              `/requestinsurance/update/${cell.getRow().getData().id}`
             );
           },
         },

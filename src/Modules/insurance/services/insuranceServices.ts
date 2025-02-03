@@ -20,6 +20,15 @@ const insuranceService = {
     });
     return response.data;
   },
+  updateRequest: async (data: FormData, id: number) => {
+    const response = await api.patch(
+      `/insurance/insurance-request/${id}/`,
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    return response.data;
+  },
 };
+
 
 export default insuranceService;

@@ -32,15 +32,26 @@ const useInsurance = {
       mutationKey: ["insurance-requests"],
       mutationFn: insuranceService.postFields,
     }),
-  usePostRequest: (): UseMutationResult<
+  usePostRequest: (id?: string): UseMutationResult<
     InsuranceRequestPostTypes,
     AxiosError<unknown>,
     FormData
   > =>
     useMutation({
-      mutationKey: ["insurance-requests"],
-      mutationFn: insuranceService.postRequest,
+      mutationKey: ["insurance-requests", id],
+      mutationFn: (data: FormData) => insuranceService.postRequest(data),
+    }),
+  useUpdateRequest: (id?: string): UseMutationResult<
+    InsuranceRequestPostTypes,
+    AxiosError<unknown>,
+    FormData
+  > =>
+    useMutation({
+      mutationKey: ["insurance-requests", id],
+      mutationFn: (data: FormData) => insuranceService.updateRequest(data, id),
     }),
 };
+
+
 
 export default useInsurance;

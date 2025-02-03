@@ -12,11 +12,16 @@ const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
   const { mutate: postFields } = useInsurance.usePostRequest();
   const [selectedInsurance, setSelectedInsurance] = useState<string>("");
+  const [selectedPriority, setSelectedPriority] = useState<string>("");
   const [files, setFiles] = useState<Record<string, File>>({});
-  const [description, setDescription] = useState<string>(""); // Single state for description
+  const [description, setDescription] = useState<string>(""); 
 
   const handleInsuranceChange = (value: string) => {
     setSelectedInsurance(value);
+  };
+
+  const handlePriorityChange = (value: string) => {
+    setSelectedPriority(value);
   };
 
   const handleFileChange = (
@@ -36,6 +41,7 @@ const InsuranceRequestCreate: React.FC = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("insurance", selectedInsurance);
+    formData.append("priority", selectedPriority);
 
     Object.entries(files).forEach(([fieldId, file]) => {
       formData.append(fieldId, file);
@@ -68,6 +74,13 @@ const InsuranceRequestCreate: React.FC = () => {
       label: insurance.name,
     })) ?? [];
 
+  const priorityOptions = [
+    { value: "iran", label: "بیمه ایران" },
+    { value: "karafarin", label: "بیمه کارآفرین" },
+    { value: "asia", label: "بیمه آسیا" },
+    { value: "parsian", label: "بیمه پارسیان" },
+  ];
+
   if (isLoading) {
     return (
       <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg">
@@ -77,10 +90,7 @@ const InsuranceRequestCreate: React.FC = () => {
   }
 
   return (
-    <div
-      className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg"
-      dir="rtl"
-    >
+    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg" dir="rtl">
       <h2 className="text-2xl font-bold text-[#29D2C7] mb-6">ثبت بیمه نامه</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <SelectInput
@@ -89,6 +99,14 @@ const InsuranceRequestCreate: React.FC = () => {
           onChange={handleInsuranceChange}
           label="نوع بیمه"
           placeholder="جستجوی نوع بیمه..."
+        />
+
+        <SelectInput
+          options={priorityOptions}
+          value={selectedPriority}
+          onChange={handlePriorityChange}
+          label="اولویت بیمه"
+          placeholder="انتخاب شرکت بیمه..."
         />
 
         {selectedInsuranceFields.map((field) => (
