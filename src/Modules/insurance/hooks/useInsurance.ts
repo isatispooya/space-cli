@@ -6,7 +6,11 @@ import {
 } from "@tanstack/react-query";
 import { insuranceService } from "../services";
 import { AxiosError } from "axios";
-import { InsurancePostTypes, InsuranceTypes } from "../types";
+import {
+  InsurancePostTypes,
+  InsuranceRequestPostTypes,
+  InsuranceTypes,
+} from "../types";
 
 const useInsurance = {
   useGetFields: (): UseQueryResult<InsuranceTypes[]> =>
@@ -29,9 +33,9 @@ const useInsurance = {
       mutationFn: insuranceService.postFields,
     }),
   usePostRequest: (): UseMutationResult<
-    InsurancePostTypes,
+    InsuranceRequestPostTypes,
     AxiosError<unknown>,
-    InsurancePostTypes
+    FormData
   > =>
     useMutation({
       mutationKey: ["insurance-requests"],

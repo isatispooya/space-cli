@@ -1,43 +1,50 @@
 import { CellComponent } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 import { useInsurance } from "../../hooks";
+import { insuranceStatus } from "../../data/insurance_status";
 
-
-const InsuranceappTable = () => {
+const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
 
-  console.log("Raw requests data:", requests);
   const columns = () => [
-    { title: "نام بیمه", field: "insurance_name" },
-    { title: "نوع بیمه", field: "insurance_type" },
-    { title: "قیمت", field: "price" },
-    { title: "تاریخ خرید", field: "purchase_date" },
-    { title: "وضعیت", field: "status" },
+    {
+      title: "نام بیمه",
+      field: "insurance_name",
+      formatter: (cell: CellComponent) => cell.getValue()?.name || "-",
+    },
+    {
+      title: "نام و نام خانوادگی",
+      field: "user_detail",
+      formatter: (cell: CellComponent) => {
+        const user = cell.getValue();
+        return user ? `${user.first_name} ${user.last_name}` : "-";
+      },
+    },
+    {
+      title: "قیمت",
+      field: "price",
+      formatter: (cell: CellComponent) => cell.getValue() || "نامشخص",
+    },
+
+    {
+      title: "وضعیت",
+      field: "insurance_status",
+      formatter: (cell: CellComponent) => {
+        const status = insuranceStatus.find(
+          (item) => item.value === cell.getValue()
+        );
+        return status ? status.label : "-";
+      },
+    },
   ];
 
-  const data = [
-    {
-      insurance_name: "fgykygfsfghytjrd",
-      insurance_type: "طولانی مدت",
-      price: 1000000,
-      purchase_date: "1402/01/01",
-      status: "درحال انتظار",
-    },
-    {
-      insurance_name: "بیمه خودرو",
-      insurance_type: "سالانه",
-      price: 500000,
-      purchase_date: "1402/02/01",
-      status: "درحال انتظار",
-    },
-    {
-      insurance_name: "بیمه خودرو",
-      insurance_type: "سالانه",
-      price: 500000,
-      purchase_date: "1402/02/01",
-      status: "درحال انتظار",
-    },
-  ];
+  const data =
+    requests?.map((request: CellComponent) => ({
+      insurance_name: request.insurance_name_detail,
+      user_detail: request.user_detail,
+      price: request.price,
+      insurance_status: request.insurance_status,
+    })) || [];
 
   const renderActionColumn = () => ({
     title: "عملیات",
@@ -150,7 +157,7 @@ const InsuranceappTable = () => {
         <TabulatorTable
           data={data}
           columns={[...columns(), renderActionColumn()]}
-          title="اطلاعات بیمه"
+          title="اطلاعات بیمه نامه ها"
           showActions={true}
         />
       </div>
@@ -158,4 +165,4 @@ const InsuranceappTable = () => {
   );
 };
 
-export default InsuranceappTable;
+export default InsuranceRequestTable;

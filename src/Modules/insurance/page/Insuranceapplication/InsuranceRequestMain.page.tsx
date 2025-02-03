@@ -1,33 +1,34 @@
-import { MainLayout } from "../../../../layouts";
 import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../../components";
-import { LuPlus } from "react-icons/lu";
-import { LuTable } from "react-icons/lu";
+import { MainLayout } from "../../../../layouts";
+import { LuPlus, LuTable } from "react-icons/lu";
 
-const InsuranceAppMain: React.FC = () => {
+const InsuranceRequestMainPage = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
       text: "جدول",
-      permission: ["view_stocktransfer"],
-      path: "table",
+      permission: ["allow_any"],
+      path: "table"
     },
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: ["add_stocktransfer"],
-      path: "create",
-    },
+      permission: ["allow_any"],
+      path: "create"
+    }
   ];
+  
+
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
         <div className="bg-white p-3">
           <h1 className="text-2xl font-bold text-center text-indigo-600 mb-1">
-             درخواست بیمه
+           بیمه
           </h1>
           <p className="text-gray-600 text-center text-sm">
-             درخواست بیمه به صورت هوشمند
+            مدیریت و پیگیری بیمه
           </p>
         </div>
         <div className="flex-grow flex flex-col">
@@ -43,4 +44,4 @@ const InsuranceAppMain: React.FC = () => {
   );
 };
 
-export default InsuranceAppMain;
+export default InsuranceRequestMainPage;
