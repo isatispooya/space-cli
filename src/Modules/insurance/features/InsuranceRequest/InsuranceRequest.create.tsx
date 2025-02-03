@@ -18,7 +18,6 @@ const InsuranceRequestCreate: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
 
-  // تبدیل دیتای API به فرمت مورد نیاز مولتی سلکت
   const insuranceCompanyOptions =
     insuranceCompanies?.map((company) => ({
       value: company.id.toString(),
@@ -45,8 +44,6 @@ const InsuranceRequestCreate: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
-
-    // اضافه کردن نوع بیمه
     formData.append("insurance", selectedInsurance);
 
     let priority = 1;
