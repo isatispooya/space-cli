@@ -93,7 +93,7 @@ const Header = () => {
                   className="flex items-center cursor-pointer"
                   onClick={() => navigate("/")}
                 >
-                  <img src={LogoWhite} className="w-20" alt="logo" />
+                  <img src={LogoWhite} className="w-20 sm:w-16" alt="logo" />
                   <img
                     src={LogoText}
                     className="w-40 hidden lg:block"

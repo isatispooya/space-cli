@@ -7,6 +7,9 @@ import { InsuranceRequest } from "../../types";
 const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
 
+  console.log(requests);
+  console.log(requests?.[0]?.insurance_status);
+
   const columns = () => [
     {
       title: "نام بیمه",
