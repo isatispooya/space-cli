@@ -1,8 +1,7 @@
 import { CellComponent } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 import { useInsurance } from "../../hooks";
-import { insuranceStatus } from "../../data/insurance_status";
-import { InsuranceRequest } from "../../types";
+import { InsuranceRequest, StatusTranslation } from "../../types";
 
 const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
@@ -10,11 +9,38 @@ const InsuranceRequestTable = () => {
   console.log(requests);
   console.log(requests?.[0]?.insurance_status);
 
+  const statusTranslations: Record<string, StatusTranslation> = {
+    pending: { text: "در انتظار بررسی" },
+    missing_document: {
+      text: "نقص مدارک",
+      button: "تکمیل مدارک",
+      url: "/requestinsurance/update",
+    },
+    pending_payment: {
+      text: "در انتظار پرداخت",
+      button: "پرداخت",
+      url: "/requestinsurance/payment",
+    },
+    pending_review: { text: "درانتظار برسی" },
+    approved: { text: "تایید پرداخت" },
+    rejected: { text: "رد شده" },
+    pending_issue: { text: "در انتظار صدور" },
+    cancelled: { text: "لغو شده" },
+    finished: {
+      text: "کامل شده",
+      button: "دریافت بیمه‌نامه",
+      url: "/requestinsurance/download",
+    },
+    expired: { text: "منقضی شده" },
+  };
+
   const columns = () => [
     {
       title: "نام بیمه",
       field: "insurance_name",
       formatter: (cell: CellComponent) => cell.getValue()?.name || "-",
+      hozAlign: "center",
+      headerHozAlign: "center",
     },
     {
       title: "نام و نام خانوادگی",
@@ -23,21 +49,43 @@ const InsuranceRequestTable = () => {
         const user = cell.getValue();
         return user ? `${user.first_name} ${user.last_name}` : "-";
       },
+      hozAlign: "center",
+      headerHozAlign: "center",
     },
     {
       title: "قیمت",
       field: "price",
       formatter: (cell: CellComponent) => cell.getValue() || "نامشخص",
+      hozAlign: "center",
+      headerHozAlign: "center",
     },
     {
       title: "وضعیت",
       field: "insurance_status",
       formatter: (cell: CellComponent) => {
-        const status = insuranceStatus.find(
-          (item) => item.value === cell.getValue()
-        );
-        return status ? status.label : "-";
+        const value = cell.getValue();
+        const status =
+          statusTranslations[value as keyof typeof statusTranslations];
+        return `
+          <div class="flex items-center justify-around gap-2">
+            <span>${status?.text || value}</span>
+            ${
+              status?.button
+                ? `<button 
+              onclick="window.open('${status.url}/${
+                    cell.getRow().getData().id
+                  }')" 
+              class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-400">
+              ${status?.button}
+            </button>
+            `
+                : ""
+            }
+          </div>
+        `;
       },
+      hozAlign: "center",
+      headerHozAlign: "center",
     },
   ];
 
