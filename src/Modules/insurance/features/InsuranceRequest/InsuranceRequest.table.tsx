@@ -92,7 +92,7 @@ const InsuranceRequestTable = () => {
           icon: "✏️",
           onClick: () => {
             window.open(
-              `/insurance/edit/${cell.getRow().getData().id}`,
+              `/insurance/update/${cell.getRow().getData().id}`,
               "_blank"
             );
           },

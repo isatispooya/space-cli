@@ -18,6 +18,12 @@ const InsuranceRequestCreate = lazy(() =>
   }))
 );
 
+const InsuranceRequestUpdate = lazy(() =>
+  import("../page/Insuranceapplication").then((module) => ({
+    default: module.InsuranceRequestUpdate,
+  }))
+);
+
 const InsuranceAppRoutes = [
   {
     path: "/requestinsurance",
@@ -30,6 +36,10 @@ const InsuranceAppRoutes = [
       {
         path: "create",
         element: <InsuranceRequestCreate />,
+      },
+      {
+        path: "update/:id",
+        element: <InsuranceRequestUpdate />,
       },
     ],
   },
