@@ -7,33 +7,152 @@ import { Toast } from "../../../../components/toast";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../../types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import { InsuranceTypes } from "../../types";
+import { InsuranceField, InsuranceRequest } from "../../types";
 import { useParams } from "react-router-dom";
+import { server } from "../../../../api/server";
+import { useUserPermissions } from "../../../permissions";
+
+const useInsuranceForm = (dataId: InsuranceRequest | undefined) => {
+  const [selectedInsurance, setSelectedInsurance] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [files, setFiles] = useState<Record<string, File>>({});
+  const [description, setDescription] = useState<string>("");
+  const [uploadedFiles, setUploadedFiles] = useState<Record<string, string>>(
+    {}
+  );
+  const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (dataId) {
+      setSelectedInsurance(dataId.insurance_name.toString());
+      setStatus(dataId.insurance_status || "");
+      setDescription(dataId.description_detail?.[0]?.description_user || "");
+    }
+  }, [dataId]);
+
+  useEffect(() => {
+    if (dataId?.file_detail) {
+      const files = dataId.file_detail.reduce(
+        (acc, file) => ({
+          ...acc,
+          [file.file_name]: file.file_attachment,
+        }),
+        {}
+      );
+      setUploadedFiles(files);
+    }
+  }, [dataId]);
+
+  return {
+    selectedInsurance,
+    setSelectedInsurance,
+    status,
+    setStatus,
+    files,
+    setFiles,
+    description,
+    setDescription,
+    uploadedFiles,
+    setUploadedFiles,
+    filesToDelete,
+    setFilesToDelete,
+    uploadFile,
+    setUploadFile,
+  };
+};
+
+const FileField: React.FC<{
+  field: { id: number; name: string };
+  existingFile: { file_name: number; file_attachment: string };
+  filesToDelete: string[];
+  handleDeleteFile: (fieldId: string) => void;
+  handleFileChange: (
+    fieldId: string,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  uploadedFiles: Record<string, string>;
+}> = ({
+  field,
+  existingFile,
+  filesToDelete,
+  handleDeleteFile,
+  handleFileChange,
+}) => (
+  <div className="space-y-2">
+    {existingFile && !filesToDelete.includes(field.id.toString()) ? (
+      <div className="flex items-center justify-between mb-2 p-4 bg-gray-50 rounded-lg">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">{field.name}:</span>
+          <a
+            href={`${server}${existingFile.file_attachment}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:text-blue-700 underline text-sm"
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(`${server}${existingFile.file_attachment}`, "_blank");
+            }}
+          >
+            مشاهده فایل
+          </a>
+        </div>
+        <button
+          type="button"
+          onClick={() => handleDeleteFile(field.id.toString())}
+          className="px-3 py-1 text-sm text-red-500 hover:text-red-700 border border-red-500 hover:border-red-700 rounded-md"
+        >
+          تغییر فایل
+        </button>
+      </div>
+    ) : (
+      <FileInput
+        label={field.name}
+        onChange={(e) => handleFileChange(field.id.toString(), e)}
+        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+      />
+    )}
+  </div>
+);
 
 const InsuranceRequestUpdate: React.FC = () => {
+  const { data: permissions } = useUserPermissions();
+
+  const hasPermission =
+    Array.isArray(permissions) &&
+    permissions.some((perm) => perm.codename === "add_insurancename");
+
   const { id } = useParams();
+
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
   const { data: currentInsurance, isLoading: isLoadingCurrent } =
     useInsurance.useGetRequests();
-  const { mutate: updateFields } = id ? useInsurance.useUpdateRequest(id) : { mutate: () => {} };
-  const [selectedInsurance, setSelectedInsurance] = useState<string>("");
-  const [files, setFiles] = useState<Record<string, File>>({});
-  const [description, setDescription] = useState<string>("");
-  const [removedFiles, setRemovedFiles] = useState<string[]>([]);
+  const { mutate: updateFields } = useInsurance.useUpdateRequest(id);
 
+  console.log(currentInsurance);
 
+  const dataId = currentInsurance?.find(
+    (item: InsuranceRequest) => item.id === Number(id)
+  );
 
-  console.log(insuranceNames , 456);
-  console.log(currentInsurance , 123);
+  const {
+    selectedInsurance,
+    setSelectedInsurance,
+    status,
+    setStatus,
+    files,
+    setFiles,
+    description,
+    setDescription,
+    uploadedFiles,
+    setUploadedFiles,
+    filesToDelete,
+    setFilesToDelete,
+    uploadFile,
+    setUploadFile,
+  } = useInsuranceForm(dataId);
 
-  useEffect(() => {
-    if (id) {
-      setSelectedInsurance(id.toString());
-    }
-    if (currentInsurance) {
-      setDescription(currentInsurance.description || "");
-    }
-  }, [currentInsurance, id]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInsuranceChange = (value: string) => {
     setSelectedInsurance(value);
@@ -49,37 +168,50 @@ const InsuranceRequestUpdate: React.FC = () => {
         ...prev,
         [fieldId]: file,
       }));
+      const fileUrl = URL.createObjectURL(file);
+      setUploadedFiles((prev) => ({
+        ...prev,
+        [fieldId]: fileUrl,
+      }));
     }
   };
 
-  const handleRemoveFile = (fieldId: string) => {
-    setRemovedFiles((prev) => [...prev, fieldId]);
-    setFiles((prev) => {
+  const handleDeleteFile = (fieldId: string) => {
+    setFilesToDelete((prev) => [...prev, fieldId]);
+    setUploadedFiles((prev) => {
       const newFiles = { ...prev };
       delete newFiles[fieldId];
       return newFiles;
     });
   };
 
+  const handleUploadFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadFile(file);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!id) {
-      Toast("شناسه بیمه نامه نامعتبر است", <ErrorIcon />, "bg-red-500");
-      return;
-    }
-    
+    setIsSubmitting(true);
     const formData = new FormData();
-    formData.append("id", id);
+
     formData.append("insurance", selectedInsurance);
+    formData.append("change_insurance_status", status);
+
     Object.entries(files).forEach(([fieldId, file]) => {
-      formData.append(fieldId, file);
+      formData.append(`insurance_name_file[${fieldId}]`, file);
     });
-    formData.append("removed_files", JSON.stringify(removedFiles));
-    
+
     formData.append("description", description);
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
+    filesToDelete.forEach((fieldId) => {
+      formData.append("delete_files[]", fieldId);
+    });
+
+    if (uploadFile) {
+      formData.append("insurance_name_file", uploadFile);
     }
 
     updateFields(formData, {
@@ -89,30 +221,18 @@ const InsuranceRequestUpdate: React.FC = () => {
           <CheckmarkIcon />,
           "bg-green-500"
         );
+        setIsSubmitting(false);
       },
       onError: (error: AxiosError<unknown>) => {
         const errorMessage = (error.response?.data as ErrorResponse)?.error;
         Toast(errorMessage || "خطایی رخ داده است", <ErrorIcon />, "bg-red-500");
+        setIsSubmitting(false);
       },
     });
   };
 
-  const parseFieldName = (nameString: string) => {
-    try {
-      return JSON.parse(nameString.replace(/'/g, '"'));
-    } catch (error) {
-      return { name: nameString, date: '' };
-    }
-  };
-
   const selectedInsuranceFields =
-    insuranceNames?.find((item: InsuranceTypes) => item.id === Number(id))
-      ?.fields.map(field => ({
-        ...field,
-        parsedName: parseFieldName(field.name)
-      })) || [];
-
-  console.log(selectedInsuranceFields);
+    dataId?.insurance_name_detail?.field_detail || [];
 
   const insuranceOptions =
     insuranceNames?.map((insurance) => ({
@@ -120,13 +240,26 @@ const InsuranceRequestUpdate: React.FC = () => {
       label: insurance.name,
     })) ?? [];
 
+  const statusOptions = [
+    { value: "missing_document", label: "نقص مدارک" },
+    { value: "pending_payment", label: "در انتظار پرداخت" },
+    { value: "pending_review", label: "در انتظار برسی پرداخت" },
+    { value: "approved", label: "تایید پرداخت" },
+    { value: "rejected", label: "رد شده" },
+    { value: "pending_issue", label: "در انتظار صدور" },
+    { value: "cancelled", label: "لغو شده" },
+    { value: "finished", label: "کامل شده" },
+    { value: "expired", label: "منقضی شده" },
+  ];
+
   const getExistingFile = (fieldId: string) => {
-    return currentInsurance?.files?.find(
-      (file: any) => file.field_id.toString() === fieldId
+    return dataId?.file_detail?.find(
+      (file: { file_name: number; file_attachment: string }) =>
+        file.file_name === Number(fieldId)
     );
   };
 
-  if (isLoading || isLoadingCurrent) {
+  if (isLoading || isLoadingCurrent || !dataId) {
     return (
       <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg">
         <Spinner />
@@ -136,65 +269,73 @@ const InsuranceRequestUpdate: React.FC = () => {
 
   return (
     <div
-      className="max-w-4xl mx-auto my-8 p-8 bg-white rounded-[32px] shadow-lg"
+      className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg"
       dir="rtl"
     >
-      <h2 className="text-2xl font-bold text-[#29D2C7] mb-8">
+      <h2 className="text-2xl font-bold text-[#29D2C7] mb-6">
         ویرایش بیمه نامه
       </h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <SelectInput
-          options={insuranceOptions}
-          value={selectedInsurance}
-          onChange={handleInsuranceChange}
-          label="نوع بیمه"
-          placeholder="جستجوی نوع بیمه..."
-        />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <SelectInput
+            options={insuranceOptions}
+            value={selectedInsurance}
+            onChange={handleInsuranceChange}
+            label="نوع بیمه"
+            placeholder="جستجوی نوع بیمه..."
+          />
+          {hasPermission && (
+            <SelectInput
+              options={statusOptions}
+              value={status}
+              onChange={(value) => setStatus(value)}
+              label="وضعیت"
+              placeholder="انتخاب وضعیت..."
+            />
+          )}
+        </div>
 
-        {selectedInsuranceFields?.map((field) => {
+        {selectedInsuranceFields?.map((field: InsuranceField) => {
           const existingFile = getExistingFile(field.id.toString());
-          const isRemoved = removedFiles.includes(field.id.toString());
-
           return (
-            <div key={field.id} className="bg-gray-50 p-4 rounded-lg">
-              {existingFile && !isRemoved && (
-                <div className="mb-3 text-sm text-gray-600 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">فایل فعلی:</span>
-                    <span className="bg-gray-100 px-3 py-1 rounded-full">
-                      {existingFile.file_name}
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveFile(field.id.toString())}
-                    className="text-red-500 hover:text-red-700 px-2 py-1 rounded-md text-sm transition-colors duration-200"
-                  >
-                    حذف
-                  </button>
-                </div>
-              )}
-              <FileInput
-                label={`${field.parsedName.name} (تاریخ: ${field.parsedName.date})`}
-                onChange={(e) => handleFileChange(field.id.toString(), e)}
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-              />
-            </div>
+            <FileField
+              key={field.id}
+              field={field}
+              existingFile={existingFile}
+              filesToDelete={filesToDelete}
+              handleDeleteFile={handleDeleteFile}
+              handleFileChange={handleFileChange}
+              uploadedFiles={uploadedFiles}
+            />
           );
         })}
 
-        <textarea
+        <input
+          type="text"
           placeholder="توضیحات"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="mt-2 p-4 border border-gray-200 rounded-lg w-full min-h-[120px] focus:outline-none focus:ring-2 focus:ring-[#29D2C7] focus:border-transparent"
+          className="mt-2 p-2 border rounded-md w-full"
         />
+
+        {hasPermission && (
+          <FileInput
+            label="آپلود فایل"
+            onChange={handleUploadFileChange}
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+          />
+        )}
 
         <button
           type="submit"
-          className="w-full py-4 px-6 mt-8 bg-[#29D2C7] hover:bg-[#008282] text-white rounded-lg transition-colors duration-200 font-medium text-lg"
+          disabled={isSubmitting}
+          className={`w-full py-3 px-4 mt-6 ${
+            isSubmitting
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-[#29D2C7] hover:bg-[#008282]"
+          } text-white rounded-md`}
         >
-          ویرایش بیمه نامه
+          {isSubmitting ? "در حال ویرایش..." : "ویرایش"}
         </button>
       </form>
     </div>

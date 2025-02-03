@@ -22,7 +22,6 @@ const InsuranceRequestCreate: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
 
-  // تبدیل دیتای API به فرمت مورد نیاز مولتی سلکت
   const insuranceCompanyOptions =
     insuranceCompanies?.map((company) => ({
       value: company.id.toString(),
@@ -53,30 +52,22 @@ const InsuranceRequestCreate: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
-
-    // اضافه کردن نوع بیمه
     formData.append("insurance", selectedInsurance);
-
-    // اضافه کردن اولویت
     formData.append("priority", selectedPriority);
-
-    // اضافه کردن آرایه شرکت‌های بیمه انتخاب شده
     selectedCompanies.forEach((companyId) => {
       formData.append("companies[]", companyId);
     });
 
-    // اضافه کردن فایل‌ها
     Object.entries(files).forEach(([fieldId, file]) => {
       formData.append(fieldId, file);
     });
 
-    // اضافه کردن توضیحات
     formData.append("description", description);
 
     postFields(formData, {
       onSuccess: () => {
         setSelectedInsurance("");
-        setSelectedCompanies([]); // ریست کردن شرکت‌های انتخاب شده
+        setSelectedCompanies([]);
         setFiles({});
         setDescription("");
         Toast("بیمه نامه با موفقیت ثبت شد", <CheckmarkIcon />, "bg-green-500");
