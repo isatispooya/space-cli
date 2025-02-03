@@ -7,14 +7,27 @@ import { Toast } from "../../../../components/toast";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../../types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
+import { MultiSelect } from "../../../../components/inputs";
 
 const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
   const { mutate: postFields } = useInsurance.usePostRequest();
+  const { data: insuranceCompanies } = useInsurance.useGetInsuranceCompanies();
+
+  console.log(insuranceCompanies);
+
   const [selectedInsurance, setSelectedInsurance] = useState<string>("");
   const [selectedPriority, setSelectedPriority] = useState<string>("");
   const [files, setFiles] = useState<Record<string, File>>({});
-  const [description, setDescription] = useState<string>(""); 
+  const [description, setDescription] = useState<string>("");
+  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+
+  // تبدیل دیتای API به فرمت مورد نیاز مولتی سلکت
+  const insuranceCompanyOptions =
+    insuranceCompanies?.map((company) => ({
+      value: company.id.toString(),
+      label: company.name,
+    })) ?? [];
 
   const handleInsuranceChange = (value: string) => {
     setSelectedInsurance(value);
@@ -40,18 +53,30 @@ const InsuranceRequestCreate: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
+
+    // اضافه کردن نوع بیمه
     formData.append("insurance", selectedInsurance);
+
+    // اضافه کردن اولویت
     formData.append("priority", selectedPriority);
 
+    // اضافه کردن آرایه شرکت‌های بیمه انتخاب شده
+    selectedCompanies.forEach((companyId) => {
+      formData.append("companies[]", companyId);
+    });
+
+    // اضافه کردن فایل‌ها
     Object.entries(files).forEach(([fieldId, file]) => {
       formData.append(fieldId, file);
     });
 
+    // اضافه کردن توضیحات
     formData.append("description", description);
 
     postFields(formData, {
       onSuccess: () => {
         setSelectedInsurance("");
+        setSelectedCompanies([]); // ریست کردن شرکت‌های انتخاب شده
         setFiles({});
         setDescription("");
         Toast("بیمه نامه با موفقیت ثبت شد", <CheckmarkIcon />, "bg-green-500");
@@ -74,13 +99,6 @@ const InsuranceRequestCreate: React.FC = () => {
       label: insurance.name,
     })) ?? [];
 
-  const priorityOptions = [
-    { value: "iran", label: "بیمه ایران" },
-    { value: "karafarin", label: "بیمه کارآفرین" },
-    { value: "asia", label: "بیمه آسیا" },
-    { value: "parsian", label: "بیمه پارسیان" },
-  ];
-
   if (isLoading) {
     return (
       <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg">
@@ -90,34 +108,46 @@ const InsuranceRequestCreate: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg" dir="rtl">
+    <div
+      className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg"
+      dir="rtl"
+    >
       <h2 className="text-2xl font-bold text-[#29D2C7] mb-6">ثبت بیمه نامه</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <SelectInput
-          options={insuranceOptions}
-          value={selectedInsurance}
-          onChange={handleInsuranceChange}
-          label="نوع بیمه"
-          placeholder="جستجوی نوع بیمه..."
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <SelectInput
+            options={insuranceOptions}
+            value={selectedInsurance}
+            onChange={handleInsuranceChange}
+            label="نوع بیمه"
+            placeholder="جستجوی نوع بیمه..."
+          />
 
-        <SelectInput
-          options={priorityOptions}
-          value={selectedPriority}
-          onChange={handlePriorityChange}
-          label="اولویت بیمه"
-          placeholder="انتخاب شرکت بیمه..."
-        />
-
-        {selectedInsuranceFields.map((field) => (
-          <div key={field.id}>
-            <FileInput
-              label={field.name}
-              onChange={(e) => handleFileChange(field.id.toString(), e)}
-              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+          {selectedInsurance && (
+            <MultiSelect
+              options={insuranceCompanyOptions}
+              selectedValues={selectedCompanies}
+              onChange={setSelectedCompanies}
+              label="شرکت‌های بیمه"
+              placeholder="انتخاب شرکت‌های بیمه..."
+              maxSelect={3}
             />
+          )}
+        </div>
+
+        {selectedInsuranceFields.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {selectedInsuranceFields.map((field) => (
+              <div key={field.id}>
+                <FileInput
+                  label={field.name}
+                  onChange={(e) => handleFileChange(field.id.toString(), e)}
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                />
+              </div>
+            ))}
           </div>
-        ))}
+        )}
 
         {/* Single description input for the selected insurance */}
         <input
