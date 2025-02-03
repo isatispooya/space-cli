@@ -10,10 +10,15 @@ const insuranceService = {
     const response = await api.get("/insurance/insurance-request/");
     return response.data;
   },
+  getRequestsById: async (id: number) => {
+    const response = await api.get(`/insurance/insurance-request/${id}/`);
+    return response.data;
+  },
   postFields: async (data: InsurancePostTypes) => {
     const response = await api.post("/insurance/insurance-with-fields/", data);
     return response.data;
   },
+
   postRequest: async (data: FormData) => {
     const response = await api.post("/insurance/insurance-request/", data, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -38,7 +43,7 @@ const insuranceService = {
   },
   postInsurancePayment: async (data: FormData) => {
     const response = await api.post(
-      "/insurance/payment_insurance-request/",
+      "/insurance/payment_insurance_request/",
       data,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -48,7 +53,7 @@ const insuranceService = {
   },
   updateInsurancePayment: async (data: FormData, id: number) => {
     const response = await api.patch(
-      `/insurance/payment_insurance-request/${id}/`,
+      `/insurance/payment_insurance_request/${id}/`,
       data,
       { headers: { "Content-Type": "multipart/form-data" } }
     );

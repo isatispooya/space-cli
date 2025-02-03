@@ -12,11 +12,18 @@ const InsuranceRequestTable = lazy(() =>
   }))
 );
 
+const InsurancePayment = lazy(() =>
+  import("../features/InsuranceRequest").then((module) => ({
+    default: module.InsurancePayment,
+  }))
+);
+
 const InsuranceRequestCreate = lazy(() =>
   import("..").then((module) => ({
     default: module.InsuranceRequestCreate,
   }))
 );
+
 
 const InsuranceRequestUpdate = lazy(() =>
   import("../page/Insuranceapplication").then((module) => ({
@@ -41,8 +48,13 @@ const InsuranceAppRoutes = [
         path: "update/:id",
         element: <InsuranceRequestUpdate />,
       },
+      {
+        path: "payment/:id",
+        element: <InsurancePayment />,
+      },
     ],
   },
 ];
+
 
 export default InsuranceAppRoutes;

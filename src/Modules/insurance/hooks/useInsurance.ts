@@ -19,14 +19,17 @@ const useInsurance = {
       queryFn: insuranceService.getFields,
     }),
 
-
-
   useGetRequests: () =>
     useQuery({
       queryKey: ["insurance-requests"],
       queryFn: insuranceService.getRequests,
     }),
 
+  useGetRequestsById: (id?: number) =>
+    useQuery({
+      queryKey: ["insurance-requests", id],
+      queryFn: () => insuranceService.getRequestsById(id ?? 0),
+    }),
 
   usePostFields: (): UseMutationResult<
     InsurancePostTypes,
@@ -38,9 +41,9 @@ const useInsurance = {
       mutationFn: insuranceService.postFields,
     }),
 
-
-
-  usePostRequest: (id?: string): UseMutationResult<
+  usePostRequest: (
+    id?: string
+  ): UseMutationResult<
     InsuranceRequestPostTypes,
     AxiosError<unknown>,
     FormData
@@ -50,10 +53,9 @@ const useInsurance = {
       mutationFn: (data: FormData) => insuranceService.postRequest(data),
     }),
 
-
-
-
-  useUpdateRequest: (id?: string): UseMutationResult<
+  useUpdateRequest: (
+    id?: string
+  ): UseMutationResult<
     InsuranceRequestPostTypes,
     AxiosError<unknown>,
     FormData
@@ -63,15 +65,11 @@ const useInsurance = {
       mutationFn: (data: FormData) => insuranceService.updateRequest(data, id),
     }),
 
-
-
-
   useGetInsuranceCompanies: (): UseQueryResult<InsuranceTypes[]> =>
     useQuery({
       queryKey: ["insurance-companies"],
       queryFn: insuranceService.getInsuranceCompanies,
     }),
-
 
   useGetInsurancePayment: (): UseQueryResult<InsuranceTypes[]> =>
     useQuery({
@@ -79,8 +77,7 @@ const useInsurance = {
       queryFn: insuranceService.getInsurancePayment,
     }),
 
-
-  usePostInsurancePayment: (): UseMutationResult< 
+  usePostInsurancePaymentFish: (): UseMutationResult<
     InsurancePostTypes,
     AxiosError<unknown>,
     InsurancePostTypes
@@ -91,19 +88,6 @@ const useInsurance = {
     }),
 
 
-  useUpdateInsurancePayment: (): UseMutationResult<
-    InsurancePostTypes,
-    AxiosError<unknown>,
-    InsurancePostTypes
-  > =>
-    useMutation({
-      mutationKey: ["insurance-payment"],
-      mutationFn: insuranceService.updateInsurancePayment,
-    }),
 };
-
-
-
-
 
 export default useInsurance;

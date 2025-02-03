@@ -1,10 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HTMLMotionProps, motion } from "framer-motion";
 
 interface FormInputProps extends HTMLMotionProps<"input"> {
   label?: string;
+  format?: (value: any) => any;
+  value?: any;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FormInput = ({ label = "Input Label", ...props }: FormInputProps) => {
+const FormInput = ({
+  label = "Input Label",
+  format,
+  value,
+  onChange,
+  ...props
+}: FormInputProps) => {
+  // Format the display value if a format function is provided
+  const displayValue = format && value !== undefined ? format(value) : value;
+
   return (
     <div dir="rtl" className="w-full max-w-sm min-w-[150px]">
       <motion.label
@@ -16,6 +29,8 @@ const FormInput = ({ label = "Input Label", ...props }: FormInputProps) => {
       </motion.label>
       <motion.input
         {...props}
+        value={displayValue || ""}
+        onChange={onChange}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         whileTap={{ scale: 0.995 }}
