@@ -33,7 +33,7 @@ const useInsuranceForm = (dataId: InsuranceRequest | undefined) => {
           typeof dataId.insurance_name_file === "string"
             ? dataId.insurance_name_file
             : URL.createObjectURL(dataId.insurance_name_file);
-        setUploadFile(fileUrl as any);
+        setUploadFile(fileUrl as unknown as File);
       }
     }
   }, [dataId]);
