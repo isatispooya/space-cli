@@ -3,6 +3,7 @@ import TabulatorTable from "../../../../components/table/table.com";
 import { useInsurance } from "../../hooks";
 import { InsuranceRequest, StatusTranslation } from "../../types";
 import { useUserPermissions } from "../../../permissions";
+import { server } from "../../../../api";
 
 const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
@@ -77,7 +78,7 @@ const InsuranceRequestTable = () => {
     },
     {
       title: "وضعیت",
-      field: "insurance_status",
+      field: "insurance_status", 
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         const status =
@@ -88,9 +89,7 @@ const InsuranceRequestTable = () => {
             ${
               status?.button && hasPermission
                 ? `<button 
-              onclick="window.open('${status.url}/${
-                    cell.getRow().getData().id
-                  }')" 
+              onclick="window.open('${value === 'finished' ? `${server}/${requests.insurance_name_file}` : `${status.url}/${cell.getRow().getData().id}`}')" 
               class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-400 w-32">
               ${status?.button}
             </button>
