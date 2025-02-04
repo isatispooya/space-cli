@@ -5,8 +5,6 @@ import { InsuranceRequest, StatusTranslation } from "../../types";
 import { useUserPermissions } from "../../../permissions";
 import { server } from "../../../../api";
 
-
-
 const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
   const { data: permissions } = useUserPermissions();
@@ -96,36 +94,28 @@ const InsuranceRequestTable = () => {
         hozAlign: "center",
         headerHozAlign: "center",
       },
-    ];
-
-    if (
-      requests?.some(
-        (request: InsuranceRequest) => request?.insurance_name_file
-      )
-    ) {
-      baseColumns.push({
+      {
         title: "فایل های ضمیمه",
-        field: "file_detail",
+        field: "insurance_name_file",
         formatter: (cell: CellComponent) => {
-          const request = cell.getRow().getData();
-          const file = request?.insurance_name_file;
-          console.log(file);
-          const url = file ? server + "/" + file : "";
-
-          return `
-            <div class="flex flex-col gap-1">
-              <a href="${url}" target="_blank" class="text-blue-500 hover:text-blue-700 underline">
-                فایل ضمیمه
-              </a>
-              
-
-            </div>
-          `;
+          const file = cell.getValue();
+          return file
+            ? `
+          <div class="flex items-center">
+            <a href="${
+              server + file
+            }" target="_blank" class="text-blue-500 underline hover:text-blue-700 transition duration-200">${file}</a>
+            <button class="px-2 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-400 w-32 ml-2 transition duration-200">
+              مشاهده
+            </button>
+          </div>
+                `
+            : "-";
         },
         hozAlign: "center",
         headerHozAlign: "center",
-      });
-    }
+      }
+    ];
 
     return baseColumns;
   };
@@ -137,7 +127,7 @@ const InsuranceRequestTable = () => {
       user_detail: request.user_detail,
       price: request.price,
       insurance_status: request.insurance_status,
-      file_detail: request.insurance_name_file,
+      insurance_name_file: request.insurance_name_file,
     })) || [];
 
   const renderActionColumn = () => ({
