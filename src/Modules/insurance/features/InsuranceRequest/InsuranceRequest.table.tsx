@@ -20,6 +20,11 @@ const InsuranceRequestTable = () => {
     permissions.some((perm) => perm.codename === "add_insurancename");
 
   const statusTranslations: Record<string, StatusTranslation> = {
+    pending_review: {
+      text: "در انتظار بررسی",
+      button: hasPermission ? "بررسی" : "",
+      url: hasPermission ? "/requestinsurance/prosses" : "",
+    },
     missing_document: {
       text: "نقص مدارک",
       button: "تکمیل مدارک",
@@ -108,7 +113,8 @@ const InsuranceRequestTable = () => {
         field: "file_detail",
         formatter: (cell: CellComponent) => {
           const request = cell.getRow().getData();
-          if (!request.file_detail?.length) return "-";
+          if (!request.file_detail || !Array.isArray(request.file_detail))
+            return "-";
 
           return `
             <div class="flex flex-col gap-1">
@@ -143,8 +149,9 @@ const InsuranceRequestTable = () => {
       user_detail: request.user_detail,
       price: request.price,
       insurance_status: request.insurance_status,
-      file_detail: request.file_detail,
+      file_detail: request.insurance_name_file,
     })) || [];
+
 
   const renderActionColumn = () => ({
     title: "عملیات",
