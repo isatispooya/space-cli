@@ -1,6 +1,7 @@
 interface DescriptionDetail {
   description_user: string;
   description_expert: string; // Add this line
+
 }
 
 interface FileDetail {
@@ -10,7 +11,6 @@ interface FileDetail {
 
 export interface InsuranceUpdateTypes {
   insurance: string;
-
   insurance_status: string;
   insurance_name: string;
   description: string;
@@ -20,6 +20,7 @@ export interface InsuranceUpdateTypes {
   file_detail: FileDetail[];
   file_name: string;
   delete_files?: string[];
+
   files: {
     [fieldId: string]: File;
   };
