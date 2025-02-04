@@ -16,27 +16,34 @@ const InsuranceRequestTable = () => {
   const statusTranslations: Record<string, StatusTranslation> = {
     pending_review: {
       text: "در انتظار بررسی",
-      button: hasPermission ? "ادامه فرآیند" : "",
+      button: hasPermission ? "بررسی" : "",
       url: hasPermission ? "/requestinsurance/prosses" : "",
-
     },
     missing_document: {
       text: "نقص مدارک",
-      button: "ادامه فرآیند",
+      button: "تکمیل مدارک",
       url: "/requestinsurance/prosses",
     },
 
     pending_payment: {
       text: "در انتظار پرداخت",
-      button: "ادامه فرآیند",
+      button: "پرداخت",
       url: "/requestinsurance/prosses",
     },
     rejected: {
       text: "رد شده",
+      button: hasPermission ? "رد شده" : "",
+      url: hasPermission ? "/requestinsurance/prosses" : "",
     },
+
     pending_issue: {
       text: "در انتظار بررسی مستندات",
       button: hasPermission ? "بارگزاری بیمه نامه" : "",
+      url: hasPermission ? "/requestinsurance/prosses" : "",
+    },
+    finished: {
+      text: "صادر شده",
+      button: hasPermission ? "صادر شده" : "",
       url: hasPermission ? "/requestinsurance/prosses" : "",
     },
   };
@@ -78,7 +85,7 @@ const InsuranceRequestTable = () => {
             <div class="flex items-center justify-around gap-2">
               <span>${status?.text || value}</span>
               ${
-                status?.button && hasPermission
+                status?.button
                   ? `<button 
                 onclick="window.open('${status.url}/${
                       cell.getRow().getData().id
@@ -96,10 +103,11 @@ const InsuranceRequestTable = () => {
         headerHozAlign: "center",
       },
       {
-        title: "فایل های ضمیمه",
-        field: "insurance_name_file",
+        title: "پیش نویس بیمه نامه",
+        field: "insurance_name_draft_file",
         formatter: (cell: CellComponent) => {
           const file = cell.getValue();
+
           return file
             ? `
           <div class="flex items-center">
@@ -128,7 +136,7 @@ const InsuranceRequestTable = () => {
       user_detail: request.user_detail,
       price: request.price,
       insurance_status: request.insurance_status,
-      insurance_name_file: request.insurance_name_file,
+      insurance_name_draft_file: request.insurance_name_draft_file,
     })) || [];
 
   const renderActionColumn = () => ({
@@ -176,7 +184,7 @@ const InsuranceRequestTable = () => {
           icon: "✏️",
           onClick: () => {
             window.open(
-              `/requestinsurance/prosses/${cell.getRow().getData().id}`
+              `/requestinsurance/update/${cell.getRow().getData().id}`
             );
           },
         },

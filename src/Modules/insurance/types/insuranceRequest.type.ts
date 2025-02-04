@@ -15,11 +15,13 @@ export interface InsuranceRequest {
     file_name: number;           // شناسه فایل
     file_attachment: string;     // آدرس فایل پیوست شده
   }>;
-  insurance_name_file?: string | File;  // فایل بیمه‌نامه (اختیاری)
+  insurance_name_file?: string | File; 
+  insurance_name_draft_file?: string | File; // فایل بیمه‌نامه (اختیاری)
   user_detail: string;           // جزئیات کاربر
   price: number;                 // قیمت
   insurance_status: string;      // وضعیت بیمه
   button: string;                // متن دکمه
+
   text: string;                  // متن توضیحات
 }
 

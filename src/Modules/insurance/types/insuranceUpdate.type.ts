@@ -14,7 +14,8 @@ export interface InsuranceUpdateTypes {
   insurance_status: string;
   insurance_name: string;
   description: string;
-  insurance_name_file: File;
+  insurance_name_file: File | null;
+  insurance_name_draft_file: File | null;
   price: string;
   file_detail: FileDetail[];
   file_name: string;

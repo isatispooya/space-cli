@@ -23,7 +23,7 @@ const InsurenceRequestProsses = () => {
 
   const isLocked_step_2 = request?.insurance_status !== "pending_payment" && !hasPermission;
   
-  
+
   console.log(request?.insurance_status , isLocked_step_1 , isLocked_step_2 , "121212121212");
 
 

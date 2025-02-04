@@ -7,10 +7,12 @@ interface FileInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   accept?: string;
+  value?: File | null | undefined;
 }
 
 const FileInput: React.FC<FileInputProps> = ({
   label,
+  value,
   onChange,
   className = "",
   accept,
@@ -49,6 +51,7 @@ const FileInput: React.FC<FileInputProps> = ({
       <input
         ref={inputRef}
         type="file"
+        value={value ? "" : undefined}
         onChange={handleFileChange}
         className="hidden"
         accept={accept}

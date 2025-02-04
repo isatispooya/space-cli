@@ -23,6 +23,7 @@ const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
   const [status, setStatus] = useState<string>("");
   const [files, setFiles] = useState<Record<string, File>>({});
   const [description, setDescription] = useState<string>("");
+  const [draftFile, setDraftFile] = useState<File | null>(null);
 
   const [descriptionExpert, setDescriptionExpert] = useState<string>("");
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, string>>(
@@ -36,6 +37,8 @@ const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
     if (dataId) {
       setSelectedInsurance(dataId.insurance_name.toString());
       setStatus(dataId.insurance_status || "");
+      setDraftFile(dataId.insurance_name_draft_file || null);
+      setUploadFile(dataId.insurance_name_file || null);
       setDescription(dataId.description_detail?.[0]?.description_user || "");
       setDescriptionExpert(
         dataId.description_detail?.[0]?.description_expert || ""
@@ -72,6 +75,9 @@ const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
     setFilesToDelete,
     uploadFile,
     setUploadFile,
+    draftFile,
+    setDraftFile,
+
     price,
     descriptionExpert,
     setDescriptionExpert,
@@ -145,7 +151,6 @@ const InsuranceRequestUpdate: React.FC = () => {
   const { data: currentInsurance, isLoading: isLoadingCurrent } =
     useInsurance.useGetRequests();
   const { mutate: updateFields } = useInsurance.useUpdateRequest(id);
-  // const { mutate: deleteRequest } = useInsurance.useDeleteRequest(Number(id));
 
   console.log(currentInsurance);
 
@@ -169,6 +174,8 @@ const InsuranceRequestUpdate: React.FC = () => {
     uploadFile,
     setUploadFile,
     price,
+    draftFile,
+    setDraftFile,
     setPrice,
     descriptionExpert,
     setDescriptionExpert,
@@ -214,8 +221,16 @@ const InsuranceRequestUpdate: React.FC = () => {
     }
   };
 
+  const handleDraftFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setDraftFile(file);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     setIsSubmitting(true);
     const formData = new FormData();
 
@@ -231,6 +246,10 @@ const InsuranceRequestUpdate: React.FC = () => {
     filesToDelete.forEach((fieldId) => {
       formData.append("delete_files[]", fieldId);
     });
+
+    if (draftFile) {
+      formData.append("insurance_name_draft_file", draftFile);
+    }
 
     if (uploadFile) {
       formData.append("insurance_name_file", uploadFile);
@@ -387,7 +406,18 @@ const InsuranceRequestUpdate: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <FileInput
                 label="آپلود بیمه نامه"
+                // value={uploadFile ? "" : undefined} 
                 onChange={handleUploadFileChange}
+                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              />
+
+
+              <FileInput
+                label="آپلود پیش نویس بیمه نامه"
+                // value={draftFile ? "" : undefined} 
+                onChange={handleDraftFileChange}
+
+
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
               />
               <FormInput
