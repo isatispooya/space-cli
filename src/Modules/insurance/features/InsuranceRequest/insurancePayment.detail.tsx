@@ -38,7 +38,7 @@ const InsurancePayment = () => {
   const formFields: FormField[] = [
     {
       name: "document",
-      label: "فیشش بانکی",
+      label: "فیش بانکی",
       type: "file",
       fileProps: {
         maxSize: 1024 * 1024 * 5,
