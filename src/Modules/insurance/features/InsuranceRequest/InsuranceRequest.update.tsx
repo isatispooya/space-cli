@@ -7,19 +7,24 @@ import { Toast } from "../../../../components/toast";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../../types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import { InsuranceField, InsuranceRequest, InsuranceUpdateTypes } from "../../types";
+import {
+  InsuranceField,
+  InsuranceRequest,
+  InsuranceUpdateTypes,
+} from "../../types";
 import { useParams } from "react-router-dom";
 import { server } from "../../../../api/server";
 import { useUserPermissions } from "../../../permissions";
 import { FormInput, TextAreaInput } from "../../../../components/inputs";
 import { formatNumber } from "../../../../utils";
 
-
 const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
   const [selectedInsurance, setSelectedInsurance] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [files, setFiles] = useState<Record<string, File>>({});
   const [description, setDescription] = useState<string>("");
+
+  
   const [descriptionExpert, setDescriptionExpert] = useState<string>("");
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, string>>(
     {}
@@ -34,7 +39,7 @@ const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
       setStatus(dataId.insurance_status || "");
       setDescription(dataId.description_detail?.[0]?.description_user || "");
       setDescriptionExpert(
-        dataId.description_detail?.[0]?.description_expert  || ""
+        dataId.description_detail?.[0]?.description_expert || ""
       );
       setPrice(dataId.price || "");
     }
