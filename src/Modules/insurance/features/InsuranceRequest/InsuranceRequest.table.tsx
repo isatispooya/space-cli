@@ -12,8 +12,6 @@ const InsuranceRequestTable = () => {
     Array.isArray(permissions) &&
     permissions.some((perm) => perm.codename === "add_insurancename");
 
-
-
   const statusTranslations: Record<string, StatusTranslation> = {
     pending: {
       text: "در انتظار بررسی",
@@ -31,7 +29,7 @@ const InsuranceRequestTable = () => {
       url: "/requestinsurance/payment",
     },
     pending_review: {
-      text: "در انتظار برسی پرداخت",
+      text: "در انتظار برسی ",
       button: hasPermission ? "مشاهده درخواست" : "",
       url: hasPermission ? "/requestinsurance/payment" : "",
     },
@@ -40,7 +38,7 @@ const InsuranceRequestTable = () => {
     pending_issue: {
       text: "در انتظار صدور",
       button: hasPermission ? "بارگزاری بیمه نامه" : "",
-      url: hasPermission ? "/requestinsurance/update" : "", 
+      url: hasPermission ? "/requestinsurance/update" : "",
     },
     cancelled: { text: "لغو شده" },
 
