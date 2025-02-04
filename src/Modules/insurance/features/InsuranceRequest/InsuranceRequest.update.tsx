@@ -24,7 +24,6 @@ const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
   const [files, setFiles] = useState<Record<string, File>>({});
   const [description, setDescription] = useState<string>("");
 
-  
   const [descriptionExpert, setDescriptionExpert] = useState<string>("");
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, string>>(
     {}
@@ -374,14 +373,15 @@ const InsuranceRequestUpdate: React.FC = () => {
             onChange={(e) => setDescription(e.target.value)}
             className="p-2 border rounded-md w-full"
           />
-          <TextAreaInput
-            label="توضیحات کارشناسی"
-            value={descriptionExpert}
-            onChange={(e) => setDescriptionExpert(e.target.value)}
-            className="p-2 border rounded-md w-full"
-          />
+          {hasPermission && (
+            <TextAreaInput
+              label="توضیحات کارشناسی"
+              value={descriptionExpert}
+              onChange={(e) => setDescriptionExpert(e.target.value)}
+              className="p-2 border rounded-md w-full"
+            />
+          )}
         </div>
-
         {hasPermission && (
           <>
             <div className="grid grid-cols-2 gap-4">
