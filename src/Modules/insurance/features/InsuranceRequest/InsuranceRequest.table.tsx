@@ -5,11 +5,7 @@ import { InsuranceRequest, StatusTranslation } from "../../types";
 import { useUserPermissions } from "../../../permissions";
 import { server } from "../../../../api";
 
-interface FileDetail {
-  id: number;
-  file_attachment: string;
-  file_name: number;
-}
+
 
 const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
@@ -104,8 +100,7 @@ const InsuranceRequestTable = () => {
 
     if (
       requests?.some(
-        (request: InsuranceRequest) =>
-          request?.file_detail && request.file_detail.length > 0
+        (request: InsuranceRequest) => request?.insurance_name_file
       )
     ) {
       baseColumns.push({
@@ -113,24 +108,17 @@ const InsuranceRequestTable = () => {
         field: "file_detail",
         formatter: (cell: CellComponent) => {
           const request = cell.getRow().getData();
-          if (!request.file_detail || !Array.isArray(request.file_detail))
-            return "-";
+          const file = request?.insurance_name_file;
+          console.log(file);
+          const url = file ? server + "/" + file : "";
 
           return `
             <div class="flex flex-col gap-1">
-              ${request.file_detail
-                .map(
-                  (file: FileDetail, index: number) => `
-                <a 
-                  href="${server + file.file_attachment}" 
-                  target="_blank" 
-                  class="text-blue-500 hover:text-blue-700 underline"
-                >
-                  فایل ${index + 1}
-                </a>
-              `
-                )
-                .join("")}
+              <a href="${url}" target="_blank" class="text-blue-500 hover:text-blue-700 underline">
+                فایل ضمیمه
+              </a>
+              
+
             </div>
           `;
         },
@@ -151,7 +139,6 @@ const InsuranceRequestTable = () => {
       insurance_status: request.insurance_status,
       file_detail: request.insurance_name_file,
     })) || [];
-
 
   const renderActionColumn = () => ({
     title: "عملیات",
