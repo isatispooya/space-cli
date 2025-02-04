@@ -31,7 +31,9 @@ const InsuranceRequestTable = () => {
       button: "پرداخت",
       url: "/requestinsurance/prosses",
     },
-
+    rejected: {
+      text: "رد شده",
+    },
     pending_issue: {
       text: "در انتظار بررسی مستندات",
       button: hasPermission ? "بارگزاری بیمه نامه" : "",
