@@ -7,6 +7,7 @@ export interface InsuranceRequest {
       name: string;               // نام فیلد
     }>;
   };
+  file_attachment?: string;
   description_detail?: Array<{    // جزئیات توضیحات (اختیاری)
     description_user: string;     // توضیحات کاربر
   }>;
