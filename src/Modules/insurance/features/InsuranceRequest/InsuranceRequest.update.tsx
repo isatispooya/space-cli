@@ -31,7 +31,7 @@ const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
   );
   const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [price, setPrice] = useState<string>("");
+  const [price, setPrice] = useState<any>("");
 
   useEffect(() => {
     if (dataId) {
@@ -77,7 +77,6 @@ const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
     setUploadFile,
     draftFile,
     setDraftFile,
-
     price,
     descriptionExpert,
     setDescriptionExpert,
@@ -406,23 +405,20 @@ const InsuranceRequestUpdate: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <FileInput
                 label="آپلود بیمه نامه"
-                // value={uploadFile ? "" : undefined} 
+                // value={uploadFile ? "" : undefined}
                 onChange={handleUploadFileChange}
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
               />
 
-
               <FileInput
                 label="آپلود پیش نویس بیمه نامه"
-                // value={draftFile ? "" : undefined} 
+                // value={draftFile ? "" : undefined}
                 onChange={handleDraftFileChange}
-
-
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
               />
               <FormInput
                 label="قیمت"
-                value={formatNumber(Number(price))}
+                value={formatNumber(price)}
                 onChange={(e) => setPrice(e.target.value)}
                 className="mt-8 p-2 border rounded-md w-full"
               />
