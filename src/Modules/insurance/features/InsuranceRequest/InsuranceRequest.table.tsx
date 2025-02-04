@@ -5,13 +5,11 @@ import { InsuranceRequest, StatusTranslation } from "../../types";
 import { useUserPermissions } from "../../../permissions";
 import { server } from "../../../../api";
 
-
 interface FileDetail {
   id: number;
   file_attachment: string;
   file_name: number;
 }
-
 
 const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
@@ -22,41 +20,23 @@ const InsuranceRequestTable = () => {
     permissions.some((perm) => perm.codename === "add_insurancename");
 
   const statusTranslations: Record<string, StatusTranslation> = {
-    pending: {
-      text: "در انتظار بررسی",
-      button: hasPermission ? "مشاهده درخواست" : "",
-      url: hasPermission ? "/requestinsurance/update" : "",
-    },
     missing_document: {
       text: "نقص مدارک",
       button: "تکمیل مدارک",
-      url: "/requestinsurance/update",
+      url: "/requestinsurance/prosses",
     },
+
     pending_payment: {
       text: "در انتظار پرداخت",
       button: "پرداخت",
-      url: "/requestinsurance/payment",
+      url: "/requestinsurance/prosses",
     },
-    pending_review: {
-      text: "در انتظار برسی ",
-      button: hasPermission ? "مشاهده درخواست" : "",
-      url: hasPermission ? "/requestinsurance/update" : "",
-    },
-    approved: { text: "تایید پرداخت" },
-    rejected: { text: "رد شده" },
-    pending_issue: {
-      text: "در انتظار صدور",
-      button: hasPermission ? "بارگزاری بیمه نامه" : "",
-      url: hasPermission ? "/requestinsurance/update" : "",
-    },
-    cancelled: { text: "لغو شده" },
 
-    finished: {
-      text: "کامل شده",
-      button: "دریافت بیمه‌نامه",
-      url: "/requestinsurance/download",
+    pending_issue: {
+      text: "در انتظار بررسی مستندات",
+      button: hasPermission ? "بارگزاری بیمه نامه" : "",
+      url: hasPermission ? "/requestinsurance/prosses" : "",
     },
-    expired: { text: "منقضی شده" },
   };
 
   const columns = () => {

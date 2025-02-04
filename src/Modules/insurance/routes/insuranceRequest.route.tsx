@@ -36,9 +36,16 @@ const InsuranceRequestUpdate = lazy(() =>
   }))
 );
 
+const InsurenceRequestProssesPage = lazy(() =>
+  import("../page/Insuranceapplication").then((module) => ({
+    default: module.InsurenceRequestProssesPage,
+  }))
+);
+
 const InsuranceAppRoutes = [
   {
     path: "/requestinsurance",
+
     element: <InsuranceRequestMain />,
     children: [
       {
@@ -61,6 +68,10 @@ const InsuranceAppRoutes = [
       {
         path: "payment/:id",
         element: <InsurancePayment />,
+      },
+      {
+        path: "prosses/:id",
+        element: <InsurenceRequestProssesPage />,
       },
     ],
   },
