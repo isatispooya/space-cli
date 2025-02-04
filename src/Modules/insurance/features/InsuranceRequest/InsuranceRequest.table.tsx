@@ -3,6 +3,15 @@ import TabulatorTable from "../../../../components/table/table.com";
 import { useInsurance } from "../../hooks";
 import { InsuranceRequest, StatusTranslation } from "../../types";
 import { useUserPermissions } from "../../../permissions";
+import { server } from "../../../../api";
+
+
+interface FileDetail {
+  id: number;
+  file_attachment: string;
+  file_name: number;
+}
+
 
 const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
@@ -50,60 +59,100 @@ const InsuranceRequestTable = () => {
     expired: { text: "منقضی شده" },
   };
 
-  const columns = () => [
-    {
-      title: "نام بیمه",
-      field: "insurance_name",
-      formatter: (cell: CellComponent) => cell.getValue()?.name || "-",
-      hozAlign: "center",
-      headerHozAlign: "center",
-    },
-    {
-      title: "نام و نام خانوادگی",
-      field: "user_detail",
-      formatter: (cell: CellComponent) => {
-        const user = cell.getValue();
-        return user ? `${user.first_name} ${user.last_name}` : "-";
+  const columns = () => {
+    const baseColumns = [
+      {
+        title: "نام بیمه",
+        field: "insurance_name",
+        formatter: (cell: CellComponent) => cell.getValue()?.name || "-",
+        hozAlign: "center",
+        headerHozAlign: "center",
       },
-      hozAlign: "center",
-      headerHozAlign: "center",
-    },
-    {
-      title: "قیمت",
-      field: "price",
-      formatter: (cell: CellComponent) => cell.getValue() || "نامشخص",
-      hozAlign: "center",
-      headerHozAlign: "center",
-    },
-    {
-      title: "وضعیت",
-      field: "insurance_status",
-      formatter: (cell: CellComponent) => {
-        const value = cell.getValue();
-        const status =
-          statusTranslations[value as keyof typeof statusTranslations];
-        return `
-          <div class="flex items-center justify-around gap-2">
-            <span>${status?.text || value}</span>
-            ${
-              status?.button && hasPermission
-                ? `<button 
-              onclick="window.open('${status.url}/${
-                    cell.getRow().getData().id
-                  }')" 
-              class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-400 w-32">
-              ${status?.button}
-            </button>
-            `
-                : ""
-            }
-          </div>
-        `;
+      {
+        title: "نام و نام خانوادگی",
+        field: "user_detail",
+        formatter: (cell: CellComponent) => {
+          const user = cell.getValue();
+          return user ? `${user.first_name} ${user.last_name}` : "-";
+        },
+        hozAlign: "center",
+        headerHozAlign: "center",
       },
-      hozAlign: "center",
-      headerHozAlign: "center",
-    },
-  ];
+      {
+        title: "قیمت",
+        field: "price",
+        formatter: (cell: CellComponent) => cell.getValue() || "نامشخص",
+        hozAlign: "center",
+        headerHozAlign: "center",
+      },
+      {
+        title: "وضعیت",
+        field: "insurance_status",
+        formatter: (cell: CellComponent) => {
+          const value = cell.getValue();
+          const status =
+            statusTranslations[value as keyof typeof statusTranslations];
+          return `
+            <div class="flex items-center justify-around gap-2">
+              <span>${status?.text || value}</span>
+              ${
+                status?.button && hasPermission
+                  ? `<button 
+                onclick="window.open('${status.url}/${
+                      cell.getRow().getData().id
+                    }')" 
+                class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-400 w-32">
+                ${status?.button}
+              </button>
+              `
+                  : ""
+              }
+            </div>
+          `;
+        },
+        hozAlign: "center",
+        headerHozAlign: "center",
+      },
+    ];
+
+    if (
+      requests?.some(
+        (request: InsuranceRequest) =>
+          request?.file_detail && request.file_detail.length > 0
+      )
+    ) {
+      baseColumns.push({
+        title: "فایل های ضمیمه",
+        field: "file_detail",
+        formatter: (cell: CellComponent) => {
+          const request = cell.getRow().getData();
+          if (!request.file_detail?.length) return "-";
+
+          return `
+            <div class="flex flex-col gap-1">
+              ${request.file_detail
+                .map(
+                  (file: FileDetail, index: number) => `
+                <a 
+                  href="${server + file.file_attachment}" 
+                  target="_blank" 
+                  class="text-blue-500 hover:text-blue-700 underline"
+                >
+                  فایل ${index + 1}
+                </a>
+              `
+                )
+                .join("")}
+            </div>
+          `;
+        },
+        hozAlign: "center",
+        headerHozAlign: "center",
+      });
+    }
+
+    return baseColumns;
+  };
 
   const data =
     requests?.map((request: InsuranceRequest) => ({
@@ -112,6 +161,7 @@ const InsuranceRequestTable = () => {
       user_detail: request.user_detail,
       price: request.price,
       insurance_status: request.insurance_status,
+      file_detail: request.file_detail,
     })) || [];
 
   const renderActionColumn = () => ({
