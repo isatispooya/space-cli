@@ -38,7 +38,7 @@ const InsurancePayment = () => {
   const formFields: FormField[] = [
     {
       name: "document",
-      label: "فایل",
+      label: "فیشش بانکی",
       type: "file",
       fileProps: {
         maxSize: 1024 * 1024 * 5,
@@ -88,6 +88,17 @@ const InsurancePayment = () => {
           },
         ]
       : []),
+
+    {
+      name: "document",
+      label: "مشاهده فیش بانکی",
+      type: "viewFile",
+      viewFileProps: {
+        showPreview: true,
+        url: server + "/" + selectedPayment.payment?.document,
+        fileType: selectedPayment.payment?.document_type || "",
+      },
+    },
   ];
 
   const initialValues: FishPaymentType = {
