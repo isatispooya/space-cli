@@ -7,24 +7,36 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { InsuranceRequestUpdate } from "../..";
 import { InsurancePayment } from ".";
+import { useUserPermissions } from "../../../permissions";
 
 const InsurenceRequestProsses = () => {
   const { id } = useParams();
   const { data: request } = useInsurance.useGetRequestsById(Number(id));
+  const { data: Permissions } = useUserPermissions();
 
-  const isLocked =
-    request?.insurance_status === "pending_issue" ||
-    request?.insurance_status === "missing_document";
+  const hasPermission =
+    Array.isArray(Permissions) &&
+    Permissions.some((perm) => perm.codename === "add_insurancename");
+
+  const isLocked_step_1 =  request?.insurance_status.includes(["pending_payment","pending_issue","finished","rejected","pending_review"]) && !hasPermission;
+
+
+  const isLocked_step_2 = request?.insurance_status !== "pending_payment" && !hasPermission;
+  
+  
+  console.log(request?.insurance_status , isLocked_step_1 , isLocked_step_2 , "121212121212");
+
 
   return (
     <div className="w-[80%] mx-auto rounded-lg shadow-md p-4 ">
       <div className="flex flex-col gap-4">
         <Accordion
           sx={{ backgroundColor: "#f5fdfe", borderRadius: "10px" }}
-          disabled={!isLocked}
+          disabled={isLocked_step_1}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
+
             aria-controls="panel1-content"
             id="panel1-header"
           >
@@ -37,10 +49,11 @@ const InsurenceRequestProsses = () => {
 
         <Accordion
           sx={{ backgroundColor: "#f5fdfe", borderRadius: "10px" }}
-          disabled={isLocked}
+          disabled={isLocked_step_2}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
+
             aria-controls="panel2-content"
             id="panel2-header"
           >
