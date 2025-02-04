@@ -9,6 +9,7 @@ import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { Toast } from "../../../../components/toast";
 import { AxiosError } from "axios";
 import { FishPaymentType, InsuranceRequest } from "../../types";
+import { server } from "../../../../api";
 
 const InsurancePayment = () => {
   const { id } = useParams();
@@ -31,6 +32,8 @@ const InsurancePayment = () => {
     document_track_id: yup.string().required("شناسه پیگیری الزامی است"),
     kind_of_payment: yup.string().required("نوع پرداخت الزامی است"),
   });
+
+  console.log(selectedPayment, "234567");
 
   const formFields: FormField[] = [
     {
@@ -69,6 +72,22 @@ const InsurancePayment = () => {
         // { label: "درگاه", value: "2" },
       ],
     },
+
+    ...(selectedPayment?.insurance_name_draft_file
+      ? [
+          {
+            name: "insurance_name_draft_file",
+            label: "پیش نویس بیمه نامه",
+            type: "viewFile" as const,
+            disabled: false,
+            viewFileProps: {
+              showPreview: true,
+              url: server + "/" + selectedPayment.insurance_name_draft_file,
+              fileType: selectedPayment.insurance_name_draft_file_type || "",
+            },
+          },
+        ]
+      : []),
   ];
 
   const initialValues: FishPaymentType = {

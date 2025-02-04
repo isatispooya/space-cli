@@ -124,7 +124,7 @@ const InsuranceRequestCreate: React.FC = () => {
               options={insuranceCompanyOptions}
               selectedValues={selectedCompanies}
               onChange={setSelectedCompanies}
-              label="شرکت‌های بیمه"
+              label="شرکت های بیمه گر منتخب"
               placeholder="انتخاب شرکت‌های بیمه..."
               maxSelect={3}
             />
