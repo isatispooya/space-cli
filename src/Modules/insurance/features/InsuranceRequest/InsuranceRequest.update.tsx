@@ -7,14 +7,15 @@ import { Toast } from "../../../../components/toast";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../../types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import { InsuranceField, InsuranceRequest } from "../../types";
+import { InsuranceField, InsuranceRequest, InsuranceUpdateTypes } from "../../types";
 import { useParams } from "react-router-dom";
 import { server } from "../../../../api/server";
 import { useUserPermissions } from "../../../permissions";
 import { FormInput, TextAreaInput } from "../../../../components/inputs";
 import { formatNumber } from "../../../../utils";
 
-const useInsuranceForm = (dataId: InsuranceRequest | undefined) => {
+
+const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
   const [selectedInsurance, setSelectedInsurance] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [files, setFiles] = useState<Record<string, File>>({});
@@ -33,7 +34,7 @@ const useInsuranceForm = (dataId: InsuranceRequest | undefined) => {
       setStatus(dataId.insurance_status || "");
       setDescription(dataId.description_detail?.[0]?.description_user || "");
       setDescriptionExpert(
-        dataId.description_detail?.[0]?.description_expert || ""
+        dataId.description_detail?.[0]?.description_expert  || ""
       );
       setPrice(dataId.price || "");
     }
@@ -140,7 +141,7 @@ const InsuranceRequestUpdate: React.FC = () => {
   const { data: currentInsurance, isLoading: isLoadingCurrent } =
     useInsurance.useGetRequests();
   const { mutate: updateFields } = useInsurance.useUpdateRequest(id);
-  const { mutate: deleteRequest } = useInsurance.useDeleteRequest(Number(id));
+  // const { mutate: deleteRequest } = useInsurance.useDeleteRequest(Number(id));
 
   console.log(currentInsurance);
 
@@ -250,41 +251,41 @@ const InsuranceRequestUpdate: React.FC = () => {
     });
   };
 
-  const handleDelete = () => {
-    console.log("Deleting insurance with ID:", id);
+  // const handleDelete = () => {
+  //   console.log("Deleting insurance with ID:", id);
 
-    if (!id) {
-      Toast("شناسه درخواست نامعتبر است", <ErrorIcon />, "bg-red-500");
-      return;
-    }
+  //   if (!id) {
+  //     Toast("شناسه درخواست نامعتبر است", <ErrorIcon />, "bg-red-500");
+  //     return;
+  //   }
 
-    if (window.confirm("آیا از حذف این درخواست بیمه اطمینان دارید؟")) {
-      try {
-        deleteRequest(Number(id), {
-          onSuccess: () => {
-            Toast(
-              "درخواست بیمه با موفقیت حذف شد",
-              <CheckmarkIcon />,
-              "bg-green-500"
-            );
-            window.history.back();
-          },
-          onError: (error: AxiosError<unknown>) => {
-            console.error("Delete error:", error);
-            const errorMessage = (error.response?.data as ErrorResponse)?.error;
-            Toast(
-              errorMessage || "خطایی در حذف رخ داده است",
-              <ErrorIcon />,
-              "bg-red-500"
-            );
-          },
-        });
-      } catch (error) {
-        console.error("Unexpected error:", error);
-        Toast("خطای غیر منتظره رخ داد", <ErrorIcon />, "bg-red-500");
-      }
-    }
-  };
+  //   if (window.confirm("آیا از حذف این درخواست بیمه اطمینان دارید؟")) {
+  //     try {
+  //       deleteRequest(Number(id), {
+  //         onSuccess: () => {
+  //           Toast(
+  //             "درخواست بیمه با موفقیت حذف شد",
+  //             <CheckmarkIcon />,
+  //             "bg-green-500"
+  //           );
+  //           window.history.back();
+  //         },
+  //         onError: (error: AxiosError<unknown>) => {
+  //           console.error("Delete error:", error);
+  //           const errorMessage = (error.response?.data as ErrorResponse)?.error;
+  //           Toast(
+  //             errorMessage || "خطایی در حذف رخ داده است",
+  //             <ErrorIcon />,
+  //             "bg-red-500"
+  //           );
+  //         },
+  //       });
+  //     } catch (error) {
+  //       console.error("Unexpected error:", error);
+  //       Toast("خطای غیر منتظره رخ داد", <ErrorIcon />, "bg-red-500");
+  //     }
+  //   }
+  // };
 
   const selectedInsuranceFields =
     dataId?.insurance_name_detail?.field_detail || [];
