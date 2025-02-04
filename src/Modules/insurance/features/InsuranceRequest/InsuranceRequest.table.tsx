@@ -16,18 +16,19 @@ const InsuranceRequestTable = () => {
   const statusTranslations: Record<string, StatusTranslation> = {
     pending_review: {
       text: "در انتظار بررسی",
-      button: hasPermission ? "بررسی" : "",
+      button: hasPermission ? "ادامه فرآیند" : "",
       url: hasPermission ? "/requestinsurance/prosses" : "",
+
     },
     missing_document: {
       text: "نقص مدارک",
-      button: "تکمیل مدارک",
+      button: "ادامه فرآیند",
       url: "/requestinsurance/prosses",
     },
 
     pending_payment: {
       text: "در انتظار پرداخت",
-      button: "پرداخت",
+      button: "ادامه فرآیند",
       url: "/requestinsurance/prosses",
     },
     rejected: {
@@ -114,7 +115,7 @@ const InsuranceRequestTable = () => {
         },
         hozAlign: "center",
         headerHozAlign: "center",
-      }
+      },
     ];
 
     return baseColumns;
@@ -175,7 +176,7 @@ const InsuranceRequestTable = () => {
           icon: "✏️",
           onClick: () => {
             window.open(
-              `/requestinsurance/update/${cell.getRow().getData().id}`
+              `/requestinsurance/prosses/${cell.getRow().getData().id}`
             );
           },
         },
