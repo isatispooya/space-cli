@@ -6,6 +6,12 @@ import { LuPlus, LuTable } from "react-icons/lu";
 const InsuranceRequestMainPage = () => {
   const toolbarButtons = [
     {
+      icon: LuPlus,
+      text: "درخواست بیمه نامه",
+      permission: ["allow_any"],
+      path: "create",
+    },
+    {
       icon: LuTable,
       text: "درخواست های من",
       permission: ["allow_any"],
@@ -16,13 +22,6 @@ const InsuranceRequestMainPage = () => {
       text: "بیمه های من",
       permission: ["allow_any"],
       path: "table-requests",
-    },
-
-    {
-      icon: LuPlus,
-      text: "درخواست بیمه نامه",
-      permission: ["allow_any"],
-      path: "create",
     },
   ];
 

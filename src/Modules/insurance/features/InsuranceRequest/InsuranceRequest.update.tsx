@@ -11,23 +11,31 @@ import { InsuranceField, InsuranceRequest } from "../../types";
 import { useParams } from "react-router-dom";
 import { server } from "../../../../api/server";
 import { useUserPermissions } from "../../../permissions";
+import { FormInput, TextAreaInput } from "../../../../components/inputs";
+import { formatNumber } from "../../../../utils";
 
 const useInsuranceForm = (dataId: InsuranceRequest | undefined) => {
   const [selectedInsurance, setSelectedInsurance] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [files, setFiles] = useState<Record<string, File>>({});
   const [description, setDescription] = useState<string>("");
+  const [descriptionExpert, setDescriptionExpert] = useState<string>("");
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, string>>(
     {}
   );
   const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [price, setPrice] = useState<string>("");
 
   useEffect(() => {
     if (dataId) {
       setSelectedInsurance(dataId.insurance_name.toString());
       setStatus(dataId.insurance_status || "");
       setDescription(dataId.description_detail?.[0]?.description_user || "");
+      setDescriptionExpert(
+        dataId.description_detail?.[0]?.description_expert || ""
+      );
+      setPrice(dataId.price || "");
     }
   }, [dataId]);
 
@@ -59,6 +67,10 @@ const useInsuranceForm = (dataId: InsuranceRequest | undefined) => {
     setFilesToDelete,
     uploadFile,
     setUploadFile,
+    price,
+    descriptionExpert,
+    setDescriptionExpert,
+    setPrice,
   };
 };
 
@@ -151,6 +163,10 @@ const InsuranceRequestUpdate: React.FC = () => {
     setFilesToDelete,
     uploadFile,
     setUploadFile,
+    price,
+    setPrice,
+    descriptionExpert,
+    setDescriptionExpert,
   } = useInsuranceForm(dataId);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -215,6 +231,8 @@ const InsuranceRequestUpdate: React.FC = () => {
       formData.append("insurance_name_file", uploadFile);
     }
 
+    formData.append("price", price);
+
     updateFields(formData, {
       onSuccess: () => {
         Toast(
@@ -278,15 +296,12 @@ const InsuranceRequestUpdate: React.FC = () => {
     })) ?? [];
 
   const statusOptions = [
+    { value: "pending_review", label: "در انتظار بررسی " },
     { value: "missing_document", label: "نقص مدارک" },
     { value: "pending_payment", label: "در انتظار پرداخت" },
-    { value: "pending_review", label: "در انتظار برسی پرداخت" },
-    { value: "approved", label: "تایید پرداخت" },
+    { value: "pending_issue", label: "در انتظار بررسی مستندات" },
+    { value: "finished", label: "صادر شده" },
     { value: "rejected", label: "رد شده" },
-    { value: "pending_issue", label: "در انتظار صدور" },
-    { value: "cancelled", label: "لغو شده" },
-    { value: "finished", label: "کامل شده" },
-    { value: "expired", label: "منقضی شده" },
   ];
 
   const getExistingFile = (fieldId: string) => {
@@ -311,15 +326,6 @@ const InsuranceRequestUpdate: React.FC = () => {
     >
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-[#29D2C7]">ویرایش بیمه نامه</h2>
-        {hasPermission && (
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md"
-          >
-            حذف درخواست
-          </button>
-        )}
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
@@ -355,21 +361,37 @@ const InsuranceRequestUpdate: React.FC = () => {
             />
           );
         })}
-
-        <input
-          type="text"
-          placeholder="توضیحات"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="mt-2 p-2 border rounded-md w-full"
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <TextAreaInput
+            label="توضیحات"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="p-2 border rounded-md w-full"
+          />
+          <TextAreaInput
+            label="توضیحات کارشناسی"
+            value={descriptionExpert}
+            onChange={(e) => setDescriptionExpert(e.target.value)}
+            className="p-2 border rounded-md w-full"
+          />
+        </div>
 
         {hasPermission && (
-          <FileInput
-            label="آپلود فایل"
-            onChange={handleUploadFileChange}
-            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-          />
+          <>
+            <div className="grid grid-cols-2 gap-4">
+              <FileInput
+                label="آپلود بیمه نامه"
+                onChange={handleUploadFileChange}
+                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              />
+              <FormInput
+                label="قیمت"
+                value={formatNumber(Number(price))}
+                onChange={(e) => setPrice(e.target.value)}
+                className="mt-8 p-2 border rounded-md w-full"
+              />
+            </div>
+          </>
         )}
 
         <button
