@@ -1,5 +1,5 @@
 export type BimeTypes = {
-  pishkar: { count: number };
+  pishkar: number
   count: number;
   status: "success";
   status_code: number;

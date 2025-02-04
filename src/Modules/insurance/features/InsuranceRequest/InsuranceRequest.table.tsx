@@ -36,7 +36,7 @@ const InsuranceRequestTable = () => {
       url: hasPermission ? "/requestinsurance/prosses" : "",
     },
 
-    pending_issue: {
+    pendeing_issue: {
       text: "در انتظار بررسی مستندات",
       button: hasPermission ? "بارگزاری بیمه نامه" : "",
       url: hasPermission ? "/requestinsurance/prosses" : "",
