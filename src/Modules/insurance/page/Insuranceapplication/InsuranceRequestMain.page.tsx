@@ -12,11 +12,19 @@ const InsuranceRequestMainPage = () => {
       path: "table"
     },
     {
+      icon: LuTable,
+      text: "درخواست های من",
+      permission: ["allow_any"],
+      path: "table-requests"
+    },
+
+    {
       icon: LuPlus,
       text: "درخواست بیمه نامه",
       permission: ["allow_any"],
       path: "create"
     }
+
   ];
   
 

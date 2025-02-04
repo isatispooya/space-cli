@@ -4,9 +4,11 @@ import { useInsurance } from "../../hooks";
 import { InsuranceRequest, StatusTranslation } from "../../types";
 import { useUserPermissions } from "../../../permissions";
 
-const InsuranceRequestTable = () => {
+const MyRequestsTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
   const { data: permissions } = useUserPermissions();
+
+  console.log(requests);
 
   const hasPermission =
     Array.isArray(permissions) &&
@@ -106,13 +108,15 @@ const InsuranceRequestTable = () => {
   ];
 
   const data =
-    requests?.map((request: InsuranceRequest) => ({
-      id: request.id,
-      insurance_name: request.insurance_name_detail,
-      user_detail: request.user_detail,
-      price: request.price,
-      insurance_status: request.insurance_status,
-    })) || [];
+    requests
+      ?.filter((request: InsuranceRequest) => request.insurance_name_file)
+      .map((request: InsuranceRequest) => ({
+        id: request.id,
+        insurance_name: request.insurance_name_detail,
+        user_detail: request.user_detail,
+        price: request.price,
+        insurance_status: request.insurance_status,
+      })) || [];
 
   const renderActionColumn = () => ({
     title: "عملیات",
@@ -232,4 +236,4 @@ const InsuranceRequestTable = () => {
   );
 };
 
-export default InsuranceRequestTable;
+export default MyRequestsTable;
