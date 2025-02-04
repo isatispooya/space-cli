@@ -4,9 +4,12 @@ import { useDashboard } from "../hooks";
 import { IoIosArrowBack } from "react-icons/io";
 
 import bimeImg from "../../../../public/assets/bime.png";
+import { useNavigate } from "react-router-dom";
 
 const DashboardBimeStat = () => {
   const { data: stats } = useDashboard.useGetPishkar();
+
+  const navigate = useNavigate();
 
   return (
     <motion.div
@@ -32,7 +35,11 @@ const DashboardBimeStat = () => {
         </motion.p>
       </div>
 
-      <a href="https://bime.isatispooya.com" target="_blank">
+      <div
+        onClick={() => {
+          navigate("/requestinsurance/table");
+        }}
+      >
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -42,7 +49,7 @@ const DashboardBimeStat = () => {
           <span className="text-white font-bold">پنل بیمه</span>
           <IoIosArrowBack className="w-3 h-3" />
         </motion.button>
-      </a>
+      </div>
 
       <svg
         className="absolute bottom-0 rounded-xl left-0 w-full h-32 md:h-48"

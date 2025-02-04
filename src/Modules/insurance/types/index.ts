@@ -5,3 +5,4 @@ export * from "./insuranceRequest.type";
 export * from "./fishPayment.type";
 export * from "./insuranceStore.type";
 export * from "./insuranceUpdate.type";
+

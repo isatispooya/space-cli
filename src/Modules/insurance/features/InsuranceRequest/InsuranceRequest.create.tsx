@@ -8,7 +8,7 @@ import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../../types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { MultiSelect } from "../../../../components/inputs";
-import { useInsuranceStore } from "../../store"; 
+import { useInsuranceStore } from "../../store";
 
 const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
@@ -53,7 +53,6 @@ const InsuranceRequestCreate: React.FC = () => {
     formData.append("insurance", selectedInsurance);
 
     let priority = 1;
-    // اضافه کردن آرایه شرکت‌های بیمه انتخاب شده
     selectedCompanies.forEach((companyId) => {
       if (priority === 1) {
         formData.append("first_properties", companyId);
@@ -107,7 +106,9 @@ const InsuranceRequestCreate: React.FC = () => {
       className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg"
       dir="rtl"
     >
-      <h2 className="text-2xl font-bold text-[#29D2C7] mb-6">ثبت بیمه نامه</h2>
+      <h2 className="text-2xl font-bold text-[#29D2C7] mb-6">
+        درخواست خرید بیمه نامه
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <SelectInput
