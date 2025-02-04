@@ -199,7 +199,7 @@ const InsuranceRequestUpdate: React.FC = () => {
     const formData = new FormData();
 
     formData.append("insurance", selectedInsurance);
-    formData.append("change_insurance_status", status);
+    formData.append("insurance_status", status);
 
     Object.entries(files).forEach(([fieldId, file]) => {
       formData.append(`insurance_name_file[${fieldId}]`, file);

@@ -3,6 +3,7 @@ import TabulatorTable from "../../../../components/table/table.com";
 import { useInsurance } from "../../hooks";
 import { InsuranceRequest, StatusTranslation } from "../../types";
 import { useUserPermissions } from "../../../permissions";
+import { server } from "../../../../api";
 
 const InsuranceRequestTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
@@ -45,7 +46,7 @@ const InsuranceRequestTable = () => {
     finished: {
       text: "کامل شده",
       button: "دریافت بیمه‌نامه",
-      url: "/requestinsurance/download",
+      url: "/api/insurance/download",
     },
     expired: { text: "منقضی شده" },
   };
@@ -82,19 +83,35 @@ const InsuranceRequestTable = () => {
         const value = cell.getValue();
         const status =
           statusTranslations[value as keyof typeof statusTranslations];
+        const rowData = cell.getRow().getData();
+
         return `
           <div class="flex items-center justify-around gap-2">
             <span>${status?.text || value}</span>
             ${
-              status?.button && hasPermission
-                ? `<button 
-              onclick="window.open('${status.url}/${
-                    cell.getRow().getData().id
-                  }')" 
-              class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-400 w-32">
-              ${status?.button}
-            </button>
-            `
+              status?.button
+                ? value === "finished"
+                  ? `<button 
+                      onclick="fetch('${status.url}/${rowData.id}')
+                        .then(response => response.blob())
+                        .then(blob => {
+                          const url = window.URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = 'insurance-${rowData.id}.pdf';
+                          document.body.appendChild(a);
+                          a.click();
+                          window.URL.revokeObjectURL(url);
+                          a.remove();
+                        })"
+                      class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-400 w-32">
+                      ${status.button}
+                    </button>`
+                  : `<button 
+                      onclick="window.open('${server}/${rowData.insurance_name_file}')"                       
+                      class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-400 w-32">
+                      ${status.button}
+                    </button>`
                 : ""
             }
           </div>
