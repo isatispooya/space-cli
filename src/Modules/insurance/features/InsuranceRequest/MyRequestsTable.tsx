@@ -109,7 +109,9 @@ const MyRequestsTable = () => {
 
   const data =
     requests
-      ?.filter((request: InsuranceRequest) => request.insurance_name_file)
+      ?.filter((request: InsuranceRequest) => 
+        request.insurance_name_file && request.insurance_status === 'finished'
+      )
       .map((request: InsuranceRequest) => ({
         id: request.id,
         insurance_name: request.insurance_name_detail,
