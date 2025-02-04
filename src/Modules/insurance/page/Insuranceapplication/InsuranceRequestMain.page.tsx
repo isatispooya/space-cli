@@ -7,33 +7,31 @@ const InsuranceRequestMainPage = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
-      text: "بیمه های من",
+      text: "درخواست های من",
       permission: ["allow_any"],
-      path: "table"
+      path: "table",
     },
     {
       icon: LuTable,
-      text: "درخواست های من",
+      text: "بیمه های من",
       permission: ["allow_any"],
-      path: "table-requests"
+      path: "table-requests",
     },
 
     {
       icon: LuPlus,
       text: "درخواست بیمه نامه",
       permission: ["allow_any"],
-      path: "create"
-    }
-
+      path: "create",
+    },
   ];
-  
 
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
         <div className="bg-white p-3">
           <h1 className="text-2xl font-bold text-center text-indigo-600 mb-1">
-           بیمه
+            بیمه
           </h1>
           <p className="text-gray-600 text-center text-sm">
             مدیریت و پیگیری بیمه
