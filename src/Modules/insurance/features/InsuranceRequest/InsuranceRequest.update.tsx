@@ -1,162 +1,27 @@
-import React, { useState, useEffect } from "react";
-import useInsurance from "../../hooks/useInsurance";
-import SelectInput from "../../../../components/inputs/selectInput";
-import { Spinner } from "../../../../components/loaders";
-import FileInput from "../../../../components/inputs/uploadInput";
-import { Toast } from "../../../../components/toast";
-import { AxiosError } from "axios";
-import { ErrorResponse } from "../../../../types";
-import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import {
-  InsuranceField,
-  InsuranceRequest,
-  InsuranceUpdateTypes,
-} from "../../types";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { server } from "../../../../api/server";
+import { AxiosError } from "axios";
+import useInsurance from "../../hooks/useInsurance";
 import { useUserPermissions } from "../../../permissions";
+import { useInsuranceRStore } from "../../store";
+import SelectInput from "../../../../components/inputs/selectInput";
+import FileInput from "../../../../components/inputs/uploadInput";
+import { Spinner } from "../../../../components/loaders";
+import { Toast } from "../../../../components/toast";
+import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { FormInput, TextAreaInput } from "../../../../components/inputs";
+import { FileField } from "../../components";
 import { formatNumber } from "../../../../utils";
-
-const useInsuranceForm = (dataId: InsuranceUpdateTypes | undefined) => {
-  const [selectedInsurance, setSelectedInsurance] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
-  const [files, setFiles] = useState<Record<string, File>>({});
-  const [description, setDescription] = useState<string>("");
-  const [draftFile, setDraftFile] = useState<File | null>(null);
-
-  const [descriptionExpert, setDescriptionExpert] = useState<string>("");
-  const [uploadedFiles, setUploadedFiles] = useState<Record<string, string>>(
-    {}
-  );
-  const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
-  const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [price, setPrice] = useState<any>("");
-
-  useEffect(() => {
-    if (dataId) {
-      setSelectedInsurance(dataId.insurance_name.toString());
-      setStatus(dataId.insurance_status || "");
-      setDraftFile(dataId.insurance_name_draft_file || null);
-      setUploadFile(dataId.insurance_name_file || null);
-      setDescription(dataId.description_detail?.[0]?.description_user || "");
-      setDescriptionExpert(
-        dataId.description_detail?.[0]?.description_expert || ""
-      );
-      setPrice(dataId.price || "");
-    }
-  }, [dataId]);
-
-  useEffect(() => {
-    if (dataId?.file_detail) {
-      const files = dataId.file_detail.reduce(
-        (acc, file) => ({
-          ...acc,
-          [file.file_name]: file.file_attachment,
-        }),
-        {}
-      );
-      setUploadedFiles(files);
-    }
-  }, [dataId]);
-
-  return {
-    selectedInsurance,
-    setSelectedInsurance,
-    status,
-    setStatus,
-    files,
-    setFiles,
-    description,
-    setDescription,
-    uploadedFiles,
-    setUploadedFiles,
-    filesToDelete,
-    setFilesToDelete,
-    uploadFile,
-    setUploadFile,
-    draftFile,
-    setDraftFile,
-    price,
-    descriptionExpert,
-    setDescriptionExpert,
-    setPrice,
-  };
-};
-
-const FileField: React.FC<{
-  field: { id: number; name: string };
-  existingFile: { file_name: number; file_attachment: string };
-  filesToDelete: string[];
-  handleDeleteFile: (fieldId: string) => void;
-  handleFileChange: (
-    fieldId: string,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  uploadedFiles: Record<string, string>;
-}> = ({
-  field,
-  existingFile,
-  filesToDelete,
-  handleDeleteFile,
-  handleFileChange,
-}) => (
-  <div className="space-y-2">
-    {existingFile && !filesToDelete.includes(field.id.toString()) ? (
-      <div className="flex items-center justify-between mb-2 p-4 bg-gray-50 rounded-lg">
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">{field.name}:</span>
-          <a
-            href={`${server}${existingFile.file_attachment}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:text-blue-700 underline text-sm"
-            onClick={(e) => {
-              e.preventDefault();
-              window.open(`${server}${existingFile.file_attachment}`, "_blank");
-            }}
-          >
-            مشاهده فایل
-          </a>
-        </div>
-        <button
-          type="button"
-          onClick={() => handleDeleteFile(field.id.toString())}
-          className="px-3 py-1 text-sm text-red-500 hover:text-red-700 border border-red-500 hover:border-red-700 rounded-md"
-        >
-          حذف
-        </button>
-      </div>
-    ) : (
-      <FileInput
-        label={field.name}
-        onChange={(e) => handleFileChange(field.id.toString(), e)}
-        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-      />
-    )}
-  </div>
-);
+import { ErrorResponse } from "../../../../types";
+import { InsuranceField, InsuranceRequest } from "../../types";
 
 const InsuranceRequestUpdate: React.FC = () => {
-  const { data: permissions } = useUserPermissions();
-
-  const hasPermission =
-    Array.isArray(permissions) &&
-    permissions.some((perm) => perm.codename === "add_insurancename");
-
   const { id } = useParams();
-
+  const { data: permissions } = useUserPermissions();
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
   const { data: currentInsurance, isLoading: isLoadingCurrent } =
     useInsurance.useGetRequests();
   const { mutate: updateFields } = useInsurance.useUpdateRequest(id);
-
-  console.log(currentInsurance);
-
-  const dataId = currentInsurance?.find(
-    (item: InsuranceRequest) => item.id === Number(id)
-  );
-
   const {
     selectedInsurance,
     setSelectedInsurance,
@@ -166,6 +31,10 @@ const InsuranceRequestUpdate: React.FC = () => {
     setFiles,
     description,
     setDescription,
+    draftFile,
+    setDraftFile,
+    descriptionExpert,
+    setDescriptionExpert,
     uploadedFiles,
     setUploadedFiles,
     filesToDelete,
@@ -173,18 +42,19 @@ const InsuranceRequestUpdate: React.FC = () => {
     uploadFile,
     setUploadFile,
     price,
-    draftFile,
-    setDraftFile,
     setPrice,
-    descriptionExpert,
-    setDescriptionExpert,
-  } = useInsuranceForm(dataId);
+    isSubmitting,
+    setIsSubmitting,
+  } = useInsuranceRStore();
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const dataId = currentInsurance?.find(
+    (item: InsuranceRequest) => item.id === Number(id)
+  );
+  const hasPermission =
+    Array.isArray(permissions) &&
+    permissions.some((perm) => perm.codename === "add_insurancename");
 
-  const handleInsuranceChange = (value: string) => {
-    setSelectedInsurance(value);
-  };
+  const handleInsuranceChange = (value: string) => setSelectedInsurance(value);
 
   const handleFileChange = (
     fieldId: string,
@@ -192,15 +62,9 @@ const InsuranceRequestUpdate: React.FC = () => {
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFiles((prev) => ({
-        ...prev,
-        [fieldId]: file,
-      }));
+      setFiles((prev) => ({ ...prev, [fieldId]: file }));
       const fileUrl = URL.createObjectURL(file);
-      setUploadedFiles((prev) => ({
-        ...prev,
-        [fieldId]: fileUrl,
-      }));
+      setUploadedFiles((prev) => ({ ...prev, [fieldId]: fileUrl }));
     }
   };
 
@@ -215,45 +79,29 @@ const InsuranceRequestUpdate: React.FC = () => {
 
   const handleUploadFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setUploadFile(file);
-    }
+    if (file) setUploadFile(file);
   };
 
   const handleDraftFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setDraftFile(file);
-    }
+    if (file) setDraftFile(file);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     setIsSubmitting(true);
     const formData = new FormData();
-
     formData.append("insurance", selectedInsurance);
     formData.append("insurance_status", status);
-
     Object.entries(files).forEach(([fieldId, file]) => {
       formData.append(`insurance_name_file[${fieldId}]`, file);
     });
-
     formData.append("description", description);
-
-    filesToDelete.forEach((fieldId) => {
-      formData.append("delete_files[]", fieldId);
-    });
-
-    if (draftFile) {
-      formData.append("insurance_name_draft_file", draftFile);
-    }
-
-    if (uploadFile) {
-      formData.append("insurance_name_file", uploadFile);
-    }
-
+    filesToDelete.forEach((fieldId) =>
+      formData.append("delete_files[]", fieldId)
+    );
+    if (draftFile) formData.append("insurance_name_draft_file", draftFile);
+    if (uploadFile) formData.append("insurance_name_file", uploadFile);
     formData.append("price", price);
 
     updateFields(formData, {
@@ -273,45 +121,8 @@ const InsuranceRequestUpdate: React.FC = () => {
     });
   };
 
-  // const handleDelete = () => {
-  //   console.log("Deleting insurance with ID:", id);
-
-  //   if (!id) {
-  //     Toast("شناسه درخواست نامعتبر است", <ErrorIcon />, "bg-red-500");
-  //     return;
-  //   }
-
-  //   if (window.confirm("آیا از حذف این درخواست بیمه اطمینان دارید؟")) {
-  //     try {
-  //       deleteRequest(Number(id), {
-  //         onSuccess: () => {
-  //           Toast(
-  //             "درخواست بیمه با موفقیت حذف شد",
-  //             <CheckmarkIcon />,
-  //             "bg-green-500"
-  //           );
-  //           window.history.back();
-  //         },
-  //         onError: (error: AxiosError<unknown>) => {
-  //           console.error("Delete error:", error);
-  //           const errorMessage = (error.response?.data as ErrorResponse)?.error;
-  //           Toast(
-  //             errorMessage || "خطایی در حذف رخ داده است",
-  //             <ErrorIcon />,
-  //             "bg-red-500"
-  //           );
-  //         },
-  //       });
-  //     } catch (error) {
-  //       console.error("Unexpected error:", error);
-  //       Toast("خطای غیر منتظره رخ داد", <ErrorIcon />, "bg-red-500");
-  //     }
-  //   }
-  // };
-
   const selectedInsuranceFields =
     dataId?.insurance_name_detail?.field_detail || [];
-
   const insuranceOptions =
     insuranceNames?.map((insurance) => ({
       value: insurance.id.toString(),
@@ -333,6 +144,30 @@ const InsuranceRequestUpdate: React.FC = () => {
         file.file_name === Number(fieldId)
     );
   };
+
+  useEffect(() => {
+    if (dataId) {
+      setSelectedInsurance(dataId.insurance_name.toString());
+      setStatus(dataId.insurance_status || "");
+      setDraftFile(dataId.insurance_name_draft_file || null);
+      setUploadFile(dataId.insurance_name_file || null);
+      setDescription(dataId.description_detail?.[0]?.description_user || "");
+      setDescriptionExpert(
+        dataId.description_detail?.[0]?.description_expert || ""
+      );
+      setPrice(dataId.price || "");
+    }
+  }, [dataId]);
+
+  useEffect(() => {
+    if (dataId?.file_detail) {
+      const files = dataId.file_detail.reduce(
+        (acc, file) => ({ ...acc, [file.file_name]: file.file_attachment }),
+        {}
+      );
+      setUploadedFiles(files);
+    }
+  }, [dataId]);
 
   if (isLoading || isLoadingCurrent || !dataId) {
     return (
@@ -384,6 +219,7 @@ const InsuranceRequestUpdate: React.FC = () => {
             />
           );
         })}
+
         <div className="grid grid-cols-2 gap-4">
           <TextAreaInput
             label="توضیحات"
@@ -400,19 +236,17 @@ const InsuranceRequestUpdate: React.FC = () => {
             />
           )}
         </div>
+
         {hasPermission && (
           <>
             <div className="grid grid-cols-2 gap-4">
               <FileInput
                 label="آپلود بیمه نامه"
-                // value={uploadFile ? "" : undefined}
                 onChange={handleUploadFileChange}
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
               />
-
               <FileInput
                 label="آپلود پیش نویس بیمه نامه"
-                // value={draftFile ? "" : undefined}
                 onChange={handleDraftFileChange}
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
               />
