@@ -4,11 +4,18 @@ import { LoaderLg } from "../../../components";
 import { userProType } from "../types";
 import TabulatorTable from "../../../components/table/table.com";
 import { CellComponent } from "tabulator-tables";
+import moment from "moment-jalaali";
 
 const UserProTable: React.FC = () => {
   const { data, isPending } = useUserPro();
 
+  console.log(data);
+
   if (isPending) return <LoaderLg />;
+
+  if (!data || data.length === 0) {
+    return <div>هیچ داده‌ای وجود ندارد.</div>;
+  }
 
   const closeAllMenus = () => {
     const existingMenus = document.querySelectorAll(".popup-menu");
@@ -70,6 +77,12 @@ const UserProTable: React.FC = () => {
       title: "تاریخ تولد",
       field: "birth_date",
       headerFilter: true,
+      formatter: (cell) => {
+        const gregorianDate = cell.getValue();
+        return gregorianDate
+          ? moment(gregorianDate).format("jYYYY/jMM/jDD")
+          : "";
+      },
     },
     {
       title: "محل تولد",
@@ -152,7 +165,6 @@ const UserProTable: React.FC = () => {
         }, 0);
       },
     },
-    
   ];
 
   const mappedData = data?.map((item: userProType) => ({
@@ -179,7 +191,7 @@ const UserProTable: React.FC = () => {
     سکه: item.point_1,
     بذر: item.point_2,
     ایمیل: item.email,
-    "شماره ثبت": item.registration_number,
+    "شماره ثبت": item.registration_number ?? "",
     جنسیت: item.gender === "M" ? "مرد" : "زن",
     "تاریخ تولد": item.birth_date,
     "محل تولد": item.place_of_birth,
