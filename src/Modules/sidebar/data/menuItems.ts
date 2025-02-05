@@ -116,15 +116,7 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  {
-    title: "راه‌های ارتباطی",
-    path: "/contact",
-    codename: ["allow_any"],
-    icon: FaPhone,
-    submenu: [
-      { title: "تماس با ما", path: "/contact", codename: ["allow_any"] },
-    ],
-  },
+
   {
     title: "دسترسی ها",
     path: "/permissions",
@@ -164,12 +156,12 @@ export const menuItems: MenuItem[] = [
     title: "فرایند استخدامی",
     path: "/employmentsprocess",
     icon: FaUserTie,
-    codename: ["allow_any"],
+    codename: ["zahra"],
     submenu: [
       {
         title: "فرایند های",
         path: "/employmentsprocess/table",
-        codename: ["allow_any"],
+        codename: ["zahra"],
       },
     ],
   },
@@ -227,6 +219,15 @@ export const menuItems: MenuItem[] = [
         path: "/rewards/table",
         codename: ["position"],
       },
+    ],
+  },
+  {
+    title: "راه‌های ارتباطی",
+    path: "/contact",
+    codename: ["allow_any"],
+    icon: FaPhone,
+    submenu: [
+      { title: "تماس با ما", path: "/contact", codename: ["allow_any"] },
     ],
   },
 ];
