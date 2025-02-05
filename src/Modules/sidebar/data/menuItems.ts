@@ -43,7 +43,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت سهام",
         path: "/shareholders/table",
-        codename: ["shareholder", "view_shareholders"],
+        codename: ["shareholder", "view_shareholders", "add_precedence"],
       },
       {
         title: "نقل و انتقال  سهام",
