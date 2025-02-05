@@ -28,15 +28,16 @@ const InsuranceRequestTable = () => {
     const value = cell.getValue();
     const status = statusTranslations[value as keyof typeof statusTranslations];
     return `
-      <div class="flex items-center justify-around gap-2">
-        <span>${status?.text || value}</span>
+      <div class="flex items-center justify-between gap-2">
+        <span class="justify-start">${status?.text || value}</span>
         ${
           status?.button
             ? `<button 
+
               onclick="window.open('${status.url}/${
                 cell.getRow().getData().id
               }')" 
-              class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-400 w-32">
+              class="px-2 justify-end py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-400 w-32">
               ${status?.button}
             </button>`
             : ""
