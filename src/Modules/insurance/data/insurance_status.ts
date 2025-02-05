@@ -1,38 +1,42 @@
-export const insuranceStatus = [
-  {
-    value: "missing_document",
-    label: "نقض مدارک",
+interface StatusTranslation {
+  text: string;
+  button?: string;
+  url?: string;
+}
+
+const getStatusTranslations = (
+  hasPermission: boolean
+): Record<string, StatusTranslation> => ({
+  pending_review: {
+    text: "در انتظار بررسی",
+    button: hasPermission ? "بررسی" : "",
+    url: hasPermission ? "/requestinsurance/prosses" : "",
   },
-  {
-    value: "pending_payment",
-    label: "درحال پرداخت",
+  missing_document: {
+    text: "نقص مدارک",
+    button: "تکمیل مدارک",
+    url: "/requestinsurance/prosses",
   },
-  {
-    value: "payment_review",
-    label: "بررسی پرداخت",
+  pending_payment: {
+    text: "در انتظار پرداخت",
+    button: "پرداخت",
+    url: "/requestinsurance/prosses",
   },
-  {
-    value: "approved",
-    label: "تایید شده",
+  rejected: {
+    text: "رد شده",
+    button: hasPermission ? "رد شده" : "",
+    url: hasPermission ? "/requestinsurance/prosses" : "",
   },
-  {
-    value: "rejected",
-    label: "رد شده",
+  pendeing_issue: {
+    text: "در انتظار بررسی مستندات",
+    button: hasPermission ? "بارگزاری بیمه نامه" : "",
+    url: hasPermission ? "/requestinsurance/prosses" : "",
   },
-  {
-    value: "canceled",
-    label: "لغو شده",
+  finished: {
+    text: "صادر شده",
+    button: hasPermission ? "صادر شده" : "",
+    url: hasPermission ? "/requestinsurance/prosses" : "",
   },
-  {
-    value: "expired",
-    label: "منقضی شده",
-  },
-  {
-    value: "pending_review",
-    label: "درحال بررسی",
-  },
-  {
-    value: "pending_issue",
-    label: "در انتضار صدور",
-  },
-];
+});
+
+export default getStatusTranslations;

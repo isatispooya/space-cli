@@ -18,14 +18,16 @@ const InsurenceRequestProsses = () => {
     Array.isArray(Permissions) &&
     Permissions.some((perm) => perm.codename === "add_insurancename");
 
-  const isLocked_step_1 =  request?.insurance_status.includes(["pending_payment","pending_issue","finished","rejected","pending_review"]) && !hasPermission;
-
-
-  const isLocked_step_2 = request?.insurance_status !== "pending_payment" && !hasPermission;
-  
-
-  console.log(request?.insurance_status , isLocked_step_1 , isLocked_step_2 , "121212121212");
-
+  const isLocked_step_1 =
+    request?.insurance_status.includes([
+      "pending_payment",
+      "pending_issue",
+      "finished",
+      "rejected",
+      "pending_review",
+    ]) && !hasPermission;
+  const isLocked_step_2 =
+    request?.insurance_status !== "pending_payment" && !hasPermission;
 
   return (
     <div className="w-[80%] mx-auto rounded-lg shadow-md p-4 ">
@@ -36,7 +38,6 @@ const InsurenceRequestProsses = () => {
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-
             aria-controls="panel1-content"
             id="panel1-header"
           >
@@ -53,7 +54,6 @@ const InsurenceRequestProsses = () => {
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-
             aria-controls="panel2-content"
             id="panel2-header"
           >

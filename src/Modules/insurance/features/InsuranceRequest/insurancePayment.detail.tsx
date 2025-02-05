@@ -33,8 +33,6 @@ const InsurancePayment = () => {
     kind_of_payment: yup.string().required("نوع پرداخت الزامی است"),
   });
 
-  console.log(selectedPayment, "234567");
-
   const formFields: FormField[] = [
     {
       name: "document",
@@ -67,10 +65,7 @@ const InsurancePayment = () => {
       name: "kind_of_payment",
       label: "نوع پرداخت",
       type: "select",
-      options: [
-        { label: "فیش بانکی", value: "1" },
-        // { label: "درگاه", value: "2" },
-      ],
+      options: [{ label: "فیش بانکی", value: "1" }],
     },
 
     ...(selectedPayment?.insurance_name_draft_file
