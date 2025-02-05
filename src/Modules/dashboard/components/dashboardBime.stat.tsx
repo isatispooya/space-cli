@@ -30,7 +30,7 @@ const DashboardBimeStat = () => {
           animate={{ scale: 1 }}
           className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#1a5c35] mt-2 mb-8 font-iranSans"
         >
-          {stats?.pishkar?.["count"] || 0}
+          {stats?.pishkar || 0}
           <span className="text-sm text-[#1a5c35] font-iranSans">عدد</span>
         </motion.p>
       </div>

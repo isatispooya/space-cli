@@ -36,7 +36,7 @@ const InsurancePayment = () => {
   const formFields: FormField[] = [
     {
       name: "document",
-      label: "فیشش بانکی",
+      label: "فیش بانکی",
       type: "file",
       fileProps: {
         maxSize: 1024 * 1024 * 5,
@@ -84,16 +84,20 @@ const InsurancePayment = () => {
         ]
       : []),
 
-    {
-      name: "document",
-      label: "مشاهده فیش بانکی",
-      type: "viewFile",
-      viewFileProps: {
-        showPreview: true,
-        url: server + "/" + selectedPayment.payment?.document,
-        fileType: selectedPayment.payment?.document_type || "",
-      },
-    },
+    ...(selectedPayment?.payment?.document
+      ? [
+          {
+            name: "document",
+            label: "مشاهده فیش بانکی",
+            type: "viewFile" as const,
+            viewFileProps: {
+              showPreview: true,
+              url: server + "/" + selectedPayment.payment?.document,
+              fileType: selectedPayment.payment?.document_type || "",
+            },
+          },
+        ]
+      : []),
   ];
 
   const initialValues: FishPaymentType = {
@@ -111,6 +115,7 @@ const InsurancePayment = () => {
     formData.append("id", String(values.id));
     formData.append("document_track_id", values.document_track_id);
     formData.append("kind_of_payment", values.kind_of_payment);
+    formData.append("price", String(initialValues.price));
 
     postFish(formData, {
       onSuccess: () => {

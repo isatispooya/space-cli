@@ -12,7 +12,7 @@ import { useInsuranceStore } from "../../store";
 
 const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
-  const { mutate: postFields } = useInsurance.usePostRequest();
+  const { mutate: postFields , isPending: isPostLoading } = useInsurance.usePostRequest();
   const { data: insuranceCompanies } = useInsurance.useGetInsuranceCompanies();
 
   const {
@@ -101,9 +101,18 @@ const InsuranceRequestCreate: React.FC = () => {
     );
   }
 
+  if (isPostLoading) {
+    return (
+      <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div
       className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg"
+
       dir="rtl"
     >
       <h2 className="text-2xl font-bold text-[#29D2C7] mb-6">
@@ -155,6 +164,7 @@ const InsuranceRequestCreate: React.FC = () => {
 
         <button
           type="submit"
+          disabled={isPostLoading}
           className="w-full py-3 px-4 mt-6 bg-[#29D2C7] hover:bg-[#008282] text-white rounded-md"
         >
           ثبت
