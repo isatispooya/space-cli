@@ -77,6 +77,8 @@ const RewardsTable = () => {
       hozAlign: "center",
       headerHozAlign: "center",
       headerFilter: true,
+      formatter: (cell) =>
+        `<div style="direction: ltr;">${cell.getValue()}</div>`,
     },
     {
       title: "آدرس",
@@ -122,7 +124,7 @@ const RewardsTable = () => {
     },
   ];
 
-  const mappedData = Welfare?.map((item: PrivilegesTypes ) => {
+  const mappedData = Welfare?.map((item: PrivilegesTypes) => {
     return {
       id: item.id,
       name: item.name,
