@@ -30,7 +30,7 @@ export const menuItems: MenuItem[] = [
     submenu: [
       {
         title: "کاربران",
-        path: "/users",
+        path: "/users/table",
         codename: ["view_user"],
       },
     ],
@@ -111,7 +111,7 @@ export const menuItems: MenuItem[] = [
     submenu: [
       {
         title: "مدیریت نقش ها",
-        path: "/positions",
+        path: "/positions/table",
         codename: ["view_position"],
       },
     ],
@@ -133,7 +133,7 @@ export const menuItems: MenuItem[] = [
     submenu: [
       {
         title: "مدیریت دسترسی ها",
-        path: "/permissions",
+        path: "/permissions/table",
         codename: ["view_permission"],
       },
     ],

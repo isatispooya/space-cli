@@ -16,6 +16,9 @@ const InsurancePayment = () => {
   const { data: insurancePayment, isLoading } = useInsurance.useGetRequests();
   const navigate = useNavigate();
   const { mutate: postFish } = useInsurance.usePostInsurancePaymentFish();
+
+  console.log(insurancePayment);
+
   const selectedPayment = insurancePayment?.find(
     (payment: InsuranceRequest) => payment.id === Number(id)
   );
@@ -31,9 +34,25 @@ const InsurancePayment = () => {
     price: yup.number().required() as yup.NumberSchema<number>,
     document_track_id: yup.string().required("شناسه پیگیری الزامی است"),
     kind_of_payment: yup.string().required("نوع پرداخت الزامی است"),
+    cart_number: yup.string().required("شماره کارت الزامی است"),
+    sheba: yup.string().required("شماره شبا الزامی است"),
+    first_properties_detail: yup.string().required("جزئیات اولیه الزامی است"),
   });
 
   const formFields: FormField[] = [
+    {
+      name: "sheba",
+      label: "شماره شبا",
+      type: "text",
+      disabled: true,
+    },
+    {
+      name: "cart_number",
+
+      label: "شماره کارت",
+      type: "text",
+      disabled: true,
+    },
     {
       name: "document",
       label: "فیش بانکی",
@@ -127,6 +146,8 @@ const InsurancePayment = () => {
     price: selectedPayment.price,
     document_track_id: "",
     kind_of_payment: "1",
+    cart_number: selectedPayment.insurance_name_detail.cart_number,
+    sheba: selectedPayment.insurance_name_detail.sheba,
   };
 
   const onSubmit = (values: FishPaymentType) => {
