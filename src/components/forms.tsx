@@ -15,7 +15,8 @@ import { useState } from "react";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import FileInput from "./inputs/uploadInput";
 import MultiSelect from "./inputs/multiSelect";
-import DetailBox from "./formDetail";
+
+import FormDetail from "./formDetail";
 
 interface FormsProps<T extends Maybe<AnyObject>> {
   formFields: FormField[];
@@ -119,26 +120,6 @@ const Forms = <T extends FormikValues>({
           <Form className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {formFields.map((field) => (
               <div key={field.name} className="col-span-1">
-                {field.type === "detail" && (
-                  <div>
-                    {formFields.map((field) => (
-                      <div key={field.name} className="col-span-1">
-                        {field.type === "detail" &&
-                          field.value &&
-                          Array.isArray(field.value) && (
-                            <DetailBox
-                              data={field.value} 
-                              title={field.label}
-                              isCopied={false} 
-                              setIsCopied={() => {}}
-                            />
-
-                          )}
-        
-                      </div>
-                    ))}
-                  </div>
-                )}
                 {field.type === "dynamic" ? (
                   <div className="space-y-4">
                     {[...Array(dynamicFieldCounts[field.name] || 1)].map(
@@ -200,6 +181,16 @@ const Forms = <T extends FormikValues>({
                       )
                     )}
                   </div>
+                ) : field.type === "detail" ? (
+                  <Field name={field.name}>
+                    {({ field: fieldProps }: FieldProps) => (
+                      <FormDetail
+                        data={fieldProps.value}
+                        isCopied={false}
+                        setIsCopied={() => {}}
+                      />
+                    )}
+                  </Field>
                 ) : field.type === "file" ? (
                   <Field name={field.name}>
                     {() => (
