@@ -9,13 +9,14 @@ const InsuranceRequestMain: React.FC = () => {
     {
       icon: LuTable,
       text: "جدول",
-      permission: ["view_stocktransfer"],
+      permission: ["allow-any"],
       path: "table",
+
     },
     {
       icon: LuPlus,
       text: "ایجاد",
-      permission: ["add_stocktransfer"],
+      permission: ["allow-any"],
       path: "create",
     },
   ];

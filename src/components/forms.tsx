@@ -121,14 +121,21 @@ const Forms = <T extends FormikValues>({
               <div key={field.name} className="col-span-1">
                 {field.type === "detail" && (
                   <div>
-                    {field.value.map((detail, index) => (
-                      <DetailBox
-                        key={index}
-                        title={detail.title}
-                        data={detail.data}
-                        isCopied={false}
-                        setIsCopied={() => {}}
-                      />
+                    {formFields.map((field) => (
+                      <div key={field.name} className="col-span-1">
+                        {field.type === "detail" &&
+                          field.value &&
+                          Array.isArray(field.value) && (
+                            <DetailBox
+                              data={field.value} 
+                              title={field.label}
+                              isCopied={false} 
+                              setIsCopied={() => {}}
+                            />
+
+                          )}
+        
+                      </div>
                     ))}
                   </div>
                 )}

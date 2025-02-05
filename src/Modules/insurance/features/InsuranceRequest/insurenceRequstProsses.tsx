@@ -24,7 +24,7 @@ const InsurenceRequestProsses = () => {
 
   const hasPermission =
     Array.isArray(Permissions) &&
-    Permissions.some((perm) => perm.codename === "add_insurancename");
+    Permissions.some((perm) => perm.codename === "add_insurance_name");
 
   const isLocked_step_1 =
     request?.insurance_status.includes([

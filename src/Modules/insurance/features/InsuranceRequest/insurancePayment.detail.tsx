@@ -17,8 +17,6 @@ const InsurancePayment = () => {
   const navigate = useNavigate();
   const { mutate: postFish } = useInsurance.usePostInsurancePaymentFish();
 
-  console.log(insurancePayment);
-
   const selectedPayment = insurancePayment?.find(
     (payment: InsuranceRequest) => payment.id === Number(id)
   );
@@ -86,26 +84,7 @@ const InsurancePayment = () => {
       type: "select",
       options: [{ label: "فیش بانکی", value: "1" }],
     },
-    {
-      name: "shaba_number",
-      label: "شماره شبا",
-      type: "detail",
-      value: selectedPayment.insurance_name_detail?.sheba,
-    },
-    {
-      name: "account_number",
-      label: "شماره حساب",
-      type: "detail",
-      value: selectedPayment.insurance_name_detail?.account_number,
-
-    },
-    {
-      name: "card_number",
-      label: "شماره کارت",
-      type: "detail",
-      value: selectedPayment.insurance_name_detail?.cart_number,
-    },
-    
+ 
 
     ...(selectedPayment?.insurance_name_draft_file
       ? [
@@ -137,6 +116,27 @@ const InsurancePayment = () => {
           },
         ]
       : []),
+
+      // {
+      //   name: "details",
+      //   label: "جزئیات",
+      //   type: "detail",
+      //   value: [
+      //     {
+      //       title: "شماره شبا",
+      //       value: selectedPayment.insurance_name_detail.sheba,
+      //     }, 
+      //     {
+      //       title: "شماره حساب",
+      //       value: selectedPayment.insurance_name_detail.cart_number,
+      //     }, 
+  
+      //     {
+      //       title: "شماره کارت",
+      //       value: selectedPayment.insurance_name_detail.cart_number,
+      //     }, 
+      //   ],
+      // },
   ];
 
   const initialValues: FishPaymentType = {

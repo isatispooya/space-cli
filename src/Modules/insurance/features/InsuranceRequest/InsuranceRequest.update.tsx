@@ -58,7 +58,7 @@ const InsuranceRequestUpdate: React.FC = () => {
   );
   const hasPermission =
     Array.isArray(permissions) &&
-    permissions.some((perm) => perm.codename === "add_insurancename");
+    permissions.some((perm) => perm.codename === "add_insurance_name");
 
   const handleInsuranceChange = (value: string) => setSelectedInsurance(value);
 
