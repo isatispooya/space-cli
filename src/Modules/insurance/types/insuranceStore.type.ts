@@ -7,7 +7,6 @@ export interface InsuranceState {
   uploadedFiles: Record<string, string>;
   filesToDelete: string[];
   uploadFile: File | null;
-
   setSelectedInsurance: (value: string) => void;
   setSelectedCompanies: (companies: string[]) => void;
   setFiles: (files: Record<string, File>) => void;
