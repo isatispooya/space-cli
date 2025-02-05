@@ -5,6 +5,8 @@ export interface FormField {
   disabled?: boolean;
   accept?: string;
   defaultValue?: string;
+  
+
 
   value?: any;
   type:
@@ -18,8 +20,9 @@ export interface FormField {
     | "file"
     | "viewFile"
     | "dynamic"
+    | "detail"
     | "multiSelect";
- 
+
   options?: { label: string; value: any }[];
   transferListProps?: {
     leftTitle?: React.ReactNode;

@@ -7,7 +7,7 @@ import { FormField } from "../types";
 import { FormikHelpers } from "formik";
 import { AnyObject, Maybe, ObjectSchema } from "yup";
 import { RiCloseLargeLine } from "react-icons/ri";
-import ViewFileInput from "./viewFileInput";
+import ViewFileInput from "./inputs/viewFileInput";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
@@ -15,6 +15,7 @@ import { useState } from "react";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import FileInput from "./inputs/uploadInput";
 import MultiSelect from "./inputs/multiSelect";
+import DetailBox from "./formDetail";
 
 interface FormsProps<T extends Maybe<AnyObject>> {
   formFields: FormField[];
@@ -118,6 +119,19 @@ const Forms = <T extends FormikValues>({
           <Form className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {formFields.map((field) => (
               <div key={field.name} className="col-span-1">
+                {field.type === "detail" && (
+                  <div>
+                    {field.value.map((detail, index) => (
+                      <DetailBox
+                        key={index}
+                        title={detail.title}
+                        data={detail.data}
+                        isCopied={false}
+                        setIsCopied={() => {}}
+                      />
+                    ))}
+                  </div>
+                )}
                 {field.type === "dynamic" ? (
                   <div className="space-y-4">
                     {[...Array(dynamicFieldCounts[field.name] || 1)].map(

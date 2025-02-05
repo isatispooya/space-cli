@@ -6,12 +6,15 @@ interface FormInputProps extends HTMLMotionProps<"input"> {
   format?: (value: any) => any;
   value?: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
+
 
 const FormInput = ({
   label = "Input Label",
   format,
   value,
+  disabled,
   onChange,
   ...props
 }: FormInputProps) => {
@@ -31,6 +34,7 @@ const FormInput = ({
         {...props}
         value={displayValue || ""}
         onChange={onChange}
+        disabled={disabled}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         whileTap={{ scale: 0.995 }}

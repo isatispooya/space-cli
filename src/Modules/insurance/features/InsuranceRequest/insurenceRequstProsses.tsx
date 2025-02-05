@@ -1,18 +1,26 @@
 import { useParams } from "react-router-dom";
 import { useInsurance } from "../../hooks";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Accordion from "../../../../components/accordian";
 import { InsuranceRequestUpdate } from "../..";
 import { InsurancePayment } from ".";
 import { useUserPermissions } from "../../../permissions";
+import { useState } from "react";
 
 const InsurenceRequestProsses = () => {
   const { id } = useParams();
   const { data: request } = useInsurance.useGetRequestsById(Number(id));
   const { data: Permissions } = useUserPermissions();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [isOpen2, setIsOpen2] = useState(false);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleToggle2 = () => {
+    setIsOpen2(!isOpen2);
+  };
 
   const hasPermission =
     Array.isArray(Permissions) &&
@@ -29,41 +37,27 @@ const InsurenceRequestProsses = () => {
   const isLocked_step_2 =
     request?.insurance_status !== "pending_payment" && !hasPermission;
 
-  return (
-    <div className="w-[80%] mx-auto rounded-lg shadow-md p-4 ">
-      <div className="flex flex-col gap-4">
-        <Accordion
-          sx={{ backgroundColor: "#f5fdfe", borderRadius: "10px" }}
-          disabled={isLocked_step_1}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-          >
-            <Typography component="span">اطلاعات درخواست</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <InsuranceRequestUpdate />
-          </AccordionDetails>
-        </Accordion>
+  console.log(isLocked_step_1, 1, isLocked_step_2, 2);
 
-        <Accordion
-          sx={{ backgroundColor: "#f5fdfe", borderRadius: "10px" }}
-          disabled={isLocked_step_2}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2-content"
-            id="panel2-header"
-          >
-            <Typography component="span">پرداخت</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <InsurancePayment />
-          </AccordionDetails>
-        </Accordion>
-      </div>
+  return (
+    <div className="w-[80%] mx-auto rounded-lg p-4 flex flex-col gap-4">
+      <Accordion
+        title="اطلاعات درخواست"
+        isOpen={isOpen}
+        onToggle={handleToggle}
+        disabled={isLocked_step_1}
+      >
+        <InsuranceRequestUpdate />
+      </Accordion>
+
+      <Accordion
+        title="پرداخت"
+        isOpen={isOpen2}
+        onToggle={handleToggle2}
+        disabled={isLocked_step_2}
+      >
+        <InsurancePayment />
+      </Accordion>
     </div>
   );
 };

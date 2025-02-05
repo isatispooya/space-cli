@@ -9,11 +9,17 @@ import FileInput from "../../../../components/inputs/uploadInput";
 import { Spinner } from "../../../../components/loaders";
 import { Toast } from "../../../../components/toast";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import { FormInput, TextAreaInput } from "../../../../components/inputs";
+import {
+  FormInput,
+  TextAreaInput,
+  ViewFileInput,
+} from "../../../../components/inputs";
 import { FileField } from "../../components";
 import { formatNumber } from "../../../../utils";
 import { ErrorResponse } from "../../../../types";
 import { InsuranceField, InsuranceRequest } from "../../types";
+import { statusOptions } from "../../data";
+import { server } from "../../../../api";
 
 const InsuranceRequestUpdate: React.FC = () => {
   const { id } = useParams();
@@ -69,9 +75,9 @@ const InsuranceRequestUpdate: React.FC = () => {
   };
 
   const handleDeleteFile = (fieldId: string) => {
-    setFilesToDelete((prev) => [...prev, fieldId]);
-    setUploadedFiles((prev) => {
-      const newFiles = { ...prev };
+    setFilesToDelete((prev: string[]) => [...prev, fieldId]);
+    setUploadedFiles((prev: Record<string, string>) => {
+      const newFiles: Record<string, string> = { ...prev };
       delete newFiles[fieldId];
       return newFiles;
     });
@@ -102,7 +108,7 @@ const InsuranceRequestUpdate: React.FC = () => {
     );
     if (draftFile) formData.append("insurance_name_draft_file", draftFile);
     if (uploadFile) formData.append("insurance_name_file", uploadFile);
-    formData.append("price", price);
+    formData.append("price", price.toString());
 
     updateFields(formData, {
       onSuccess: () => {
@@ -128,15 +134,6 @@ const InsuranceRequestUpdate: React.FC = () => {
       value: insurance.id.toString(),
       label: insurance.name,
     })) ?? [];
-
-  const statusOptions = [
-    { value: "pending_review", label: "در انتظار بررسی " },
-    { value: "missing_document", label: "نقص مدارک" },
-    { value: "pending_payment", label: "در انتظار پرداخت" },
-    { value: "pending_issue", label: "در انتظار بررسی مستندات" },
-    { value: "finished", label: "صادر شده" },
-    { value: "rejected", label: "رد شده" },
-  ];
 
   const getExistingFile = (fieldId: string) => {
     return dataId?.file_detail?.find(
@@ -183,7 +180,7 @@ const InsuranceRequestUpdate: React.FC = () => {
       dir="rtl"
     >
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-[#29D2C7]">ویرایش بیمه نامه</h2>
+        <h2 className="text-2xl font-bold text-[#5677BC]">ویرایش بیمه نامه</h2>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
@@ -205,21 +202,6 @@ const InsuranceRequestUpdate: React.FC = () => {
           )}
         </div>
 
-        {selectedInsuranceFields?.map((field: InsuranceField) => {
-          const existingFile = getExistingFile(field.id.toString());
-          return (
-            <FileField
-              key={field.id}
-              field={field}
-              existingFile={existingFile}
-              filesToDelete={filesToDelete}
-              handleDeleteFile={handleDeleteFile}
-              handleFileChange={handleFileChange}
-              uploadedFiles={uploadedFiles}
-            />
-          );
-        })}
-
         <div className="grid grid-cols-2 gap-4">
           <TextAreaInput
             label="توضیحات"
@@ -240,11 +222,26 @@ const InsuranceRequestUpdate: React.FC = () => {
         {hasPermission && (
           <>
             <div className="grid grid-cols-2 gap-4">
+              {uploadFile && (
+                <ViewFileInput
+                  label="مشاهده بیمه نامه"
+                  url={server + uploadFile}
+                  fileType="application/pdf"
+                />
+              )}
               <FileInput
                 label="آپلود بیمه نامه"
                 onChange={handleUploadFileChange}
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
               />
+
+              {draftFile && (
+                <ViewFileInput
+                  label="مشاهده پیش نویس بیمه نامه"
+                  url={server + draftFile}
+                  fileType="application/pdf"
+                />
+              )}
               <FileInput
                 label="آپلود پیش نویس بیمه نامه"
                 onChange={handleDraftFileChange}
@@ -252,13 +249,29 @@ const InsuranceRequestUpdate: React.FC = () => {
               />
               <FormInput
                 label="قیمت"
+                disabled={hasPermission}
                 value={formatNumber(price)}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setPrice(Number(e.target.value))}
                 className="mt-8 p-2 border rounded-md w-full"
               />
             </div>
           </>
         )}
+
+        {selectedInsuranceFields?.map((field: InsuranceField) => {
+          const existingFile = getExistingFile(field.id.toString());
+          return (
+            <FileField
+              key={field.id}
+              field={field}
+              existingFile={existingFile}
+              filesToDelete={filesToDelete}
+              handleDeleteFile={handleDeleteFile}
+              handleFileChange={handleFileChange}
+              uploadedFiles={uploadedFiles}
+            />
+          );
+        })}
 
         <button
           type="submit"
@@ -266,7 +279,7 @@ const InsuranceRequestUpdate: React.FC = () => {
           className={`w-full py-3 px-4 mt-6 ${
             isSubmitting
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-[#29D2C7] hover:bg-[#008282]"
+              : "bg-[#5677BC] hover:bg-[#5677BC]"
           } text-white rounded-md`}
         >
           {isSubmitting ? "در حال ویرایش..." : "ویرایش"}
