@@ -112,10 +112,12 @@ const NotificationComponent = React.forwardRef<
             width: "100%",
             maxWidth: "320px",
             minWidth: "300px",
-            left: "80px",
+            left: "50px",
             top: "100px",
             maxHeight: "100vh",
             overflowY: "auto",
+            padding: "10px",
+            boxSizing: "border-box",
           }}
         >
           <div className="p-4 sm:p-6 tour-header-notification">
