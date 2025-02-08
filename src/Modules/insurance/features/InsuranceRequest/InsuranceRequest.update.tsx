@@ -83,6 +83,7 @@ const InsuranceRequestUpdate: React.FC = () => {
     });
   };
 
+
   const handleUploadFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setUploadFile(file);
