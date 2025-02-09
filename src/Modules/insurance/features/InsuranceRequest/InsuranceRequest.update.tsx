@@ -291,3 +291,4 @@ const InsuranceRequestUpdate: React.FC = () => {
 };
 
 export default InsuranceRequestUpdate;
+                   

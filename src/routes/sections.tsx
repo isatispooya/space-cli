@@ -24,9 +24,10 @@ import { TimeflowRoutes } from "../Modules/timeflow";
 import { EmploymentsProcessRoutes } from "../Modules/employmentsprocess";
 import { EmploymentsRoutes } from "../Modules/employments";
 import { InsuranceAppRoutes, InsuranceRoutes } from "../Modules/insurance";
-import { UsersRoutes } from "../Modules/users/routes";
-import { LoginRoutes } from "../Modules/auth/routes";
+import { UsersRoutes } from "../Modules/users";
+import { LoginRoutes } from "../Modules/auth";
 import { ContactRoutes } from "../Modules/contact";
+import { StreamRoutes } from "../Modules/live";
 
 const PaymentResultPage = lazy(() =>
   import("../pages/paymentResultPage").then((module) => ({
@@ -61,6 +62,7 @@ const ExistingRoutes = [
   ...InsuranceAppRoutes,
   ...UsersRoutes,
   ...ContactRoutes,
+  ...StreamRoutes,
 ];
 
 export default function Router() {

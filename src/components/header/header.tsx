@@ -15,11 +15,17 @@ import { useRemainPoints } from "../../Modules/points";
 import NotificationComponent from "../notification/notification";
 import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
+import { CiStreamOn } from "react-icons/ci";
+import { useLiveStream } from "../../Modules/live/hooks";
 
 initTWE({ Collapse, Ripple });
 
 const Header = () => {
   const { toggleSidebar } = useSidebarStore();
+
+  const { data: liveStream } = useLiveStream.useLiveStream();
+
+  const ShowLiveStream = liveStream?.status;
 
   const { data: remainPoints } = useRemainPoints();
   const navigate = useNavigate();
@@ -109,6 +115,20 @@ const Header = () => {
             data-twe-collapse-item
           ></div>
           <div className="flex items-center justify-start relative xs:mr-1 lg:mx-4">
+            {ShowLiveStream && (
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="mr-10  cursor-pointer flex items-center"
+                animate={{ rotate: [0, 10, -10, 0] }}
+                onClick={() => navigate("/stream")}
+              >
+                <CiStreamOn className="text-red-500 text-3xl cursor-pointer" />
+                <span className="text-blue-900 text-sm font-bold">
+                  پخش زنده
+                </span>
+              </motion.div>
+            )}
             <Badge
               sx={{
                 position: "relative",
