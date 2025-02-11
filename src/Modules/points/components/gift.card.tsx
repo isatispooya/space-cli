@@ -25,6 +25,7 @@ import { formatNumber } from "../../../utils";
 import { Link } from "react-router-dom";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
+import { FormControlLabel, Checkbox } from "@mui/material";
 
 interface GiftCardProps {
   gifts: GiftTypes[];
@@ -70,6 +71,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<string>("");
   const [selectedGift, setSelectedGift] = useState<SelectedGift | null>(null);
+  const [isContractAccepted, setIsContractAccepted] = useState(false);
   const [filterTypeSeed, setFilterTypeSeed] = useState<string | null>(null);
   const [filterTypeCoin, setFilterTypeCoin] = useState<
     "all" | "crowd" | "ipmill"
@@ -480,6 +482,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
           },
         }}
       >
+        {/* بخش اصلی دیالوگ */}
         <DialogTitle
           sx={{
             textAlign: "center",
@@ -491,12 +494,12 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
         >
           دریافت هدیه
         </DialogTitle>
-
         <DialogContent sx={{ p: 4 }}>
+          {/* محتوای دیالوگ */}
           <p className="text-gray-600 text-center mb-6">
             آیا مطمئن هستید که می‌خواهید این هدیه را دریافت کنید؟
           </p>
-
+          {/* بخش سکه یا بذر */}
           <div className="flex items-center justify-between mb-6 bg-gray-50 p-4 rounded-lg">
             <span className="text-gray-700 flex items-center gap-2">
               {selectedGift?.is_repetitive ? (
@@ -534,7 +537,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
               ) : null}
             </div>
           </div>
-
+          {/* فیلد ورودی برای هدایای تکراری */}
           {selectedGift && selectedGift.is_repetitive === true && (
             <TextField
               autoFocus
@@ -553,7 +556,7 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
               }}
             />
           )}
-
+          {/* دکمه‌های انصراف و تایید */}
           <div className="flex justify-end gap-3 mt-8">
             <Button
               onClick={() => setOpen(false)}
@@ -578,6 +581,8 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             </Button>
           </div>
         </DialogContent>
+
+        {/* دیالوگ قرارداد */}
         <Dialog
           open={openContractDialog}
           onClose={handleCloseContractDialog}
@@ -607,13 +612,35 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             <p className="text-gray-600">
               {selectedGift?.contract || "قراردادی برای این هدیه موجود نیست."}
             </p>
+            {/* چکباکس برای تأیید قرارداد */}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isContractAccepted}
+                  onChange={(e) => setIsContractAccepted(e.target.checked)}
+                  sx={{
+                    color: "#5677BC",
+                    "&.Mui-checked": {
+                      color: "#5677BC",
+                    },
+                  }}
+                />
+              }
+              label="من قرارداد را خوانده‌ام و موافقم."
+            />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseContractDialog} color="primary">
-              بستن
+          
+            <Button
+              onClick={handleCloseContractDialog}
+              color="primary"
+              disabled={!isContractAccepted} 
+            >
+              تایید
             </Button>
           </DialogActions>
         </Dialog>
+
         <Snackbar
           open={openToast}
           autoHideDuration={3000}

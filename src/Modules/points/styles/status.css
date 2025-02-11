@@ -1,0 +1,23 @@
+.status-cell {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+  }
+  
+  .status-menu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .status-menu div {
+    cursor: pointer;
+    padding: 4px 8px;
+    margin: 2px 0;
+  }
+  
+  .status-menu div:hover {
+    background-color: #f0f0f0;
+  }

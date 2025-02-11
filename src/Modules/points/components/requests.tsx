@@ -1,36 +1,25 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import { CustomDataGridToolbar, localeText } from "../../../utils";
-import { tableStyles } from "../../../ui";
-import Popup from "./popup";
+import { useGiftsUser } from "../hooks";
+import { RequestTypes, RequestUpdateTypes } from "../types";
+import { CellComponent } from "tabulator-tables";
+import TabulatorTable from "../../../components/table/table.com";
+import toast, { ErrorIcon } from "react-hot-toast";
+import { Toast } from "../../../components/toast";
 import { useUserPermissions } from "../../permissions";
-import toast from "react-hot-toast";
-import useGiftsUser from "../hooks/useGiftsUser";
-import { formatNumber } from "../../../utils";
-import { RequestTypes } from "../types";
-
-interface RequestType {
-  id: number;
-  title: string;
-  description: string;
-  points: number;
-  user: {
-    first_name: string;
-    last_name: string;
-  };
-  status: "pending" | "approved" | "rejected";
-  created_at: string;
-  amount: number;
-}
 
 const Request = () => {
-  const { checkPermission } = useUserPermissions();
-  const [selectedRow, setSelectedRow] = useState<RequestType | null>(null);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { data: giftsUser } = useGiftsUser.useGetGifts();
+  const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
+  const { checkPermission } = useUserPermissions();
+
+  const isAdmin = checkPermission(["change_giftuser"]);
+
+  const statusMapping = {
+    delivered: "تحویل داده شده",
+    cancelled: "لغو شده",
+    pending: "در انتظار",
+  };
 
   const rows: RequestTypes[] =
     giftsUser?.map((item: RequestTypes) => ({
@@ -57,205 +46,154 @@ const Request = () => {
       },
     })) || [];
 
-  const columns: GridColDef[] = [
+  const handleStatusChange = (id: number, newStatus: string) => {
+    const updatedData: RequestUpdateTypes = {
+      status: newStatus as "delivered" | "cancelled" | "pending",
+    };
+
+    if (id !== undefined) {
+      updateGiftsUser(
+        { id, data: updatedData },
+        {
+          onSuccess: () => {
+            toast.success("وضعیت با موفقیت تغییر کرد");
+          },
+          onError: () => {
+            Toast("خطا در اعمال تغییرات", <ErrorIcon />, "bg-red-500");
+          },
+        }
+      );
+    } else {
+      console.error("ID is undefined");
+    }
+  };
+
+  const closeAllMenus = () => {
+    const existingMenus = document.querySelectorAll(".popup-menu");
+    existingMenus.forEach((menu) => {
+      document.body.removeChild(menu);
+    });
+  };
+
+  const columns = () => [
     {
       field: "title",
-      headerName: "عنوان",
-      width: 150,
-      headerAlign: "center",
-      align: "center",
+      title: "عنوان",
     },
     {
       field: "description",
-      headerName: "توضیحات",
-      width: 200,
-      headerAlign: "center",
-      align: "center",
+      title: "توضیحات",
     },
     {
       field: "points",
-      headerName: "امتیاز",
-      width: 100,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        return <div className="text-center">{params.row.points}</div>;
-      },
+      title: "امتیاز",
     },
-
     {
       field: "total_points",
-      headerName: "کل دریافتی",
-      width: 100,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        return (
-          <div className="text-center">
-            {formatNumber(params.row.points * params.row.amount)}
-          </div>
-        );
-      },
+      title: "کل دریافتی",
     },
     {
       field: "status",
-      headerName: "وضعیت",
-      width: 120,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        const statusMap = {
-          pending: "در انتظار",
-          approved: "تایید شده",
-          rejected: "رد شده",
-        };
-        const statusColors = {
-          pending: "text-yellow-600",
-          approved: "text-green-600",
-          rejected: "text-red-600",
-        };
-        return (
-          <div
-            className={`text-center ${
-              statusColors[params.row.status as keyof typeof statusColors]
-            }`}
-          >
-            {statusMap[params.row.status as keyof typeof statusMap]}
-          </div>
+      title: "وضعیت",
+      formatter: (cell: CellComponent) => {
+        const statusValue = cell.getValue();
+        return statusMapping[statusValue]; // Show the Persian meaning of the status in the cell
+      },
+      cellClick: (e: MouseEvent, cell: CellComponent) => {
+        if (!isAdmin) return;
+        e.stopPropagation();
+        const existingMenu = document.querySelector(
+          `.popup-menu[data-cell="${cell
+            .getElement()
+            .getAttribute("tabulator-field")}"]`
         );
+        if (existingMenu) {
+          closeAllMenus();
+          return;
+        }
+        closeAllMenus();
+
+        const menu = document.createElement("div");
+        menu.className = "popup-menu";
+        menu.setAttribute(
+          "data-cell",
+          cell.getElement().getAttribute("tabulator-field") || ""
+        );
+
+        Object.entries(statusMapping).forEach(
+          ([status, persianTranslation]) => {
+            const menuItem = document.createElement("button");
+            menuItem.className = "menu-item";
+            menuItem.textContent = persianTranslation;
+
+            if (status === cell.getValue()) {
+              menuItem.style.fontWeight = "bold";
+            }
+
+            menuItem.onclick = () => {
+              const rowData = cell.getRow().getData();
+              console.log("Row Data:", rowData); // Debugging line
+              const rowId = rowData.id || "default-id"; // Fallback for missing ID
+              console.log("Row ID:", rowId); // Debugging line
+              handleStatusChange(rowId, status); // Pass the English status to the server
+              closeAllMenus();
+            };
+
+            menu.appendChild(menuItem);
+          }
+        );
+
+        const rect = cell.getElement().getBoundingClientRect();
+        menu.style.left = `${rect.left + window.scrollX}px`;
+        menu.style.top = `${rect.bottom + window.scrollY}px`;
+
+        document.body.appendChild(menu);
+
+        const closeMenu = (e: MouseEvent) => {
+          if (!menu.contains(e.target as Node)) {
+            closeAllMenus();
+            document.removeEventListener("click", closeMenu);
+          }
+        };
+        document.addEventListener("click", closeMenu);
+
+        const handleScroll = () => {
+          closeAllMenus();
+          window.removeEventListener("scroll", handleScroll);
+        };
+        window.addEventListener("scroll", handleScroll);
       },
     },
     {
-      field: "user",
-      headerName: "نام و نام خانوادگی",
-      width: 200,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        return (
-          <div className="text-center w-full">
-            {params.row.user.first_name} {params.row.user.last_name}
-          </div>
-        );
+      field: "user_detail",
+      title: "نام و نام خانوادگی",
+      formatter: (cell: CellComponent) => {
+        const userDetail = cell.getValue();
+        if (userDetail && typeof userDetail === "object") {
+          return `${userDetail.first_name} ${userDetail.last_name}`;
+        }
+        return "";
       },
     },
     {
       field: "created_at",
-      headerName: "تاریخ ایجاد",
-      width: 150,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        return (
-          <div className="text-center w-full">
-            {moment(params.row.created_at).locale("fa").format("jYYYY/jMM/jDD")}
-          </div>
-        );
-      },
+      title: "تاریخ ایجاد",
+      formatter: (cell: CellComponent) =>
+        moment(cell.getValue()).format("jYYYY/jMM/jDD"),
     },
   ];
 
-  const handleEdit = () => {
-    if (!selectedRow) {
-      toast.error("لطفا یک درخواست را انتخاب کنید");
-      return;
-    }
-  };
-
-  const handleDelete = () => {
-    if (!selectedRow) {
-      toast.error("لطفا یک درخواست را انتخاب کنید");
-      return;
-    }
-    setIsDeleteOpen(true);
-  };
-
   return (
     <>
-      <div className="w-full bg-gray-100 shadow-md rounded-2xl relative overflow-hidden">
-        <DataGrid
-          columns={columns}
-          rows={rows}
-          localeText={localeText}
-          onRowClick={(params) => {
-            if (!selectedRow) {
-              setSelectedRow(params.row);
-            }
-          }}
-          isRowSelectable={(params) => {
-            return !selectedRow || params.row.id === selectedRow.id;
-          }}
-          onRowSelectionModelChange={(newSelectionModel) => {
-            if (newSelectionModel.length > 0) {
-              const selectedId = newSelectionModel[0];
-              const selectedRow = rows.find(
-                (row: RequestType) => row.id === selectedId
-              );
-              if (selectedRow) {
-                setSelectedRow(selectedRow);
-              }
-            } else {
-              setSelectedRow(null);
-            }
-          }}
-          sx={tableStyles}
-          checkboxSelection
-          rowSelectionModel={selectedRow ? [selectedRow.id] : []}
-          disableMultipleRowSelection
-          initialState={{
-            pagination: {
-              paginationModel: { pageSize: 10, page: 0 },
-            },
-          }}
-          pageSizeOptions={[10]}
-          disableColumnMenu
-          filterMode="client"
-          slots={{
-            toolbar: (props) => (
-              <CustomDataGridToolbar
-                {...props}
-                data={rows as unknown as Record<string, unknown>[]}
-                fileName="گزارش-درخواست‌ها"
-                showExcelExport={true}
-                actions={{
-                  edit: {
-                    label: "ویرایش",
-                    show: checkPermission(["change_request"]),
-                    onClick: handleEdit,
-                    icon: <FaEdit />,
-                  },
-                  delete: {
-                    label: "حذف",
-                    show: checkPermission(["delete_request"]),
-                    onClick: handleDelete,
-                    icon: <FaTrash />,
-                  },
-                }}
-              />
-            ),
-          }}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
-        />
-        {selectedRow && (
-          <Popup
-            isOpen={isDeleteOpen}
-            onClose={() => setIsDeleteOpen(false)}
-            label="حذف درخواست"
-            text="آیا از حذف این درخواست مطمئن هستید؟"
-            onConfirm={() => {
-              setIsDeleteOpen(false);
-              setSelectedRow(null);
-            }}
-            onCancel={() => {
-              setIsDeleteOpen(false);
-            }}
+      <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
+        <div className="overflow-x-auto">
+          <TabulatorTable
+            data={rows}
+            columns={[...columns()]}
+            title="درخواست ها"
+            showActions={true}
           />
-        )}
+        </div>
       </div>
     </>
   );

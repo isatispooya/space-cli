@@ -6,3 +6,4 @@ export { default as RolesPage } from "./roles.page";
 export { default as PrivilegesPage } from "./Privileges.page";
 export { default as RewardsMainPage } from "./rewardsMain.page";
 export { default as Rewards } from "./Rewards";
+export { default as CrowdPointsPage } from "./crowdpoints.page";

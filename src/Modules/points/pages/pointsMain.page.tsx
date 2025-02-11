@@ -5,6 +5,7 @@ import { FaGift } from "react-icons/fa6";
 import { BiTask } from "react-icons/bi";
 import { RiFileList3Line } from "react-icons/ri";
 import { FaCoins } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
 
 const PointsMainPage = () => {
   const toolbarButtons = [
@@ -32,6 +33,12 @@ const PointsMainPage = () => {
       text: "درخواست های من",
       permission: ["allow_any"],
       path: "requests",
+    },
+    {
+      icon: FaUser,
+      text: "کراد",
+      permission: ["allow_anyyy"],
+      path: "crowdpoints",
     },
   ];
 
