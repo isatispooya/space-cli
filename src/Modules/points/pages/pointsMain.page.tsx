@@ -15,7 +15,6 @@ const PointsMainPage = () => {
       permission: ["allow_any"],
       path: "privileges",
     },
-
     {
       icon: BiTask,
       text: "ماموریت ها",
@@ -37,7 +36,7 @@ const PointsMainPage = () => {
     {
       icon: FaUser,
       text: "کراد",
-      permission: ["allow_anyyy"],
+      permission: ["allow_any"],
       path: "crowdpoints",
     },
   ];

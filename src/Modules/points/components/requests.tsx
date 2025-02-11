@@ -97,7 +97,7 @@ const Request = () => {
       title: "وضعیت",
       formatter: (cell: CellComponent) => {
         const statusValue = cell.getValue();
-        return statusMapping[statusValue]; // Show the Persian meaning of the status in the cell
+        return statusMapping[statusValue as keyof typeof statusMapping]; // Show the Persian meaning of the status in the cell
       },
       cellClick: (e: MouseEvent, cell: CellComponent) => {
         if (!isAdmin) return;

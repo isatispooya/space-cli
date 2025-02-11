@@ -1,8 +1,12 @@
 import { useState } from "react";
 import Accordion from "../../../components/accordian";
+import { useCrowdPoints } from "../hooks";
 
 const CrowdPoints = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data } = useCrowdPoints.useGetPlans();
+
+  console.log(data);
   return (
     <div>
       <Accordion
@@ -10,7 +14,9 @@ const CrowdPoints = () => {
         isOpen={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
       >
-        <div>asdfghj</div>
+        <div>
+          <h1>طرح ها</h1>
+        </div>
       </Accordion>
     </div>
   );
