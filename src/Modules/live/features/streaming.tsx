@@ -74,30 +74,26 @@ const Stream: React.FC = () => {
           />
         </div>
         <div className="w-full h-full bg-black relative overflow-hidden">
-          <div className="h_iframe-aparat_embed_frame">
+          <div
+            className="h_iframe-aparat_embed_frame"
+            style={{ position: "relative", width: "100%", height: "100%" }}
+          >
             <span style={{ display: "block", paddingTop: "57%" }}></span>
             <iframe
-              allowFullScreen
-              src="https://www.aparat.com/isatispooyalive/live"
               style={{
                 position: "absolute",
                 top: 0,
                 left: 0,
                 width: "100%",
                 height: "100%",
+                border: "none",
               }}
-            ></iframe>
-          </div>
-        </div>
-        <div className="flex space-x-6 absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          {[1, 2, 3].map((button) => (
-            <motion.button
-              key={button}
-              className="w-12 h-12 bg-red-600 rounded-full shadow-md md:w-16 md:h-16"
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
+              src="https://www.aparat.com/embed/live/isatispooyalive"
+              scrolling="no"
+              allowFullScreen
+              title="Aparat Live Stream"
             />
-          ))}
+          </div>
         </div>
       </motion.div>
       <div className="mt-6 w-56 h-12 bg-gray-700 rounded-b-lg md:w-72 md:h-16" />
