@@ -34,7 +34,6 @@ const InsuranceRequestUpdate: React.FC = () => {
     status,
     setStatus,
     files,
-    setFiles,
     description,
     setDescription,
     draftFile,
@@ -44,7 +43,7 @@ const InsuranceRequestUpdate: React.FC = () => {
     uploadedFiles,
     setUploadedFiles,
     filesToDelete,
-    setFilesToDelete,
+
     uploadFile,
     setUploadFile,
     price,
@@ -68,21 +67,24 @@ const InsuranceRequestUpdate: React.FC = () => {
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFiles((prev) => ({ ...prev, [fieldId]: file }));
-      const fileUrl = URL.createObjectURL(file);
-      setUploadedFiles((prev) => ({ ...prev, [fieldId]: fileUrl }));
+      useInsuranceRStore.setState((state) => ({
+        files: { ...state.files, [fieldId]: file },
+        uploadedFiles: {
+          ...state.uploadedFiles,
+          [fieldId]: URL.createObjectURL(file),
+        },
+      }));
     }
   };
 
   const handleDeleteFile = (fieldId: string) => {
-    setFilesToDelete((prev: string[]) => [...prev, fieldId]);
-    setUploadedFiles((prev: Record<string, string>) => {
-      const newFiles: Record<string, string> = { ...prev };
-      delete newFiles[fieldId];
-      return newFiles;
-    });
+    useInsuranceRStore.setState((state) => ({
+      filesToDelete: [...state.filesToDelete, fieldId],
+      uploadedFiles: Object.fromEntries(
+        Object.entries(state.uploadedFiles).filter(([key]) => key !== fieldId)
+      ),
+    }));
   };
-
 
   const handleUploadFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -160,7 +162,10 @@ const InsuranceRequestUpdate: React.FC = () => {
   useEffect(() => {
     if (dataId?.file_detail) {
       const files = dataId.file_detail.reduce(
-        (acc, file) => ({ ...acc, [file.file_name]: file.file_attachment }),
+        (acc: Record<string, string>, file: { file_name: number; file_attachment: string }) => ({
+          ...acc,
+          [file.file_name.toString()]: file.file_attachment,
+        }),
         {}
       );
       setUploadedFiles(files);
@@ -291,4 +296,3 @@ const InsuranceRequestUpdate: React.FC = () => {
 };
 
 export default InsuranceRequestUpdate;
-                   
