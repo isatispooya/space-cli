@@ -8,7 +8,7 @@ interface InputLineProps extends HTMLMotionProps<"div"> {
   name?: string;
   label: string;
   error?: string;
-  value?: string;
+  value?: string | number | undefined | null;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   maxLength?: number;
@@ -41,7 +41,7 @@ const InputBase: React.FC<InputLineProps> = ({
       <input
         type={type}
         ref={inputRef}
-        value={value}
+        value={value ?? ""}
         onChange={onChange}
         name={name}
         onBlur={onBlur}

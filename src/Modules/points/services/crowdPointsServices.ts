@@ -5,6 +5,19 @@ const CrowdPoints = {
     const response = await api.get("/marketing/plan-crowd/");
     return response.data;
   },
+  getPlanByTraceCode: async (traceCode: string) => {
+    const response = await api.get(
+      `/marketing/participant-crowd/${traceCode}/`
+    );
+    return response.data;
+  },
+  postCrowdPoints: async (data: any, traceCode: string) => {
+    const response = await api.post(
+      `/marketing/point-refrencer-crowd/${traceCode}/`,
+      data
+    );
+    return response.data;
+  },
 };
 
 export default CrowdPoints;

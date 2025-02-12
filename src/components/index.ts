@@ -4,3 +4,4 @@ export * from "./toolbar";
 export { default as ViewDownload } from "./viewDownload";
 export { default as Forms } from "./forms";
 export { default as DynamicList } from "./list";
+export { default as NoContent } from "./noContent";
