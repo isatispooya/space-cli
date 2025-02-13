@@ -11,7 +11,6 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import useRemainPoints from "./useRemainPoints";
 
-
 const useGifts = {
   useGetGifts: (): UseQueryResult<GiftTypes[]> => {
     return useQuery({

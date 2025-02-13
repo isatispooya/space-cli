@@ -36,7 +36,7 @@ const PointsMainPage = () => {
     {
       icon: FaUser,
       text: "کراد",
-      permission: ["allow_any"],
+      permission: ["can_edit_point_crowd"],
       path: "crowdpoints",
     },
   ];

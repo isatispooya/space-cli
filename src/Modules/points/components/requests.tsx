@@ -9,7 +9,7 @@ import { Toast } from "../../../components/toast";
 import { useUserPermissions } from "../../permissions";
 
 const Request = () => {
-  const { data: giftsUser } = useGiftsUser.useGetGifts();
+  const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
   const { checkPermission } = useUserPermissions();
 
@@ -18,7 +18,6 @@ const Request = () => {
   const statusMapping = {
     delivered: "تحویل داده شده",
     cancelled: "لغو شده",
-    pending: "در انتظار",
   };
 
   const rows: RequestTypes[] =
@@ -57,14 +56,17 @@ const Request = () => {
         {
           onSuccess: () => {
             toast.success("وضعیت با موفقیت تغییر کرد");
+            refetch();
           },
           onError: () => {
             Toast("خطا در اعمال تغییرات", <ErrorIcon />, "bg-red-500");
+            refetch();
           },
         }
       );
     } else {
       console.error("ID is undefined");
+      refetch();
     }
   };
 
@@ -132,11 +134,12 @@ const Request = () => {
 
             menuItem.onclick = () => {
               const rowData = cell.getRow().getData();
-              console.log("Row Data:", rowData); // Debugging line
-              const rowId = rowData.id || "default-id"; // Fallback for missing ID
-              console.log("Row ID:", rowId); // Debugging line
-              handleStatusChange(rowId, status); // Pass the English status to the server
+              console.log("Row Data:", rowData);
+              const rowId = rowData.id || "default-id";
+              console.log("Row ID:", rowId);
+              handleStatusChange(rowId, status);
               closeAllMenus();
+              refetch();
             };
 
             menu.appendChild(menuItem);

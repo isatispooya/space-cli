@@ -23,7 +23,7 @@ const Accordion = ({
     }
   };
 
-  console.log(disabled);
+
 
   return (
     <div className="border  border-gray-200 rounded-xl dark:border-gray-700">

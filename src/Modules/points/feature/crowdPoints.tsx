@@ -67,7 +67,7 @@ const CrowdPoints = () => {
             <AnimatePresence>
               {isOpen && (
                 <>
-                  {/* Search Box Inside Accordion */}
+
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -84,7 +84,6 @@ const CrowdPoints = () => {
                     />
                   </motion.div>
 
-                  {/* List of Plans */}
                   <motion.ul
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -117,7 +116,7 @@ const CrowdPoints = () => {
                             </motion.li>
                           ))}
 
-                        {/* Show More Button */}
+   
                         {filteredPlans.length > visibleItems && (
                           <motion.button
                             onClick={handleShowMore}
