@@ -6,3 +6,4 @@ export * from "./precedence.type";
 export * from "./underwriting.type";
 export * from "./capitalCreate.type";
 export * from "./underwritingCreate.type";
+export * from "./reports.type";

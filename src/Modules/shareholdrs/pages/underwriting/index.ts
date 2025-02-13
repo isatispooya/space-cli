@@ -12,3 +12,4 @@ export { default as ShareExpertPage } from "./shareExpert.page";
 export { default as ProjectAnalysisPage } from "./projectAnalysis.page";
 export { default as UpdateUnderWritingPage } from "./updateUnderWriting.page";
 export { default as PrintUnderwritingPage } from "./underWritingprintPage";
+export { default as UnderwritingReportsPage } from "./underwritingReports.page";

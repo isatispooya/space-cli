@@ -72,6 +72,11 @@ const LicensePage = lazy(() =>
     default: module.LicensePage,
   }))
 );
+const UnderwritingReportsPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.UnderwritingReportsPage,
+  }))
+);
 
 const UnderwritingRoutes = [
   {
@@ -135,6 +140,10 @@ const UnderwritingRoutes = [
       {
         path: "projectAnalysis",
         element: <ProjectAnalysisPage />,
+      },
+      {
+        path: "reports",
+        element: <UnderwritingReportsPage />,
       },
     ],
   },

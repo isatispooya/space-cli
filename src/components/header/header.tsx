@@ -156,7 +156,7 @@ const Header = () => {
               />
             </Badge>
 
-            <div className="mr-5">
+            <div className="mr-5">  
               {showNotifications && (
                 <NotificationComponent ref={notificationRef} />
               )}

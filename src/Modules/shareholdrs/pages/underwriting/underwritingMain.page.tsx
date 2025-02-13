@@ -10,6 +10,7 @@ import { FaMoneyCheckAlt } from "react-icons/fa";
 import { GrValidate } from "react-icons/gr";
 import { GrUserExpert } from "react-icons/gr";
 import { IoDocumentAttachSharp } from "react-icons/io5";
+import { CiStreamOn } from "react-icons/ci";
 
 const UnderwritingMain = () => {
   const toolbarButtons = [
@@ -21,7 +22,7 @@ const UnderwritingMain = () => {
     },
     {
       icon: MdOutlineShoppingBag,
-      text: "مجوز پذیره نویسی", 
+      text: "مجوز پذیره نویسی",
       permission: ["unused_precedence_process"],
       path: "license",
     },
@@ -60,6 +61,12 @@ const UnderwritingMain = () => {
       icon: GrUserExpert,
       permission: ["unused_precedence_process"],
       path: "shareExpert",
+    },
+    {
+      text: "گزارشات",
+      icon: CiStreamOn,
+      permission: ["change_underwriting"],
+      path: "reports",
     },
     {
       icon: IoDocumentAttachSharp,

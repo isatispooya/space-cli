@@ -31,6 +31,10 @@ const underwritingServices = {
     );
     return response.data;
   },
+  getReports: async () => {
+    const response = await api.get("/stock_affairs/underwriting-report/");
+    return response.data;
+  },
 };
 
 export default underwritingServices;

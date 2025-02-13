@@ -9,7 +9,7 @@ import { underwritingServices } from "../services";
 import { underwritingTypes } from "../types/underwriting.type";
 import { underwritingCreateTypes } from "../types/underwritingCreate.type";
 import { AxiosError } from "axios";
-
+import { IUnderwritingReports } from "../types/reports.type";
 
 const useUnderwriting = {
   useGet: (): UseQueryResult<underwritingTypes[]> => {
@@ -17,13 +17,19 @@ const useUnderwriting = {
       queryKey: ["underwriting"],
       queryFn: underwritingServices.get,
     });
-    },
+  },
+
+  useGetReports: (): UseQueryResult<IUnderwritingReports> => {
+    return useQuery({
+      queryKey: ["underwritingReports"],
+      queryFn: underwritingServices.getReports,
+    });
+  },
 
   useCreate: (): UseMutationResult<
     { redirect_url?: string },
     AxiosError<unknown>,
     underwritingCreateTypes
-
   > => {
     return useMutation({
       mutationKey: ["createUnderwriting"],
@@ -42,10 +48,10 @@ const useUnderwriting = {
       mutationKey: ["updateUnderwriting"],
       mutationFn: (data: underwritingTypes) =>
         underwritingServices.update(data),
-      
+
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: ["underwriting"] });
-      }
+      },
     });
   },
 
