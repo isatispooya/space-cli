@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { formatNumber } from "../../../utils";
+import { motion } from "framer-motion";
+
 import { useInView } from "react-intersection-observer"; // برای Infinite Scroll
 
 interface DynamicListProps<T> {
