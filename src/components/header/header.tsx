@@ -25,6 +25,8 @@ const Header = () => {
 
   const { data: liveStream } = useLiveStream.useLiveStream();
 
+  console.log(liveStream);
+
   const ShowLiveStream = liveStream?.status;
 
   const { data: remainPoints } = useRemainPoints();
@@ -125,7 +127,7 @@ const Header = () => {
               >
                 <CiStreamOn className="text-red-500 text-3xl cursor-pointer" />
                 <span className="text-blue-900 text-sm font-bold">
-                  پخش زنده
+                  {liveStream?.title}
                 </span>
               </motion.div>
             )}
