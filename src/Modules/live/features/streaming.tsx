@@ -96,7 +96,14 @@ const Stream: React.FC = () => {
           </div>
         </div>
       </motion.div>
-      <div className="mt-6 w-56 h-12 bg-gray-700 rounded-b-lg md:w-72 md:h-16" />
+      <button
+        onClick={() => {
+          window.open("https://www.aparat.com/isatispooyalive/live", "_blank");
+        }}
+        className="mt-6 w-56 h-12 bg-gray-700 rounded-b-lg md:w-72 md:h-16"
+      >
+        مشاهده در آپارات
+      </button>
     </div>
   );
 };
