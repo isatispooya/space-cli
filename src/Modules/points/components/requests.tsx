@@ -86,6 +86,7 @@ const Request = () => {
       field: "description",
       title: "توضیحات",
     },
+
     {
       field: "points",
       title: "امتیاز",
@@ -166,6 +167,12 @@ const Request = () => {
         };
         window.addEventListener("scroll", handleScroll);
       },
+    },
+
+    {
+      field: "reason",
+      title: "علت",
+      editor: "input",
     },
     {
       field: "user_detail",
