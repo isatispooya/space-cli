@@ -20,6 +20,12 @@ const TimeFlowPage = () => {
     },
     {
       icon: LuTable,
+      text: "شیفت کاری",
+      permission: ["allow_any"],
+      path: "shift",
+    },
+    {
+      icon: LuTable,
       text: "لیست مرخصی",
       permission: ["allow_any"],
       path: "leave",

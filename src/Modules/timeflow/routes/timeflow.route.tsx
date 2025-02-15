@@ -25,6 +25,12 @@ const TimeFlowCreatePage = lazy(() =>
     default: module.LeaveCreatePage,
   }))
 );
+const TimeFlowShiftPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.TimeFlowShiftPage,
+  }))
+);
+
 
 const TimeflowRoutes = [
   {
@@ -46,6 +52,10 @@ const TimeflowRoutes = [
       {
         path: "addleave",
         element: <TimeFlowCreatePage />,
+      },
+      {
+        path: "shift",
+        element: <TimeFlowShiftPage />,
       },
     ],
   },
