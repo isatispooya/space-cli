@@ -6,6 +6,8 @@ import { FaArrowRight } from "react-icons/fa"; // Changed to left arrow for back
 import { LoaderLg, NoContent } from "../../../components";
 import { FormInput } from "../../../components/inputs";
 import { formatNumber } from "../../../utils";
+import { Button } from "@mui/material";
+import * as XLSX from "xlsx";
 
 const PlansView: React.FC<{
   plan: PlansType;
@@ -64,6 +66,20 @@ const PlansView: React.FC<{
     return <LoaderLg />;
   }
 
+  const handleDownloadExcel = () => {
+    const excelData = filteredUsers.map((item) => ({
+      name: item?.data_crowd?.fulname,
+      user: item?.data_crowd?.user,
+      refrence: item?.refrence_number?.name,
+      value: item?.data_crowd?.value,
+      coin: item?.data_crowd?.value / 1000,
+    }));
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.writeFile(wb, "users_data.xlsx");
+  };
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <motion.div
@@ -110,25 +126,32 @@ const PlansView: React.FC<{
         />
       </motion.div>
 
+      <div className="flex flex-wrap justify-end gap-4">
+        <Button
+          onClick={() => handleDownloadExcel()}
+          variant="contained"
+          color="primary"
+        >
+          دانلود اکسل
+        </Button>
+      </div>
+
       <AnimatePresence>
         {filteredUsers?.length > 0 ? (
-          <>
+          <div className="flex flex-wrap justify-center gap-4">
             {filteredUsers.slice(0, visibleItems).map((item, index) => (
               <motion.div
                 key={index}
-                className="mt-4 border border-gray-300 rounded-lg p-4 shadow-md bg-white relative"
+                className="mt-4 border w-[500px] border-gray-300 rounded-lg p-4 shadow-md bg-white relative"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.3 }}
               >
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  اطلاعات کاربر
-                </h3>
-                <p className="text-md text-gray-700">
-                  نام: {item?.data_crowd?.fulname || "نامشخص"}
+                <p className="text-lg font-bold text-gray-700 mb-8">
+                  {item?.data_crowd?.fulname || "نامشخص"}
                 </p>
-                <p className="text-md text-gray-700">
+                <p className="text-md text-gray-700 mb-2">
                   شناسه کاربری: {item?.data_crowd?.user || "نامشخص"}
                 </p>
                 <p className="text-md text-gray-700">
@@ -175,7 +198,7 @@ const PlansView: React.FC<{
                 مشاهده بیشتر
               </motion.button>
             )}
-          </>
+          </div>
         ) : (
           <NoContent label="کاربری یافت نشد." />
         )}

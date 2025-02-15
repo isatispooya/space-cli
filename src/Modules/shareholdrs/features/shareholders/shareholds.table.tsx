@@ -13,8 +13,6 @@ const ShareholdTable: React.FC = () => {
   const { data: shareholders, isPending } = useShareholders.useGet();
   const navigate = useNavigate();
 
-  console.log(shareholders);
-
   const mappedData = shareholders?.map((row: ShareholdersTypes) => ({
     ...row,
     company_name: row?.company_detail?.name,
