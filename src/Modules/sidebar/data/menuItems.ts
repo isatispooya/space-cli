@@ -2,7 +2,7 @@ import { IconType } from "react-icons";
 import {
   FaBuilding,
   FaEnvelope,
-  FaHome,
+
   FaPhone,
   FaUserTie,
 } from "react-icons/fa";
@@ -18,12 +18,6 @@ export interface MenuItem {
 }
 
 export const menuItems: MenuItem[] = [
-  {
-    title: "خانه",
-    icon: FaHome,
-    codename: ["allow_any"],
-    submenu: [{ title: "داشبورد", path: "/", codename: ["allow_any"] }],
-  },
   {
     title: "کاربران",
     icon: FaUserTie,

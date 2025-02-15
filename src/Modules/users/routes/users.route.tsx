@@ -12,6 +12,12 @@ const UserProTablePage = lazy(() =>
   }))
 );
 
+const UserViewPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.UserViewPage,
+  }))
+);
+
 const UsersRoutes = [
   {
     path: "/users",
@@ -20,6 +26,10 @@ const UsersRoutes = [
       {
         path: "table",
         element: <UserProTablePage />,
+      },
+      {
+        path: "view/:id",
+        element: <UserViewPage />,
       },
     ],
   },

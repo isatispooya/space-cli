@@ -1,20 +1,17 @@
 import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../components";
 import { MainLayout } from "../../../layouts";
-import { useUserPro } from "../hooks";
 import { LuTable } from "react-icons/lu";
 
 const UsersMainPage = () => {
-  const { data } = useUserPro();
 
-  console.log(data);
 
   const toolbarButtons = [
     {
       icon: LuTable,
       text: "جدول",
       permission: ["allow_any"],
-      path: "table",
+      path: "table",  
     },
   ];
   return (
