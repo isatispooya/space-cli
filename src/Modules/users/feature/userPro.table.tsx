@@ -5,18 +5,26 @@ import { userProType } from "../types";
 import TabulatorTable from "../../../components/table/table.com";
 import { CellComponent } from "tabulator-tables";
 import moment from "moment-jalaali";
+import { useNavigate } from "react-router-dom";
 
 const UserProTable: React.FC = () => {
-  const { data, isPending } = useUserPro();
+  const { data, isPending } = useUserPro.useUsers();
+  const navigate = useNavigate();
 
-  console.log(data);
+  // Function to handle navigation to the view page
+  const handleView = (id: number) => {
+    navigate(`/users/view/${id}`);
+  };
 
+  // Show loader if data is still loading
   if (isPending) return <LoaderLg />;
 
+  // Show message if no data is available
   if (!data || data.length === 0) {
     return <div>هیچ داده‌ای وجود ندارد.</div>;
   }
 
+  // Function to close all open popup menus
   const closeAllMenus = () => {
     const existingMenus = document.querySelectorAll(".popup-menu");
     existingMenus.forEach((menu) => {
@@ -24,6 +32,7 @@ const UserProTable: React.FC = () => {
     });
   };
 
+  // Define table columns
   const columns = (): ColumnDefinition[] => [
     {
       title: "نام",
@@ -110,25 +119,32 @@ const UserProTable: React.FC = () => {
       cellClick: function (e: Event, cell: CellComponent) {
         e.stopPropagation();
 
-        const existingMenu = document.querySelector(
-          `.popup-menu[data-cell="${cell
-            .getElement()
-            .getAttribute("tabulator-field")}"]`
-        );
+        // Get the row data for the clicked cell
+        const rowData = cell.getRow().getData() as userProType;
 
-        if (existingMenu) {
-          closeAllMenus();
-          return;
-        }
-
+        // Close any existing menus
         closeAllMenus();
 
+        // Dynamically create the menu with the row's ID
         const menu = document.createElement("div");
         menu.className = "popup-menu";
         menu.setAttribute(
           "data-cell",
           cell.getElement().getAttribute("tabulator-field") || ""
         );
+
+        const customMenuItems = [
+          {
+            label: "ویرایش",
+            icon: "⚡",
+            action: () => console.log("Custom action:", rowData.id),
+          },
+          {
+            label: "نمایش",
+            icon: "⚡",
+            action: () => handleView(rowData.id), // Pass the row's ID here
+          },
+        ];
 
         customMenuItems.forEach((item) => {
           const menuItem = document.createElement("button");
@@ -144,7 +160,6 @@ const UserProTable: React.FC = () => {
         const rect = cell.getElement().getBoundingClientRect();
         menu.style.left = `${rect.left + window.scrollX}px`;
         menu.style.top = `${rect.bottom + window.scrollY}px`;
-
         document.body.appendChild(menu);
 
         const handleScroll = () => {
@@ -167,7 +182,9 @@ const UserProTable: React.FC = () => {
     },
   ];
 
+  // Map the data to match the column definitions
   const mappedData = data?.map((item: userProType) => ({
+    id: item.id,
     first_name: item.first_name,
     last_name: item.last_name,
     national_code: item.uniqueIdentifier,
@@ -183,6 +200,7 @@ const UserProTable: React.FC = () => {
     point_2: item.points.point_2,
   }));
 
+  // Format data for Excel export
   const ExelData = (item: userProType) => ({
     نام: item.first_name,
     "نام خانوادگی": item.last_name,
@@ -198,14 +216,6 @@ const UserProTable: React.FC = () => {
     سن: item.age,
     شهر: item.city,
   });
-
-  const customMenuItems = [
-    {
-      label: "ویرایش",
-      icon: "⚡",
-      action: () => console.log("Custom action:"),
-    },
-  ];
 
   return (
     <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">

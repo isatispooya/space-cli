@@ -90,7 +90,7 @@ const InvitationTable = () => {
 
   const rows = (data || []).map((row) => ({
     ...row,
-    code: `my.isatispooya.com?rf=${row.code}`,
+    code: `my.isatispooya.com/login?rf=${row.code}`,
 
     userFirstName: row.introducer_user_detail?.first_name,
     userLastName: row.introducer_user_detail?.last_name,
