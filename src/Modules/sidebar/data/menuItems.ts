@@ -14,6 +14,7 @@ export interface MenuItem {
   icon?: IconType;
   submenu?: MenuItem[];
   codename?: string[];
+  child?: MenuItem[];
 }
 
 export const menuItems: MenuItem[] = [
@@ -32,6 +33,26 @@ export const menuItems: MenuItem[] = [
         title: "کاربران",
         path: "/users/table",
         codename: ["view_user"],
+      },
+      {
+        title: "مدیریت نقش ها",
+        path: "/positions/table",
+        codename: ["view_position"],
+      },
+      {
+        title: "مدیریت گروه ها",
+        path: "/groups",
+        codename: ["view_group"],
+      },
+      {
+        title: "گزارش تردد",
+        path: "/timeflow/table",
+        codename: ["position"],
+      },
+      {
+        title: "مدیریت دسترسی ها",
+        path: "/permissions/table",
+        codename: ["view_permission"],
       },
     ],
   },
@@ -103,42 +124,44 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  {
-    title: "مدیریت نقش‌ها",
-    path: "/positions",
-    icon: FaUserTie,
-    codename: ["view_position"],
-    submenu: [
-      {
-        title: "مدیریت نقش ها",
-        path: "/positions/table",
-        codename: ["view_position"],
-      },
-    ],
-  },
 
-  {
-    title: "دسترسی ها",
-    path: "/permissions",
-    icon: FaUserTie,
-    codename: ["view_permission"],
-    submenu: [
-      {
-        title: "مدیریت دسترسی ها",
-        path: "/permissions/table",
-        codename: ["view_permission"],
-      },
-    ],
-  },
-  {
-    title: "گروه ها",
-    path: "/groups",
-    icon: FaUserTie,
-    codename: ["view_group"],
-    submenu: [
-      { title: "مدیریت گروه ها", path: "/groups", codename: ["view_group"] },
-    ],
-  },
+  // {
+  //   title: "دسترسی ها",
+  //   path: "/permissions",
+  //   icon: FaUserTie,
+  //   codename: ["view_permission"],
+  //   submenu: [
+  //     {
+  //       title: "مدیریت دسترسی ها",
+  //       path: "/permissions/table",
+  //       codename: ["view_permission"],
+  //     },
+  //   ],
+  // },
+
+  // {
+  //   title: "مدیریت نقش‌ها",
+  //   path: "/positions",
+  //   icon: FaUserTie,
+  //   codename: ["view_position"],
+  //   submenu: [
+  //     {
+  //       title: "مدیریت نقش ها",
+  //       path: "/positions/table",
+  //       codename: ["view_position"],
+  //     },
+  //   ],
+  // },
+
+  // {
+  //   title: "گروه ها",
+  //   path: "/groups",
+  //   icon: FaUserTie,
+  //   codename: ["view_group"],
+  //   submenu: [
+  //     { title: "مدیریت گروه ها", path: "/groups", codename: ["view_group"] },
+  //   ],
+  // },
   {
     title: "همکاری با ما",
     path: "/employments",
@@ -165,19 +188,19 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  {
-    title: "تردد",
-    path: "/timeflow",
-    icon: FaClockRotateLeft,
-    codename: ["position"],
-    submenu: [
-      {
-        title: "گزارش تردد",
-        path: "/timeflow/table",
-        codename: ["position"],
-      },
-    ],
-  },
+  // {
+  //   title: "تردد",
+  //   path: "/timeflow",
+  //   icon: FaClockRotateLeft,
+  //   codename: ["position"],
+  //   submenu: [
+  //     {
+  //       title: "گزارش تردد",
+  //       path: "/timeflow/table",
+  //       codename: ["position"],
+  //     },
+  //   ],
+  // },
 
   {
     title: "کارگزاری بیمه",
