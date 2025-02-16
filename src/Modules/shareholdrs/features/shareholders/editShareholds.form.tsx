@@ -6,6 +6,7 @@ import { useShareholders } from "../../hooks";
 import { useCompany } from "../../../companies/hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormField } from "../../../../types";
+import { NewShareholdersType } from "../../types/new.type";
 
 const EditShareholdForm: React.FC = () => {
   const { mutate } = useShareholders.useUpdate();
@@ -64,14 +65,14 @@ const EditShareholdForm: React.FC = () => {
     },
   ];
 
-  const initialValues: ShareholdersTypes = {
+  const initialValues: NewShareholdersType = {
     number_of_shares: shareholder?.number_of_shares || 0,
-    company: shareholder?.company || 0,
+    company: shareholder?.company || 0 ,
     user: shareholder?.user || 0,
     id: shareholder?.id || 0,
   };
 
-  const onSubmit = (values: ShareholdersTypes) => {
+  const onSubmit = (values: NewShareholdersType) => {
     if (shareholder?.id) {
       const formattedValues = {
         ...values,

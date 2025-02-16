@@ -4,7 +4,7 @@ export interface ShareholdersTypes {
   number_of_shares?: number;
   updated_at?: string;
   created_at?: string;
-  company: number;
+  company?: number;
   user?: number;
   company_detail?: {
     name: string;

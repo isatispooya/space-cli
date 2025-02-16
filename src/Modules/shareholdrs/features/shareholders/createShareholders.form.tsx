@@ -52,6 +52,7 @@ const CreateShareholdersPost = () => {
     number_of_shares: 0,
     company: 0,
     user: 0,
+
   };
 
   const validationSchema = Yup.object().shape({

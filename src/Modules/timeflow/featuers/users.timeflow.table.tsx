@@ -84,7 +84,6 @@ const UsersTimeflowTable = () => {
       title: "دستگاه خروج",
       headerFilter: true,
     },
-
     {
       field: "duration",
       title: "زمان",

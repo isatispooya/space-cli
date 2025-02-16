@@ -8,24 +8,30 @@ import { CellComponent, ColumnDefinition } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 import { createRoot } from "react-dom/client";
 import { ActionMenu } from "../../../../components/table/tableaction";
+import { NewShareholdersType } from "../../types/new.type";
 
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, isPending } = useShareholders.useGet();
   const navigate = useNavigate();
 
-  const mappedData = shareholders?.map((row: ShareholdersTypes) => ({
+  const mappedData = shareholders?.map((row: NewShareholdersType) => ({
     ...row,
-    company_name: row?.company_detail?.name,
-    company_type: row?.company_detail?.company_type,
-    first_name: row?.user_detail?.first_name,
-    last_name: row?.user_detail?.last_name,
-    uniqueIdentifier: row?.user_detail?.uniqueIdentifier,
+    company: row?.company,
+    company_national_id: row?.company_national_id,
+    number_of_shares: row?.number_of_shares,
+    first_name: row?.first_name,
+    last_name: row?.last_name,
+    uniqueIdentifier: row?.uniqueIdentifier,
+    capital_increase_payment: row?.capital_increase_payment,
     id: row.id || Math.random(),
   }));
 
+
+
+
   const columns = (): ColumnDefinition[] => [
     {
-      field: "company_name",
+      field: "company",
       title: "شرکت",
       headerFilter: true,
     },
@@ -50,12 +56,12 @@ const ShareholdTable: React.FC = () => {
       headerFilter: true,
     },
     {
-      field: "precedence_count",
+      field: "precedence",
       title: "حق تقدم",
       headerFilter: true,
     },
     {
-      field: "total_amount",
+      field: "capital_increase_payment",
       title: "حق تقدم استفاده شده",
       headerFilter: true,
     },

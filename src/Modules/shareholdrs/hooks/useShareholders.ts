@@ -6,9 +6,10 @@ import {
 } from "@tanstack/react-query";
 import shareServices from "../services/shareServices";
 import { ShareholdersTypes } from "../types/shareholders.type";
+import { NewShareholdersType } from "../types/new.type";
 
 const useShareholders = {
-  useGet: (): UseQueryResult<ShareholdersTypes[]> => {
+  useGet: (): UseQueryResult<NewShareholdersType[]> => {
     return useQuery({
       queryKey: ["shareholders"],
       queryFn: shareServices.get,
