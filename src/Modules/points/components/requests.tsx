@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
 import { useGiftsUser } from "../hooks";
@@ -12,7 +13,7 @@ const Request = () => {
   const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
   const { checkPermission } = useUserPermissions();
-
+  const navigate = useNavigate();
   const isAdmin = checkPermission(["change_giftuser"]);
 
   const statusMapping = {
@@ -42,6 +43,7 @@ const Request = () => {
       user_detail: {
         first_name: item.user_detail.first_name,
         last_name: item.user_detail.last_name,
+        id: item.user_detail.id,
       },
     })) || [];
 
@@ -65,7 +67,6 @@ const Request = () => {
         }
       );
     } else {
-      console.error("ID is undefined");
       refetch();
     }
   };
@@ -75,6 +76,10 @@ const Request = () => {
     existingMenus.forEach((menu) => {
       document.body.removeChild(menu);
     });
+  };
+
+  const handleView = (id: number) => {
+    navigate(`/users/view/${id}`);
   };
 
   const columns = () => [
@@ -92,7 +97,7 @@ const Request = () => {
       title: "امتیاز",
     },
     {
-      field: "total_points",
+      field: "amount",
       title: "کل دریافتی",
     },
     {
@@ -100,7 +105,7 @@ const Request = () => {
       title: "وضعیت",
       formatter: (cell: CellComponent) => {
         const statusValue = cell.getValue();
-        return statusMapping[statusValue as keyof typeof statusMapping]; // Show the Persian meaning of the status in the cell
+        return statusMapping[statusValue as keyof typeof statusMapping];
       },
       cellClick: (e: MouseEvent, cell: CellComponent) => {
         if (!isAdmin) return;
@@ -135,9 +140,7 @@ const Request = () => {
 
             menuItem.onclick = () => {
               const rowData = cell.getRow().getData();
-              console.log("Row Data:", rowData);
-              const rowId = rowData.id || "default-id";
-              console.log("Row ID:", rowId);
+              const rowId = rowData.user_detail.id;
               handleStatusChange(rowId, status);
               closeAllMenus();
               refetch();
@@ -191,21 +194,82 @@ const Request = () => {
       formatter: (cell: CellComponent) =>
         moment(cell.getValue()).format("jYYYY/jMM/jDD"),
     },
+
+    {
+      title: "عملیات",
+      formatter: () => {
+        return '<button class="action-btn">⋮</button>';
+      },
+      hozAlign: "center",
+      headerSort: false,
+      width: 60,
+      cellClick: function (e: Event, cell: CellComponent) {
+        e.stopPropagation();
+
+        const rowData = cell.getRow().getData() as RequestTypes;
+        closeAllMenus();
+        const menu = document.createElement("div");
+        menu.className = "popup-menu";
+        menu.setAttribute(
+          "data-cell",
+          cell.getElement().getAttribute("tabulator-field") || ""
+        );
+
+        const customMenuItems = [
+          {
+            label: "نمایش",
+            icon: "⚡",
+            action: () => handleView(rowData.user_detail.id),
+          },
+        ];
+
+        customMenuItems.forEach((item) => {
+          const menuItem = document.createElement("button");
+          menuItem.className = "menu-item";
+          menuItem.innerHTML = `${item.icon} ${item.label}`;
+          menuItem.onclick = () => {
+            item.action();
+            closeAllMenus();
+          };
+          menu.appendChild(menuItem);
+        });
+
+        const rect = cell.getElement().getBoundingClientRect();
+        menu.style.left = `${rect.left + window.scrollX}px`;
+        menu.style.top = `${rect.bottom + window.scrollY}px`;
+        document.body.appendChild(menu);
+
+        const handleScroll = () => {
+          closeAllMenus();
+          window.removeEventListener("scroll", handleScroll);
+        };
+        window.addEventListener("scroll", handleScroll);
+
+        setTimeout(() => {
+          const closeMenu = (e: MouseEvent) => {
+            if (!menu.contains(e.target as Node)) {
+              closeAllMenus();
+              document.removeEventListener("click", closeMenu);
+              window.removeEventListener("scroll", handleScroll);
+            }
+          };
+          document.addEventListener("click", closeMenu);
+        }, 0);
+      },
+    },
   ];
 
   return (
-    <>
-      <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
-        <div className="overflow-x-auto">
-          <TabulatorTable
-            data={rows}
-            columns={[...columns()]}
-            title="درخواست ها"
-            showActions={true}
-          />
-        </div>
+    <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
+      <div className="overflow-x-auto">
+        <TabulatorTable
+          data={rows}
+          columns={[...columns()]}
+          title="درخواست ها"
+          showActions={true}
+        />
       </div>
-    </>
+    </div>
   );
 };
 
