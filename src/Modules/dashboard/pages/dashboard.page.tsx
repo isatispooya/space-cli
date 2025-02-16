@@ -1,16 +1,13 @@
-import { MainLayout } from "../../../layouts";
+import { MainLayout, ModalLayout } from "../../../layouts";
 import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
 import { useMemo } from "react";
-
 import { DashboardMarketingStat } from "../components";
 import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
 import DashboardBimeStat from "../components/dashboardBime.stat";
 import DashboardBorsStat from "../components/dashboardBors.stat";
-
-// import { TimeFlowList } from "../../timeflow/components";
-// import TimeflowVerify from "../../timeflow/components/timeflow.verify";
+import TimeflowVerify from "../../timeflow/components/timeflow.verify";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
@@ -30,7 +27,6 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
-      {/* <TimeFlowList items={[]} /> */}
       <div className="container mx-auto px-4 py-2 relative">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
           <div className="lg:col-span-3 space-y-4 lg:space-y-6">
@@ -60,7 +56,9 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-      {/* <TimeflowVerify /> */}
+      <ModalLayout isOpen={true} onClose={() => {}}>
+        <TimeflowVerify />
+      </ModalLayout>
     </MainLayout>
   );
 };

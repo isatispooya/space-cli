@@ -5,3 +5,4 @@ export { default as ViewDownload } from "./viewDownload";
 export { default as Forms } from "./forms";
 export { default as DynamicList } from "./dynamiclist";
 export { default as NoContent } from "./noContent";
+export * from "./table";

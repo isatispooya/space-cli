@@ -7,7 +7,6 @@ import {
   TextField,
   SelectChangeEvent,
 } from "@mui/material";
-
 import useTimeflowShift from "../hooks/useTimeflowShift";
 import { useState, useEffect } from "react";
 
@@ -21,7 +20,7 @@ const Shift = () => {
   useEffect(() => {
     if (data && data.length > 0) {
       const shiftData = data[0];
-      const daysMap: any = {
+      const daysMap: Record<string, string> = {
         saturday: "شنبه",
         sunday: "یکشنبه",
         monday: "دوشنبه",
@@ -53,37 +52,6 @@ const Shift = () => {
     setShift(event.target.value);
   };
 
-  //   <Switch
-  //     focusVisibleClassName=".Mui-focusVisible"
-  //     disableRipple
-  //     {...props}
-  //   />
-  // ))(() => ({
-  //   width: 50,
-  //   height: 30,
-  //   padding: 0,
-  //   "& .MuiSwitch-switchBase": {
-  //     padding: 2,
-  //     transitionDuration: "300ms",
-  //     "&.Mui-checked": {
-  //       transform: "translateX(20px)",
-  //       color: "#fff",
-  //       "& + .MuiSwitch-track": {
-  //         backgroundColor: "#4CAF50",
-  //       },
-  //     },
-  //   },
-  //   "& .MuiSwitch-thumb": {
-  //     width: 26,
-  //     height: 26,
-  //     backgroundColor: "#fff",
-  //   },
-  //   "& .MuiSwitch-track": {
-  //     borderRadius: 15,
-  //     backgroundColor: "#ccc",
-  //     opacity: 1,
-  //   },
-  // }));
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 w-[90%] max-w-7xl mb-10 h-full bg-white shadow-2xl rounded-xl p-8 mx-auto">

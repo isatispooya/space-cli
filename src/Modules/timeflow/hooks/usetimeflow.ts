@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { TimeFlowResponse } from "../types/timeflow.type";
+import { TimeFlowResponse } from "../types/users.timeflow.type";
 import timeflowService from "../service/timeflowService";
 
 const useTimeFlow = {

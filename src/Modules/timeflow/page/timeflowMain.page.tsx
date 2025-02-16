@@ -1,16 +1,16 @@
 import { MainLayout } from "../../../layouts";
 import { Outlet } from "react-router-dom";
-
+import { CiLogin } from "react-icons/ci";
 import { Toolbar } from "../../../components";
 import { LuTable } from "react-icons/lu";
 
 const TimeFlowPage = () => {
   const toolbarButtons = [
     {
-      icon: LuTable,
-      text: "جدول",
+      icon: CiLogin,
+      text: "ورود و خروج کاربران",
       permission: ["allow_any"],
-      path: "table",
+      path: "users",
     },
     {
       icon: LuTable,

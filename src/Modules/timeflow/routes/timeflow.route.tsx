@@ -42,7 +42,7 @@ const TimeflowRoutes = [
         element: <TimeFlowApproachPage />,
       },
       {
-        path: "table",
+        path: "users",
         element: <TimeFlowTablePage />,
       },
       {
