@@ -18,6 +18,7 @@ export interface RequestTypes {
   user_detail: {
     first_name: string;
     last_name: string;
+    id: number;
 
   };
   amount: number;
