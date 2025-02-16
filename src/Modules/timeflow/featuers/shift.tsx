@@ -1,4 +1,12 @@
-import { Chip, TextField } from "@mui/material";
+import {
+  Chip,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+  TextField,
+  SelectChangeEvent,
+} from "@mui/material";
 
 import useTimeflowShift from "../hooks/useTimeflowShift";
 import { useState, useEffect } from "react";
@@ -6,6 +14,9 @@ import { useState, useEffect } from "react";
 const Shift = () => {
   const { data } = useTimeflowShift.useGet();
   const [weekDays, setWeekDays] = useState<any[]>([]);
+  const [shift, setShift] = useState<string>("");
+
+  const namedate = data ? data.map((item: any) => item.name) : [];
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -31,13 +42,6 @@ const Shift = () => {
     }
   }, [data]);
 
-  // const handleSwitchChange =
-  //   (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     const newWeekDays = [...weekDays];
-  //     newWeekDays[index].working = event.target.checked;
-  //     setWeekDays(newWeekDays);
-  //   };
-
   const handleTimeChange =
     (index: number, field: "start" | "end") =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,8 +49,10 @@ const Shift = () => {
       newWeekDays[index][field] = event.target.value;
       setWeekDays(newWeekDays);
     };
+  const handleChange = (event: SelectChangeEvent) => {
+    setShift(event.target.value);
+  };
 
-  // const IOSSwitch = styled((props: SwitchProps) => (
   //   <Switch
   //     focusVisibleClassName=".Mui-focusVisible"
   //     disableRipple
@@ -86,6 +92,24 @@ const Shift = () => {
       </h2>
 
       <div className="w-full space-y-4">
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">شیفت ها </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={shift}
+            label="شیفت ها "
+            onChange={handleChange}
+          >
+            {namedate.length > 0 &&
+              namedate.map((name: string, index: number) => (
+                <MenuItem key={index} value={index + 1}>
+                  {name}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+
         {weekDays.map((day, index) => (
           <div
             key={day.name}
@@ -111,10 +135,6 @@ const Shift = () => {
               )}
 
               {!day.working && (
-                // <div className="flex flex-col items-center mx-4 text-center">
-                //   <span className="text-sm text-gray-600 mb-1">تعطیل</span>
-                // </div>
-
                 <Chip label="تعطیل" color="error" variant="outlined" />
               )}
 
@@ -131,17 +151,6 @@ const Shift = () => {
                   />
                 </div>
               )}
-
-              {/* <FormControlLabel
-                control={
-                  <IOSSwitch
-                    disabled
-                    checked={day.working}
-                    onChange={handleSwitchChange(index)}
-                  />
-                }
-                label=""
-              /> */}
             </div>
           </div>
         ))}
