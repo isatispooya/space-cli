@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { tableStyles } from "../../../ui";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { FaEdit } from "react-icons/fa";
-import ModalLayout from "../../../layouts/ModalLayout";
+import { ModalLayout } from "../../../layouts"; 
 import EditPermissionForm from "./editpermissions.form";
 import { PaginatedResponse } from "../../../types/paginated";
 import { LoaderLg } from "../../../components";
@@ -93,7 +93,7 @@ const PermissionsTable: React.FC = () => {
         />
       </div>
 
-      <ModalLayout open={isEditOpen} onClose={() => setIsEditOpen(false)}>
+      <ModalLayout isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
         {selectedRow && (
           <EditPermissionForm
             data={selectedRow}

@@ -56,7 +56,7 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-      <ModalLayout isOpen={true} onClose={() => {}}>
+      <ModalLayout isOpen={false} onClose={() => {}}>
         <TimeflowVerify />
       </ModalLayout>
     </MainLayout>

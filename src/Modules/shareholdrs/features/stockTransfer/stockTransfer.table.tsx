@@ -6,7 +6,7 @@ import { CustomDataGridToolbar, localeText } from "../../../../utils";
 import { useState } from "react";
 import { tableStyles } from "../../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import ModalLayout from "../../../../layouts/ModalLayout";
+import { ModalLayout } from "../../../../layouts";
 import { Button } from "@headlessui/react";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
@@ -187,7 +187,7 @@ const StockTransferTable: React.FC = () => {
           }}
         />
       </div>
-      <ModalLayout open={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>
+      <ModalLayout isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>
         <div>
           <h2>آیا از حذف این سهام مطمئن هستید؟</h2>
           <Button onClick={() => setIsDeleteOpen(false)}>بله</Button>
