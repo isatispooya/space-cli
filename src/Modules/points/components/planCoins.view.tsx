@@ -2,12 +2,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCrowdPoints } from "../hooks";
 import { useState } from "react";
 import { PlanByTraceCodeType, PlansType } from "../types";
-import { FaArrowRight } from "react-icons/fa"; // Changed to left arrow for back button
+import { FaArrowRight } from "react-icons/fa";
 import { LoaderLg, NoContent } from "../../../components";
 import { FormInput } from "../../../components/inputs";
 import { formatNumber } from "../../../utils";
 import { Button } from "@mui/material";
 import * as XLSX from "xlsx";
+import { ErrorIcon, toast } from "react-hot-toast";
+import { ErrorResponse } from "../../../types";
+import { AxiosError } from "axios";
+import { Toast } from "../../../components/toast";
 
 const PlansView: React.FC<{
   plan: PlansType;
@@ -26,16 +30,14 @@ const PlansView: React.FC<{
   const filteredUsers = Array.isArray(data)
     ? data.filter(
         (item: PlanByTraceCodeType) =>
-          item.data_crowd?.fulname
+          item.fulname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.refrence?.first_name
             .toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
-          item.data_crowd?.refrence_number?.name
+          item.user?.uniqueIdentifier
             .toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
-          item.data_crowd?.user
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          item.data_crowd?.refrence_number?.user_id
+          item.refrence?.last_name
             .toLowerCase()
             .includes(searchQuery.toLowerCase())
       )
@@ -44,18 +46,26 @@ const PlansView: React.FC<{
   const handleCoinChange = (userId: string, value: string) => {
     setCoinValues((prev) => ({
       ...prev,
-      [userId]: value,
+      [userId]: value === "" ? "" : value,
     }));
   };
 
   const handleConfirm = (item: PlanByTraceCodeType) => {
     const payload = {
-      selected_references: item.refrence_number?.user_id || "N/A",
-      coin: parseInt(coinValues[item.user_info] || "0", 10),
-      subset_uniqueidefinder: item?.user_info || "N/A",
+      user: String(item.user?.id || "N/A"),
+      point_1: parseInt(coinValues[item.user?.id || "0"], 10),
+      refrence: String(item?.refrence?.id || "N/A"),
     };
 
-    postCrowdPoints(payload);
+    postCrowdPoints(payload, {
+      onSuccess: () => {
+        toast.success("با موفقیت ثبت شد");
+      },
+      onError: (error: AxiosError<unknown>) => {
+        const errorMessage = (error.response?.data as ErrorResponse)?.error;
+        Toast(errorMessage || "خطایی رخ داده است", <ErrorIcon />, "bg-red-500");
+      },
+    });
   };
 
   const handleShowMore = () => {
@@ -68,11 +78,11 @@ const PlansView: React.FC<{
 
   const handleDownloadExcel = () => {
     const excelData = filteredUsers.map((item) => ({
-      name: item?.data_crowd?.fulname,
-      user: item?.data_crowd?.user,
-      refrence: item?.refrence_number?.name,
-      value: item?.data_crowd?.value,
-      coin: item?.data_crowd?.value / 1000,
+      name: item?.fulname,
+      user: item?.user?.uniqueIdentifier,
+      refrence: item?.refrence?.first_name + " " + item?.refrence?.last_name,
+      value: item?.value,
+      coin: item?.value / 1000,
     }));
     const ws = XLSX.utils.json_to_sheet(excelData);
     const wb = XLSX.utils.book_new();
@@ -149,30 +159,32 @@ const PlansView: React.FC<{
                 transition={{ duration: 0.3 }}
               >
                 <p className="text-lg font-bold text-gray-700 mb-8">
-                  {item?.data_crowd?.fulname || "نامشخص"}
+                  {item?.fulname || "نامشخص"}
                 </p>
                 <p className="text-md text-gray-700 mb-2">
-                  شناسه کاربری: {item?.data_crowd?.user || "نامشخص"}
+                  شناسه کاربری: {item?.user?.uniqueIdentifier || "نامشخص"}
                 </p>
                 <p className="text-md text-gray-700">
-                  نام معرف: {item?.refrence_number?.name || "نامشخص"}
+                  نام معرف:{" "}
+                  {item?.refrence?.first_name +
+                    " " +
+                    item?.refrence?.last_name || "نامشخص"}
                 </p>
                 <p className="text-md text-gray-700">
-                  مبلغ سرمایه گذاری:{" "}
-                  {formatNumber(item?.data_crowd?.value) || "نامشخص"}
+                  مبلغ سرمایه گذاری: {formatNumber(item?.value) || "نامشخص"}
                 </p>
                 <div className="flex items-center justify-between mt-4">
                   <FormInput
                     label="تعداد سکه"
-                    id={`coin-${item.user_info}`}
+                    id={`coin-${item.user?.id}`}
                     type="text"
                     value={
-                      coinValues[item.user_info] ||
-                      item?.data_crowd?.value / 1000 ||
-                      0
+                      coinValues[item.user?.id] !== undefined
+                        ? coinValues[item.user?.id]
+                        : item?.value / 1000 || 0
                     }
                     onChange={(e) =>
-                      handleCoinChange(item.user_info, e.target.value)
+                      handleCoinChange(item.user?.id || "0", e.target.value)
                     }
                     className="w-32"
                   />
@@ -182,7 +194,7 @@ const PlansView: React.FC<{
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    ارسال
+                    ثبت
                   </motion.button>
                 </div>
               </motion.div>

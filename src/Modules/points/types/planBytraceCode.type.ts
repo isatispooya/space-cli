@@ -1,19 +1,17 @@
 export interface PlanByTraceCodeType {
-  data_crowd: {
-    fulname: string;
-    plan_name: string;
-    user: string;
-    value: number;
-
-    refrence_number: {
-      name: string;
-      user_id: string;
-    };
+  fulname: string;
+  plan_name: string;
+  refrence: {
+    first_name: string;
+    id: number;
+    last_name: string;
+    uniqueIdentifier: string;
   };
-  refrence_number: {
-    name: string;
-    user_id: string;
+  user: {
+    first_name: string;
+    id: number;
+    last_name: string;
+    uniqueIdentifier: string;
   };
-
-  user_info: string;
+  value: number;
 }
