@@ -23,6 +23,8 @@ const TimeflowVerify = () => {
   const { mutate: verify } = useVerify.usePostVerify();
   const { data: verifyData, refetch, isError } = useVerify.useGetVerify();
 
+  console.log(exitTime);
+
   useEffect(() => {
     return () => {
       setApprovedIds([]);

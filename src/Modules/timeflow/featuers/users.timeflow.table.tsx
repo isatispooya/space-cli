@@ -8,24 +8,26 @@ import { usersTimeflowType } from "../types";
 const UsersTimeflowTable = () => {
   const { data, isLoading } = useTimeFlow.useGet();
 
-  const mappedData = data?.map((item: usersTimeflowType) => ({
-    id: item.id,
-    date: moment(item.date).format("jYYYY/jMM/jDD"),
-    firstLoginTime: item.login?.time,
-    ip: item.login?.ip,
-    device: item.login?.device,
-    browser: item.login?.browser,
-    os: item.login?.os,
-    intermediate_logs: item.intermediate_logs,
-    last_logout: item.logout?.time,
-    logout_ip: item.logout?.ip,
-    logout_device: item.logout?.device,
-    logout_browser: item.logout?.browser,
-    logout_os: item.logout?.os,
-    fullName: item.user?.full_name,
-    duration: item.duration,
-    username: item.user?.username,
-  }));
+  const mappedData = Array.isArray(data)
+    ? data.map((item: usersTimeflowType) => ({
+        id: item.id,
+        date: moment(item.date).format("jYYYY/jMM/jDD"),
+        firstLoginTime: item.login?.time,
+        ip: item.login?.ip,
+        device: item.login?.device,
+        browser: item.login?.browser,
+        os: item.login?.os,
+        intermediate_logs: item.intermediate_logs,
+        last_logout: item.logout?.time,
+        logout_ip: item.logout?.ip,
+        logout_device: item.logout?.device,
+        logout_browser: item.logout?.browser,
+        logout_os: item.logout?.os,
+        fullName: item.user?.full_name,
+        duration: item.duration,
+        username: item.user?.username,
+      }))
+    : [];
 
   const columns = (): ColumnDefinition[] => [
     {

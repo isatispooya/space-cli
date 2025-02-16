@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { TimeFlowResponse } from "../types/users.timeflow.type";
+import { usersTimeflowType } from "../types/users.timeflow.type";
 import timeflowService from "../service/timeflowService";
 
 const useTimeFlow = {
   useGet: () => {
-    return useQuery<TimeFlowResponse>({
+    return useQuery<usersTimeflowType>({
       queryKey: ["timeflow"],
       queryFn: () => timeflowService.get()
     });

@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { TimeFlowApproachList, TimeflowMission, TimeflowOvertime } from "../featuers";
+import {
+  TimeFlowApproachList,
+  TimeflowMission,
+  TimeflowOvertime,
+} from "../featuers";
 
 const TimeFlowApproachPage = () => {
   const [alignment, setAlignment] = useState("timeflow");
@@ -14,7 +18,7 @@ const TimeFlowApproachPage = () => {
       setAlignment(newAlignment);
       setListVisible(newAlignment === "timeflow");
     }
-    
+    console.log(event);
   };
 
   return (
