@@ -1,6 +1,6 @@
 export interface PlansCoinsPostType {
-  selected_references: string;
-  coin: number;
-  subset_uniqueidefinder: string;
+  user: string;
+  point_1: number;
+  refrence: string;
 }
 

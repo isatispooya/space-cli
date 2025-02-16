@@ -2,6 +2,7 @@ import { CrowdPoints } from "../services";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { PlanByTraceCodeType, PlansCoinsPostType, PlansType } from "../types";
+import { AxiosError } from "axios";
 
 const useCrowdPoints = {
   useGetPlans: (): UseQueryResult<PlansType> => {
@@ -20,7 +21,7 @@ const useCrowdPoints = {
   },
   usePostCrowdPoints: (
     traceCode: string
-  ): UseMutationResult<PlansCoinsPostType, Error, PlansCoinsPostType> => {
+  ): UseMutationResult<PlansCoinsPostType, AxiosError<unknown>, PlansCoinsPostType> => {
     return useMutation({
       mutationKey: ["post-crowd-points"],
       mutationFn: (data: PlansCoinsPostType) =>
