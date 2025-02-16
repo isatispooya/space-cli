@@ -13,7 +13,7 @@ import { Dayjs } from "dayjs";
 import { Chip, Stack } from "@mui/material";
 import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 
-const TimeflowVerify = () => {
+const TimeflowMission = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [approvedIds, setApprovedIds] = useState<number[]>([]);
   const [entryTime, setEntryTime] = useState<Dayjs | null>(null);
@@ -129,7 +129,7 @@ const TimeflowVerify = () => {
       <div className="container mx-auto px-4 py-8 relative">
         <div className="max-w-7xl mx-auto bg-white rounded-3xl shadow-xl p-6 mb-8">
           <p className="text-lg text-center text-gray-800 mb-6">
-            لطفا ورود و خروج را ثبت کنید
+            لطفا ورود و خروج ماموریت را ثبت کنید
           </p>
 
           <div className="mb-6 p-6 border border-gray-300 rounded-lg bg-gradient-to-r from-gray-50 to-gray-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -176,7 +176,7 @@ const TimeflowVerify = () => {
               <div className="flex items-center gap-4">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
-                    label="ساعت "
+                    label="ساعت"
                     value={entryTime}
                     onChange={setEntryTime}
                     className="w-48 bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
@@ -202,4 +202,4 @@ const TimeflowVerify = () => {
   );
 };
 
-export default TimeflowVerify;
+export default TimeflowMission;
