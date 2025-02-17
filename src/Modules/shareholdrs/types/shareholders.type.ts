@@ -5,15 +5,20 @@ export interface ShareholdersTypes {
   updated_at?: string;
   created_at?: string;
   company?: number;
+  company_national_id?: string;
+  first_name?: string;
+  last_name?: string;
+  uniqueIdentifier?: string;
+  capital_increase_payment?: number;
   user?: number;
   company_detail?: {
-    name: string;
-    company_type: string;
+    name?: string;
+    company_type?: string;
   };
   user_detail?: {
-    first_name: string;
-    last_name: string;
-    uniqueIdentifier: string;
+    first_name?: string;
+    last_name?: string;
+    uniqueIdentifier?: string;
   };
 }
 

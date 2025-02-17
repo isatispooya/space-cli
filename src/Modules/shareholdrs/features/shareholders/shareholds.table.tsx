@@ -8,13 +8,12 @@ import { CellComponent, ColumnDefinition } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 import { createRoot } from "react-dom/client";
 import { ActionMenu } from "../../../../components/table/tableaction";
-import { NewShareholdersType } from "../../types/new.type";
 
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, isPending } = useShareholders.useGet();
   const navigate = useNavigate();
 
-  const mappedData = shareholders?.map((row: NewShareholdersType) => ({
+  const mappedData = shareholders?.map((row: ShareholdersTypes) => ({
     ...row,
     company: row?.company,
     company_national_id: row?.company_national_id,
