@@ -1,4 +1,4 @@
-import RewardsTable from "../components/rewardstable";
+import RewardsTable from "../feature/Rewards/rewardstable";
 
 const Rewards = () => {
   return (
