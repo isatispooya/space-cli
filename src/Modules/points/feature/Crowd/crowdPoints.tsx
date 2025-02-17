@@ -1,11 +1,11 @@
-import Accordion from "../../../components/common/accordian/accordian";
-import { useCrowdPoints } from "../hooks";
+import { useCrowdPoints } from "../../hooks";
 import { motion, AnimatePresence } from "framer-motion";
-import { PlansView } from "../../components";
 import { formatNumber } from "../../../../utils";
 import { PlansType } from "../../types";
 import { useCrowdPointsStore } from "../../store";
 import { LoaderLg } from "../../../../components";
+import Accordion from "../../../../components/common/accordian/accordian"; 
+import PlansView from "../Coin/planCoins.view"; 
 
 const CrowdPoints = () => {
   const {

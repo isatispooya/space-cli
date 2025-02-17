@@ -1,8 +1,8 @@
 import { Collapse, Ripple, initTWE } from "tw-elements";
 import { UserAvatar } from "../../avatar";
 import { motion } from "framer-motion";
-import LogoWhite from "../../assets/Artboard 1 copy 17.png";
-import LogoText from "../../assets/textLogo.png";
+import LogoWhite from "../../../assets/Artboard 1 copy 17.png"
+import LogoText from "../../../assets/textLogo.png";
 import { useSidebarStore } from "../../../Modules/sidebar/store/sidebar.store";
 import { FiMenu } from "react-icons/fi";
 import Badge from "@mui/material/Badge";
@@ -15,7 +15,7 @@ import { useRemainPoints } from "../../../Modules/points";
 import NotificationComponent from "../../notification/notification";
 import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
-import { CiStreamOn } from "react-icons/ci";
+import { CiStreamOn } from "react-icons/ci";           
 import { useLiveStream } from "../../../Modules/live/hooks";
 
 initTWE({ Collapse, Ripple });
