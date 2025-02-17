@@ -10,6 +10,7 @@ import ForgetPassForm from "./changePass.form";
 import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components";
 import { HiExternalLink } from "react-icons/hi";
+import { FaPhone } from "react-icons/fa";
 initTWE({ Input, Ripple });
 
 const Login: React.FC = () => {
@@ -131,22 +132,6 @@ const Login: React.FC = () => {
                       <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-200"></span>
                     </button>
                   </div>
-                  <a
-                    href="https://profilesejam.csdiran.ir/"
-                    className="tour-sejam-link fixed text-center 
-                      bottom-2 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[200px]
-                      sm:w-auto sm:left-auto sm:right-4 sm:bottom-4
-                      rounded-lg sm:rounded-none
-                      text-blue-600 px-2 py-1.5
-                      transition-all duration-300 
-                      text-sm font-medium 
-                      flex items-center justify-center sm:justify-start gap-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span>ثبت نام در سجام</span>
-                    <HiExternalLink className="w-3.5 h-3.5" />
-                  </a>
                 </>
               )}
               {activeComponent === "signup" && (
@@ -163,6 +148,29 @@ const Login: React.FC = () => {
                       وارد شوید
                       <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-200"></span>
                     </button>
+                  </div>
+
+                  <div className="flex items-center w-full justify-center lg:mt-[130px] md:mt-[130px] sm:mt-[50px] gap-4">
+                    <a
+                      href="https://profilesejam.csdiran.ir/"
+                      className="tour-sejam-link text-center rounded-lg sm:rounded-none text-blue-600 px-2 py-1.5 transition-all duration-300 text-sm font-medium  flex items-center justify-center gap-1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span>ثبت نام در سجام</span>
+                      <HiExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                    <div className="flex items-center">
+                      <FaPhone className="text-gray-500 text-sm mr-2" />
+                      <p className="flex-1">
+                        <a
+                          href="tel:0353311"
+                          className="cursor-pointer border-b-2 border-transparent hover:border-blue-500 transition-all duration-200"
+                        >
+                          0353311
+                        </a>
+                      </p>
+                    </div>
                   </div>
                 </>
               )}
