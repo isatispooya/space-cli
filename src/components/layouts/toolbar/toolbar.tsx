@@ -1,5 +1,5 @@
 import { IconType } from "react-icons";
-import { useUserPermissions } from "../../Modules/permissions";
+import { useUserPermissions } from "../../../Modules/permissions";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 

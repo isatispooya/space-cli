@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
-import { fadeIn } from "../../Modules/auth/animations/fadeIn";
+import { fadeIn } from "../../../Modules/auth/animations/fadeIn";
 
 interface InputLineProps extends HTMLMotionProps<"div"> {
   type?: string;

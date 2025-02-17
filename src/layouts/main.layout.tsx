@@ -1,7 +1,7 @@
 // src/components/Layout.tsx
 import { ReactNode } from "react";
 
-import { Header } from "../components/header";
+import { Header } from "../components/layouts/header";
 import { SideBar } from "../Modules/sidebar";
 
 interface LayoutProps {
@@ -11,12 +11,10 @@ interface LayoutProps {
 const MainLayout = ({ children }: LayoutProps) => {
   return (
     <div>
-      <SideBar/>
-      <div >
-        <Header/>
-        <main  >
-          {children}
-        </main>
+      <SideBar />
+      <div>
+        <Header />
+        <main>{children}</main>
       </div>
     </div>
   );

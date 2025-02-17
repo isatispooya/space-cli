@@ -14,7 +14,7 @@ import { useUserPermissions } from "../../permissions";
 import useCompany from "../hooks/useCompany";
 import Spinner from "../../../components/loaders/spinner";
 import { useNavigate } from "react-router-dom";
-import { Toast } from "../../../components/toast";
+import { Toast } from "../../../components/common"; 
 
 const CompanyTable = () => {
   const { data, isPending } = useCompany.useGet();
@@ -51,7 +51,6 @@ const CompanyTable = () => {
     deleteCompanyMutation(selectedRow.id);
     setIsDeleteOpen(true);
   }, [selectedRow, deleteCompanyMutation]);
-
 
   const columns: GridColDef<CompanyTypes>[] = [
     {
@@ -136,7 +135,6 @@ const CompanyTable = () => {
     },
   ];
 
-  
   if (isPending) {
     return <Spinner />;
   }

@@ -1,6 +1,6 @@
 import { MainLayout } from "../../../../layouts";
 import { Outlet } from "react-router-dom";
-import { Toolbar } from "../../../../components";
+import { Toolbar } from "../../../../components/layouts/toolbar";
 import { LuPlus } from "react-icons/lu";
 import { LuTable } from "react-icons/lu";
 
@@ -11,7 +11,6 @@ const InsuranceRequestMain: React.FC = () => {
       text: "جدول",
       permission: ["allow-any"],
       path: "table",
-
     },
     {
       icon: LuPlus,

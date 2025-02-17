@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formik, Form, Field, FieldProps, FormikValues } from "formik";
 import { motion } from "framer-motion";
-import SelectInput from "./inputs/selectInput";
-import FormInput from "./inputs/formInput";
-import { FormField } from "../types";
+import SelectInput from "../common/inputs/selectInput";
+import FormInput from "../common/inputs/formInput";
+import { FormField } from "../../types";
 import { FormikHelpers } from "formik";
 import { AnyObject, Maybe, ObjectSchema } from "yup";
 import { RiCloseLargeLine } from "react-icons/ri";
-import ViewFileInput from "./inputs/viewFileInput";
+import ViewFileInput from "../common/inputs/viewFileInput";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { useState } from "react";
 import { BiPlus, BiMinus } from "react-icons/bi";
-import FileInput from "./inputs/uploadInput";
-import MultiSelect from "./inputs/multiSelect";
+import FileInput from "../common/inputs/uploadInput";
+import MultiSelect from "../common/inputs/multiSelect";
 
-import FormDetail from "./formDetail";
+import FormDetail from "../form/formDetail";
 
 interface FormsProps<T extends Maybe<AnyObject>> {
   formFields: FormField[];

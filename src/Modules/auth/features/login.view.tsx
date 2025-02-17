@@ -8,7 +8,7 @@ import SignupForm from "./signup.form";
 import ForgetPassSms from "./forgetPassSms.form";
 import ForgetPassForm from "./changePass.form";
 import { useAnnouncements } from "../hooks";
-import { LoaderLg } from "../../../components";
+import { LoaderLg } from "../../../components/loaders";
 import { HiExternalLink } from "react-icons/hi";
 import { FaPhone } from "react-icons/fa";
 initTWE({ Input, Ripple });

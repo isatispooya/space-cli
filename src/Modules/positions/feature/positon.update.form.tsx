@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import Forms from "../../../components/forms";
+import { Forms } from "../../../components";
 import { usePosition } from "../hooks";
 import { FormField } from "../../../types";
 import { useNavigate, useParams } from "react-router-dom";

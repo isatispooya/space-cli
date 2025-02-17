@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import Forms from "../../../components/forms";
+import { Forms } from "../../../components";
 import { useCorrespondences } from "../hooks";
 import { CorrespondenceTypes } from "../types";
 import toast from "react-hot-toast";

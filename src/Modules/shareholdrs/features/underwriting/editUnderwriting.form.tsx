@@ -1,5 +1,5 @@
 import { useUnderwriting } from "../../hooks";
-import Forms from "../../../../components/forms";
+import { Forms } from "../../../../components";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { underwritingTypes } from "../../types/underwriting.type";

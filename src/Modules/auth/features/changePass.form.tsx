@@ -1,9 +1,9 @@
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import InputLogin from "../../../components/inputs/inputBase";
+import InputLogin from "../../../components/common/inputs/inputBase";
 import useForgetPass from "../hooks/useForgetPass";
 import toast from "react-hot-toast";
-import PassInput from "../../../components/inputs/passInput";
+import PassInput from "../../../components/common/inputs/passInput";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../types";
 import Spinner from "../../../components/loaders/spinner";

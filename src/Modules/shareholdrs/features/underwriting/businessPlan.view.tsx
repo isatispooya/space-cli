@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useUnusedProcess } from "../../hooks";
-import ViewDownload from "../../../../components/viewDownload";
+import { ViewDownload } from "../../../../components";
 import toast from "react-hot-toast";
 
 const BusinessPlanView: FC = () => {

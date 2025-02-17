@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonBaseProps } from "../types";
+import { ButtonBaseProps } from "../../../types";
 
 const ButtonBase: React.FC<ButtonBaseProps> = ({ label }) => {
   return (

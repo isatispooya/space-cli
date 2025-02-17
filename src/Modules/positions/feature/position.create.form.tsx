@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { usePosition } from "../hooks";
 import { useUserData } from "../../users/hooks";
-import Forms from "../../../components/forms";
+import { Forms } from "../../../components";
 import { useCompany } from "../../companies/hooks";
 import { CompanyTypes } from "../../companies/types";
 import { useNavigate } from "react-router-dom";

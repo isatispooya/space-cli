@@ -1,12 +1,12 @@
 import React, { FormEventHandler } from "react";
 import useLogin from "../../auth/hooks/useLogin";
 import toast, { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import PassInput from "../../../components/inputs/passInput";
-import InputBase from "../../../components/inputs/inputBase";
+import PassInput from "../../../components/common/inputs/passInput";
+import InputBase from "../../../components/common/inputs/inputBase";
 import Spinner from "../../../components/loaders/spinner";
 import { ErrorResponse } from "../../../types";
 import { AxiosError } from "axios";
-import { Toast } from "../../../components/toast";
+import { Toast } from "../../../components/common";
 const LoginForm = ({
   handleComponentChange,
 }: {

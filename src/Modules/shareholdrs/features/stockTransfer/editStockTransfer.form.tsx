@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import Forms from "../../../../components/forms";
+import { Forms } from "../../../../components";
 import { stockTransferTypes } from "../../types/stockTransfer.type";
 import * as yup from "yup";
 import { useStockTransfer } from "../../hooks";

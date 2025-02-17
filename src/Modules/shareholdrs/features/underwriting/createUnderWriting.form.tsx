@@ -71,11 +71,13 @@ const CreateUnderWritingForm = () => {
       type: "2",
       document: null,
     },
-    validationSchema: Yup.object({
-      amount: Yup.string().required("مقدار الزامی است"),
-      company: Yup.string().required("شرکت الزامی است"),
-      type: Yup.string().required("نوع الزامی است"),
-    }),
+  validationSchema: Yup.object({
+    amount: Yup.string()
+      .required("مقدار الزامی است")
+      .matches(/^\d+$/, "فقط اعداد مجاز هستند"), // Ensure only numbers are allowed
+    company: Yup.string().required("شرکت الزامی است"),
+    type: Yup.string().required("نوع الزامی است"),
+  }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
         if (values.type === "1") {

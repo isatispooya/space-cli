@@ -1,18 +1,19 @@
 import React from "react";
 import useInsurance from "../../hooks/useInsurance";
-import SelectInput from "../../../../components/inputs/selectInput";
+import { SelectInput } from "../../../../components";
 import { Spinner } from "../../../../components/loaders";
-import FileInput from "../../../../components/inputs/uploadInput";
-import { Toast } from "../../../../components/toast";
+import { FileInput } from "../../../../components";
+import { Toast } from "../../../../components";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "../../../../types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import { MultiSelect } from "../../../../components/inputs";
+import { MultiSelect } from "../../../../components";
 import { useInsuranceStore } from "../../store";
 
 const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
-  const { mutate: postFields , isPending: isPostLoading } = useInsurance.usePostRequest();
+  const { mutate: postFields, isPending: isPostLoading } =
+    useInsurance.usePostRequest();
   const { data: insuranceCompanies } = useInsurance.useGetInsuranceCompanies();
 
   const {
@@ -112,7 +113,6 @@ const InsuranceRequestCreate: React.FC = () => {
   return (
     <div
       className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-[32px] shadow-lg"
-
       dir="rtl"
     >
       <h2 className="text-2xl font-bold text-[#29D2C7] mb-6">

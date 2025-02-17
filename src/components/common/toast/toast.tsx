@@ -51,8 +51,15 @@ const ToastComponent = ({
   );
 };
 
-export const Toast = (message: string, icon: JSX.Element, lineColor: string) => {
+const Toast = (message: string, icon: JSX.Element, lineColor: string) => {
   toast.custom((t) => (
-    <ToastComponent message={message} icon={icon} id={t.id} lineColor={lineColor} />
+    <ToastComponent
+      message={message}
+      icon={icon}
+      id={t.id}
+      lineColor={lineColor}
+    />
   ));
 };
+
+export default Toast;

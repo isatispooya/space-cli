@@ -1,5 +1,5 @@
 // import React from "react";
-import Logo from "../../../components/logo";
+import Logo from "../../../components/common/logo/logo";
 import { fadeIn } from "../animations/fadeIn";
 import { motion } from "framer-motion";
 import typo from "../../../assets/logotypography.png";

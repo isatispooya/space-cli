@@ -4,16 +4,16 @@ import { AxiosError } from "axios";
 import useInsurance from "../../hooks/useInsurance";
 import { useUserPermissions } from "../../../permissions";
 import { useInsuranceRStore } from "../../store";
-import SelectInput from "../../../../components/inputs/selectInput";
-import FileInput from "../../../../components/inputs/uploadInput";
+import { SelectInput } from "../../../../components";
+import { FileInput } from "../../../../components";
 import { Spinner } from "../../../../components/loaders";
-import { Toast } from "../../../../components/toast";
+import { Toast } from "../../../../components";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import {
   FormInput,
   TextAreaInput,
   ViewFileInput,
-} from "../../../../components/inputs";
+} from "../../../../components";
 import { FileField } from "../../components";
 import { formatNumber } from "../../../../utils";
 import { ErrorResponse } from "../../../../types";
@@ -162,7 +162,10 @@ const InsuranceRequestUpdate: React.FC = () => {
   useEffect(() => {
     if (dataId?.file_detail) {
       const files = dataId.file_detail.reduce(
-        (acc: Record<string, string>, file: { file_name: number; file_attachment: string }) => ({
+        (
+          acc: Record<string, string>,
+          file: { file_name: number; file_attachment: string }
+        ) => ({
           ...acc,
           [file.file_name.toString()]: file.file_attachment,
         }),

@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { usePayment } from "../hooks/usePayment";
-import LoaderLg from "./loaders/loader-lg";
+import { usePayment } from "../../hooks/usePayment";
+import LoaderLg from "../loaders/loader-lg";
 
 interface ApiError extends Error {
   response?: {

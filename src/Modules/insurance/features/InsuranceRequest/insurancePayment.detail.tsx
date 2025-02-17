@@ -1,12 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useInsurance } from "../../hooks";
-import Forms from "../../../../components/forms";
+import { Forms } from "../../../../components";
 import * as yup from "yup";
 import { ErrorResponse, FormField } from "../../../../types";
 import { Spinner } from "../../../../components/loaders";
 import { formatNumber } from "../../../../utils";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import { Toast } from "../../../../components/toast";
+import { Toast } from "../../../../components";
 import { AxiosError } from "axios";
 import { FishPaymentType, InsuranceRequest } from "../../types";
 import { server } from "../../../../api";
@@ -83,7 +83,6 @@ const InsurancePayment = () => {
       type: "select",
       options: [{ label: "فیش بانکی", value: "1" }],
     },
- 
 
     ...(selectedPayment?.insurance_name_draft_file
       ? [
@@ -116,18 +115,27 @@ const InsurancePayment = () => {
         ]
       : []),
 
-      {
-        name: "detail",
-        label: "جزئیات",
-        type: "detail", // Keep this as "detail"
-        value: [
-          { title: "شماره شبا", value: selectedPayment.insurance_name_detail.sheba },
-          { title: "شماره حساب", value: selectedPayment.insurance_name_detail.cart_number },
-          { title: "شماره کارت", value: selectedPayment.insurance_name_detail.cart_number },
-          { title: "Title 1", value: "Value 1" },
-          { title: "Title 2", value: "Value 2" },
-        ],
-      }
+    {
+      name: "detail",
+      label: "جزئیات",
+      type: "detail", // Keep this as "detail"
+      value: [
+        {
+          title: "شماره شبا",
+          value: selectedPayment.insurance_name_detail.sheba,
+        },
+        {
+          title: "شماره حساب",
+          value: selectedPayment.insurance_name_detail.cart_number,
+        },
+        {
+          title: "شماره کارت",
+          value: selectedPayment.insurance_name_detail.cart_number,
+        },
+        { title: "Title 1", value: "Value 1" },
+        { title: "Title 2", value: "Value 2" },
+      ],
+    },
   ];
 
   const initialValues: FishPaymentType = {

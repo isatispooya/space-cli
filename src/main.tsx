@@ -13,7 +13,7 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Toaster } from "react-hot-toast";
-import loadWidget from "./components/chatBox";
+import loadWidget from "./components/contact/chatBox";
 import { startClarity } from "./utils";
 import "tabulator-tables/dist/css/tabulator_bulma.min.css";
 

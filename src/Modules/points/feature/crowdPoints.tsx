@@ -1,4 +1,4 @@
-import Accordion from "../../../components/accordian";
+import Accordion from "../../../components/common/accordian/accordian";
 import { useCrowdPoints } from "../hooks";
 import { motion, AnimatePresence } from "framer-motion";
 import { PlansView } from "../components";
@@ -67,7 +67,6 @@ const CrowdPoints = () => {
             <AnimatePresence>
               {isOpen && (
                 <>
-
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -116,7 +115,6 @@ const CrowdPoints = () => {
                             </motion.li>
                           ))}
 
-   
                         {filteredPlans.length > visibleItems && (
                           <motion.button
                             onClick={handleShowMore}

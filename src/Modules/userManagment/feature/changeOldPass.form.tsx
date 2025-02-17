@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { fadeIn } from "../../auth/animations/fadeIn";
-import { PassInput } from "../../../components/inputs";
+import { PassInput } from "../../../components";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 

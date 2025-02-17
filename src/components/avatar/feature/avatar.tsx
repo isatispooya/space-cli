@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useProfile } from "../../Modules/userManagment/hooks/useProfile";
-import { getCookie } from "../../api/cookie";
-import useLogout from "./hooks/useLogout";
-import { removeCookie } from "../../api/cookie";
+import { useProfile } from "../../../Modules/userManagment/hooks/useProfile";
+import { getCookie } from "../../../api/cookie";
+import useLogout from "../hooks/useLogout";
+import { removeCookie } from "../../../api/cookie";
 import { Avatar } from "@mui/material";
-import { server } from "../../api/server";
-import { identifyUser } from "../../utils";
+import { server } from "../../../api/server";
+import { identifyUser } from "../../../utils";
 import { toast } from "react-hot-toast";
 // import Stories from "stories-react";
 import "stories-react/dist/index.css";

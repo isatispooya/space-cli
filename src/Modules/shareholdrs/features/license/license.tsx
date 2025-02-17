@@ -1,5 +1,5 @@
 import { FC } from "react";
-import ViewDownload from "../../../../components/viewDownload";
+import { ViewDownload } from "../../../../components";
 import toast from "react-hot-toast";
 import logo from "/public/logolicense.png";
 import license from "../../../../../public/assets/image.png";

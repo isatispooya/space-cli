@@ -1,4 +1,4 @@
-import Forms from "../../../components/forms";
+import { Forms } from "../../../components";
 import * as yup from "yup";
 import { PermissionData } from "../types/permissionData";
 import { useUserData } from "../../users/hooks";

@@ -1,4 +1,4 @@
-export * from "./underwriting.store";
+export { default as useUnderwritingStore } from "./underwriting.store";
 export * from "./shareHolders.store";
 export * from "./stockTransfer.store";
 export * from "./displacerment.store";

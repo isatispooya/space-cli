@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { CompanyTypes } from "../types";
 
 import { useCompany } from "../hooks";
-import Forms from "../../../components/forms";
+import Forms from "../../../components/form/forms";
 import toast from "react-hot-toast";
 import { FormField } from "../../../types";
 import { useParams } from "react-router-dom";

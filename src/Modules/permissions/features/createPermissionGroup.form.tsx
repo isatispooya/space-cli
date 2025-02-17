@@ -1,10 +1,10 @@
-import Forms from "../../../components/forms";
-import {usePostGroups, usePermissionList} from "../hooks";
-import {CreatePermissionData} from "../types";
+import { Forms } from "../../../components";
+import { usePostGroups, usePermissionList } from "../hooks";
+import { CreatePermissionData } from "../types";
 import * as Yup from "yup";
-import TransferList from "../../../components/transferList";
-import {useState} from "react";
-import {FormField} from "../../../types";
+import TransferList from "../../../components/list/transferList";
+import { useState } from "react";
+import { FormField } from "../../../types";
 
 interface Permission {
   id: number;

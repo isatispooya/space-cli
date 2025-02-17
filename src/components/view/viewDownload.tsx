@@ -98,15 +98,6 @@ const ViewDownload: FC<ViewDownloadProps> = ({
               {regulatorText}
             </p>
           </motion.div>
-
-          {/* {isImg && downloadLink && (
-            <motion.img
-              src={downloadLink}
-              alt="download"
-              className="w-full h-auto object-contain rounded shadow-lg"
-            />
-          )} */}
-
           {img && (
             <motion.img
               src={typeof img === "string" ? img : URL.createObjectURL(img)}

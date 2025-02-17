@@ -1,4 +1,4 @@
-import Forms from "../../../../components/forms";
+import { Forms } from "../../../../components";
 import { useCompany } from "../../../companies/hooks";
 import { useUserData } from "../../../users/hooks";
 import { useDisplacement } from "../../hooks";

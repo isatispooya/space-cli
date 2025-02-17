@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
 import { useGiftsUser } from "../hooks";
@@ -6,14 +5,15 @@ import { RequestTypes, RequestUpdateTypes } from "../types";
 import { CellComponent } from "tabulator-tables";
 import TabulatorTable from "../../../components/table/table.com";
 import toast, { ErrorIcon } from "react-hot-toast";
-import { Toast } from "../../../components/toast";
+import { Toast } from "../../../components";
 import { useUserPermissions } from "../../permissions";
+import { formatNumber } from "../../../utils";
 
 const Request = () => {
   const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
   const { checkPermission } = useUserPermissions();
-  const navigate = useNavigate();
+
   const isAdmin = checkPermission(["change_giftuser"]);
 
   const statusMapping = {
@@ -79,7 +79,7 @@ const Request = () => {
   };
 
   const handleView = (id: number) => {
-    navigate(`/users/view/${id}`);
+    window.open(`/users/view/${id}`, "_blank");
   };
 
   const columns = () => [
@@ -91,14 +91,24 @@ const Request = () => {
       field: "description",
       title: "توضیحات",
     },
-
     {
       field: "points",
-      title: "امتیاز",
+      title: "سکه",
     },
     {
       field: "amount",
       title: "کل دریافتی",
+      formatter: (cell: CellComponent) => {
+        return formatNumber(cell.getValue());
+      },
+    },
+    {
+      field: "value",
+      title: "ارزش ",
+      formatter: (cell: CellComponent) => {
+        const rowData = cell.getRow().getData();
+        return formatNumber(rowData.points * rowData.amount * 10);
+      },
     },
     {
       field: "status",
@@ -140,7 +150,7 @@ const Request = () => {
 
             menuItem.onclick = () => {
               const rowData = cell.getRow().getData();
-              const rowId = rowData.user_detail.id;
+              const rowId = rowData.id;
               handleStatusChange(rowId, status);
               closeAllMenus();
               refetch();
@@ -171,7 +181,6 @@ const Request = () => {
         window.addEventListener("scroll", handleScroll);
       },
     },
-
     {
       field: "reason",
       title: "علت",
@@ -194,7 +203,6 @@ const Request = () => {
       formatter: (cell: CellComponent) =>
         moment(cell.getValue()).format("jYYYY/jMM/jDD"),
     },
-
     {
       title: "عملیات",
       formatter: () => {

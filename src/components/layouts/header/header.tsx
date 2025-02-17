@@ -1,22 +1,22 @@
 import { Collapse, Ripple, initTWE } from "tw-elements";
-import { UserAvatar } from "../avatar";
+import { UserAvatar } from "../../avatar";
 import { motion } from "framer-motion";
 import LogoWhite from "../../assets/Artboard 1 copy 17.png";
 import LogoText from "../../assets/textLogo.png";
-import { useSidebarStore } from "../../Modules/sidebar/store/sidebar.store";
+import { useSidebarStore } from "../../../Modules/sidebar/store/sidebar.store";
 import { FiMenu } from "react-icons/fi";
 import Badge from "@mui/material/Badge";
 import { useState, useRef, useEffect } from "react";
-import { useCorrespondencesData } from "../notification/hook/notification.get";
+import { useCorrespondencesData } from "../../notification/hook/notification.get";
 import { useNavigate } from "react-router-dom";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Tooltip from "@mui/material/Tooltip";
-import { useRemainPoints } from "../../Modules/points";
-import NotificationComponent from "../notification/notification";
+import { useRemainPoints } from "../../../Modules/points";
+import NotificationComponent from "../../notification/notification";
 import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
 import { CiStreamOn } from "react-icons/ci";
-import { useLiveStream } from "../../Modules/live/hooks";
+import { useLiveStream } from "../../../Modules/live/hooks";
 
 initTWE({ Collapse, Ripple });
 
@@ -156,7 +156,7 @@ const Header = () => {
               />
             </Badge>
 
-            <div className="mr-5">  
+            <div className="mr-5">
               {showNotifications && (
                 <NotificationComponent ref={notificationRef} />
               )}

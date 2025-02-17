@@ -1,5 +1,5 @@
 import { server } from "../../../api";
-import { FileInput } from "../../../components/inputs";
+import { FileInput } from "../../../components";
 
 const FileField: React.FC<{
   field: { id: number; name: string };

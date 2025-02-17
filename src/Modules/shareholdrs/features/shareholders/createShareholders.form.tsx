@@ -1,4 +1,4 @@
-import Forms from "../../../../components/forms";
+import { Forms } from "../../../../components";
 
 import * as Yup from "yup";
 import {

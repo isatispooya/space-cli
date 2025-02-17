@@ -2,7 +2,7 @@ import { ErrorResponse, FormField } from "../../../../types";
 import useInsurance from "../../hooks/useInsurance";
 import { Forms } from "../../../../components";
 import * as yup from "yup";
-import { Toast } from "../../../../components/toast";
+import Toast from "../../../../components/common/toast/toast";
 import { InsurancePostTypes } from "../../types";
 import { FormikHelpers } from "formik";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";

@@ -1,4 +1,4 @@
-import Forms from "../../../components/forms";
+import Forms from "../../../components/form/forms";
 import * as Yup from "yup";
 import { CorrespondencePostType, CorrespondenceTypes } from "../types";
 import { FormikHelpers } from "formik";

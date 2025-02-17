@@ -1,4 +1,4 @@
-import Forms from "../../../components/forms";
+import Forms from "../../../components/form/forms";
 import { FormField } from "../../../types";
 import { CompanyTypes } from "../types";
 import toast from "react-hot-toast";

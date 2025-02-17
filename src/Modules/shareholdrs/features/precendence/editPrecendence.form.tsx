@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import Forms from "../../../../components/forms";
+import { Forms } from "../../../../components";
 import { usePrecendence } from "../../hooks";
 import * as yup from "yup";
 import { PrecedenceTypes } from "../../types/precedence.type";

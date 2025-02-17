@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useInsurance } from "../../hooks";
-import Accordion from "../../../../components/accordian";
+import Accordion from "../../../../components/common/accordian/accordian";
 import { InsuranceRequestUpdate } from "../..";
 import { InsurancePayment } from ".";
 import { useUserPermissions } from "../../../permissions";

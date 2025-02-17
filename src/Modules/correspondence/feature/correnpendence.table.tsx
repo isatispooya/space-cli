@@ -13,7 +13,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 import EditCorrespondence from "./editCorrespondence.form";
 import DeleteCorrespondence from "./deleteCorrespondence";
-import { LoaderLg } from "../../../components";
+import { LoaderLg } from "../../../components/loaders";
 
 const CorrespondenceTable = () => {
   const { data, isPending } = useCorrespondences.useGet();

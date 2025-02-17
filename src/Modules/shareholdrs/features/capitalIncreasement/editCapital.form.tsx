@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import Forms from "../../../../components/forms";
+import { Forms } from "../../../../components";
 import { useCapital } from "../../hooks";
 import { CapitalIncreaseTypes } from "../../types/capitalIncrease.type";
 import * as yup from "yup";

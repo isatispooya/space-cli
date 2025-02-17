@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import InputLogin from "../../../components/inputs/inputBase";
+import InputLogin from "../../../components/common/inputs/inputBase";
 import CaptchaImg from "../components/captcha.field";
 import { useLoginStore } from "../stores/loginStore";
 import { motion } from "framer-motion";
@@ -13,7 +13,7 @@ import { ErrorResponse } from "../../../types";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useCaptcha } from "../hooks";
-import { Toast } from "../../../components/toast";
+import { Toast } from "../../../components/common";
 
 const validationSchema = Yup.object({
   nationalCode: Yup.string()

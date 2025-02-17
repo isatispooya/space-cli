@@ -4,14 +4,14 @@ import { useState } from "react";
 import { PlanByTraceCodeType, PlansType } from "../types";
 import { FaArrowRight } from "react-icons/fa";
 import { LoaderLg, NoContent } from "../../../components";
-import { FormInput } from "../../../components/inputs";
+import { FormInput } from "../../../components";
 import { formatNumber } from "../../../utils";
 import { Button } from "@mui/material";
 import * as XLSX from "xlsx";
 import { ErrorIcon, toast } from "react-hot-toast";
 import { ErrorResponse } from "../../../types";
 import { AxiosError } from "axios";
-import { Toast } from "../../../components/toast";
+import { Toast } from "../../../components";
 
 const PlansView: React.FC<{
   plan: PlansType;

@@ -1,5 +1,5 @@
 import { useEmployments } from "../hooks";
-import Accordion from "../../../components/accordian";
+import Accordion from "../../../components/common/accordian/accordian";
 import JobCard from "../components/jobCard";
 import { useState } from "react";
 
