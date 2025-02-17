@@ -1,4 +1,3 @@
-import Rools from "../components/rools";
 
 const RolesPage = () => {
   return (
