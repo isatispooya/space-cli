@@ -8,12 +8,10 @@ import toast, { ErrorIcon } from "react-hot-toast";
 import { Toast } from "../../../components";
 import { useUserPermissions } from "../../permissions";
 import { formatNumber } from "../../../utils";
-
 const Request = () => {
   const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
   const { checkPermission } = useUserPermissions();
-
   const isAdmin = checkPermission(["change_giftuser"]);
 
   const statusMapping = {
@@ -110,6 +108,15 @@ const Request = () => {
         return formatNumber(rowData.points * rowData.amount * 10);
       },
     },
+    {
+      field: "value",
+      title: "ارزش",
+      formatter: (cell: CellComponent) => {
+        const rowData = cell.getRow().getData();
+        return formatNumber(rowData.gift_detail.point_1 * rowData.amount * 10);
+      },
+    },
+
     {
       field: "status",
       title: "وضعیت",

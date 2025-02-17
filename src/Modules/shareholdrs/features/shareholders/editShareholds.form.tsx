@@ -6,7 +6,6 @@ import { useShareholders } from "../../hooks";
 import { useCompany } from "../../../companies/hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormField } from "../../../../types";
-import { NewShareholdersType } from "../../types/new.type";
 
 const EditShareholdForm: React.FC = () => {
   const { mutate } = useShareholders.useUpdate();
@@ -28,6 +27,11 @@ const EditShareholdForm: React.FC = () => {
     company: yup.number().required("نام شرکت الزامی است"),
     user: yup.number().required("کاربر الزامی است"),
     user_name: yup.string().optional(),
+    company_national_id: yup.string().optional(),
+    first_name: yup.string().optional(),
+    last_name: yup.string().optional(),
+    uniqueIdentifier: yup.string().optional(),
+    capital_increase_payment: yup.number().optional(),
     company_detail: yup.object().optional(),
     user_detail: yup.object().optional(),
     updated_at: yup.string().optional(),
@@ -65,18 +69,18 @@ const EditShareholdForm: React.FC = () => {
     },
   ];
 
-  const initialValues: NewShareholdersType = {
-    number_of_shares: shareholder?.number_of_shares || 0,
-    company: shareholder?.company || 0 ,
-    user: shareholder?.user || 0,
-    id: shareholder?.id || 0,
+  const initialValues: ShareholdersTypes = {
+    number_of_shares: Number(shareholder?.number_of_shares) || 0,
+    company: Number(shareholder?.company) || 0,
+    user: Number(shareholder?.user) || 0,
+    id: Number(shareholder?.id) || 0,
   };
 
-  const onSubmit = (values: NewShareholdersType) => {
+  const onSubmit = (values: ShareholdersTypes) => {
     if (shareholder?.id) {
       const formattedValues = {
         ...values,
-        company: parseInt(values.company.toString()),
+        company: parseInt(values.company?.toString() ?? "0"),
         user: parseInt(values.user?.toString() || "0"),
         number_of_shares: parseInt(values.number_of_shares?.toString() || "0"),
       };
