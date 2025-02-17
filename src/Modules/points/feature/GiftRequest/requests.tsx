@@ -1,13 +1,13 @@
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import { useGiftsUser } from "../hooks";
-import { RequestTypes, RequestUpdateTypes } from "../types";
+import { useGiftsUser } from "../../hooks";
+import { RequestTypes, RequestUpdateTypes } from "../../types";
 import { CellComponent } from "tabulator-tables";
-import TabulatorTable from "../../../components/table/table.com";
+import TabulatorTable from "../../../../components/table/table.com";
 import toast, { ErrorIcon } from "react-hot-toast";
-import { Toast } from "../../../components/toast";
-import { useUserPermissions } from "../../permissions";
-import { formatNumber } from "../../../utils";
+import { Toast } from "../../../../components/toast";
+import { useUserPermissions } from "../../../permissions";
+import { formatNumber } from "../../../../utils";
 const Request = () => {
   const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();

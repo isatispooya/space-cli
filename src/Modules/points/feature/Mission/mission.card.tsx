@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { MissionTypes } from "../types/mission.type";
+import { MissionTypes } from "../../types/mission.type";
 import { PiSealCheckDuotone } from "react-icons/pi";
 import { LuCoins } from "react-icons/lu";
 import { TbSeeding } from "react-icons/tb";
 import { useState } from "react";
 import { Button, ButtonGroup } from "@mui/material";
-import { formatNumber } from "../../../utils";
+import { formatNumber } from "../../../../utils";
 
 const COLORS = {
   primary: {

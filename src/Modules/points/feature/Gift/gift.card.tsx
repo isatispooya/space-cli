@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { GiftTypes } from "../types/gifts.type";
+import { GiftTypes } from "../../types/gifts.type";
 import { useState } from "react";
-import { useRemainPoints } from "../hooks";
+import { useRemainPoints } from "../../hooks";
 import { LuCoins } from "react-icons/lu";
 import { TbSeeding } from "react-icons/tb";
 import {
@@ -21,7 +21,7 @@ import {
   MenuList,
 } from "@mui/material";
 import * as React from "react";
-import { formatNumber } from "../../../utils";
+import { formatNumber } from "../../../../utils";
 import { Link } from "react-router-dom";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";

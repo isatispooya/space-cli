@@ -1,4 +1,4 @@
-import PrivilegesComponent from "../components/Privileges";
+import PrivilegesComponent from "../feature/Privileges/Privileges";
 
 
 const Privileges = () => {
