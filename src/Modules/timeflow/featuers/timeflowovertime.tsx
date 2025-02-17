@@ -17,7 +17,6 @@ const TimeflowOvertime = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [approvedIds, setApprovedIds] = useState<number[]>([]);
   const [entryTime, setEntryTime] = useState<Dayjs | null>(null);
-  const [exitTime, setExitTime] = useState<Dayjs | null>(null);
   const [date, setDate] = useState<string>("");
   const [selectedChip, setSelectedChip] = useState<string>("ورود");
 
@@ -116,11 +115,7 @@ const TimeflowOvertime = () => {
   };
 
   const handleSubmit = () => {
-    console.log("Entry Time:", entryTime);
-    console.log("Exit Time:", exitTime);
-    console.log("Date:", date);
     setEntryTime(null);
-    setExitTime(null);
     setDate("");
   };
 
@@ -185,7 +180,7 @@ const TimeflowOvertime = () => {
                       minutes: renderTimeViewClock,
                       seconds: renderTimeViewClock,
                     }}
-                  /> 
+                  />
                 </LocalizationProvider>
               </div>
               <button

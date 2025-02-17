@@ -37,8 +37,6 @@ const InsurenceRequestProsses = () => {
   const isLocked_step_2 =
     request?.insurance_status !== "pending_payment" && !hasPermission;
 
-  console.log(isLocked_step_1, 1, isLocked_step_2, 2);
-
   return (
     <div className="w-[80%] mx-auto rounded-lg p-4 flex flex-col gap-4">
       <Accordion

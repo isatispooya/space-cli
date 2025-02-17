@@ -37,10 +37,8 @@ const PrivilegesComponent = () => {
       user_phone: item?.user_detail?.mobile,
     };
   });
-  console.log("Mapped Data:", mappedData);
 
   const ExelData = (item: PrivilegesTypes) => {
-    console.log("Formatting Item for Excel:", item);
     return {
       مقدار: item.amount || 0,
       تاریخ_ایجاد: item.created_at || "نامشخص",

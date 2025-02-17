@@ -17,13 +17,11 @@ const TimeflowVerify = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [approvedIds, setApprovedIds] = useState<number[]>([]);
   const [entryTime, setEntryTime] = useState<Dayjs | null>(null);
-  const [exitTime, setExitTime] = useState<Dayjs | null>(null);
   const [date, setDate] = useState<string>("");
   const [selectedChip, setSelectedChip] = useState<string>("ورود");
   const { mutate: verify } = useVerify.usePostVerify();
   const { data: verifyData, refetch, isError } = useVerify.useGetVerify();
 
-  console.log(exitTime);
 
   useEffect(() => {
     return () => {
@@ -118,7 +116,6 @@ const TimeflowVerify = () => {
 
   const handleSubmit = () => {
     setEntryTime(null);
-    setExitTime(null);
     setDate("");
   };
 

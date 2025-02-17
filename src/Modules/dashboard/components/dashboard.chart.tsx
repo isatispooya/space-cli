@@ -45,7 +45,6 @@ const DashboardChart = () => {
   const { data: statsChart, isLoading } = useDashboard.useGetStats();
   const [isVertical, setIsVertical] = useState(false);
   const { data: permissions } = useUserPermissions();
-  console.log(permissions);
 
   const hasPermission =
     Array.isArray(permissions) &&

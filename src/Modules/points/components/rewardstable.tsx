@@ -142,7 +142,6 @@ const RewardsTable = () => {
       created_at: item.created_at,
     };
   });
-  console.log("Mapped Data:", mappedData);
 
   const ExelData = (item: PrivilegesTypes) => {
     return {

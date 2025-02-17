@@ -8,7 +8,6 @@ import { CellComponent } from "tabulator-tables";
 const InsuranceTable = () => {
   const { data: fields } = useInsurance.useGetFields();
 
-  console.log("Raw fields data:", fields);
 
   const columns = () => [
     { title: "بیمه نامه", field: "parent_name" },

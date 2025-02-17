@@ -142,7 +142,7 @@ const UserProTable: React.FC = () => {
           {
             label: "نمایش",
             icon: "⚡",
-            action: () => handleView(rowData.id), // Pass the row's ID here
+            action: () => handleView(rowData.id),
           },
         ];
 

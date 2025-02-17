@@ -11,9 +11,6 @@ const ProfileView: React.FC = () => {
     profile?.profile_image ?? ""
   );
 
-  console.log(profile);
-  
-
   React.useEffect(() => {
     if (profile?.profile_image) {
       setAvatarUrl(profile.profile_image);
@@ -68,11 +65,23 @@ const ProfileView: React.FC = () => {
   ];
 
   const bankInfo = [
-    { label: "شماره حساب", value: profile?.accounts?.[0]?.account_number || "نامشخص" },
+    {
+      label: "شماره حساب",
+      value: profile?.accounts?.[0]?.account_number || "نامشخص",
+    },
     { label: "نام بانک", value: profile?.accounts?.[0]?.bank || "نامشخص" },
-    { label: "کد شعبه", value: profile?.accounts?.[0]?.branch_code || "نامشخص" },
-    { label: "نام شعبه", value: profile?.accounts?.[0]?.branch_name || "نامشخص" },
-    { label: "شماره شبا", value: profile?.accounts?.[0]?.sheba_number || "نامشخص" },
+    {
+      label: "کد شعبه",
+      value: profile?.accounts?.[0]?.branch_code || "نامشخص",
+    },
+    {
+      label: "نام شعبه",
+      value: profile?.accounts?.[0]?.branch_name || "نامشخص",
+    },
+    {
+      label: "شماره شبا",
+      value: profile?.accounts?.[0]?.sheba_number || "نامشخص",
+    },
   ];
 
   const contactInfo = [

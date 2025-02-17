@@ -30,8 +30,6 @@ const Gifts = () => {
       : []),
   ];
 
-  console.log(gifts, "#######");
-
   return (
     <div>
       <div>

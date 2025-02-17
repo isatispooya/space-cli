@@ -17,7 +17,6 @@ const postOtp = async ({
       referral,
     }
   );
-  console.log(response.data);
   
   return response.data;
 };
