@@ -1,1 +1,1 @@
-export { default as useTimeFlow } from "./usetimeflow";
+export { default as useTimeflow } from "./usetimeflow";

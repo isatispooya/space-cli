@@ -1,4 +1,4 @@
-import { MainLayout, ModalLayout } from "../../../layouts";
+import { MainLayout } from "../../../layouts";
 import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
 import { useMemo } from "react";
@@ -7,7 +7,6 @@ import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
 import DashboardBimeStat from "../components/dashboardBime.stat";
 import DashboardBorsStat from "../components/dashboardBors.stat";
-import TimeflowVerify from "../../timeflow/components/timeflow.verify";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
@@ -56,9 +55,6 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-      <ModalLayout isOpen={false} onClose={() => {}}>
-        <TimeflowVerify />
-      </ModalLayout>
     </MainLayout>
   );
 };

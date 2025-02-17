@@ -5,32 +5,18 @@ const TimeFlowMainPage = lazy(() =>
     default: module.TimeFlowMainPage,
   }))
 );
-const TimeFlowTablePage = lazy(() =>
+
+const VerifyTimeFlowPage = lazy(() =>
   import("..").then((module) => ({
-    default: module.TimeFlowTablePage,
-  }))
-);
-const TimeFlowApproachPage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.TimeFlowApproachPage,
-  }))
-);
-const TimeFlowLeaveTablePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.TimeFlowLeaveTablePage,
-  }))
-);
-const TimeFlowCreatePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.LeaveCreatePage,
-  }))
-);
-const TimeFlowShiftPage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.TimeFlowShiftPage,
+    default: module.VerifyTimeFlowPage,
   }))
 );
 
+const UsersTimeFlowPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.UsersTimeFlowPage,
+  }))
+);
 
 const TimeflowRoutes = [
   {
@@ -38,24 +24,12 @@ const TimeflowRoutes = [
     element: <TimeFlowMainPage />,
     children: [
       {
-        path: "approach",
-        element: <TimeFlowApproachPage />,
+        path: "verify",
+        element: <VerifyTimeFlowPage />,
       },
       {
         path: "users",
-        element: <TimeFlowTablePage />,
-      },
-      {
-        path: "leave",
-        element: <TimeFlowLeaveTablePage />,
-      },
-      {
-        path: "addleave",
-        element: <TimeFlowCreatePage />,
-      },
-      {
-        path: "shift",
-        element: <TimeFlowShiftPage />,
+        element: <UsersTimeFlowPage />,
       },
     ],
   },

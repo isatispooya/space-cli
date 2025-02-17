@@ -1,1 +1,1 @@
-export * from "./users.timeflow.type";
+export * from "./userTimeFlow.type";

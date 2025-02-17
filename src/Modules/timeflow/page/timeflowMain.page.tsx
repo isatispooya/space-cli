@@ -16,25 +16,7 @@ const TimeFlowPage = () => {
       icon: LuTable,
       text: "ثبت تردد",
       permission: ["allow_any"],
-      path: "approach",
-    },
-    {
-      icon: LuTable,
-      text: "شیفت کاری",
-      permission: ["allow_any"],
-      path: "shift",
-    },
-    {
-      icon: LuTable,
-      text: "لیست مرخصی",
-      permission: ["allow_any"],
-      path: "leave",
-    },
-    {
-      icon: LuTable,
-      text: "ثبت مرخصی",
-      permission: ["allow_any"],
-      path: "addleave",
+      path: "verify",
     },
   ];
   return (
