@@ -1,5 +1,5 @@
 import { api } from "../../../api";
-import { TimeflowVerifyType, UserLoginType } from "../types";
+import { SeniorVerifyType, TimeflowVerifyType, UserLoginType } from "../types";
 
 const timeflowServices = {
   getUsersLogin: async (): Promise<UserLoginType> => {
@@ -16,7 +16,7 @@ const timeflowServices = {
     const response = await api.patch(`/timeflow/user-login-log/${id}/`, data);
     return response.data;
   },
-  updateUsersLoginByParent: async (data: TimeflowVerifyType, id: number) => {
+  updateUsersLoginByParent: async (data: SeniorVerifyType, id: number) => {
     const response = await api.patch(
       `/timeflow/user-login-log-senior/${id}/`,
       data

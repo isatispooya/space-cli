@@ -5,7 +5,7 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { timeflowServices } from "../service";
-import { TimeflowVerifyType, UserLoginType } from "../types";
+import { SeniorVerifyType, TimeflowVerifyType, UserLoginType } from "../types";
 import { AxiosError } from "axios";
 
 const useTimeflow = {
@@ -33,13 +33,13 @@ const useTimeflow = {
     });
   },
   useUpdateUsersLoginByParent: (): UseMutationResult<
-    TimeflowVerifyType,
+    SeniorVerifyType,
     AxiosError,
-    { data: TimeflowVerifyType; id: number }
+    { data: SeniorVerifyType; id: number }
   > => {
     return useMutation({
       mutationKey: ["update-users-login-by-parent"],
-      mutationFn: ({ data, id }: { data: TimeflowVerifyType; id: number }) =>
+      mutationFn: ({ data, id }: { data: SeniorVerifyType; id: number }) =>
         timeflowServices.updateUsersLoginByParent(data, id),
     });
   },

@@ -24,11 +24,11 @@ const VerifyTimeFlow: React.FC = () => {
 
         <UserTimeflowVerify userLogin={userLogin as UserLoginType} />
 
-        {/* Separator */}
+     
         <hr className="border-t-2 border-gray-300" />
 
         <h2 className="text-3xl font-bold text-center text-indigo-700">
-          بچه ها
+          همکاران
         </h2>
 
         <ParentTimeFlowVerify userLogin={userLogin as UserLoginType} />

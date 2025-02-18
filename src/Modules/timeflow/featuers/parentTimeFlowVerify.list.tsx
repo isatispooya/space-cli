@@ -12,7 +12,7 @@ const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
 
   const handleAccept = (logId: number, selectedTime: Dayjs) => {
     const payload = {
-      time_user: moment(selectedTime.toISOString()).format(
+      time_parent: moment(selectedTime.toISOString()).format(
         "YYYY-MM-DDTHH:mm:ss"
       ),
     };
