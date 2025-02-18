@@ -9,7 +9,7 @@ const PrivilegesComponent = () => {
   const { data } = usePoint.useGetPoint();
 
   const mappedData = data?.map((item: PrivilegesTypes) => {
-    console.log("Mapping Item:", item);
+
     return {
       point_1: (item?.mission_detail?.point_1 || 0) * (item.amount || 0),
       point_2: (item?.mission_detail?.point_2 || 0) * (item.amount || 0),

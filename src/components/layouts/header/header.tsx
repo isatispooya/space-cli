@@ -25,7 +25,7 @@ const Header = () => {
 
   const { data: liveStream } = useLiveStream.useLiveStream();
 
-  console.log(liveStream);
+
 
   const ShowLiveStream = liveStream?.status;
 

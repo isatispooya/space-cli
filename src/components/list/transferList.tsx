@@ -54,7 +54,6 @@ const TransferList: React.FC<TransferListProps> = ({
     React.useState<TransferListItem[]>(initialRightItems);
   const [searchLeft, setSearchLeft] = React.useState("");
   const [searchRight, setSearchRight] = React.useState("");
-
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
 

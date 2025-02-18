@@ -10,12 +10,6 @@ const useForgetPassSms = (): UseMutationResult<
   return useMutation({
     mutationKey: ["forgetPassSms"],
     mutationFn: postForgetPassSms,
-    onSuccess: (response) => {
-      console.log(response);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 };
 
