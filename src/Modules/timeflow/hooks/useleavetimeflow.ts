@@ -12,7 +12,8 @@ const useLeaveTimeFlow = () => {
 
 const useLeaveTimeFlowCreate = () => {
   return useMutation({
-    mutationFn: (data: LeaveTimeFlowType) => leaveTimeFlowService().create(data),
+    mutationFn: (data: LeaveTimeFlowType) =>
+      leaveTimeFlowService().create(data),
     onSuccess: () => {
       toast.success("اطلاعات با موفقیت ثبت شد");
     },
@@ -26,17 +27,13 @@ const useLeaveTimeFlowUpdate = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: LeaveTimeFlowType }) =>
       leaveTimeFlowService().update(id, data),
-    onSuccess: () => {
-      toast.success("اطلاعات با موفقیت به روز شد");
+    onSuccess: (response) => {
+      toast.success(response.message || "اطلاعات با موفقیت به روز شد");
     },
-    onError: () => {
-      toast.error("اطلاعات به تایید نشد");
+    onError: (error: any) => {
+      toast.error(error.response?.data?.error || "اطلاعات به روز نشد");
     },
   });
 };
 
-export {
-  useLeaveTimeFlow,
-  useLeaveTimeFlowCreate,
-  useLeaveTimeFlowUpdate,
-};
+export { useLeaveTimeFlow, useLeaveTimeFlowCreate, useLeaveTimeFlowUpdate };
