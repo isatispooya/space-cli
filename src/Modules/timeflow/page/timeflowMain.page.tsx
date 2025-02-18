@@ -18,6 +18,18 @@ const TimeFlowPage = () => {
       permission: ["allow_any"],
       path: "verify",
     },
+    {
+      icon: LuTable,
+      text: "لیست مرخصی ها",
+      permission: ["allow_any"],
+      path: "leaveTable",
+    },
+    {
+      icon: LuTable,
+      text: "مرخصی",
+      permission: ["allow_any"],
+      path: "leave",
+    },
   ];
   return (
     <MainLayout>
