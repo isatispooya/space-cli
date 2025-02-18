@@ -24,8 +24,6 @@ const LeaveTimeFlow = () => {
   const { mutate: updateLeaveTimeFlow } = useLeaveTimeFlowUpdate();
   const [approvedItems, setApprovedItems] = useState<number[]>([]);
 
-  console.log(dataLeaveTimeFlow);
-
   const handleSubmit = () => {
     const data = {
       time_user_end: endTime ? moment(endTime).toISOString() : null,
@@ -79,9 +77,12 @@ const LeaveTimeFlow = () => {
   return (
     <>
       <div className="w-[80%] mx-auto shadow-lg bg-white rounded-3xl relative p-8 flex flex-col mb-[100px] border border-gray-300 hover:shadow-xl transition-shadow duration-300">
-        <div className="flex flex-row gap-6 items-center justify-center mr-10">
+        <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+          ثبت مرخصی
+        </h2>
+        <div className="flex flex-row gap-6 items-center justify-center mr-10 shadow-lg p-8 border border-gray-300 rounded-lg">
           <label className="text-sm font-medium text-gray-700 flex items-center">
-            ساعت خروج
+            ساعت و تاریخ خروج
           </label>
           <DatePicker
             format="DD/MM/YYYY HH:mm"
@@ -89,6 +90,7 @@ const LeaveTimeFlow = () => {
             calendar={persian}
             locale={persian_fa}
             calendarPosition="bottom-right"
+            value={startTime}
             style={{
               width: "100%",
               minWidth: "250px",
@@ -99,7 +101,7 @@ const LeaveTimeFlow = () => {
             onChange={(date) => setStartTime(date)}
           />
           <label className="text-sm font-medium text-gray-700 flex items-center">
-            ساعت ورود
+            ساعت وتاریخ ورود
           </label>
           <DatePicker
             format="DD/MM/YYYY HH:mm"
@@ -107,6 +109,7 @@ const LeaveTimeFlow = () => {
             calendar={persian}
             locale={persian_fa}
             calendarPosition="bottom-right"
+            value={endTime}
             style={{
               width: "100%",
               minWidth: "250px",
@@ -149,7 +152,7 @@ const LeaveTimeFlow = () => {
                       <div className="space-y-2">
                         <div>
                           <span className="font-medium text-gray-700 ml-2">
-                            ساعت ورود:
+                            ساعت و تاریخ ورود:
                           </span>
                           <span className="text-gray-600">
                             {moment(startItem.time_user).format(
@@ -160,7 +163,7 @@ const LeaveTimeFlow = () => {
                         {endItem && (
                           <div>
                             <span className="font-medium text-gray-700 ml-2">
-                              ساعت خروج:
+                              ساعت و تاریخ خروج:
                             </span>
                             <span className="text-gray-600">
                               {moment(endItem.time_user).format(
@@ -232,7 +235,7 @@ const LeaveTimeFlow = () => {
                         <div className="space-y-2">
                           <div>
                             <label className="text-sm font-medium text-gray-700 flex items-center">
-                              ساعت خروج
+                              ساعت و تاریخ خروج
                             </label>
                             <DatePicker
                               format="DD/MM/YYYY HH:mm"
@@ -240,6 +243,9 @@ const LeaveTimeFlow = () => {
                               calendar={persian}
                               locale={persian_fa}
                               calendarPosition="bottom-right"
+                              value={moment(startItem.time_user).format(
+                                "DD/MM/YYYY HH:mm"
+                              )}
                               style={{
                                 width: "100%",
                                 minWidth: "250px",
@@ -248,15 +254,12 @@ const LeaveTimeFlow = () => {
                                 padding: "20px",
                               }}
                               onChange={(date) => setStartTime(date)}
-                              value={moment(startItem.time_user).format(
-                                "DD/MM/YYYY HH:mm"
-                              )}
                             />
                           </div>
                           {endItem && (
                             <div>
                               <label className="text-sm font-medium text-gray-700 flex items-center">
-                                ساعت ورود
+                                ساعت و تاریخ خروج
                               </label>
                               <DatePicker
                                 format="DD/MM/YYYY HH:mm"
@@ -264,6 +267,9 @@ const LeaveTimeFlow = () => {
                                 calendar={persian}
                                 locale={persian_fa}
                                 calendarPosition="bottom-right"
+                                value={moment(endItem.time_user).format(
+                                  "DD/MM/YYYY HH:mm"
+                                )}
                                 style={{
                                   width: "100%",
                                   minWidth: "250px",
@@ -272,9 +278,6 @@ const LeaveTimeFlow = () => {
                                   padding: "20px",
                                 }}
                                 onChange={(date) => setStartTime(date)}
-                                value={moment(endItem.time_user).format(
-                                  "DD/MM/YYYY HH:mm"
-                                )}
                               />
                             </div>
                           )}

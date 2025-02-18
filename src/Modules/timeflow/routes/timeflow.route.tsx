@@ -24,12 +24,6 @@ const LeaveTimeFlowPage = lazy(() =>
   }))
 );
 
-const LeaveTimeFlowTablePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.LeaveTimeFlowTablePage,
-  }))
-);
-
 const TimeflowRoutes = [
   {
     path: "/timeflow",
@@ -46,10 +40,6 @@ const TimeflowRoutes = [
       {
         path: "leave",
         element: <LeaveTimeFlowPage />,
-      },
-      {
-        path: "leaveTable",
-        element: <LeaveTimeFlowTablePage />,
       },
     ],
   },
