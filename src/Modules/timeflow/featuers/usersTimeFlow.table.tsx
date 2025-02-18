@@ -53,6 +53,48 @@ const UsersTimeFlowTable = () => {
       },
     },
     {
+      title: "زمان والد",
+      field: "time_parent",
+      headerFilter: true,
+      formatter: (cell: CellComponent) => {
+        const value = cell.getValue();
+        return moment(value).format("jYYYY/jMM/jDD HH:mm:ss");
+      },
+    },
+
+    {
+      title: "زمان سیستم",
+      field: "time_system",
+      headerFilter: true,
+      formatter: (cell: CellComponent) => {
+        const value = cell.getValue();
+        return moment(value).format("jYYYY/jMM/jDD HH:mm:ss");
+      },
+    },
+    {
+      title: "وضعیت خود",
+      field: "status_self",
+      headerFilter: true,
+      formatter: (cell: CellComponent) => {
+        const value = cell.getValue();
+        if (value === "pending") return "درحال بررسی";
+        if (value === "approved") return "تایید";
+        return value;
+      },
+    },
+    {
+      title: "وضعیت والد",
+      field: "status_parent",
+      headerFilter: true,
+      formatter: (cell: CellComponent) => {
+        const value = cell.getValue();
+        if (value === "pending") return "درحال بررسی";
+        if (value === "approved") return "تایید";
+        return value;
+      },
+    },
+
+    {
       title: "نوع",
       field: "type",
       headerFilter: true,
