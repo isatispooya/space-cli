@@ -6,3 +6,4 @@ export { default as FileInput } from "./uploadInput";
 export { default as MultiSelect } from "./multiSelect";
 export { default as TextAreaInput } from "./textareaInput";
 export { default as ViewFileInput } from "./viewFileInput";
+export { default as DateSelector } from "./dateSelector";

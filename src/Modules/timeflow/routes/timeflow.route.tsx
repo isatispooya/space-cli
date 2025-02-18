@@ -24,6 +24,12 @@ const LeaveTimeFlowPage = lazy(() =>
   }))
 );
 
+const MissionPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.MissionPage,
+  }))
+);
+
 const TimeflowRoutes = [
   {
     path: "/timeflow",
@@ -40,6 +46,10 @@ const TimeflowRoutes = [
       {
         path: "leave",
         element: <LeaveTimeFlowPage />,
+      },
+      {
+        path: "mission",
+        element: <MissionPage />,
       },
     ],
   },

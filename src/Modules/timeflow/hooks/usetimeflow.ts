@@ -43,6 +43,18 @@ const useTimeflow = {
         timeflowServices.updateUsersLoginByParent(data, id),
     });
   },
+  useGetMissions: () => {
+    return useQuery({
+      queryKey: ["user_missions"],
+      queryFn: () => timeflowServices.getMissions(),
+    });
+  },
+  usePostMissions: () => {
+    return useMutation({
+      mutationKey: ["post_missions"],
+      mutationFn: (data: any) => timeflowServices.postMissions(data),
+    });
+  },
 };
 
 export default useTimeflow;

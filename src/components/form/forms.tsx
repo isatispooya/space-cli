@@ -8,15 +8,13 @@ import { FormikHelpers } from "formik";
 import { AnyObject, Maybe, ObjectSchema } from "yup";
 import { RiCloseLargeLine } from "react-icons/ri";
 import ViewFileInput from "../common/inputs/viewFileInput";
-import DatePicker from "react-multi-date-picker";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
 import { useState } from "react";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import FileInput from "../common/inputs/uploadInput";
 import MultiSelect from "../common/inputs/multiSelect";
 
 import FormDetail from "../form/formDetail";
+import { DateSelector } from "../common";
 
 interface FormsProps<T extends Maybe<AnyObject>> {
   formFields: FormField[];
@@ -271,23 +269,11 @@ const Forms = <T extends FormikValues>({
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           {field.label}
                         </label>
-                        <DatePicker
+                        <DateSelector
                           value={fieldProps.value}
                           onChange={(date) => {
-                            handleFieldChange(
-                              field.name,
-                              date,
-                              setFieldValue,
-                              field.format
-                            );
-                            return false;
+                            handleFieldChange(field.name, date, setFieldValue, field.format);
                           }}
-                          calendar={persian}
-                          locale={persian_fa}
-                          inputClass="h-10 w-[93%] px-4 rounded-md border border-gray-300 bg-white py-1 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-100"
-                          placeholder={`انتخاب ${field.label}...`}
-                          disabled={field.disabled}
-                          containerClassName="w-full"
                         />
                       </div>
                     )}

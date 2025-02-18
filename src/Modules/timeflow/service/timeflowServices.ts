@@ -23,6 +23,14 @@ const timeflowServices = {
     );
     return response.data;
   },
+  getMissions: async () => {
+    const response = await api.get("/timeflow/user-mission-log/");
+    return response.data;
+  },
+  postMissions: async (data: any) => {
+    const response = await api.post("/timeflow/user-mission-log/", data);
+    return response.data;
+  },
 };
 
 export default timeflowServices;
