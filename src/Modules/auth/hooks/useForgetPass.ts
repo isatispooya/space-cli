@@ -13,12 +13,6 @@ const useForgetPass = (): UseMutationResult<
     {
       mutationKey: ["forgetPass"],
       mutationFn: postForgetPass,
-      onSuccess: (response) => {
-        console.log(response);
-      },
-      onError: (error) => {
-        console.log(error);
-      },
     }
   );
 };

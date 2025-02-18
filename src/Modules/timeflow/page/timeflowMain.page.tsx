@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { CiLogin } from "react-icons/ci";
 import { Toolbar } from "../../../components";
 import { LuTable } from "react-icons/lu";
+import { MdOutlineSendTimeExtension } from "react-icons/md";
 
 const TimeFlowPage = () => {
   const toolbarButtons = [
@@ -23,6 +24,12 @@ const TimeFlowPage = () => {
       text: "مرخصی",
       permission: ["allow_any"],
       path: "leave",
+    },
+    {
+      icon: MdOutlineSendTimeExtension,
+      text: "ماموریت",
+      permission: ["allow_any"],
+      path: "mission",
     },
   ];
   return (

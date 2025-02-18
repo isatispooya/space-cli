@@ -1,13 +1,13 @@
 import { useTimeflow } from "../hooks";
 import { TabulatorTable } from "../../../components";
-import { ColumnDefinition } from "tabulator-tables";
-import { UserTimeFlowType } from "../types";
+import { CellComponent, ColumnDefinition } from "tabulator-tables";
+import moment from "moment-jalaali";
 
 const UsersTimeFlowTable = () => {
   const { data: userLogin } = useTimeflow.useGetUsersLogin();
 
-  const mappedData = Array.isArray(userLogin) 
-    ? userLogin.map((item: UserTimeFlowType) => ({
+  const mappedData = Array.isArray(userLogin?.other_logs)
+    ? userLogin.other_logs.map((item) => ({
         user_first_name: item.user.first_name,
         user_last_name: item.user.last_name,
         browser: item.browser,
@@ -44,49 +44,22 @@ const UsersTimeFlowTable = () => {
       headerFilter: true,
     },
     {
-      title: "وضعیت والد",
-      field: "status_parent",
-      headerFilter: true,
-    },
-    {
-      title: "وضعیت خود",
-      field: "status_self",
-      headerFilter: true,
-    },
-    {
-      title: "زمان دستگاه",
-      field: "time_device",
-      headerFilter: true,
-    },
-    {
-      title: "زمان والد",
-      field: "time_parent",
-      headerFilter: true,
-    },
-    {
-      title: "زمان سیستم",
-      field: "time_system",
-      headerFilter: true,
-    },
-    {
       title: "زمان کاربر",
       field: "time_user",
       headerFilter: true,
+      formatter: (cell: CellComponent) => {
+        const value = cell.getValue();
+        return moment(value).format("jYYYY/jMM/jDD HH:mm:ss");
+      },
     },
     {
       title: "نوع",
       field: "type",
       headerFilter: true,
-    },
-    {
-      title: "کاربر",
-      field: "user",
-      headerFilter: true,
-    },
-    {
-      title: "کاربر عامل",
-      field: "user_agent",
-      headerFilter: true,
+      formatter: (cell: CellComponent) => {
+        const value = cell.getValue();
+        return value === "login" ? "ورود" : "خروج";
+      },
     },
   ];
 

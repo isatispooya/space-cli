@@ -24,8 +24,8 @@ interface NotificationMessage {
 const NotificationComponent = React.forwardRef<
   HTMLDivElement,
   React.PropsWithChildren<unknown>
->((props, ref) => {
-  console.log(props);
+>((ref) => {
+
   const { data } = useCorrespondencesData();
   const markAsReadMutation = useMarkAsRead();
 

@@ -6,9 +6,9 @@ const TimeFlowMainPage = lazy(() =>
   }))
 );
 
-const VerifyTimeFlowPage = lazy(() =>
+const UserTimeflowVerifyPage = lazy(() =>
   import("..").then((module) => ({
-    default: module.VerifyTimeFlowPage,
+    default: module.UserTimeflowVerifyPage,
   }))
 );
 
@@ -31,7 +31,7 @@ const TimeflowRoutes = [
     children: [
       {
         path: "verify",
-        element: <VerifyTimeFlowPage />,
+        element: <UserTimeflowVerifyPage />,
       },
       {
         path: "users",
