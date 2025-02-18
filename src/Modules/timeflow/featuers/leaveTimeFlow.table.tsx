@@ -2,7 +2,7 @@ import { ColumnDefinition } from "tabulator-tables";
 import { PrivilegesTypes } from "../../points/types/pivileges.type";
 import moment from "moment-jalaali";
 import { TabulatorTable } from "../../../components";
-import useLeaveTimeFlow from "../hooks/useleavetimeflow";
+import { useLeaveTimeFlow } from "../hooks/useleavetimeflow";
 
 const LeaveTimeFlowTable = () => {
   const { data } = useLeaveTimeFlow();

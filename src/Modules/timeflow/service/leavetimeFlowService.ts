@@ -1,4 +1,5 @@
 import { api } from "../../../api";
+import { LeaveTimeFlowType } from "../types/LeaveTimeFlow.type";
 
 const leaveTimeFlowService = () => {
   return {
@@ -6,8 +7,12 @@ const leaveTimeFlowService = () => {
       const response = await api.get("/timeflow/user-leave-log/");
       return response.data;
     },
-    getById: async (id: string) => {
-      const response = await api.get(`/timeflow/user-leave-log/${id}/`);
+    create: async (data: LeaveTimeFlowType) => {
+      const response = await api.post(`/timeflow/user-leave-log/`, data);
+      return response.data;
+    },
+    update: async (id: string, data: LeaveTimeFlowType) => {
+      const response = await api.patch(`/timeflow/user-login-log-senior/${id}/`, data);
       return response.data;
     },
   };
