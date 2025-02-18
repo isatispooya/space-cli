@@ -6,24 +6,26 @@ import { UserTimeFlowType } from "../types";
 const UsersTimeFlowTable = () => {
   const { data: userLogin } = useTimeflow.useGetUsersLogin();
 
-  const mappedData = userLogin?.map((item: UserTimeFlowType) => ({
-    user_first_name: item.user.first_name,
-    user_last_name: item.user.last_name,
-    browser: item.browser,
-    device_type: item.device_type,
-    id: item.id,
-    ip_address: item.ip_address,
-    os_type: item.os_type,
-    status_parent: item.status_parent,
-    status_self: item.status_self,
-    time_device: item.time_device,
-    time_parent: item.time_parent,
-    time_system: item.time_system,
-    time_user: item.time_user,
-    type: item.type,
-    user: item.user,
-    user_agent: item.user_agent,
-  }));
+  const mappedData = Array.isArray(userLogin) 
+    ? userLogin.map((item: UserTimeFlowType) => ({
+        user_first_name: item.user.first_name,
+        user_last_name: item.user.last_name,
+        browser: item.browser,
+        device_type: item.device_type,
+        id: item.id,
+        ip_address: item.ip_address,
+        os_type: item.os_type,
+        status_parent: item.status_parent,
+        status_self: item.status_self,
+        time_device: item.time_device,
+        time_parent: item.time_parent,
+        time_system: item.time_system,
+        time_user: item.time_user,
+        type: item.type,
+        user: item.user,
+        user_agent: item.user_agent,
+      }))
+    : [];
 
   const columns = (): ColumnDefinition[] => [
     {
