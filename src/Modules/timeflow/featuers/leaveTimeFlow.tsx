@@ -17,6 +17,98 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Typography from "@mui/material/Typography";
 import { LeaveTimeFlowType } from "../types/LeaveTimeFlow.type";
 
+const CustomDatePicker = ({
+  label,
+  onChange,
+  value,
+}: {
+  label: string;
+  onChange: (date: any) => void;
+  value: any;
+}) => (
+  <div>
+    <label className="text-sm font-medium text-gray-700 flex items-center mb-2">
+      {label}
+    </label>
+    <DatePicker
+      format="DD/MM/YYYY HH:mm"
+      plugins={[<TimePicker position="bottom" />]}
+      calendar={persian}
+      locale={persian_fa}
+      calendarPosition="bottom-right"
+      style={{
+        width: "100%",
+        minWidth: "250px",
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        padding: "20px",
+      }}
+      onChange={onChange}
+      value={value}
+    />
+  </div>
+);
+
+const LeaveItem = ({
+  startItem,
+  endItem,
+  isOwnLeave,
+  onApprove,
+}: {
+  startItem: any;
+  endItem: any;
+  isOwnLeave: boolean;
+  onApprove: () => void;
+}) => (
+  <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+    <div className="space-y-2">
+      {!isOwnLeave && (
+        <div className="mb-2">
+          <span className="font-medium text-gray-700 ml-2">نام:</span>
+          <span className="text-gray-600">
+            {startItem.user.first_name} {startItem.user.last_name}
+          </span>
+        </div>
+      )}
+      <div className="space-y-2">
+        <CustomDatePicker
+          label="ساعت خروج"
+          value={moment(startItem.time_user).format("DD/MM/YYYY HH:mm")}
+          onChange={() => {}}
+        />
+        {endItem && (
+          <CustomDatePicker
+            label="ساعت ورود"
+            value={moment(endItem.time_user).format("DD/MM/YYYY HH:mm")}
+            onChange={() => {}}
+          />
+        )}
+      </div>
+    </div>
+    <div className="flex items-center gap-4">
+      {startItem.status_parent === "pending" && onApprove ? (
+        <button
+          onClick={onApprove}
+          className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
+        >
+          تایید
+        </button>
+      ) : (
+        <Chip
+          label={
+            startItem.status_parent === "pending" ? "در حال بررسی" : "تایید شده"
+          }
+          style={{
+            backgroundColor:
+              startItem.status_parent === "pending" ? undefined : "green",
+            color: startItem.status_parent === "pending" ? undefined : "white",
+          }}
+        />
+      )}
+    </div>
+  </div>
+);
+
 const LeaveTimeFlow = () => {
   const { mutate: createLeaveTimeFlow } = useLeaveTimeFlowCreate();
   const { data: dataLeaveTimeFlow, refetch } = useLeaveTimeFlow();
@@ -78,258 +170,113 @@ const LeaveTimeFlow = () => {
   }, [dataLeaveTimeFlow?.other_logs]);
 
   return (
-    <>
-      <div className="w-[80%] mx-auto shadow-lg bg-white rounded-3xl relative p-8 flex flex-col mb-[100px] border border-gray-300 hover:shadow-xl transition-shadow duration-300">
-        <div className="flex flex-row gap-6 items-center justify-center mr-10">
-          <label className="text-sm font-medium text-gray-700 flex items-center">
-            ساعت خروج
-          </label>
-          <DatePicker
-            format="DD/MM/YYYY HH:mm"
-            plugins={[<TimePicker position="bottom" />]}
-            calendar={persian}
-            locale={persian_fa}
-            calendarPosition="bottom-right"
-            style={{
-              width: "100%",
-              minWidth: "250px",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "20px",
-            }}
-            onChange={(date) => setStartTime(date as any)}
-          />
-          <label className="text-sm font-medium text-gray-700 flex items-center">
-            ساعت ورود
-          </label>
-          <DatePicker
-            format="DD/MM/YYYY HH:mm"
-            plugins={[<TimePicker position="bottom" />]}
-            calendar={persian}
-            locale={persian_fa}
-            calendarPosition="bottom-right"
-            style={{
-              width: "100%",
-              minWidth: "250px",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "20px",
-            }}
-            onChange={(date) => setEndTime(date as any)}
-          />
-          <div className="flex-grow" />
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-500 text-white px-8 py-2 rounded-md"
+    <div className="w-[80%] mx-auto shadow-lg bg-white rounded-3xl relative p-8 flex flex-col mb-[100px] border border-gray-300 hover:shadow-xl transition-shadow duration-300">
+      <div className="flex flex-row gap-6 items-center justify-center mr-10">
+        <CustomDatePicker
+          label="ساعت خروج"
+          onChange={(date) => setStartTime(date)}
+        />
+        <CustomDatePicker
+          label="ساعت ورود"
+          onChange={(date) => setEndTime(date)}
+        />
+        <div className="flex-grow" />
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-500 text-white px-8 py-2 rounded-md hover:bg-blue-600 transition-colors"
+        >
+          ثبت
+        </button>
+      </div>
+
+      <div className="mt-8">
+        <Accordion defaultExpanded={false}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
           >
-            ثبت
-          </button>
-        </div>
-        <div className="mt-8">
-          <Accordion defaultExpanded={false}>
+            <Typography
+              component="span"
+              className="text-xl font-bold text-gray-800"
+            >
+              مرخصی‌های من
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {groupedOwnData.length > 0 ? (
+              <div className="space-y-4">
+                {groupedOwnData.map(({ startItem, endItem }) => (
+                  <LeaveItem
+                    key={startItem.id}
+                    startItem={startItem}
+                    endItem={endItem}
+                    isOwnLeave={true}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 text-center py-4">
+                هیچ مرخصی شخصی ثبت نشده است.
+              </p>
+            )}
+          </AccordionDetails>
+        </Accordion>
+
+        {groupedOtherData.length > 0 && (
+          <Accordion className="mt-4" defaultExpanded={false}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
+              aria-controls="panel2-content"
+              id="panel2-header"
             >
               <Typography
                 component="span"
                 className="text-xl font-bold text-gray-800"
               >
-                مرخصی‌های من
+                مرخصی‌های زیرمجموعه
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {groupedOwnData.length > 0 ? (
-                <div className="space-y-4">
-                  {groupedOwnData.map(({ startItem, endItem }) => (
-                    <div
-                      key={startItem.id}
-                      className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
-                    >
-                      <div className="space-y-2">
-                        <div>
-                          <span className="font-medium text-gray-700 ml-2">
-                            ساعت ورود:
-                          </span>
-                          <span className="text-gray-600">
-                            {moment(startItem.time_user).format(
-                              "DD/MM/YYYY HH:mm"
-                            )}
-                          </span>
-                        </div>
-                        {endItem && (
-                          <div>
-                            <span className="font-medium text-gray-700 ml-2">
-                              ساعت خروج:
-                            </span>
-                            <span className="text-gray-600">
-                              {moment(endItem.time_user).format(
-                                "DD/MM/YYYY HH:mm"
-                              )}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                      <Chip
-                        label={
-                          startItem.status_parent === "pending"
-                            ? "در حال بررسی"
-                            : "تایید شده"
-                        }
-                        style={{
-                          backgroundColor:
-                            startItem.status_parent === "pending"
-                              ? undefined
-                              : "green",
-                          color:
-                            startItem.status_parent === "pending"
-                              ? undefined
-                              : "white",
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500 text-center py-4">
-                  هیچ مرخصی شخصی ثبت نشده است.
-                </p>
-              )}
+              <div className="space-y-4">
+                {groupedOtherData.map(({ startItem, endItem }) => (
+                  <LeaveItem
+                    key={startItem.id}
+                    startItem={startItem}
+                    endItem={endItem}
+                    isOwnLeave={false}
+                    onApprove={
+                      !approvedItems.includes(startItem.id)
+                        ? () => {
+                            updateLeaveTimeFlow(
+                              {
+                                id: startItem.id,
+                                data: {
+                                  time_user_start: startItem.time_user,
+                                  time_user_end: endItem?.time_user || null,
+                                },
+                              },
+                              {
+                                onSuccess: () => {
+                                  setApprovedItems((prev) => [
+                                    ...prev,
+                                    startItem.id,
+                                  ]);
+                                  refetch();
+                                },
+                              }
+                            );
+                          }
+                        : undefined
+                    }
+                  />
+                ))}
+              </div>
             </AccordionDetails>
           </Accordion>
-
-          {groupedOtherData.length > 0 && (
-            <Accordion className="mt-4" defaultExpanded={false}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2-content"
-                id="panel2-header"
-              >
-                <Typography
-                  component="span"
-                  className="text-xl font-bold text-gray-800"
-                >
-                  مرخصی‌های زیرمجموعه
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className="space-y-4">
-                  {groupedOtherData.map(({ startItem, endItem }) => (
-                    <div
-                      key={startItem.id}
-                      className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
-                    >
-                      <div className="space-y-2">
-                        <div className="mb-2">
-                          <span className="font-medium text-gray-700 ml-2">
-                            نام:
-                          </span>
-                          <span className="text-gray-600">
-                            {startItem.user.first_name}{" "}
-                            {startItem.user.last_name}
-                          </span>
-                        </div>
-                        <div className="space-y-2">
-                          <div>
-                            <label className="text-sm font-medium text-gray-700 flex items-center">
-                              ساعت خروج
-                            </label>
-                            <DatePicker
-                              format="DD/MM/YYYY HH:mm"
-                              plugins={[<TimePicker position="bottom" />]}
-                              calendar={persian}
-                              locale={persian_fa}
-                              calendarPosition="bottom-right"
-                              style={{
-                                width: "100%",
-                                minWidth: "250px",
-                                border: "1px solid #ccc",
-                                borderRadius: "8px",
-                                padding: "20px",
-                              }}
-                              onChange={(date) => setStartTime(date)}
-                              value={moment(startItem.time_user).format(
-                                "DD/MM/YYYY HH:mm"
-                              )}
-                            />
-                          </div>
-                          {endItem && (
-                            <div>
-                              <label className="text-sm font-medium text-gray-700 flex items-center">
-                                ساعت ورود
-                              </label>
-                              <DatePicker
-                                format="DD/MM/YYYY HH:mm"
-                                plugins={[<TimePicker position="bottom" />]}
-                                calendar={persian}
-                                locale={persian_fa}
-                                calendarPosition="bottom-right"
-                                style={{
-                                  width: "100%",
-                                  minWidth: "250px",
-                                  border: "1px solid #ccc",
-                                  borderRadius: "8px",
-                                  padding: "20px",
-                                }}
-                                onChange={(date) => setStartTime(date)}
-                                value={moment(endItem.time_user).format(
-                                  "DD/MM/YYYY HH:mm"
-                                )}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        {startItem.status_parent === "pending" &&
-                        !approvedItems.includes(startItem.id) ? (
-                          <>
-                            <button
-                              onClick={() => {
-                                updateLeaveTimeFlow(
-                                  {
-                                    id: startItem.id,
-                                    data: {
-                                      time_user_start: startItem.time_user,
-                                      time_user_end: endItem?.time_user || null,
-                                    },
-                                  },
-                                  {
-                                    onSuccess: () => {
-                                      setApprovedItems((prev) => [
-                                        ...prev,
-                                        startItem.id,
-                                      ]);
-                                      refetch();
-                                    },
-                                  }
-                                );
-                              }}
-                              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
-                            >
-                              تایید
-                            </button>
-                          </>
-                        ) : (
-                          <Chip
-                            label="تایید شده"
-                            style={{
-                              backgroundColor: "green",
-                              color: "white",
-                            }}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          )}
-        </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 
