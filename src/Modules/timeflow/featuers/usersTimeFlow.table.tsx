@@ -36,13 +36,11 @@ const UsersTimeFlowTable = () => {
       field: "user_last_name",
       headerFilter: true,
     },
-
     {
       title: "نوع دستگاه",
       field: "device_type",
       headerFilter: true,
     },
-
     {
       title: "وضعیت والد",
       field: "status_parent",
