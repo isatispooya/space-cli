@@ -77,7 +77,9 @@ const UsersTimeFlowTable = () => {
       headerFilter: true,
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
-        return value === "pending" ? "درحال بررسی" : value;
+        if (value === "pending") return "درحال بررسی";
+        if (value === "approved") return "تایید";
+        return value;
       },
     },
     {
@@ -86,7 +88,9 @@ const UsersTimeFlowTable = () => {
       headerFilter: true,
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
-        return value === "pending" ? "درحال بررسی" : value;
+        if (value === "pending") return "درحال بررسی";
+        if (value === "approved") return "تایید";
+        return value;
       },
     },
 
