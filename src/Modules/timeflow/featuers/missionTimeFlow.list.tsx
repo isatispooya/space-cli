@@ -156,7 +156,9 @@ const MissionTimeFlowList = () => {
                             ساعت و تاریخ ورود:
                           </span>
                           <span className="text-gray-600">
-                            {moment(startItem.time_user).format("jYYYY/jMM/jDD HH:mm")}
+                            {moment(startItem.time_user).format(
+                              "jYYYY/jMM/jDD HH:mm"
+                            )}
                           </span>
                         </div>
                         {endItem && (
@@ -165,7 +167,9 @@ const MissionTimeFlowList = () => {
                               ساعت و تاریخ خروج:
                             </span>
                             <span className="text-gray-600">
-                              {moment(endItem.time_user).format("jYYYY/jMM/jDD HH:mm")}
+                              {moment(endItem.time_user).format(
+                                "jYYYY/jMM/jDD HH:mm"
+                              )}
                             </span>
                           </div>
                         )}
@@ -240,7 +244,9 @@ const MissionTimeFlowList = () => {
                               calendar={persian}
                               locale={persian_fa}
                               calendarPosition="bottom-right"
-                              value={moment(startItem.time_user).format("jYYYY/jMM/jDD HH:mm")}
+                              value={moment(startItem.time_user).format(
+                                "jYYYY/jMM/jDD HH:mm"
+                              )}
                               style={{
                                 width: "100%",
                                 minWidth: "250px",
@@ -262,7 +268,9 @@ const MissionTimeFlowList = () => {
                                 calendar={persian}
                                 locale={persian_fa}
                                 calendarPosition="bottom-right"
-                                value={moment(endItem.time_user).format("jYYYY/jMM/jDD HH:mm")}
+                                value={moment(endItem.time_user).format(
+                                  "jYYYY/jMM/jDD HH:mm"
+                                )}
                                 style={{
                                   width: "100%",
                                   minWidth: "250px",

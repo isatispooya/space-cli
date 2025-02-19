@@ -8,7 +8,7 @@ import {
   useLeaveTimeFlowUpdate,
 } from "../hooks/useleavetimeflow";
 import { useState, useMemo } from "react";
-import moment from "moment";
+import moment from "moment-jalaali";
 import { Chip } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -156,7 +156,7 @@ const LeaveTimeFlow = () => {
                           </span>
                           <span className="text-gray-600">
                             {moment(startItem.time_user).format(
-                              "DD/MM/YYYY HH:mm"
+                              "jYYYY/jMM/jDD HH:mm"
                             )}
                           </span>
                         </div>
@@ -167,7 +167,7 @@ const LeaveTimeFlow = () => {
                             </span>
                             <span className="text-gray-600">
                               {moment(endItem.time_user).format(
-                                "DD/MM/YYYY HH:mm"
+                                "jYYYY/jMM/jDD HH:mm"
                               )}
                             </span>
                           </div>
@@ -244,7 +244,7 @@ const LeaveTimeFlow = () => {
                               locale={persian_fa}
                               calendarPosition="bottom-right"
                               value={moment(startItem.time_user).format(
-                                "DD/MM/YYYY HH:mm"
+                                "jYYYY/jMM/jDD HH:mm"
                               )}
                               style={{
                                 width: "100%",
@@ -268,7 +268,7 @@ const LeaveTimeFlow = () => {
                                 locale={persian_fa}
                                 calendarPosition="bottom-right"
                                 value={moment(endItem.time_user).format(
-                                  "DD/MM/YYYY HH:mm"
+                                  "jYYYY/jMM/jDD HH:mm"
                                 )}
                                 style={{
                                   width: "100%",
