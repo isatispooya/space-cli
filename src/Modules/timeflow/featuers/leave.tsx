@@ -3,11 +3,17 @@ import { TabComponent } from "../../../components";
 import { ParentLeaveForm, UserLeaveView } from "../components";
 import LeaveCreate from "../components/leaveCreate.form";
 import { motion } from "framer-motion";
+import { LeaveType } from "../types";
 
 const Leave = () => {
   const { data: LeaveData, refetch } = useTimeflow.useGetLeave();
 
+  const leaveData: LeaveType = Array.isArray(LeaveData) 
+  ? (LeaveData[0] || { other_logs: [], own_logs: [] }) 
+  : LeaveData || { other_logs: [], own_logs: [] };
+
   const tabs = [
+
     {
       id: "leave",
       label: "مرخصی های کاربر",
@@ -15,14 +21,14 @@ const Leave = () => {
         <>
           <div className="mb-5 mt-5">
             <UserLeaveView
-              leaveData={LeaveData || { other_logs: [], own_logs: [] }}
+              leaveData={leaveData}
               refetch={refetch}
             />
           </div>
 
           <div>
             <ParentLeaveForm
-              dataLeaveTimeFlow={LeaveData || { other_logs: [], own_logs: [] }}
+              dataLeaveTimeFlow={leaveData}
               refetch={refetch}
             />
           </div>
