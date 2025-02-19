@@ -5,10 +5,50 @@ import ParentTimeFlowVerify from "./parentTimeFlowVerify.list";
 import { UserLoginType } from "../types";
 import { Accordian } from "../../../components";
 import { useState } from "react";
+import { TabComponent } from "../../../components";
+import UserLogoutVerify from "./usersLogoutVerify.list";
 
 const VerifyTimeFlow: React.FC = () => {
   const { data: userLogin } = useTimeflow.useGetUsersLogin();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenParent, setIsOpenParent] = useState(false);
+
+  const tabs = [
+    {
+      id: "user",
+      label: "ورود و خروج کاربر",
+      content: (
+        <>
+          <div className="mb-5 mt-5">
+            <Accordian
+              title="ورود و خروج کاربر"
+              isOpen={isOpen}
+              onToggle={() => setIsOpen(!isOpen)}
+            >
+              <UserTimeflowVerify userLogin={userLogin as UserLoginType} />
+            </Accordian>
+          </div>
+
+          <Accordian
+            title="ورود و خروج همکاران"
+            isOpen={isOpenParent}
+            onToggle={() => setIsOpenParent(!isOpenParent)}
+          >
+            <ParentTimeFlowVerify userLogin={userLogin as UserLoginType} />
+          </Accordian>
+        </>
+      ),
+    },
+    {
+      id: "parent",
+      label: "ثبت خروج",
+      content: (
+        <div className="mb-5 mt-5">
+          <UserLogoutVerify />
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="flex flex-col items-center justify-center  px-4" dir="rtl">
@@ -16,25 +56,9 @@ const VerifyTimeFlow: React.FC = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-5xl space-y-6 border border-gray-300"
+        className=" p-8 w-full max-w-5xl space-y-6 "
       >
-        <Accordian
-          title="ورود و خروج کاربر"
-          isOpen={isOpen}
-          onToggle={() => setIsOpen(!isOpen)}
-        >
-          <UserTimeflowVerify userLogin={userLogin as UserLoginType} />
-        </Accordian>
-
-        <hr className="border-t-2  border-gray-300" />
-
-        <Accordian
-          title="ورود و خروج همکاران"
-          isOpen={isOpen}
-          onToggle={() => setIsOpen(!isOpen)}
-        >
-          <ParentTimeFlowVerify userLogin={userLogin as UserLoginType} />
-        </Accordian>
+        <TabComponent tabs={tabs} />
       </motion.div>
     </div>
   );
