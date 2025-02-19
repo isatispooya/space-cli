@@ -1,5 +1,5 @@
 export interface LeaveTimeFlowType {
-  id: number;
+  id?: number;
   time_user_start: string | null;
   time_user_end: string | null;
 }
@@ -24,6 +24,8 @@ export interface LeaveTimeFlowResponse {
 export interface LeaveTimeFlowCreateInput {
   time_user_start: string | null;
   time_user_end: string | null;
+  time_parent_start?: string | null;
+  time_parent_end?: string | null;
 }
 
 export interface LeaveTimeFlowUpdateInput {

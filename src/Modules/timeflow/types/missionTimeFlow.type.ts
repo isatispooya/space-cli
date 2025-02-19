@@ -1,7 +1,9 @@
 export interface MissionTimeFlowType {
-  id: number;
-  time_user_start: string | null;
-  time_user_end: string | null;
+  id?: number;
+  time_user_start?: string | null;
+  time_user_end?: string | null;
+  time_parent_start?: string | null;
+  time_parent_end?: string | null;
 }
 
 interface User {

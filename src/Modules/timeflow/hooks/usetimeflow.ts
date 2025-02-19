@@ -19,12 +19,12 @@ const useTimeflow = {
   useUsersLogoutAccept: (): UseMutationResult<
     TimeflowVerifyType,
     AxiosError,
-    { data: TimeflowVerifyType; id: number }
+    { data: TimeflowVerifyType }
   > => {
     return useMutation({
       mutationKey: ["update-users-logout"],
-      mutationFn: ({ data, id }: { data: TimeflowVerifyType; id: number }) =>
-        timeflowServices.UsersLogoutAccept(data, id),
+      mutationFn: ({ data }: { data: TimeflowVerifyType }) =>
+        timeflowServices.UsersLogoutAccept(data),
     });
   },
 

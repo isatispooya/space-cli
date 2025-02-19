@@ -24,13 +24,19 @@ const UserTimeflowVerify: React.FC<{ userLogin: UserLoginType }> = ({
     );
   };
 
+  const formattedLogs = userLogin.own_logs
+    .filter((log) => log.type === "login")
+    .map((log) => ({
+      id: log.id,
+      user: log.user,
+      time_parent: log.time_parent,
+      type: log.type as "login" | "logout",
+    }));
+
   return (
     <>
       {userLogin?.own_logs?.filter((log) => log.type === "login") ? (
-        <List
-          logs={userLogin.own_logs.filter((log) => log.type === "login")}
-          onAccept={handleAccept}
-        />
+        <List logs={formattedLogs} onAccept={handleAccept} />
       ) : null}
     </>
   );

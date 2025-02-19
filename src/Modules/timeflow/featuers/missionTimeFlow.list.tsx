@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import persian from "react-date-object/calendars/persian";
@@ -16,11 +17,13 @@ import {
   useMissionTimeFlow,
 } from "../hooks/usemissionTimeFlow";
 
+import DateObject from "react-date-object";
+
 const MissionTimeFlowList = () => {
   const { mutate: createMissionTimeFlow } = useMissionTimeFlowCreate();
   const { data: dataMissionTimeFlow, refetch } = useMissionTimeFlow();
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  const [startTime, setStartTime] = useState<DateObject | null>(null);
+  const [endTime, setEndTime] = useState<DateObject | null>(null);
   const { mutate: updateMissionTimeFlow } = useMissionTimeFlowUpdate();
   const [approvedItems, setApprovedItems] = useState<number[]>([]);
 
@@ -102,7 +105,7 @@ const MissionTimeFlowList = () => {
                   padding: "0.5rem",
                   boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
                 }}
-                onChange={(date) => setStartTime(date)}
+                onChange={(date: DateObject | null) => setStartTime(date)}
                 className="focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -126,7 +129,7 @@ const MissionTimeFlowList = () => {
                   padding: "0.5rem",
                   boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
                 }}
-                onChange={(date) => setEndTime(date)}
+                onChange={(date: DateObject | null) => setEndTime(date)}
                 className="focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -159,7 +162,7 @@ const MissionTimeFlowList = () => {
             <AccordionDetails>
               {groupedOwnData.length > 0 ? (
                 <div className="space-y-4">
-                  {groupedOwnData.map(({ startItem, endItem }, index) => (
+                  {groupedOwnData.map(({ startItem, endItem }) => (
                     <div
                       key={startItem.id}
                       className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
@@ -268,7 +271,9 @@ const MissionTimeFlowList = () => {
                                 borderRadius: "8px",
                                 padding: "20px",
                               }}
-                              onChange={(date) => setStartTime(date)}
+                              onChange={(date: DateObject | null) => {
+                                setStartTime(date);
+                              }}
                             />
                           </div>
                           {endItem && (
@@ -292,7 +297,9 @@ const MissionTimeFlowList = () => {
                                   borderRadius: "8px",
                                   padding: "20px",
                                 }}
-                                onChange={(date) => setStartTime(date)}
+                                onChange={(date: DateObject | null) => {
+                                  setStartTime(date);
+                                }}
                               />
                             </div>
                           )}
@@ -309,7 +316,8 @@ const MissionTimeFlowList = () => {
                                     id: startItem.id,
                                     data: {
                                       time_parent_start: startItem.time_user,
-                                      time_parent_end: endItem?.time_user || null,
+                                      time_parent_end:
+                                        endItem?.time_user || null,
                                     },
                                   },
                                   {

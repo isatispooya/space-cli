@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import persian from "react-date-object/calendars/persian";
@@ -15,12 +16,15 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Typography from "@mui/material/Typography";
+import DateObject from "react-date-object";
+
+
 
 const LeaveTimeFlow = () => {
   const { mutate: createLeaveTimeFlow } = useLeaveTimeFlowCreate();
   const { data: dataLeaveTimeFlow, refetch } = useLeaveTimeFlow();
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  const [startTime, setStartTime] = useState<DateObject | null>(null);
+  const [endTime, setEndTime] = useState<DateObject | null>(null);
   const { mutate: updateLeaveTimeFlow } = useLeaveTimeFlowUpdate();
   const [approvedItems, setApprovedItems] = useState<number[]>([]);
 
@@ -126,7 +130,7 @@ const LeaveTimeFlow = () => {
                   padding: "0.5rem",
                   boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
                 }}
-                onChange={(date) => setEndTime(date)}
+                onChange={(date: DateObject | null) => setEndTime(date)}
                 className="focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -158,7 +162,7 @@ const LeaveTimeFlow = () => {
             <AccordionDetails>
               {groupedOwnData.length > 0 ? (
                 <div className="space-y-4">
-                  {groupedOwnData.map(({ startItem, endItem }, index) => (
+                  {groupedOwnData.map(({ startItem, endItem }) => (
                     <div
                       key={startItem.id}
                       className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
@@ -307,8 +311,8 @@ const LeaveTimeFlow = () => {
                                   {
                                     id: startItem.id,
                                     data: {
-                                      time_parent_start: startItem.time_user,
-                                      time_parent_end:
+                                      time_user_start: startItem.time_user,
+                                      time_user_end:
                                         endItem?.time_user || null,
                                     },
                                   },

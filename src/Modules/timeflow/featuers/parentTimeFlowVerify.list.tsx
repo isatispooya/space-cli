@@ -33,7 +33,15 @@ const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
   return (
     <>
       {userLogin?.other_logs ? (
-        <List logs={userLogin.other_logs} onAccept={handleAccept} />
+        <List
+          logs={userLogin.other_logs.map((log) => ({
+            id: log.id,
+            user: log.user,
+            time_parent: log.time_parent,
+            type: log.type as "login" | "logout",
+          }))}
+          onAccept={handleAccept}
+        />
       ) : null}
     </>
   );

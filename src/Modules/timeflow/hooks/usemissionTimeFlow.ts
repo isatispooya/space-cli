@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { MissionTimeFlowType } from "../types/missionTimeFlow.type";
 import { toast } from "react-hot-toast";
