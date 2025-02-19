@@ -8,29 +8,22 @@ import { LeaveType } from "../types";
 const Leave = () => {
   const { data: LeaveData, refetch } = useTimeflow.useGetLeave();
 
-  const leaveData: LeaveType = Array.isArray(LeaveData) 
-  ? (LeaveData[0] || { other_logs: [], own_logs: [] }) 
-  : LeaveData || { other_logs: [], own_logs: [] };
+  const leaveData: LeaveType = Array.isArray(LeaveData)
+    ? LeaveData[0] || { other_logs: [], own_logs: [] }
+    : LeaveData || { other_logs: [], own_logs: [] };
 
   const tabs = [
-
     {
       id: "leave",
       label: "مرخصی های کاربر",
       content: (
         <>
           <div className="mb-5 mt-5">
-            <UserLeaveView
-              leaveData={leaveData}
-              refetch={refetch}
-            />
+            <UserLeaveView leaveData={leaveData} refetch={refetch} />
           </div>
 
           <div>
-            <ParentLeaveForm
-              dataLeaveTimeFlow={leaveData}
-              refetch={refetch}
-            />
+            <ParentLeaveForm dataLeaveTimeFlow={leaveData} refetch={refetch} />
           </div>
         </>
       ),
