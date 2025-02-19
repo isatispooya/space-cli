@@ -12,7 +12,8 @@ interface Log {
     first_name: string;
     last_name: string;
   };
-  time_user: string;
+  time_parent: string;
+  type: "login" | "logout";
 }
 
 interface LogListProps {
@@ -47,17 +48,19 @@ const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          {/* User Information */}
           <div className="flex flex-col space-y-1">
             <span className="text-lg font-medium text-gray-800">
               {log.user.first_name} {log.user.last_name}
             </span>
             <span className="text-sm text-gray-600">
-              {moment(log.time_user).format("jYYYY/jMM/jDD HH:mm")}
+              {moment(log.time_parent).format("jYYYY/jMM/jDD HH:mm")}
+            </span>
+
+            <span className="text-sm text-gray-600">
+              {log.type === "login" ? "ورود" : "خروج"}
             </span>
           </div>
 
-          {/* Time Picker */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <TimePicker
               label=""
@@ -81,7 +84,7 @@ const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
             />
           </LocalizationProvider>
 
-          {/* Accept Button */}
+       
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

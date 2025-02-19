@@ -15,12 +15,19 @@ const useTimeflow = {
       queryFn: () => timeflowServices.getUsersLogin(),
     });
   },
-  useGetUsersLogout: () => {
-    return useQuery({
-      queryKey: ["users-logout"],
-      queryFn: () => timeflowServices.getUsersLogout(),
+
+  useUsersLogoutAccept: (): UseMutationResult<
+    TimeflowVerifyType,
+    AxiosError,
+    { data: TimeflowVerifyType; id: number }
+  > => {
+    return useMutation({
+      mutationKey: ["update-users-logout"],
+      mutationFn: ({ data, id }: { data: TimeflowVerifyType; id: number }) =>
+        timeflowServices.UsersLogoutAccept(data, id),
     });
   },
+
   useUserTimeflowAccept: (): UseMutationResult<
     TimeflowVerifyType,
     AxiosError,
@@ -41,18 +48,6 @@ const useTimeflow = {
       mutationKey: ["update-users-login-by-parent"],
       mutationFn: ({ data, id }: { data: SeniorVerifyType; id: number }) =>
         timeflowServices.updateUsersLoginByParent(data, id),
-    });
-  },
-  useGetMissions: () => {
-    return useQuery({
-      queryKey: ["user_missions"],
-      queryFn: () => timeflowServices.getMissions(),
-    });
-  },
-  usePostMissions: () => {
-    return useMutation({
-      mutationKey: ["post_missions"],
-      mutationFn: (data: any) => timeflowServices.postMissions(data),
     });
   },
 };
