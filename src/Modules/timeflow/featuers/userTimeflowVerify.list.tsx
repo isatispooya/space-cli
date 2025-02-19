@@ -3,6 +3,8 @@ import { useTimeflow } from "../hooks";
 import { List } from "../components";
 import { UserLoginType } from "../types";
 import { Dayjs } from "dayjs";
+import toast from "react-hot-toast";
+import dayjs from "dayjs";
 
 const UserTimeflowVerify: React.FC<{ userLogin: UserLoginType }> = ({
   userLogin,
@@ -15,11 +17,10 @@ const UserTimeflowVerify: React.FC<{ userLogin: UserLoginType }> = ({
       { data: payload, id: logId },
       {
         onSuccess: () => {
-          alert("زمان با موفقیت تایید شد!");
+          toast.success("زمان با موفقیت تایید شد!");
         },
-        onError: (error) => {
-          console.error("خطا در تایید زمان:", error);
-          alert("خطا در تایید زمان. لطفاً دوباره تلاش کنید.");
+        onError: () => {
+          toast.error("خطا در تایید زمان. لطفاً دوباره تلاش کنید.");
         },
       }
     );
@@ -30,7 +31,7 @@ const UserTimeflowVerify: React.FC<{ userLogin: UserLoginType }> = ({
     .map((log) => ({
       id: log.id,
       user: log.user,
-      time_parent: log.time_parent,
+      time_parent: dayjs(log.time_parent),
       type: log.type as "login" | "logout",
     }));
 

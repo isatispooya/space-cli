@@ -5,6 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Dayjs } from "dayjs";
+import toast from "react-hot-toast";
 
 interface Log {
   id: number;
@@ -12,7 +13,7 @@ interface Log {
     first_name: string;
     last_name: string;
   };
-  time_parent: string;
+  time_parent: Dayjs;
   type: "login" | "logout";
 }
 
@@ -24,7 +25,13 @@ interface LogListProps {
 const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
   const [selectedTimes, setSelectedTimes] = useState<{
     [key: number]: Dayjs | null;
-  }>({});
+  }>(() => {
+    const initialTimes: { [key: number]: Dayjs | null } = {};
+    logs.forEach((log) => {
+      initialTimes[log.id] = log.time_parent;
+    });
+    return initialTimes;
+  });
 
   const handleTimeChange = (id: number, newTime: Dayjs | null) => {
     setSelectedTimes((prev) => ({ ...prev, [id]: newTime }));
@@ -33,7 +40,7 @@ const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
   const handleAccept = (logId: number) => {
     const selectedTime = selectedTimes[logId];
     if (!selectedTime) {
-      alert("لطفاً زمان معتبری انتخاب کنید.");
+      toast.error("لطفاً زمان معتبری انتخاب کنید.");
       return;
     }
     onAccept(logId, selectedTime);

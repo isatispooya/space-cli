@@ -4,6 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Dayjs } from "dayjs";
+import toast from "react-hot-toast";
 
 interface LogListProps {
   onAccept: (selectedTime: Dayjs) => void;
@@ -18,7 +19,7 @@ const LogoutList: React.FC<LogListProps> = ({ onAccept }) => {
 
   const handleAccept = () => {
     if (!selectedTime) {
-      alert("لطفاً زمان معتبری انتخاب کنید.");
+      toast.error("لطفاً زمان معتبری انتخاب کنید.");
       return;
     }
     onAccept(selectedTime);
@@ -31,7 +32,6 @@ const LogoutList: React.FC<LogListProps> = ({ onAccept }) => {
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
-        {/* Time Picker */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
             label="زمان خروج"
