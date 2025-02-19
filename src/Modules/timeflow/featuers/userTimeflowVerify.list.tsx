@@ -1,6 +1,6 @@
 import React from "react";
 import { useTimeflow } from "../hooks";
-import { LoginList } from "../components";
+import { List } from "../components";
 import { UserLoginType } from "../types";
 import { Dayjs } from "dayjs";
 const UserTimeflowVerify: React.FC<{ userLogin: UserLoginType }> = ({
@@ -26,8 +26,11 @@ const UserTimeflowVerify: React.FC<{ userLogin: UserLoginType }> = ({
 
   return (
     <>
-      {userLogin?.own_logs ? (
-        <LoginList logs={userLogin.own_logs} onAccept={handleAccept} />
+      {userLogin?.own_logs?.filter((log) => log.type === "login") ? (
+        <List
+          logs={userLogin.own_logs.filter((log) => log.type === "login")}
+          onAccept={handleAccept}
+        />
       ) : null}
     </>
   );

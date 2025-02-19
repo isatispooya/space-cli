@@ -6,9 +6,8 @@ const timeflowServices = {
     const response = await api.get("/timeflow/user-login-log/");
     return response.data;
   },
-
-  getUsersLogout: async () => {
-    const response = await api.get("/timeflow/user-logout-log/");
+  UsersLogoutAccept: async (data: any) => {
+    const response = await api.post("/timeflow/user-logout-log/", data);
     return response.data;
   },
 
@@ -21,14 +20,6 @@ const timeflowServices = {
       `/timeflow/user-login-log-senior/${id}/`,
       data
     );
-    return response.data;
-  },
-  getMissions: async () => {
-    const response = await api.get("/timeflow/user-mission-log/");
-    return response.data;
-  },
-  postMissions: async (data: any) => {
-    const response = await api.post("/timeflow/user-mission-log/", data);
     return response.data;
   },
 };

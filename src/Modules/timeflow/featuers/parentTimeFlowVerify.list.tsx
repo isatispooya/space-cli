@@ -1,5 +1,5 @@
 import { useTimeflow } from "../hooks";
-import { LoginList } from "../components";
+import { List } from "../components";
 import { UserLoginType } from "../types";
 import moment from "moment";
 import { Dayjs } from "dayjs";
@@ -33,7 +33,7 @@ const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
   return (
     <>
       {userLogin?.other_logs ? (
-        <LoginList logs={userLogin.other_logs} onAccept={handleAccept} />
+        <List logs={userLogin.other_logs} onAccept={handleAccept} />
       ) : null}
     </>
   );
