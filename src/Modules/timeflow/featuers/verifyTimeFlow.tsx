@@ -9,24 +9,24 @@ const VerifyTimeFlow: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 px-4"
+      className="flex flex-col items-center justify-center min-h-screen px-4"
       dir="rtl"
     >
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-3xl space-y-6"
+        className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-5xl space-y-6 border border-gray-300"
       >
-        <h2 className="text-3xl font-bold text-center text-indigo-700">
+        <h2 className="text-2xl font-bold text-center text-gray-700">
           ورود کاربر
         </h2>
 
         <UserTimeflowVerify userLogin={userLogin as UserLoginType} />
 
-        <hr className="border-t-2 border-gray-300" />
+        <hr className="border-t-2  border-gray-300" />
 
-        <h2 className="text-3xl font-bold text-center text-indigo-700">
+        <h2 className="text-2xl font-bold text-center text-gray-700">
           همکاران
         </h2>
 
