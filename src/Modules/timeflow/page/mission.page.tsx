@@ -1,7 +1,7 @@
-import { MissionList } from "../featuers";
+import { Mission } from "../featuers";
 
 const MissionPage = () => {
-  return <MissionList />;
+  return <Mission />;
 };
 
 export default MissionPage;

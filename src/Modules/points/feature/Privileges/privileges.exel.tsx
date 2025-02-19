@@ -1,4 +1,4 @@
-import { LeaveTimeFlowType } from "../../../timeflow/types/LeaveTimeFlow.type";
+import { LeaveTimeFlowType } from "../../../timeflow/types/Leave.type";
 
 export const ExelData = (item: LeaveTimeFlowType) => {
   return {

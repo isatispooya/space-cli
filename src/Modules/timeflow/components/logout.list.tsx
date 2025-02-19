@@ -54,7 +54,6 @@ const LogoutList: React.FC<LogListProps> = ({ onAccept }) => {
             }}
           />
         </LocalizationProvider>
-        {/* Accept Button */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

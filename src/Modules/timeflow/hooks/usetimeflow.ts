@@ -5,8 +5,18 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { timeflowServices } from "../service";
-import { SeniorVerifyType, TimeflowVerifyType, UserLoginType } from "../types";
+import {
+  LeaveParentPostType,
+  LeavePostType,
+  LeaveType,
+  MissionParentPostType,
+  MissionType,
+  SeniorVerifyType,
+  TimeflowVerifyType,
+  UserLoginType,
+} from "../types";
 import { AxiosError } from "axios";
+import { MissionPostType } from "../types";
 
 const useTimeflow = {
   useGetUsersLogin: (): UseQueryResult<UserLoginType> => {
@@ -48,6 +58,61 @@ const useTimeflow = {
       mutationKey: ["update-users-login-by-parent"],
       mutationFn: ({ data, id }: { data: SeniorVerifyType; id: number }) =>
         timeflowServices.updateUsersLoginByParent(data, id),
+    });
+  },
+  useGetMission: (): UseQueryResult<MissionType> => {
+    return useQuery({
+      queryKey: ["mission-time-flow"],
+      queryFn: () => timeflowServices.getMission(),
+    });
+  },
+  useCreateMission: (): UseMutationResult<
+    MissionPostType,
+    AxiosError,
+    MissionPostType
+  > => {
+    return useMutation({
+      mutationKey: ["create-mission"],
+      mutationFn: (data: MissionPostType) =>
+        timeflowServices.createMission(data),
+    });
+  },
+  useUpdateMission: (): UseMutationResult<
+    MissionParentPostType,
+    AxiosError,
+    { data: MissionParentPostType; id: number }
+  > => {
+    return useMutation({
+      mutationKey: ["update-mission"],
+      mutationFn: ({ data, id }: { data: MissionParentPostType; id: number }) =>
+        timeflowServices.updateMission(id, data),
+    });
+  },
+  useGetLeave: (): UseQueryResult<LeaveType[]> => {
+    return useQuery({
+      queryKey: ["leave"],
+      queryFn: () => timeflowServices.getLeave(),
+    });
+  },
+  useCreateLeave: (): UseMutationResult<
+    LeavePostType,
+    AxiosError,
+    LeavePostType
+  > => {
+    return useMutation({
+      mutationKey: ["create-leave"],
+      mutationFn: (data: LeavePostType) => timeflowServices.createLeave(data),
+    });
+  },
+  useUpdateLeave: (): UseMutationResult<
+    LeaveParentPostType,
+    AxiosError,
+    { data: LeaveParentPostType; id: number }
+  > => {
+    return useMutation({
+      mutationKey: ["update-leave"],
+      mutationFn: ({ data, id }: { data: LeaveParentPostType; id: number }) =>
+        timeflowServices.updateLeave(id, data),
     });
   },
 };

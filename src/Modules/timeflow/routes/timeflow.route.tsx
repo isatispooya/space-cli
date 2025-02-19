@@ -18,9 +18,9 @@ const UsersTimeFlowPage = lazy(() =>
   }))
 );
 
-const LeaveTimeFlowPage = lazy(() =>
+const LeavePage = lazy(() =>
   import("..").then((module) => ({
-    default: module.LeaveTimeFlowPage,
+    default: module.LeavePage,
   }))
 );
 
@@ -45,7 +45,7 @@ const TimeflowRoutes = [
       },
       {
         path: "leave",
-        element: <LeaveTimeFlowPage />,
+        element: <LeavePage />,
       },
       {
         path: "mission",
