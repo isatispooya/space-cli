@@ -307,8 +307,9 @@ const LeaveTimeFlow = () => {
                                   {
                                     id: startItem.id,
                                     data: {
-                                      time_user_start: startItem.time_user,
-                                      time_user_end: endItem?.time_user || null,
+                                      time_parent_start: startItem.time_user,
+                                      time_parent_end:
+                                        endItem?.time_user || null,
                                     },
                                   },
                                   {
@@ -322,7 +323,7 @@ const LeaveTimeFlow = () => {
                                   }
                                 );
                               }}
-                              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
+                              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
                             >
                               تایید
                             </button>
@@ -331,7 +332,7 @@ const LeaveTimeFlow = () => {
                           <Chip
                             label="تایید شده"
                             style={{
-                              backgroundColor: "green",
+                              backgroundColor: "#77e3aa",
                               color: "white",
                             }}
                           />
