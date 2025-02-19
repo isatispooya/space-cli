@@ -1,8 +1,8 @@
 import { useTimeflow } from "../hooks";
 import { List } from "../components";
 import { UserLoginType } from "../types";
-import moment from "moment";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import toast from "react-hot-toast";
 
 const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
   userLogin,
@@ -12,19 +12,16 @@ const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
 
   const handleAccept = (logId: number, selectedTime: Dayjs) => {
     const payload = {
-      time_parent: moment(selectedTime.toISOString()).format(
-        "YYYY-MM-DDTHH:mm:ss"
-      ),
+      time_parent: selectedTime.format("YYYY-MM-DDTHH:mm:ss"),
     };
     updateUsersLoginByParent(
       { data: payload, id: logId },
       {
         onSuccess: () => {
-          alert("زمان با موفقیت تایید شد!");
+          toast.success("زمان با موفقیت تایید شد!");
         },
-        onError: (error) => {
-          console.error("خطا در تایید زمان:", error);
-          alert("خطا در تایید زمان. لطفاً دوباره تلاش کنید.");
+        onError: () => {
+          toast.error("خطا در تایید زمان. لطفاً دوباره تلاش کنید.");
         },
       }
     );
@@ -37,7 +34,7 @@ const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
           logs={userLogin.other_logs.map((log) => ({
             id: log.id,
             user: log.user,
-            time_parent: log.time_parent,
+            time_parent: dayjs(log.time_parent),
             type: log.type as "login" | "logout",
           }))}
           onAccept={handleAccept}

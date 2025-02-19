@@ -39,6 +39,8 @@ const UnderWritingTable: React.FC = () => {
         ? "درگاه پرداخت"
         : item.type === "1"
         ? "فیش بانکی"
+        : item.type === "3"
+        ? "باشگاه مشتریان"
         : "نامشخص",
     مبلغ: item.price || 0,
     "شماره پیگیری": item.payment_detail?.track_id,
@@ -176,6 +178,8 @@ const UnderWritingTable: React.FC = () => {
         ? "درگاه پرداخت"
         : item.type === "1"
         ? "فیش بانکی"
+        : item.type === "3"
+        ? "باشگاه مشتریان"
         : "نامشخص",
     track_id: item.payment_detail?.track_id,
     first_name: item.user_detail?.first_name,
@@ -194,6 +198,7 @@ const UnderWritingTable: React.FC = () => {
         values: {
           "درگاه پرداخت": "درگاه پرداخت",
           "فیش بانکی": "فیش بانکی",
+          "باشگاه مشتریان": "باشگاه مشتریان",
         },
       },
     },

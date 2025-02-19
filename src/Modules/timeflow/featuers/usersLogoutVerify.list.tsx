@@ -3,20 +3,20 @@ import { useTimeflow } from "../hooks";
 
 import { Dayjs } from "dayjs";
 import LogList from "../components/logout.list";
+import toast from "react-hot-toast";
 const UserLogoutVerify: React.FC = () => {
   const { mutate: UsersLogout } = useTimeflow.useUsersLogoutAccept();
 
-  const handleAccept = ( selectedTime: Dayjs) => {
+  const handleAccept = (selectedTime: Dayjs) => {
     const payload = { time_user: selectedTime.format("YYYY-MM-DDTHH:mm:ss") };
     UsersLogout(
       { data: payload },
       {
         onSuccess: () => {
-          alert("زمان با موفقیت تایید شد!");
+          toast.success("زمان با موفقیت تایید شد!");
         },
-        onError: (error) => {
-          console.error("خطا در تایید زمان:", error);
-          alert("خطا در تایید زمان. لطفاً دوباره تلاش کنید.");
+        onError: () => {
+          toast.error("خطا در تایید زمان. لطفاً دوباره تلاش کنید.");
         },
       }
     );
