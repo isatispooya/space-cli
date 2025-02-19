@@ -8,3 +8,4 @@ export * from "./planBytraceCode.type";
 export * from "./plans.type";
 export * from "./plansCoinsPost.type";
 export * from "./crowdStore.ts";
+export * from "./exelData.privileges";

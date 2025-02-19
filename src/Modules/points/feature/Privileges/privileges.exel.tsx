@@ -1,15 +1,18 @@
-import { LeaveTimeFlowType } from "../../../timeflow/types/LeaveTimeFlow.type";
+import { ExelDataPrivileges } from "../../types"; 
 
-export const ExelData = (item: LeaveTimeFlowType) => {
+export const ExelData = (item: ExelDataPrivileges) => {
   return {
-    مقدار: item.amount || 0,
-    تاریخ_ایجاد: item.created_at || "نامشخص",
+    نام: item.user_first_name || "نامشخص",
+    "نام خانوادگی": item.user_last_name || "نامشخص",
+    "کد ملی": item.user_phone || "نامشخص",
+    نوع: item.type || "نامشخص",
     توضیحات: item.description || "بدون توضیحات",
-    شناسه: item.id || "نامشخص",
-    ماموریت: item.mission || "نامشخص",
-    کاربر: item.user_detail?.first_name || "نامشخص",
-    شماره_تماس: item?.user_detail?.mobile || "نامشخص",
-    سکه: Number(item.mission_detail?.point_1 || 0) * Number(item.amount || 0),
-    بذر: Number(item.mission_detail?.point_2 || 0) * Number(item.amount || 0),
+    سکه: item.point_1?.toString() || "0",
+    بذر: item.point_2?.toString() || "0",
+    "ثبت کننده": item.by_user_first_name && item.by_user_last_name
+      ? `${item.by_user_first_name} ${item.by_user_last_name}`
+      : "نامشخص",
   };
 };
+
+
