@@ -76,56 +76,70 @@ const LeaveTimeFlow = () => {
 
   return (
     <>
-      <div className="w-[80%] mx-auto shadow-lg bg-white rounded-3xl relative p-8 flex flex-col mb-[100px] border border-gray-300 hover:shadow-xl transition-shadow duration-300">
-        <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+      <div className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[80%] mx-auto shadow-lg bg-white rounded-3xl relative p-4 sm:p-6 md:p-8 flex flex-col mb-[100px] border border-gray-300 hover:shadow-xl transition-shadow duration-300">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 text-center">
           ثبت مرخصی
         </h2>
-        <div className="flex flex-row gap-6 items-center justify-center mr-10 shadow-lg p-8 border border-gray-300 rounded-lg">
-          <label className="text-sm font-medium text-gray-700 flex items-center">
-            ساعت و تاریخ خروج
-          </label>
-          <DatePicker
-            format="DD/MM/YYYY HH:mm"
-            plugins={[<TimePicker position="bottom" />]}
-            calendar={persian}
-            locale={persian_fa}
-            calendarPosition="bottom-right"
-            value={startTime}
-            style={{
-              width: "100%",
-              minWidth: "250px",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "20px",
-            }}
-            onChange={(date) => setStartTime(date)}
-          />
-          <label className="text-sm font-medium text-gray-700 flex items-center">
-            ساعت وتاریخ ورود
-          </label>
-          <DatePicker
-            format="DD/MM/YYYY HH:mm"
-            plugins={[<TimePicker position="bottom" />]}
-            calendar={persian}
-            locale={persian_fa}
-            calendarPosition="bottom-right"
-            value={endTime}
-            style={{
-              width: "100%",
-              minWidth: "250px",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "20px",
-            }}
-            onChange={(date) => setEndTime(date)}
-          />
-          <div className="flex-grow" />
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-500 text-white px-8 py-2 rounded-md"
-          >
-            ثبت
-          </button>
+
+        <div className="flex flex-col space-y-6 p-4 sm:p-6 shadow-lg border border-gray-300 rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[1fr,1fr,auto] gap-6">
+            <div className="flex flex-col space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                ساعت و تاریخ خروج
+              </label>
+              <DatePicker
+                format="DD/MM/YYYY HH:mm"
+                plugins={[<TimePicker position="bottom" />]}
+                calendar={persian}
+                locale={persian_fa}
+                calendarPosition="bottom-right"
+                value={startTime}
+                style={{
+                  width: "100%",
+                  height: "42px",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: "0.5rem",
+                  padding: "0.5rem",
+                  boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                }}
+                onChange={(date) => setStartTime(date)}
+                className="focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                ساعت و تاریخ ورود
+              </label>
+              <DatePicker
+                format="DD/MM/YYYY HH:mm"
+                plugins={[<TimePicker position="bottom" />]}
+                calendar={persian}
+                locale={persian_fa}
+                calendarPosition="bottom-right"
+                value={endTime}
+                style={{
+                  width: "100%",
+                  height: "42px",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: "0.5rem",
+                  padding: "0.5rem",
+                  boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                }}
+                onChange={(date) => setEndTime(date)}
+                className="focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <div className="flex items-end">
+              <button
+                onClick={handleSubmit}
+                className="w-full xl:w-auto bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] active:scale-[0.98] h-[42px] font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                ثبت مرخصی
+              </button>
+            </div>
+          </div>
         </div>
         <div className="mt-8">
           <Accordion defaultExpanded={false}>

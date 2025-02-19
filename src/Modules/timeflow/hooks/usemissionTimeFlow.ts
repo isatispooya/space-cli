@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { LeaveTimeFlowType } from "../types/LeaveTimeFlow.type";
+import { MissionTimeFlowType } from "../types/missionTimeFlow.type";
 import { toast } from "react-hot-toast";
 import missionTimeFlowService from "../service/MissionTimeFlowِService";
 
@@ -12,7 +12,7 @@ const useMissionTimeFlow = () => {
 
 const useMissionTimeFlowCreate = () => {
   return useMutation({
-    mutationFn: (data: LeaveTimeFlowType) =>
+    mutationFn: (data: MissionTimeFlowType) =>
       missionTimeFlowService().create(data),
     onSuccess: () => {
       toast.success("اطلاعات با موفقیت ثبت شد");
@@ -25,7 +25,7 @@ const useMissionTimeFlowCreate = () => {
 
 const useMissionTimeFlowUpdate = () => {
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: LeaveTimeFlowType }) =>
+    mutationFn: ({ id, data }: { id: string; data: MissionTimeFlowType }) =>
       missionTimeFlowService().update(id, data),
     onSuccess: (response) => {
       toast.success(response.message || "اطلاعات با موفقیت به روز شد");
