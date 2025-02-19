@@ -8,6 +8,7 @@ import toast, { ErrorIcon } from "react-hot-toast";
 import { Toast } from "../../../../components";
 import { useUserPermissions } from "../../../permissions";
 import { formatNumber } from "../../../../utils";
+
 const Request = () => {
   const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
@@ -17,6 +18,7 @@ const Request = () => {
   const statusMapping = {
     delivered: "تحویل داده شده",
     cancelled: "لغو شده",
+    pending: "در حال بررسی",
   };
 
   const rows: RequestTypes[] =
@@ -43,6 +45,7 @@ const Request = () => {
         last_name: item.user_detail.last_name,
         id: item.user_detail.id,
       },
+      reason: item.reason,
     })) || [];
 
   const handleStatusChange = (id: number, newStatus: string) => {
@@ -78,6 +81,26 @@ const Request = () => {
 
   const handleView = (id: number) => {
     window.open(`/users/view/${id}`, "_blank");
+  };
+
+  const ExelData = (item: RequestTypes) => {
+    return {
+      عنوان: item.title || "",
+      توضیحات: item.description || "",
+      سکه: item.points || 0,
+      "کل دریافتی": item.amount || 0,
+      "ارزش (ریال)": (item.gift_detail?.point_1 || 0) * (item.amount || 0) * 10,
+      وضعیت:
+        statusMapping[item.status as keyof typeof statusMapping] ||
+        "در حال بررسی",
+      علت: item.reason || "",
+      "نام و نام خانوادگی": `${item.user_detail?.first_name || ""} ${
+        item.user_detail?.last_name || ""
+      }`,
+      "تاریخ ایجاد": item.created_at
+        ? moment(item.created_at).format("jYYYY/jMM/jDD")
+        : "",
+    };
   };
 
   const columns = () => [
@@ -282,6 +305,7 @@ const Request = () => {
           columns={[...columns()]}
           title="درخواست ها"
           showActions={true}
+          formatExportData={ExelData}
         />
       </div>
     </div>

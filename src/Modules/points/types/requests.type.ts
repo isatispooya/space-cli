@@ -22,4 +22,6 @@ export interface RequestTypes {
 
   };
   amount: number;
+  reason: string;
+  
 }
