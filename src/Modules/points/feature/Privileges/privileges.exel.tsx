@@ -1,6 +1,6 @@
-import { PrivilegesTypes } from "../../types/pivileges.type";
+import { LeaveTimeFlowType } from "../../../timeflow/types/LeaveTimeFlow.type";
 
-export const ExelData = (item: PrivilegesTypes) => {
+export const ExelData = (item: LeaveTimeFlowType) => {
   return {
     مقدار: item.amount || 0,
     تاریخ_ایجاد: item.created_at || "نامشخص",

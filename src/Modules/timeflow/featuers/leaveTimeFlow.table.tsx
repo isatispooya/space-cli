@@ -1,14 +1,15 @@
 import { ColumnDefinition } from "tabulator-tables";
-import { PrivilegesTypes } from "../../points/types/pivileges.type";
+
 import moment from "moment-jalaali";
 import { TabulatorTable } from "../../../components";
 import { useLeaveTimeFlow } from "../hooks/useleavetimeflow";
+import { LeaveTimeFlowType } from "../types/LeaveTimeFlow.type";
 
 const LeaveTimeFlowTable = () => {
   const { data } = useLeaveTimeFlow();
 
   const mappedData = Array.isArray(data)
-    ? data.map((item: PrivilegesTypes) => {
+    ? data.map((item: LeaveTimeFlowType) => {
         console.log("Mapping Item:", item);
         return {
           point_1: (item?.mission_detail?.point_1 || 0) * (item.amount || 0),
@@ -16,7 +17,7 @@ const LeaveTimeFlowTable = () => {
           created_at: item.created_at,
           description: item.description,
           id: item.id,
-          mission: item.mission_detail.display_name,
+          mission: item.mission_detail?.display_name,
           user_first_name: item.user_detail?.first_name,
           user_last_name: item.user_detail?.last_name,
           user_phone: item?.user_detail?.mobile,
@@ -39,7 +40,7 @@ const LeaveTimeFlowTable = () => {
     },
   ];
 
-  const ExelData = (item: PrivilegesTypes) => {
+  const ExelData = (item: LeaveTimeFlowType) => {
     return {
       مقدار: item.amount || 0,
       تاریخ_ایجاد: item.created_at || "نامشخص",
