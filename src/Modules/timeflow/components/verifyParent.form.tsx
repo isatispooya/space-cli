@@ -12,7 +12,7 @@ const VerifyParent: React.FC<{ userLogin: UserLoginType }> = ({
 
   const handleAccept = (logId: number, selectedTime: DateObject) => {
     const payload = {
-      time_parent: selectedTime.format("YYYY-MM-DDTHH:mm:ss"),
+      time_parent: selectedTime.toDate().toISOString(),
     };
     updateUsersLoginByParent(
       { data: payload, id: logId },
@@ -36,6 +36,10 @@ const VerifyParent: React.FC<{ userLogin: UserLoginType }> = ({
             user: log.user,
             time_parent: new DateObject(log.time_parent),
             type: log.type as "login" | "logout",
+            status_parent: log.status_parent as
+              | "pending"
+              | "approved"
+              | "rejected",
           }))}
           onAccept={handleAccept}
         />

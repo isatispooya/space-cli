@@ -10,7 +10,7 @@ const VerifyUser: React.FC<{ userLogin: UserLoginType }> = ({ userLogin }) => {
   const { mutate: acceptTimeflow } = useTimeflow.useUserTimeflowAccept();
 
   const handleAccept = (logId: number, selectedTime: DateObject) => {
-    const payload = { time_user: selectedTime.format("YYYY-MM-DDTHH:mm:ss") };
+    const payload = { time_user: selectedTime.toDate().toISOString() };
     acceptTimeflow(
       { data: payload, id: logId },
       {
@@ -31,6 +31,7 @@ const VerifyUser: React.FC<{ userLogin: UserLoginType }> = ({ userLogin }) => {
       user: log.user,
       time_parent: new DateObject(log.time_parent),
       type: log.type as "login" | "logout",
+      status_parent: log.status_parent as "pending" | "approved" | "rejected",
     }));
 
   return (

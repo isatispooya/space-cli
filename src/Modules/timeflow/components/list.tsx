@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { DateSelector } from "../../../components";
 import { DateObject } from "react-multi-date-picker";
 import toast from "react-hot-toast";
 import moment from "moment-jalaali";
+import { Chip } from "@mui/material";
 
 interface Log {
   id: number;
@@ -13,6 +13,7 @@ interface Log {
   };
   time_parent: DateObject;
   type: "login" | "logout";
+  status_parent: "pending" | "approved" | "rejected";
 }
 
 interface LogListProps {
@@ -72,7 +73,6 @@ const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
               <DateSelector
                 value={selectedTimes[log.id] || null}
                 onChange={(newTime) => {
-                  // Ensure newTime is a single DateObject or null
                   const singleTime = Array.isArray(newTime)
                     ? newTime[0]
                     : newTime;
@@ -82,14 +82,26 @@ const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleAccept(log.id)}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
-            >
-              تایید
-            </motion.button>
+            {log.status_parent === "pending" && (
+              <Chip
+                onClick={() => handleAccept(log.id)}
+                label="تایید"
+                style={{
+                  backgroundColor: "blue",
+                  color: "white",
+                }}
+              />
+            )}
+            <Chip
+              label={
+                log.status_parent === "pending" ? "در حال بررسی" : "تایید شده"
+              }
+              style={{
+                backgroundColor:
+                  log.status_parent === "pending" ? undefined : "green",
+                color: log.status_parent === "pending" ? undefined : "white",
+              }}
+            />
           </div>
         </div>
       ))}

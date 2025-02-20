@@ -66,6 +66,35 @@ const ParentMissionForm = ({
                   <div className="space-y-2">
                     <div>
                       <label className="text-sm font-medium text-gray-700 flex items-center">
+                        ساعت و تاریخ ورود
+                      </label>
+                      {startItem && (
+                        <div>
+                          <DateSelector
+                            value={
+                              modifiedDates[startItem.id] ||
+                              (startItem.time_user
+                                ? moment(startItem.time_user).toDate()
+                                : null)
+                            }
+                            onChange={(value) => {
+                              const dateValue = Array.isArray(value)
+                                ? value[0]?.toDate()
+                                : value instanceof Date
+                                ? value
+                                : value?.toDate();
+
+                              setModifiedDates((prev) => ({
+                                ...prev,
+                                [startItem.id]: dateValue || null,
+                              }));
+
+                              setStartTime(dateValue || null);
+                            }}
+                          />
+                        </div>
+                      )}
+                      <label className="text-sm font-medium text-gray-700 flex items-center">
                         ساعت و تاریخ خروج
                       </label>
                     </div>

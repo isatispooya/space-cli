@@ -40,7 +40,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "گزارش تردد",
-        path: "/timeflow/users",
+        path: "/timeflow/verify",
         codename: ["position"],
       },
       {

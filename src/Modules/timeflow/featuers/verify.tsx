@@ -1,12 +1,10 @@
 import { motion } from "framer-motion";
 import { useTimeflow } from "../hooks";
-import UserTimeflowVerify from "../components/verifyUser.form";
-import ParentTimeFlowVerify from "../components/verifyParent.form";
+import { VerifyUser, VerifyParent, VerifyLogout } from "../components";
 import { UserLoginType } from "../types";
 import { Accordian } from "../../../components";
 import { useState } from "react";
 import { TabComponent } from "../../../components";
-import UserLogoutVerify from "../components/verifyLogout.form";
 
 const Verify: React.FC = () => {
   const { data: userLogin } = useTimeflow.useGetUsersLogin();
@@ -25,7 +23,7 @@ const Verify: React.FC = () => {
               isOpen={isOpen}
               onToggle={() => setIsOpen(!isOpen)}
             >
-              <UserTimeflowVerify userLogin={userLogin as UserLoginType} />
+              <VerifyUser userLogin={userLogin as UserLoginType} />
             </Accordian>
           </div>
 
@@ -34,7 +32,7 @@ const Verify: React.FC = () => {
             isOpen={isOpenParent}
             onToggle={() => setIsOpenParent(!isOpenParent)}
           >
-            <ParentTimeFlowVerify userLogin={userLogin as UserLoginType} />
+            <VerifyParent userLogin={userLogin as UserLoginType} />
           </Accordian>
         </>
       ),
@@ -44,7 +42,7 @@ const Verify: React.FC = () => {
       label: "ثبت خروج",
       content: (
         <div className="mb-5 mt-5">
-          <UserLogoutVerify />
+          <VerifyLogout />
         </div>
       ),
     },
