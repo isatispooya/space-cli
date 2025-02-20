@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import moment from "moment-jalaali";
 import { motion } from "framer-motion";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { Dayjs } from "dayjs";
+import { DateSelector } from "../../../components";
+import { DateObject } from "react-multi-date-picker";
 import toast from "react-hot-toast";
 
 interface Log {
@@ -13,27 +10,27 @@ interface Log {
     first_name: string;
     last_name: string;
   };
-  time_parent: Dayjs;
+  time_parent: DateObject;
   type: "login" | "logout";
 }
 
 interface LogListProps {
   logs: Log[];
-  onAccept: (logId: number, selectedTime: Dayjs) => void;
+  onAccept: (logId: number, selectedTime: DateObject) => void;
 }
 
 const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
   const [selectedTimes, setSelectedTimes] = useState<{
-    [key: number]: Dayjs | null;
+    [key: number]: DateObject | null;
   }>(() => {
-    const initialTimes: { [key: number]: Dayjs | null } = {};
+    const initialTimes: { [key: number]: DateObject | null } = {};
     logs.forEach((log) => {
       initialTimes[log.id] = log.time_parent;
     });
     return initialTimes;
   });
 
-  const handleTimeChange = (id: number, newTime: Dayjs | null) => {
+  const handleTimeChange = (id: number, newTime: DateObject | null) => {
     setSelectedTimes((prev) => ({ ...prev, [id]: newTime }));
   };
 
@@ -49,58 +46,49 @@ const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
   return (
     <div className="space-y-4">
       {logs.map((log) => (
-        <motion.div
+        <div
           key={log.id}
-          className="flex flex-wrap items-center justify-between gap-4 p-6 bg-slate-50 rounded-xl border border-slate-200 shadow-sm"
-          whileHover={{ scale: 1.02 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
         >
-          <div className="flex flex-col space-y-1">
-            <span className="text-lg font-medium text-gray-800">
-              {log.user.first_name} {log.user.last_name}
-            </span>
-            <span className="text-sm text-gray-600">
-              {moment(log.time_parent).format("jYYYY/jMM/jDD HH:mm")}
-            </span>
-
-            <span className="text-sm text-gray-600">
-              {log.type === "login" ? "ورود" : "خروج"}
-            </span>
+          <div className="space-y-2">
+            <div className="mb-2">
+              <span className="font-medium text-gray-700 ml-2">نام:</span>
+              <span className="text-gray-600">
+                {log.user.first_name} {log.user.last_name}
+              </span>
+            </div>
+            <div className="space-y-2">
+              <div>
+                <label className="text-sm font-medium text-gray-700 flex items-center">
+                  {log.type === "login" ? "زمان ورود" : "زمان خروج"}
+                  <span className="text-gray-400 ml-2">
+                    {log.time_parent.format("YYYY/MM/DD HH:mm")}
+                  </span>
+                </label>
+              </div>
+              <DateSelector
+                value={selectedTimes[log.id] || null}
+                onChange={(newTime) => {
+                  // Ensure newTime is a single DateObject or null
+                  const singleTime = Array.isArray(newTime)
+                    ? newTime[0]
+                    : newTime;
+                  handleTimeChange(log.id, singleTime);
+                }}
+              />
+            </div>
           </div>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker
-              label=""
-              value={selectedTimes[log.id] || null}
-              onChange={(newTime) => handleTimeChange(log.id, newTime)}
-              slotProps={{
-                textField: {
-                  size: "small",
-                  className: "w-36",
-                  sx: {
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "8px",
-                      borderColor: "#d1d5db",
-                    },
-                    "& .MuiOutlinedInput-input": {
-                      padding: "8px 12px",
-                    },
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-       
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => handleAccept(log.id)}
-            className="py-2 px-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200"
-          >
-            تایید
-          </motion.button>
-        </motion.div>
+          <div className="flex items-center gap-4">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleAccept(log.id)}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
+            >
+              تایید
+            </motion.button>
+          </div>
+        </div>
       ))}
     </div>
   );

@@ -27,11 +27,7 @@ const LogoutList: React.FC<LogListProps> = ({ onAccept }) => {
 
   return (
     <div className="space-y-4">
-      <motion.div
-        className="flex flex-wrap items-center justify-between gap-4 p-6 bg-slate-50 rounded-xl border border-slate-200 shadow-sm"
-        whileHover={{ scale: 1.02 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
+      <div className="flex flex-wrap items-center justify-between gap-4 p-6 bg-slate-50 rounded-xl border border-slate-200 shadow-sm">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
             label="زمان خروج"
@@ -62,7 +58,7 @@ const LogoutList: React.FC<LogListProps> = ({ onAccept }) => {
         >
           تایید
         </motion.button>
-      </motion.div>
+      </div>
     </div>
   );
 };
