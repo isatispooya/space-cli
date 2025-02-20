@@ -1,7 +1,7 @@
 import { useTimeflow } from "../hooks";
 import { List } from "../components";
 import { UserLoginType } from "../types";
-import dayjs, { Dayjs } from "dayjs";
+import { DateObject } from "react-multi-date-picker";
 import toast from "react-hot-toast";
 
 const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
@@ -10,7 +10,7 @@ const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
   const { mutate: updateUsersLoginByParent } =
     useTimeflow.useUpdateUsersLoginByParent();
 
-  const handleAccept = (logId: number, selectedTime: Dayjs) => {
+  const handleAccept = (logId: number, selectedTime: DateObject) => {
     const payload = {
       time_parent: selectedTime.format("YYYY-MM-DDTHH:mm:ss"),
     };
@@ -34,7 +34,7 @@ const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
           logs={userLogin.other_logs.map((log) => ({
             id: log.id,
             user: log.user,
-            time_parent: dayjs(log.time_parent),
+            time_parent: new DateObject(log.time_parent),
             type: log.type as "login" | "logout",
           }))}
           onAccept={handleAccept}
