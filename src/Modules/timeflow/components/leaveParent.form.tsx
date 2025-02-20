@@ -76,10 +76,11 @@ const ParentLeaveForm = ({
                           }
                           onChange={(value) => {
                             console.log("Selected End Time:", value);
+                            if (value instanceof Date) {
+                              endItem.time_user = value.toISOString();
+                            }
                             setStartTime(
-                              Array.isArray(value)
-                                ? null
-                                : value instanceof Date
+                              value instanceof Date
                                 ? value
                                 : value
                                 ? value.toDate()
