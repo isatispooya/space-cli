@@ -20,8 +20,8 @@ const ParentLeaveForm = ({
   const { mutate: updateLeaveTimeFlow } = useTimeflow.useUpdateLeave();
 
   const [modifiedDates, setModifiedDates] = useState<
-  Record<number, Date | null>
->({});
+    Record<number, Date | null>
+  >({});
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,28 +51,28 @@ const ParentLeaveForm = ({
         onToggle={() => setIsOpen(!isOpen)}
       >
         {groupedOtherData.length > 0 && (
-          <div className="space-y-4">
+          <div className="space-y-4 w-full max-w-4xl mx-auto px-2 sm:px-4">
             {groupedOtherData.map(({ startItem, endItem }) => (
               <div
                 key={startItem.id}
-                className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
+                className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg w-full"
               >
-                <div className="space-y-2">
-                  <div className="mb-2">
-                    <span className="font-medium text-gray-700 ml-2">نام:</span>
-                    <span className="text-gray-600">
+                <div className="w-full sm:w-auto space-y-3">
+                  <div className="mb-2 flex flex-col sm:flex-row sm:items-center gap-2">
+                    <span className="font-medium text-gray-700 whitespace-nowrap">
+                      نام:
+                    </span>
+                    <span className="text-gray-600 break-words">
                       {startItem.user.first_name} {startItem.user.last_name}
                     </span>
                   </div>
-                  <div className="space-y-2">
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 flex items-center">
-                        ساعت و تاریخ خروج
-                      </label>
-                    </div>
+                  <div className="space-y-2 w-full">
+                    <label className="text-sm font-medium text-gray-700 block">
+                      ساعت و تاریخ خروج
+                    </label>
                     {endItem && (
-                      <div>
-                      <DateSelector
+                      <div className="w-full">
+                        <DateSelector
                           value={
                             modifiedDates[endItem.id] ||
                             (endItem.time_user
@@ -93,52 +93,52 @@ const ParentLeaveForm = ({
 
                             setStartTime(dateValue || null);
                           }}
+                          // Assuming DateSelector accepts these props
+                      
                         />
                       </div>
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 mt-4 sm:mt-0 w-full sm:w-auto justify-start sm:justify-end">
                   {startItem.status_parent === "pending" &&
                   !approvedItems.includes(startItem.id) ? (
-                    <>
-                      <button
-                        onClick={() => {
-                          updateLeaveTimeFlow(
-                            {
-                              id: startItem.id,
-                              data: {
-                                time_parent_start: startItem.time_user,
-                                time_parent_end: endItem?.time_user || "",
-                              },
+                    <button
+                      onClick={() => {
+                        updateLeaveTimeFlow(
+                          {
+                            id: startItem.id,
+                            data: {
+                              time_parent_start: startItem.time_user,
+                              time_parent_end: endItem?.time_user || "",
                             },
-                            {
-                              onSuccess: () => {
-                                setApprovedItems([
-                                  ...approvedItems,
-                                  startItem.id,
-                                ]);
-                                refetch();
-                                toast.success("مرخصی با موفقیت تایید شد");
-                              },
-                              onError: (error: AxiosError<unknown>) => {
-                                const errorMessage = (
-                                  error.response?.data as ErrorResponse
-                                )?.error;
-                                Toast(
-                                  errorMessage || "خطایی رخ داده است",
-                                  <ErrorIcon />,
-                                  "bg-red-500"
-                                );
-                              },
-                            }
-                          );
-                        }}
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
-                      >
-                        تایید
-                      </button>
-                    </>
+                          },
+                          {
+                            onSuccess: () => {
+                              setApprovedItems([
+                                ...approvedItems,
+                                startItem.id,
+                              ]);
+                              refetch();
+                              toast.success("مرخصی با موفقیت تایید شد");
+                            },
+                            onError: (error: AxiosError<unknown>) => {
+                              const errorMessage = (
+                                error.response?.data as ErrorResponse
+                              )?.error;
+                              Toast(
+                                errorMessage || "خطایی رخ داده است",
+                                <ErrorIcon />,
+                                "bg-red-500"
+                              );
+                            },
+                          }
+                        );
+                      }}
+                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors w-full sm:w-auto text-sm whitespace-nowrap"
+                    >
+                      تایید
+                    </button>
                   ) : (
                     <Chip
                       label="تایید شده"
@@ -146,6 +146,7 @@ const ParentLeaveForm = ({
                         backgroundColor: "#77e3aa",
                         color: "white",
                       }}
+                      className="px-3 py-1 text-sm w-full sm:w-auto flex justify-center"
                     />
                   )}
                 </div>

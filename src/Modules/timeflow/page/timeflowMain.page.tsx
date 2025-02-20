@@ -3,11 +3,18 @@ import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../components";
 import { LuTable } from "react-icons/lu";
 import { MdOutlineSendTimeExtension } from "react-icons/md";
+import { AiOutlineUser } from "react-icons/ai";
 
 const TimeFlowPage = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
+      text: "کاربران",
+      permission: ["allow_any"],
+      path: "users-timeflows",
+    },
+    {
+      icon: AiOutlineUser,
       text: "ثبت تردد",
       permission: ["allow_any"],
       path: "verify",

@@ -10,3 +10,4 @@ export type { default as LeaveType } from "./Leave.type";
 export type { default as LeaveParentPostType } from "./leaveParent.type";
 export type { default as LeavePostType } from "./leavePost.type";
 export type { default as LeaveStoreTypes } from "./leaveStore.type";
+export type { default as UsersTimeflowType } from "./userstimeflow.type";
