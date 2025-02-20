@@ -30,11 +30,21 @@ const MissionPage = lazy(() =>
   }))
 );
 
+const UsersTimeflowsPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.UsersTimeflowsPage,
+  }))
+);
+
 const TimeflowRoutes = [
   {
     path: "/timeflow",
     element: <TimeFlowMainPage />,
     children: [
+      {
+        path: "users-timeflows",
+        element: <UsersTimeflowsPage />,
+      },
       {
         path: "verify",
         element: <VerifyPage />,

@@ -14,6 +14,7 @@ import {
   SeniorVerifyType,
   TimeflowVerifyType,
   UserLoginType,
+  UsersTimeflowType,
 } from "../types";
 import { AxiosError } from "axios";
 import { MissionPostType } from "../types";
@@ -115,7 +116,7 @@ const useTimeflow = {
         timeflowServices.updateLeave(id, data),
     });
   },
-  useGetTimeflow: () => {
+  useGetTimeflow: (): UseQueryResult<UsersTimeflowType[]> => {
     return useQuery({
       queryKey: ["timeflow"],
       queryFn: () => timeflowServices.getTimeflow(),

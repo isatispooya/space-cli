@@ -7,13 +7,14 @@ import {
   SeniorVerifyType,
   TimeflowVerifyType,
   UserLoginType,
+  UsersTimeflowType,
   VerifyLogoutType,
 } from "../types";
 import { MissionPostType } from "../types";
 import { LeaveType } from "../types";
 
 const timeflowServices = {
-  getTimeflow: async () => {
+  getTimeflow: async (): Promise<UsersTimeflowType[]> => {
     const response = await api.get("/timeflow/list-user-logs/");
     return response.data;
   },

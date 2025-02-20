@@ -1,23 +1,65 @@
 import { useTimeflow } from "../hooks";
-import { TabulatorTable } from "../../../components";
-import { CellComponent, ColumnDefinition } from "tabulator-tables";
+import { LoaderLg, TabulatorTable } from "../../../components";
+import { ColumnDefinition } from "tabulator-tables";
 import moment from "moment-jalaali";
-
-
+import { ExelData } from "../data";
 
 const TimeflowTable = () => {
   const { data, isLoading } = useTimeflow.useGetTimeflow();
 
-  console.log(data);
+  const mappedData = data?.map((item) => ({
+    ...item,
+    date: moment(item.date).format("jYYYY/jMM/jDD"),
+    time_start: item.time_start,
+    time_end: item.time_end,
+    type: item.type === "working" ? "زمان حضور" : " غیبت",
+    user_id: item.user_id,
+  }));
 
-  return <div>TimeflowTable</div>;
+  if (isLoading) {
+    return <LoaderLg />;
+  }
+
+
+
+  const columns = (): ColumnDefinition[] => [
+    {
+      title: "تاریخ ",
+      field: "date",
+      headerFilter: true,
+    },
+    {
+      title: "زمان شروع",
+      field: "time_start",
+      headerFilter: true,
+    },
+    {
+      title: "زمان پایان",
+      field: "time_end",
+      headerFilter: true,
+    },
+    {
+      title: "نوع",
+      field: "type",
+      headerFilter: true,
+    },
+  ];
+
+  return (
+    <>
+      <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
+        <div className="overflow-x-auto">
+          <TabulatorTable
+            data={mappedData || []}
+            columns={columns()}
+            title="اطلاعات کاربران"
+            showActions={true}
+            formatExportData={ExelData}
+          />
+        </div>
+      </div>
+    </>
+  );
 };
 
-
-
-
 export default TimeflowTable;
-
-
-
-
