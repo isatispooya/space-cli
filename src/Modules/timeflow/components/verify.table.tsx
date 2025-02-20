@@ -3,7 +3,7 @@ import { TabulatorTable } from "../../../components";
 import { CellComponent, ColumnDefinition } from "tabulator-tables";
 import moment from "moment-jalaali";
 
-const UsersTimeFlowTable = () => {
+const VerifyTable = () => {
   const { data: userLogin } = useTimeflow.useGetUsersLogin();
 
   const mappedData = Array.isArray(userLogin?.other_logs)
@@ -121,4 +121,4 @@ const UsersTimeFlowTable = () => {
   );
 };
 
-export default UsersTimeFlowTable;
+export default VerifyTable;

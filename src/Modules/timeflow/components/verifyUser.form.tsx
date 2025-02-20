@@ -1,14 +1,12 @@
 import React from "react";
 import { useTimeflow } from "../hooks";
-import { List } from "../components";
+import { List } from ".";
 import { UserLoginType } from "../types";
 import toast from "react-hot-toast";
 
 import { DateObject } from "react-multi-date-picker";
 
-const UserTimeflowVerify: React.FC<{ userLogin: UserLoginType }> = ({
-  userLogin,
-}) => {
+const VerifyUser: React.FC<{ userLogin: UserLoginType }> = ({ userLogin }) => {
   const { mutate: acceptTimeflow } = useTimeflow.useUserTimeflowAccept();
 
   const handleAccept = (logId: number, selectedTime: DateObject) => {
@@ -44,4 +42,4 @@ const UserTimeflowVerify: React.FC<{ userLogin: UserLoginType }> = ({
   );
 };
 
-export default UserTimeflowVerify;
+export default VerifyUser;

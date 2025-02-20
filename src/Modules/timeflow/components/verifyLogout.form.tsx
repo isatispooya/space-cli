@@ -2,9 +2,9 @@ import React from "react";
 import { useTimeflow } from "../hooks";
 
 import { Dayjs } from "dayjs";
-import LogList from "../components/logout.list";
+import LogList from "./logout.list";
 import toast from "react-hot-toast";
-const UserLogoutVerify: React.FC = () => {
+const VerifyLogout: React.FC = () => {
   const { mutate: UsersLogout } = useTimeflow.useUsersLogoutAccept();
 
   const handleAccept = (selectedTime: Dayjs) => {
@@ -25,4 +25,4 @@ const UserLogoutVerify: React.FC = () => {
   return <LogList onAccept={handleAccept} />;
 };
 
-export default UserLogoutVerify;
+export default VerifyLogout;

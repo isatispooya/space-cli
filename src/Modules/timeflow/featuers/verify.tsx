@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import { useTimeflow } from "../hooks";
-import UserTimeflowVerify from "./userTimeflowVerify.list";
-import ParentTimeFlowVerify from "./parentTimeFlowVerify.list";
+import UserTimeflowVerify from "../components/verifyUser.form";
+import ParentTimeFlowVerify from "../components/verifyParent.form";
 import { UserLoginType } from "../types";
 import { Accordian } from "../../../components";
 import { useState } from "react";
 import { TabComponent } from "../../../components";
-import UserLogoutVerify from "./usersLogoutVerify.list";
+import UserLogoutVerify from "../components/verifyLogout.form";
 
-const VerifyTimeFlow: React.FC = () => {
+const Verify: React.FC = () => {
   const { data: userLogin } = useTimeflow.useGetUsersLogin();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenParent, setIsOpenParent] = useState(false);
@@ -64,4 +64,4 @@ const VerifyTimeFlow: React.FC = () => {
   );
 };
 
-export default VerifyTimeFlow;
+export default Verify;

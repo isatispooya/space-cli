@@ -1,18 +1,11 @@
 import { MainLayout } from "../../../layouts";
 import { Outlet } from "react-router-dom";
-import { CiLogin } from "react-icons/ci";
 import { Toolbar } from "../../../components";
 import { LuTable } from "react-icons/lu";
 import { MdOutlineSendTimeExtension } from "react-icons/md";
 
 const TimeFlowPage = () => {
   const toolbarButtons = [
-    {
-      icon: CiLogin,
-      text: "ورود و خروج کاربران",
-      permission: ["allow_any"],
-      path: "users",
-    },
     {
       icon: LuTable,
       text: "ثبت تردد",
@@ -40,7 +33,7 @@ const TimeFlowPage = () => {
             پنل ورود و خروج کاربران
           </h1>
           <p className="text-gray-600 text-center text-sm">
-            مدیریت و پیگیری دعوت ها به صورت هوشمند
+            مدیریت و پیگیری ورود و خروج کاربران
           </p>
         </div>
         <div className="flex-grow flex flex-col">

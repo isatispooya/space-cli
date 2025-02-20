@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { DateSelector } from "../../../components";
 import { DateObject } from "react-multi-date-picker";
 import toast from "react-hot-toast";
+import moment from "moment-jalaali";
 
 interface Log {
   id: number;
@@ -62,7 +63,9 @@ const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
                 <label className="text-sm font-medium text-gray-700 flex items-center">
                   {log.type === "login" ? "زمان ورود" : "زمان خروج"}
                   <span className="text-gray-400 ml-2">
-                    {log.time_parent.format("YYYY/MM/DD HH:mm")}
+                    {moment(log.time_parent.toDate()).format(
+                      "jYYYY/MM/DD HH:mm"
+                    )}
                   </span>
                 </label>
               </div>

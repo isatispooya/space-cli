@@ -1,10 +1,10 @@
 import { useTimeflow } from "../hooks";
-import { List } from "../components";
+import { List } from ".";
 import { UserLoginType } from "../types";
 import { DateObject } from "react-multi-date-picker";
 import toast from "react-hot-toast";
 
-const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
+const VerifyParent: React.FC<{ userLogin: UserLoginType }> = ({
   userLogin,
 }) => {
   const { mutate: updateUsersLoginByParent } =
@@ -44,4 +44,4 @@ const ParentTimeFlowVerify: React.FC<{ userLogin: UserLoginType }> = ({
   );
 };
 
-export default ParentTimeFlowVerify;
+export default VerifyParent;
