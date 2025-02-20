@@ -16,14 +16,13 @@ const ParentMissionForm = ({
   dataMissionTimeFlow: MissionType;
   refetch: () => void;
 }) => {
-  const {
-    approvedItems,
-    setApprovedItems,
-    setStartTime,
-  } = useMissionStore();
+  const { approvedItems, setApprovedItems, setStartTime } = useMissionStore();
   const { mutate: updateMissionTimeFlow } = useTimeflow.useUpdateMission();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [modifiedDates, setModifiedDates] = useState<
+    Record<number, Date | null>
+  >({});
 
   const groupedOtherData = useMemo(() => {
     if (!dataMissionTimeFlow?.other_logs) return [];
@@ -74,21 +73,24 @@ const ParentMissionForm = ({
                       <div>
                         <DateSelector
                           value={
-                            endItem.time_user
+                            modifiedDates[endItem.id] ||
+                            (endItem.time_user
                               ? moment(endItem.time_user).toDate()
-                              : null
+                              : null)
                           }
                           onChange={(value) => {
-                            console.log("Selected End Time:", value);
-                            setStartTime(
-                              Array.isArray(value)
-                                ? null
-                                : value instanceof Date
-                                ? value
-                                : value
-                                ? value.toDate()
-                                : null
-                            );
+                            const dateValue = Array.isArray(value)
+                              ? value[0]?.toDate()
+                              : value instanceof Date
+                              ? value
+                              : value?.toDate();
+
+                            setModifiedDates((prev) => ({
+                              ...prev,
+                              [endItem.id]: dateValue || null,
+                            }));
+
+                            setStartTime(dateValue || null);
                           }}
                         />
                       </div>
@@ -106,7 +108,10 @@ const ParentMissionForm = ({
                               id: startItem.id,
                               data: {
                                 time_parent_start: startItem.time_user,
-                                time_parent_end: endItem?.time_user || "",
+                                time_parent_end:
+                                  modifiedDates[endItem?.id] ||
+                                  endItem?.time_user ||
+                                  "",
                               },
                             },
                             {
@@ -119,8 +124,14 @@ const ParentMissionForm = ({
                                 toast.success("ماموریت با موفقیت تایید شد");
                               },
                               onError: (error: AxiosError<unknown>) => {
-                                const errorMessage = (error.response?.data as ErrorResponse)?.error;
-                                Toast(errorMessage || "خطایی رخ داده است", <ErrorIcon />, "bg-red-500");
+                                const errorMessage = (
+                                  error.response?.data as ErrorResponse
+                                )?.error;
+                                Toast(
+                                  errorMessage || "خطایی رخ داده است",
+                                  <ErrorIcon />,
+                                  "bg-red-500"
+                                );
                               },
                             }
                           );
