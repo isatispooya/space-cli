@@ -54,7 +54,7 @@ const timeflowServices = {
   },
   updateLeave: async (id: number, data: LeaveParentPostType) => {
     const response = await api.patch(
-      `/timeflow/user-login-log-senior/${id}/`,
+      `/timeflow/user-leave-log/${id}/`,
       data
     );
     return response.data;

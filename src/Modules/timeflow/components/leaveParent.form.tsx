@@ -19,6 +19,10 @@ const ParentLeaveForm = ({
   const { approvedItems, setApprovedItems, setStartTime } = useLeaveStore();
   const { mutate: updateLeaveTimeFlow } = useTimeflow.useUpdateLeave();
 
+  const [modifiedDates, setModifiedDates] = useState<
+  Record<number, Date | null>
+>({});
+
   const [isOpen, setIsOpen] = useState(false);
 
   const groupedOtherData = useMemo(() => {
@@ -68,24 +72,26 @@ const ParentLeaveForm = ({
                     </div>
                     {endItem && (
                       <div>
-                        <DateSelector
+                      <DateSelector
                           value={
-                            endItem.time_user
+                            modifiedDates[endItem.id] ||
+                            (endItem.time_user
                               ? moment(endItem.time_user).toDate()
-                              : null
+                              : null)
                           }
                           onChange={(value) => {
-                            console.log("Selected End Time:", value);
-                            if (value instanceof Date) {
-                              endItem.time_user = value.toISOString();
-                            }
-                            setStartTime(
-                              value instanceof Date
-                                ? value
-                                : value
-                                ? value.toDate()
-                                : null
-                            );
+                            const dateValue = Array.isArray(value)
+                              ? value[0]?.toDate()
+                              : value instanceof Date
+                              ? value
+                              : value?.toDate();
+
+                            setModifiedDates((prev) => ({
+                              ...prev,
+                              [endItem.id]: dateValue || null,
+                            }));
+
+                            setStartTime(dateValue || null);
                           }}
                         />
                       </div>
