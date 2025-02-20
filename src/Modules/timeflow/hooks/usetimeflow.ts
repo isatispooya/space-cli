@@ -115,6 +115,12 @@ const useTimeflow = {
         timeflowServices.updateLeave(id, data),
     });
   },
+  useGetTimeflow: () => {
+    return useQuery({
+      queryKey: ["timeflow"],
+      queryFn: () => timeflowServices.getTimeflow(),
+    });
+  },
 };
 
 export default useTimeflow;
