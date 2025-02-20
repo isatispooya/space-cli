@@ -4,6 +4,7 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { DateObject } from "react-multi-date-picker";
+import "./dateSelector.css";
 
 interface DatePickerComponentProps {
   format?: string;
@@ -13,7 +14,6 @@ interface DatePickerComponentProps {
   calendarPosition?: "bottom-right" | "top-right" | "bottom-left" | "top-left";
   value?: DateObject | DateObject[] | null;
   onChange?: (date: DateObject | DateObject[] | null) => void;
-  style?: React.CSSProperties;
 }
 
 const DateSelector: React.FC<DatePickerComponentProps> = ({
@@ -24,13 +24,6 @@ const DateSelector: React.FC<DatePickerComponentProps> = ({
   calendarPosition = "bottom-right",
   value,
   onChange,
-  style = {
-    width: "100%",
-    minWidth: "250px",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    padding: "20px",
-  },
 }) => {
   return (
     <DatePicker
@@ -40,8 +33,8 @@ const DateSelector: React.FC<DatePickerComponentProps> = ({
       locale={locale}
       calendarPosition={calendarPosition}
       value={Array.isArray(value) ? value[0] : value}
-      style={style}
       onChange={onChange}
+      inputClass="custom-date-picker"
     />
   );
 };
