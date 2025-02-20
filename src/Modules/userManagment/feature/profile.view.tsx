@@ -11,6 +11,8 @@ const ProfileView: React.FC = () => {
     profile?.profile_image ?? ""
   );
 
+  console.log(profile);
+
   React.useEffect(() => {
     if (profile?.profile_image) {
       setAvatarUrl(profile.profile_image);
@@ -40,6 +42,7 @@ const ProfileView: React.FC = () => {
   const personalInfo = [
     { label: "نام", value: profile?.first_name || "نامشخص" },
     { label: "نام خانوادگی", value: profile?.last_name || "نامشخص" },
+    { label: "کدملی", value: profile?.uniqueIdentifier || "نامشخص" },
     { label: "نام پدر", value: profile?.father_name || "نامشخص" },
     {
       label: "جنسیت",
