@@ -10,8 +10,8 @@ const TimeflowTable = () => {
   const mappedData = data?.map((item) => ({
     ...item,
     date: moment(item.date).format("jYYYY/jMM/jDD"),
-    time_start: item.time_start,
-    time_end: item.time_end,
+    time_start: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(item.time_start, "HH:mm:ss").format("HH:mm")}`,
+    time_end: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(item.time_end, "HH:mm:ss").format("HH:mm")}`,
     type: item.type === "working" ? "زمان حضور" : " غیبت",
     user_id: item.user_id,
   }));
@@ -29,12 +29,12 @@ const TimeflowTable = () => {
       headerFilter: true,
     },
     {
-      title: "زمان شروع",
+      title: "زمان شروع با تاریخ",
       field: "time_start",
       headerFilter: true,
     },
     {
-      title: "زمان پایان",
+      title: "زمان پایان با تاریخ",
       field: "time_end",
       headerFilter: true,
     },
@@ -43,6 +43,7 @@ const TimeflowTable = () => {
       field: "type",
       headerFilter: true,
     },
+    
   ];
 
   return (
