@@ -1,89 +1,198 @@
 import { motion, AnimatePresence } from "framer-motion";
-import useVerify from "../hooks/useVerify";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import { VerifyType } from "../types/Verify.type";
 import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import { useTimeflow } from "../hooks";
+import { Accordian } from "../../../components";
+
+moment.loadPersian({ dialect: "persian-modern" });
+
+type User = { first_name: string; last_name: string };
+type Status =
+  | "pending"
+  | "approved"
+  | "rejected"
+  | "mission"
+  | "leave"
+  | "shift_end";
+
+interface TimeEntry {
+  id: number;
+  user: User;
+  type: "login" | "logout";
+  time: string;
+  status: Status;
+  rejectReason?: string;
+}
 
 const TimeflowVerify = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const { mutate: verify } = useVerify.usePostVerify();
-  const { data: verifyData, refetch } = useVerify.useGetVerify();
+  const [entries, setEntries] = useState<TimeEntry[]>([]);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenTeam, setIsOpenTeam] = useState(false);
 
-  console.log(verifyData, "12345678");
+  const { mutate: updateUser } = useTimeflow.useUserTimeflowAccept();
+  const { mutate: updateParent } = useTimeflow.useUpdateUsersLoginByParent();
+  const { mutate: updateLogout } = useTimeflow.useUsersLogoutAccept();
 
+  const { mutate: updateLogoutParent } =
+    useTimeflow.useUsersLogoutAcceptParent();
+  const { data: userLogins } = useTimeflow.useGetUsersLogin();
+
+  // Map userLogins data to TimeEntry format when it loads
   useEffect(() => {
-    if (verifyData) {
-      const hasUnapprovedData =
-        verifyData.login?.some(
-          (item: VerifyType) =>
-            item.self_status !== "approved" && item.self_status !== "rejected"
-        ) ||
-        verifyData.logout?.some(
-          (item: VerifyType) =>
-            item.self_status !== "approved" && item.self_status !== "rejected"
-        );
-
-      setIsVisible(hasUnapprovedData);
+    if (userLogins) {
+      const mappedEntries: TimeEntry[] = [
+        ...(userLogins.own_logs || []).map((log: any) => ({
+          id: log.id,
+          user: {
+            first_name: log.user.first_name,
+            last_name: log.user.last_name || "",
+          },
+          type: log.type,
+          time: log.time_user,
+          status: log.status_self as Status,
+        })),
+        ...(userLogins.other_logs || []).map((log: any) => ({
+          id: log.id,
+          user: {
+            first_name: log.user.first_name,
+            last_name: log.user.last_name || "",
+          },
+          type: log.type,
+          time: log.time_user,
+          status: log.status_parent as Status,
+        })),
+      ];
+      setEntries(mappedEntries);
     }
-  }, [verifyData]);
+  }, [userLogins]);
 
-  const handleVerify = (id: number) => {
-    if (id) {
-      verify(
-        { id, data: { self_status: "approved" } },
-        {
-          onSuccess: (response) => {
-            const remainingLogins = verifyData?.login?.filter(
-              (item: VerifyType) => item.id !== id
-            );
-            const remainingLogouts = verifyData?.logout?.filter(
-              (item: VerifyType) => item.id !== id
-            );
+  // Check if there are pending entries to control visibility
+  useEffect(() => {
+    const hasPending = entries.some((entry) => entry.status === "pending");
+    setIsVisible(hasPending);
+  }, [entries]);
 
-            if (!remainingLogins?.length && !remainingLogouts?.length) {
-              setIsVisible(false);
-            } else {
-              setIsVisible(true);
-            }
-            toast.success(response.message);
-            refetch();
+  const updateEntryStatus = (id: number, status: Status, reason?: string) => {
+    const entry = entries.find((e) => e.id === id);
+    if (!entry) return;
+
+    const isUserEntry = userLogins?.own_logs.some((log: any) => log.id === id);
+    const payload = {
+      id,
+      ...(isUserEntry
+        ? { time_user: new Date().toISOString() } // Replace with "2023-02-22T16:02:25.379063Z" if static
+        : { time_parent: new Date().toISOString() }), // Replace with "2028-02-22T18:02:25.379063Z" if static
+      status,
+      ...(reason && { rejectReason: reason }),
+    };
+
+    if (isUserEntry) {
+      if (entry.type === "login") {
+        updateUser(payload, {
+          onSuccess: () => {
+            setEntries((prev) =>
+              prev.map((e) =>
+                e.id === id
+                  ? {
+                      ...e,
+                      status,
+                      rejectReason: reason,
+                      time: payload.time_user!,
+                    }
+                  : e
+              )
+            );
           },
-          onError: () => {
-            toast.error("خطایی پیش آمده است");
+        });
+      } else if (entry.type === "logout") {
+        updateLogout(payload, {
+          onSuccess: () => {
+            setEntries((prev) =>
+              prev.map((e) =>
+                e.id === id
+                  ? {
+                      ...e,
+                      status,
+                      rejectReason: reason,
+                      time: payload.time_user!,
+                    }
+                  : e
+              )
+            );
           },
-        }
-      );
+        });
+      }
+    } else {
+      if (entry.type === "login") {
+        updateParent(payload, {
+          onSuccess: () => {
+            setEntries((prev) =>
+              prev.map((e) =>
+                e.id === id
+                  ? {
+                      ...e,
+                      status,
+                      rejectReason: reason,
+                      time: payload.time_parent!,
+                    }
+                  : e
+              )
+            );
+          },
+        });
+      } else if (entry.type === "logout") {
+        updateLogoutParent(payload, {
+          onSuccess: () => {
+            setEntries((prev) =>
+              prev.map((e) =>
+                e.id === id
+                  ? {
+                      ...e,
+                      status,
+                      rejectReason: reason,
+                      time: payload.time_parent!,
+                    }
+                  : e
+              )
+            );
+          },
+        });
+      }
     }
   };
 
-  const handleReject = (id: number) => {
-    if (id) {
-      verify(
-        { id, data: { self_status: "rejected" } },
-        {
-          onSuccess: () => {
-            const remainingLogins = verifyData?.login?.filter(
-              (item: VerifyType) => item.id !== id
-            );
-            const remainingLogouts = verifyData?.logout?.filter(
-              (item: VerifyType) => item.id !== id
-            );
-
-            if (!remainingLogins?.length && !remainingLogouts?.length) {
-              setIsVisible(false);
-            } else {
-              setIsVisible(true);
-            }
-            refetch();
-          },
-        }
+  const handleTimeChange = (id: number, value: any) => {
+    if (value) {
+      const isoString = value.toDate
+        ? value.toDate().toISOString()
+        : new Date(value).toISOString();
+      setEntries((prev) =>
+        prev.map((entry) =>
+          entry.id === id ? { ...entry, time: isoString } : entry
+        )
       );
     }
   };
 
   if (!isVisible) return null;
+
+  // Filter current user's pending entries (both login and logout)
+  const currentUserEntries = entries.filter(
+    (e) =>
+      userLogins?.own_logs.some((log: any) => log.id === e.id) &&
+      e.status === "pending"
+  );
+  const teamEntries = entries.filter(
+    (e) =>
+      userLogins?.other_logs.some((log: any) => log.id === e.id) &&
+      e.status === "pending"
+  );
 
   return (
     <motion.div
@@ -92,192 +201,179 @@ const TimeflowVerify = () => {
       exit={{ opacity: 0 }}
       className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 overflow-y-auto"
     >
-      <div className="min-h-screen relative">
-        <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 relative">
-          <div className="max-w-3xl mx-auto bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-4 sm:p-8 mb-6 relative border border-gray-100">
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="w-16 h-16 bg-pink-300/30 rounded-full absolute top-24 left-20 blur-xs"></div>
-              <div className="w-10 h-10 bg-yellow-200/40 rounded-full absolute top-32 right-24 blur-xs"></div>
-              <div className="w-8 h-8 bg-orange-300/25 rounded-full absolute bottom-16 right-32 blur-xs"></div>
-              <div className="w-12 h-12 bg-blue-300/35 rounded-full absolute bottom-24 left-36 blur-xs"></div>
-              <div className="w-5 h-5 bg-green-300/30 rounded-full absolute top-48 left-1/3 blur-xs"></div>
-              <div className="w-18 h-18 bg-purple-300/25 rounded-full absolute bottom-32 right-1/4 blur-xs"></div>
-              <div className="w-12 h-12 bg-indigo-300/30 rounded-full absolute top-16 right-1/3 blur-xs"></div>
-              <div className="w-5 h-5 bg-red-200/35 rounded-full absolute bottom-48 left-1/4 blur-xs"></div>
-              <div className="w-4 h-4 bg-teal-300/25 rounded-full absolute top-96 left-1/2 blur-xs"></div>
-              <div className="w-16 h-16 bg-cyan-200/30 rounded-full absolute bottom-40 right-1/5 blur-xs"></div>
-              <div className="w-10 h-10 bg-rose-300/35 rounded-full absolute top-56 right-36 blur-xs"></div>
-              <div className="w-8 h-8 bg-amber-200/25 rounded-full absolute bottom-56 left-48 blur-xs"></div>
-            </div>
-
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent z-10">
-              تایید ورود و خروج
-            </h1>
-            <p className="text-sm sm:text-base text-center text-gray-600 mb-6 sm:mb-8">
-              لطفا ورود و خروج های ثبت شده را تایید یا رد کنید
-            </p>
-
-            <div className="grid gap-4 sm:gap-8 max-w-3xl mx-auto">
-              <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl p-3 sm:p-6 transition-all duration-300 hover:shadow-2xl border border-gray-100">
-                <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 border-b pb-2 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                  ورود های ثبت شده
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="bg-white/95 rounded-3xl shadow-2xl p-6 max-w-3xl w-full">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            تأیید ورود و خروج
+          </h1>
+          <div className="flex flex-col gap-4">
+          <Accordian title="ورود و خروج من" isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)}>
+            {currentUserEntries.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                  ورود و خروج من
                 </h2>
-                <AnimatePresence mode="wait">
-                  {verifyData?.login
-                    ?.filter(
-                      (item: VerifyType) => item.self_status !== "approved"
-                    )
-                    .map((item: VerifyType, index: number) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-2 sm:p-4 my-2 sm:my-3 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
-                      >
-                        <div className="flex flex-col space-y-1 mb-2 sm:mb-0 w-full sm:w-auto">
-                          <h1 className="text-md sm:text-sm text-gray-700">
-                            {item.user.first_name + " " + item.user.last_name}
-                          </h1>
-                          <span className="text-xs sm:text-sm text-gray-500">
-                            زمان ورود
-                          </span>
-                          <span className="text-sm sm:text-base font-semibold text-gray-800 direction-ltr">
-                            {item?.time === "نامعتبر" ? (
-                              <span className="text-red-500">نامعتبر</span>
-                            ) : (
-                              moment(item?.time).format("HH:mm - jYYYY/jMM/jDD")
-                            )}
-                          </span>
-                        </div>
-
-                        <div className="flex gap-2 w-full sm:w-auto justify-end sm:justify-start">
-                          <button
-                            className="flex-1 sm:flex-none px-3 sm:px-5 py-2 text-xs sm:text-sm font-medium bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 hover:shadow-lg hover:shadow-green-100"
-                            onClick={() => handleVerify(item?.id)}
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                            تایید
-                          </button>
-                          <button
-                            className="flex-1 sm:flex-none px-3 sm:px-5 py-2 text-xs sm:text-sm font-medium bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 hover:shadow-lg hover:shadow-red-100"
-                            onClick={() => handleReject(item?.id)}
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                            رد
-                          </button>
-                        </div>
-                      </motion.div>
-                    ))}
+                <AnimatePresence>
+                  {currentUserEntries.map((entry) => (
+                    <EntryCard
+                      key={entry.id}
+                      entry={entry}
+                      onApprove={() => updateEntryStatus(entry.id, "approved")}
+                      onReject={(reason) =>
+                        updateEntryStatus(entry.id, "rejected", reason)
+                      }
+                      onTimeChange={handleTimeChange}
+                    />
+                  ))}
                 </AnimatePresence>
               </div>
-              <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl p-3 sm:p-6 transition-all duration-300 hover:shadow-2xl border border-gray-100">
-                <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 border-b pb-2 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-                  خروج های ثبت شده
-                </h2>
-                <AnimatePresence mode="wait">
-                  {verifyData?.logout
-                    ?.filter(
-                      (item: VerifyType) => item.self_status !== "approved"
-                    )
-                    .map((item: VerifyType, index: number) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-2 sm:p-4 my-2 sm:my-3 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
-                      >
-                        <div className="flex flex-col space-y-1 mb-2 sm:mb-0 w-full sm:w-auto">
-                          <h1 className="text-md sm:text-sm text-gray-700">
-                            {item.user.first_name + " " + item.user.last_name}
-                          </h1>
-                          <span className="text-xs sm:text-sm text-gray-500">
-                            زمان خروج
-                          </span>
-                          <span className="text-sm sm:text-base font-semibold text-gray-800 direction-ltr">
-                            {item?.time === "نامعتبر" ? (
-                              <span className="text-red-500">نامعتبر</span>
-                            ) : (
-                              moment(item?.time).format("HH:mm - jYYYY/jMM/jDD")
-                            )}
-                          </span>
-                        </div>
+            )}
+          </Accordian>
 
-                        <div className="flex gap-2 w-full sm:w-auto justify-end sm:justify-start">
-                          <button
-                            className="flex-1 sm:flex-none px-3 sm:px-5 py-2 text-xs sm:text-sm font-medium bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 hover:shadow-lg hover:shadow-green-100"
-                            onClick={() => handleVerify(item?.id)}
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                            تایید
-                          </button>
-                          <button
-                            className="flex-1 sm:flex-none px-3 sm:px-5 py-2 text-xs sm:text-sm font-medium bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 hover:shadow-lg hover:shadow-red-100"
-                            onClick={() => handleReject(item?.id)}
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                            رد
-                          </button>
-                        </div>
-                      </motion.div>
-                    ))}
-                </AnimatePresence>
+          <Accordian title="ورود و خروج زیرمجموعه‌ها" isOpen={isOpenTeam} onToggle={() => setIsOpenTeam(!isOpenTeam)}>
+            {teamEntries.length > 0 && (
+              <div>
+                <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                ورود و خروج زیرمجموعه‌ها
+              </h2>
+              <AnimatePresence>
+                {teamEntries.map((entry) => (
+                  <EntryCard
+                    key={entry.id}
+                    entry={entry}
+                    onApprove={() => updateEntryStatus(entry.id, "approved")}
+                    onReject={(reason) =>
+                      updateEntryStatus(entry.id, "rejected", reason)
+                    }
+                    onMission={() => updateEntryStatus(entry.id, "mission")}
+                    onLeave={() => updateEntryStatus(entry.id, "leave")}
+                    onShiftEnd={() => updateEntryStatus(entry.id, "shift_end")}
+                    onTimeChange={handleTimeChange}
+                  />
+                ))}
+              </AnimatePresence>
               </div>
-            </div>
+            )}
+          </Accordian>
           </div>
         </div>
       </div>
+    </motion.div>
+  );
+};
+
+const EntryCard = ({
+  entry,
+  onApprove,
+  onReject,
+  onTimeChange,
+}: {
+  entry: TimeEntry;
+  onApprove: () => void;
+  onReject: (reason: string) => void;
+  onMission?: () => void;
+  onLeave?: () => void;
+  onShiftEnd?: () => void;
+  onTimeChange: (id: number, value: any) => void;
+}) => {
+  const [showRejectInput, setShowRejectInput] = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      className="p-4 mb-4 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+    >
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-col space-y-1">
+          <h3 className="text-sm text-gray-700">
+            {entry.user.first_name + " " + entry.user.last_name}
+          </h3>
+          <span className="text-xs text-gray-500">
+            {entry.type === "login" ? "زمان ورود" : "زمان خروج"}
+          </span>
+          <DatePicker
+            value={entry.time === "نامعتبر" ? null : new Date(entry.time)}
+            onChange={(value) => onTimeChange(entry.id, value)}
+            format="HH:mm - YYYY/MM/DD"
+            plugins={[<TimePicker position="bottom" />]}
+            calendar={persian}
+            locale={persian_fa}
+            calendarPosition="bottom-right"
+          />
+        </div>
+        <div className="flex gap-2 flex-wrap">
+          <button
+            className="px-4 py-2 text-sm bg-green-50 text-green-600 rounded-lg hover:bg-green-100 flex items-center gap-2"
+            onClick={onApprove}
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            تأیید
+          </button>
+          <button
+            className="px-4 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 flex items-center gap-2"
+            onClick={() => setShowRejectInput(!showRejectInput)}
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+            رد
+          </button>
+        </div>
+      </div>
+      <AnimatePresence>
+        {showRejectInput && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-4"
+          >
+            <textarea
+              className="w-full p-2 border rounded-lg resize-none"
+              placeholder="دلیل رد درخواست (اختیاری)"
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+            />
+            <button
+              className="mt-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              onClick={() => {
+                onReject(rejectReason);
+                setShowRejectInput(false);
+                setRejectReason("");
+              }}
+            >
+              ثبت رد
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

@@ -38,7 +38,17 @@ const useTimeflow = {
         timeflowServices.UsersLogoutAccept(data),
     });
   },
-
+  useUsersLogoutAcceptParent: (): UseMutationResult<
+    TimeflowVerifyType,
+    AxiosError,
+    { data: TimeflowVerifyType }
+  > => {
+    return useMutation({
+      mutationKey: ["update-users-logout-parent"],
+      mutationFn: ({ data }: { data: TimeflowVerifyType }) =>
+        timeflowServices.UsersLogoutAcceptParent(data),
+    });
+  },
   useUserTimeflowAccept: (): UseMutationResult<
     TimeflowVerifyType,
     AxiosError,
