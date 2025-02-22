@@ -43,7 +43,6 @@ const TimeflowVerify = () => {
     useTimeflow.useUsersLogoutAcceptParent();
   const { data: userLogins } = useTimeflow.useGetUsersLogin();
 
-  // Map userLogins data to TimeEntry format when it loads
   useEffect(() => {
     if (userLogins) {
       const mappedEntries: TimeEntry[] = [
@@ -72,7 +71,6 @@ const TimeflowVerify = () => {
     }
   }, [userLogins]);
 
-  // Check if there are pending entries to control visibility
   useEffect(() => {
     const hasPending = entries.some((entry) => entry.status === "pending");
     setIsVisible(hasPending);
@@ -87,7 +85,7 @@ const TimeflowVerify = () => {
       id,
       ...(isUserEntry
         ? { time_user: new Date().toISOString() }
-        : { time_parent: new Date().toISOString() }),
+        : { time_parent: entry.time }), // Use the entry's time instead of new Date
       status,
       ...(reason && { rejectReason: reason }),
     };
