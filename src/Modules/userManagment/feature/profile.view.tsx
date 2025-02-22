@@ -10,9 +10,6 @@ const ProfileView: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>(
     profile?.profile_image ?? ""
   );
-
-  console.log(profile);
-
   React.useEffect(() => {
     if (profile?.profile_image) {
       setAvatarUrl(profile.profile_image);
