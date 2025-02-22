@@ -86,85 +86,25 @@ const TimeflowVerify = () => {
     const payload = {
       id,
       ...(isUserEntry
-        ? { time_user: new Date().toISOString() } // Replace with "2023-02-22T16:02:25.379063Z" if static
-        : { time_parent: new Date().toISOString() }), // Replace with "2028-02-22T18:02:25.379063Z" if static
+        ? { time_user: new Date().toISOString() }
+        : { time_parent: new Date().toISOString() }),
       status,
       ...(reason && { rejectReason: reason }),
     };
 
-    if (isUserEntry) {
-      if (entry.type === "login") {
-        updateUser(payload, {
-          onSuccess: () => {
-            setEntries((prev) =>
-              prev.map((e) =>
-                e.id === id
-                  ? {
-                      ...e,
-                      status,
-                      rejectReason: reason,
-                      time: payload.time_user!,
-                    }
-                  : e
-              )
-            );
-          },
-        });
-      } else if (entry.type === "logout") {
-        updateLogout(payload, {
-          onSuccess: () => {
-            setEntries((prev) =>
-              prev.map((e) =>
-                e.id === id
-                  ? {
-                      ...e,
-                      status,
-                      rejectReason: reason,
-                      time: payload.time_user!,
-                    }
-                  : e
-              )
-            );
-          },
-        });
-      }
-    } else {
-      if (entry.type === "login") {
-        updateParent(payload, {
-          onSuccess: () => {
-            setEntries((prev) =>
-              prev.map((e) =>
-                e.id === id
-                  ? {
-                      ...e,
-                      status,
-                      rejectReason: reason,
-                      time: payload.time_parent!,
-                    }
-                  : e
-              )
-            );
-          },
-        });
-      } else if (entry.type === "logout") {
-        updateLogoutParent(payload, {
-          onSuccess: () => {
-            setEntries((prev) =>
-              prev.map((e) =>
-                e.id === id
-                  ? {
-                      ...e,
-                      status,
-                      rejectReason: reason,
-                      time: payload.time_parent!,
-                    }
-                  : e
-              )
-            );
-          },
-        });
-      }
-    }
+    const updateFunction = isUserEntry
+      ? entry.type === "login"
+        ? updateUser
+        : updateLogout
+      : entry.type === "login"
+      ? updateParent
+      : updateLogoutParent;
+
+    updateFunction(payload, {
+      onSuccess: () => {
+        setEntries((prev) => prev.filter((e) => e.id !== id));
+      },
+    });
   };
 
   const handleTimeChange = (id: number, value: any) => {
@@ -188,6 +128,7 @@ const TimeflowVerify = () => {
       userLogins?.own_logs.some((log: any) => log.id === e.id) &&
       e.status === "pending"
   );
+
   const teamEntries = entries.filter(
     (e) =>
       userLogins?.other_logs.some((log: any) => log.id === e.id) &&
@@ -207,56 +148,59 @@ const TimeflowVerify = () => {
             تأیید ورود و خروج
           </h1>
           <div className="flex flex-col gap-4">
-          <Accordian title="ورود و خروج من" isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)}>
-            {currentUserEntries.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                  ورود و خروج من
-                </h2>
-                <AnimatePresence>
-                  {currentUserEntries.map((entry) => (
-                    <EntryCard
-                      key={entry.id}
-                      entry={entry}
-                      onApprove={() => updateEntryStatus(entry.id, "approved")}
-                      onReject={(reason) =>
-                        updateEntryStatus(entry.id, "rejected", reason)
-                      }
-                      onTimeChange={handleTimeChange}
-                    />
-                  ))}
-                </AnimatePresence>
-              </div>
-            )}
-          </Accordian>
+            <Accordian
+              title={`ورود و خروج من (${currentUserEntries.length})`}
+              isOpen={isOpen}
+              onToggle={() => setIsOpen(!isOpen)}
+            >
+              {currentUserEntries.map((entry) => (
+                <EntryCard
+                  key={entry.id}
+                  entry={entry}
+                  onApprove={() => updateEntryStatus(entry.id, "approved")}
+                  onReject={(reason) =>
+                    updateEntryStatus(entry.id, "rejected", reason)
+                  }
+                  onTimeChange={handleTimeChange}
+                  status={entry.status}
+                />
+              ))}
+            </Accordian>
 
-          <Accordian title="ورود و خروج زیرمجموعه‌ها" isOpen={isOpenTeam} onToggle={() => setIsOpenTeam(!isOpenTeam)}>
-            {teamEntries.length > 0 && (
-              <div>
-                <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                ورود و خروج زیرمجموعه‌ها
-              </h2>
-              <AnimatePresence>
-                {teamEntries.map((entry) => (
-                  <EntryCard
-                    key={entry.id}
-                    entry={entry}
-                    onApprove={() => updateEntryStatus(entry.id, "approved")}
-                    onReject={(reason) =>
-                      updateEntryStatus(entry.id, "rejected", reason)
-                    }
-                    onMission={() => updateEntryStatus(entry.id, "mission")}
-                    onLeave={() => updateEntryStatus(entry.id, "leave")}
-                    onShiftEnd={() => updateEntryStatus(entry.id, "shift_end")}
-                    onTimeChange={handleTimeChange}
-                  />
-                ))}
-              </AnimatePresence>
-              </div>
-            )}
-          </Accordian>
+            <Accordian
+              title="ورود و خروج زیرمجموعه‌ها"
+              isOpen={isOpenTeam}
+              onToggle={() => setIsOpenTeam(!isOpenTeam)}
+            >
+              {teamEntries.length > 0 && (
+                <div>
+                  <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                    ورود و خروج زیرمجموعه‌ها
+                  </h2>
+                  <AnimatePresence>
+                    {teamEntries.map((entry) => (
+                      <EntryCard
+                        key={entry.id}
+                        entry={entry}
+                        onApprove={() =>
+                          updateEntryStatus(entry.id, "approved")
+                        }
+                        onReject={(reason) =>
+                          updateEntryStatus(entry.id, "rejected", reason)
+                        }
+                        onMission={() => updateEntryStatus(entry.id, "mission")}
+                        onLeave={() => updateEntryStatus(entry.id, "leave")}
+                        onShiftEnd={() =>
+                          updateEntryStatus(entry.id, "shift_end")
+                        }
+                        onTimeChange={handleTimeChange}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </div>
+              )}
+            </Accordian>
           </div>
         </div>
       </div>
@@ -269,25 +213,59 @@ const EntryCard = ({
   onApprove,
   onReject,
   onTimeChange,
+  status,
 }: {
   entry: TimeEntry;
   onApprove: () => void;
   onReject: (reason: string) => void;
-  onMission?: () => void;
-  onLeave?: () => void;
-  onShiftEnd?: () => void;
   onTimeChange: (id: number, value: any) => void;
+  status: Status;
 }) => {
   const [showRejectInput, setShowRejectInput] = useState(false);
   const [rejectReason, setRejectReason] = useState("");
 
+  const handleReject = () => {
+    if (!rejectReason.trim()) {
+      alert("لطفا دلیل رد را وارد کنید");
+      return;
+    }
+    onReject(rejectReason);
+    setRejectReason("");
+    setShowRejectInput(false);
+  };
+
   return (
     <motion.div
+      layout
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
-      className="p-4 mb-4 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+      transition={{ duration: 0.2 }}
+      className={`p-4 mb-4 bg-gradient-to-r rounded-xl border transition-all ${
+        status === "approved"
+          ? "from-green-50 to-green-100 border-green-200"
+          : status === "rejected"
+          ? "from-red-50 to-red-100 border-red-200"
+          : "from-gray-50 to-white border-gray-100"
+      }`}
     >
+      <div className="flex justify-between items-center mb-2">
+        <span
+          className={`text-sm ${
+            status === "approved"
+              ? "text-green-600"
+              : status === "rejected"
+              ? "text-red-600"
+              : "text-gray-600"
+          }`}
+        >
+          {status === "approved"
+            ? "تایید شده"
+            : status === "rejected"
+            ? "رد شده"
+            : "در انتظار تایید"}
+        </span>
+      </div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex flex-col space-y-1">
           <h3 className="text-sm text-gray-700">
@@ -299,8 +277,9 @@ const EntryCard = ({
           <DatePicker
             value={entry.time === "نامعتبر" ? null : new Date(entry.time)}
             onChange={(value) => onTimeChange(entry.id, value)}
-            format="HH:mm - YYYY/MM/DD"
-            plugins={[<TimePicker position="bottom" />]}
+            disableDayPicker
+            format="YYYY/MM/DD HH:mm:ss"
+            plugins={[<TimePicker />]}
             calendar={persian}
             locale={persian_fa}
             calendarPosition="bottom-right"
@@ -328,7 +307,7 @@ const EntryCard = ({
           </button>
           <button
             className="px-4 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 flex items-center gap-2"
-            onClick={() => setShowRejectInput(!showRejectInput)}
+            onClick={() => setShowRejectInput(true)}
           >
             <svg
               className="w-4 h-4"
@@ -357,20 +336,29 @@ const EntryCard = ({
           >
             <textarea
               className="w-full p-2 border rounded-lg resize-none"
-              placeholder="دلیل رد درخواست (اختیاری)"
+              placeholder="لطفا دلیل رد را وارد کنید"
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
+              autoFocus
+              rows={3}
             />
-            <button
-              className="mt-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-              onClick={() => {
-                onReject(rejectReason);
-                setShowRejectInput(false);
-                setRejectReason("");
-              }}
-            >
-              ثبت رد
-            </button>
+            <div className="flex gap-2 mt-2">
+              <button
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                onClick={handleReject}
+              >
+                ثبت رد
+              </button>
+              <button
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                onClick={() => {
+                  setShowRejectInput(false);
+                  setRejectReason("");
+                }}
+              >
+                انصراف
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
