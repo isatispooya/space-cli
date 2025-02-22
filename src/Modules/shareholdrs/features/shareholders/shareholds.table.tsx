@@ -1,7 +1,6 @@
 import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { ShareholdersTypes } from "../../types/shareholders.type";
-import { useNavigate } from "react-router-dom";
 import { useShareholders } from "../../hooks";
 import { LoaderLg } from "../../../../components";
 import { CellComponent, ColumnDefinition } from "tabulator-tables";
@@ -11,7 +10,6 @@ import { ActionMenu } from "../../../../components/table/tableaction";
 
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, isPending } = useShareholders.useGet();
-  const navigate = useNavigate();
 
   const mappedData = shareholders?.map((row: ShareholdersTypes) => ({
     ...row,
@@ -22,11 +20,9 @@ const ShareholdTable: React.FC = () => {
     last_name: row?.last_name,
     uniqueIdentifier: row?.uniqueIdentifier,
     capital_increase_payment: row?.capital_increase_payment,
-    id: row.id || Math.random(),
+    precedence: row?.precedence,
+    updated_at: row?.updated_at,
   }));
-
-
-
 
   const columns = (): ColumnDefinition[] => [
     {
@@ -51,7 +47,7 @@ const ShareholdTable: React.FC = () => {
     },
     {
       field: "uniqueIdentifier",
-      title: "کدملی ",
+      title: "کدملی",
       headerFilter: true,
     },
     {
@@ -64,13 +60,14 @@ const ShareholdTable: React.FC = () => {
       title: "حق تقدم استفاده شده",
       headerFilter: true,
     },
-
     {
       field: "updated_at",
       title: "تاریخ ویرایش",
       formatter: (cell: CellComponent) => {
         const rowData = cell.getRow().getData();
-        return moment(rowData.updated_at).locale("fa").format("jYYYY/jMM/jDD");
+        return rowData.updated_at
+          ? moment(rowData.updated_at).locale("fa").format("jYYYY/jMM/jDD")
+          : "-";
       },
     },
     {
@@ -85,6 +82,105 @@ const ShareholdTable: React.FC = () => {
     },
   ];
 
+  const handlePrint = (rowData: ShareholdersTypes) => {
+    const printContent = `
+      <html>
+        <head>
+          <title>چاپ اطلاعات سهامدار</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+            body {
+              font-family: 'Vazirmatn', Arial, sans-serif;
+              direction: rtl;
+              padding: 40px;
+              background-color: #f9fafb;
+              color: #1f2937;
+            }
+            .container {
+              max-width: 800px;
+              margin: 0 auto;
+              background: white;
+              padding: 30px;
+              border-radius: 12px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+              text-align: center;
+              color: #1e40af;
+              font-size: 24px;
+              margin-bottom: 30px;
+              border-bottom: 2px solid #dbeafe;
+              padding-bottom: 10px;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 16px;
+            }
+            th, td {
+              padding: 12px 16px;
+              text-align: right;
+              border-bottom: 1px solid #e5e7eb;
+            }
+            th {
+              background-color: #eff6ff;
+              color: #1e40af;
+              font-weight: 700;
+              width: 30%;
+            }
+            td {
+              background-color: #ffffff;
+              color: #374151;
+            }
+            tr:last-child th, tr:last-child td {
+              border-bottom: none;
+            }
+            .footer {
+              text-align: center;
+              margin-top: 20px;
+              font-size: 12px;
+              color: #6b7280;
+            }
+            @media print {
+              body { background-color: white; }
+              .container { box-shadow: none; border: 1px solid #e5e7eb; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>اطلاعات سهامدار</h1>
+            <table>
+              <tr><th>شرکت</th><td>${rowData.company || "-"}</td></tr>
+              <tr><th>تعداد سهام</th><td>${
+                rowData.number_of_shares || "0"
+              }</td></tr>
+              <tr><th>نام</th><td>${rowData.first_name || "-"}</td></tr>
+              <tr><th>نام خانوادگی</th><td>${rowData.last_name || "-"}</td></tr>
+              <tr><th>کدملی</th><td>${rowData.uniqueIdentifier || "-"}</td></tr>
+              <tr><th>حق تقدم</th><td>${rowData.precedence || "0"}</td></tr>
+              <tr><th>حق تقدم استفاده شده</th><td>${
+                Array.isArray(rowData.capital_increase_payment)
+                  ? "ندارد"
+                  : rowData.capital_increase_payment || "0"
+              }</td></tr>
+            </table>
+            <div class="footer">
+              چاپ شده در تاریخ: ${moment().locale("fa").format("jYYYY/jMM/jDD")}
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    const printWindow = window.open("", "_blank");
+    if (printWindow) {
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
+
   const handleCellClick = (e: UIEvent, cell: CellComponent) => {
     e.stopPropagation();
     if ((e.target as HTMLElement).classList.contains("action-btn")) {
@@ -96,16 +192,16 @@ const ShareholdTable: React.FC = () => {
 
       const rect = (e.target as HTMLElement).getBoundingClientRect();
       const rowData = cell.getRow().getData();
+
       const menuItems = [
         {
           icon: "fas fa-print",
           label: "چاپ",
-          onClick: () => {
-            navigate(`/precendence/print/${rowData.id}`);
-          },
+          onClick: () => handlePrint(rowData as ShareholdersTypes),
           color: "#DC2626",
         },
       ];
+
       const menuPosition = { x: rect.left, y: rect.bottom };
       const menuContainer = document.createElement("div");
       menuContainer.className = "popup-menu";
@@ -134,27 +230,25 @@ const ShareholdTable: React.FC = () => {
   }
 
   const ExelData = (item: ShareholdersTypes) => ({
-    "نام شرکت": item.company_detail?.name,
-    "نوع شرکت": item.company_detail?.company_type,
-    "تعداد سهام": item.number_of_shares,
-    نام: item.user_detail?.first_name,
-    "نام خانوادگی": item.user_detail?.last_name,
+    "نام شرکت": item.company_detail?.name || item.company,
+    "نوع شرکت": item.company_detail?.company_type || "-",
+    "تعداد سهام": item.number_of_shares || 0,
+    نام: item.user_detail?.first_name || item.first_name,
+    "نام خانوادگی": item.user_detail?.last_name || item.last_name,
   });
 
   return (
-    <>
-      <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
-        <div className="overflow-x-auto">
-          <TabulatorTable
-            data={mappedData || []}
-            columns={columns()}
-            title="اطلاعات کاربران"
-            showActions={true}
-            formatExportData={ExelData}
-          />
-        </div>
+    <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
+      <div className="overflow-x-auto">
+        <TabulatorTable
+          data={mappedData || []}
+          columns={columns()}
+          title="اطلاعات کاربران"
+          showActions={true}
+          formatExportData={ExelData}
+        />
       </div>
-    </>
+    </div>
   );
 };
 
