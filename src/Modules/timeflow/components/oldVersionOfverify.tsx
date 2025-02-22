@@ -1,45 +1,22 @@
 import { motion, AnimatePresence } from "framer-motion";
 import "moment/locale/fa";
-import moment from "moment-jalaali"; // For Jalali calendar
+import moment from "moment-jalaali";
 import { useState, useEffect } from "react";
 import { useTimeflow } from "../hooks";
 import { Accordian } from "../../../components";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Button } from "@mui/material";
 import dayjs from "dayjs";
+import OwnLog from "../types/ownLogs.type";
+import OtherLog from "../types/otherLogs.type";
 // Define the user type
-type User = {
-  username: string;
-  first_name: string;
-  last_name: string;
-};
-// Define a type for the log entries
-type OwnLog = {
-  id: number;
-  status_self: string;
-  time_user: string;
-  user: User; // Add user property
-  // Add other relevant properties
-  type: string;
-  isOwnLog: boolean;
-};
-type OtherLog = {
-  id: number;
-  status_parent: string;
-  time_parent: string;
-  time_user: string;
-  user: User; // Add user property
-  // Add other relevant properties
-  type: string;
-  isOwnLog: boolean;
-};
-const TimeflowVerify = () => {
+
+const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
   const { mutate: updateUser } = useTimeflow.useUserTimeflowAccept();
   const { data: userLogins } = useTimeflow.useGetUsersLogin();
   const { mutate: updateParent } = useTimeflow.useUpdateUsersLoginByParent();
   const { mutate: updateLogoutParent } =
     useTimeflow.useUsersLogoutAcceptParent();
-
   const [ownLogs, setOwnLogs] = useState<OwnLog[]>([]);
   const [otherLogs, setOtherLogs] = useState<OtherLog[]>([]);
   const [isOpenOwn, setIsOpenOwn] = useState(false);
@@ -99,8 +76,6 @@ const TimeflowVerify = () => {
 
     const formattedTime = selectedTime.toISOString();
     const patchData = { time_user: formattedTime };
-
-    console.log("Calling updateUser with ID:", logId, "Data:", patchData);
 
     updateUser(
       { id: logId, data: patchData }, // Single object with id and data
@@ -193,6 +168,12 @@ const TimeflowVerify = () => {
       }
     );
   };
+
+  useEffect(() => {
+    if (notApprovedOwnLogs.length === 0 && notApprovedOtherLogs.length === 0) {
+      onClose(); // Close the component when no pending logs exist
+    }
+  }, [notApprovedOwnLogs, notApprovedOtherLogs, onClose]);
 
   return (
     <motion.div

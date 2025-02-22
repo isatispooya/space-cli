@@ -1,7 +1,7 @@
 import { MainLayout } from "../../../layouts";
 import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { DashboardMarketingStat } from "../components";
 import { useDashboard } from "../hooks";
 import DashboardCrowdStat from "../components/dashboardCrowd.stat";
@@ -11,6 +11,7 @@ import TimeflowVerify from "../../timeflow/components/oldVersionOfverify";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
+  const [isVerifyOpen, setIsVerifyOpen] = useState(true);
 
   const sliderData = useMemo(
     () =>
@@ -27,7 +28,7 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
-      <TimeflowVerify />
+      {isVerifyOpen && <TimeflowVerify onClose={() => setIsVerifyOpen(false)} />}
       <div className="container mx-auto px-4 py-2 relative">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
           <div className="lg:col-span-3 space-y-4 lg:space-y-6">
