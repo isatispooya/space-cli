@@ -1,15 +1,16 @@
 export interface ShareholdersTypes {
-  id?: number;
-  name?: string;
-  number_of_shares?: number;
+  company: string;
+  company_national_id: string;
+  number_of_shares: number;
+  first_name: string;
+  last_name: string;
+  uniqueIdentifier: string;
+  capital_increase_payment: number | [];
+  precedence: number;
   updated_at?: string;
   created_at?: string;
-  company?: number;
-  company_national_id?: string;
-  first_name?: string;
-  last_name?: string;
-  uniqueIdentifier?: string;
-  capital_increase_payment?: number;
+  id?: number;
+  name?: string;
   user?: number;
   company_detail?: {
     name?: string;
