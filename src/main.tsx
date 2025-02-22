@@ -16,6 +16,8 @@ import { Toaster } from "react-hot-toast";
 import loadWidget from "./components/contact/chatBox";
 import { startClarity } from "./utils";
 import "tabulator-tables/dist/css/tabulator_bulma.min.css";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 const queryClient = new QueryClient();
@@ -47,15 +49,17 @@ loadWidget();
 
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <CacheProvider value={rtlCache}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <CacheProvider value={rtlCache}>
           <ThemeProvider theme={theme}>
             <Toaster />
             <App />
           </ThemeProvider>
         </CacheProvider>
       </BrowserRouter>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </LocalizationProvider>
   </React.StrictMode>
 );

@@ -39,14 +39,14 @@ const useTimeflow = {
     });
   },
   useUsersLogoutAcceptParent: (): UseMutationResult<
-    TimeflowVerifyType,
+  SeniorVerifyType,
     AxiosError,
-    { data: TimeflowVerifyType }
+    { data: SeniorVerifyType; id: number }
   > => {
     return useMutation({
       mutationKey: ["update-users-logout-parent"],
-      mutationFn: ({ data }: { data: TimeflowVerifyType }) =>
-        timeflowServices.UsersLogoutAcceptParent(data),
+      mutationFn: ({ data, id }: { data: SeniorVerifyType; id: number }) =>
+        timeflowServices.UsersLogoutAcceptParent(data, id),
     });
   },
   useUserTimeflowAccept: (): UseMutationResult<
