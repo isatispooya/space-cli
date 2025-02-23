@@ -31,13 +31,13 @@ const InsuranceRequestCreate = lazy(() =>
 );
 
 const InsuranceRequestUpdate = lazy(() =>
-  import("../page/Insuranceapplication").then((module) => ({
+  import("../page/Insurance-request").then((module) => ({
     default: module.InsuranceRequestUpdate,
   }))
 );
 
 const InsurenceRequestProssesPage = lazy(() =>
-  import("../page/Insuranceapplication").then((module) => ({
+  import("../page/Insurance-request").then((module) => ({
     default: module.InsurenceRequestProssesPage,
   }))
 );
