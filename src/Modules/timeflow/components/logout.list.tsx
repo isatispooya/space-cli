@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Dayjs } from "dayjs";
 import toast from "react-hot-toast";
+import dayjs from "dayjs";
 
 interface LogListProps {
   onAccept: (selectedTime: Dayjs) => void;
@@ -12,6 +13,10 @@ interface LogListProps {
 
 const LogoutList: React.FC<LogListProps> = ({ onAccept }) => {
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(null);
+
+  useEffect(() => {
+    setSelectedTime(dayjs());
+  }, []);
 
   const handleTimeChange = (newTime: Dayjs | null) => {
     setSelectedTime(newTime);
