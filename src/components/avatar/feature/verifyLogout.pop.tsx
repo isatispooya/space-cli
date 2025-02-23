@@ -17,7 +17,7 @@ const VerifyLogoutPopup = ({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={onClose} // Close when clicking outside
+          onClick={onClose} 
         >
           <motion.div
             initial={{ scale: 0.9 }}
@@ -25,7 +25,7 @@ const VerifyLogoutPopup = ({
             exit={{ scale: 0.9 }}
             transition={{ duration: 0.2 }}
             className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full max-h-[80vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+            onClick={(e) => e.stopPropagation()} 
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-gray-800">

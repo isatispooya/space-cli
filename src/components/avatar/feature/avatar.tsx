@@ -9,12 +9,13 @@ import { server } from "../../../api/server";
 import { identifyUser } from "../../../utils";
 import { toast } from "react-hot-toast";
 import VerifyLogoutPopup from "./verifyLogout.pop";
-
+import { useNavigate } from "react-router-dom";
 const UserAvatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const { data: profileData, isSuccess } = useProfile();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isSuccess) {
@@ -34,7 +35,7 @@ const UserAvatar = () => {
         dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
-        setIsPopupOpen(false); // Close popup when clicking outside
+        setIsPopupOpen(false);
       }
     };
 
@@ -65,8 +66,7 @@ const UserAvatar = () => {
     },
     {
       label: "ثبت زمان خروج",
-      href: "#", // Prevent navigation
-      onClick: () => setIsPopupOpen(true), // Open popup
+      onClick: () => setIsPopupOpen(true),
     },
   ];
 
@@ -78,6 +78,7 @@ const UserAvatar = () => {
           removeCookie("access_token");
           removeCookie("refresh_token");
           toast.success("خروج با موفقیت انجام شد");
+          navigate("/login");
         },
         onError: (error) => {
           toast.error("خطا در خروج از سیستم");
@@ -87,6 +88,7 @@ const UserAvatar = () => {
     } else {
       removeCookie("access_token");
       removeCookie("refresh_token");
+      navigate("/login");
     }
   };
 
