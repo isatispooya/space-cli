@@ -68,13 +68,18 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleUpdateOwnTime = (logId: number) => {
-    const selectedTime = selectedOwnTimes[logId];
+    // اگر کاربر زمان را تغییر نداده باشد، از زمان پیش‌فرض log.time_user استفاده می‌کنیم
+    const selectedTime =
+      selectedOwnTimes[logId] !== undefined
+        ? selectedOwnTimes[logId]
+        : ownLogs.find((log) => log.id === logId)?.time_user || null;
+
     if (!selectedTime) {
-      toast.error("لطفاً یک زمان انتخاب کنید.");
+      toast.error("زمان معتبری وجود ندارد.");
       return;
     }
 
-    const formattedTime = selectedTime.toISOString();
+    const formattedTime = new Date(selectedTime).toISOString();
     const patchData = { time_user: formattedTime };
 
     updateUser(
@@ -103,13 +108,18 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleUpdateOtherTime = (logId: number, logType: string) => {
-    const selectedTime = selectedOtherTimes[logId];
+    // اگر کاربر زمان را تغییر نداده باشد، از زمان پیش‌فرض log.time_parent استفاده می‌کنیم
+    const selectedTime =
+      selectedOtherTimes[logId] !== undefined
+        ? selectedOtherTimes[logId]
+        : otherLogs.find((log) => log.id === logId)?.time_parent || null;
+
     if (!selectedTime) {
-      toast.error("لطفاً یک زمان انتخاب کنید.");
+      toast.error("زمان معتبری وجود ندارد.");
       return;
     }
 
-    const formattedTime = selectedTime.toISOString();
+    const formattedTime = new Date(selectedTime).toISOString();
     const patchData = { time_parent: formattedTime };
     const updateMutation =
       logType === "logout" ? updateLogoutParent : updateParent;
