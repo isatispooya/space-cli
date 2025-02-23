@@ -8,11 +8,12 @@ import { Avatar } from "@mui/material";
 import { server } from "../../../api/server";
 import { identifyUser } from "../../../utils";
 import { toast } from "react-hot-toast";
+import VerifyLogoutPopup from "./verifyLogout.pop";
 
 const UserAvatar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isPopupOpen, setIsPopupOpen] = useState(false); // New state for popup
-  const dropdownRef = useRef(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const { data: profileData, isSuccess } = useProfile();
 
   useEffect(() => {
@@ -27,8 +28,11 @@ const UserAvatar = () => {
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
         setIsPopupOpen(false); // Close popup when clicking outside
       }
@@ -61,8 +65,8 @@ const UserAvatar = () => {
     },
     {
       label: "ثبت زمان خروج",
-      href: "#", // Changed to "#" to prevent navigation
-      onClick: () => setIsPopupOpen(true), // Trigger popup
+      href: "#", // Prevent navigation
+      onClick: () => setIsPopupOpen(true), // Open popup
     },
   ];
 
@@ -141,7 +145,7 @@ const UserAvatar = () => {
                     <li key={index}>
                       <a
                         href={item.href}
-                        onClick={item.onClick} // Add onClick handler
+                        onClick={item.onClick} // Trigger onClick if present
                         className="block px-4 py-2.5 hover:bg-[#041685]/10 transition-colors duration-200 font-medium"
                       >
                         {item.label}
@@ -164,51 +168,11 @@ const UserAvatar = () => {
         </div>
       </div>
 
-      {/* Popup for "ثبت زمان خروج" */}
-      <AnimatePresence>
-        {isPopupOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          >
-            <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
-              transition={{ duration: 0.2 }}
-              className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full"
-            >
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                ثبت زمان خروج
-              </h2>
-              <p className="text-gray-600 mb-4">
-                آیا مطمئن هستید که می‌خواهید زمان خروج خود را ثبت کنید؟
-              </p>
-              <div className="flex justify-end gap-4">
-                <button
-                  onClick={() => setIsPopupOpen(false)}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
-                >
-                  لغو
-                </button>
-                <button
-                  onClick={() => {
-                    // Add your logout time registration logic here
-                    toast.success("زمان خروج با موفقیت ثبت شد");
-                    setIsPopupOpen(false);
-                  }}
-                  className="px-4 py-2 bg-[#041685] text-white rounded hover:bg-[#041685]/90 transition-colors"
-                >
-                  ثبت
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Integrate VerifyLogoutPopup */}
+      <VerifyLogoutPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+      />
     </>
   );
 };
