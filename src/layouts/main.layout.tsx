@@ -1,22 +1,27 @@
 // src/components/Layout.tsx
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 import { Header } from "../components/layouts/header";
 import { SideBar } from "../Modules/sidebar";
+import TimeflowVerify from "../Modules/timeflow/components/oldVersionOfverify";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const MainLayout = ({ children }: LayoutProps) => {
+  const [isVerifyOpen, setIsVerifyOpen] = useState(true);
   return (
-    <div>
-      <SideBar />
+    <>
+      {isVerifyOpen && <TimeflowVerify onClose={() => setIsVerifyOpen(true)} />}
       <div>
-        <Header />
-        <main>{children}</main>
+        <SideBar />
+        <div>
+          <Header />
+          <main>{children}</main>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

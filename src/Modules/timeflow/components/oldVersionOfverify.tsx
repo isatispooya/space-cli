@@ -10,9 +10,12 @@ import dayjs from "dayjs";
 import OwnLog from "../types/ownLogs.type";
 import OtherLog from "../types/otherLogs.type";
 import { toast } from "react-hot-toast";
+import { IoClose } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
   const { mutate: updateUser } = useTimeflow.useUserTimeflowAccept();
+  const navigate = useNavigate();
   const { data: userLogins } = useTimeflow.useGetUsersLogin();
   const { mutate: updateParent } = useTimeflow.useUpdateUsersLoginByParent();
   const { mutate: updateLogoutParent } =
@@ -163,181 +166,199 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
     return null;
   }
 
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 overflow-y-auto"
-    >
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="bg-white/95 rounded-3xl shadow-2xl p-6 max-w-3xl w-full">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            تأیید ورود و خروج
-          </h1>
-          <div className="flex flex-col gap-4">
-            {notApprovedOwnLogs.length > 0 && (
-              <Accordian
-                title="ورود"
-                isOpen={isOpenOwn}
-                onToggle={() => setIsOpenOwn(!isOpenOwn)}
-              >
-                <div className="space-y-4">
-                  <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                    موارد تأیید نشده
-                  </h2>
-                  <AnimatePresence>
-                    {notApprovedOwnLogs.map((log) => (
-                      <motion.div
-                        key={log.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="bg-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
-                      >
-                        <div className="flex justify-between items-center flex-wrap gap-4">
-                          <div>
-                            <p className="text-gray-800 font-semibold">
-                              کاربر: {log.user.username} ({log.user.first_name}{" "}
-                              {log.user.last_name})
-                            </p>
-                            <p className="text-gray-600 text-sm">
-                              زمان:{" "}
-                              {moment(log.time_user).format(
-                                "jYYYY/jMM/jDD - HH:mm"
-                              )}
-                            </p>
-                            <p className="text-gray-600 text-sm">
-                              نوع: {log.type === "login" ? "ورود" : "خروج"}
-                            </p>
-                            <p className="text-sm font-medium text-yellow-600">
-                              وضعیت: در انتظار
-                            </p>
-                          </div>
-                          <div className="flex flex-col gap-2">
-                            <TimePicker
-                              label="انتخاب زمان"
-                              value={
-                                selectedOwnTimes[log.id]
-                                  ? dayjs(selectedOwnTimes[log.id])
-                                  : log.time_user
-                                  ? dayjs(log.time_user)
-                                  : null
-                              }
-                              onChange={(newTime) =>
-                                handleOwnTimeChange(
-                                  log.id,
-                                  newTime ? newTime.toDate() : null
-                                )
-                              }
-                              sx={{ direction: "ltr" }}
-                            />
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => handleUpdateOwnTime(log.id)}
-                            >
-                              به‌روزرسانی
-                            </Button>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </div>
-              </Accordian>
-            )}
+  const handleClose = () => {
+    navigate("/login");
+  };
 
-            {notApprovedOtherLogs.length > 0 && (
-              <Accordian
-                title="ورود و خروج زیرمجموعه‌ها"
-                isOpen={isOpenOther}
-                onToggle={() => setIsOpenOther(!isOpenOther)}
-              >
-                <div className="space-y-4">
-                  <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                    موارد تأیید نشده زیرمجموعه‌ها
-                  </h2>
-                  <AnimatePresence>
-                    {notApprovedOtherLogs.map((log) => (
-                      <motion.div
-                        key={log.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="bg-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
-                      >
-                        <div className="flex justify-between items-center flex-wrap gap-4">
-                          <div>
-                            <p className="text-gray-800 font-semibold">
-                              کاربر: {log.user.username} ({log.user.first_name}{" "}
-                              {log.user.last_name})
-                            </p>
-                            {log.isOwnLog ? (
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 overflow-y-auto"
+      >
+        <div className="min-h-screen flex items-center justify-center p-4">
+          <div className="bg-white/95 rounded-3xl shadow-2xl p-6 max-w-3xl w-full relative">
+            {/* Close Button */}
+            <motion.button
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleClose}
+              className="absolute top-4 right-4 p-1 bg-gray-200 rounded-full text-gray-600 hover:bg-gray-300 transition-colors"
+            >
+              <IoClose size={24} />
+            </motion.button>
+
+            <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              تأیید ورود و خروج
+            </h1>
+            <div className="flex flex-col gap-4">
+              {notApprovedOwnLogs.length > 0 && (
+                <Accordian
+                  title="ورود"
+                  isOpen={isOpenOwn}
+                  onToggle={() => setIsOpenOwn(!isOpenOwn)}
+                >
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                      موارد تأیید نشده
+                    </h2>
+                    <AnimatePresence>
+                      {notApprovedOwnLogs.map((log) => (
+                        <motion.div
+                          key={log.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.3 }}
+                          className="bg-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                        >
+                          <div className="flex justify-between items-center flex-wrap gap-4">
+                            <div>
+                              <p className="text-gray-800 font-semibold">
+                                کاربر: {log.user.username} (
+                                {log.user.first_name} {log.user.last_name})
+                              </p>
                               <p className="text-gray-600 text-sm">
-                                زمان کاربر:{" "}
+                                زمان:{" "}
                                 {moment(log.time_user).format(
                                   "jYYYY/jMM/jDD - HH:mm"
                                 )}
                               </p>
-                            ) : (
                               <p className="text-gray-600 text-sm">
-                                زمان والد:{" "}
-                                {moment(log.time_parent).format(
-                                  "jYYYY/jMM/jDD - HH:mm"
-                                )}
+                                نوع: {log.type === "login" ? "ورود" : "خروج"}
                               </p>
-                            )}
-                            <p className="text-gray-600 text-sm">
-                              نوع: {log.type === "login" ? "ورود" : "خروج"}
-                            </p>
-                            <p className="text-sm font-medium text-yellow-600">
-                              وضعیت والد: در انتظار
-                            </p>
+                              <p className="text-sm font-medium text-yellow-600">
+                                وضعیت: در انتظار
+                              </p>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                              <TimePicker
+                                label="انتخاب زمان"
+                                value={
+                                  selectedOwnTimes[log.id]
+                                    ? dayjs(selectedOwnTimes[log.id])
+                                    : log.time_user
+                                    ? dayjs(log.time_user)
+                                    : null
+                                }
+                                onChange={(newTime) =>
+                                  handleOwnTimeChange(
+                                    log.id,
+                                    newTime ? newTime.toDate() : null
+                                  )
+                                }
+                                sx={{ direction: "ltr" }}
+                              />
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => handleUpdateOwnTime(log.id)}
+                              >
+                                به‌روزرسانی
+                              </Button>
+                            </div>
                           </div>
-                          <div className="flex flex-col gap-2">
-                            <TimePicker
-                              label="انتخاب زمان والد"
-                              value={
-                                selectedOtherTimes[log.id]
-                                  ? dayjs(selectedOtherTimes[log.id])
-                                  : log.time_parent
-                                  ? dayjs(log.time_parent)
-                                  : null
-                              }
-                              onChange={(newTime) =>
-                                handleOtherTimeChange(
-                                  log.id,
-                                  newTime ? newTime.toDate() : null
-                                )
-                              }
-                              sx={{ direction: "ltr" }}
-                            />
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() =>
-                                handleUpdateOtherTime(log.id, log.type)
-                              }
-                            >
-                              به‌روزرسانی
-                            </Button>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                </Accordian>
+              )}
+
+              {notApprovedOtherLogs.length > 0 && (
+                <Accordian
+                  title="ورود و خروج زیرمجموعه‌ها"
+                  isOpen={isOpenOther}
+                  onToggle={() => setIsOpenOther(!isOpenOther)}
+                >
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                      موارد تأیید نشده زیرمجموعه‌ها
+                    </h2>
+                    <AnimatePresence>
+                      {notApprovedOtherLogs.map((log) => (
+                        <motion.div
+                          key={log.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.3 }}
+                          className="bg-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                        >
+                          <div className="flex justify-between items-center flex-wrap gap-4">
+                            <div>
+                              <p className="text-gray-800 font-semibold">
+                                کاربر: {log.user.username} (
+                                {log.user.first_name} {log.user.last_name})
+                              </p>
+                              {log.isOwnLog ? (
+                                <p className="text-gray-600 text-sm">
+                                  زمان کاربر:{" "}
+                                  {moment(log.time_user).format(
+                                    "jYYYY/jMM/jDD - HH:mm"
+                                  )}
+                                </p>
+                              ) : (
+                                <p className="text-gray-600 text-sm">
+                                  زمان والد:{" "}
+                                  {moment(log.time_parent).format(
+                                    "jYYYY/jMM/jDD - HH:mm"
+                                  )}
+                                </p>
+                              )}
+                              <p className="text-gray-600 text-sm">
+                                نوع: {log.type === "login" ? "ورود" : "خروج"}
+                              </p>
+                              <p className="text-sm font-medium text-yellow-600">
+                                وضعیت والد: در انتظار
+                              </p>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                              <TimePicker
+                                label="انتخاب زمان والد"
+                                value={
+                                  selectedOtherTimes[log.id]
+                                    ? dayjs(selectedOtherTimes[log.id])
+                                    : log.time_parent
+                                    ? dayjs(log.time_parent)
+                                    : null
+                                }
+                                onChange={(newTime) =>
+                                  handleOtherTimeChange(
+                                    log.id,
+                                    newTime ? newTime.toDate() : null
+                                  )
+                                }
+                                sx={{ direction: "ltr" }}
+                              />
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() =>
+                                  handleUpdateOtherTime(log.id, log.type)
+                                }
+                              >
+                                به‌روزرسانی
+                              </Button>
+                            </div>
                           </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </div>
-              </Accordian>
-            )}
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                </Accordian>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
