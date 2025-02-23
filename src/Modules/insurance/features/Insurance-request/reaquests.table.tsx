@@ -6,7 +6,7 @@ import { useUserPermissions } from "../../../permissions";
 import getStatusTranslations from "../../data/insurance_status";
 import { server } from "../../../../api";
 
-const MyRequestsTable = () => {
+const RequestsTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
   const { data: permissions } = useUserPermissions();
 
@@ -122,4 +122,4 @@ const MyRequestsTable = () => {
   );
 };
 
-export default MyRequestsTable;
+export default RequestsTable;

@@ -1,4 +1,4 @@
-import { InsuranceRequestCreate } from "../../features/InsuranceRequest";
+import { InsuranceRequestCreate } from "../../features/Insurance-request";
 
 const InsuranceRequestCreatePage = () => {
   return <InsuranceRequestCreate />;

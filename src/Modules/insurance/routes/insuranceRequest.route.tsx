@@ -7,19 +7,19 @@ const InsuranceRequestMain = lazy(() =>
 );
 
 const InsuranceRequestTable = lazy(() =>
-  import("../features/InsuranceRequest").then((module) => ({
+  import("../features/Insurance-request").then((module) => ({
     default: module.InsuranceRequestTable,
   }))
 );
 
 const InsurancePayment = lazy(() =>
-  import("../features/InsuranceRequest").then((module) => ({
+  import("../features/Insurance-request").then((module) => ({
     default: module.InsurancePayment,
   }))
 );
 
 const MyRequestsTable = lazy(() =>
-  import("../features/InsuranceRequest").then((module) => ({
+  import("../features/Insurance-request").then((module) => ({
     default: module.MyRequestsTable,
   }))
 );
@@ -45,7 +45,6 @@ const InsurenceRequestProssesPage = lazy(() =>
 const InsuranceAppRoutes = [
   {
     path: "/requestinsurance",
-
     element: <InsuranceRequestMain />,
     children: [
       {
@@ -60,7 +59,6 @@ const InsuranceAppRoutes = [
         path: "create",
         element: <InsuranceRequestCreate />,
       },
-
       {
         path: "update/:id",
         element: <InsuranceRequestUpdate />,

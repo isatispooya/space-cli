@@ -8,7 +8,7 @@ import { FormikHelpers } from "formik";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { AxiosError } from "axios";
 
-export const InsuranceCreate: React.FC = () => {
+const InsurancePolicyCreate: React.FC = () => {
   const { mutate } = useInsurance.usePostFields();
 
   const validationSchema = yup.object({
@@ -88,4 +88,4 @@ export const InsuranceCreate: React.FC = () => {
   );
 };
 
-export default InsuranceCreate;
+export default InsurancePolicyCreate;

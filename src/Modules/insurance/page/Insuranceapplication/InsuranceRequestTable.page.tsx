@@ -1,4 +1,4 @@
-import { InsuranceRequestTable } from "../../features/InsuranceRequest";
+import { InsuranceRequestTable } from "../../features/Insurance-request";
 
 const InsuranceRequestTablePage = () => {
   return <InsuranceRequestTable />;

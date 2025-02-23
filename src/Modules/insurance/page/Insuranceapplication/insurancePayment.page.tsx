@@ -1,4 +1,4 @@
-import { InsurancePayment } from "../../features/InsuranceRequest";
+import { InsurancePayment } from "../../features/Insurance-request";
 
 const InsurancePaymentPage = () => {
   return <InsurancePayment />;

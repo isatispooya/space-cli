@@ -1,4 +1,4 @@
-import MyRequestsTable from "../../features/InsuranceRequest/MyRequestsTable";
+import MyRequestsTable from "../../features/Insurance-request/reaquests.table";
 
 const MyRequestsTablePage = () => {
   return <MyRequestsTable />;
