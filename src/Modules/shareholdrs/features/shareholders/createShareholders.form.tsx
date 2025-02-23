@@ -50,38 +50,42 @@ const CreateShareholdersPost = () => {
 
   const initialValues: ShareholdersTypes = {
     number_of_shares: 0,
-    company: 0,
+    company: "",
     user: 0,
-
   };
 
   const validationSchema = Yup.object().shape({
     id: Yup.number().optional(),
     name: Yup.string().required("نام الزامی است"),
     number_of_shares: Yup.number().required("تعداد سهام الزامی است"),
-    company: Yup.number().required("نام شرکت الزامی است"),
+    company: Yup.string().required("نام شرکت الزامی است"),
     user: Yup.number().required("کاربر الزامی است"),
     company_national_id: Yup.string().optional(),
     first_name: Yup.string().optional(),
     last_name: Yup.string().optional(),
     uniqueIdentifier: Yup.string().optional(),
     capital_increase_payment: Yup.number().optional(),
-    company_detail: Yup.object().shape({
-      name: Yup.string().required("نام شرکت الزامی است"),
-      company_type: Yup.string().required("نوع شرکت الزامی است"),
-      address: Yup.string().optional(),
-      description: Yup.string().optional(),
-      email: Yup.string().optional(),
-      id: Yup.number().required("شناسه شرکت الزامی است"),
-    }).optional(),
-    user_detail: Yup.object().shape({
-      first_name: Yup.string().required("نام کاربر الزامی است"),
-      last_name: Yup.string().required("نام خانوادگی کاربر الزامی است"),
-      uniqueIdentifier: Yup.string().required("شناسه کاربر الزامی است"),
-    }).optional(),
+    company_detail: Yup.object()
+      .shape({
+        name: Yup.string().required("نام شرکت الزامی است"),
+        company_type: Yup.string().required("نوع شرکت الزامی است"),
+        address: Yup.string().optional(),
+        description: Yup.string().optional(),
+        email: Yup.string().optional(),
+        id: Yup.number().required("شناسه شرکت الزامی است"),
+      })
+      .optional(),
+    user_detail: Yup.object()
+      .shape({
+        first_name: Yup.string().required("نام کاربر الزامی است"),
+        last_name: Yup.string().required("نام خانوادگی کاربر الزامی است"),
+        uniqueIdentifier: Yup.string().required("شناسه کاربر الزامی است"),
+      })
+      .optional(),
     updated_at: Yup.string().optional(),
     created_at: Yup.string().optional(),
-  });
+    precedence: Yup.number().optional(),
+  }) as Yup.ObjectSchema<CreateShareholderDTO>;
 
   const onSubmit = async (
     values: CreateShareholderDTO,
@@ -91,7 +95,7 @@ const CreateShareholdersPost = () => {
       await postShareholders(
         {
           ...values,
-          company: Number(values.company),
+          company: values.company?.toString() ?? "",
           user: Number(values.user),
           id: 0,
         },

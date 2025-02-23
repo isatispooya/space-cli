@@ -24,7 +24,7 @@ const EditShareholdForm: React.FC = () => {
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
-    company: yup.number().required("نام شرکت الزامی است"),
+    company: yup.string().required("نام شرکت الزامی است"),
     user: yup.number().required("کاربر الزامی است"),
     user_name: yup.string().optional(),
     company_national_id: yup.string().optional(),
@@ -37,6 +37,7 @@ const EditShareholdForm: React.FC = () => {
     updated_at: yup.string().optional(),
     created_at: yup.string().optional(),
     name: yup.string().required("نام الزامی است"),
+    precedence: yup.number().optional(),
   }) as yup.ObjectSchema<ShareholdersTypes>;
 
   const formFields = [
@@ -71,7 +72,7 @@ const EditShareholdForm: React.FC = () => {
 
   const initialValues: ShareholdersTypes = {
     number_of_shares: Number(shareholder?.number_of_shares) || 0,
-    company: Number(shareholder?.company) || 0,
+    company: shareholder?.company?.toString() || "",
     user: Number(shareholder?.user) || 0,
     id: Number(shareholder?.id) || 0,
   };
@@ -80,8 +81,8 @@ const EditShareholdForm: React.FC = () => {
     if (shareholder?.id) {
       const formattedValues = {
         ...values,
-        company: parseInt(values.company?.toString() ?? "0"),
-        user: parseInt(values.user?.toString() || "0"),
+        company: values.company?.toString() ?? "0",
+        user: Number(values.user) || 0,
         number_of_shares: parseInt(values.number_of_shares?.toString() || "0"),
       };
 

@@ -92,7 +92,6 @@ const ParentMissionForm = ({
 
                               setStartTime(dateValue || null);
                             }}
-                            className="w-full"
                           />
                         </div>
                       )}
@@ -124,7 +123,6 @@ const ParentMissionForm = ({
 
                               setStartTime(dateValue || null);
                             }}
-                            className="w-full"
                           />
                         </div>
                       )}
