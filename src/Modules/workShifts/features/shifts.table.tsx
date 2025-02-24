@@ -1,77 +1,42 @@
 import "moment/locale/fa";
 import { TabulatorTable } from "../../../components";
+import useShifts from "../hooks/useShifts";
 
 const ShiftsTable = () => {
-  const data = [
-    {
-      firstName: "علی",
-      lastName: "محمدی",
-      nationalCode: "۱۲۳۴۵۶۷۸۹۰",
-      date: "۱۴۰۳/۱۲/۰۵",
-      shift: "صبح",
-      entryTime: "۰۸:۰۰",
-      exitTime: "۱۶:۰۰",
-    },
-    {
-      firstName: "رضا",
-      lastName: "رضایی",
-      nationalCode: "۹۸۷۶۵۴۳۲۱۰",
-      date: "۱۴۰۳/۱۲/۰۵",
-      shift: "عصر",
-      entryTime: "۱۶:۰۰",
-      exitTime: "۲۴:۰۰",
-    },
-    {
-      firstName: "مریم",
-      lastName: "احمدی",
-      nationalCode: "۴۵۶۱۲۳۷۸۹۰",
-      date: "۱۴۰۳/۱۲/۰۶",
-      shift: "شب",
-      entryTime: "۰۰:۰۰",
-      exitTime: "۰۸:۰۰",
-    },
-    {
-      firstName: "حسین",
-      lastName: "کریمی",
-      nationalCode: "۳۲۱۷۸۹۴۵۶۰",
-      date: "۱۴۰۳/۱۲/۰۶",
-      shift: "صبح",
-      entryTime: "۰۸:۰۰",
-      exitTime: "۱۶:۰۰",
-    },
-  ];
+  const { data } = useShifts.useGetShifts();
+  console.log(data);
 
   const mappedData = data?.map((item: any) => {
     return {
-      first_name: item.firstName,
-      last_name: item.lastName,
-      national_code: item.nationalCode,
+      id: item.id,
+      shift_name: item.shift.name,
       date: item.date,
-      shift: item.shift,
-      entry_time: item.entryTime,
-      exit_time: item.exitTime,
+      start_time: item.start_time,
+      end_time: item.end_time,
+      work_day: item.work_day ? "بله" : "خیر",
+      day_of_week: item.day_of_week,
     };
   });
 
   const columns = () => [
-    { title: "نام", field: "first_name" },
-    { title: "نام خانوادگی", field: "last_name" },
-    { title: "کد ملی", field: "national_code" },
+    { title: "شناسه", field: "id" },
+    { title: "نام شیفت", field: "shift_name" },
     { title: "تاریخ", field: "date" },
-    { title: "شیفت", field: "shift" },
-    { title: "ساعت ورود", field: "entry_time" },
-    { title: "ساعت خروج", field: "exit_time" },
+    { title: "زمان شروع", field: "start_time" },
+    { title: "زمان پایان", field: "end_time" },
+    { title: "روز کاری", field: "work_day" },
+    { title: "روز هفته", field: "day_of_week" },
   ];
 
   const ExelData = (data: any) => {
     return data.map((item: any) => ({
-      نام: item.first_name,
-      "نام خانوادگی": item.last_name,
-      "کد ملی": item.national_code,
+      شناسه: item.id,
+      "نام شیفت": item.shift_name,
       تاریخ: item.date,
-      شیفت: item.shift,
-      "ساعت ورود": item.entry_time,
-      "ساعت خروج": item.exit_time,
+      "زمان شروع": item.start_time,
+      "زمان پایان": item.end_time,
+      "روز کاری": item.work_day,
+      "روز هفته": item.day_of_week,
     }));
   };
 
