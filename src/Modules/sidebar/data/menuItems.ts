@@ -1,11 +1,5 @@
 import { IconType } from "react-icons";
-import {
-  FaBuilding,
-  FaEnvelope,
-
-  FaPhone,
-  FaUserTie,
-} from "react-icons/fa";
+import { FaBuilding, FaEnvelope, FaPhone, FaUserTie } from "react-icons/fa";
 import { FaClockRotateLeft } from "react-icons/fa6";
 
 export interface MenuItem {
@@ -39,8 +33,8 @@ export const menuItems: MenuItem[] = [
         codename: ["view_group"],
       },
       {
-        title: "گزارش تردد",
-        path: "/timeflow/verify",
+        title: " تردد",
+        path: "/timeflow/users-timeflows",
         codename: ["position"],
       },
       {

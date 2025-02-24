@@ -18,17 +18,17 @@ const VerifyTablePage = lazy(() =>
   }))
 );
 
-const LeavePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.LeavePage,
-  }))
-);
+// const LeavePage = lazy(() =>
+//   import("..").then((module) => ({
+//     default: module.LeavePage,
+//   }))
+// );
 
-const MissionPage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.MissionPage,
-  }))
-);
+// const MissionPage = lazy(() =>
+//   import("..").then((module) => ({
+//     default: module.MissionPage,
+//   }))
+// );
 
 const UsersTimeflowsPage = lazy(() =>
   import("..").then((module) => ({
@@ -53,14 +53,14 @@ const TimeflowRoutes = [
         path: "verify-table",
         element: <VerifyTablePage />,
       },
-      {
-        path: "leave",
-        element: <LeavePage />,
-      },
-      {
-        path: "mission",
-        element: <MissionPage />,
-      },
+      // {
+      //   path: "leave",
+      //   element: <LeavePage />,
+      // },
+      // {
+      //   path: "mission",
+      //   element: <MissionPage />,
+      // },
     ],
   },
 ];

@@ -10,12 +10,21 @@ import { identifyUser } from "../../../utils";
 import { toast } from "react-hot-toast";
 import VerifyLogoutPopup from "./verifyLogout.pop";
 import { useNavigate } from "react-router-dom";
+import { useUserPermissions } from "../../../Modules/permissions/hooks";
 const UserAvatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const { data: profileData, isSuccess } = useProfile();
   const navigate = useNavigate();
+  const { data: permissions } = useUserPermissions();
+
+  const Permissions = permissions || [];
+  console.log("Permissions:", Permissions);
+
+  const hasPermission =
+    Array.isArray(Permissions) &&
+    Permissions.some((perm) => perm.codename === "position");
 
   useEffect(() => {
     if (isSuccess) {
@@ -32,7 +41,7 @@ const UserAvatar = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
         setIsPopupOpen(false);
@@ -64,10 +73,14 @@ const UserAvatar = () => {
       label: "پروفایل",
       href: "/userManagement/profile",
     },
-    {
-      label: "ثبت زمان خروج",
-      onClick: () => setIsPopupOpen(true),
-    },
+    ...(hasPermission
+      ? [
+          {
+            label: "ثبت زمان خروج",
+            onClick: () => setIsPopupOpen(true),
+          },
+        ]
+      : []),
   ];
 
   const handleLogout = () => {
@@ -147,7 +160,7 @@ const UserAvatar = () => {
                     <li key={index}>
                       <a
                         href={item.href}
-                        onClick={item.onClick} // Trigger onClick if present
+                        onClick={item.onClick}
                         className="block px-4 py-2.5 hover:bg-[#041685]/10 transition-colors duration-200 font-medium"
                       >
                         {item.label}
