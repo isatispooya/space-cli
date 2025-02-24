@@ -4,9 +4,12 @@ import DashboardChart from "../components/dashboard.chart";
 import { useMemo } from "react";
 import { DashboardMarketingStat } from "../components";
 import { useDashboard } from "../hooks";
-import DashboardCrowdStat from "../components/dashboardCrowd.stat";
-import DashboardBimeStat from "../components/dashboardBime.stat";
-import DashboardBorsStat from "../components/dashboardBors.stat";
+import {
+  DashboardCrowdStat,
+  DashboardGoldStat,
+  DashboardBimeStat,
+  DashboardBorsStat,
+} from "../components";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
@@ -29,14 +32,21 @@ const DashboardPage = () => {
       <div className="container mx-auto px-4 py-2 relative">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
           <div className="lg:col-span-3 space-y-4 lg:space-y-6">
-            <div className="h-[250px] sm:h-[300px] lg:h-[24vh] tour-slider">
-              {sliderData.length > 0 && <DashboardSlider slides={sliderData} />}
+            <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
+              <div className="lg:col-span-4 h-[250px] sm:h-[300px] lg:h-[24vh] ml-2">
+                {sliderData.length > 0 && (
+                  <DashboardSlider slides={sliderData} />
+                )}
+              </div>
+              <div className="lg:col-span-2 ">
+                <DashboardGoldStat />
+              </div>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sx gap-4 lg:gap-10">
               <div className="md:col-span-2 tour-stock-chart">
                 <DashboardChart />
               </div>
+
               <div className="md:col-span-1 tour-marketing-stat">
                 <DashboardMarketingStat />
               </div>
