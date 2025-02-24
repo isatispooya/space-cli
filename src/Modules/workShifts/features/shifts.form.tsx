@@ -100,7 +100,7 @@ const ShiftsForm = () => {
         return;
       }
 
-      const formattedShifts = shifts.map((shift) => {
+      const groupedShifts = shifts.reduce((acc, shift) => {
         const dateObject = new DateObject({
           date: shift.date,
           calendar: persian,
@@ -111,25 +111,37 @@ const ShiftsForm = () => {
         const formatTime = (time: DateObject) => {
           const hours = time.hour.toString().padStart(2, "0");
           const minutes = time.minute.toString().padStart(2, "0");
-          return `${hours}:${minutes}`;
+          return `${hours}:${minutes}:00`;
         };
 
-        return {
+        const shiftData = {
           date: gregorianDate.toISOString().split("T")[0],
-          shiftName: shiftName,
-          startTime: shift.startTime
+          start_time: shift.startTime
             ? formatTime(shift.startTime as unknown as DateObject)
             : null,
-          endTime: shift.endTime
+          end_time: shift.endTime
             ? formatTime(shift.endTime as unknown as DateObject)
             : null,
-          isWorkDay: shift.isWorkDay,
+          work_day: shift.isWorkDay,
         };
-      });
 
-      console.log("Sending shifts:", formattedShifts);
+        const existingGroup = acc.find(
+          (group) => group["shift-name"] === shift.shiftName
+        );
+        if (existingGroup) {
+          existingGroup.day.push(shiftData);
+        } else {
+          acc.push({
+            "shift-name": shift.shiftName,
+            day: [shiftData],
+          });
+        }
+        return acc;
+      }, [] as { "shift-name": string; day: any[] }[]);
 
-      await createShift(formattedShifts, {
+      console.log("Sending shifts:", groupedShifts);
+
+      await createShift(groupedShifts, {
         onSuccess: () => {
           setShiftName("");
           setDates([]);
