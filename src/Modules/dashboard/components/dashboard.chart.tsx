@@ -153,7 +153,7 @@ const DashboardChart = () => {
   };
 
   return (
-    <div className="w-full h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl relative">
+    <div className="max-w-3xl h-full bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl relative">
       {/* SVG Wave Top */}
       <svg
         className="absolute top-0 left-0 w-full h-16 md:h-24 rounded-lg"
@@ -169,12 +169,12 @@ const DashboardChart = () => {
         ></path>
       </svg>
 
-      <div className="w-full h-[400px] lg:h-[400px] md:h-[300px] xs:h-[500px]  p-4 sm:p-2">
+      <div className="w-full h-[400px] lg:h-[400px] md:h-[300px] xs:h-[500px] p-4 sm:p-2">
         <h3 className="text-base sm:text-[8px] md:text-[14px] lg:text-sm font-bold text-gray-800 text-center font-iranSans">
           درصد سهام شما در شرکت های گروه مالی و سرمایه گذاری ایساتیس پویا
         </h3>
 
-        <div className="w-full h-[600px]  md:h-[500px] ">
+        <div className="w-full h-[600px] md:h-[500px]">
           {isLoading ? (
             <div className="w-full h-full flex justify-center items-center">
               <Spinner />
@@ -249,7 +249,7 @@ const DashboardChart = () => {
             whileTap={{ scale: 0.98 }}
             onClick={() => (window.location.href = "/shareholders/table")}
             className="w-96 font-bold bg-indigo-900 hover:bg-indigo-700 text-white py-1 px-1 rounded-md 
-               font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
+           font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
           >
             مدیریت سهام
             <IoIosArrowBack className="w-3 h-3" />

@@ -129,7 +129,7 @@ const DashboardMarketingStat = () => {
       transition={{ duration: 0.5 }}
       className="relative isolate w-full"
     >
-      <div className="background"></div>
+     
 
       <motion.div {...getMotionDivStyles()}>
         <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row items-center justify-between sm:space-x-4">
