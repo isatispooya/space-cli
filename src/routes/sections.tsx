@@ -28,7 +28,7 @@ import { UsersRoutes } from "../Modules/users";
 import { LoginRoutes } from "../Modules/auth";
 import { ContactRoutes } from "../Modules/contact";
 import { StreamRoutes } from "../Modules/live";
-
+import { ShiftsRoutes } from "../Modules/workShifts";
 const PaymentResultPage = lazy(() =>
   import("../pages/paymentResultPage").then((module) => ({
     default: module.default,
@@ -63,6 +63,7 @@ const ExistingRoutes = [
   ...UsersRoutes,
   ...ContactRoutes,
   ...StreamRoutes,
+  ...ShiftsRoutes,
 ];
 
 export default function Router() {

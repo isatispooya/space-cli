@@ -42,6 +42,11 @@ export const menuItems: MenuItem[] = [
         path: "/permissions/table",
         codename: ["view_permission"],
       },
+      {
+        title: "مدیریت شیفت ها",
+        path: "/shifts/shifts-table",
+        codename: ["allow_any"],
+      },
     ],
   },
   {
