@@ -9,13 +9,13 @@ const TimeFlowPage = () => {
       icon: LuTable,
       text: "شیفت ها",
       permission: ["allow_any"],
-      path: "shifts-table",
+      path: "table",
     },
     {
       icon: LuTable,
       text: "ایجاد شیفت",
       permission: ["allow_any"],
-      path: "shifts-form",
+      path: "form",
     },
   ];
   return (
