@@ -63,8 +63,8 @@ const EditShareholdForm: React.FC = () => {
 
       options: [
         {
-          value: shareholder?.user ?? "",
-          label: shareholder?.user?.toString() || "",
+          value: shareholder?.user_detail?.id ?? "",
+          label: shareholder?.user_detail?.first_name + " " + shareholder?.user_detail?.last_name || "",
         },
       ],
     },
@@ -72,8 +72,8 @@ const EditShareholdForm: React.FC = () => {
 
   const initialValues: ShareholdersTypes = {
     number_of_shares: Number(shareholder?.number_of_shares) || 0,
-    company: shareholder?.company?.toString() || "",
-    user: Number(shareholder?.user) || 0,
+    company: shareholder?.company_detail?.name?.toString() || "",
+    user: Number(shareholder?.user_detail?.id) || 0,
     id: Number(shareholder?.id) || 0,
   };
 
