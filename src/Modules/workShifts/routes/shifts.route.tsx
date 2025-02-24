@@ -18,6 +18,12 @@ const ShiftsFormPage = lazy(() =>
   }))
 );
 
+const ShiftsAssignPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ShiftsAssignPage,
+  }))
+);
+
 const ShiftsRoutes = [
   {
     path: "/shifts",
@@ -30,6 +36,10 @@ const ShiftsRoutes = [
       {
         path: "form",
         element: <ShiftsFormPage />,
+      },
+      {
+        path: "assign",
+        element: <ShiftsAssignPage />,
       },
     ],
   },

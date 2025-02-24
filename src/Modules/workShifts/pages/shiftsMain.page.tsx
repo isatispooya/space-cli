@@ -17,6 +17,12 @@ const TimeFlowPage = () => {
       permission: ["allow_any"],
       path: "form",
     },
+    {
+      icon: LuTable,
+      text: "تخصیص شیفت ها",
+      permission: ["allow_any"],
+      path: "assign",
+    },
   ];
   return (
     <MainLayout>

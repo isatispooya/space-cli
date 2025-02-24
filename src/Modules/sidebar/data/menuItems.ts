@@ -44,7 +44,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "مدیریت شیفت ها",
-        path: "/shifts/shifts-table",
+        path: "/shifts/table",
         codename: ["allow_any"],
       },
     ],
