@@ -7,21 +7,20 @@ import { CellComponent, ColumnDefinition } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 import { createRoot } from "react-dom/client";
 import { ActionMenu } from "../../../../components/table/tableaction";
+import ShareHoldersNewTypes from "../../types/shareHolderss.type";
 
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, isPending } = useShareholders.useGet();
 
-  const mappedData = shareholders?.map((row: ShareholdersTypes) => ({
+  const mappedData = shareholders?.map((row: ShareHoldersNewTypes) => ({
     ...row,
-    company: row?.company,
-    company_national_id: row?.company_national_id,
-    number_of_shares: row?.number_of_shares,
-    first_name: row?.first_name,
-    last_name: row?.last_name,
-    uniqueIdentifier: row?.uniqueIdentifier,
-    capital_increase_payment: row?.capital_increase_payment,
-    precedence: row?.precedence,
-    updated_at: row?.updated_at,
+    company: row.company_detail.name,
+    company_type: row.company_detail.company_type,
+    first_name: row.user_detail.first_name,
+    last_name: row.user_detail.last_name,
+    uniqueIdentifier: row.user_detail.uniqueIdentifier,
+    number_of_shares: row.number_of_shares,
+    precedence_count: row.precedence_count,
   }));
 
   const columns = (): ColumnDefinition[] => [
@@ -51,25 +50,11 @@ const ShareholdTable: React.FC = () => {
       headerFilter: true,
     },
     {
-      field: "precedence",
+      field: "precedence_count",
       title: "حق تقدم",
       headerFilter: true,
     },
-    {
-      field: "capital_increase_payment",
-      title: "حق تقدم استفاده شده",
-      headerFilter: true,
-    },
-    {
-      field: "updated_at",
-      title: "تاریخ ویرایش",
-      formatter: (cell: CellComponent) => {
-        const rowData = cell.getRow().getData();
-        return rowData.updated_at
-          ? moment(rowData.updated_at).locale("fa").format("jYYYY/jMM/jDD")
-          : "-";
-      },
-    },
+
     {
       field: "عملیات",
       title: "عملیات",
