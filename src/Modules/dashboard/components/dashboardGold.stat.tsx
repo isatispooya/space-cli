@@ -80,7 +80,7 @@ const DashboardGoldStat = () => {
         <svg
           className="absolute bottom-0 rounded-lg left-0 w-full h-[80px] md:h-32"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 400" 
+          viewBox="0 0 1440 400"
           preserveAspectRatio="none"
           width="100%"
           style={{ zIndex: -1 }}
