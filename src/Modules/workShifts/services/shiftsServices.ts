@@ -11,6 +11,11 @@ const shiftsServices = {
     const response = await api.post("/timeflow/set-shift/", data);
     return response.data;
   },
+
+  update: async (id: string, data: object) => {
+    const response = await api.patch(`/timeflow/set-shift/${id}`, data);
+    return response.data;
+  },
 };
 
 export default shiftsServices;

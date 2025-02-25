@@ -1,14 +1,9 @@
-import { ButtonGroup } from "@mui/material";
-import { Button } from "@mui/material";
-import { ShiftsForm, ShiftsUpdateForm } from "../features";
-import { useState } from "react";
+import { ShiftsForm } from "../features";
 
 const ShiftsFormPage = () => {
-  const [activeForm, setActiveForm] = useState("create");
-
   return (
     <>
-      <div
+      {/* <div
         style={{
           display: "flex",
           justifyContent: "center", 
@@ -22,17 +17,11 @@ const ShiftsFormPage = () => {
           >
             ایجاد
           </Button>
-          <Button
-            onClick={() => setActiveForm("edit")}
-            variant={activeForm === "edit" ? "contained" : "outlined"}
-          >
-            ویرایش
-          </Button>
+
         </ButtonGroup>
-      </div>
+      </div> */}
       {/* فرم‌ها بیرون از div وسط‌چین */}
-      {activeForm === "create" && <ShiftsForm />}
-      {activeForm === "edit" && <ShiftsUpdateForm />}
+      <ShiftsForm />
     </>
   );
 };

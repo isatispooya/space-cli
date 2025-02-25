@@ -1,11 +1,9 @@
-import { useState } from "react";
-import { TiDeleteOutline } from "react-icons/ti";
-
-// Type definitions
-interface User {
-  id: number;
-  name: string;
-}
+import { useState, useEffect } from "react";
+import { TiEdit } from "react-icons/ti";
+import { IoCheckmarkCircleOutline } from "react-icons/io5";
+import useShiftsassign from "../hooks/useShiftsassign";
+import { useShifts } from "../hooks";
+import { ShiftResponse } from "../types/shifts.type";
 
 interface Shift {
   id: number;
@@ -13,138 +11,157 @@ interface Shift {
 }
 
 interface ShiftAssignment {
-  user: string;
-  shift: string;
+  userId: number;
+  userName: string;
+  shiftId?: number;
+  shiftName?: string;
+  isRegistered: boolean;
+  isEditing: boolean;
+  assignmentId?: number;
 }
 
 const ShiftsAssignForm = () => {
-  // Mock data with proper typing
-  const [users] = useState<User[]>([
-    { id: 1, name: "ممد امینی" },
-    { id: 2, name: "علی حسینی" },
-    { id: 3, name: "رضا محمدی" },
-  ]);
+  const shiftsAssign = useShiftsassign();
+  const { data: shiftsAssignData } = shiftsAssign.useGetShiftsassign();
+  const { data: shiftsData } = useShifts.useGetShifts();
+  const [shifts, setShifts] = useState<Shift[]>([]);
+  const [shiftAssignments, setShiftAssignments] = useState<ShiftAssignment[]>(
+    []
+  );
 
-  const [shifts] = useState<Shift[]>([
-    { id: 1, name: "صبح (8-14)" },
-    { id: 2, name: "عصر (14-20)" },
-    { id: 3, name: "شب (20-2)" },
-  ]);
+  const setShiftUser = shiftsAssign.useSetShiftUser();
+  const { mutate } = setShiftUser;
 
-  const [selectedUser, setSelectedUser] = useState<string>("");
-  const [selectedShift, setSelectedShift] = useState<string>("");
-  const [assignedShifts, setAssignedShifts] = useState<ShiftAssignment[]>([]);
+  const users: { id: number; name: string }[] = shiftsAssignData
+    ? shiftsAssignData.map((item) => ({
+        id: item.user.id,
+        name: `${item.user.first_name} ${item.user.last_name} | ${item.user.uniqueIdentifier}`,
+      }))
+    : [];
 
-  const handleAddShift = () => {
-    if (!selectedUser || !selectedShift) return;
-
-    const user = users.find((u) => u.id === Number(selectedUser));
-    const shift = shifts.find((s) => s.id === Number(selectedShift));
-
-    if (user && shift) {
-      setAssignedShifts((prev) => [
-        ...prev,
-        { user: user.name, shift: shift.name },
-      ]);
-      setSelectedUser("");
-      setSelectedShift("");
+  useEffect(() => {
+    if (shiftsData && Array.isArray(shiftsData)) {
+      console.log("sdfsdfsdfsd",shiftsData);
+      
+      const formattedShifts = shiftsData.map((item) => ({
+        id: item.shift?.id ?? item.id ?? 0,
+        name: item.shift?.name ?? item.name ?? "Unknown Shift",
+      }));
+      setShifts(formattedShifts);
     }
+  }, [shiftsData]);
+
+  useEffect(() => {
+    if (shiftsAssignData && users.length > 0) {
+      const initialAssignments = shiftsAssignData.map((item:ShiftResponse) => ({
+        userId: item.user.id,
+        userName: `${item.user.first_name} ${item.user.last_name} | ${item.user.uniqueIdentifier}`,
+        shiftId: item.shift_detail?.id,
+        shiftName: item.shift_detail?.name,
+        isRegistered: !!item.shift_detail,
+        isEditing: false,
+        assignmentId: item.id,
+      }));
+      setShiftAssignments(initialAssignments);
+    }
+  }, [shiftsAssignData, users.length]);
+
+  const handleShiftChange = (userId: number, shiftId: string) => {
+    const shift = shifts.find((s) => s.id === Number(shiftId));
+    setShiftAssignments((prev) =>
+      prev.map((assignment) =>
+        assignment.userId === userId
+          ? {
+              ...assignment,
+              shiftId: shift?.id,
+              shiftName: shift?.name,
+              isRegistered: false,
+            }
+          : assignment
+      )
+    );
   };
 
-  const handleRemoveShift = (index: number) => {
-    setAssignedShifts((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleSubmitAll = () => {
-    if (assignedShifts.length === 0) {
-      alert("اول باید حداقل یک شیفت ثبت کنی!");
-      return;
+  const handleSubmit = (assignment: ShiftAssignment) => {
+    if (assignment.isRegistered && !assignment.isEditing) {
+      setShiftAssignments((prev) =>
+        prev.map((a) =>
+          a.userId === assignment.userId ? { ...a, isEditing: true } : a
+        )
+      );
+    } else if (!assignment.isRegistered || assignment.isEditing) {
+      const uniqueidentifier = assignment.userName.split("|")[1].trim();
+      mutate({
+        uniqueidentifier: uniqueidentifier,
+        shift_id: assignment.shiftId?.toString() || "",
+      });
+      setShiftAssignments((prev) =>
+        prev.map((a) =>
+          a.userId === assignment.userId
+            ? { ...a, isRegistered: true, isEditing: false }
+            : a
+        )
+      );
     }
-
-    console.log("لیست نهایی شیفت‌ها:", assignedShifts);
-    setAssignedShifts([]);
-    alert("همه شیفت‌ها با موفقیت ثبت شدند!");
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
         تخصیص شیفت
       </h2>
 
-      <div className="space-y-6">
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">کاربر:</label>
-          <select
-            value={selectedUser}
-            onChange={(e) => setSelectedUser(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <div className="space-y-4">
+        {shiftAssignments.map((assignment) => (
+          <div
+            key={assignment.userId}
+            className="flex items-center justify-between p-3 bg-gray-50 rounded-md"
           >
-            <option value="">انتخاب کنید</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-              </option>
-            ))}
-          </select>
-        </div>
+            <span className="w-1/3 text-gray-700">{assignment.userName}</span>
 
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">شیفت:</label>
-          <select
-            value={selectedShift}
-            onChange={(e) => setSelectedShift(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">انتخاب کنید</option>
-            {shifts.map((shift) => (
-              <option key={shift.id} value={shift.id}>
-                {shift.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          onClick={handleAddShift}
-          disabled={!selectedUser || !selectedShift}
-          className="w-full bg-blue-400 text-white py-2 rounded-md hover:bg-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed transition duration-200"
-        >
-          افزودن
-        </button>
-
-        <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">
-            لیست شیفت‌های انتخاب شده:
-          </h3>
-          {assignedShifts.length === 0 ? (
-            <p className="text-gray-500">هنوز شیفتی ثبت نشده</p>
-          ) : (
-            <ul className="space-y-2">
-              {assignedShifts.map((assignment, index) => (
-                <li
-                  key={index}
-                  className="flex justify-between items-center p-2 bg-gray-100 rounded-md"
-                >
-                  <span className="text-gray-700">{`${assignment.user} - ${assignment.shift}`}</span>
-                  <button
-                    onClick={() => handleRemoveShift(index)}
-                    className="text-red-500 hover:text-red-600 transition duration-200"
-                  >
-                    <TiDeleteOutline size={20} />
-                  </button>
-                </li>
+            <select
+              value={assignment.shiftId?.toString() || ""}
+              onChange={(e) =>
+                handleShiftChange(assignment.userId, e.target.value)
+              }
+              className="w-1/3 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-200"
+            >
+              <option value="">انتخاب شیفت</option>
+              {shifts.map((shift) => (
+                <option key={shift.id} value={shift.id.toString()}>
+                  {shift.name}
+                </option>
               ))}
-            </ul>
-          )}
-        </div>
+            </select>
 
-        <button
-          onClick={handleSubmitAll}
-          className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition duration-200"
-        >
-          ثبت همه شیفت‌ها
-        </button>
+            <button
+              onClick={() => handleSubmit(assignment)}
+              className={`w-1/4 flex items-center justify-center gap-2 py-2 rounded-md transition duration-200 ${
+                assignment.isRegistered && !assignment.isEditing
+                  ? "bg-yellow-500 hover:bg-yellow-600 text-white"
+                  : "bg-green-600 hover:bg-green-700 text-white"
+              } disabled:bg-gray-300 disabled:cursor-not-allowed`}
+            >
+              {assignment.isRegistered && !assignment.isEditing ? (
+                <>
+                  <TiEdit size={20} />
+                  <span>ویرایش</span>
+                </>
+              ) : (
+                <>
+                  <IoCheckmarkCircleOutline size={20} />
+                  <span>ثبت</span>
+                </>
+              )}
+            </button>
+          </div>
+        ))}
+
+        {shiftAssignments.length === 0 && (
+          <p className="text-gray-500 text-center">
+            کاربری برای نمایش وجود ندارد
+          </p>
+        )}
       </div>
     </div>
   );

@@ -20,6 +20,11 @@ const useShifts = {
       mutationFn: shiftsServices.create,
     });
   },
+  useUpdate: (): UseMutationResult<Shift, Error, { id: string; data: Shift }> => {
+    return useMutation<Shift, Error, { id: string; data: Shift }>({
+      mutationFn: ({ id, data }) => shiftsServices.update(id, data),
+    });
+  },
 };
 
 export default useShifts;

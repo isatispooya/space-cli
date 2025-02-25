@@ -22,17 +22,35 @@ import {
 } from "@mui/material";
 import { TiDeleteOutline } from "react-icons/ti";
 import useShifts from "../hooks/useShifts";
-import { Shift } from "../types/shifts.type";
 import { DateType } from "react-date-object";
+import { any } from "prop-types";
+
+interface ShiftPayload {
+  "shiftname": string;
+  day: {
+    date: string;
+    start_time: string | null;
+    end_time: string | null;
+    work_day: boolean;
+  }[];
+}
+
+interface ShiftState {
+  date: string;
+  shiftName: string;
+  startTime: DateObject | null;
+  endTime: DateObject | null;
+  isWorkDay: boolean;
+}
 
 const ShiftsForm = () => {
   const [dates, setDates] = useState<DateObject[]>([]);
   const [shiftName, setShiftName] = useState<string>("");
-  const [shifts, setShifts] = useState<Shift[]>([]);
+  const [shifts, setShifts] = useState<ShiftState[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { mutate: createShift } = useShifts.useCreate();
+  const { mutate: createShift } = useShifts.useCreate<ShiftPayload[]>();
 
   useEffect(() => {
     if (dates.length === 0) {
@@ -138,8 +156,6 @@ const ShiftsForm = () => {
         }
         return acc;
       }, [] as { "shift-name": string; day: any[] }[]);
-
-      console.log("Sending shifts:", groupedShifts);
 
       await createShift(groupedShifts, {
         onSuccess: () => {
@@ -389,7 +405,7 @@ const ShiftsForm = () => {
                         <FormControlLabel
                           control={
                             <Switch
-                              checked={shift.isWorkDay} 
+                              checked={shift.isWorkDay}
                               onChange={(e) =>
                                 updateShift(
                                   index,
@@ -400,7 +416,7 @@ const ShiftsForm = () => {
                               sx={{
                                 "& .MuiSwitch-switchBase.Mui-checked": {
                                   color: "#22c55e",
-                                }, 
+                                },
                                 "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
                                   { bgcolor: "#86efac" },
                               }}
