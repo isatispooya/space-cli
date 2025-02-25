@@ -23,7 +23,6 @@ import {
 import { TiDeleteOutline } from "react-icons/ti";
 import useShifts from "../hooks/useShifts";
 import { DateType } from "react-date-object";
-import { any } from "prop-types";
 
 interface ShiftPayload {
   "shiftname": string;
