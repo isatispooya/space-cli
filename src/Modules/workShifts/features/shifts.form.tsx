@@ -143,18 +143,18 @@ const ShiftsForm = () => {
         };
 
         const existingGroup = acc.find(
-          (group) => group["shift-name"] === shift.shiftName
+          (group) => group["shiftname"] === shift.shiftName
         );
         if (existingGroup) {
           existingGroup.day.push(shiftData);
         } else {
           acc.push({
-            "shift-name": shift.shiftName,
+            "shiftname": shift.shiftName,
             day: [shiftData],
           });
         }
         return acc;
-      }, [] as { "shift-name": string; day: any[] }[]);
+      }, [] as { "shiftname": string; day: any[] }[]);
 
       await createShift(groupedShifts, {
         onSuccess: () => {
