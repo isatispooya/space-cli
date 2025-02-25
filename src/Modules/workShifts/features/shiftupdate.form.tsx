@@ -7,6 +7,7 @@ import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+
 import {
   Button,
   Switch,
@@ -15,46 +16,103 @@ import {
   Paper,
   List,
   ListItem,
-  TextField,
   IconButton,
   Box,
   Grid,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
 } from "@mui/material";
 import { TiDeleteOutline } from "react-icons/ti";
 import useShifts from "../hooks/useShifts";
 import { Shift } from "../types/shifts.type";
-import { DateType } from "react-date-object";
+import moment from "moment-jalaali";
+import { RiEdit2Line } from "react-icons/ri";
 
-const ShiftsForm = () => {
+const ShiftsUpdateForm = () => {
   const [dates, setDates] = useState<DateObject[]>([]);
   const [shiftName, setShiftName] = useState<string>("");
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const { mutate: createShift } = useShifts.useCreate();
+  const { data } = useShifts.useGetShifts();
+
+  const [shiftsList, setShiftsList] = useState("");
+  const [shiftOptions, setShiftOptions] = useState<
+    { id: number; name: string }[]
+  >([]);
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setShiftsList(event.target.value as string);
+    const selectedShift = shiftOptions.find(
+      (shift) => shift.id === Number(event.target.value)
+    );
+    if (selectedShift) {
+      setShiftName(selectedShift.name);
+    }
+  };
 
   useEffect(() => {
-    if (dates.length === 0) {
+    if (data) {
+      const uniqueShifts = Array.from(
+        new Set(data.map((item) => item.shift.id))
+      ).map((id) => {
+        const shift = data.find((item) => item.shift.id === id)?.shift;
+        return { id: shift.id, name: shift.name };
+      });
+      setShiftOptions(uniqueShifts);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (!data || !shiftName || dates.length === 0) {
       setShifts([]);
       return;
     }
 
-    const newDates = getAllDatesInRange(dates).map((date) =>
-      (date as DateObject).format()
+    const newDates = getAllDatesInRange(dates).map(
+      (date) => (date as DateObject).toDate().toISOString().split("T")[0]
     );
+
+    const filteredShifts = data.filter((item) => {
+      const shiftDate = item.date;
+      return item.shift.name === shiftName && newDates.includes(shiftDate);
+    });
+
+    console.log(
+      "داده‌های فیلترشده برای شیفت",
+      shiftName,
+      "در بازه انتخاب‌شده:",
+      filteredShifts
+    );
+
     const updatedShifts = newDates.map((date) => {
-      const existingShift = shifts.find((shift) => shift.date === date);
+      const existingShift = filteredShifts.find((shift) => shift.date === date);
       return {
         date: date,
         shiftName: shiftName,
-        startTime: existingShift?.startTime || null,
-        endTime: existingShift?.endTime || null,
-        isWorkDay: existingShift?.isWorkDay ?? true,
+        startTime: existingShift?.start_time
+          ? new DateObject({
+              date: `2023-01-01 ${existingShift.start_time}`,
+              calendar: persian,
+              locale: persian_fa,
+            })
+          : null,
+        endTime: existingShift?.end_time
+          ? new DateObject({
+              date: `2023-01-01 ${existingShift.end_time}`,
+              calendar: persian,
+              locale: persian_fa,
+            })
+          : null,
+        isWorkDay: existingShift?.work_day ?? true,
       };
     });
     setShifts(updatedShifts);
-  }, [shiftName, dates]);
+  }, [shiftName, dates, data]);
 
   const handleDateChange = (dateObjects: DateObject[]) => {
     setDates(dateObjects);
@@ -68,14 +126,7 @@ const ShiftsForm = () => {
     const updatedShifts = [...shifts];
     updatedShifts[index] = {
       ...updatedShifts[index],
-      [field]:
-        field === "isWorkDay"
-          ? value
-          : new DateObject({
-              date: value as unknown as DateType,
-              calendar: persian,
-              locale: persian_fa,
-            }),
+      [field]: value,
     };
     setShifts(updatedShifts);
   };
@@ -165,46 +216,54 @@ const ShiftsForm = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        p: { xs: 2, sm: 4 },
+        p: { xs: 4, sm: 6 },
         display: "flex",
         justifyContent: "center",
+        bgcolor: "#f3f4f6",
       }}
     >
-      <Box sx={{ width: "100%", maxWidth: { xs: "100%", sm: 900 } }}>
+      <Box sx={{ width: "100%", maxWidth: { xs: "100%", sm: 1000 } }}>
         <Paper
           sx={{
-            p: { xs: 2, sm: 4 },
-            borderRadius: 3,
-            bgcolor: "#fff",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+            p: { xs: 4, sm: 6 },
+            borderRadius: 4,
+            bgcolor: "#ffffff",
+            boxShadow: "0 8px 30px rgba(0,0,0,0.2)",
+            transition: "box-shadow 0.3s ease-in-out",
+            "&:hover": {
+              boxShadow: "0 10px 35px rgba(0,0,0,0.25)",
+            },
           }}
         >
           <Typography
-            variant="h5"
+            variant="h4"
             sx={{
-              mb: 4,
+              mb: 6,
               fontWeight: 700,
               color: "#1e293b",
               textAlign: "center",
             }}
           >
-            برنامه‌ریزی شیفت‌ها
+            ویرایش شیفت
           </Typography>
           <Grid container spacing={3} direction="column">
             <Grid item xs={12}>
-              <Typography
-                variant="subtitle1"
-                sx={{ mb: 1, fontWeight: 500, color: "#475569" }}
-              >
-                نام شیفت
-              </Typography>
-              <TextField
-                value={shiftName}
-                onChange={(e) => setShiftName(e.target.value)}
-                placeholder="یک نام برای شیفت وارد کنید"
-                fullWidth
-                variant="outlined"
-              />
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">شیفت</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={shiftsList}
+                  label="شیفت"
+                  onChange={handleChange}
+                >
+                  {shiftOptions.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Typography
@@ -224,6 +283,7 @@ const ShiftsForm = () => {
                 plugins={[<DatePanel eachDaysInRange position="left" />]}
                 calendar={persian}
                 locale={persian_fa}
+                format="YYYY/MM/DD"
               />
             </Grid>
           </Grid>
@@ -276,6 +336,17 @@ const ShiftsForm = () => {
                   >
                     <TiDeleteOutline />
                   </IconButton>
+                  {shift.startTime && (
+                    <IconButton
+                      sx={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                      }}
+                    >
+                      <RiEdit2Line />
+                    </IconButton>
+                  )}
                   <Box
                     sx={{
                       display: "flex",
@@ -310,7 +381,7 @@ const ShiftsForm = () => {
                       <Box component="span" sx={{ mx: 1, color: "#64748b" }}>
                         |
                       </Box>
-                      {shift.date}
+                      {moment(shift.date).format("jYYYY/jMM/jDD")}
                     </Typography>
                     <Box
                       sx={{
@@ -394,7 +465,7 @@ const ShiftsForm = () => {
                         <FormControlLabel
                           control={
                             <Switch
-                              checked={shift.isWorkDay} // وضعیت سوییچ بر اساس isWorkDay
+                              checked={shift.isWorkDay}
                               onChange={(e) =>
                                 updateShift(
                                   index,
@@ -405,7 +476,7 @@ const ShiftsForm = () => {
                               sx={{
                                 "& .MuiSwitch-switchBase.Mui-checked": {
                                   color: "#22c55e",
-                                }, // سبز برای "کاری"
+                                },
                                 "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
                                   { bgcolor: "#86efac" },
                               }}
@@ -438,12 +509,14 @@ const ShiftsForm = () => {
               }
               fullWidth
               sx={{
-                mt: 4,
-                py: 1.5,
-                borderRadius: 2,
+                mt: 6,
+                py: 2,
+                borderRadius: 3,
+                fontSize: "1.1rem",
                 bgcolor: "#3b82f6",
                 "&:hover": { bgcolor: "#2563eb" },
                 "&:disabled": { bgcolor: "#e5e7eb", color: "#9ca3af" },
+                transition: "background-color 0.3s ease-in-out",
               }}
             >
               {isSubmitting ? "در حال ثبت..." : "ثبت نهایی شیفت‌ها"}
@@ -455,4 +528,4 @@ const ShiftsForm = () => {
   );
 };
 
-export default ShiftsForm;
+export default ShiftsUpdateForm;
