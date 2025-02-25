@@ -170,7 +170,7 @@ const ShiftsForm = () => {
         justifyContent: "center",
       }}
     >
-      <Box sx={{ width: "100%", maxWidth: { xs: "100%", sm: 900 } }}>
+      <Box sx={{ width: "100%", maxWidth: { xs: "100%", sm: 1000 } }}>
         <Paper
           sx={{
             p: { xs: 2, sm: 4 },
@@ -192,17 +192,12 @@ const ShiftsForm = () => {
           </Typography>
           <Grid container spacing={3} direction="column">
             <Grid item xs={12}>
-              <Typography
-                variant="subtitle1"
-                sx={{ mb: 1, fontWeight: 500, color: "#475569" }}
-              >
-                نام شیفت
-              </Typography>
               <TextField
                 value={shiftName}
                 onChange={(e) => setShiftName(e.target.value)}
-                placeholder="یک نام برای شیفت وارد کنید"
                 fullWidth
+                id="outlined-basic"
+                label="نام شیفت"
                 variant="outlined"
               />
             </Grid>
@@ -394,7 +389,7 @@ const ShiftsForm = () => {
                         <FormControlLabel
                           control={
                             <Switch
-                              checked={shift.isWorkDay} // وضعیت سوییچ بر اساس isWorkDay
+                              checked={shift.isWorkDay} 
                               onChange={(e) =>
                                 updateShift(
                                   index,
@@ -405,7 +400,7 @@ const ShiftsForm = () => {
                               sx={{
                                 "& .MuiSwitch-switchBase.Mui-checked": {
                                   color: "#22c55e",
-                                }, // سبز برای "کاری"
+                                }, 
                                 "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
                                   { bgcolor: "#86efac" },
                               }}

@@ -216,29 +216,24 @@ const ShiftsUpdateForm = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        p: { xs: 4, sm: 6 },
+        p: { xs: 2, sm: 4 },
         display: "flex",
         justifyContent: "center",
-        bgcolor: "#f3f4f6",
       }}
     >
       <Box sx={{ width: "100%", maxWidth: { xs: "100%", sm: 1000 } }}>
         <Paper
           sx={{
-            p: { xs: 4, sm: 6 },
-            borderRadius: 4,
-            bgcolor: "#ffffff",
-            boxShadow: "0 8px 30px rgba(0,0,0,0.2)",
-            transition: "box-shadow 0.3s ease-in-out",
-            "&:hover": {
-              boxShadow: "0 10px 35px rgba(0,0,0,0.25)",
-            },
+            p: { xs: 2, sm: 4 },
+            borderRadius: 3,
+            bgcolor: "#fff",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
           }}
         >
           <Typography
-            variant="h4"
+            variant="h5"
             sx={{
-              mb: 6,
+              mb: 4,
               fontWeight: 700,
               color: "#1e293b",
               textAlign: "center",
@@ -249,7 +244,8 @@ const ShiftsUpdateForm = () => {
           <Grid container spacing={3} direction="column">
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">شیفت</InputLabel>
+                <InputLabel id="demo-simple-select-label">نام شیفت</InputLabel>
+
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
