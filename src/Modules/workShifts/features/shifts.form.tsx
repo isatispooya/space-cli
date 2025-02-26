@@ -118,51 +118,52 @@ const ShiftsForm = () => {
     return `${hours}:${minutes}:00`;
   };
 
+  const validateShiftData = (
+    shifts: WorkShiftTypes["FormShiftState"][],
+    shiftName: string
+  ): boolean => {
+    return (
+      shifts.every((shift) => shift.startTime && shift.endTime) &&
+      Boolean(shiftName)
+    );
+  };
+
+  const convertToShiftDay = (
+    shift: WorkShiftTypes["FormShiftState"]
+  ): WorkShiftTypes["ShiftDay"] => {
+    const dateObject = new DateObject({
+      date: shift.date,
+      calendar: persian,
+      locale: persian_fa,
+    });
+    const gregorianDate = dateObject.toDate();
+
+    return {
+      date: gregorianDate.toISOString().split("T")[0],
+      start_time: shift.startTime ? formatTime(shift.startTime) : null,
+      end_time: shift.endTime ? formatTime(shift.endTime) : null,
+      work_day: shift.isWorkDay,
+    };
+  };
+
   const handleSubmit = async () => {
     try {
       setIsSubmitting(true);
       setError(null);
 
-      const isValid = shifts.every((shift) => shift.startTime && shift.endTime);
-      if (!isValid || !shiftName) {
+      if (!validateShiftData(shifts, shiftName)) {
         setError("لطفاً همه فیلدهای لازم را پر کنید");
-        setIsSubmitting(false);
         return;
       }
 
-      const groupedShifts: WorkShiftTypes["ShiftPayload"][] = shifts.reduce(
-        (acc, shift) => {
-          const dateObject = new DateObject({
-            date: shift.date,
-            calendar: persian,
-            locale: persian_fa,
-          });
-          const gregorianDate = dateObject.toDate();
-
-          const shiftDay: WorkShiftTypes["ShiftDay"] = {
-            date: gregorianDate.toISOString().split("T")[0],
-            start_time: shift.startTime ? formatTime(shift.startTime) : null,
-            end_time: shift.endTime ? formatTime(shift.endTime) : null,
-            work_day: shift.isWorkDay,
-          };
-
-          const existingGroup = acc.find(
-            (group) => group.shiftname === shift.shiftName
-          );
-          if (existingGroup) {
-            existingGroup.day.push(shiftDay);
-          } else {
-            acc.push({
-              shiftname: shift.shiftName,
-              day: [shiftDay],
-            });
-          }
-          return acc;
+      const shiftPayload = [
+        {
+          shiftname: shiftName,
+          day: shifts.map(convertToShiftDay),
         },
-        [] as WorkShiftTypes["ShiftPayload"][]
-      );
+      ] as unknown as WorkShiftTypes["ShiftPayload"];
 
-      await createShift(groupedShifts[0], {
+      await createShift(shiftPayload, {
         onSuccess: () => {
           setShiftName("");
           setDates([]);

@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
-import { TiEdit } from "react-icons/ti";
-import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { useShifts } from "../hooks";
 import { WorkShiftTypes } from "../types";
-import { LoaderLg } from "../../../components";
+import {
+  Accordian,
+  ButtonBase,
+  DynamicList,
+  LoaderLg,
+  SelectInput,
+} from "@/components";
 
 const ShiftsAssignForm = () => {
   const { data: shiftsAssignData, isLoading: isLoadingShiftsAssign } =
@@ -17,6 +21,10 @@ const ShiftsAssignForm = () => {
   const [shiftAssignments, setShiftAssignments] = useState<
     WorkShiftTypes["FormShiftAssignment"][]
   >([]);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [visibleItems, setVisibleItems] = useState(10);
+  const [isOpen, setIsOpen] = useState(false);
 
   const users =
     shiftsAssignData?.map((item: WorkShiftTypes["ShiftAssignResponse"]) => ({
@@ -51,7 +59,7 @@ const ShiftsAssignForm = () => {
     }
   }, [shiftsAssignData, users.length]);
 
-  const handleShiftChange = (userId: number, shiftId: string) => {
+  const handleShiftChange = (shiftId: string, userId: number) => {
     const selectedShift = shifts.find((shift) => shift.id === Number(shiftId));
     setShiftAssignments((prev) =>
       prev.map((assignment) =>
@@ -92,50 +100,48 @@ const ShiftsAssignForm = () => {
     }
   };
 
-  const renderShiftItem = (
+  const renderAssignmentItem = (
     assignment: WorkShiftTypes["FormShiftAssignment"]
   ) => (
-    <div
-      key={assignment.userId}
-      className="flex items-center justify-between p-3 bg-gray-50 rounded-md"
-    >
+    <div className="flex items-center justify-between">
       <span className="w-1/3 text-gray-700">{assignment.userName}</span>
 
-      <select
+      <SelectInput
         value={assignment.shiftId?.toString() || ""}
-        onChange={(e) => handleShiftChange(assignment.userId, e.target.value)}
-        className="w-1/3 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-200"
-      >
-        <option value="">انتخاب شیفت</option>
-        {shifts.map((shift) => (
-          <option key={shift.id} value={shift.id.toString()}>
-            {shift.name}
-          </option>
-        ))}
-      </select>
+        onChange={(value) => handleShiftChange(value, assignment.userId)}
+        options={[
+          { value: "", label: "انتخاب شیفت" },
+          ...shifts.map((shift) => ({
+            value: shift.id.toString(),
+            label: shift.name,
+          })),
+        ]}
+        className="w-1/3"
+        disabled={assignment.isRegistered && !assignment.isEditing}
+      />
 
-      <button
+      <ButtonBase
         onClick={() => handleSubmit(assignment)}
-        className={`w-1/4 flex items-center justify-center gap-2 py-2 rounded-md transition duration-200 ${
+        label={
+          assignment.isRegistered && !assignment.isEditing ? "ویرایش" : "ثبت"
+        }
+        bgColor={
           assignment.isRegistered && !assignment.isEditing
-            ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-            : "bg-green-600 hover:bg-green-700 text-white"
-        } disabled:bg-gray-300 disabled:cursor-not-allowed`}
-      >
-        {assignment.isRegistered && !assignment.isEditing ? (
-          <>
-            <TiEdit size={20} />
-            <span>ویرایش</span>
-          </>
-        ) : (
-          <>
-            <IoCheckmarkCircleOutline size={20} />
-            <span>ثبت</span>
-          </>
-        )}
-      </button>
+            ? "rgb(51 65 85)"
+            : "rgb(30 41 59)"
+        }
+        hoverColor={
+          assignment.isRegistered && !assignment.isEditing
+            ? "rgb(51 65 85)"
+            : "rgb(30 41 59)"
+        }
+      />
     </div>
   );
+
+  const handleLoadMore = () => {
+    setVisibleItems((prev) => prev + 10);
+  };
 
   if (isLoadingShiftsAssign && isLoadingShifts) {
     return <LoaderLg />;
@@ -146,20 +152,24 @@ const ShiftsAssignForm = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-        تخصیص شیفت
-      </h2>
-
-      <div className="space-y-4">
-        {shiftAssignments.length > 0 ? (
-          shiftAssignments.map(renderShiftItem)
-        ) : (
-          <p className="text-gray-500 text-center">
-            کاربری برای نمایش وجود ندارد
-          </p>
-        )}
-      </div>
+    <div className="max-w-4xl mx-auto p-6  mt-8">
+      <Accordian
+        title="تخصیص شیفت"
+        isOpen={isOpen}
+        onToggle={() => setIsOpen(!isOpen)}
+      >
+        <DynamicList
+          data={shiftAssignments}
+          isPending={isLoadingShiftsAssign || isLoadingShifts}
+          searchQuery={searchQuery}
+          visibleItems={visibleItems}
+          onSearchChange={setSearchQuery}
+          onItemClick={() => {}}
+          onLoadMore={handleLoadMore}
+          renderItem={renderAssignmentItem}
+          noResultsMessage="کاربری برای نمایش وجود ندارد"
+        />
+      </Accordian>
     </div>
   );
 };
