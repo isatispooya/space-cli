@@ -4,7 +4,6 @@ import useShifts from "../hooks/useShifts";
 
 const ShiftsTable = () => {
   const { data } = useShifts.useGetShifts();
-  console.log(data);
 
   const mappedData = data?.map((item: any) => {
     return {

@@ -7,13 +7,7 @@ export interface ShiftDay {
   work_day: boolean;
 }
 
-export interface shift_detail {
-  created_at: string;
-  id: number;
-  name: string;
-  owner: number;
-  updated_at: string;
-}
+
 
 export interface Shift {
   date: string;
@@ -38,21 +32,8 @@ export interface shiftCreate {
   day: Shift[];
 }
 
-export interface ShiftResponse {
-  id?: number;
-  shift?: {
-    id: number;
-    name: string;
-  };
-  shift_detail: shift_detail;
-  name?: string;
-  user: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    uniqueIdentifier: string;
-  };
-}
+
+
 
 export interface AssignShift {
   id: number;

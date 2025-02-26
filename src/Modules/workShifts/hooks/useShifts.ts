@@ -7,10 +7,11 @@ import {
 
 import { shiftsServices } from "../services";
 import { Shift } from "../types/shifts.type";
+import { ShiftAssignTypes } from "../types";
 
 const useShifts = {
-  useGetShifts: (): UseQueryResult<Shift[]> => {
-    return useQuery<Shift[]>({
+  useGetShifts: (): UseQueryResult<ShiftAssignTypes> => {
+    return useQuery<ShiftAssignTypes>({
       queryKey: ["shifts"],
       queryFn: shiftsServices.getShifts,
     });
@@ -20,7 +21,11 @@ const useShifts = {
       mutationFn: shiftsServices.create,
     });
   },
-  useUpdate: (): UseMutationResult<Shift, Error, { id: string; data: Shift }> => {
+  useUpdate: (): UseMutationResult<
+    Shift,
+    Error,
+    { id: string; data: Shift }
+  > => {
     return useMutation<Shift, Error, { id: string; data: Shift }>({
       mutationFn: ({ id, data }) => shiftsServices.update(id, data),
     });
@@ -28,4 +33,3 @@ const useShifts = {
 };
 
 export default useShifts;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
