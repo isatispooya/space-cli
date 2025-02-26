@@ -7,15 +7,15 @@ const TimeFlowPage = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
-      text: "شیفت ها",
-      permission: ["allow_any"],
-      path: "table",
-    },
-    {
-      icon: LuTable,
       text: "ایجاد شیفت",
       permission: ["allow_any"],
       path: "form",
+    },
+    {
+      icon: LuTable,
+      text: "شیفت ها",
+      permission: ["allow_any"],
+      path: "table",
     },
     {
       icon: LuTable,
