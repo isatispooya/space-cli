@@ -18,7 +18,6 @@ const DashboardGoldStat = () => {
         </div>
 
         <div className="w-full h-36 md:h-56 lg:h-32 flex items-center justify-center relative">
-          {/* Gold Bar SVGs */}
           <svg
             className="absolute w-20 h-12 md:w-32 md:h-20 lg:w-20 lg:h-12 transform -rotate-12"
             viewBox="0 0 100 60"
