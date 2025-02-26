@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { shiftsServices } from "../services";
 import { WorkShiftTypes } from "../types";
+import { AxiosError } from "axios";
 
 const useShifts = {
   useGetShifts: (): UseQueryResult<WorkShiftTypes["shiftTypes"]> => {
@@ -16,7 +17,7 @@ const useShifts = {
   },
   useCreate: (): UseMutationResult<
     unknown,
-    Error,
+    AxiosError,
     WorkShiftTypes["ShiftPayload"]
   > => {
     return useMutation({

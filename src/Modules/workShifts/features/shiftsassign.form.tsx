@@ -16,7 +16,6 @@ const ShiftsAssignForm = () => {
     useShifts.useGetShifts();
   const { mutate, isPending: isPendingSetShiftUser } =
     useShifts.useSetShiftUser();
-
   const [shifts, setShifts] = useState<WorkShiftTypes["Shift"][]>([]);
   const [shiftAssignments, setShiftAssignments] = useState<
     WorkShiftTypes["FormShiftAssignment"][]
