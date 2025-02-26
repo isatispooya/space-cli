@@ -10,19 +10,41 @@ const TimeflowTable = () => {
   const mappedData = data?.map((item) => ({
     ...item,
     date: moment(item.date).format("jYYYY/jMM/jDD"),
-    time_start: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(item.time_start, "HH:mm:ss").format("HH:mm")}`,
-    time_end: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(item.time_end, "HH:mm:ss").format("HH:mm")}`,
+    time_start: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(
+      item.time_start,
+      "HH:mm:ss"
+    ).format("HH:mm")}`,
+    time_end: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(
+      item.time_end,
+      "HH:mm:ss"
+    ).format("HH:mm")}`,
     type: item.type === "working" ? "زمان حضور" : " غیبت",
     user_id: item.user_id,
+    first_name: item.user_detail.first_name,
+    last_name: item.user_detail.last_name,
+    uniqueIdentifier: item.user_detail.uniqueIdentifier,
   }));
 
   if (isLoading) {
     return <LoaderLg />;
   }
 
-
-
   const columns = (): ColumnDefinition[] => [
+    {
+      title: "نام",
+      field: "first_name",
+      headerFilter: true,
+    },
+    {
+      title: "نام خانوادگی",
+      field: "last_name",
+      headerFilter: true,
+    },
+    {
+      title: "کد ملی",
+      field: "uniqueIdentifier",
+      headerFilter: true,
+    },
     {
       title: "تاریخ ",
       field: "date",
@@ -43,7 +65,6 @@ const TimeflowTable = () => {
       field: "type",
       headerFilter: true,
     },
-    
   ];
 
   return (
