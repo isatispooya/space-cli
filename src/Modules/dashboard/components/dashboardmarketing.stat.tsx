@@ -118,7 +118,7 @@ const DashboardMarketingStat = () => {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     className:
-      "relative bg-white rounded-xl shadow-lg p-4 sm:p-6 min-h-[450px] sm:min-h-[520px] transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
+      "relative bg-white rounded-xl shadow-lg p-4 sm:p-6 min-h-[400px] sm:min-h-[480px] w-full max-w-8xl px-10` mx-auto transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
     style: { zIndex: 2 },
   });
 
@@ -129,10 +129,8 @@ const DashboardMarketingStat = () => {
       transition={{ duration: 0.5 }}
       className="relative isolate w-full"
     >
-     
-
       <motion.div {...getMotionDivStyles()}>
-        <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row items-center justify-between sm:space-x-4">
+        <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row items-center justify-between sm:space-x-4 ">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center">
               <RiUserReceived2Line className="w-4 h-4 sm:w-5 sm:h-6 text-[#D2042D]" />
@@ -213,7 +211,7 @@ const DashboardMarketingStat = () => {
               مشاهده بیشتر
             </button>
           </div>
-          <div className="flex flex-col gap-1 overflow-hidden h-[140px] sm:h-[180px]">
+          <div className="flex flex-col gap-1 overflow-hidden h-[130px] sm:h-[150px]">
             {visibleIndices.map((index) => {
               const userDetail = allNames[index]?.invited_user_detail;
               return (
@@ -258,7 +256,7 @@ const DashboardMarketingStat = () => {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={handleCopy}
-              className={`px-2 py-1 rounded-md  text-[10px] sm:text-[12px] font-medium transition-all duration-200 ${
+              className={`px-8  py-1 rounded-md  text-[10px] sm:text-[12px] font-medium transition-all duration-200 ${
                 copied
                   ? "bg-[#D2042D] text-[#ffffff]"
                   : "bg-[#D2042D] text-white hover:bg-[#E57350]"

@@ -81,7 +81,7 @@ const DashboardChart = () => {
   const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 shadow-lg rounded-lg border border-gray-100">
+        <div className="bg-white p-2 shadow-lg rounded-lg border border-gray-100">
           <p className="text-sm text-gray-600  font-iranSans">{label}</p>
           <p className="text-lg font-bold text-indigo-600 font-iranSans">
             {payload[0].value} <span className="text-xs">%</span>

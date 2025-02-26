@@ -7,7 +7,7 @@ const DashboardGoldStat = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative bg-white rounded-xl shadow-md p-6 h-full 
+        className="relative bg-white rounded-xl shadow-md p-4 h-full 
                    transition-all duration-300 hover:shadow-xl transform hover:scale-105"
         style={{ zIndex: 2 }}
       >
@@ -17,7 +17,7 @@ const DashboardGoldStat = () => {
           </h3>
         </div>
 
-        <div className="w-full h-28 md:h-56 lg:h-28 flex items-center justify-center relative">
+        <div className="w-full h-36 md:h-56 lg:h-32 flex items-center justify-center relative">
           {/* Gold Bar SVGs */}
           <svg
             className="absolute w-20 h-12 md:w-32 md:h-20 lg:w-20 lg:h-12 transform -rotate-12"
@@ -70,7 +70,7 @@ const DashboardGoldStat = () => {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full mt-4  bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white py-1 px-2 rounded-lg 
+          className="w-full mt-10 mb-2  bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white py-1 px-1 rounded-lg 
                        font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
         >
           <span className="text-white font-bold">به زودی</span>
@@ -78,7 +78,7 @@ const DashboardGoldStat = () => {
         </motion.button>
 
         <svg
-          className="absolute bottom-0 rounded-lg left-0 w-full h-[80px] md:h-32"
+          className="absolute bottom-0 rounded-lg left-0 w-full h-[100px] md:h-36"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 400"
           preserveAspectRatio="none"
