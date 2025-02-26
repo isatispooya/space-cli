@@ -6,8 +6,8 @@ const ButtonBase: React.FC<ButtonBaseProps> = ({
   onClick,
   disabled,
   icon,
-  bgColor = "rgb(30 41 59)", // default slate-800
-  hoverColor = "rgb(51 65 85)", // default slate-700
+  bgColor = "rgb(30 41 59)", 
+  hoverColor = "rgb(51 65 85)",
 }) => {
   return (
     <button
