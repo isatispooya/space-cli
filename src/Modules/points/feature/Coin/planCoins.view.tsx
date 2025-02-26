@@ -173,8 +173,11 @@ const PlansView: React.FC<{
                     " " +
                     item?.refrence?.last_name || "نامشخص"}
                 </p>
-                <p className="text-md text-gray-700">
+                <p className="text-md text-gray-700 mb-8">
                   مبلغ سرمایه گذاری: {formatNumber(item?.value) || "نامشخص"}
+                </p>
+                <p className="text-md text-gray-700 mb-[-8px]">
+                  سکه پرداخت شده : {item?.set_point || 0}
                 </p>
                 <div className="flex items-center justify-between mt-4">
                   <FormInput
