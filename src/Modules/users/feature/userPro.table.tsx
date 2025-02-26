@@ -86,7 +86,7 @@ const UserProTable: React.FC = () => {
       title: "تاریخ تولد",
       field: "birth_date",
       headerFilter: true,
-      formatter: (cell) => {
+      formatter: (cell : CellComponent) => {
         const gregorianDate = cell.getValue();
         return gregorianDate
           ? moment(gregorianDate).format("jYYYY/jMM/jDD")
