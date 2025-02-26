@@ -1,26 +1,49 @@
 import "moment/locale/fa";
+import moment from "moment-jalaali";
 import { TabulatorTable } from "../../../components";
 import useShifts from "../hooks/useShifts";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  SelectChangeEvent,
+  MenuItem,
+} from "@mui/material";
+import { useState, useMemo } from "react";
+import { shiftTypes } from "../types";
 
 const ShiftsTable = () => {
   const { data } = useShifts.useGetShifts();
-  console.log(data);
+  const [selectedShift, setSelectedShift] = useState("");
 
-  const mappedData = data?.map((item: any) => {
-    return {
-      id: item.id,
-      shift_name: item.shift.name,
-      date: item.date,
-      start_time: item.start_time,
-      end_time: item.end_time,
-      work_day: item.work_day ? "بله" : "خیر",
-      day_of_week: item.day_of_week,
-    };
-  });
+  const handleChange = (event: SelectChangeEvent) => {
+    setSelectedShift(event.target.value as string);
+  };
+
+  const uniqueShifts = useMemo(() => {
+    if (!data || !Array.isArray(data)) return [];
+    return Array.from(new Set(data.map((item: shiftTypes) => item.shift.name)));
+  }, [data]);
+
+  const mappedData = useMemo(() => {
+    if (!data || !Array.isArray(data)) return [];
+    return data
+      ?.filter(
+        (item: shiftTypes) =>
+          selectedShift === "" || item.shift.name === selectedShift
+      )
+      .map((item) => ({
+        id: item.id ?? 0,
+        shift_name: item.shift.name,
+        date: moment(item.date).format("jYYYY/jMM/jDD"),
+        start_time: item.start_time,
+        end_time: item.end_time,
+        work_day: item.work_day ? "بله" : "خیر",
+        day_of_week: item.day_of_week,
+      }));
+  }, [data, selectedShift]);
 
   const columns = () => [
-    { title: "شناسه", field: "id" },
-    { title: "نام شیفت", field: "shift_name" },
     { title: "تاریخ", field: "date" },
     { title: "زمان شروع", field: "start_time" },
     { title: "زمان پایان", field: "end_time" },
@@ -28,22 +51,37 @@ const ShiftsTable = () => {
     { title: "روز هفته", field: "day_of_week" },
   ];
 
-  const ExelData = (data: any) => {
-    return data.map((item: any) => ({
-      شناسه: item.id,
-      "نام شیفت": item.shift_name,
-      تاریخ: item.date,
-      "زمان شروع": item.start_time,
-      "زمان پایان": item.end_time,
-      "روز کاری": item.work_day,
-      "روز هفته": item.day_of_week,
-    }));
+  const ExelData = (item: shiftTypes) => {
+    return {
+      نام_شیفت: item.shift.name || "نامشخص",
+      تاریخ_شروع: moment(item.start_time).format("jYYYY/jMM/jDD"),
+      تاریخ_پایان: moment(item.end_time).format("jYYYY/jMM/jDD"),
+      روزکاری: item.work_day,
+      روزهفته: item.day_of_week,
+    };
   };
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
+      <FormControl sx={{ width: "80%", mx: "auto" }}>
+        <InputLabel id="shift-select-label">شیفت ها</InputLabel>
+        <Select
+          labelId="shift-select-label"
+          id="shift-select"
+          value={selectedShift}
+          label="شیفت ها"
+          onChange={handleChange}
+        >
+          <MenuItem value="">همه</MenuItem>
+          {uniqueShifts.map((shiftName: string) => (
+            <MenuItem key={shiftName} value={shiftName}>
+              {shiftName}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <div className="overflow-x-auto">
-        {(data ?? []).length > 0 ? (
+        {Array.isArray(data) && data.length > 0 ? (
           <TabulatorTable
             data={mappedData || []}
             columns={columns()}

@@ -1,8 +1,9 @@
 import { api } from "../../../api";
+import { shiftTypes } from "../types";
 import { Shift } from "../types/shifts.type";
 
 const shiftsServices = {
-  getShifts: async () => {
+  getShifts: async ():Promise<shiftTypes> => {
     const response = await api.get("/timeflow/set-shift/");
     return response.data;
   },
