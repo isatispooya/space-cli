@@ -3,11 +3,15 @@ import { TiEdit } from "react-icons/ti";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { useShifts } from "../hooks";
 import { WorkShiftTypes } from "../types";
+import { LoaderLg } from "../../../components";
 
 const ShiftsAssignForm = () => {
-  const { data: shiftsAssignData } = useShifts.useGetShiftsassign();
-  const { data: shiftsData } = useShifts.useGetShifts();
-  const { mutate } = useShifts.useSetShiftUser();
+  const { data: shiftsAssignData, isLoading: isLoadingShiftsAssign } =
+    useShifts.useGetShiftsassign();
+  const { data: shiftsData, isLoading: isLoadingShifts } =
+    useShifts.useGetShifts();
+  const { mutate, isPending: isPendingSetShiftUser } =
+    useShifts.useSetShiftUser();
 
   const [shifts, setShifts] = useState<WorkShiftTypes["Shift"][]>([]);
   const [shiftAssignments, setShiftAssignments] = useState<
@@ -132,6 +136,14 @@ const ShiftsAssignForm = () => {
       </button>
     </div>
   );
+
+  if (isLoadingShiftsAssign && isLoadingShifts) {
+    return <LoaderLg />;
+  }
+
+  if (isPendingSetShiftUser) {
+    return <LoaderLg />;
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">

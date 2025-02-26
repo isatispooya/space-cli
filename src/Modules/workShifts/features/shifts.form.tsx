@@ -24,6 +24,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 import useShifts from "../hooks/useShifts";
 import { DateType } from "react-date-object";
 import { WorkShiftTypes } from "../types";
+import { LoaderLg } from "../../../components";
 
 const ShiftsForm = () => {
   const [dates, setDates] = useState<DateObject[]>([]);
@@ -32,7 +33,7 @@ const ShiftsForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { mutate: createShift } = useShifts.useCreate();
+  const { mutate: createShift, isPending } = useShifts.useCreate();
 
   useEffect(() => {
     if (dates.length === 0) {
@@ -48,8 +49,28 @@ const ShiftsForm = () => {
       return {
         date: date,
         shiftName: shiftName,
-        startTime: existingShift?.startTime || null,
-        endTime: existingShift?.endTime || null,
+        startTime:
+          existingShift?.startTime ||
+          new DateObject({
+            calendar: persian,
+            locale: persian_fa,
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            day: new Date().getDate(),
+            hour: 8,
+            minute: 0,
+          }),
+        endTime:
+          existingShift?.endTime ||
+          new DateObject({
+            calendar: persian,
+            locale: persian_fa,
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            day: new Date().getDate(),
+            hour: 15,
+            minute: 30,
+          }),
         isWorkDay: existingShift?.isWorkDay ?? true,
       };
     });
@@ -160,6 +181,10 @@ const ShiftsForm = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (isPending) {
+    return <LoaderLg />;
+  }
 
   return (
     <Box
