@@ -6,7 +6,7 @@ import { useState, useMemo } from "react";
 import { shiftTypes } from "../types";
 
 const ShiftsTable = () => {
-  const { data } = useShifts.useGetShifts();
+  const { data, isLoading } = useShifts.useGetShifts();
   const [selectedShift, setSelectedShift] = useState("");
 
   const uniqueShifts = useMemo(() => {
@@ -50,6 +50,10 @@ const ShiftsTable = () => {
       روزهفته: item.day_of_week || "نامشخص",
     };
   };
+
+  if (isLoading) {
+    return <LoaderLg />;
+  }
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">

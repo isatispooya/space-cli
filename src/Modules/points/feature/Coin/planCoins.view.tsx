@@ -51,9 +51,12 @@ const PlansView: React.FC<{
   };
 
   const handleConfirm = (item: PlanByTraceCodeType) => {
+    const defaultValue = Math.floor(item?.value / 1000) || 0;
     const payload = {
       user: String(item.user?.id || "N/A"),
-      point_1: parseInt(coinValues[item.user?.id || "0"], 10),
+      point_1: coinValues[item.user?.id || "0"]
+        ? parseInt(coinValues[item.user?.id || "0"], 10)
+        : defaultValue,
       refrence: String(item?.refrence?.id || "N/A"),
     };
 
