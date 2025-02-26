@@ -1,33 +1,21 @@
 import { useState, useEffect } from "react";
 import { TiEdit } from "react-icons/ti";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
-import useShiftsassign from "../hooks/useShiftsassign";
 import { useShifts } from "../hooks";
-import { Shift, ShiftAssignResponse } from "../types";
-
-interface FormShiftAssignment {
-  userId: number;
-  userName: string;
-  shiftId?: number;
-  shiftName?: string;
-  isRegistered: boolean;
-  isEditing: boolean;
-  assignmentId?: number;
-}
+import { WorkShiftTypes } from "../types";
 
 const ShiftsAssignForm = () => {
-  const shiftsAssign = useShiftsassign();
-  const { data: shiftsAssignData } = shiftsAssign.useGetShiftsassign();
+  const { data: shiftsAssignData } = useShifts.useGetShiftsassign();
   const { data: shiftsData } = useShifts.useGetShifts();
-  const { mutate } = shiftsAssign.useSetShiftUser();
+  const { mutate } = useShifts.useSetShiftUser();
 
-  const [shifts, setShifts] = useState<Shift[]>([]);
+  const [shifts, setShifts] = useState<WorkShiftTypes["Shift"][]>([]);
   const [shiftAssignments, setShiftAssignments] = useState<
-    FormShiftAssignment[]
+    WorkShiftTypes["FormShiftAssignment"][]
   >([]);
 
   const users =
-    shiftsAssignData?.map((item: ShiftAssignResponse) => ({
+    shiftsAssignData?.map((item: WorkShiftTypes["ShiftAssignResponse"]) => ({
       id: item.user.id,
       name: `${item.user.first_name} ${item.user.last_name} | ${item.user.uniqueIdentifier}`,
     })) ?? [];
@@ -45,7 +33,7 @@ const ShiftsAssignForm = () => {
   useEffect(() => {
     if (shiftsAssignData && users.length > 0) {
       const initialAssignments = shiftsAssignData.map(
-        (item: ShiftAssignResponse) => ({
+        (item: WorkShiftTypes["ShiftAssignResponse"]) => ({
           userId: item.user.id,
           userName: `${item.user.first_name} ${item.user.last_name} | ${item.user.uniqueIdentifier}`,
           shiftId: item.shift_detail?.id,
@@ -75,7 +63,7 @@ const ShiftsAssignForm = () => {
     );
   };
 
-  const handleSubmit = (assignment: FormShiftAssignment) => {
+  const handleSubmit = (assignment: WorkShiftTypes["FormShiftAssignment"]) => {
     if (assignment.isRegistered && !assignment.isEditing) {
       // Enable editing mode
       setShiftAssignments((prev) =>
@@ -88,7 +76,7 @@ const ShiftsAssignForm = () => {
       const uniqueIdentifier = assignment.userName.split("|")[1].trim();
       mutate({
         uniqueidentifier: uniqueIdentifier,
-        shift_id: assignment.shiftId?.toString() || "",
+        shift_id: assignment.shiftId || 0,
       });
       setShiftAssignments((prev) =>
         prev.map((a) =>
@@ -100,7 +88,9 @@ const ShiftsAssignForm = () => {
     }
   };
 
-  const renderShiftItem = (assignment: FormShiftAssignment) => (
+  const renderShiftItem = (
+    assignment: WorkShiftTypes["FormShiftAssignment"]
+  ) => (
     <div
       key={assignment.userId}
       className="flex items-center justify-between p-3 bg-gray-50 rounded-md"

@@ -1,10 +1,9 @@
 import "moment/locale/fa";
 import moment from "moment-jalaali";
-import { LoaderLg, TabulatorTable } from "../../../components";
+import { LoaderLg, TabulatorTable, SelectInput } from "../../../components";
 import useShifts from "../hooks/useShifts";
 import { useState, useMemo } from "react";
 import { shiftTypes } from "../types";
-import SelectInput from "../../../components/common/inputs/selectInput";
 
 const ShiftsTable = () => {
   const { data } = useShifts.useGetShifts();

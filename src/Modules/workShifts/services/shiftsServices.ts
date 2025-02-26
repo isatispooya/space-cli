@@ -1,20 +1,36 @@
 import { api } from "../../../api";
-import { shiftTypes } from "../types";
-import { Shift } from "../types/shifts.type";
+import { WorkShiftTypes } from "../types";
 
 const shiftsServices = {
-  getShifts: async ():Promise<shiftTypes> => {
+  getShifts: async (): Promise<WorkShiftTypes["shiftTypes"]> => {
     const response = await api.get("/timeflow/set-shift/");
     return response.data;
   },
 
-  create: async (data: Shift[]) => {
+  create: async (data: WorkShiftTypes["ShiftPayload"]) => {
     const response = await api.post("/timeflow/set-shift/", data);
     return response.data;
   },
 
-  update: async (id: string, data: object) => {
+  update: async (id: string, data: WorkShiftTypes["ShiftPayload"]) => {
     const response = await api.patch(`/timeflow/set-shift/${id}`, data);
+    return response.data;
+  },
+  getShiftsassign: async () => {
+    const response = await api.get("/positions/list-of-subcategory/");
+    console.log(response.data, "shiftassaindsd");
+    return response.data;
+  },
+
+  createShiftsassign: async (
+    SetShiftUser: WorkShiftTypes["SetShiftUserPostType"]
+  ) => {
+    const response = await api.patch(
+      `/timeflow/set-shift-user/${SetShiftUser.shift_id}/`,
+      {
+        uniqueidentifier: SetShiftUser.uniqueidentifier,
+      }
+    );
     return response.data;
   },
 };

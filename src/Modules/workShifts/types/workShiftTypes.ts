@@ -1,3 +1,5 @@
+import { DateObject } from "react-multi-date-picker";
+
 // Basic shift type
 export interface Shift {
   id: number;
@@ -13,6 +15,23 @@ export interface CompanyAddress {
   postalCode: string;
 }
 
+export interface ShiftDay {
+  date: string;
+  start_time: string | null;
+  end_time: string | null;
+  work_day: boolean;
+}
+
+export interface ShiftPayload {
+  shiftname: string;
+  day: WorkShiftTypes["ShiftDay"][];
+}
+
+export interface SetShiftUserPostType {
+  uniqueidentifier: string;
+  shift_id: number;
+}
+
 // Basic shift assignment response type
 export interface ShiftAssignResponse {
   id: number;
@@ -26,6 +45,32 @@ export interface ShiftAssignResponse {
     id: number;
     name: string;
   };
+}
+
+export interface shiftTypes {
+  id: number;
+  shift: {
+    id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
+    owner: number;
+  };
+  date: string;
+  start_time: string;
+  end_time: string;
+  work_day: boolean;
+  day_of_week: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FormShiftState {
+  date: string;
+  shiftName: string;
+  startTime: DateObject | null;
+  endTime: DateObject | null;
+  isWorkDay: boolean;
 }
 
 export interface CompanyDetails {
@@ -157,6 +202,16 @@ export interface ShiftFilter {
   sortOrder?: "asc" | "desc";
 }
 
+export interface FormShiftAssignment {
+  userId: number;
+  userName: string;
+  shiftId?: number;
+  shiftName?: string;
+  isRegistered: boolean;
+  isEditing: boolean;
+  assignmentId?: number;
+}
+
 // Error handling types
 export interface ShiftError {
   code: string;
@@ -165,3 +220,30 @@ export interface ShiftError {
 }
 
 export type ShiftValidationErrors = Record<string, ShiftError>;
+
+export type WorkShiftTypes = {
+  Shift: Shift;
+  CompanyAddress: CompanyAddress;
+  ShiftDay: ShiftDay;
+  ShiftPayload: ShiftPayload;
+  SetShiftUserPostType: SetShiftUserPostType;
+  ShiftAssignResponse: ShiftAssignResponse;
+  shiftTypes: shiftTypes;
+  FormShiftState: FormShiftState;
+  CompanyDetails: CompanyDetails;
+  UserBasicInfo: UserBasicInfo;
+  UserProfile: UserProfile;
+  ShiftTimeRange: ShiftTimeRange;
+  ShiftDetails: ShiftDetails;
+  ShiftAssignment: ShiftAssignment;
+  ShiftResponse: ShiftResponse<unknown>;
+  PaginatedShiftResponse: PaginatedShiftResponse<unknown>;
+  CreateShiftRequest: CreateShiftRequest;
+  UpdateShiftRequest: UpdateShiftRequest;
+  ShiftFilter: ShiftFilter;
+  ShiftError: ShiftError;
+  ShiftValidationErrors: ShiftValidationErrors;
+  FormShiftAssignment: FormShiftAssignment;
+};
+
+export default WorkShiftTypes;
