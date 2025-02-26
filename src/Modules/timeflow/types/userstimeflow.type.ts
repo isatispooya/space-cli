@@ -4,6 +4,11 @@ export interface UsersTimeflowType {
   time_start: string;
   type: string;
   user_id: number;
+  user_detail: {
+    first_name: string;
+    last_name: string;
+    uniqueIdentifier: string;
+  };
 }
 
 export default UsersTimeflowType;
