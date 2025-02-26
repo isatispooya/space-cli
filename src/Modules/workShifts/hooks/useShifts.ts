@@ -16,6 +16,7 @@ const useShifts = {
       queryFn: shiftsServices.getShifts,
     });
   },
+
   useCreate: (): UseMutationResult<Shift[], Error, Shift[]> => {
     return useMutation<Shift[], Error, Shift[]>({
       mutationFn: shiftsServices.create,
