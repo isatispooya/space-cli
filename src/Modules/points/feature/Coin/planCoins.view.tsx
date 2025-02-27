@@ -69,7 +69,6 @@ const PlansView: React.FC<{
     postCrowdPoints(payload, {
       onSuccess: async () => {
         toast.success("با موفقیت ثبت شد");
-        setIsRefetching(true);
         await refetch();
         setSubmittingUserId(null);
       },
