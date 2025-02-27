@@ -12,26 +12,12 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { WorkShiftTypes } from "../types";
 
-interface ShiftItemProps {
-  shift: WorkShiftTypes["FormShiftState"];
-  index: number;
-  onDelete: (index: number) => void;
-  onUpdate: (
-    index: number,
-    field: keyof Pick<
-      WorkShiftTypes["FormShiftState"],
-      "startTime" | "endTime" | "isWorkDay"
-    >,
-    value: DateObject | boolean
-  ) => void;
-}
-
- const ShiftItem = ({
+const ShiftItem = ({
   shift,
   index,
   onDelete,
   onUpdate,
-}: ShiftItemProps) => (
+}: WorkShiftTypes["ShiftItemProps"]) => (
   <Box
     sx={{
       display: "flex",
@@ -96,12 +82,16 @@ interface ShiftItemProps {
         <TimePickerField
           label="شروع:"
           value={shift.startTime}
-          onChange={(time) => onUpdate(index, "startTime", time)}
+          onChange={(time) =>
+            onUpdate(index, "startTime", time || new DateObject())
+          }
         />
         <TimePickerField
           label="پایان:"
           value={shift.endTime}
-          onChange={(time) => onUpdate(index, "endTime", time)}
+          onChange={(time) =>
+            onUpdate(index, "endTime", time || new DateObject())
+          }
         />
         <WorkDaySwitch
           isWorkDay={shift.isWorkDay}
@@ -118,8 +108,8 @@ const TimePickerField = ({
   onChange,
 }: {
   label: string;
-  value: DateObject;
-  onChange: (time: DateObject) => void;
+  value: DateObject | null;
+  onChange: (time: DateObject | null) => void;
 }) => (
   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
     <Typography variant="subtitle2" sx={{ color: "#475569" }}>

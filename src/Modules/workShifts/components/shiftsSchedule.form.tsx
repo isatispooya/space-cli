@@ -4,20 +4,14 @@ import DatePicker, { DateObject } from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-
-interface ShiftScheduleProps {
-  shiftName: string;
-  dates: DateObject[];
-  onShiftNameChange: (value: string) => void;
-  onDateChange: (dates: DateObject[]) => void;
-}
+import { WorkShiftTypes } from "../types";
 
 const ShiftSchedule = ({
   shiftName,
   dates,
   onShiftNameChange,
   onDateChange,
-}: ShiftScheduleProps) => (
+}: WorkShiftTypes["ShiftScheduleProps"]) => (
   <Grid container spacing={3} direction="column">
     <Grid item xs={12}>
       <FormInput

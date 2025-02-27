@@ -4,14 +4,14 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { Typography, Paper, Box } from "@mui/material";
 import useShifts from "../hooks/useShifts";
-import { DateType } from "react-date-object";
+
 import { WorkShiftTypes } from "../types";
 import { LoaderLg, Toast } from "@/components";
 import { ShiftSchedule, ShiftList } from "../components";
 import { convertToShiftDay } from "../utils";
 import { BiCheckCircle } from "react-icons/bi";
 import { ErrorResponse } from "@/types";
-import { ErrorIcon } from "react-hot-toast";
+import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { AxiosError } from "axios";
 import { useShiftsFormStore } from "../store";
 
@@ -74,7 +74,7 @@ const ShiftsForm = () => {
     }));
 
     setShifts(updatedShifts);
-  }, [dates, shiftName]);
+  }, [dates, shiftName, setShifts]);
 
   const handleDateChange = (dateObjects: DateObject[]) => {
     setDates(dateObjects);
@@ -86,19 +86,12 @@ const ShiftsForm = () => {
       WorkShiftTypes["FormShiftState"],
       "startTime" | "endTime" | "isWorkDay"
     >,
-    value: DateObject | boolean
+    value: DateObject | null | boolean
   ) => {
     const updatedShifts = [...shifts];
     updatedShifts[index] = {
       ...updatedShifts[index],
-      [field]:
-        field === "isWorkDay"
-          ? value
-          : new DateObject({
-              date: value as unknown as DateType,
-              calendar: persian,
-              locale: persian_fa,
-            }),
+      [field]: value,
     };
     setShifts(updatedShifts);
   };
@@ -145,7 +138,7 @@ const ShiftsForm = () => {
           setShifts([]);
           Toast(
             "شیفت‌ها با موفقیت ثبت شدند",
-            <BiCheckCircle />,
+            <CheckmarkIcon />,
             "bg-green-500"
           );
         },

@@ -170,6 +170,33 @@ export interface PaginatedShiftResponse<T> {
   hasMore: boolean;
 }
 
+export interface ShiftScheduleProps {
+  shiftName: string;
+  dates: DateObject[];
+  onShiftNameChange: (value: string) => void;
+  onDateChange: (dates: DateObject[]) => void;
+}
+
+export interface ShiftListProps {
+  shifts: WorkShiftTypes["FormShiftState"][];
+  isSubmitting: boolean;
+  searchQuery: string;
+  visibleItems: number;
+  shiftName: string;
+  onSearchChange: (query: string) => void;
+  onLoadMore: () => void;
+  onDelete: (index: number) => void;
+  onUpdate: (
+    index: number,
+    field: keyof Pick<
+      WorkShiftTypes["FormShiftState"],
+      "startTime" | "endTime" | "isWorkDay"
+    >,
+    value: DateObject | null | boolean
+  ) => void;
+  onSubmit: () => void;
+}
+
 // Request types for API calls
 export interface CreateShiftRequest {
   companyId: number;
@@ -219,6 +246,20 @@ export interface ShiftError {
   field?: string;
 }
 
+export interface ShiftItemProps {
+  shift: WorkShiftTypes["FormShiftState"];
+  index: number;
+  onDelete: (index: number) => void;
+  onUpdate: (
+    index: number,
+    field: keyof Pick<
+      WorkShiftTypes["FormShiftState"],
+      "startTime" | "endTime" | "isWorkDay"
+    >,
+    value: DateObject | null | boolean
+  ) => void;
+}
+
 export type ShiftValidationErrors = Record<string, ShiftError>;
 
 export type WorkShiftTypes = {
@@ -244,6 +285,9 @@ export type WorkShiftTypes = {
   ShiftError: ShiftError;
   ShiftValidationErrors: ShiftValidationErrors;
   FormShiftAssignment: FormShiftAssignment;
+  ShiftListProps: ShiftListProps;
+  ShiftItemProps: ShiftItemProps;
+  ShiftScheduleProps: ShiftScheduleProps;
 };
 
 export default WorkShiftTypes;

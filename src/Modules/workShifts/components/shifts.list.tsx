@@ -3,26 +3,6 @@ import { DynamicList } from "@/components";
 import { WorkShiftTypes } from "../types";
 import ShiftItem from "./shiftsItem.list";
 
-interface ShiftListProps {
-  shifts: WorkShiftTypes["FormShiftState"][];
-  isSubmitting: boolean;
-  searchQuery: string;
-  visibleItems: number;
-  shiftName: string;
-  onSearchChange: (query: string) => void;
-  onLoadMore: () => void;
-  onDelete: (index: number) => void;
-  onUpdate: (
-    index: number,
-    field: keyof Pick<
-      WorkShiftTypes["FormShiftState"],
-      "startTime" | "endTime" | "isWorkDay"
-    >,
-    value: any
-  ) => void;
-  onSubmit: () => void;
-}
-
 const ShiftList = ({
   shifts,
   isSubmitting,
@@ -34,7 +14,7 @@ const ShiftList = ({
   onDelete,
   onUpdate,
   onSubmit,
-}: ShiftListProps) => (
+}: WorkShiftTypes["ShiftListProps"]) => (
   <Paper
     sx={{
       mt: 4,
@@ -80,8 +60,8 @@ const ShiftList = ({
         mt: 4,
         py: 1.5,
         borderRadius: 2,
-        bgcolor: "#3b82f6",
-        "&:hover": { bgcolor: "#2563eb" },
+        bgcolor: "#29D2C7",
+        "&:hover": { bgcolor: "#29D2C7" },
         "&:disabled": { bgcolor: "#e5e7eb", color: "#9ca3af" },
       }}
     >
