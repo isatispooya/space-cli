@@ -20,8 +20,6 @@ const UserAvatar = () => {
   const { data: permissions } = useUserPermissions();
 
   const Permissions = permissions || [];
-  console.log("Permissions:", Permissions);
-
   const hasPermission =
     Array.isArray(Permissions) &&
     Permissions.some((perm) => perm.codename === "position");
@@ -183,7 +181,6 @@ const UserAvatar = () => {
         </div>
       </div>
 
-      {/* Integrate VerifyLogoutPopup */}
       <VerifyLogoutPopup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}

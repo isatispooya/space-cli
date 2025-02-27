@@ -16,8 +16,22 @@ import { AxiosError } from "axios";
 import { useShiftsFormStore } from "../store";
 
 const ShiftsForm = () => {
-  const { shiftName, dates, shifts, setShiftName, setDates, setShifts } =
-    useShiftsFormStore();
+  const {
+    shiftName,
+    dates,
+    shifts,
+    setShiftName,
+    setDates,
+    setShifts,
+    searchQuery,
+    setSearchQuery,
+    isSubmitting,
+    setIsSubmitting,
+    error,
+    setError,
+    visibleItems,
+    setVisibleItems,
+  } = useShiftsFormStore();
 
   const { mutate: createShift, isPending } = useShifts.useCreate();
 
@@ -30,38 +44,37 @@ const ShiftsForm = () => {
     const newDates = getAllDatesInRange(dates).map((date) =>
       (date as DateObject).format()
     );
-    const updatedShifts = newDates.map((date) => {
-      const existingShift = shifts.find((shift) => shift.date === date);
-      return {
-        date: date,
-        shiftName: shiftName,
-        startTime:
-          existingShift?.startTime ||
-          new DateObject({
-            calendar: persian,
-            locale: persian_fa,
-            year: new Date().getFullYear(),
-            month: new Date().getMonth() + 1,
-            day: new Date().getDate(),
-            hour: 8,
-            minute: 0,
-          }),
-        endTime:
-          existingShift?.endTime ||
-          new DateObject({
-            calendar: persian,
-            locale: persian_fa,
-            year: new Date().getFullYear(),
-            month: new Date().getMonth() + 1,
-            day: new Date().getDate(),
-            hour: 15,
-            minute: 30,
-          }),
-        isWorkDay: existingShift?.isWorkDay ?? true,
-      };
+
+    const defaultStartTime = new DateObject({
+      calendar: persian,
+      locale: persian_fa,
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1,
+      day: new Date().getDate(),
+      hour: 8,
+      minute: 0,
     });
+
+    const defaultEndTime = new DateObject({
+      calendar: persian,
+      locale: persian_fa,
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1,
+      day: new Date().getDate(),
+      hour: 15,
+      minute: 30,
+    });
+
+    const updatedShifts = newDates.map((date) => ({
+      date,
+      shiftName,
+      startTime: defaultStartTime,
+      endTime: defaultEndTime,
+      isWorkDay: true,
+    }));
+
     setShifts(updatedShifts);
-  }, [shiftName, dates, shifts]);
+  }, [dates, shiftName]);
 
   const handleDateChange = (dateObjects: DateObject[]) => {
     setDates(dateObjects);
@@ -151,7 +164,7 @@ const ShiftsForm = () => {
   };
 
   const handleLoadMore = () => {
-    setVisibleItems((prev) => prev + 10);
+    setVisibleItems(visibleItems + 10);
   };
 
   if (isPending) {

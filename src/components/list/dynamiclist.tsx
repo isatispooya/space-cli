@@ -12,7 +12,7 @@ interface DynamicListProps<T> {
   onItemClick: (item: T) => void; // تابع کلیک روی آیتم
   onLoadMore: () => void; // تابع بارگذاری بیشتر داده‌ها
   renderItem: (item: T) => React.ReactNode; // تابع رندر کردن هر آیتم
-  noResultsMessage?: string; // پیام زمانی که نتیجه‌ای یافت نشد
+  noResultsMessage?: string;
 }
 
 const DynamicList = <T extends object>({
@@ -34,19 +34,16 @@ const DynamicList = <T extends object>({
     JSON.stringify(item).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  
   const [ref, inView] = useInView({
-    threshold: 0.5, 
+    threshold: 0.5,
   });
 
-  
   useEffect(() => {
     if (inView && !isPending) {
       onLoadMore();
     }
   }, [inView, isPending, onLoadMore]);
 
- 
   if (isPending && filteredData.length === 0) {
     return (
       <div className="flex justify-center items-center h-40">بارگذاری...</div>
@@ -54,21 +51,8 @@ const DynamicList = <T extends object>({
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-      className="rounded-lg shadow-lg bg-white p-4"
-    >
-   
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.3 }}
-        className="mb-4"
-      >
+    <div className="rounded-lg shadow-lg bg-white p-4">
+      <div className="mb-4">
         <input
           type="text"
           placeholder="جستجو..."
@@ -76,29 +60,20 @@ const DynamicList = <T extends object>({
           onChange={(e) => onSearchChange(e.target.value)}
           className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
         />
-      </motion.div>
+      </div>
 
-    
-      <motion.ul
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className="space-y-2 mt-4"
-      >
+      <ul className="space-y-2 mt-4">
         {filteredData.length > 0 ? (
           <>
             {filteredData.slice(0, visibleItems).map((item, index) => (
               <motion.li
                 key={index}
                 layout
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                exit={{ opacity: 0, y: -20 }} 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors"
+                className="p-4 bg-gray-50 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
                 onClick={() => onItemClick(item)}
               >
                 {renderItem(item)}
@@ -106,30 +81,18 @@ const DynamicList = <T extends object>({
             ))}
 
             {filteredData.length > visibleItems && (
-              <motion.div
-                ref={ref}
-                className="flex justify-center items-center h-16"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: inView ? 1 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
+              <div ref={ref} className="flex justify-center items-center h-16">
                 <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
-              </motion.div>
+              </div>
             )}
           </>
         ) : (
-          <motion.div
-            className="p-4 text-center text-gray-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
+          <div className="p-4 text-center text-gray-500">
             {noResultsMessage}
-          </motion.div>
+          </div>
         )}
-      </motion.ul>
-    </motion.div>
+      </ul>
+    </div>
   );
 };
 
