@@ -15,7 +15,7 @@ const useCrowdPoints = {
     traceCode: string
   ): UseQueryResult<PlanByTraceCodeType> => {
     return useQuery({
-      queryKey: ["crowd-points-plan-by-trace-code"],
+      queryKey: ["crowd-points-plan-by-trace-code",traceCode],
       queryFn: () => CrowdPoints.getPlanByTraceCode(traceCode),
     });
   },

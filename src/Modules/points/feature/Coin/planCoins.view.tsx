@@ -20,17 +20,13 @@ const PlansView: React.FC<{
   const { mutate: postCrowdPoints } = useCrowdPoints.usePostCrowdPoints(
     plan?.plan?.trace_code
   );
-  const { data, isPending, refetch } = useCrowdPoints.useGetPlanByTraceCode(
+  const { data, isLoading, refetch } = useCrowdPoints.useGetPlanByTraceCode(
     plan?.plan?.trace_code
   );
   const [coinValues, setCoinValues] = useState<{ [key: string]: string }>({});
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleItems, setVisibleItems] = useState(10);
   const [submittingUserId, setSubmittingUserId] = useState<string | null>(null);
-
-  if (isPending) {
-    return <LoaderLg />;
-  }
 
   const filteredUsers = Array.isArray(data)
     ? data.filter(
@@ -98,6 +94,13 @@ const PlansView: React.FC<{
     XLSX.writeFile(wb, "users_data.xlsx");
   };
 
+  const handleBack = () => {
+    refetch();
+    onBack();
+  };
+  if (isLoading) {
+    return <LoaderLg />;
+  }
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <motion.div
@@ -108,7 +111,7 @@ const PlansView: React.FC<{
         transition={{ duration: 0.3 }}
       >
         <motion.button
-          onClick={onBack}
+          onClick={handleBack}
           className="flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
