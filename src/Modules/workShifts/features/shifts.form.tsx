@@ -171,7 +171,7 @@ const ShiftsForm = () => {
         justifyContent: "center",
         alignItems: "flex-start",
         p: 3,
-        bgcolor: "#f8f9fa",
+    
       }}
     >
       <Box sx={{ width: "100%", maxWidth: { xs: "100%", sm: 1000 } }}>
