@@ -1,77 +1,94 @@
 import { motion, AnimatePresence } from "framer-motion";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useTimeflow } from "../hooks";
 import { Accordian } from "../../../components";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Button } from "@mui/material";
 import dayjs from "dayjs";
-import OwnLog from "../types/ownLogs.type";
-import OtherLog from "../types/otherLogs.type";
 import { toast } from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import AbsenseConfirm from "./abbsenseConfirm";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setOwnLogs,
+  setOtherLogs,
+  setOpenOwn,
+  setOpenAbsense,
+  setOpenOther,
+  setSelectedOwnTime,
+  setSelectedOtherTime,
+  clearSelectedOwnTime,
+  clearSelectedOtherTime,
+  updateOwnLogStatus,
+  updateOtherLogStatus,
+} from "../store/verifySlice";
+import { RootState } from "../../../store/store";
 
 const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
-  const { mutate: updateUser } = useTimeflow.useUserTimeflowAccept();
+  const dispatch = useDispatch();
+  const {
+    ownLogs,
+    otherLogs,
+    isOpenOwn,
+    isOpenAbsense,
+    isOpenOther,
+    selectedOwnTimes,
+    selectedOtherTimes,
+  } = useSelector((state: RootState) => state.verify);
+
   const navigate = useNavigate();
   const { data: userLogins } = useTimeflow.useGetUsersLogin();
+  const { mutate: updateUser } = useTimeflow.useUserTimeflowAccept();
   const { mutate: updateParent } = useTimeflow.useUpdateUsersLoginByParent();
   const { mutate: updateLogoutParent } =
     useTimeflow.useUsersLogoutAcceptParent();
-  const [ownLogs, setOwnLogs] = useState<OwnLog[]>([]);
-  const [otherLogs, setOtherLogs] = useState<OtherLog[]>([]);
-  const [isOpenOwn, setIsOpenOwn] = useState(false);
-  const [isOpenOther, setIsOpenOther] = useState(false);
-  const [selectedOwnTimes, setSelectedOwnTimes] = useState<
-    Record<number, Date | null>
-  >({});
-  const [selectedOtherTimes, setSelectedOtherTimes] = useState<
-    Record<number, Date | null>
-  >({});
 
-  useEffect(() => {
-    if (userLogins) {
-      setOwnLogs(
-        userLogins.own_logs.map((log) => ({
-          ...log,
-          isOwnLog: true,
-        })) || []
-      );
-      setOtherLogs(
-        userLogins.other_logs.map((log) => ({
-          ...log,
-          isOwnLog: false,
-        })) || []
-      );
-    }
-  }, [userLogins]);
-
+ 
   const notApprovedOwnLogs = ownLogs.filter(
     (log) => log.status_self === "pending"
   );
-
   const notApprovedOtherLogs = otherLogs.filter(
     (log) => log.status_parent === "pending"
   );
 
+  // Load user login data
+  useEffect(() => {
+    if (userLogins) {
+      dispatch(
+        setOwnLogs(
+          userLogins.own_logs.map((log) => ({ ...log, isOwnLog: true })) || []
+        )
+      );
+      dispatch(
+        setOtherLogs(
+          userLogins.other_logs.map((log) => ({ ...log, isOwnLog: false })) ||
+            []
+        )
+      );
+    }
+  }, [userLogins, dispatch]);
+
+  // Close modal if no pending logs
+  useEffect(() => {
+    if (notApprovedOwnLogs.length === 0 && notApprovedOtherLogs.length === 0) {
+      onClose();
+    }
+  }, [notApprovedOwnLogs, notApprovedOtherLogs, onClose]);
+
+  // Handle time changes
   const handleOwnTimeChange = (logId: number, newTime: Date | null) => {
-    setSelectedOwnTimes((prev) => ({
-      ...prev,
-      [logId]: newTime,
-    }));
+    dispatch(setSelectedOwnTime({ logId, time: newTime }));
   };
 
   const handleOtherTimeChange = (logId: number, newTime: Date | null) => {
-    setSelectedOtherTimes((prev) => ({
-      ...prev,
-      [logId]: newTime,
-    }));
+    dispatch(setSelectedOtherTime({ logId, time: newTime }));
   };
 
+  // Update own time
   const handleUpdateOwnTime = (logId: number) => {
-    // اگر کاربر زمان را تغییر نداده باشد، از زمان پیش‌فرض log.time_user استفاده می‌کنیم
     const selectedTime =
       selectedOwnTimes[logId] !== undefined
         ? selectedOwnTimes[logId]
@@ -83,24 +100,13 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
     }
 
     const formattedTime = new Date(selectedTime).toISOString();
-    const patchData = { time_user: formattedTime };
 
     updateUser(
-      { id: logId, data: patchData },
+      { id: logId, data: { time_user: formattedTime } },
       {
         onSuccess: () => {
-          setOwnLogs((prevLogs) =>
-            prevLogs.map((log) =>
-              log.id === logId
-                ? { ...log, time_user: formattedTime, status_self: "approved" }
-                : log
-            )
-          );
-          setSelectedOwnTimes((prev) => {
-            const newTimes = { ...prev };
-            delete newTimes[logId];
-            return newTimes;
-          });
+          dispatch(updateOwnLogStatus({ logId, time: formattedTime }));
+          dispatch(clearSelectedOwnTime(logId));
           toast.success("زمان با موفقیت به‌روزرسانی شد.");
         },
         onError: () => {
@@ -110,8 +116,8 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
     );
   };
 
+  // Update other time
   const handleUpdateOtherTime = (logId: number, logType: string) => {
-    // اگر کاربر زمان را تغییر نداده باشد، از زمان پیش‌فرض log.time_parent استفاده می‌کنیم
     const selectedTime =
       selectedOtherTimes[logId] !== undefined
         ? selectedOtherTimes[logId]
@@ -123,30 +129,15 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
     }
 
     const formattedTime = new Date(selectedTime).toISOString();
-    const patchData = { time_parent: formattedTime };
     const updateMutation =
       logType === "logout" ? updateLogoutParent : updateParent;
 
     updateMutation(
-      { id: logId, data: patchData },
+      { id: logId, data: { time_parent: formattedTime } },
       {
         onSuccess: () => {
-          setOtherLogs((prevLogs) =>
-            prevLogs.map((log) =>
-              log.id === logId
-                ? {
-                    ...log,
-                    time_parent: formattedTime,
-                    status_parent: "approved",
-                  }
-                : log
-            )
-          );
-          setSelectedOtherTimes((prev) => {
-            const newTimes = { ...prev };
-            delete newTimes[logId];
-            return newTimes;
-          });
+          dispatch(updateOtherLogStatus({ logId, time: formattedTime }));
+          dispatch(clearSelectedOtherTime(logId));
           toast.success("زمان زیرمجموعه با موفقیت به‌روزرسانی شد.");
         },
         onError: () => {
@@ -156,19 +147,14 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
     );
   };
 
-  useEffect(() => {
-    if (notApprovedOwnLogs.length === 0 && notApprovedOtherLogs.length === 0) {
-      onClose();
-    }
-  }, [notApprovedOwnLogs, notApprovedOtherLogs, onClose]);
-
-  if (notApprovedOwnLogs.length === 0 && notApprovedOtherLogs.length === 0) {
-    return null;
-  }
-
   const handleClose = () => {
     navigate("/login");
   };
+
+  // Return null if no logs need approval
+  if (notApprovedOwnLogs.length === 0 && notApprovedOtherLogs.length === 0) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
@@ -195,12 +181,23 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
             <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               تأیید ورود و خروج
             </h1>
+
             <div className="flex flex-col gap-4">
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => dispatch(setOpenAbsense(true))}
+                className="mb-4"
+              >
+                مدیریت غیبت‌ها
+              </Button>
+
+              {/* Own logs section */}
               {notApprovedOwnLogs.length > 0 && (
                 <Accordian
                   title="ورود"
                   isOpen={isOpenOwn}
-                  onToggle={() => setIsOpenOwn(!isOpenOwn)}
+                  onToggle={() => dispatch(setOpenOwn(!isOpenOwn))}
                 >
                   <div className="space-y-4">
                     <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
@@ -270,11 +267,12 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
                 </Accordian>
               )}
 
+              {/* Other logs section */}
               {notApprovedOtherLogs.length > 0 && (
                 <Accordian
                   title="ورود و خروج زیرمجموعه‌ها"
                   isOpen={isOpenOther}
-                  onToggle={() => setIsOpenOther(!isOpenOther)}
+                  onToggle={() => dispatch(setOpenOther(!isOpenOther))}
                 >
                   <div className="space-y-4">
                     <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
@@ -297,21 +295,12 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
                                 کاربر: {log.user.username} (
                                 {log.user.first_name} {log.user.last_name})
                               </p>
-                              {log.isOwnLog ? (
-                                <p className="text-gray-600 text-sm">
-                                  زمان کاربر:{" "}
-                                  {moment(log.time_user).format(
-                                    "jYYYY/jMM/jDD - HH:mm"
-                                  )}
-                                </p>
-                              ) : (
-                                <p className="text-gray-600 text-sm">
-                                  زمان والد:{" "}
-                                  {moment(log.time_parent).format(
-                                    "jYYYY/jMM/jDD - HH:mm"
-                                  )}
-                                </p>
-                              )}
+                              <p className="text-gray-600 text-sm">
+                                زمان:{" "}
+                                {moment(
+                                  log.isOwnLog ? log.time_user : log.time_parent
+                                ).format("jYYYY/jMM/jDD - HH:mm")}
+                              </p>
                               <p className="text-gray-600 text-sm">
                                 نوع: {log.type === "login" ? "ورود" : "خروج"}
                               </p>
@@ -353,6 +342,13 @@ const TimeflowVerify = ({ onClose }: { onClose: () => void }) => {
                     </AnimatePresence>
                   </div>
                 </Accordian>
+              )}
+
+              {/* Absense management modal */}
+              {isOpenAbsense && (
+                <AbsenseConfirm
+                  onClose={() => dispatch(setOpenAbsense(false))}
+                />
               )}
             </div>
           </div>

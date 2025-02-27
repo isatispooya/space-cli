@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import VerifyLogout from "../../../Modules/timeflow/components/verifyLogout.form"; // Adjust the import path as needed
+// import VerifyLogout from "../../../Modules/timeflow/components/verifyLogout.form"; // Adjust the import path as needed
 
 const VerifyLogoutPopup = ({
   isOpen,
@@ -38,7 +38,7 @@ const VerifyLogoutPopup = ({
                 ✕
               </button>
             </div>
-            <VerifyLogout />
+            {/* <VerifyLogout /> */}
           </motion.div>
         </motion.div>
       )}

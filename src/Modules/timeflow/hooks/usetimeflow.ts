@@ -39,7 +39,7 @@ const useTimeflow = {
     });
   },
   useUsersLogoutAcceptParent: (): UseMutationResult<
-  SeniorVerifyType,
+    SeniorVerifyType,
     AxiosError,
     { data: SeniorVerifyType; id: number }
   > => {
@@ -130,6 +130,12 @@ const useTimeflow = {
     return useQuery({
       queryKey: ["timeflow"],
       queryFn: () => timeflowServices.getTimeflow(),
+    });
+  },
+  usePostAbsence: (): UseMutationResult<any, AxiosError, { data: any }> => {
+    return useMutation({
+      mutationKey: ["post-absence"],
+      mutationFn: (data: any) => timeflowServices.postAbsence(data),
     });
   },
 };

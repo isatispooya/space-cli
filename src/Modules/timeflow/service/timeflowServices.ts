@@ -26,6 +26,11 @@ const timeflowServices = {
     const response = await api.post("/timeflow/user-logout-log/", data);
     return response.data;
   },
+  postAbsence: async (data: any) => {
+    const response = await api.post("/timeflow/user-leave-log/", data);
+    return response.data;
+  },
+  
   UsersLogoutAcceptParent: async (data: SeniorVerifyType, id: number) => {
     const response = await api.patch(
       `/timeflow/user-logout-log-senior/${id}/`,

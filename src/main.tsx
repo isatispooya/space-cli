@@ -18,6 +18,8 @@ import { startClarity } from "./utils";
 import "tabulator-tables/dist/css/tabulator_bulma.min.css";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 const queryClient = new QueryClient();
@@ -49,17 +51,19 @@ loadWidget();
 
 root.render(
   <React.StrictMode>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <CacheProvider value={rtlCache}>
-          <ThemeProvider theme={theme}>
-            <Toaster />
-            <App />
-          </ThemeProvider>
-        </CacheProvider>
-      </BrowserRouter>
-      </QueryClientProvider>
-    </LocalizationProvider>
+    <Provider store={store}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <CacheProvider value={rtlCache}>
+              <ThemeProvider theme={theme}>
+                <Toaster />
+                <App />
+              </ThemeProvider>
+            </CacheProvider>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </LocalizationProvider>
+    </Provider>
   </React.StrictMode>
 );
