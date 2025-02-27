@@ -4,8 +4,8 @@ import { formatNumber } from "../../../../utils";
 import { PlansType } from "../../types";
 import { useCrowdPointsStore } from "../../store";
 import { LoaderLg } from "../../../../components";
-import Accordion from "../../../../components/common/accordian/accordian"; 
-import PlansView from "../Coin/planCoins.view"; 
+import Accordion from "../../../../components/common/accordian/accordian";
+import PlansView from "../Coin/planCoins.view";
 
 const CrowdPoints = () => {
   const {
@@ -19,12 +19,16 @@ const CrowdPoints = () => {
     setSearchQuery,
     setVisibleItems,
   } = useCrowdPointsStore();
-  const { data, isPending } = useCrowdPoints.useGetPlans();
+  const { data, isPending, isLoading } = useCrowdPoints.useGetPlans();
 
   const filteredPlans = Array.isArray(data)
-    ? data.filter((item: PlansType) =>
-        item.plan.persian_name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+    ? [...data]
+        .reverse()
+        .filter((item: PlansType) =>
+          item.plan.persian_name
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        )
     : data
     ? [data].filter((item: PlansType) =>
         item.plan.persian_name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -45,7 +49,7 @@ const CrowdPoints = () => {
     setIsOpen(false);
   };
 
-  if (isPending) {
+  if (isPending || isLoading) {
     return <LoaderLg />;
   }
 

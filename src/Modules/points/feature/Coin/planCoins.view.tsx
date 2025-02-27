@@ -26,14 +26,10 @@ const PlansView: React.FC<{
   const [coinValues, setCoinValues] = useState<{ [key: string]: string }>({});
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleItems, setVisibleItems] = useState(10);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submittingUserId, setSubmittingUserId] = useState<string | null>(null);
 
   if (isPending) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <LoaderLg />
-      </div>
-    );
+    return <LoaderLg />;
   }
 
   const filteredUsers = Array.isArray(data)
@@ -60,7 +56,7 @@ const PlansView: React.FC<{
   };
 
   const handleConfirm = (item: PlanByTraceCodeType) => {
-    setIsSubmitting(true);
+    setSubmittingUserId(String(item.user?.id || "0"));
     const defaultValue = Math.floor(item?.value / 1000) || 0;
     const payload = {
       user: String(item.user?.id || "N/A"),
@@ -74,12 +70,12 @@ const PlansView: React.FC<{
       onSuccess: async () => {
         toast.success("با موفقیت ثبت شد");
         await refetch();
-        setIsSubmitting(false);
+        setSubmittingUserId(null);
       },
       onError: (error: AxiosError<unknown>) => {
         const errorMessage = (error.response?.data as ErrorResponse)?.error;
         Toast(errorMessage || "خطایی رخ داده است", <ErrorIcon />, "bg-red-500");
-        setIsSubmitting(false);
+        setSubmittingUserId(null);
       },
     });
   };
@@ -205,12 +201,14 @@ const PlansView: React.FC<{
                   />
                   <motion.button
                     onClick={() => handleConfirm(item)}
-                    disabled={isSubmitting}
+                    disabled={submittingUserId === item.user?.id}
                     className="absolute bottom-4 left-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    {isSubmitting ? "در حال ثبت..." : "ثبت"}
+                    {submittingUserId === item.user?.id
+                      ? "در حال ثبت..."
+                      : "ثبت"}
                   </motion.button>
                 </div>
               </motion.div>
