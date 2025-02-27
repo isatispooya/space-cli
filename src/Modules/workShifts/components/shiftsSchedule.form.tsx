@@ -12,8 +12,8 @@ const ShiftSchedule = ({
   onShiftNameChange,
   onDateChange,
 }: WorkShiftTypes["ShiftScheduleProps"]) => (
-  <Grid container spacing={3} direction="column">
-    <Grid item xs={12}>
+  <Grid container spacing={3} direction="row" justifyContent="space-between">
+    <Grid item xs={5}>
       <FormInput
         value={shiftName}
         onChange={(e) => onShiftNameChange(e.target.value)}
@@ -21,7 +21,7 @@ const ShiftSchedule = ({
         placeholder="نام شیفت را وارد کنید"
       />
     </Grid>
-    <Grid item xs={12}>
+    <Grid item xs={6}>
       <Typography
         variant="subtitle1"
         sx={{ mb: 1, fontWeight: 500, color: "#475569" }}

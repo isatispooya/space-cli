@@ -2,14 +2,13 @@ import { useEffect } from "react";
 import { DateObject, getAllDatesInRange } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import { Typography, Paper, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import useShifts from "../hooks/useShifts";
 
 import { WorkShiftTypes } from "../types";
 import { LoaderLg, Toast } from "@/components";
 import { ShiftSchedule, ShiftList } from "../components";
 import { convertToShiftDay } from "../utils";
-import { BiCheckCircle } from "react-icons/bi";
 import { ErrorResponse } from "@/types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { AxiosError } from "axios";
@@ -168,27 +167,31 @@ const ShiftsForm = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        p: { xs: 2, sm: 4 },
         display: "flex",
         justifyContent: "center",
+        alignItems: "flex-start",
+        p: 3,
+        bgcolor: "#f8f9fa",
       }}
     >
       <Box sx={{ width: "100%", maxWidth: { xs: "100%", sm: 1000 } }}>
-        <Paper
+        <Box
           sx={{
-            p: { xs: 2, sm: 4 },
-            borderRadius: 3,
-            bgcolor: "#fff",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+            width: "100%",
+            borderRadius: 4,
+            p: 4,
+            mt: 4,
+            bgcolor: "white",
+            boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
           }}
         >
           <Typography
             variant="h5"
             sx={{
+              color: "#29D2C7",
               mb: 4,
-              fontWeight: 700,
-              color: "#1e293b",
-              textAlign: "center",
+              textAlign: "left",
+              fontWeight: 500,
             }}
           >
             برنامه‌ریزی شیفت‌ها
@@ -200,13 +203,13 @@ const ShiftsForm = () => {
             onShiftNameChange={setShiftName}
             onDateChange={handleDateChange}
           />
+        </Box>
 
-          {error && (
-            <Typography color="error" sx={{ mt: 2, textAlign: "center" }}>
-              {error}
-            </Typography>
-          )}
-        </Paper>
+        {error && (
+          <Typography color="error" sx={{ mt: 2, textAlign: "center" }}>
+            {error}
+          </Typography>
+        )}
 
         {shifts.length > 0 && (
           <ShiftList

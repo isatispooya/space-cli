@@ -1,3 +1,4 @@
+import { SxProps, Theme } from "@mui/material";
 import { DateObject } from "react-multi-date-picker";
 
 // Basic shift type
@@ -175,6 +176,7 @@ export interface ShiftScheduleProps {
   dates: DateObject[];
   onShiftNameChange: (value: string) => void;
   onDateChange: (dates: DateObject[]) => void;
+  sx?: SxProps<Theme>;
 }
 
 export interface ShiftListProps {
