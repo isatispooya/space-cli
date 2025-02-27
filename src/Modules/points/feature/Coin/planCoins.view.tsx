@@ -20,12 +20,21 @@ const PlansView: React.FC<{
   const { mutate: postCrowdPoints } = useCrowdPoints.usePostCrowdPoints(
     plan?.plan?.trace_code
   );
-  const { data, isPending } = useCrowdPoints.useGetPlanByTraceCode(
+  const { data, isPending, refetch } = useCrowdPoints.useGetPlanByTraceCode(
     plan?.plan?.trace_code
   );
   const [coinValues, setCoinValues] = useState<{ [key: string]: string }>({});
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleItems, setVisibleItems] = useState(10);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <LoaderLg />
+      </div>
+    );
+  }
 
   const filteredUsers = Array.isArray(data)
     ? data.filter(
@@ -51,6 +60,7 @@ const PlansView: React.FC<{
   };
 
   const handleConfirm = (item: PlanByTraceCodeType) => {
+    setIsSubmitting(true);
     const defaultValue = Math.floor(item?.value / 1000) || 0;
     const payload = {
       user: String(item.user?.id || "N/A"),
@@ -61,12 +71,15 @@ const PlansView: React.FC<{
     };
 
     postCrowdPoints(payload, {
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.success("با موفقیت ثبت شد");
+        await refetch();
+        setIsSubmitting(false);
       },
       onError: (error: AxiosError<unknown>) => {
         const errorMessage = (error.response?.data as ErrorResponse)?.error;
         Toast(errorMessage || "خطایی رخ داده است", <ErrorIcon />, "bg-red-500");
+        setIsSubmitting(false);
       },
     });
   };
@@ -74,10 +87,6 @@ const PlansView: React.FC<{
   const handleShowMore = () => {
     setVisibleItems((prev) => prev + 5);
   };
-
-  if (isPending) {
-    return <LoaderLg />;
-  }
 
   const handleDownloadExcel = () => {
     const excelData = filteredUsers.map((item) => ({
@@ -196,11 +205,12 @@ const PlansView: React.FC<{
                   />
                   <motion.button
                     onClick={() => handleConfirm(item)}
-                    className="absolute bottom-4 left-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                    disabled={isSubmitting}
+                    className="absolute bottom-4 left-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    ثبت
+                    {isSubmitting ? "در حال ثبت..." : "ثبت"}
                   </motion.button>
                 </div>
               </motion.div>
