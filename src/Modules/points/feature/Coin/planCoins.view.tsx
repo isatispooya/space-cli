@@ -27,13 +27,14 @@ const PlansView: React.FC<{
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleItems, setVisibleItems] = useState(10);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRefetching, setIsRefetching] = useState(false);
 
-  if (isPending) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <LoaderLg />
-      </div>
-    );
+  if (isPending || isRefetching) {
+    return <LoaderLg />;
+  }
+
+  if (plan === undefined) {
+    return <NoContent label="طرحی یافت نشد." />;
   }
 
   const filteredUsers = Array.isArray(data)
@@ -73,7 +74,9 @@ const PlansView: React.FC<{
     postCrowdPoints(payload, {
       onSuccess: async () => {
         toast.success("با موفقیت ثبت شد");
+        setIsRefetching(true);
         await refetch();
+        setIsRefetching(false);
         setIsSubmitting(false);
       },
       onError: (error: AxiosError<unknown>) => {
