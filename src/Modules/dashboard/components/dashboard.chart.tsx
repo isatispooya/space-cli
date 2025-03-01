@@ -153,7 +153,7 @@ const DashboardChart = () => {
   };
 
   return (
-    <div className="max-w-3xl h-[520px] lg:h-[520px] md:h-[500px] xs:h-[600px] bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl relative">
+    <div className="max-w-3xl h-[530px] lg:h-[530px] md:h-[500px] xs:h-[600px] bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl relative">
       {/* SVG Wave Top */}
       <svg
         className="absolute top-0 left-0 w-full h-16 md:h-24 rounded-lg"

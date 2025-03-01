@@ -118,7 +118,7 @@ const DashboardMarketingStat = () => {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     className:
-      "relative bg-white rounded-xl shadow-lg p-4 sm:p-6 min-h-[350px] sm:min-h-[450px] w-full max-w-8xl px-10` mx-auto transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
+      "relative bg-white rounded-xl shadow-lg p-4 sm:p-6 min-h-[330px] sm:min-h-[430px] w-full max-w-8xl px-10` mx-auto transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
     style: { zIndex: 2 },
   });
 
