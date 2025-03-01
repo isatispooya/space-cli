@@ -19,9 +19,19 @@ const SideBar = () => {
   //   localStorage.setItem("sidebarTourCompleted", "true");
   // }, []);
 
-  const filteredMenuItems = menuItems.filter(
-    (item) => item.title?.toLowerCase().includes(search.toLowerCase()) ?? false
-  );
+  const filteredMenuItems = menuItems.filter((item) => {
+    // بررسی عنوان اصلی منو
+    const titleMatch =
+      item.title?.toLowerCase().includes(search.toLowerCase()) ?? false;
+
+    // بررسی زیرمجموعه‌ها
+    const hasMatchingSubmenu =
+      item.submenu?.some((subItem) =>
+        subItem.title?.toLowerCase().includes(search.toLowerCase())
+      ) ?? false;
+
+    return titleMatch || hasMatchingSubmenu;
+  });
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
