@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { timeflowServices } from "../service";
 import {
+  AbsensePostType,
   LeaveParentPostType,
   LeavePostType,
   LeaveType,
@@ -132,10 +133,14 @@ const useTimeflow = {
       queryFn: () => timeflowServices.getTimeflow(),
     });
   },
-  usePostAbsence: (): UseMutationResult<any, AxiosError, { data: any }> => {
+  usePostAbsence: (): UseMutationResult<
+    AbsensePostType,
+    AxiosError,
+    AbsensePostType
+  > => {
     return useMutation({
       mutationKey: ["post-absence"],
-      mutationFn: (data: any) => timeflowServices.postAbsence(data),
+      mutationFn: (data: AbsensePostType) => timeflowServices.postAbsence(data),
     });
   },
 };

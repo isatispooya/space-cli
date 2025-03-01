@@ -8,8 +8,8 @@ import { useTimeflow } from "../hooks";
 import { setOpenOwn, setSelectedOwnTime } from "../store/verifySlice";
 import { RootState } from "../../../store/store";
 import OwnLog from "../types/ownLogs.type";
-import { formatTimeForDisplay, getTimeValue } from "../utils/time.utils";
-import { updateOwnLogTime } from "../utils/api.utils";
+import { formatTimeForDisplay, getTimeValue } from "../utils";
+import { updateOwnLogTime } from "../utils";
 
 interface OwnLogsSectionProps {
   logs: OwnLog[];

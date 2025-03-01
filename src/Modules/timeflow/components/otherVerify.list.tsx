@@ -8,8 +8,11 @@ import { useTimeflow } from "../hooks";
 import { setOpenOther, setSelectedOtherTime } from "../store/verifySlice";
 import { RootState } from "../../../store/store";
 import OtherLog from "../types/otherLogs.type";
-import { formatTimeForDisplay, getTimeValue } from "../utils/time.utils";
-import { updateOtherLogTime } from "../utils/api.utils";
+import {
+  updateOtherLogTime,
+  formatTimeForDisplay,
+  getTimeValue,
+} from "../utils";
 
 interface OtherLogsSectionProps {
   logs: OtherLog[];

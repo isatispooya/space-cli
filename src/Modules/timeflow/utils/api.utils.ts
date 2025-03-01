@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { toast } from "react-hot-toast";
 import { Dispatch } from "redux";
 import { 
@@ -6,7 +7,7 @@ import {
   clearSelectedOwnTime,
   clearSelectedOtherTime
 } from "../store/verifySlice";
-import { formatTimeForAPI } from "./timeUtils";
+import { formatTimeForAPI } from "./time.utils";
 
 /**
  * Updates own log time through API

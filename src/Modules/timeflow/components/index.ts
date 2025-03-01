@@ -8,5 +8,5 @@ export { default as ParentLeaveForm } from "./leaveParent.form";
 export { default as UserLeaveView } from "./leaveUser.view";
 export { default as VerifyTable } from "./verify.table";
 export { default as TimeflowTable } from "./timeflow.table";
-
-
+export { default as OwnVerify } from "./ownVeify.list";
+export { default as OtherVerify } from "./otherVerify.list";
