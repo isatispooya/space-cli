@@ -46,25 +46,41 @@ const TimeflowVerify = ({ onClose }: TimeflowVerifyProps) => {
   }, [userLogins, dispatch]);
 
   useEffect(() => {
-    if (
-      !isLoading &&
-      notApprovedOwnLogs.length === 0 &&
-      notApprovedOtherLogs.length === 0
-    ) {
-      onClose();
+    if (!isLoading) {
+      const hasOwnLogs =
+        notApprovedOwnLogs.filter((log) => log.type !== "logout").length > 0;
+      const hasOtherLogs = notApprovedOtherLogs.length > 0;
+      const hasAbsenceLogs =
+        userLogins?.own_absence && userLogins.own_absence.length > 0;
+
+      if (!hasOwnLogs && !hasOtherLogs && !hasAbsenceLogs) {
+        onClose();
+      }
     }
-  }, [notApprovedOwnLogs, notApprovedOtherLogs, onClose, isLoading]);
+  }, [
+    notApprovedOwnLogs,
+    notApprovedOtherLogs,
+    userLogins,
+    onClose,
+    isLoading,
+  ]);
 
   const handleClose = () => {
+    onClose();
     navigate("/login");
   };
 
-  if (
-    !isLoading &&
-    notApprovedOwnLogs.length === 0 &&
-    notApprovedOtherLogs.length === 0
-  ) {
-    return null;
+  // Check if there's any data to display
+  if (!isLoading) {
+    const hasOwnLogs =
+      notApprovedOwnLogs.filter((log) => log.type !== "logout").length > 0;
+    const hasOtherLogs = notApprovedOtherLogs.length > 0;
+    const hasAbsenceLogs =
+      userLogins?.own_absence && userLogins.own_absence.length > 0;
+
+    if (!hasOwnLogs && !hasOtherLogs && !hasAbsenceLogs) {
+      return null;
+    }
   }
 
   return (
@@ -109,7 +125,11 @@ const TimeflowVerify = ({ onClose }: TimeflowVerifyProps) => {
                   <OtherVerify logs={notApprovedOtherLogs} />
                 )}
 
-                <OwnAbsense logs={userLogins?.own_absence || []} />
+                {/* Only render OwnAbsense if there's data */}
+                {userLogins?.own_absence &&
+                  userLogins.own_absence.length > 0 && (
+                    <OwnAbsense logs={userLogins.own_absence} />
+                  )}
               </div>
             )}
           </div>

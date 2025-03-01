@@ -22,6 +22,9 @@ const OwnVerify = ({ logs }: OwnLogsSectionProps) => {
   );
   const { mutate: updateUser } = useTimeflow.useUserTimeflowAccept();
 
+  // Filter out logs with type "logout"
+  const filteredLogs = logs.filter((log) => log.type !== "logout");
+
   // Handle time changes
   const handleOwnTimeChange = (logId: number, newTime: Date | null) => {
     dispatch(setSelectedOwnTime({ logId, time: newTime }));
@@ -38,6 +41,11 @@ const OwnVerify = ({ logs }: OwnLogsSectionProps) => {
     updateOwnLogTime(logId, selectedTime, updateUser, dispatch);
   };
 
+  // If there are no logs after filtering out "logout" types, don't render anything
+  if (filteredLogs.length === 0) {
+    return null;
+  }
+
   return (
     <Accordian
       title="ورود"
@@ -50,7 +58,7 @@ const OwnVerify = ({ logs }: OwnLogsSectionProps) => {
           موارد تأیید نشده
         </h2>
         <AnimatePresence>
-          {logs.map((log) => (
+          {filteredLogs.map((log) => (
             <motion.div
               key={log.id}
               initial={{ opacity: 0, y: 20 }}

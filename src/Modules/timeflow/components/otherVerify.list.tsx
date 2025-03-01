@@ -27,6 +27,11 @@ const OtherVerify = ({ logs }: OtherLogsSectionProps) => {
   const { mutate: updateLogoutParent } =
     useTimeflow.useUsersLogoutAcceptParent();
 
+  // If there are no logs, don't render anything
+  if (logs.length === 0) {
+    return null;
+  }
+
   // Handle time changes
   const handleOtherTimeChange = (logId: number, newTime: Date | null) => {
     dispatch(setSelectedOtherTime({ logId, time: newTime }));
