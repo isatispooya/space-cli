@@ -118,7 +118,7 @@ const DashboardMarketingStat = () => {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     className:
-      "relative bg-white rounded-xl shadow-lg p-4 sm:p-6 min-h-[400px] sm:min-h-[480px] w-full max-w-8xl px-10` mx-auto transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
+      "relative bg-white rounded-xl shadow-lg p-4 sm:p-6 min-h-[350px] sm:min-h-[450px] w-full max-w-8xl px-10` mx-auto transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
     style: { zIndex: 2 },
   });
 
@@ -161,7 +161,7 @@ const DashboardMarketingStat = () => {
             </button>
           )}
         </div>
-        <div className="flex-grow flex flex-col items-center justify-center mt-6 sm:mt-10">
+        <div className="flex-grow flex flex-col items-center justify-center mt-8 sm:mt-12">
           <motion.p
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
@@ -199,7 +199,7 @@ const DashboardMarketingStat = () => {
             </span>
           </motion.p>
         </div>
-        <div className="mt-4 sm:mt-6 flex-grow mb-[-20px]">
+        <div className="mt-6 sm:mt-8 flex-grow mb-[-20px]">
           <div className="flex items-center justify-between sm:mb-3">
             <h4 className="text-gray-600 font-iranSans text-xs sm:text-sm">
               لیست کاربران دعوت شده
@@ -211,7 +211,7 @@ const DashboardMarketingStat = () => {
               مشاهده بیشتر
             </button>
           </div>
-          <div className="flex flex-col gap-1 overflow-hidden h-[130px] sm:h-[150px]">
+          <div className="flex flex-col gap-2 overflow-hidden h-[120px] sm:h-[150px]">
             {visibleIndices.map((index) => {
               const userDetail = allNames[index]?.invited_user_detail;
               return (
