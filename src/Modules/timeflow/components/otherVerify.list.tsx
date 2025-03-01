@@ -27,11 +27,6 @@ const OtherVerify = ({ logs }: OtherLogsSectionProps) => {
   const { mutate: updateLogoutParent } =
     useTimeflow.useUsersLogoutAcceptParent();
 
-  // If there are no logs, don't render anything
-  if (logs.length === 0) {
-    return null;
-  }
-
   // Handle time changes
   const handleOtherTimeChange = (logId: number, newTime: Date | null) => {
     dispatch(setSelectedOtherTime({ logId, time: newTime }));
@@ -83,16 +78,16 @@ const OtherVerify = ({ logs }: OtherLogsSectionProps) => {
                     {log.user.last_name})
                   </p>
                   <p className="text-gray-600 text-sm">
-                    زمان:{" "}
-                    {formatTimeForDisplay(
-                      log.isOwnLog ? log.time_user : log.time_parent
-                    )}
+                    زمان: {formatTimeForDisplay(log.time_user)}
                   </p>
                   <p className="text-gray-600 text-sm">
                     نوع: {log.type === "login" ? "ورود" : "خروج"}
                   </p>
                   <p className="text-sm font-medium text-yellow-600">
-                    وضعیت والد: در انتظار
+                    وضعیت والد:{" "}
+                    {log.status_parent === "approved"
+                      ? "تأیید شده"
+                      : "در انتظار"}
                   </p>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -101,8 +96,8 @@ const OtherVerify = ({ logs }: OtherLogsSectionProps) => {
                     value={
                       selectedOtherTimes[log.id]
                         ? dayjs(selectedOtherTimes[log.id])
-                        : log.time_parent
-                        ? dayjs(log.time_parent)
+                        : log.time_user
+                        ? dayjs(log.time_user)
                         : null
                     }
                     onChange={(newTime) =>
@@ -117,6 +112,7 @@ const OtherVerify = ({ logs }: OtherLogsSectionProps) => {
                     variant="contained"
                     color="primary"
                     onClick={() => handleUpdateOtherTime(log.id, log.type)}
+                    disabled={log.status_parent === "approved"}
                   >
                     به‌روزرسانی
                   </Button>

@@ -37,13 +37,28 @@ const UserAvatar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      // Check if the click is within a MUI picker popup or dialog
+      const isPickerPopup =
+        (event.target as Element)?.closest(".MuiPickersPopper-root") ||
+        (event.target as Element)?.closest(".MuiDialog-root") ||
+        (event.target as Element)?.closest(".MuiPaper-root") ||
+        (event.target as Element)?.closest(".MuiPopover-root") ||
+        (event.target as Element)?.closest(".MuiModal-root");
+
+      // If clicking on a MUI component, don't close anything
+      if (isPickerPopup) {
+        return;
+      }
+
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
-        setIsPopupOpen(false);
       }
+
+      // Don't automatically close the popup here
+      // Let the popup handle its own closing
     };
 
     document.addEventListener("mousedown", handleClickOutside);

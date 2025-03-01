@@ -35,8 +35,17 @@ const useTimeflow = {
   > => {
     return useMutation({
       mutationKey: ["update-users-logout"],
-      mutationFn: ({ data }: { data: TimeflowVerifyType }) =>
-        timeflowServices.UsersLogoutAccept(data),
+      mutationFn: ({ data }: { data: TimeflowVerifyType }) => {
+        // Ensure time_user is a string
+        const formattedData = {
+          ...data,
+          time_user:
+            typeof data.time_user === "string"
+              ? data.time_user
+              : data.time_user.toISOString(),
+        };
+        return timeflowServices.UsersLogoutAccept(formattedData);
+      },
     });
   },
   useUsersLogoutAcceptParent: (): UseMutationResult<

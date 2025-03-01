@@ -1,5 +1,5 @@
 interface TimeflowVerifyType {
-  time_user: string;
+  time_user: Date | string;
 }
 
 export default TimeflowVerifyType;

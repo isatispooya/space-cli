@@ -6,13 +6,11 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Dayjs } from "dayjs";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
+import { useTimeflow } from "../hooks";
 
-interface LogListProps {
-  onAccept: (selectedTime: Dayjs) => void;
-}
-
-const LogoutList: React.FC<LogListProps> = ({ onAccept }) => {
+const LogoutList: React.FC = () => {
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(null);
+  const { mutate: logout } = useTimeflow.useUsersLogoutAccept();
 
   useEffect(() => {
     setSelectedTime(dayjs());
@@ -27,7 +25,22 @@ const LogoutList: React.FC<LogListProps> = ({ onAccept }) => {
       toast.error("لطفاً زمان معتبری انتخاب کنید.");
       return;
     }
-    onAccept(selectedTime);
+
+    logout(
+      {
+        data: {
+          time_user: selectedTime.toDate(),
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success("خروج با موفقیت ثبت شد.");
+        },
+        onError: () => {
+          toast.error("ثبت خروج با مشکل مواجه شد.");
+        },
+      }
+    );
   };
 
   return (
