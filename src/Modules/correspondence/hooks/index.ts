@@ -1,2 +1,2 @@
-export { default as useCorrespondences } from "./useCorrespondences";
+export { default as useCorrespondences } from "./useChat";
 

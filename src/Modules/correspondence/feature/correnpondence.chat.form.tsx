@@ -11,6 +11,7 @@ import {
 import { FaPaperPlane, FaPaperclip } from "react-icons/fa";
 import { FormikHelpers } from "formik";
 import { CorrespondenceTypes } from "../types";
+import useChat from "../hooks/useChat";
 
 interface Message {
   id: number;
@@ -21,12 +22,22 @@ interface Message {
 }
 
 interface CorrespondenceChatFormProps {
-  onSubmit: (values: CorrespondenceTypes, actions: FormikHelpers<CorrespondenceTypes>) => void;
+  onSubmit: (
+    values: CorrespondenceTypes,
+    actions: FormikHelpers<CorrespondenceTypes>
+  ) => void;
   loading: boolean;
   selectedUser?: { id: string; name: string; avatar?: string };
 }
 
-const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({ onSubmit, loading, selectedUser }) => {
+const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
+  onSubmit,
+  loading,
+  selectedUser,
+}) => {
+  const { data: message } = useChat.useGetChat();
+
+  console.log(message);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -76,16 +87,15 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({ onSubmi
     };
 
     setMessages([...messages, newMsg]);
-    
+
     const messageData: CorrespondenceTypes = {
       content: newMessage,
       sender: "کاربر",
     };
-    
-    onSubmit(messageData, {
-      resetForm: () => setNewMessage("")
-    } as FormikHelpers<CorrespondenceTypes>);
 
+    onSubmit(messageData, {
+      resetForm: () => setNewMessage(""),
+    } as FormikHelpers<CorrespondenceTypes>);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -96,11 +106,19 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({ onSubmi
   };
 
   return (
-    <Paper elevation={3} className="w-full h-full flex flex-col rounded-lg overflow-hidden" dir="rtl">
+    <Paper
+      elevation={3}
+      className="w-full h-full flex flex-col rounded-lg overflow-hidden"
+      dir="rtl"
+    >
       <Box className="bg-gradient-to-r from-[#29D2C7] to-[#20B2AA] text-white p-4 flex items-center justify-between shadow-sm">
         <div className="flex items-center">
-          <Avatar className="ml-3" sx={{ bgcolor: '#1a8f88' }}>{selectedUser?.name.charAt(0) || 'پ'}</Avatar>
-          <Typography variant="h6" className="font-semibold">{selectedUser?.name || 'گفتگوی پشتیبانی'}</Typography>
+          <Avatar className="ml-3" sx={{ bgcolor: "#1a8f88" }}>
+            {selectedUser?.name.charAt(0) || "پ"}
+          </Avatar>
+          <Typography variant="h6" className="font-semibold">
+            {selectedUser?.name || "گفتگوی پشتیبانی"}
+          </Typography>
         </div>
       </Box>
 
@@ -115,7 +133,7 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({ onSubmi
             }`}
           >
             {!message.isCurrentUser && (
-              <Avatar className="h-9 w-9 ml-2" sx={{ bgcolor: '#1a8f88' }}>
+              <Avatar className="h-9 w-9 ml-2" sx={{ bgcolor: "#1a8f88" }}>
                 {message.sender.charAt(0)}
               </Avatar>
             )}
@@ -126,13 +144,18 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({ onSubmi
                   : "bg-white shadow-md border border-gray-100"
               }`}
             >
-              <Typography variant="body1" className="leading-relaxed">{message.text}</Typography>
-              <Typography variant="caption" className="block text-left mt-1 opacity-75">
+              <Typography variant="body1" className="leading-relaxed">
+                {message.text}
+              </Typography>
+              <Typography
+                variant="caption"
+                className="block text-left mt-1 opacity-75"
+              >
                 {message.timestamp}
               </Typography>
             </Box>
             {message.isCurrentUser && (
-              <Avatar className="h-9 w-9 mr-2" sx={{ bgcolor: '#0088cc' }}>
+              <Avatar className="h-9 w-9 mr-2" sx={{ bgcolor: "#0088cc" }}>
                 {message.sender.charAt(0)}
               </Avatar>
             )}
@@ -162,13 +185,13 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({ onSubmi
           disabled={loading}
           className="rounded-full mx-2"
           sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '24px',
-              '&:hover fieldset': {
-                borderColor: '#29D2C7',
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "24px",
+              "&:hover fieldset": {
+                borderColor: "#29D2C7",
               },
-              '&.Mui-focused fieldset': {
-                borderColor: '#29D2C7',
+              "&.Mui-focused fieldset": {
+                borderColor: "#29D2C7",
               },
             },
           }}
@@ -188,11 +211,11 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({ onSubmi
           variant="contained"
           className="rounded-full w-12 h-12 min-w-0 flex items-center justify-center"
           sx={{
-            bgcolor: '#0088cc',
-            '&:hover': {
-              bgcolor: '#0077b3',
+            bgcolor: "#0088cc",
+            "&:hover": {
+              bgcolor: "#0077b3",
             },
-            boxShadow: '0 3px 5px rgba(0,136,204,0.3)',
+            boxShadow: "0 3px 5px rgba(0,136,204,0.3)",
           }}
           onClick={handleSendMessage}
           disabled={newMessage.trim() === "" || loading}

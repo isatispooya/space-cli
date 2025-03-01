@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import LogoutList from "../../../Modules/timeflow/components/logout.list";
 import { useEffect, useRef } from "react";
 
-
 const VerifyLogoutPopup = ({
   isOpen,
   onClose,
@@ -11,7 +10,6 @@ const VerifyLogoutPopup = ({
   onClose: () => void;
 }) => {
   const popupRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -83,7 +81,7 @@ const VerifyLogoutPopup = ({
                 ✕
               </button>
             </div>
-            <LogoutList  />
+            <LogoutList />
           </motion.div>
         </motion.div>
       )}

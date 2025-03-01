@@ -1,2 +1,1 @@
-export { default as correspondenceService } from "./correspondenceServices";
-
+export { default as chatService } from "./chatServices";

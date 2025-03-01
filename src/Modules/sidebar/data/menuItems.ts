@@ -108,12 +108,12 @@ export const menuItems: MenuItem[] = [
     title: "مکاتبات",
     path: "/correspondence",
     icon: FaEnvelope,
-    codename: ["view_correspondence"],
+    codename: ["allow_any"],
     submenu: [
       {
         title: "گفتگو",
         path: "/correspondence/create",
-        codename: ["view_correspondence"],
+        codename: ["allow_any"],
       },
     ],
   },
