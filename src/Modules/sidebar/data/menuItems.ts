@@ -111,8 +111,8 @@ export const menuItems: MenuItem[] = [
     codename: ["view_correspondence"],
     submenu: [
       {
-        title: "مدیریت مکاتبات",
-        path: "/correspondence",
+        title: "گفتگو",
+        path: "/correspondence/create",
         codename: ["view_correspondence"],
       },
     ],

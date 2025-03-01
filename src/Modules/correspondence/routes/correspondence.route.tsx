@@ -5,29 +5,19 @@ const CorrespondencePage = lazy(() =>
     default: module.CorrespondencePage,
   }))
 );
-const CorrespondenceCreatePage = lazy(() =>
+const CorrespondenceChatPage = lazy(() =>
   import("..").then((module) => ({
-    default: module.CorrespondenceCreatePage,
+    default: module.CorrespondenceChatPage,
   }))
 );
-const CorrespondenceTablePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.CorrespondenceTablePage,
-  }))
-);
-
 const CorrespondenceRoutes = [
   {
     path: "/correspondence",
     element: <CorrespondencePage />,
     children: [
       {
-        path: "table",
-        element: <CorrespondenceTablePage />,
-      },
-      {
         path: "create",
-        element: <CorrespondenceCreatePage />,
+        element: <CorrespondenceChatPage />,
       },
     ],
   },
