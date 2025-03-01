@@ -14,6 +14,7 @@ const OwnAbsense = ({ logs }: { logs: any[] }) => {
   const dispatch = useDispatch();
   const { isOpenAbsense } = useSelector((state: RootState) => state.verify);
   const { mutate: postAbsence } = useTimeflow.usePostAbsence();
+  const { refetch } = useTimeflow.useGetUsersLogin();
 
   const abssenceType = {
     absence: "absence",
@@ -42,6 +43,11 @@ const OwnAbsense = ({ logs }: { logs: any[] }) => {
               : "ماموریت"
           } تغییر کرد`
         );
+        refetch();
+      },
+      onError: () => {
+        toast.error("خطایی رخ داده است");
+        refetch();
       },
     });
   };
