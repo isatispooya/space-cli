@@ -45,7 +45,7 @@ const useTimeflow = {
               : data.time_user.toISOString(),
         };
         return timeflowServices.UsersLogoutAccept(formattedData);
-      },
+      },  
     });
   },
   useUsersLogoutAcceptParent: (): UseMutationResult<

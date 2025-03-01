@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import LogoutList from "../../../Modules/timeflow/components/logout.list";
 import { useEffect, useRef } from "react";
-import { useTimeflow } from "@/Modules/timeflow/hooks";
+
 
 const VerifyLogoutPopup = ({
   isOpen,
@@ -83,7 +83,7 @@ const VerifyLogoutPopup = ({
                 ✕
               </button>
             </div>
-            <LogoutList onAccept={() => {}} />
+            <LogoutList  />
           </motion.div>
         </motion.div>
       )}
