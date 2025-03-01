@@ -68,7 +68,7 @@ const ConversationUsers = () => {
   const selectedUser = users.find((user) => user.id === selectedUserId);
 
   const handleNewChat = () => {
-    setShowUserList(true);
+    setShowUserList(!showUserList);
   };
 
   const handleSelectNewUser = (userId: string) => {
@@ -88,7 +88,9 @@ const ConversationUsers = () => {
             size="small"
             aria-label="چت جدید"
           >
-            <span className="material-icons text-white text-xl">+</span>
+            <span className="material-icons text-white text-xl">
+              {showUserList ? "x" : "+"}
+            </span>
           </IconButton>
         </div>
 
@@ -158,7 +160,7 @@ const ConversationUsers = () => {
       <div className="chat-container flex-1">
         {showUserList ? (
           <div className="flex flex-col h-full bg-white">
-            <div className="p-4 border-b">
+            <div className="p-4 border-b flex justify-between items-center">
               <h2 className="text-xl font-bold">
                 انتخاب کاربر برای گفتگوی جدید
               </h2>
