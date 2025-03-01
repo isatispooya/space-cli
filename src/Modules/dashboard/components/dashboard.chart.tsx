@@ -153,7 +153,7 @@ const DashboardChart = () => {
   };
 
   return (
-    <div className="max-w-3xl h-[530px] lg:h-[530px] md:h-[500px] xs:h-[600px] bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl relative">
+    <div className="max-w-3xl h-[512px] lg:h-[512px] md:h-[500px] xs:h-[600px] bg-white bg-opacity-70 rounded-3xl shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl relative">
       {/* SVG Wave Top */}
       <svg
         className="absolute top-0 left-0 w-full h-16 md:h-24 rounded-lg"
@@ -174,7 +174,7 @@ const DashboardChart = () => {
           درصد سهام شما در شرکت های گروه مالی و سرمایه گذاری ایساتیس پویا
         </h3>
 
-        <div className="w-full h-[600px] md:h-[500px]">
+        <div className="w-full h-[500px] md:h-[450px]">
           {isLoading ? (
             <div className="w-full h-full flex justify-center items-center">
               <Spinner />
@@ -242,7 +242,7 @@ const DashboardChart = () => {
           )}
         </div>
       </div>
-      <div className="flex justify-center mt-20 p-4 z-10">
+      <div className="flex justify-center mt-10 p-4 z-10">
         {hasPermission && (
           <motion.button
             whileHover={{ scale: 1.02 }}

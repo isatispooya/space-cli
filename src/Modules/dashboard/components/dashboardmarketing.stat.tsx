@@ -118,7 +118,7 @@ const DashboardMarketingStat = () => {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     className:
-      "relative bg-white rounded-xl shadow-lg p-4 sm:p-6 min-h-[330px] sm:min-h-[430px] w-full max-w-8xl px-10` mx-auto transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
+      "relative bg-white rounded-xl shadow-lg p-4 sm:p-6 min-h-[200px] sm:min-h-[200px] w-full max-w-8xl px-10` mx-auto transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105",
     style: { zIndex: 2 },
   });
 
@@ -199,7 +199,7 @@ const DashboardMarketingStat = () => {
             </span>
           </motion.p>
         </div>
-        <div className="mt-6 sm:mt-8 flex-grow mb-[-20px]">
+        <div className="mt-6 sm:mt-8 flex-grow mb-[-34px]">
           <div className="flex items-center justify-between sm:mb-3">
             <h4 className="text-gray-600 font-iranSans text-xs sm:text-sm">
               لیست کاربران دعوت شده
