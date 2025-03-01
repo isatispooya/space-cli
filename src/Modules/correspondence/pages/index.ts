@@ -1,3 +1,3 @@
 export { default as CorrespondencePage } from "./correnpondence.main.page";
-export { default as CorrespondenceCreatePage } from "./correnpondence.create.page";
-export { default as CorrespondenceTablePage } from "./correnpondence.table.page";
+export { default as CorrespondenceChatPage } from "./correnpondence.chat.page";
+export { default as ConversationUsersPage } from "./conversationUsers.page";

@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { CreateCorrespondenceForm } from "./correnpondence.create.form";
+import { CorrespondenceChatForm } from "./index";
 import { useCorrespondences } from "../hooks";
 import ModalLayout from "../../../layouts/modal.layout";
 import { FormikHelpers } from "formik";
 import { CorrespondenceTypes } from "../types";
 
-const CorrespondenceToolBar = () => {
+const ConversationToolBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<"create" | "import" | null>(
     null
@@ -43,7 +43,7 @@ const CorrespondenceToolBar = () => {
       case "create":
         return (
           <ModalLayout isOpen={isOpen} onClose={() => setIsOpen(false)}>
-            <CreateCorrespondenceForm
+            <CorrespondenceChatForm
               onSubmit={handleSubmit}
               loading={isPending}
             />
@@ -115,4 +115,4 @@ const CorrespondenceToolBar = () => {
   );
 };
 
-export default CorrespondenceToolBar;
+export default ConversationToolBar;
