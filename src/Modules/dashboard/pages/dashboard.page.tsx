@@ -42,7 +42,7 @@ const DashboardPage = () => {
                 <DashboardGoldStat />
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sx gap-4 lg:gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-4 lg:gap-10">
               <div className="md:col-span-2 tour-stock-chart">
                 <DashboardChart />
               </div>
