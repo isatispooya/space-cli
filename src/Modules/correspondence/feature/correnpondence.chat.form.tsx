@@ -5,7 +5,6 @@ import {
   Divider,
 } from "@mui/material";
 import { FormikHelpers } from "formik";
-import { CorrespondenceTypes } from "../types";
 import useChat from "../hooks/useChat";
 import ChatHeader from "../components/chatHeader";
 import MessageItem from "../components/itemMessage";
@@ -19,6 +18,10 @@ interface Message {
   isCurrentUser: boolean;
 }
 
+interface CorrespondenceTypes {
+  content: string;
+}
+
 interface CorrespondenceChatFormProps {
   onSubmit: (
     values: CorrespondenceTypes,
@@ -26,6 +29,7 @@ interface CorrespondenceChatFormProps {
   ) => void;
   loading: boolean;
   selectedUser?: { id: string; name: string; avatar?: string };
+  onBackClick?: () => void;
 }
 
 const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
@@ -81,7 +85,6 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
 
     const messageData: CorrespondenceTypes = {
       content: newMessage,
-      sender: "کاربر",
     };
 
     onSubmit(messageData, {
@@ -106,16 +109,18 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
         overflow: "hidden",
       }}
     >
-      <ChatHeader selectedUser={selectedUser} />
+      <ChatHeader 
+        selectedUser={selectedUser ? { name: selectedUser.name } : { name: "" }} 
+      />
       <Divider />
       <Box
-        className="flex-grow p-4 overflow-y-auto"
+        className="flex-grow p-2 sm:p-4 overflow-y-auto"
         sx={{
           backgroundColor: "#f8fafc",
           backgroundImage:
             "linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px)",
           backgroundSize: "20px 20px",
-          padding: "20px",
+          padding: { xs: "10px", sm: "15px", md: "20px" },
         }}
       >
         {messages.map((message) => (

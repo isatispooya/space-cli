@@ -1,6 +1,15 @@
 import { Avatar, Box, Typography } from "@mui/material";
 
-const MessageItem = ({ message }: { message: any }) => (
+interface MessageProps {
+  message: {
+    isCurrentUser: boolean;
+    sender: string;
+    text: string;
+    timestamp: string;
+  }
+}
+
+const MessageItem = ({ message }: MessageProps) => (
   <Box
     className={`flex mb-4 ${
       message.isCurrentUser ? "justify-end" : "justify-start"

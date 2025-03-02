@@ -23,7 +23,6 @@ const ConversationUsers = ({
   selectedUserId,
 }: ConversationUsersProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [showUserList, setShowUserList] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const { data: messages } = useChat.useGetChat();
   const { data: profileData } = useProfile();
@@ -96,10 +95,6 @@ const ConversationUsers = ({
     }
   };
 
-  const handleNewChat = () => {
-    setShowUserList(!showUserList);
-  };
-
   const SearchInput = ({
     onChange,
   }: {
@@ -155,12 +150,12 @@ const ConversationUsers = ({
   );
 
   return (
-    <div className="user-list-container w-1/4 border-l bg-white shadow-lg rounded-lg mx-3 transition-all duration-300 hover:shadow-xl flex flex-col relative">
-      <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-[#5677BC] to-[#5677BC] text-white rounded-t-xl">
-        <h2 className="text-xl font-bold">لیست چت</h2>
+    <div className="user-list-container w-full h-full border-l bg-white shadow-lg rounded-lg transition-all duration-300 hover:shadow-xl flex flex-col relative">
+      <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-gradient-to-r from-[#5677BC] to-[#5677BC] text-white rounded-t-xl">
+        <h2 className="text-lg sm:text-xl font-bold">اسپیس گرام</h2>
       </div>
 
-      <div className="p-4">
+      <div className="p-2 sm:p-4">
         <SearchInput onChange={(e) => setSearchQuery(e.target.value)} />
       </div>
 
@@ -168,7 +163,7 @@ const ConversationUsers = ({
         {filteredUsers.map((user) => (
           <div
             key={user.id}
-            className={`user-item py-3 px-4 border-b flex items-center cursor-pointer transition-all duration-300 ${
+            className={`user-item py-2 sm:py-3 px-3 sm:px-4 border-b flex items-center cursor-pointer transition-all duration-300 ${
               selectedUserId === user.id
                 ? "bg-[#5677BC]/20 border-r-4 border-r-[#5677BC]"
                 : "hover:bg-gray-50"
@@ -178,11 +173,11 @@ const ConversationUsers = ({
             <UserAvatar user={user} />
             <div className="user-info flex-1 min-w-0 mr-2">
               <div className="flex justify-between items-center">
-                <div className="user-name font-semibold text-sm truncate">
+                <div className="user-name font-semibold text-xs sm:text-sm truncate">
                   {user.name}
                 </div>
                 {user.lastMessageTime && (
-                  <div className="text-xs text-gray-500 whitespace-nowrap mr-2">
+                  <div className="text-xs text-gray-500 whitespace-nowrap mr-1 sm:mr-2">
                     {user.lastMessageTime}
                   </div>
                 )}
@@ -197,22 +192,24 @@ const ConversationUsers = ({
         ))}
       </div>
 
-      <div className="absolute bottom-6 left-6">
+      <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 sm:block hidden">
         <button
           onClick={() => setShowAllUsers(!showAllUsers)}
-          className="w-14 h-14 bg-gradient-to-r from-[#5677BC] to-[#4A67A6] rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center text-white"
+          className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-[#5677BC] to-[#4A67A6] rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center text-white"
         >
-          <span className="material-icons text-2xl">
+          <span className="material-icons text-xl sm:text-2xl">
             {showAllUsers ? "x" : "+"}
           </span>
         </button>
       </div>
 
       {showAllUsers && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg w-96 max-h-[80vh] overflow-hidden shadow-2xl transform transition-all">
-            <div className="bg-gradient-to-r from-[#5677BC] to-[#5677BC] p-4 text-white flex justify-between items-center">
-              <h3 className="text-xl font-bold">لیست تمام کاربران</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg max-h-[80vh] overflow-hidden shadow-2xl transform transition-all">
+            <div className="bg-gradient-to-r from-[#5677BC] to-[#5677BC] p-3 sm:p-4 text-white flex justify-between items-center">
+              <h3 className="text-lg sm:text-xl font-bold">
+                لیست تمام کاربران
+              </h3>
               <IconButton
                 onClick={() => setShowAllUsers(false)}
                 className="text-white hover:bg-[#4A67A6] transition-all"
@@ -221,7 +218,7 @@ const ConversationUsers = ({
                 <span className="material-icons text-white">x</span>
               </IconButton>
             </div>
-            <div className="p-4">
+            <div className="p-3 sm:p-4">
               <TextField
                 fullWidth
                 variant="outlined"
@@ -243,19 +240,19 @@ const ConversationUsers = ({
                 }}
               />
             </div>
-            <div className="overflow-y-auto max-h-[60vh] p-2">
+            <div className="overflow-y-auto max-h-[50vh] sm:max-h-[60vh] p-2">
               {users.map((user) => (
                 <div
                   key={user.id}
-                  className="p-3 hover:bg-gray-100 rounded-lg cursor-pointer flex items-center"
+                  className="p-2 sm:p-3 hover:bg-gray-100 rounded-lg cursor-pointer flex items-center"
                   onClick={() => {
                     handleUserClick(user.id);
                     setShowAllUsers(false);
                   }}
                 >
                   <UserAvatar user={user} />
-                  <div className="mr-3">
-                    <div className="font-semibold">{user.name}</div>
+                  <div className="mr-2 sm:mr-3">
+                    <div className="font-semibold text-sm">{user.name}</div>
                     <div className="text-xs text-gray-500">
                       {user.uniqueIdentifier}
                     </div>
