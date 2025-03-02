@@ -1,25 +1,14 @@
 import { lazy } from "react";
 
-const CorrespondencePage = lazy(() =>
+const ConversationPage = lazy(() =>
   import("..").then((module) => ({
-    default: module.CorrespondencePage,
-  }))
-);
-const CorrespondenceChatPage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.CorrespondenceChatPage,
+    default: module.ConversationPage,
   }))
 );
 const CorrespondenceRoutes = [
   {
     path: "/correspondence",
-    element: <CorrespondencePage />,
-    children: [
-      {
-        path: "create",
-        element: <CorrespondenceChatPage />,
-      },
-    ],
+    element: <ConversationPage />,
   },
 ];
 

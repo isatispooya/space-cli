@@ -1,24 +1,7 @@
-import { Outlet } from "react-router-dom";
 import { MainLayout } from "../../../layouts";
-import { Toolbar } from "../../../components";
-import { LuPlus } from "react-icons/lu";
+import Conversation from "../feature/conversation";
 
-const ConversationMainPage = () => {
-  const toolbarButtons = [
-    {
-      icon: LuPlus,
-      text: "گفتگو جدید",
-      permission: ["add_correspondence"],
-      path: "create",
-    },
-    {
-      icon: LuPlus,
-      text: "گفتگو ها",
-      permission: ["add_correspondence"],
-      path: "chats",
-    },
-
-  ];
+const ConversationPage = () => {
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
@@ -31,11 +14,8 @@ const ConversationMainPage = () => {
           </p>
         </div>
         <div className="flex-grow flex flex-col">
-          <div className="px-6 py-3">
-            <Toolbar buttons={toolbarButtons} />
-          </div>
           <div className="flex-grow px-6 bg-white">
-            <Outlet />
+            <Conversation />
           </div>
         </div>
       </div>
@@ -43,4 +23,4 @@ const ConversationMainPage = () => {
   );
 };
 
-export default ConversationMainPage;
+export default ConversationPage;
