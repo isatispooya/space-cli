@@ -23,6 +23,7 @@ const EditShareholdForm: React.FC = () => {
 
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
+    precedence_count: yup.number().required("تعداد سهام الزامی است"),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
     company: yup.string().required("نام شرکت الزامی است"),
     user: yup.number().required("کاربر الزامی است"),

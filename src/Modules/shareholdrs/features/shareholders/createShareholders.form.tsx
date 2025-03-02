@@ -56,6 +56,7 @@ const CreateShareholdersPost = () => {
 
   const validationSchema = Yup.object().shape({
     id: Yup.number().optional(),
+    precedence_count: Yup.number().required("تعداد سهام الزامی است"),
     name: Yup.string().required("نام الزامی است"),
     number_of_shares: Yup.number().required("تعداد سهام الزامی است"),
     company: Yup.string().required("نام شرکت الزامی است"),
