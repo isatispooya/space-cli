@@ -35,34 +35,29 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
   loading,
   selectedUser,
 }) => {
-  const { data: message } = useChat.useGetChat();
-
-  console.log(message);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      text: "سلام، چطور می‌توانم کمک کنم؟",
-      sender: "پشتیبانی",
-      timestamp: "10:30",
-      isCurrentUser: false,
-    },
-    {
-      id: 2,
-      text: "من درباره مکاتبه شماره 1234 سوال داشتم",
-      sender: "کاربر",
-      timestamp: "10:32",
-      isCurrentUser: true,
-    },
-    {
-      id: 3,
-      text: "بله، بفرمایید. چه سوالی دارید؟",
-      sender: "پشتیبانی",
-      timestamp: "10:33",
-      isCurrentUser: false,
-    },
-  ]);
+  const { data: chatData } = useChat.useGetChat();
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatData && Array.isArray(chatData)) {
+      // تبدیل داده‌های API به فرمت مورد نیاز کامپوننت
+      const formattedMessages = chatData.map(msg => ({
+        id: msg.id,
+        text: msg.message,
+        sender: `${msg.sender_details.first_name} ${msg.sender_details.last_name}`,
+        timestamp: new Date(msg.created_at).toLocaleTimeString('fa-IR', {
+          hour: '2-digit',
+          minute: '2-digit'
+        }),
+        // بررسی می‌کنیم که آیا پیام توسط کاربر فعلی ارسال شده یا خیر
+        isCurrentUser: msg.sender_details.id === 22437 // اینجا باید ID کاربر فعلی را قرار دهید
+      }));
+      
+      setMessages(formattedMessages);
+    }
+  }, [chatData]);
 
   useEffect(() => {
     scrollToBottom();
@@ -76,7 +71,7 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
     if (newMessage.trim() === "" || loading) return;
 
     const newMsg: Message = {
-      id: messages.length + 1,
+      id: messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1,
       text: newMessage,
       sender: "کاربر",
       timestamp: new Date().toLocaleTimeString("fa-IR", {

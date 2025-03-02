@@ -1,49 +1,69 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CorrespondenceChatForm from "./correnpondence.chat.form";
 import { FormikHelpers } from "formik";
 import { CorrespondenceTypes } from "../types";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
+import useChat from "../hooks/useChat";
+import { useProfile } from "@/Modules/userManagment";
 
 const ConversationUsers = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showUserList, setShowUserList] = useState(false);
+  const [users, setUsers] = useState<any[]>([]);
 
-  const users = [
-    {
-      id: "1",
-      name: "هنری جان",
-      lastMessage: "سلام، حالت چطوره؟ امیدوارم خوب باشی...",
-      lastMessageTime: "10:19",
-      isOnline: true,
-    },
-    {
-      id: "2",
-      name: "الیزابت رز",
-      lastMessage: "سلام، حالت چطوره؟ امیدوارم خوب باشی...",
-      lastMessageTime: "10:17",
-      isOnline: true,
-    },
-    {
-      id: "3",
-      name: "الیزابت رز",
-      lastMessage: "سلام، حالت چطوره؟ امیدوارم خوب باشی...",
-      lastMessageTime: "10:15",
-    },
-    {
-      id: "4",
-      name: "هنری جان",
-      lastMessage: "سلام، حالت چطوره؟ امیدوارم خوب باشی...",
-      lastMessageTime: "10:13",
-      isOnline: true,
-    },
-    {
-      id: "5",
-      name: "الیزابت رز",
-      lastMessage: "سلام، حالت چطوره؟ امیدوارم خوب باشی...",
-      lastMessageTime: "10:11",
-      isOnline: true,
-    },
-  ];
+  const { data: messages } = useChat.useGetChat();
+  const { data: profileData } = useProfile();
+
+  const filterCurrentUser = (users: any[]) => {
+    if (!profileData || !profileData.uniqueIdentifier) return users;
+
+    return users.filter((user) => {
+      return user.uniqueIdentifier !== profileData.uniqueIdentifier;
+    });
+  };
+
+  useEffect(() => {
+    if (messages && messages.length > 0) {
+      const uniqueUsers = new Map();
+
+      messages.forEach((message) => {
+        const sender = message.sender_details;
+        const receiver = message.receiver_details;
+
+        if (!uniqueUsers.has(sender.id)) {
+          uniqueUsers.set(sender.id, {
+            id: sender.id.toString(),
+            name: `${sender.first_name} ${sender.last_name}`,
+            lastMessage: message.message,
+            lastMessageTime: new Date(message.created_at).toLocaleTimeString(
+              "fa-IR",
+              { hour: "2-digit", minute: "2-digit" }
+            ),
+            isOnline: Math.random() > 0.5,
+            avatar: null,
+            uniqueIdentifier: sender.uniqueIdentifier,
+          });
+        }
+
+        if (!uniqueUsers.has(receiver.id)) {
+          uniqueUsers.set(receiver.id, {
+            id: receiver.id.toString(),
+            name: `${receiver.first_name} ${receiver.last_name}`,
+            lastMessage: message.message,
+            lastMessageTime: new Date(message.created_at).toLocaleTimeString(
+              "fa-IR",
+              { hour: "2-digit", minute: "2-digit" }
+            ),
+            isOnline: Math.random() > 0.5,
+            avatar: null,
+            uniqueIdentifier: receiver.uniqueIdentifier,
+          });
+        }
+      });
+
+      setUsers(filterCurrentUser(Array.from(uniqueUsers.values())));
+    }
+  }, [messages, profileData]);
 
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
