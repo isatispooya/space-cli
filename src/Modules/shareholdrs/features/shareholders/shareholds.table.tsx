@@ -145,9 +145,9 @@ const ShareholdTable: React.FC = () => {
               <tr><th>کدملی</th><td>${rowData.uniqueIdentifier || "-"}</td></tr>
               <tr><th>حق تقدم</th><td>${rowData.precedence || "0"}</td></tr>
               <tr><th>حق تقدم استفاده شده</th><td>${
-                Array.isArray(rowData.capital_increase_payment)
+                Array.isArray(rowData.precedence_count)
                   ? "ندارد"
-                  : rowData.capital_increase_payment || "0"
+                  : rowData.precedence_count || "0"
               }</td></tr>
             </table>
             <div class="footer">

@@ -4,6 +4,7 @@ export interface ShareholdersTypes {
   number_of_shares?: number;
   first_name?: string;
   last_name?: string;
+  precedence_count?: number;
   uniqueIdentifier?: string;
   capital_increase_payment?: number | [];
   precedence?: number;
