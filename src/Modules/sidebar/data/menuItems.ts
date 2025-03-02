@@ -112,7 +112,7 @@ export const menuItems: MenuItem[] = [
     submenu: [
       {
         title: "گفتگو",
-        path: "/correspondence/create",
+        path: "/correspondence",
         codename: ["allow_any"],
       },
     ],
