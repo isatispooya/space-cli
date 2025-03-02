@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ConversationUsers from "./conversationUsers";
+import ConversationUsers from "./users.panel";
 import CorrespondenceChatForm from "./correnpondence.chat.form";
 
 const Conversation = () => {

@@ -1,5 +1,5 @@
 import { MainLayout } from "../../../layouts";
-import Conversation from "../feature/conversation";
+import Conversation from "../feature/conversation.field";
 
 const ConversationPage = () => {
   return (
