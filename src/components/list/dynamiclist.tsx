@@ -39,10 +39,10 @@ const DynamicList = <T extends object>({
   });
 
   useEffect(() => {
-    if (inView && !isPending) {
+    if (inView && !isPending && filteredData.length > visibleItems) {
       onLoadMore();
     }
-  }, [inView, isPending, onLoadMore]);
+  }, [inView, isPending, onLoadMore, filteredData.length, visibleItems]);
 
   if (isPending && filteredData.length === 0) {
     return (

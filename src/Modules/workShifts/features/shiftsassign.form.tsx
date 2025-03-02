@@ -12,10 +12,10 @@ import {
 const ShiftsAssignForm = () => {
   const { data: shiftsAssignData, isLoading: isLoadingShiftsAssign } =
     useShifts.useGetShiftsassign();
-  const { data: shiftsData, isLoading: isLoadingShifts } =
-    useShifts.useGetShifts();
+  const { isLoading: isLoadingShifts } = useShifts.useGetShifts();
   const { mutate, isPending: isPendingSetShiftUser } =
     useShifts.useSetShiftUser();
+  const { data: shiftsNamesData } = useShifts.useGetShiftsNames();
   const [shifts, setShifts] = useState<WorkShiftTypes["Shift"][]>([]);
   const [shiftAssignments, setShiftAssignments] = useState<
     WorkShiftTypes["FormShiftAssignment"][]
@@ -25,6 +25,8 @@ const ShiftsAssignForm = () => {
   const [visibleItems, setVisibleItems] = useState(10);
   const [isOpen, setIsOpen] = useState(false);
 
+  console.log(shiftsNamesData, "shiftsNamesData");
+
   const users =
     shiftsAssignData?.map((item: WorkShiftTypes["ShiftAssignResponse"]) => ({
       id: item.user.id,
@@ -32,14 +34,14 @@ const ShiftsAssignForm = () => {
     })) ?? [];
 
   useEffect(() => {
-    if (shiftsData && Array.isArray(shiftsData)) {
-      const formattedShifts = shiftsData.map((item) => ({
-        id: item.shift?.id ?? item.id ?? 0,
-        name: item.shift?.name ?? item.name ?? "Unknown Shift",
+    if (shiftsNamesData && Array.isArray(shiftsNamesData)) {
+      const formattedShifts = shiftsNamesData.map((item) => ({
+        id: item.id,
+        name: item.name,
       }));
       setShifts(formattedShifts);
     }
-  }, [shiftsData]);
+  }, [shiftsNamesData]);
 
   useEffect(() => {
     if (shiftsAssignData && users.length > 0) {
@@ -110,10 +112,12 @@ const ShiftsAssignForm = () => {
         onChange={(value) => handleShiftChange(value, assignment.userId)}
         options={[
           { value: "", label: "انتخاب شیفت" },
-          ...shifts.map((shift) => ({
-            value: shift.id.toString(),
-            label: shift.name,
-          })),
+          ...(shiftsNamesData
+            ? shiftsNamesData.map((shift) => ({
+                value: shift.id.toString(),
+                label: shift.name,
+              }))
+            : []),
         ]}
         className="w-1/3"
         disabled={assignment.isRegistered && !assignment.isEditing}

@@ -17,10 +17,10 @@ interface ShiftsFormStore {
   setIsSubmitting: (isSubmitting: boolean) => void;
   setError: (error: string | null) => void;
   setSearchQuery: (query: string) => void;
-  setVisibleItems: (count: number) => void;
+  setVisibleItems: (count: number | ((prev: number) => number)) => void;
 }
 
- const useShiftsFormStore = create<ShiftsFormStore>((set) => ({
+const useShiftsFormStore = create<ShiftsFormStore>((set) => ({
   shiftName: "",
   dates: [],
   shifts: [],
@@ -35,7 +35,13 @@ interface ShiftsFormStore {
   setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
   setError: (error) => set({ error }),
   setSearchQuery: (query) => set({ searchQuery: query }),
-  setVisibleItems: (count) => set({ visibleItems: count }),
+  setVisibleItems: (count) =>
+    set({
+      visibleItems:
+        typeof count === "function"
+          ? count(useShiftsFormStore.getState().visibleItems)
+          : count,
+    }),
 }));
 
 export default useShiftsFormStore;
