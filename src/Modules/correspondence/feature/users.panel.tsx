@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import useChat from "../hooks/useChat";
 import { useProfile } from "@/Modules/userManagment";
+import { server } from "@/api/server";
 
 interface User {
   id: string;
@@ -11,10 +12,11 @@ interface User {
   isOnline: boolean;
   avatar: string | null;
   uniqueIdentifier: string;
+  profile_image?: string | null;
 }
 
 interface ConversationUsersProps {
-  onSelectUser: (user: { id: string; name: string; avatar?: string }) => void;
+  onSelectUser: (user: { id: string; name: string; avatar?: string; profile_image?: string }) => void;
   selectedUserId?: string | null;
 }
 
@@ -51,6 +53,7 @@ const ConversationUsers = ({
             isOnline: Math.random() > 0.5,
             avatar: null,
             uniqueIdentifier: sender.uniqueIdentifier,
+            profile_image: server+sender.profile_image || null,
           });
         }
 
@@ -66,6 +69,7 @@ const ConversationUsers = ({
             isOnline: Math.random() > 0.5,
             avatar: null,
             uniqueIdentifier: receiver.uniqueIdentifier,
+            profile_image: server + receiver.profile_image || null,
           });
         }
       });
@@ -94,6 +98,7 @@ const ConversationUsers = ({
         id: user.id,
         name: user.name,
         avatar: user.avatar || undefined,
+        profile_image: user.profile_image || undefined,
       });
     }
   };
@@ -103,6 +108,7 @@ const ConversationUsers = ({
       id: position.user.id.toString(),
       name: `${position.user.first_name} ${position.user.last_name}`,
       avatar: undefined,
+      profile_image: position.user.profile_image || undefined,
     });
     setShowAllUsers(false);
   };
@@ -145,7 +151,13 @@ const ConversationUsers = ({
   const UserAvatar = ({ user }: { user: User }) => (
     <div className="relative">
       <div className="avatar w-10 h-10 rounded-full bg-[#5677BC] text-white flex items-center justify-center mr-3">
-        {user.avatar ? (
+        {user.profile_image ? (
+          <img
+            src={user.profile_image}
+            alt={user.name}
+            className="w-full h-full rounded-full"
+          />
+        ) : user.avatar ? (
           <img
             src={user.avatar}
             alt={user.name}
@@ -280,9 +292,17 @@ const ConversationUsers = ({
                 >
                   <div className="relative">
                     <div className="avatar w-10 h-10 rounded-full bg-[#5677BC] text-white flex items-center justify-center mr-3">
-                      <span className="text-md font-semibold">
-                        {position.user.first_name.charAt(0)}
-                      </span>
+                      {position.user.profile_image ? (
+                        <img
+                          src={position.user.profile_image}
+                          alt={`${position.user.first_name} ${position.user.last_name}`}
+                          className="w-full h-full rounded-full"
+                        />
+                      ) : (
+                        <span className="text-md font-semibold">
+                          {position.user.first_name.charAt(0)}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="mr-2 sm:mr-3 flex-1">

@@ -1,3 +1,4 @@
+import { server } from "@/api/server";
 import { Box, Typography } from "@mui/material";
 
 import { Avatar } from "@mui/material";
@@ -22,7 +23,15 @@ const ChatHeader = ({ selectedUser }: { selectedUser: { name: string } }) => (
           border: "2px solid rgba(255,255,255,0.8)",
         }}
       >
-        {selectedUser?.name.charAt(0) || "پ"}
+        {selectedUser?.profile_image ? (
+          <img
+            src={server + selectedUser.profile_image}
+            alt={selectedUser.name}
+            className="w-full h-full rounded-full"
+          />
+        ) : (
+          selectedUser?.name.charAt(0)
+        )}
       </Avatar>
       <div>
         <Typography variant="h6" className="font-semibold">

@@ -6,6 +6,7 @@ import ChatHeader from "../components/chatHeader";
 import MessageItem from "../components/itemMessage";
 import ChatInput from "../components/chatInputs";
 import useProfile from "@/Modules/userManagment/hooks/useProfile";
+import { server } from "@/api/server";
 
 interface Message {
   id: number;
@@ -28,7 +29,7 @@ interface CorrespondenceChatFormProps {
     actions: FormikHelpers<CorrespondenceTypes>
   ) => void;
   loading: boolean;
-  selectedUser?: { id: string; name: string; avatar?: string };
+  selectedUser?: { id: string; name: string; avatar?: string; };
   onBackClick?: () => void;
 }
 
@@ -44,6 +45,10 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: profileData } = useProfile();
+
+
+  console.log(selectedUser);
+  
 
   useEffect(() => {
     if (chatData && Array.isArray(chatData) && profileData) {
@@ -145,8 +150,12 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
       }}
     >
       <ChatHeader
-        selectedUser={selectedUser ? { name: selectedUser.name } : { name: "" }}
+        selectedUser={selectedUser ? { 
+          name: selectedUser.name,
+          profile_image: selectedUser.profile_image || null,
+        } : { name: "" }}
         onBackClick={onBackClick}
+        isFullUrl={true}
       />
       <Divider />
       {selectedUser ? (
