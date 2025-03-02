@@ -66,11 +66,7 @@ const Conversation = () => {
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
                 لطفاً یک گفتگو را انتخاب کنید یا گفتگوی جدیدی شروع کنید
               </p>
-              <div className="mt-6">
-                <button className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
-                  شروع گفتگوی جدید
-                </button>
-              </div>
+             
             </div>
           </div>
         ) : (
