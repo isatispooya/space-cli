@@ -24,6 +24,7 @@ const ConversationUsers = ({
 }: ConversationUsersProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState<User[]>([]);
+  const { data: usersData } = useChat.useGetUsersByPosition();
   const { data: messages } = useChat.useGetChat();
   const { data: profileData } = useProfile();
   const [showAllUsers, setShowAllUsers] = useState(false);

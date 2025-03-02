@@ -9,6 +9,13 @@ const useChat = {
       queryFn: () => chatService.get(),
     });
   },
+
+  useGetUsersByPosition: () => {
+    return useQuery({
+      queryKey: ["users"],
+      queryFn: () => chatService.getUsersByPosition(),
+    });
+  },
   useGetChatById: (id: number): UseQueryResult<ChatType> => {
     return useQuery({
       queryKey: ["chat", id],
