@@ -1,14 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  Paper,
-  Box,
-  Divider,
-} from "@mui/material";
+import { Paper, Box, Divider } from "@mui/material";
 import { FormikHelpers } from "formik";
 import useChat from "../hooks/useChat";
 import ChatHeader from "../components/chatHeader";
 import MessageItem from "../components/itemMessage";
 import ChatInput from "../components/chatInputs";
+import useProfile from "@/Modules/userManagment/hooks/useProfile";
 
 interface Message {
   id: number;
@@ -16,10 +13,13 @@ interface Message {
   sender: string;
   timestamp: string;
   isCurrentUser: boolean;
+  createdAt: number;
 }
 
 interface CorrespondenceTypes {
   content: string;
+  receiver?: string;
+  message?: string;
 }
 
 interface CorrespondenceChatFormProps {
@@ -38,26 +38,31 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
   selectedUser,
 }) => {
   const { data: chatData } = useChat.useGetChat();
+  const { mutate: createChat } = useChat.useCreateChat();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { data: profileData } = useProfile();
 
   useEffect(() => {
     if (chatData && Array.isArray(chatData)) {
-      const formattedMessages = chatData.map((msg) => ({
-        id: msg.id,
-        text: msg.message,
-        sender: `${msg.sender_details.first_name} ${msg.sender_details.last_name}`,
-        timestamp: new Date(msg.created_at).toLocaleTimeString("fa-IR", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        isCurrentUser: msg.sender_details.id === 22437,
-      }));
+      const formattedMessages = chatData
+        .map((msg) => ({
+          id: msg.id,
+          text: msg.message,
+          sender: `${msg.sender_details.first_name} ${msg.sender_details.last_name}`,
+          timestamp: new Date(msg.created_at).toLocaleTimeString("fa-IR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          isCurrentUser: msg.sender_details.id === profileData?.id,
+          createdAt: new Date(msg.created_at).getTime(),
+        }))
+        .sort((a, b) => a.createdAt - b.createdAt);
 
       setMessages(formattedMessages);
     }
-  }, [chatData]);
+  }, [chatData, profileData]);
 
   useEffect(() => {
     scrollToBottom();
@@ -79,13 +84,22 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
         minute: "2-digit",
       }),
       isCurrentUser: true,
+      createdAt: new Date().getTime(),
     };
 
     setMessages([...messages, newMsg]);
 
     const messageData: CorrespondenceTypes = {
       content: newMessage,
+      receiver: selectedUser?.id,
+      message: newMessage,
     };
+
+    createChat(messageData, {
+      onSuccess: () => {
+        setNewMessage("");
+      },
+    });
 
     onSubmit(messageData, {
       resetForm: () => setNewMessage(""),
@@ -109,8 +123,8 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
         overflow: "hidden",
       }}
     >
-      <ChatHeader 
-        selectedUser={selectedUser ? { name: selectedUser.name } : { name: "" }} 
+      <ChatHeader
+        selectedUser={selectedUser ? { name: selectedUser.name } : { name: "" }}
       />
       <Divider />
       <Box

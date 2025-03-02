@@ -1,12 +1,6 @@
 import { useState } from "react";
 import ConversationUsers from "./conversationUsers";
 import CorrespondenceChatForm from "./correnpondence.chat.form";
-import useChat from "../hooks/useChat";
-import { FormikHelpers } from "formik";
-
-interface CorrespondenceTypes {
-  content: string;
-}
 
 const Conversation = () => {
   const [selectedUser, setSelectedUser] = useState<{
@@ -14,7 +8,6 @@ const Conversation = () => {
     name: string;
     avatar?: string;
   } | null>(null);
-  const { mutate: sendMessage } = useChat.useCreateChat();
   const [showUserList, setShowUserList] = useState(true);
 
   const toggleUserList = () => {
@@ -30,25 +23,6 @@ const Conversation = () => {
     if (window.innerWidth < 768) {
       setShowUserList(false);
     }
-  };
-
-  const handleSendMessage = (
-    values: CorrespondenceTypes,
-    actions: FormikHelpers<CorrespondenceTypes>
-  ) => {
-    if (!selectedUser) return;
-
-    sendMessage(
-      {
-        message: values.content,
-        receiver_id: selectedUser.id,
-      },
-      {
-        onSuccess: () => {
-          actions.resetForm();
-        },
-      }
-    );
   };
 
   return (
@@ -101,10 +75,10 @@ const Conversation = () => {
           </div>
         ) : (
           <CorrespondenceChatForm
-            onSubmit={handleSendMessage}
             selectedUser={selectedUser}
             loading={false}
             onBackClick={() => setShowUserList(true)}
+            onSubmit={() => {}}
           />
         )}
       </div>
