@@ -41,6 +41,13 @@ const useShifts = {
     });
   },
 
+  useGetShiftsNames: () => {
+    return useQuery<WorkShiftTypes["ShiftName"][]>({
+      queryKey: ["shiftsnames"],
+      queryFn: shiftsServices.getShiftsNames,
+    });
+  },
+
   useSetShiftUser: () =>
     useMutation({
       mutationKey: ["shiftsassign"],

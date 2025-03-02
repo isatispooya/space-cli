@@ -36,6 +36,7 @@ export interface SetShiftUserPostType {
 // Basic shift assignment response type
 export interface ShiftAssignResponse {
   id: number;
+
   user: {
     id: number;
     first_name: string;
@@ -264,6 +265,14 @@ export interface ShiftItemProps {
 
 export type ShiftValidationErrors = Record<string, ShiftError>;
 
+export interface ShiftName {
+  id: number;
+  name: string;
+  created_at: string;
+  updated_at: string;
+  owner: number;
+}
+
 export type WorkShiftTypes = {
   Shift: Shift;
   CompanyAddress: CompanyAddress;
@@ -290,6 +299,7 @@ export type WorkShiftTypes = {
   ShiftListProps: ShiftListProps;
   ShiftItemProps: ShiftItemProps;
   ShiftScheduleProps: ShiftScheduleProps;
+  ShiftName: ShiftName;
 };
 
 export default WorkShiftTypes;

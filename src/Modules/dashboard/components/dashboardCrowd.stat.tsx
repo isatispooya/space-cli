@@ -61,6 +61,7 @@ const DashboardCrowdStat = () => {
       },
       onError: (error) => {
         toast.error(`خطایی رخ داده است: ${error.message}`);
+        window.location.href = "https://app.isatiscrowd.ir/login";
       },
     });
   };

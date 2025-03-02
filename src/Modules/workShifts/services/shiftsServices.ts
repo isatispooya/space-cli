@@ -7,6 +7,11 @@ const shiftsServices = {
     return response.data;
   },
 
+  getShiftsNames: async (): Promise<WorkShiftTypes["ShiftName"][]> => {
+    const response = await api.get("/timeflow/list-shift-name/");
+    return response.data;
+  },
+
   create: async (data: WorkShiftTypes["ShiftPayload"]) => {
     const response = await api.post("/timeflow/set-shift/", data);
     return response.data;

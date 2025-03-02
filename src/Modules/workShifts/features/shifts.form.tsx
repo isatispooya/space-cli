@@ -4,7 +4,6 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { Typography, Box } from "@mui/material";
 import useShifts from "../hooks/useShifts";
-
 import { WorkShiftTypes } from "../types";
 import { LoaderLg, Toast } from "@/components";
 import { ShiftSchedule, ShiftList } from "../components";
@@ -156,7 +155,9 @@ const ShiftsForm = () => {
   };
 
   const handleLoadMore = () => {
-    setVisibleItems(visibleItems + 10);
+    if (shifts.length > visibleItems) {
+      setVisibleItems((prev) => prev + 10);
+    }
   };
 
   if (isPending) {
@@ -171,7 +172,6 @@ const ShiftsForm = () => {
         justifyContent: "center",
         alignItems: "flex-start",
         p: 3,
-    
       }}
     >
       <Box sx={{ width: "100%", maxWidth: { xs: "100%", sm: 1000 } }}>
