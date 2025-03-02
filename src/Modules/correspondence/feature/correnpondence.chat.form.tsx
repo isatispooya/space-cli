@@ -36,6 +36,7 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
   onSubmit,
   loading,
   selectedUser,
+  onBackClick,
 }) => {
   const { data: chatData } = useChat.useGetChat();
   const { mutate: createChat } = useChat.useCreateChat();
@@ -45,8 +46,8 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
   const { data: profileData } = useProfile();
 
   useEffect(() => {
-    if (chatData && Array.isArray(chatData)) {
-      const formattedMessages = chatData
+    if (chatData && Array.isArray(chatData) && profileData) {
+      let formattedMessages = chatData
         .map((msg) => ({
           id: msg.id,
           text: msg.message,
@@ -59,10 +60,30 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
           createdAt: new Date(msg.created_at).getTime(),
         }))
         .sort((a, b) => a.createdAt - b.createdAt);
+      
+      if (selectedUser && selectedUser.id) {
+        formattedMessages = chatData
+          .filter(msg => 
+            (msg.sender_details.id.toString() === selectedUser.id && msg.receiver_details.id === profileData?.id) || 
+            (msg.receiver_details.id.toString() === selectedUser.id && msg.sender_details.id === profileData?.id)
+          )
+          .map((msg) => ({
+            id: msg.id,
+            text: msg.message,
+            sender: `${msg.sender_details.first_name} ${msg.sender_details.last_name}`,
+            timestamp: new Date(msg.created_at).toLocaleTimeString("fa-IR", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            isCurrentUser: msg.sender_details.id === profileData?.id,
+            createdAt: new Date(msg.created_at).getTime(),
+          }))
+          .sort((a, b) => a.createdAt - b.createdAt);
+      }
 
       setMessages(formattedMessages);
     }
-  }, [chatData, profileData]);
+  }, [chatData, profileData, selectedUser]);
 
   useEffect(() => {
     scrollToBottom();
@@ -125,31 +146,46 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
     >
       <ChatHeader
         selectedUser={selectedUser ? { name: selectedUser.name } : { name: "" }}
+        onBackClick={onBackClick}
       />
       <Divider />
-      <Box
-        className="flex-grow p-2 sm:p-4 overflow-y-auto"
-        sx={{
-          backgroundColor: "#f8fafc",
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-          padding: { xs: "10px", sm: "15px", md: "20px" },
-        }}
-      >
-        {messages.map((message) => (
-          <MessageItem key={message.id} message={message} />
-        ))}
-        <div ref={messagesEndRef} />
-      </Box>
-      <Divider />
-      <ChatInput
-        newMessage={newMessage}
-        setNewMessage={setNewMessage}
-        handleSendMessage={handleSendMessage}
-        handleKeyPress={handleKeyPress}
-        loading={loading}
-      />
+      {selectedUser ? (
+        <>
+          <Box
+            className="flex-grow p-2 sm:p-4 overflow-y-auto"
+            sx={{
+              backgroundColor: "#f8fafc",
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px)",
+              backgroundSize: "20px 20px",
+              padding: { xs: "10px", sm: "15px", md: "20px" },
+            }}
+          >
+            {messages.length > 0 ? (
+              messages.map((message) => (
+                <MessageItem key={message.id} message={message} />
+              ))
+            ) : (
+              <div className="flex justify-center items-center h-full text-gray-500">
+                هنوز پیامی ارسال نشده است. اولین پیام خود را ارسال کنید.
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </Box>
+          <Divider />
+          <ChatInput
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+            loading={loading}
+          />
+        </>
+      ) : (
+        <div className="flex-grow flex justify-center items-center bg-gray-50 text-gray-500">
+          لطفاً یک کاربر را برای شروع گفتگو انتخاب کنید
+        </div>
+      )}
     </Paper>
   );
 };

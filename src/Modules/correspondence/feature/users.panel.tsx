@@ -28,6 +28,8 @@ const ConversationUsers = ({
   const { data: messages } = useChat.useGetChat();
   const { data: profileData } = useProfile();
   const [showAllUsers, setShowAllUsers] = useState(false);
+  const [positionUsers, setPositionUsers] = useState<any[]>([]);
+  const [searchPositionQuery, setSearchPositionQuery] = useState("");
 
   useEffect(() => {
     if (messages && messages.length > 0 && profileData) {
@@ -96,6 +98,15 @@ const ConversationUsers = ({
     }
   };
 
+  const handlePositionUserClick = (position: any) => {
+    onSelectUser({
+      id: position.user.id.toString(),
+      name: `${position.user.first_name} ${position.user.last_name}`,
+      avatar: undefined,
+    });
+    setShowAllUsers(false);
+  };
+
   const SearchInput = ({
     onChange,
   }: {
@@ -149,6 +160,22 @@ const ConversationUsers = ({
       )}
     </div>
   );
+
+  const filteredPositionUsers = useMemo(() => {
+    if (!positionUsers) return [];
+    
+    return positionUsers.filter((user) => {
+      const fullName = `${user.user.first_name} ${user.user.last_name}`;
+      return fullName.toLowerCase().includes(searchPositionQuery.toLowerCase()) ||
+             user.user.uniqueIdentifier.includes(searchPositionQuery);
+    });
+  }, [positionUsers, searchPositionQuery]);
+
+  useEffect(() => {
+    if (usersData && Array.isArray(usersData)) {
+      setPositionUsers(usersData);
+    }
+  }, [usersData]);
 
   return (
     <div className="user-list-container w-full h-full border-l bg-white shadow-lg rounded-lg transition-all duration-300 hover:shadow-xl flex flex-col relative">
@@ -224,6 +251,9 @@ const ConversationUsers = ({
                 fullWidth
                 variant="outlined"
                 size="small"
+                value={searchPositionQuery}
+                onChange={(e) => setSearchPositionQuery(e.target.value)}
+                placeholder="جستجوی نام یا کد ملی"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -242,24 +272,35 @@ const ConversationUsers = ({
               />
             </div>
             <div className="overflow-y-auto max-h-[50vh] sm:max-h-[60vh] p-2">
-              {users.map((user) => (
+              {filteredPositionUsers.map((position) => (
                 <div
-                  key={user.id}
+                  key={position.id}
                   className="p-2 sm:p-3 hover:bg-gray-100 rounded-lg cursor-pointer flex items-center"
-                  onClick={() => {
-                    handleUserClick(user.id);
-                    setShowAllUsers(false);
-                  }}
+                  onClick={() => handlePositionUserClick(position)}
                 >
-                  <UserAvatar user={user} />
-                  <div className="mr-2 sm:mr-3">
-                    <div className="font-semibold text-sm">{user.name}</div>
-                    <div className="text-xs text-gray-500">
-                      {user.uniqueIdentifier}
+                  <div className="relative">
+                    <div className="avatar w-10 h-10 rounded-full bg-[#5677BC] text-white flex items-center justify-center mr-3">
+                      <span className="text-md font-semibold">
+                        {position.user.first_name.charAt(0)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mr-2 sm:mr-3 flex-1">
+                    <div className="font-semibold text-sm">
+                      {`${position.user.first_name} ${position.user.last_name}`}
+                    </div>
+                    <div className="text-xs text-gray-500 flex justify-between">
+                      <span>{position.user.uniqueIdentifier}</span>
+                      <span className="text-[#5677BC]">{position.name}</span>
                     </div>
                   </div>
                 </div>
               ))}
+              {filteredPositionUsers.length === 0 && (
+                <div className="p-4 text-center text-gray-500">
+                  کاربری یافت نشد
+                </div>
+              )}
             </div>
           </div>
         </div>
