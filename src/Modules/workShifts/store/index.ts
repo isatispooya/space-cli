@@ -1,1 +1,1 @@
-export { default as useShiftsFormStore } from "./shiftsForm.store";
+export { default as shiftsFormSlice } from "./shiftsForm.store";

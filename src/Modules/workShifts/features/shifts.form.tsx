@@ -1,41 +1,55 @@
 import { useEffect } from "react";
 import { DateObject, getAllDatesInRange } from "react-multi-date-picker";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
-import { Typography, Box } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import useShifts from "../hooks/useShifts";
 import { WorkShiftTypes } from "../types";
-import { LoaderLg, Toast } from "@/components";
+import { LoaderLg, NoContent, Toast } from "@/components";
 import { ShiftSchedule, ShiftList } from "../components";
 import { convertToShiftDay } from "../utils";
 import { ErrorResponse } from "@/types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { AxiosError } from "axios";
-import { useShiftsFormStore } from "../store";
+import {
+  createDefaultTimes,
+  validateShiftData,
+  updateShiftField,
+  removeShift,
+} from "../utils";
+
+import {
+  setShiftName,
+  setDates,
+  setShifts,
+  setSearchQuery,
+  setIsSubmitting,
+  setError,
+  setVisibleItems,
+  selectShiftName,
+  selectDates,
+  selectShifts,
+  selectSearchQuery,
+  selectIsSubmitting,
+  selectError,
+  selectVisibleItems,
+} from "../store/shiftsForm.store";
 
 const ShiftsForm = () => {
-  const {
-    shiftName,
-    dates,
-    shifts,
-    setShiftName,
-    setDates,
-    setShifts,
-    searchQuery,
-    setSearchQuery,
-    isSubmitting,
-    setIsSubmitting,
-    error,
-    setError,
-    visibleItems,
-    setVisibleItems,
-  } = useShiftsFormStore();
+  const dispatch = useDispatch();
+
+  // Select state from Redux store
+  const shiftName = useSelector(selectShiftName);
+  const dates = useSelector(selectDates);
+  const shifts = useSelector(selectShifts);
+  const searchQuery = useSelector(selectSearchQuery);
+  const isSubmitting = useSelector(selectIsSubmitting);
+  const error = useSelector(selectError);
+  const visibleItems = useSelector(selectVisibleItems);
 
   const { mutate: createShift, isPending } = useShifts.useCreate();
 
   useEffect(() => {
     if (dates.length === 0) {
-      setShifts([]);
+      dispatch(setShifts([]));
       return;
     }
 
@@ -43,25 +57,7 @@ const ShiftsForm = () => {
       (date as DateObject).format()
     );
 
-    const defaultStartTime = new DateObject({
-      calendar: persian,
-      locale: persian_fa,
-      year: new Date().getFullYear(),
-      month: new Date().getMonth() + 1,
-      day: new Date().getDate(),
-      hour: 8,
-      minute: 0,
-    });
-
-    const defaultEndTime = new DateObject({
-      calendar: persian,
-      locale: persian_fa,
-      year: new Date().getFullYear(),
-      month: new Date().getMonth() + 1,
-      day: new Date().getDate(),
-      hour: 15,
-      minute: 30,
-    });
+    const { defaultStartTime, defaultEndTime } = createDefaultTimes();
 
     const updatedShifts = newDates.map((date) => ({
       date,
@@ -71,11 +67,11 @@ const ShiftsForm = () => {
       isWorkDay: true,
     }));
 
-    setShifts(updatedShifts);
-  }, [dates, shiftName, setShifts]);
+    dispatch(setShifts(updatedShifts));
+  }, [dates, shiftName, dispatch]);
 
   const handleDateChange = (dateObjects: DateObject[]) => {
-    setDates(dateObjects);
+    dispatch(setDates(dateObjects));
   };
 
   const updateShift = (
@@ -86,39 +82,25 @@ const ShiftsForm = () => {
     >,
     value: DateObject | null | boolean
   ) => {
-    const updatedShifts = [...shifts];
-    updatedShifts[index] = {
-      ...updatedShifts[index],
-      [field]: value,
-    };
-    setShifts(updatedShifts);
+    const updatedShifts = updateShiftField(shifts, index, field, value);
+    dispatch(setShifts(updatedShifts));
   };
 
   const deleteShift = (index: number) => {
-    const updatedShifts = shifts.filter((_, i) => i !== index);
-    setShifts(updatedShifts);
+    const updatedShifts = removeShift(shifts, index);
+    dispatch(setShifts(updatedShifts));
     if (updatedShifts.length === 0) {
-      setDates([]);
+      dispatch(setDates([]));
     }
-  };
-
-  const validateShiftData = (
-    shifts: WorkShiftTypes["FormShiftState"][],
-    shiftName: string
-  ): boolean => {
-    return (
-      shifts.every((shift) => shift.startTime && shift.endTime) &&
-      Boolean(shiftName)
-    );
   };
 
   const handleSubmit = async () => {
     try {
-      setIsSubmitting(true);
-      setError(null);
+      dispatch(setIsSubmitting(true));
+      dispatch(setError(null));
 
       if (!validateShiftData(shifts, shiftName)) {
-        setError("لطفاً همه فیلدهای لازم را پر کنید");
+        dispatch(setError("لطفاً همه فیلدهای لازم را پر کنید"));
         return;
       }
 
@@ -131,9 +113,9 @@ const ShiftsForm = () => {
 
       await createShift(shiftPayload, {
         onSuccess: () => {
-          setShiftName("");
-          setDates([]);
-          setShifts([]);
+          dispatch(setShiftName(""));
+          dispatch(setDates([]));
+          dispatch(setShifts([]));
           Toast(
             "شیفت‌ها با موفقیت ثبت شدند",
             <CheckmarkIcon />,
@@ -146,17 +128,19 @@ const ShiftsForm = () => {
         },
       });
     } catch (err: unknown) {
-      setError(
-        "خطایی رخ داد: " + (err instanceof Error ? err.message : String(err))
+      dispatch(
+        setError(
+          "خطایی رخ داد: " + (err instanceof Error ? err.message : String(err))
+        )
       );
     } finally {
-      setIsSubmitting(false);
+      dispatch(setIsSubmitting(false));
     }
   };
 
   const handleLoadMore = () => {
     if (shifts.length > visibleItems) {
-      setVisibleItems((prev) => prev + 10);
+      dispatch(setVisibleItems(visibleItems + 10));
     }
   };
 
@@ -165,51 +149,22 @@ const ShiftsForm = () => {
   }
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        p: 3,
-      }}
-    >
-      <Box sx={{ width: "100%", maxWidth: { xs: "100%", sm: 1000 } }}>
-        <Box
-          sx={{
-            width: "100%",
-            borderRadius: 4,
-            p: 4,
-            mt: 4,
-            bgcolor: "white",
-            boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-          }}
-        >
-          <Typography
-            variant="h5"
-            sx={{
-              color: "#29D2C7",
-              mb: 4,
-              textAlign: "left",
-              fontWeight: 500,
-            }}
-          >
+    <div className="min-h-screen flex justify-center items-start p-3">
+      <div className="w-full max-w-[1000px]">
+        <div className="w-full rounded-2xl p-4 mt-4 bg-white shadow-md">
+          <h2 className="text-[#29D2C7] mb-4 text-left font-medium text-xl">
             برنامه‌ریزی شیفت‌ها
-          </Typography>
+          </h2>
 
           <ShiftSchedule
             shiftName={shiftName}
             dates={dates}
-            onShiftNameChange={setShiftName}
+            onShiftNameChange={(name) => dispatch(setShiftName(name))}
             onDateChange={handleDateChange}
           />
-        </Box>
+        </div>
 
-        {error && (
-          <Typography color="error" sx={{ mt: 2, textAlign: "center" }}>
-            {error}
-          </Typography>
-        )}
+        {error && <NoContent label={error} />}
 
         {shifts.length > 0 && (
           <ShiftList
@@ -218,15 +173,15 @@ const ShiftsForm = () => {
             searchQuery={searchQuery}
             visibleItems={visibleItems}
             shiftName={shiftName}
-            onSearchChange={setSearchQuery}
+            onSearchChange={(query) => dispatch(setSearchQuery(query))}
             onLoadMore={handleLoadMore}
             onDelete={deleteShift}
             onUpdate={updateShift}
             onSubmit={handleSubmit}
           />
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

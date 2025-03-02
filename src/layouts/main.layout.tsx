@@ -10,6 +10,8 @@ interface LayoutProps {
 
 const MainLayout = ({ children }: LayoutProps) => {
   const [isVerifyOpen, setIsVerifyOpen] = useState(true);
+
+  
   return (
     <>
       {isVerifyOpen && <TimeflowVerify onClose={() => setIsVerifyOpen(true)} />}
