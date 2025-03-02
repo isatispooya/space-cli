@@ -3,34 +3,21 @@ import { TextField, InputAdornment, IconButton } from "@mui/material";
 import useChat from "../hooks/useChat";
 import { useProfile } from "@/Modules/userManagment";
 import { server } from "@/api/server";
-
-interface User {
-  id: string;
-  name: string;
-  lastMessage?: string;
-  lastMessageTime?: string;
-  isOnline: boolean;
-  avatar: string | null;
-  uniqueIdentifier: string;
-  profile_image?: string | null;
-}
-
-interface ConversationUsersProps {
-  onSelectUser: (user: { id: string; name: string; avatar?: string; profile_image?: string }) => void;
-  selectedUserId?: string | null;
-}
+import { ChatType } from "../types";
 
 const ConversationUsers = ({
   onSelectUser,
   selectedUserId,
-}: ConversationUsersProps) => {
+}: ChatType["ConversationUsersProps"]) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<ChatType["UserMessageType"][]>([]);
   const { data: usersData } = useChat.useGetUsersByPosition();
   const { data: messages } = useChat.useGetChat();
   const { data: profileData } = useProfile();
   const [showAllUsers, setShowAllUsers] = useState(false);
-  const [positionUsers, setPositionUsers] = useState<any[]>([]);
+  const [positionUsers, setPositionUsers] = useState<
+    ChatType["UserPositionType"][]
+  >([]);
   const [searchPositionQuery, setSearchPositionQuery] = useState("");
 
   useEffect(() => {
@@ -53,7 +40,7 @@ const ConversationUsers = ({
             isOnline: Math.random() > 0.5,
             avatar: null,
             uniqueIdentifier: sender.uniqueIdentifier,
-            profile_image: server+sender.profile_image || null,
+            profile_image: server + sender.profile_image || null,
           });
         }
 
@@ -74,7 +61,9 @@ const ConversationUsers = ({
         }
       });
 
-      const usersList = Array.from(uniqueUsers.values()) as User[];
+      const usersList = Array.from(
+        uniqueUsers.values()
+      ) as ChatType["UserMessageType"][];
       const filteredUsers = profileData.uniqueIdentifier
         ? usersList.filter(
             (user) => user.uniqueIdentifier !== profileData.uniqueIdentifier
@@ -103,7 +92,7 @@ const ConversationUsers = ({
     }
   };
 
-  const handlePositionUserClick = (position: any) => {
+  const handlePositionUserClick = (position: ChatType["UserPositionType"]) => {
     onSelectUser({
       id: position.user.id.toString(),
       name: `${position.user.first_name} ${position.user.last_name}`,
@@ -148,7 +137,7 @@ const ConversationUsers = ({
     />
   );
 
-  const UserAvatar = ({ user }: { user: User }) => (
+  const UserAvatar = ({ user }: { user: ChatType["UserMessageType"] }) => (
     <div className="relative">
       <div className="avatar w-10 h-10 rounded-full bg-[#5677BC] text-white flex items-center justify-center mr-3">
         {user.profile_image ? (
@@ -175,11 +164,13 @@ const ConversationUsers = ({
 
   const filteredPositionUsers = useMemo(() => {
     if (!positionUsers) return [];
-    
+
     return positionUsers.filter((user) => {
       const fullName = `${user.user.first_name} ${user.user.last_name}`;
-      return fullName.toLowerCase().includes(searchPositionQuery.toLowerCase()) ||
-             user.user.uniqueIdentifier.includes(searchPositionQuery);
+      return (
+        fullName.toLowerCase().includes(searchPositionQuery.toLowerCase()) ||
+        user.user.uniqueIdentifier.includes(searchPositionQuery)
+      );
     });
   }, [positionUsers, searchPositionQuery]);
 

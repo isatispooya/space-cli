@@ -1,9 +1,15 @@
-import { useQuery, useMutation, UseQueryResult } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  UseQueryResult,
+  UseMutationResult,
+} from "@tanstack/react-query";
 import { chatService } from "../services";
 import { ChatType } from "../types";
+import { AxiosError } from "axios";
 
 const useChat = {
-  useGetChat: (): UseQueryResult<ChatType[]> => {
+  useGetChat: (): UseQueryResult<ChatType["MessagesType"][]> => {
     return useQuery({
       queryKey: ["chat"],
       queryFn: () => chatService.get(),
@@ -22,16 +28,27 @@ const useChat = {
       queryFn: () => chatService.getById(id),
     });
   },
-  useCreateChat: () => {
+  useCreateChat: (): UseMutationResult<
+    ChatType["postMessegeType"],
+    AxiosError,
+    ChatType["postMessegeType"]
+  > => {
     return useMutation({
       mutationKey: ["chat"],
-      mutationFn: (data: any) => chatService.post(data),
+      mutationFn: (data: ChatType["postMessegeType"]) => chatService.post(data),
     });
   },
-  useUpdateChat: (id: number) => {
+  useUpdateChat: (
+    id: number
+  ): UseMutationResult<
+    ChatType["postMessegeType"],
+    AxiosError,
+    ChatType["postMessegeType"]
+  > => {
     return useMutation({
       mutationKey: ["chat", id],
-      mutationFn: (data: any) => chatService.patch(id, data),
+      mutationFn: (data: ChatType["postMessegeType"]) =>
+        chatService.patch(id, data),
     });
   },
 };

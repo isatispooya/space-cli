@@ -3,7 +3,16 @@ import { Box, Typography } from "@mui/material";
 
 import { Avatar } from "@mui/material";
 
-const ChatHeader = ({ selectedUser }: { selectedUser: { name: string } }) => (
+interface ChatHeaderProps {
+  selectedUser: {
+    name: string;
+    profile_image?: string | null;
+  };
+  onBackClick?: () => void;
+  isFullUrl?: boolean;
+}
+
+const ChatHeader = ({ selectedUser }: ChatHeaderProps) => (
   <Box
     className="text-white p-4 flex items-center justify-between"
     sx={{

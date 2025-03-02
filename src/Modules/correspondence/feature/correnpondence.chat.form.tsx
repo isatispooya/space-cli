@@ -6,34 +6,9 @@ import ChatHeader from "../components/chatHeader";
 import MessageItem from "../components/itemMessage";
 import ChatInput from "../components/chatInputs";
 import useProfile from "@/Modules/userManagment/hooks/useProfile";
-import { server } from "@/api/server";
+import { ChatType } from "../types";
 
-interface Message {
-  id: number;
-  text: string;
-  sender: string;
-  timestamp: string;
-  isCurrentUser: boolean;
-  createdAt: number;
-}
-
-interface CorrespondenceTypes {
-  content: string;
-  receiver?: string;
-  message?: string;
-}
-
-interface CorrespondenceChatFormProps {
-  onSubmit: (
-    values: CorrespondenceTypes,
-    actions: FormikHelpers<CorrespondenceTypes>
-  ) => void;
-  loading: boolean;
-  selectedUser?: { id: string; name: string; avatar?: string; };
-  onBackClick?: () => void;
-}
-
-const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
+const CorrespondenceChatForm: React.FC<ChatType["ChatFormProps"]> = ({
   onSubmit,
   loading,
   selectedUser,
@@ -41,14 +16,12 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
 }) => {
   const { data: chatData } = useChat.useGetChat();
   const { mutate: createChat } = useChat.useCreateChat();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<ChatType["SingleMessageType"][]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: profileData } = useProfile();
 
-
   console.log(selectedUser);
-  
 
   useEffect(() => {
     if (chatData && Array.isArray(chatData) && profileData) {
@@ -65,12 +38,15 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
           createdAt: new Date(msg.created_at).getTime(),
         }))
         .sort((a, b) => a.createdAt - b.createdAt);
-      
+
       if (selectedUser && selectedUser.id) {
         formattedMessages = chatData
-          .filter(msg => 
-            (msg.sender_details.id.toString() === selectedUser.id && msg.receiver_details.id === profileData?.id) || 
-            (msg.receiver_details.id.toString() === selectedUser.id && msg.sender_details.id === profileData?.id)
+          .filter(
+            (msg) =>
+              (msg.sender_details.id.toString() === selectedUser.id &&
+                msg.receiver_details.id === profileData?.id) ||
+              (msg.receiver_details.id.toString() === selectedUser.id &&
+                msg.sender_details.id === profileData?.id)
           )
           .map((msg) => ({
             id: msg.id,
@@ -101,7 +77,7 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
   const handleSendMessage = () => {
     if (newMessage.trim() === "" || loading) return;
 
-    const newMsg: Message = {
+    const newMsg: ChatType["SingleMessageType"] = {
       id: messages.length > 0 ? Math.max(...messages.map((m) => m.id)) + 1 : 1,
       text: newMessage,
       sender: "کاربر",
@@ -115,9 +91,9 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
 
     setMessages([...messages, newMsg]);
 
-    const messageData: CorrespondenceTypes = {
+    const messageData: ChatType["postMessegeType"] = {
       content: newMessage,
-      receiver: selectedUser?.id,
+      receiver: selectedUser?.id ? parseInt(selectedUser.id) : 0,
       message: newMessage,
     };
 
@@ -129,7 +105,7 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
 
     onSubmit(messageData, {
       resetForm: () => setNewMessage(""),
-    } as FormikHelpers<CorrespondenceTypes>);
+    } as FormikHelpers<ChatType["postMessegeType"]>);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -150,10 +126,7 @@ const CorrespondenceChatForm: React.FC<CorrespondenceChatFormProps> = ({
       }}
     >
       <ChatHeader
-        selectedUser={selectedUser ? { 
-          name: selectedUser.name,
-          profile_image: selectedUser.profile_image || null,
-        } : { name: "" }}
+        selectedUser={selectedUser ? { name: selectedUser.name } : { name: "" }}
         onBackClick={onBackClick}
         isFullUrl={true}
       />

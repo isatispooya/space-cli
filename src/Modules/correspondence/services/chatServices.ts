@@ -1,7 +1,8 @@
 import { api } from "../../../api";
+import { ChatType } from "../types";
 
 const ChatServices = {
-  get: async () => {
+  get: async (): Promise<ChatType["MessagesType"][]> => {
     const response = await api.get("/correspondence/chat/");
     return response.data;
   },
@@ -13,11 +14,11 @@ const ChatServices = {
     const response = await api.get("/positions/list-of-position/");
     return response.data;
   },
-  post: async (data: any) => {
+  post: async (data: ChatType["postMessegeType"]) => {
     const response = await api.post("/correspondence/chat/", data);
     return response.data;
   },
-  patch: async (id: number, data: any) => {
+  patch: async (id: number, data: ChatType["postMessegeType"]) => {
     const response = await api.patch(`/correspondence/chat/${id}/`, data);
     return response.data;
   },
