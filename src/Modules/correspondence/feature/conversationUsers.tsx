@@ -213,17 +213,25 @@ const ConversationUsers = ({
           <div className="bg-white rounded-lg w-96 max-h-[80vh] overflow-hidden shadow-2xl transform transition-all">
             <div className="bg-gradient-to-r from-[#5677BC] to-[#5677BC] p-4 text-white flex justify-between items-center">
               <h3 className="text-xl font-bold">لیست تمام کاربران</h3>
+              <IconButton
+                onClick={() => setShowAllUsers(false)}
+                className="text-white hover:bg-[#4A67A6] transition-all"
+                size="small"
+              >
+                <span className="material-icons text-white">x</span>
+              </IconButton>
             </div>
             <div className="p-4">
               <TextField
                 fullWidth
                 variant="outlined"
                 size="small"
-                placeholder="جستجوی کاربر..."
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <span className="material-icons text-gray-400">search</span>
+                      <span className="material-icons text-gray-400">
+                        جستجو
+                      </span>
                     </InputAdornment>
                   ),
                 }}
@@ -248,7 +256,9 @@ const ConversationUsers = ({
                   <UserAvatar user={user} />
                   <div className="mr-3">
                     <div className="font-semibold">{user.name}</div>
-                    <div className="text-xs text-gray-500">{user.uniqueIdentifier}</div>
+                    <div className="text-xs text-gray-500">
+                      {user.uniqueIdentifier}
+                    </div>
                   </div>
                 </div>
               ))}
