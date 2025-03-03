@@ -23,7 +23,10 @@ const EditShareholdForm: React.FC = () => {
 
   const validationSchema = yup.object().shape({
     id: yup.number().required(),
-    precedence_count: yup.number().required("تعداد سهام الزامی است"),
+    used_precedence: yup.number().optional(),
+    precedence_count: yup.number().optional(),
+    precedence_used: yup.number().optional(),
+    precedence: yup.number().optional(),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
     company: yup.string().required("نام شرکت الزامی است"),
     user: yup.number().required("کاربر الزامی است"),
@@ -38,7 +41,6 @@ const EditShareholdForm: React.FC = () => {
     updated_at: yup.string().optional(),
     created_at: yup.string().optional(),
     name: yup.string().required("نام الزامی است"),
-    precedence: yup.number().optional(),
   }) as yup.ObjectSchema<ShareholdersTypes>;
 
   const formFields = [
