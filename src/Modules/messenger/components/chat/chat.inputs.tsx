@@ -1,6 +1,7 @@
 import { Button, TextField, Box } from "@mui/material";
 import { FaPaperPlane, FaPaperclip } from "react-icons/fa";
 import { ChatType } from "../../types";
+import { motion } from "framer-motion";
 
 const ChatInput = ({
   newMessage,
@@ -73,10 +74,11 @@ const ChatInput = ({
           className="rounded-full flex items-center justify-center"
           sx={{
             bgcolor: "#5677BC",
-            width: "48px",
-            height: "48px",
-            minWidth: "48px",
+            width: { xs: "42px", sm: "48px" },
+            height: { xs: "42px", sm: "48px" },
+            minWidth: { xs: "42px", sm: "48px" },
             borderRadius: "50%",
+            ml: { xs: 1, sm: 2 },
             "&:hover": {
               bgcolor: "#02205F",
               transform: "translateY(-2px) scale(1.05)",
@@ -86,11 +88,27 @@ const ChatInput = ({
           }}
           onClick={handleSendMessage}
           disabled={newMessage.trim() === "" || loading}
+          component={motion.button}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          whileTap={{ scale: 0.95 }}
         >
           {loading ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <motion.div
+              className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            />
           ) : (
-            <FaPaperPlane className="text-sm" />
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 500 }}
+            >
+              <FaPaperPlane className="text-sm" />
+            </motion.div>
           )}
         </Button>
       </Box>

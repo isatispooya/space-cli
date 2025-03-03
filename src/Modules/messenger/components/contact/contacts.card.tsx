@@ -12,7 +12,7 @@ const ContactsCard = ({
   selectedUserId: string | null | undefined;
   handleUserClick: (userId: string) => void;
 }) => {
-  console.log(userProfileData);
+
 
   const { mutate: updateSeen } = useChat.useUpdateSeen();
   const { data: messages } = useChat.useGetChat();

@@ -13,7 +13,7 @@ interface ChatHeaderProps {
 }
 
 const ChatHeader = ({ selectedUser }: ChatHeaderProps) => {
-  console.log(selectedUser);
+  
 
   return (
     <Box
