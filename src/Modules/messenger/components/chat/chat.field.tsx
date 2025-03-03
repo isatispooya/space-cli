@@ -20,6 +20,7 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: profileData } = useProfile();
+  const { mutate: uploadAttachment } = useChat.useAttachment();
 
   useEffect(() => {
     if (chatData && Array.isArray(chatData) && profileData) {
