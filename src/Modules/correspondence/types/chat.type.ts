@@ -14,6 +14,15 @@ export interface sender_details {
   uniqueIdentifier: string;
   profile_image: string | null;
 }
+
+export interface ChatStateTypes {
+  selectedUserId: string | null;
+  showAllUsers: boolean;
+  searchQuery: string;
+  searchPositionQuery: string;
+  users: ChatType["UserMessageType"][];
+  positionUsers: ChatType["UserPositionType"][];
+}
 export interface MessagesType {
   attach: File | null;
   created_at: string;
@@ -98,7 +107,7 @@ export type ChatType = {
   ConversationUsersProps: ConversationUsersProps;
   SingleMessageType: SingleMessageType;
   ChatFormProps: ChatFormProps;
-
+  ChatStateTypes: ChatStateTypes;
 };
 
 export default ChatType;

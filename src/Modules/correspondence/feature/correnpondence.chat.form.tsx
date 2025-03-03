@@ -14,14 +14,12 @@ const CorrespondenceChatForm: React.FC<ChatType["ChatFormProps"]> = ({
   selectedUser,
   onBackClick,
 }) => {
-  const { data: chatData } = useChat.useGetChat();
+  const { data: chatData, refetch } = useChat.useGetChat();
   const { mutate: createChat } = useChat.useCreateChat();
   const [messages, setMessages] = useState<ChatType["SingleMessageType"][]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: profileData } = useProfile();
-
-  console.log(selectedUser);
 
   useEffect(() => {
     if (chatData && Array.isArray(chatData) && profileData) {
@@ -100,12 +98,14 @@ const CorrespondenceChatForm: React.FC<ChatType["ChatFormProps"]> = ({
     createChat(messageData, {
       onSuccess: () => {
         setNewMessage("");
+        refetch();
       },
     });
 
     onSubmit(messageData, {
       resetForm: () => setNewMessage(""),
     } as FormikHelpers<ChatType["postMessegeType"]>);
+    refetch();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
