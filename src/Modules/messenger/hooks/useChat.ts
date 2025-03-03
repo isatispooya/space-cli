@@ -13,9 +13,9 @@ const useChat = {
     return useQuery({
       queryKey: ["chat"],
       queryFn: () => chatService.get(),
+      refetchInterval: 10000,
     });
   },
-
   useGetUsersByPosition: () => {
     return useQuery({
       queryKey: ["users"],
@@ -36,6 +36,27 @@ const useChat = {
     return useMutation({
       mutationKey: ["chat"],
       mutationFn: (data: ChatType["postMessegeType"]) => chatService.post(data),
+    });
+  },
+  useAttachment: (): UseMutationResult<any, AxiosError, any> => {
+    return useMutation({
+      mutationKey: ["attachment"],
+      mutationFn: async (data: any) => {
+        // Create a new FormData object
+        const formData = new FormData();
+
+        // Append data to FormData
+        if (typeof data === "object" && data !== null) {
+          Object.keys(data).forEach((key) => {
+            formData.append(key, data[key]);
+          });
+        } else {
+          formData.append("file", data);
+        }
+
+        // Pass FormData to the postAttachment function
+        return chatService.postAttachment(formData);
+      },
     });
   },
   useUpdateChat: (

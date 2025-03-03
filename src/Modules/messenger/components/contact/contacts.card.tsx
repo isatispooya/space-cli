@@ -12,8 +12,6 @@ const ContactsCard = ({
   selectedUserId: string | null | undefined;
   handleUserClick: (userId: string) => void;
 }) => {
-
-
   const { mutate: updateSeen } = useChat.useUpdateSeen();
   const { data: messages } = useChat.useGetChat();
   const { data: profileData } = useProfile();
@@ -24,24 +22,30 @@ const ContactsCard = ({
     // Get current user's uniqueIdentifier
     const currentUserUniqueId = profileData.uniqueIdentifier;
 
-    return messages.some(
-      (message) =>
-        // Check if message is for this user
-        message.receiver === parseInt(userId) &&
-        // Check if message is unseen
-        !message.seen &&
-        // Check if sender is NOT the current user
-        message.sender_details?.uniqueIdentifier !== currentUserUniqueId
-    );
+    return messages.some((message) => {
+      // Check if this message is from the selected user to the current user
+      const isMessageFromThisUser = message.sender === parseInt(userId);
+      // Check if message is to the current user
+      const isMessageToCurrentUser =
+        message.receiver_details?.uniqueIdentifier === currentUserUniqueId;
+      // Check if message is unseen
+      const isUnseen = !message.seen;
+
+      return isMessageFromThisUser && isMessageToCurrentUser && isUnseen;
+    });
   };
 
   const handleUserSelection = (userId: string) => {
+    // Call the original handleUserClick
     handleUserClick(userId);
 
-    updateSeen({
-      seen: true,
-      sender_id: parseInt(userId),
-    });
+    // Mark messages from this user as seen
+    if (profileData) {
+      updateSeen({
+        seen: true,
+        sender_id: parseInt(userId),
+      });
+    }
   };
 
   return (

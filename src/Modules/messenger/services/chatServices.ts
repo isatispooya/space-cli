@@ -18,6 +18,31 @@ const ChatServices = {
     const response = await api.post("/correspondence/chat/", data);
     return response.data;
   },
+
+  postAttachment: async (data: any) => {
+    // Create a new FormData object
+    const formData = new FormData();
+
+    // Append data to FormData
+    // If data is an object, loop through its properties
+    if (typeof data === "object" && data !== null) {
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+    } else {
+      // If data is a single value, append it with a default key
+      formData.append("file", data);
+    }
+
+    // Make the POST request with FormData
+    const response = await api.post("/correspondence/attache/", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  },
   patch: async (id: number, data: ChatType["postMessegeType"]) => {
     const response = await api.patch(`/correspondence/chat/${id}/`, data);
     return response.data;

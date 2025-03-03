@@ -15,6 +15,12 @@ export interface sender_details {
   profile_image: string | null;
 }
 
+export interface postAttachmentType {
+  attachment: File;
+  receiver: number;
+  message: string;
+}
+
 export interface ChatStateTypes {
   selectedUserId: string | null;
   showAllUsers: boolean;
