@@ -5,7 +5,7 @@ import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../Modules/dashboard/pages/dashboard.page";
 import { CompanyRoutes } from "../Modules/companies/routes/company.route";
 import { UserManagementRoutes } from "../Modules/userManagment/routes";
-import { CorrespondenceRoutes } from "../Modules/correspondence";
+import MessengerRoutes from "../Modules/messenger/routes/messenger.route";
 import { PositionRoutes } from "../Modules/positions/routes";
 import ShareholdersRoutes from "../Modules/shareholdrs/routes/shareholders.route";
 import { GroupsRoutes, PermissionRoutes } from "../Modules/permissions";
@@ -41,7 +41,7 @@ const ExistingRoutes = [
   ...CompanyRoutes,
   ...LoginRoutes,
   ...UserManagementRoutes,
-  ...CorrespondenceRoutes,
+  ...MessengerRoutes,
   ...PositionRoutes,
   ...ShareholdersRoutes,
   ...PermissionRoutes,

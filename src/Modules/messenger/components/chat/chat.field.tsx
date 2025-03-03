@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Paper, Box, Divider } from "@mui/material";
 import { FormikHelpers } from "formik";
-import useChat from "../hooks/useChat";
-import ChatHeader from "../components/chatHeader";
-import MessageItem from "../components/itemMessage";
-import ChatInput from "../components/chatInputs";
+import useChat from "../../hooks/useChat";
+import ChatHeader from "./chat.header";
+import MessageItem from "./chat.bubble";
+import ChatInput from "./chat.inputs";
 import useProfile from "@/Modules/userManagment/hooks/useProfile";
-import { ChatType } from "../types";
+import { ChatType } from "../../types";
 
-const CorrespondenceChatForm: React.FC<ChatType["ChatFormProps"]> = ({
+const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   onSubmit,
   loading,
   selectedUser,
@@ -172,4 +172,4 @@ const CorrespondenceChatForm: React.FC<ChatType["ChatFormProps"]> = ({
   );
 };
 
-export default CorrespondenceChatForm;
+export default MessageField;

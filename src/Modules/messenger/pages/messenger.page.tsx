@@ -1,7 +1,7 @@
 import { MainLayout } from "../../../layouts";
-import Conversation from "../feature/conversation.field";
+import Conversation from "../feature/chat.feat";
 
-const ConversationPage = () => {
+const MessengerPage = () => {
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
@@ -23,4 +23,4 @@ const ConversationPage = () => {
   );
 };
 
-export default ConversationPage;
+export default MessengerPage;

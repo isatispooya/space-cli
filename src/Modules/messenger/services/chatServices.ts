@@ -22,6 +22,13 @@ const ChatServices = {
     const response = await api.patch(`/correspondence/chat/${id}/`, data);
     return response.data;
   },
+  patchSeen: async (sender_id: number, data: ChatType["postSeenType"]) => {
+    const response = await api.patch(
+      `/correspondence/seen-chat/${sender_id}/`,
+      data
+    );
+    return response.data;
+  },
 };
 
 export default ChatServices;

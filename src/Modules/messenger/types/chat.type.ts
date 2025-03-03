@@ -62,6 +62,11 @@ export interface postMessegeType {
   message: string;
 }
 
+export interface postSeenType {
+  seen: boolean;
+  sender_id: number;
+}
+
 export interface UserMessageType {
   id: string;
   name: string;
@@ -71,6 +76,34 @@ export interface UserMessageType {
   avatar: string | null;
   uniqueIdentifier: string;
   profile_image: string | null;
+}
+
+export interface MessageBubbleProps {
+  message: {
+    isCurrentUser: boolean;
+    sender: string;
+    text: string;
+    timestamp: string;
+  };
+}
+
+export interface ChatInputProps {
+  newMessage: string;
+  setNewMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  loading: boolean;
+}
+
+export interface NewMessagePopupProps {
+  onSelectUser: (user: { id: string; name: string; avatar?: string }) => void;
+  showAllUsers: boolean;
+  setShowAllUsers: (show: boolean) => void;
+  searchPositionQuery: string;
+  setSearchPositionQuery: (query: string) => void;
+  filteredPositionUsers: ChatType["UserPositionType"][];
+  handlePositionUserClick: (user: ChatType["UserPositionType"]) => void;
+  positionUsers: ChatType["UserPositionType"][];
 }
 
 export interface UserPositionType {
@@ -108,6 +141,10 @@ export type ChatType = {
   SingleMessageType: SingleMessageType;
   ChatFormProps: ChatFormProps;
   ChatStateTypes: ChatStateTypes;
+  postSeenType: postSeenType;
+  MessageBubbleProps: MessageBubbleProps;
+  ChatInputProps: ChatInputProps;
+  NewMessagePopupProps: NewMessagePopupProps;
 };
 
 export default ChatType;

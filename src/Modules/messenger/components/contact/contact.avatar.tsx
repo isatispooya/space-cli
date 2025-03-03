@@ -1,6 +1,6 @@
-import { ChatType } from "../types";
+import { ChatType } from "../../types";
 
-const UserAvatar = ({ user }: { user: ChatType["UserMessageType"] }) => {
+const ContactAvatar = ({ user }: { user: ChatType["UserMessageType"] }) => {
   return (
     <>
       <div className="relative">
@@ -29,4 +29,4 @@ const UserAvatar = ({ user }: { user: ChatType["UserMessageType"] }) => {
   );
 };
 
-export default UserAvatar;
+export default ContactAvatar;

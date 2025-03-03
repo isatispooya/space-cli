@@ -1,15 +1,7 @@
 import { Avatar, Box, Typography } from "@mui/material";
+import { ChatType } from "../../types";
 
-interface MessageProps {
-  message: {
-    isCurrentUser: boolean;
-    sender: string;
-    text: string;
-    timestamp: string;
-  }
-}
-
-const MessageItem = ({ message }: MessageProps) => (
+const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => (
   <Box
     className={`flex mb-4 ${
       message.isCurrentUser ? "justify-end" : "justify-start"
@@ -98,4 +90,4 @@ const MessageItem = ({ message }: MessageProps) => (
   </Box>
 );
 
-export default MessageItem;
+export default MessageBubble;

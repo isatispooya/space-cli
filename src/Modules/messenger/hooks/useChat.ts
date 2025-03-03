@@ -51,6 +51,17 @@ const useChat = {
         chatService.patch(id, data),
     });
   },
+  useUpdateSeen: (): UseMutationResult<
+    ChatType["postSeenType"],
+    AxiosError,
+    ChatType["postSeenType"]
+  > => {
+    return useMutation({
+      mutationKey: ["chat"],
+      mutationFn: (data: ChatType["postSeenType"]) =>
+        chatService.patchSeen(data.sender_id, data),
+    });
+  },
 };
 
 export default useChat;
