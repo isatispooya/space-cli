@@ -12,6 +12,9 @@ interface ShareHoldersNewTypes {
   };
   number_of_shares: number;
   precedence_count: number;
+  used_precedence: number;
+  precedence: string;
+
 }
 
 export default ShareHoldersNewTypes;

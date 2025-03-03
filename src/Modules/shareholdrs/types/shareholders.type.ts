@@ -7,6 +7,8 @@ export interface ShareholdersTypes {
   precedence_count?: number;
   uniqueIdentifier?: string;
   capital_increase_payment?: number | [];
+  precedence_used?: number;
+  used_precedence?:number;
   precedence?: number;
   updated_at?: string;
   created_at?: string;
