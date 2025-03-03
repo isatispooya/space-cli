@@ -20,7 +20,8 @@ const ShareholdTable: React.FC = () => {
     last_name: row.user_detail.last_name,
     uniqueIdentifier: row.user_detail.uniqueIdentifier,
     number_of_shares: row.number_of_shares,
-    precedence_count: row.precedence_count,
+    precedence_count: row.precedence,
+    precedence_used: row.used_precedence,
   }));
 
   const columns = (): ColumnDefinition[] => [
@@ -52,6 +53,12 @@ const ShareholdTable: React.FC = () => {
     {
       field: "precedence_count",
       title: "حق تقدم",
+      headerFilter: true,
+    },
+
+    {
+      field: "precedence_used",
+      title: "حق تقدم استفاده شده",
       headerFilter: true,
     },
 
@@ -136,18 +143,32 @@ const ShareholdTable: React.FC = () => {
           <div class="container">
             <h1>اطلاعات سهامدار</h1>
             <table>
-              <tr><th>شرکت</th><td>${rowData.company || "-"}</td></tr>
+              <tr><th>شرکت</th><td>${
+                rowData.company || rowData.company_detail?.name || "-"
+              }</td></tr>
               <tr><th>تعداد سهام</th><td>${
                 rowData.number_of_shares || "0"
               }</td></tr>
-              <tr><th>نام</th><td>${rowData.first_name || "-"}</td></tr>
-              <tr><th>نام خانوادگی</th><td>${rowData.last_name || "-"}</td></tr>
-              <tr><th>کدملی</th><td>${rowData.uniqueIdentifier || "-"}</td></tr>
-              <tr><th>حق تقدم</th><td>${rowData.precedence || "0"}</td></tr>
+              <tr><th>نام</th><td>${
+                rowData.first_name || rowData.user_detail?.first_name || "-"
+              }</td></tr>
+              <tr><th>نام خانوادگی</th><td>${
+                rowData.last_name || rowData.user_detail?.last_name || "-"
+              }</td></tr>
+              <tr><th>کدملی</th><td>${
+                rowData.uniqueIdentifier ||
+                rowData.user_detail?.uniqueIdentifier ||
+                "-"
+              }</td></tr>
+              <tr><th>حق تقدم</th><td>${
+                rowData.precedence_count || rowData.precedence || "0"
+              }</td></tr>
               <tr><th>حق تقدم استفاده شده</th><td>${
-                Array.isArray(rowData.precedence_count)
-                  ? "ندارد"
-                  : rowData.precedence_count || "0"
+                rowData.precedence_used !== undefined
+                  ? rowData.precedence_used
+                  : rowData.used_precedence !== undefined
+                  ? rowData.used_precedence
+                  : "0"
               }</td></tr>
             </table>
             <div class="footer">
@@ -216,10 +237,17 @@ const ShareholdTable: React.FC = () => {
 
   const ExelData = (item: ShareholdersTypes) => ({
     "نام شرکت": item.company_detail?.name || item.company,
-    "نوع شرکت": item.company_detail?.company_type || "-",
     "تعداد سهام": item.number_of_shares || 0,
     نام: item.user_detail?.first_name || item.first_name,
     "نام خانوادگی": item.user_detail?.last_name || item.last_name,
+    کدملی: item.user_detail?.uniqueIdentifier || item.uniqueIdentifier || "-",
+    "حق تقدم": item.precedence || item.precedence_count || 0,
+    "حق تقدم استفاده شده":
+      item.used_precedence !== undefined
+        ? item.used_precedence
+        : item.precedence_used !== undefined
+        ? item.precedence_used
+        : 0,
   });
 
   return (
