@@ -42,19 +42,30 @@ const useChat = {
     return useMutation({
       mutationKey: ["attachment"],
       mutationFn: async (data: any) => {
-        // Create a new FormData object
+        // اگر data از نوع FormData است، مستقیماً آن را ارسال کنید
+        if (data instanceof FormData) {
+          return chatService.postAttachment(data);
+        }
+
+        // در غیر این صورت، یک FormData جدید ایجاد کنید
         const formData = new FormData();
 
-        // Append data to FormData
+        // اضافه کردن داده‌ها به FormData
         if (typeof data === "object" && data !== null) {
           Object.keys(data).forEach((key) => {
-            formData.append(key, data[key]);
+            // اگر مقدار آرایه است، هر عنصر را با همان کلید اضافه کنید
+            if (Array.isArray(data[key])) {
+              data[key].forEach((item: any) => {
+                formData.append(key, item);
+              });
+            } else {
+              formData.append(key, data[key]);
+            }
           });
         } else {
           formData.append("file", data);
         }
 
-        // Pass FormData to the postAttachment function
         return chatService.postAttachment(formData);
       },
     });

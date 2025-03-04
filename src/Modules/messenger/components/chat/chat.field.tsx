@@ -21,6 +21,8 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: profileData } = useProfile();
   const { mutate: uploadAttachment } = useChat.useAttachment();
+  const [files, setFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (chatData && Array.isArray(chatData) && profileData) {
@@ -73,40 +75,85 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFiles = Array.from(e.target.files);
+      setFiles(selectedFiles);
+    }
+  };
+
+  const handleFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
   const handleSendMessage = () => {
-    if (newMessage.trim() === "" || loading) return;
+    if ((newMessage.trim() === "" && files.length === 0) || loading) return;
 
-    const newMsg: ChatType["SingleMessageType"] = {
-      id: messages.length > 0 ? Math.max(...messages.map((m) => m.id)) + 1 : 1,
-      text: newMessage,
-      sender: "کاربر",
-      timestamp: new Date().toLocaleTimeString("fa-IR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      isCurrentUser: true,
-      createdAt: new Date().getTime(),
-    };
+    if (files.length > 0) {
+      const formData = new FormData();
 
-    setMessages([...messages, newMsg]);
+      formData.append("message", newMessage);
+      formData.append("receiver", selectedUser?.id ? selectedUser.id : "0");
 
-    const messageData: ChatType["postMessegeType"] = {
-      content: newMessage,
-      receiver: selectedUser?.id ? parseInt(selectedUser.id) : 0,
-      message: newMessage,
-    };
+      files.forEach((file) => {
+        formData.append("file", file);
+      });
 
-    createChat(messageData, {
-      onSuccess: () => {
-        setNewMessage("");
-        refetch();
-      },
-    });
+      uploadAttachment(formData, {
+        onSuccess: () => {
+          setFiles([]);
+          setNewMessage("");
+          refetch();
+        },
+        onError: (error) => {
+          console.error("خطا در آپلود فایل:", error);
+        },
+      });
 
-    onSubmit(messageData, {
-      resetForm: () => setNewMessage(""),
-    } as FormikHelpers<ChatType["postMessegeType"]>);
-    refetch();
+      if (newMessage.trim() === "") {
+        scrollToBottom();
+        return;
+      }
+    }
+
+    if (newMessage.trim() !== "" && files.length === 0) {
+      const newMsg: ChatType["SingleMessageType"] = {
+        id:
+          messages.length > 0 ? Math.max(...messages.map((m) => m.id)) + 1 : 1,
+        text: newMessage,
+        sender: "کاربر",
+        timestamp: new Date().toLocaleTimeString("fa-IR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        isCurrentUser: true,
+        createdAt: new Date().getTime(),
+      };
+
+      setMessages([...messages, newMsg]);
+
+      const messageData: ChatType["postMessegeType"] = {
+        content: newMessage,
+        receiver: selectedUser?.id ? parseInt(selectedUser.id) : 0,
+        message: newMessage,
+      };
+
+      createChat(messageData, {
+        onSuccess: () => {
+          setNewMessage("");
+          refetch();
+        },
+        onError: (error) => {
+          console.error("خطا در ارسال پیام:", error);
+        },
+      });
+
+      onSubmit(messageData, {
+        resetForm: () => setNewMessage(""),
+      } as FormikHelpers<ChatType["postMessegeType"]>);
+    }
+
+    scrollToBottom();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -156,12 +203,46 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
             <div ref={messagesEndRef} />
           </Box>
           <Divider />
+          <input
+            type="file"
+            multiple
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          {files.length > 0 && (
+            <Box
+              className="p-2 bg-blue-50 flex flex-wrap gap-2"
+              sx={{
+                borderTop: "1px solid rgba(0,0,0,0.05)",
+              }}
+            >
+              {files.map((file, index) => (
+                <div
+                  key={index}
+                  className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs flex items-center"
+                >
+                  {file.name}
+                  <button
+                    className="ml-1 text-blue-600 hover:text-blue-800"
+                    onClick={() =>
+                      setFiles(files.filter((_, i) => i !== index))
+                    }
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </Box>
+          )}
           <ChatInput
             newMessage={newMessage}
             setNewMessage={setNewMessage}
             handleSendMessage={handleSendMessage}
             handleKeyPress={handleKeyPress}
             loading={loading}
+            handleFileUpload={handleFileUpload}
+            filesCount={files.length}
           />
         </>
       ) : (

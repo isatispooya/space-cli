@@ -19,29 +19,25 @@ const ChatServices = {
     return response.data;
   },
 
-  postAttachment: async (data: any) => {
-    // Create a new FormData object
-    const formData = new FormData();
+  postAttachment: async (data: FormData) => {
+    try {
+      // اگر data از نوع FormData نیست، یک خطا پرتاب کنید
+      if (!(data instanceof FormData)) {
+        throw new Error("داده باید از نوع FormData باشد");
+      }
 
-    // Append data to FormData
-    // If data is an object, loop through its properties
-    if (typeof data === "object" && data !== null) {
-      Object.keys(data).forEach((key) => {
-        formData.append(key, data[key]);
+      // ارسال درخواست با FormData
+      const response = await api.post("/correspondence/attache/", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-    } else {
-      // If data is a single value, append it with a default key
-      formData.append("file", data);
+
+      return response.data;
+    } catch (error) {
+      console.error("خطا در ارسال فایل:", error);
+      throw error;
     }
-
-    // Make the POST request with FormData
-    const response = await api.post("/correspondence/attache/", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    return response.data;
   },
   patch: async (id: number, data: ChatType["postMessegeType"]) => {
     const response = await api.patch(`/correspondence/chat/${id}/`, data);

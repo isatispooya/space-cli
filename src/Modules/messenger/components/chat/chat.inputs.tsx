@@ -9,6 +9,8 @@ const ChatInput = ({
   handleSendMessage,
   handleKeyPress,
   loading,
+  handleFileUpload,
+  filesCount,
 }: ChatType["ChatInputProps"]) => {
   return (
     <>
@@ -25,6 +27,7 @@ const ChatInput = ({
           variant="text"
           className="ml-2 text-gray-600 hover:bg-gray-100 rounded-full p-2"
           disabled={loading}
+          onClick={handleFileUpload}
           sx={{
             minWidth: "40px",
             height: "40px",
@@ -37,7 +40,14 @@ const ChatInput = ({
             },
           }}
         >
-          <FaPaperclip className="text-gray-500" />
+          <FaPaperclip
+            className={filesCount > 0 ? "text-blue-500" : "text-gray-500"}
+          />
+          {filesCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              {filesCount}
+            </span>
+          )}
         </Button>
         <TextField
           fullWidth
@@ -87,7 +97,7 @@ const ChatInput = ({
             transition: "all 0.2s ease",
           }}
           onClick={handleSendMessage}
-          disabled={newMessage.trim() === "" || loading}
+          disabled={(newMessage.trim() === "" && filesCount === 0) || loading}
           component={motion.button}
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
