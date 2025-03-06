@@ -1,7 +1,16 @@
 import { Button, TextField, Box } from "@mui/material";
 import { FaPaperPlane, FaPaperclip } from "react-icons/fa";
-import { ChatType } from "../../types";
 import { motion } from "framer-motion";
+
+interface ChatInputProps {
+  newMessage: string;
+  setNewMessage: React.Dispatch<React.SetStateAction<string>>;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+  loading: boolean;
+  handleFileUpload: () => void;
+  filesCount: number;
+}
 
 const ChatInput = ({
   newMessage,
@@ -11,7 +20,7 @@ const ChatInput = ({
   loading,
   handleFileUpload,
   filesCount,
-}: ChatType["ChatInputProps"]) => {
+}: ChatInputProps) => {
   return (
     <>
       <Box
