@@ -1,8 +1,9 @@
 import { useState } from "react";
-import ConversationUsers from "./users.panel";
-import CorrespondenceChatForm from "./correnpondence.chat.form";
 
-const Conversation = () => {
+import { ChatField } from "../components";
+import { ContactsFeature } from "../feature";
+
+const ChatFeature = () => {
   const [selectedUser, setSelectedUser] = useState<{
     id: string;
     name: string;
@@ -41,7 +42,7 @@ const Conversation = () => {
           showUserList ? "block" : "hidden"
         } md:block w-full md:w-1/3 lg:w-1/4 mb-4 md:mb-0`}
       >
-        <ConversationUsers
+        <ContactsFeature
           onSelectUser={handleUserSelect}
           selectedUserId={selectedUser?.id}
         />
@@ -66,11 +67,10 @@ const Conversation = () => {
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
                 لطفاً یک گفتگو را انتخاب کنید یا گفتگوی جدیدی شروع کنید
               </p>
-             
             </div>
           </div>
         ) : (
-          <CorrespondenceChatForm
+          <ChatField
             selectedUser={selectedUser}
             loading={false}
             onBackClick={() => setShowUserList(true)}
@@ -82,4 +82,4 @@ const Conversation = () => {
   );
 };
 
-export default Conversation;
+export default ChatFeature;

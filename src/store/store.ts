@@ -1,11 +1,13 @@
 import verifySlice from "@/Modules/timeflow/store/verifySlice";
 import shiftsFormReducer from "@/Modules/workShifts/store/shiftsForm.store";
+import chatReducer from "@/Modules/messenger/store/chatSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 const store = configureStore({
   reducer: {
     verify: verifySlice,
     shiftsForm: shiftsFormReducer,
+    chat: chatReducer,
   },
 });
 

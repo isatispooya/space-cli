@@ -1,1 +1,0 @@
-export { default as CorrespondenceRoutes } from "./correspondence.route";

@@ -106,9 +106,10 @@ const UserAvatar = () => {
           toast.success("خروج با موفقیت انجام شد");
           navigate("/login");
         },
-        onError: (error) => {
+        onError: (error ) => {
           toast.error("خطا در خروج از سیستم");
           console.error("خطای خروج:", error);
+ 
         },
       });
     } else {

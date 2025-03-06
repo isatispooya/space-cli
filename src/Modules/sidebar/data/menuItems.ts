@@ -106,13 +106,13 @@ export const menuItems: MenuItem[] = [
   },
   {
     title: "مکاتبات",
-    path: "/correspondence",
+    path: "/messenger",
     icon: FaEnvelope,
     codename: ["allow_any"],
     submenu: [
       {
         title: "گفتگو",
-        path: "/correspondence",
+        path: "/messenger",
         codename: ["allow_any"],
       },
     ],
