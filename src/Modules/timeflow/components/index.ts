@@ -10,3 +10,4 @@ export { default as VerifyTable } from "./verify.table";
 export { default as TimeflowTable } from "./timeflow.table";
 export { default as OwnVerify } from "./ownVeify.list";
 export { default as OtherVerify } from "./otherVerify.list";
+export { default as TimeflowDetails } from "./timeflowDetails";

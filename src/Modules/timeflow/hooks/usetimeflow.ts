@@ -70,6 +70,17 @@ const useTimeflow = {
         timeflowServices.updateUserTimeflowAccept(data, id),
     });
   },
+
+  useGetTimeflowDetails: (year: number, month: number): UseQueryResult<UserLoginType[]> => {
+    return useQuery({
+      queryKey: ["timeflow-details", year, month],
+      queryFn: ({ queryKey }) => {
+        const [, year, month] = queryKey.map((value) => parseInt(value as string, 10));
+        return timeflowServices.getTimeflowDetails(year, month);
+      },
+    });
+  },
+
   useUpdateUsersLoginByParent: (): UseMutationResult<
     SeniorVerifyType,
     AxiosError,
@@ -109,6 +120,9 @@ const useTimeflow = {
         timeflowServices.updateMission(id, data),
     });
   },
+
+
+
   useGetLeave: (): UseQueryResult<LeaveType[]> => {
     return useQuery({
       queryKey: ["leave"],

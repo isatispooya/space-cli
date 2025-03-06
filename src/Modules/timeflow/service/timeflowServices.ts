@@ -23,6 +23,7 @@ const timeflowServices = {
     const response = await api.get("/timeflow/user-login-log/");
     return response.data;
   },
+
   UsersLogoutAccept: async (data: VerifyLogoutType) => {
     const response = await api.post("/timeflow/user-logout-log/", data);
     return response.data;
@@ -31,7 +32,7 @@ const timeflowServices = {
     const response = await api.post("/timeflow/user-leave-log/", data);
     return response.data;
   },
-  
+
   UsersLogoutAcceptParent: async (data: SeniorVerifyType, id: number) => {
     const response = await api.patch(
       `/timeflow/user-logout-log-senior/${id}/`,
@@ -48,6 +49,10 @@ const timeflowServices = {
       `/timeflow/user-login-log-senior/${id}/`,
       data
     );
+    return response.data;
+  },
+  getTimeflowDetails: async (year: number, month: number): Promise<UserLoginType> => {
+    const response = await api.get(`/timeflow/summery-time-flow/?year=${year}&month=${month}`);
     return response.data;
   },
   getMission: async (): Promise<MissionType[]> => {
