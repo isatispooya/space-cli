@@ -5,8 +5,6 @@ export interface FormField {
   disabled?: boolean;
   accept?: string;
   defaultValue?: string;
-  
-
 
   value?: any;
   type:
