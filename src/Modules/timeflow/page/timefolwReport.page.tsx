@@ -92,7 +92,7 @@ const Timesheet = () => {
   const tableSizeClass = getTableSizeClass(formattedTimeflowData.length);
 
   return (
-    <div className="container mx-auto p-1 font-sans bg-gradient-to-br from-[#5677BC]/10 to-[#7DE7DC]/10 print:bg-white print:p-0">
+    <div className="container mx-auto p-4 font-sans  print:bg-white print:p-0">
       <style type="text/css" media="print">
         {`
           @page {
@@ -139,6 +139,23 @@ const Timesheet = () => {
             box-sizing: border-box;
           }
           
+          /* تغییر ساختار به حالت افقی در چاپ و ایجاد فاصله بین ستون‌ها */
+          .print-columns {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 5mm !important;
+            justify-content: space-between !important;
+          }
+          
+          /* تنظیم عرض ستون‌های جدول */
+          .print-columns > div:first-child {
+            width: 62% !important;
+          }
+          
+          .print-columns > div:last-child {
+            width: 35% !important;
+          }
+          
           /* حذف کامل همه رنگ‌های گرادیان و پس‌زمینه */
           .profile-box, .summary-box, .signature-box {
             background: none !important;
@@ -148,6 +165,7 @@ const Timesheet = () => {
             border-radius: 8mm !important;
             box-shadow: none !important;
             margin-bottom: 5mm !important;
+            padding: 0 !important;
           }
           
           /* تنظیم هدر باکس‌ها به حالت خنثی */
@@ -157,12 +175,16 @@ const Timesheet = () => {
             background-image: none !important;
             color: black !important;
             border-bottom: 1px solid #333333 !important;
+            font-size: 0.75rem !important;
+            margin-bottom: 0 !important;
+            padding: 2px !important;
           }
           
           /* همه متن‌ها سیاه باشند */
           .profile-box *, .summary-box *, .signature-box *, table * {
             color: black !important;
             background-image: none !important;
+            font-size: 0.65rem !important;
           }
           
           /* اطمینان از اینکه گرادیان‌ها کار نمی‌کنند */
@@ -175,6 +197,31 @@ const Timesheet = () => {
           /* تنظیم جدول */
           table {
             border: 1px solid #333333 !important;
+            font-size: 0.5rem !important;
+            table-layout: fixed !important;
+            width: 100% !important;
+          }
+          
+          /* تنظیم عرض ستون‌های جدول */
+          th:first-child, td:first-child {
+            width: 5% !important;
+          }
+          
+          th:nth-child(2), td:nth-child(2) {
+            width: 20% !important;
+          }
+          
+          th:nth-child(3), td:nth-child(3),
+          th:nth-child(4), td:nth-child(4) {
+            width: 15% !important;
+          }
+          
+          th:nth-child(5), td:nth-child(5) {
+            width: 15% !important;
+          }
+          
+          th:nth-child(6), td:nth-child(6) {
+            width: 30% !important;
           }
           
           th {
@@ -182,6 +229,8 @@ const Timesheet = () => {
             background-color: #f0f0f0 !important;
             color: black !important;
             border: 1px solid #cccccc !important;
+            padding: 1px !important;
+            font-size: 0.5rem !important;
           }
           
           td {
@@ -189,6 +238,8 @@ const Timesheet = () => {
             background-color: white !important;
             border: 1px solid #cccccc !important;
             color: black !important;
+            padding: 1px !important;
+            font-size: 0.5rem !important;
           }
           
           tr:nth-child(even) {
@@ -196,19 +247,71 @@ const Timesheet = () => {
           }
           
           /* تنظیم عکس پروفایل */
+          .avatar-container {
+            margin-bottom: 5mm !important;
+          }
+          
           .avatar {
+            width: 5rem !important;
+            height: 5rem !important;
             border: 1px solid #333333 !important;
             box-shadow: none !important;
+            border-radius: 0.5rem !important;
+            overflow: hidden !important;
+          }
+          
+          /* تنظیم عنوان صفحه */
+          h1 {
+            font-size: 0.75rem !important;
+            margin-bottom: 2mm !important;
+            color: black !important;
           }
           
           /* اعمال سایه خنثی به همه عناصر */
           * {
             box-shadow: none !important;
           }
+          
+          /* تنظیم فاصله بین آیتم‌ها */
+          .space-y-2, .space-y-3 {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+          }
+          
+          li {
+            padding-bottom: 1px !important;
+            border-bottom-width: 1px !important;
+          }
+          
+          /* تنظیم بخش امضا */
+          .signature-box div > div {
+            margin-bottom: 2mm !important;
+          }
+          
+          /* نمایش فقط متن در بخش امضا و حذف کادرهای خط‌چین */
+          .signature-box div > div {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 1mm 2mm !important;
+          }
+          
+          /* پنهان کردن کادرهای خط‌چین در بخش امضا */
+          .signature-box div > div > div {
+            display: none !important;
+          }
+          
+          /* تنظیم بخش توضیحات در جدول */
+          td:last-child > div {
+            height: 2mm !important;
+            min-height: 2mm !important;
+            border: none !important;
+            background: transparent !important;
+          }
         `}
       </style>
 
-      <div className="print-container">
+      <div className="print-container bg-white rounded-xl shadow-lg p-6 border border-gray-200">
         {/* واترمارک لوگو */}
         <img
           src={waterMark}
@@ -216,34 +319,32 @@ const Timesheet = () => {
           className="hidden print:block watermark-logo"
         />
 
-        <div className="flex flex-row gap-0 print-columns">
-          {/* بخش جدول تایم‌شیت */}
-          <div className="w-full md:w-3/5 print:w-3/5">
-            <h1 className="text-sm font-semibold mb-1 text-gray-800 print:text-xs print:mb-1 print:text-black">
+        <div className="flex flex-col md:flex-row gap-6 print-columns">
+          {/* بخش جدول تایم‌شیت - تغییر ترتیب برای چاپ */}
+          <div className="w-full md:w-3/5 print:w-3/5 order-2 print:order-1">
+            <h1 className="text-2xl font-bold mb-4 text-[#02205F] print:text-xs print:mb-1 print:text-black">
               تایم‌شیت کارمندان
             </h1>
-            <div className="shadow-sm rounded-lg bg-white print:shadow-none print:rounded-none">
+            <div className="shadow-lg rounded-lg bg-white overflow-hidden print:shadow-none print:rounded-none">
               <table
-                className={`w-full text-[7px] text-right print:text-[6px] print:border print:border-gray-500 print:table-fixed ${tableSizeClass}`}
+                className={`w-full text-sm text-right print:text-[6px] print:border print:border-gray-500 print:table-fixed ${tableSizeClass}`}
               >
-                <thead className="bg-gradient-to-r from-[#5677BC]/50 to-[#7DE7DC]/50 text-white font-medium print:bg-gray-200 print:text-black">
+                <thead className="bg-[#02205F] text-white font-medium print:bg-gray-200 print:text-black">
                   <tr>
-                    <th className="px-0.2 py-0.2 print:px-0.5 print:py-0.5">
+                    <th className="px-4 py-3 print:px-0.5 print:py-0.5">
                       ردیف
                     </th>
-                    <th className="px-0.2 py-0.2 print:px-0.5 print:py-0.5">
+                    <th className="px-4 py-3 print:px-0.5 print:py-0.5">
                       تاریخ
                     </th>
-                    <th className="px-0.2 py-0.2 print:px-0.5 print:py-0.5">
+                    <th className="px-4 py-3 print:px-0.5 print:py-0.5">
                       ورود
                     </th>
-                    <th className="px-0.2 py-0.2 print:px-0.5 print:py-0.5">
+                    <th className="px-4 py-3 print:px-0.5 print:py-0.5">
                       خروج
                     </th>
-                    <th className="px-0.2 py-0.2 print:px-0.5 print:py-0.5">
-                      نوع
-                    </th>
-                    <th className="px-0.2 py-0.2 print:px-0.5 print:py-0.5">
+                    <th className="px-4 py-3 print:px-0.5 print:py-0.5">نوع</th>
+                    <th className="px-4 py-3 print:px-0.5 print:py-0.5 hidden print:table-cell">
                       توضیحات
                     </th>
                   </tr>
@@ -253,25 +354,35 @@ const Timesheet = () => {
                     formattedTimeflowData.map((row, rowIndex) => (
                       <tr
                         key={row.id}
-                        className="border-b border-gray-200 print:border-gray-200 print:h-[6px]"
+                        className={`border-b border-gray-200 print:border-gray-200 print:h-[6px] ${
+                          rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white"
+                        }`}
                       >
-                        <td className="px-0.2 py-0.1 print:px-0.5 print:py-0.2">
+                        <td className="px-4 py-3 print:px-0.5 print:py-0.2">
                           {rowIndex + 1}
                         </td>
-                        <td className="px-0.2 py-0.1 print:px-0.5 print:py-0.2">
+                        <td className="px-4 py-3 print:px-0.5 print:py-0.2">
                           {row.date}
                         </td>
-                        <td className="px-0.2 py-0.1 print:px-0.5 print:py-0.2">
+                        <td className="px-4 py-3 print:px-0.5 print:py-0.2">
                           {row.timeIn}
                         </td>
-                        <td className="px-0.2 py-0.1 print:px-0.5 print:py-0.2">
+                        <td className="px-4 py-3 print:px-0.5 print:py-0.2">
                           {row.timeOut}
                         </td>
-                        <td className="px-0.2 py-0.1 print:px-0.5 print:py-0.2">
-                          {row.type}
+                        <td className="px-4 py-3 print:px-0.5 print:py-0.2 print:text-center">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs ${
+                              row.type === "حضور"
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-red-100 text-red-800"
+                            } print:bg-transparent print:p-0`}
+                          >
+                            {row.type}
+                          </span>
                         </td>
-                        <td className="px-0.2 py-0.1 print:px-0.5 print:py-0.2">
-                          <div className="bg-white border border-gray-200 rounded-sm h-3 w-full print:h-2"></div>
+                        <td className="px-4 py-3 print:px-0.5 print:py-0.2 hidden print:table-cell">
+                          <div className="bg-white border border-gray-200 rounded-sm h-6 w-full print:h-2"></div>
                         </td>
                       </tr>
                     ))
@@ -279,7 +390,7 @@ const Timesheet = () => {
                     <tr className="border-b border-gray-200 print:border-gray-200 print:h-[6px]">
                       <td
                         colSpan={6}
-                        className="px-0.2 py-0.1 print:px-0.5 print:py-0.2 text-center"
+                        className="px-4 py-3 print:px-0.5 print:py-0.2 text-center"
                       >
                         داده‌ای برای نمایش وجود ندارد
                       </td>
@@ -291,10 +402,10 @@ const Timesheet = () => {
           </div>
 
           {/* بخش اطلاعات کاربر */}
-          <div className="w-full md:w-2/5 flex flex-col gap-0.5 print:gap-3 print:w-2/5">
+          <div className="w-full md:w-2/5 flex flex-col gap-4 print:gap-3 print:w-2/5 order-1 print:order-2">
             {/* عکس پروفایل */}
-            <div className="mb-0.5 flex justify-center print:mb-2 avatar-container">
-              <div className="w-20 h-20 rounded-lg overflow-hidden border border-gray-200 print:border-gray-500 avatar">
+            <div className="mb-4 flex justify-center print:mb-2 avatar-container">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#02205F] shadow-md print:border-gray-500 print:rounded-lg avatar">
                 <img
                   src={server + userDetail?.user_detail?.profile_image}
                   alt="پروفایل"
@@ -304,78 +415,88 @@ const Timesheet = () => {
             </div>
 
             {/* باکس پروفایل کاربر */}
-            <div className="p-0.5 bg-gradient-to-br from-[#5677BC] to-[#7DE7DC] rounded-lg shadow-sm border border-gray-200 print:p-0 print:border-gray-500 print:rounded-lg profile-box">
-              <h2 className="text-xs font-semibold mb-0.5 text-white print:text-xs print:font-semibold print:text-black print:mb-0">
+            <div className="p-4 bg-white rounded-lg shadow-md border-l-4 border-[#02205F] print:p-0 print:border-gray-500 print:rounded-lg profile-box">
+              <h2 className="text-lg font-bold mb-3 text-[#02205F] border-b pb-2 print:text-xs print:font-semibold print:text-black print:mb-0">
                 اطلاعات شخص
               </h2>
-              <ul className="space-y-0.5 text-xs print:space-y-0 print:text-xs print:text-black w-full">
+              <ul className="space-y-2 text-sm print:space-y-0 print:text-xs print:text-black w-full">
                 {personalInfo.map((field, index) => (
                   <li
                     key={index}
-                    className="flex justify-between border-b border-white/50 pb-0.5 print:border-b print:border-gray-300 print:pb-0.5"
+                    className="flex justify-between border-b border-gray-100 pb-2 print:border-b print:border-gray-300 print:pb-0.5"
                   >
-                    <span>{field.label}</span>
-                    <span className="font-medium">{field.value}</span>
+                    <span className="text-gray-600">{field.label}</span>
+                    <span className="font-medium text-gray-800">
+                      {field.value}
+                    </span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* باکس مجموع کارکرد - تغییر رنگ‌ها به حالت خنثی */}
-            <div className="p-0.5 bg-gradient-to-br from-[#5677BC] to-[#7DE7DC] rounded-lg shadow-sm border border-gray-200 print:p-0 print:border-gray-500 print:rounded-lg summary-box">
-              <h3 className="text-xs font-semibold mb-0.5 text-white print:text-xs print:font-semibold print:text-black print:mb-0">
+            {/* باکس مجموع کارکرد */}
+            <div className="p-4 bg-white rounded-lg shadow-md border-l-4 border-[#02205F] print:p-0 print:border-gray-500 print:rounded-lg summary-box">
+              <h3 className="text-lg font-bold mb-3 text-[#02205F] border-b pb-2 print:text-xs print:font-semibold print:text-black print:mb-0">
                 مجموع کارکرد
               </h3>
-              <ul className="space-y-0.5 text-xs print:space-y-0 print:text-xs print:text-black">
-                <li className="flex justify-between border-b border-white/50 pb-0.5 print:border-b print:border-gray-300 print:pb-0.5">
-                  <span>ماه</span>
-                  <span className="font-medium">{workSummary.month}</span>
+              <ul className="space-y-2 text-sm print:space-y-0 print:text-xs print:text-black">
+                <li className="flex justify-between border-b border-gray-100 pb-2 print:border-b print:border-gray-300 print:pb-0.5">
+                  <span className="text-gray-600">ماه</span>
+                  <span className="font-medium text-gray-800">
+                    {workSummary.month}
+                  </span>
                 </li>
-                <li className="flex justify-between border-b border-white/50 pb-0.5 print:border-b print:border-gray-300 print:pb-0.5">
-                  <span>موظفی</span>
-                  <span className="font-medium">{workSummary.dutyHours}</span>
+                <li className="flex justify-between border-b border-gray-100 pb-2 print:border-b print:border-gray-300 print:pb-0.5">
+                  <span className="text-gray-600">موظفی</span>
+                  <span className="font-medium text-gray-800">
+                    {workSummary.dutyHours}
+                  </span>
                 </li>
-                <li className="flex justify-between border-b border-white/50 pb-0.5 print:border-b print:border-gray-300 print:pb-0.5">
-                  <span>کارکرد</span>
-                  <span className="font-medium">{workSummary.workedHours}</span>
+                <li className="flex justify-between border-b border-gray-100 pb-2 print:border-b print:border-gray-300 print:pb-0.5">
+                  <span className="text-gray-600">کارکرد</span>
+                  <span className="font-medium text-gray-800">
+                    {workSummary.workedHours}
+                  </span>
                 </li>
-                <li className="flex justify-between border-b border-white/50 pb-0.5 print:border-b print:border-gray-300 print:pb-0.5">
-                  <span>ماموریت</span>
-                  <span className="font-medium">
+                <li className="flex justify-between border-b border-gray-100 pb-2 print:border-b print:border-gray-300 print:pb-0.5">
+                  <span className="text-gray-600">ماموریت</span>
+                  <span className="font-medium text-gray-800">
                     {workSummary.missionHours}
                   </span>
                 </li>
-                <li className="flex justify-between border-b border-white/50 pb-0.5 print:border-b print:border-gray-300 print:pb-0.5">
-                  <span>مرخصی</span>
-                  <span className="font-medium">{workSummary.leaveHours}</span>
+                <li className="flex justify-between border-b border-gray-100 pb-2 print:border-b print:border-gray-300 print:pb-0.5">
+                  <span className="text-gray-600">مرخصی</span>
+                  <span className="font-medium text-gray-800">
+                    {workSummary.leaveHours}
+                  </span>
                 </li>
-                <li className="flex justify-between border-b border-white/50 pb-0.5 print:border-b print:border-gray-300 print:pb-0.5">
-                  <span>غیبت</span>
-                  <span className="font-medium">
+                <li className="flex justify-between border-b border-gray-100 pb-2 print:border-b print:border-gray-300 print:pb-0.5">
+                  <span className="text-gray-600">غیبت</span>
+                  <span className="font-medium text-gray-800">
                     {workSummary.absenceHours}
                   </span>
                 </li>
               </ul>
             </div>
 
-            {/* باکس امضا - تغییر رنگ‌ها به حالت خنثی */}
-            <div className="p-0.5 bg-gradient-to-br from-[#5677BC] to-[#7DE7DC] rounded-lg shadow-sm border border-gray-200 print:p-0 print:border-gray-500 print:rounded-lg signature-box">
-              <h3 className="text-xs font-semibold mb-0.5 text-white print:text-xs print:font-semibold print:text-black print:mb-0">
+            {/* باکس امضا - فقط در چاپ نمایش داده شود */}
+            <div className="p-4 bg-white rounded-lg shadow-md border-l-4 border-[#02205F] hidden print:block print:p-0 print:border-gray-500 print:rounded-lg signature-box">
+              <h3 className="text-lg font-bold mb-3 text-[#02205F] border-b pb-2 print:text-xs print:font-semibold print:text-black print:mb-0">
                 امضا
               </h3>
-              <div className="space-y-0.5 text-xs print:space-y-2 print:text-xs print:text-black">
-                <div className="flex justify-between items-center">
-                  <span>امضای کارمند:</span>
+              <div className="space-y-3 text-sm print:space-y-0.5 print:text-xs print:text-black">
+                <div className="flex justify-between items-center border-b border-gray-100 pb-2 print:pb-0.5 print:border-b-0">
+                  <span className="text-gray-600">امضای کارمند:</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-gray-100 pb-2 print:pb-0.5 print:border-b-0">
+                  <span className="text-gray-600">امزای مدیر:</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-gray-100 pb-2 print:pb-0.5 print:border-b-0">
+                  <span className="text-gray-600">تنظیم‌کننده:</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span>امزای مدیر:</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>تنظیم‌کننده:</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>تاریخ:</span>
-                  <span className="font-medium">
+                  <span className="text-gray-600">تاریخ:</span>
+                  <span className="font-medium text-gray-800">
                     {new Date().toLocaleDateString("fa-IR")}
                   </span>
                 </div>
