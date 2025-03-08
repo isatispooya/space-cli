@@ -61,10 +61,22 @@ interface Absence {
   working_day: boolean;
 }
 
+interface UserDetail {
+  id: number;
+  first_name: string;
+  last_name: string;
+  uniqueIdentifier: string;
+  mobile: string;
+  profile_image: string;
+}
+
+
+
 interface UserLoginType {
   other_logs: Other_logs[];
   own_logs: Own_logs[];
   own_absence: Absence[];
+  user_detail: UserDetail;
 }
 
 export default UserLoginType;

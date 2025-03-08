@@ -5,7 +5,7 @@ import { Spinner } from "../../../../components/loaders";
 import { FileInput } from "../../../../components";
 import { Toast } from "../../../../components";
 import { AxiosError } from "axios";
-import { ErrorResponse } from "react-router-dom"; 
+import { ErrorResponse } from "@/types";  
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { MultiSelect } from "../../../../components";
 import { useInsuranceStore } from "../../store";

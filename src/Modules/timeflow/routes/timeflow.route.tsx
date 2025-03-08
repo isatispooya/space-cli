@@ -24,6 +24,12 @@ const DetailsTablePage = lazy(() =>
   }))
 );
 
+const TimeflowReportPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.TimeflowReportPage,
+  }))
+);
+
 const TimeflowRoutes = [
   {
     path: "/timeflow",
@@ -44,6 +50,10 @@ const TimeflowRoutes = [
         element: <DetailsTablePage />,
       },
     ],
+  },
+  {
+    path: "/timeflow-report/:id",
+    element: <TimeflowReportPage />,
   },
 ];
 

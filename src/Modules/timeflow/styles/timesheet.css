@@ -1,0 +1,230 @@
+@media print {
+  @page {
+    margin: 0;
+    size: A4;
+  }
+
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  @page {
+    margin: 0;
+  }
+
+  @page :first {
+    margin-top: 0;
+  }
+
+  @page :left {
+    margin-left: 0;
+  }
+
+  @page :right {
+    margin-right: 0;
+  }
+
+  @page :header {
+    display: none;
+  }
+
+  @page :footer {
+    display: none;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important; /* کروم، سافاری */
+    color-adjust: exact !important; /* فایرفاکس */
+  }
+
+  /* واترمارک لوگو */
+  .watermark-logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150mm;
+    height: auto;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* کادر دور صفحه */
+  .print-container {
+    position: relative;
+    border: 1px solid #02205f;
+    border-radius: 15mm;
+    margin: 10mm;
+    padding: 10mm;
+    background-color: white;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: calc(100vh - 20mm);
+    width: calc(100vw - 20mm);
+  }
+
+  /* عنوان بالای صفحه */
+  .page-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 0;
+    margin-bottom: 8mm;
+    color: #02205f;
+  }
+
+  /* تنظیم فاصله بین ستون‌ها */
+  .print-columns {
+    display: flex;
+    gap: 5mm;
+  }
+
+  /* استایل جدول */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #02205f;
+  }
+
+  th,
+  td {
+    border: 1px solid #e1e1e1;
+    padding: 2px;
+    font-size: 6px;
+  }
+
+  thead th {
+    background-color: #02205f;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+
+  /* استایل باکس‌ها */
+  .profile-box,
+  .summary-box,
+  .signature-box {
+    border: 1px solid #02205f;
+    border-radius: 8mm;
+    margin-bottom: 5mm;
+    background-color: white;
+    overflow: hidden;
+  }
+
+  .profile-box h2,
+  .summary-box h3,
+  .signature-box h3 {
+    background-color: #02205f;
+    color: white !important;
+    padding: 1.5mm;
+    margin: 0;
+    font-weight: bold;
+    text-align: center;
+    font-size: 8px;
+  }
+
+  .profile-box ul,
+  .summary-box ul,
+  .signature-box div {
+    padding: 2mm;
+    margin: 0;
+  }
+
+  .profile-box li,
+  .summary-box li {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1mm;
+    margin-bottom: 1mm;
+    border-bottom: 1px solid #e1e1e1;
+  }
+
+  /* استایل عکس پروفایل */
+  .avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3mm;
+  }
+
+  .avatar {
+    width: 20mm;
+    height: 20mm;
+    border-radius: 50%;
+    border: 2px solid #02205f;
+    padding: 1mm;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  /* استایل عنوان */
+  .report-title {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5mm 0;
+    color: #02205f;
+  }
+
+  /* استایل امضاها */
+  .signature-line {
+    border-bottom: 1px solid #02205f;
+    width: 30mm;
+    display: inline-block;
+    margin-left: 2mm;
+    text-align: center;
+  }
+
+  /* لوگوی شرکت در گوشه سمت چپ */
+  .company-logo {
+    position: absolute;
+    top: 10mm;
+    left: 10mm;
+    width: 25mm;
+    height: auto;
+    z-index: 10;
+  }
+
+  /* استایل‌های پویا برای اندازه متن جدول بر اساس تعداد رکوردها */
+  /* برای تعداد رکوردهای کمتر از 10 */
+  .record-size-xs th,
+  .record-size-xs td {
+    font-size: 12px !important;
+    padding: 4px !important;
+  }
+
+  /* برای تعداد رکوردهای بین 10 تا 20 */
+  .record-size-sm th,
+  .record-size-sm td {
+    font-size: 10px !important;
+    padding: 3px !important;
+  }
+
+  /* برای تعداد رکوردهای بین 20 تا 40 */
+  .record-size-md th,
+  .record-size-md td {
+    font-size: 8px !important;
+    padding: 2.5px !important;
+  }
+
+  /* برای تعداد رکوردهای بین 40 تا 60 */
+  .record-size-lg th,
+  .record-size-lg td {
+    font-size: 6px !important;
+    padding: 2px !important;
+  }
+
+  /* برای تعداد رکوردهای بیشتر از 60 (پیش‌فرض) */
+  .record-size-xl th,
+  .record-size-xl td {
+    font-size: 6px !important;
+    padding: 1.5px !important;
+  }
+}
