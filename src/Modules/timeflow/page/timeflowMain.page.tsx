@@ -7,13 +7,13 @@ const TimeFlowPage = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
-      text: "لیست تردد",
+      text: "جزئیات تردد",
       permission: ["allow_any"],
       path: "users-timeflows",
     },
     {
       icon: LuTable,
-      text: "جزئیات تردد",
+      text: "لیست تردد",
       permission: ["allow_any"],
       path: "details-table",
     },
