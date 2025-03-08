@@ -118,7 +118,7 @@ const InsurancePayment = () => {
     {
       name: "detail",
       label: "جزئیات",
-      type: "detail", // Keep this as "detail"
+      type: "detail",
       value: [
         {
           title: "شماره شبا",
