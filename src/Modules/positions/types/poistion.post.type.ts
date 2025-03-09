@@ -1,7 +1,9 @@
+import { User } from "./postions.type";
+
 export interface PositionPostTypes {
   name: string | null;
   company: number | null;
-  user: number;
+  user: number | User["id"];
   parent: number | null;
   type_of_employment: string | null;
   description: string;

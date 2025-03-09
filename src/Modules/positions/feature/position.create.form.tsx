@@ -5,8 +5,7 @@ import { useUserData } from "../../users/hooks";
 import { Forms, Toast } from "../../../components";
 import { useCompany } from "../../companies/hooks";
 import { CompanyTypes } from "../../companies/types";
-import { useNavigate } from "react-router-dom";
-import { PositionPostTypes, PositionTypes } from "../types";
+import { PositionPostTypes, PositionTypes, PositionFormTypes } from "../types";
 import { ErrorResponse, FormField } from "../../../types";
 import { UserData } from "../../users/types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
@@ -21,7 +20,6 @@ const formatDate = (date: Date | string): string => {
 };
 
 const PositionCreate = () => {
-  const navigate = useNavigate();
   const { data: companies } = useCompany.useGet();
   const { refetch } = usePosition.useGet();
   const { data: users } = useUserData();
@@ -43,7 +41,7 @@ const PositionCreate = () => {
     first_name: Yup.string().optional(),
     last_name: Yup.string().optional(),
     company_detail: Yup.object().optional(),
-  }) as Yup.ObjectSchema<PositionTypes>;
+  }) as Yup.ObjectSchema<PositionFormTypes>;
 
   const typeOfEmploymentOptions = [
     "full_time",
@@ -132,7 +130,7 @@ const PositionCreate = () => {
     },
   ];
 
-  const initialValues: PositionTypes = {
+  const initialValues: PositionFormTypes = {
     name: "",
     company: 0,
     user: 0,
@@ -148,7 +146,7 @@ const PositionCreate = () => {
   };
 
   const handleSubmit = async (
-    values: PositionTypes,
+    values: PositionFormTypes,
     { setSubmitting, resetForm }: any
   ) => {
     try {
