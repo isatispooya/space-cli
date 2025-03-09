@@ -8,11 +8,7 @@ export interface PositionTypes {
   } | null;
   type_of_employment: string | null;
   description: string;
-  user: {
-    first_name: string;
-    last_name: string;
-    id: number;
-  };
+  user: number;
   start_date: string;
   end_date: string;
   created_at?: string;

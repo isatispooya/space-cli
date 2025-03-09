@@ -95,17 +95,51 @@ const Timesheet = () => {
     <div className="container mx-auto p-1 font-sans bg-gradient-to-br from-[#5677BC]/10 to-[#7DE7DC]/10 print:bg-white print:p-0">
       <style type="text/css" media="print">
         {`
+          /* تنظیمات پایه برای تمام مرورگرها */
           @page {
             size: A4;
-            margin: 0mm !important;
+            margin: 0 !important;
           }
           
+          /* تنظیمات فایرفاکس */
+          @-moz-document url-prefix() {
+            @page {
+              margin: 0 !important;
+            }
+            
+            @page :first {
+              margin-top: 0 !important;
+            }
+            
+            @page :left {
+              margin-left: 0 !important;
+              margin-right: 0 !important;
+            }
+            
+            @page :right {
+              margin-left: 0 !important;
+              margin-right: 0 !important;
+            }
+          }
+          
+          /* حذف هدر و فوتر در تمام مرورگرها */
           html, body {
             width: 210mm;
             height: 297mm;
             margin: 0 !important;
             padding: 0 !important;
             overflow: hidden;
+          }
+          
+          /* حذف هدر و فوتر در فایرفاکس */
+          body::before, body::after {
+            content: none !important;
+          }
+          
+          /* حذف خودکار URL */
+          html {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
           }
           
           /* حذف URL و شماره صفحه در مرورگرها */

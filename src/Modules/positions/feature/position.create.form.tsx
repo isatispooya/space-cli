@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Yup from "yup";
 import { usePosition } from "../hooks";
 import { useUserData } from "../../users/hooks";
-import { Forms } from "../../../components";
+import { Forms, Toast } from "../../../components";
 import { useCompany } from "../../companies/hooks";
 import { CompanyTypes } from "../../companies/types";
 import { useNavigate } from "react-router-dom";
 import { PositionPostTypes, PositionTypes } from "../types";
-import { FormField } from "../../../types";
+import { ErrorResponse, FormField } from "../../../types";
 import { UserData } from "../../users/types";
+import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
+import { AxiosError } from "axios";
 
 const formatDate = (date: Date | string): string => {
   const d = new Date(date);
@@ -33,13 +36,7 @@ const PositionCreate = () => {
     description: Yup.string(),
     parent: Yup.number().nullable(),
     type_of_employment: Yup.string().required(),
-    user: Yup.object()
-      .shape({
-        first_name: Yup.string().required("نام کاربر الزامی است"),
-        last_name: Yup.string().required("نام خانوادگی کاربر الزامی است"),
-        id: Yup.number().required("شناسه کاربر الزامی است"),
-      })
-      .required("کاربر الزامی است"),
+    user: Yup.number().required("کاربر الزامی است"),
     id: Yup.number().optional(),
     created_at: Yup.string().optional(),
     sender: Yup.string().optional(),
@@ -138,21 +135,54 @@ const PositionCreate = () => {
   const initialValues: PositionTypes = {
     name: "",
     company: 0,
-    user: {
-      first_name: "",
-      last_name: "",
-      id: 0,
-    },
+    user: 0,
     parent: null,
     type_of_employment: "",
     description: "",
     start_date: "",
     end_date: "",
     id: 0,
-
     sender: "",
     first_name: "",
     last_name: "",
+  };
+
+  const handleSubmit = async (
+    values: PositionTypes,
+    { setSubmitting, resetForm }: any
+  ) => {
+    try {
+      const formData = {
+        ...values,
+        parent: values.parent,
+        type_of_employment: values.type_of_employment || null,
+        start_date: values.start_date
+          ? formatDate(new Date(values.start_date).toISOString())
+          : null,
+        end_date: values.end_date
+          ? formatDate(new Date(values.end_date).toISOString())
+          : null,
+      };
+      await createPosition(formData as unknown as PositionPostTypes, {
+        onSuccess: () => {
+          Toast("نقش با موفقیت ایجاد شد", <CheckmarkIcon />, "bg-green-500");
+          resetForm();
+          refetch();
+        },
+        onError: (error: AxiosError<unknown>) => {
+          const errorMessage = (error.response?.data as ErrorResponse)?.error;
+          Toast(
+            errorMessage || "نام کاربری یا رمز عبور اشتباه است",
+            <ErrorIcon />,
+            "bg-red-500"
+          );
+        },
+      });
+    } catch (error) {
+      console.error("Error creating position:", error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -167,28 +197,7 @@ const PositionCreate = () => {
         default: "ایجاد نقش",
         loading: "در حال ارسال...",
       }}
-      onSubmit={async (values, { setSubmitting }) => {
-        try {
-          const formData = {
-            ...values,
-            parent: values.parent,
-            type_of_employment: values.type_of_employment || null,
-            start_date: values.start_date
-              ? formatDate(new Date(values.start_date).toISOString())
-              : null,
-            end_date: values.end_date
-              ? formatDate(new Date(values.end_date).toISOString())
-              : null,
-          };
-          await createPosition(formData as unknown as PositionPostTypes);
-          navigate("/positions/table");
-          refetch();
-        } catch (error) {
-          console.error("Error creating position:", error);
-        } finally {
-          setSubmitting(false);
-        }
-      }}
+      onSubmit={handleSubmit}
     />
   );
 };
