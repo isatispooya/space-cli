@@ -12,6 +12,7 @@ import {
   InsuranceTypes,
   InsuranceUpdateTypes,
 } from "../types";
+import { InsurancePaymentDarghahTypes } from "../types/dargah.type";
 
 const useInsurance = {
   useGetFields: (): UseQueryResult<InsuranceTypes[]> =>
@@ -63,12 +64,9 @@ const useInsurance = {
         insuranceService.updateRequest(data, id ? Number(id) : 0),
     }),
 
-  useDeleteRequest: (id : number): UseMutationResult<
-    void,
-    AxiosError<unknown>,
-    number,
-    unknown
-  > =>
+  useDeleteRequest: (
+    id: number
+  ): UseMutationResult<void, AxiosError<unknown>, number, unknown> =>
     useMutation({
       mutationKey: ["insurance-requests", id],
       mutationFn: (id: number) => insuranceService.deleteRequest(id),
@@ -94,6 +92,17 @@ const useInsurance = {
     useMutation({
       mutationKey: ["insurance-payment"],
       mutationFn: insuranceService.postInsurancePayment,
+    }),
+
+  usePostInsurancePaymentDarghah: (): UseMutationResult<
+    InsurancePostTypes,
+    AxiosError<unknown>,
+    InsurancePaymentDarghahTypes
+  > =>
+    useMutation({
+      mutationKey: ["insurance-payment"],
+      mutationFn: (data: InsurancePaymentDarghahTypes) =>
+        insuranceService.postInsurancePaymnetDarghah(data),
     }),
 };
 
