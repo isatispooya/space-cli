@@ -29,6 +29,7 @@ import { LoginRoutes } from "../Modules/auth";
 import { ContactRoutes } from "../Modules/contact";
 import { StreamRoutes } from "../Modules/live";
 import { ShiftsRoutes } from "../Modules/workShifts";
+import PaymentPage from "@/pages/payment.page";
 const PaymentResultPage = lazy(() =>
   import("../pages/paymentResultPage").then((module) => ({
     default: module.default,
@@ -78,6 +79,14 @@ export default function Router() {
       element: (
         <Suspense fallback={<Loader />}>
           <PaymentResultPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/payment",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <PaymentPage />
         </Suspense>
       ),
     },

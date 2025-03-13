@@ -199,7 +199,9 @@ const InsurancePayment = () => {
         {
           onSuccess: (data: any) => {
             Toast(data.message, <CheckmarkIcon />, "bg-green-500");
-            window.open(data.redirect_url as string, "_blank");
+            window.location.href = `https://ipin.ir/peymentpage?url=${encodeURIComponent(
+              data.redirect_url
+            )}`;
           },
           onError: (error: AxiosError<unknown>) => {
             const errorMessage = (error.response?.data as ErrorResponse)?.error;
