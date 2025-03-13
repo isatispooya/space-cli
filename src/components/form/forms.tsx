@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formik, Form, Field, FieldProps, FormikValues } from "formik";
 import { motion } from "framer-motion";
@@ -76,16 +77,23 @@ const Forms = <T extends FormikValues>({
     fieldName: string,
     value: any,
     setFieldValue: (field: string, value: any) => void,
-    format?: (value: any) => any
+    format?: (value: any) => any,
+    onChange?: (value: any) => void
   ) => {
     const formattedValue = format ? format(value) : value;
     setFieldValue(fieldName, formattedValue);
+
+    // Call the field's onChange handler if provided
+    if (onChange) {
+      onChange(value);
+    }
   };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      enableReinitialize={true}
       onSubmit={async (values, actions) => {
         try {
           await onSubmit(values, actions);
@@ -95,6 +103,7 @@ const Forms = <T extends FormikValues>({
       }}
     >
       {({ errors, touched, isSubmitting, setFieldValue }) => (
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -200,7 +209,8 @@ const Forms = <T extends FormikValues>({
                             field.name,
                             file,
                             setFieldValue,
-                            field.format
+                            field.format,
+                            field.onChange
                           );
                         }}
                         accept={field.fileProps?.accept}
@@ -230,7 +240,8 @@ const Forms = <T extends FormikValues>({
                             field.name.toString(),
                             newValue,
                             setFieldValue,
-                            field.format
+                            field.format,
+                            field.onChange
                           )
                         }
                         className="h-5"
@@ -272,7 +283,13 @@ const Forms = <T extends FormikValues>({
                         <DateSelector
                           value={fieldProps.value}
                           onChange={(date) => {
-                            handleFieldChange(field.name, date, setFieldValue, field.format);
+                            handleFieldChange(
+                              field.name,
+                              date,
+                              setFieldValue,
+                              field.format,
+                              field.onChange
+                            );
                           }}
                         />
                       </div>
@@ -289,7 +306,8 @@ const Forms = <T extends FormikValues>({
                             field.name,
                             newValue,
                             setFieldValue,
-                            field.format
+                            field.format,
+                            field.onChange
                           )
                         }
                         label={field.label}

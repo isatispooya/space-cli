@@ -6,6 +6,6 @@ export interface FishPaymentType {
   insurance_name?: string;
   price?: number;
   cart_number?: string;
-  first_properties_detail?: string;
+
   sheba?: string;
 }

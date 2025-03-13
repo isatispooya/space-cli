@@ -1,5 +1,6 @@
 import { api } from "../../../api";
 import { InsurancePostTypes } from "../types";
+import { InsurancePaymentDarghahTypes } from "../types/dargah.type";
 
 const insuranceService = {
   getFields: async () => {
@@ -59,6 +60,14 @@ const insuranceService = {
       `/insurance/payment_insurance_request/${id}/`,
       data,
       { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    return response.data;
+  },
+  postInsurancePaymnetDarghah: async (data: InsurancePaymentDarghahTypes) => {
+    const response = await api.post(
+      "/insurance/payment_insurance_request/",
+      data,
+      { headers: { "Content-Type": "application/json" } }
     );
     return response.data;
   },

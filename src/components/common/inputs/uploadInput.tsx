@@ -8,12 +8,14 @@ interface FileInputProps {
   className?: string;
   accept?: string;
   value?: File | null | undefined;
+  disabled?: boolean;
 }
 
 const FileInput: React.FC<FileInputProps> = ({
   label,
   value,
   onChange,
+  disabled = false,
   className = "",
   accept,
 }) => {
@@ -54,6 +56,7 @@ const FileInput: React.FC<FileInputProps> = ({
         value={value ? "" : undefined}
         onChange={handleFileChange}
         className="hidden"
+        disabled={disabled}
         accept={accept}
       />
     </div>
