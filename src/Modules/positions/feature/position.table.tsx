@@ -11,6 +11,13 @@ import { tableStyles } from "../../../ui";
 import moment from "moment-jalaali";
 import { useNavigate } from "react-router-dom";
 
+// Define interface for user object
+interface UserObject {
+  id: number;
+  first_name?: string;
+  last_name?: string;
+}
+
 type RowType = {
   id: number;
   name: string;
@@ -60,6 +67,17 @@ const PositionsTable = () => {
 
   const rows = positions
     ? positions.map((position) => {
+        // Extract user data safely
+        const userData = position.user as unknown as UserObject | number;
+        const userFirstName =
+          typeof userData === "object"
+            ? userData.first_name || "نامشخص"
+            : "نامشخص";
+        const userLastName =
+          typeof userData === "object"
+            ? userData.last_name || "نامشخص"
+            : "نامشخص";
+
         return {
           id: position.id,
           name: position.name,
@@ -70,8 +88,8 @@ const PositionsTable = () => {
             : "",
           description: position.description,
           user: {
-            first_name: position.user?.first_name || "نامشخص",
-            last_name: position.user?.last_name || "نامشخص",
+            first_name: userFirstName,
+            last_name: userLastName,
           },
           created_at: moment(position.created_at, "YYYY-MM-DD").format(
             "jYYYY/jMM/jDD"

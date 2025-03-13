@@ -6,6 +6,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment-jalaali";
 import { PositionPostTypes } from "../types";
 
+// Define interface for user object
+interface UserObject {
+  id: number;
+  first_name?: string;
+  last_name?: string;
+}
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("نام نقش الزامی است"),
   company: Yup.string().required("شرکت الزامی است"),
@@ -49,6 +56,12 @@ const PositionUpdateForm = () => {
     return <div>Position not found</div>;
   }
 
+  // Extract user data safely
+  const userData = specificUser?.user as unknown as UserObject | number;
+  const userId = typeof userData === "object" ? userData.id : userData;
+  const userFirstName = typeof userData === "object" ? userData.first_name : "";
+  const userLastName = typeof userData === "object" ? userData.last_name : "";
+
   const formFields: FormField[] = [
     { name: "name", label: "نام نقش", type: "text" },
     {
@@ -68,10 +81,8 @@ const PositionUpdateForm = () => {
       type: "select",
       options: [
         {
-          value: specificUser?.user?.id.toString() || "",
-          label: `${specificUser?.user?.first_name || ""} ${
-            specificUser?.user?.last_name || ""
-          }`,
+          value: String(userId) || "",
+          label: `${userFirstName || ""} ${userLastName || ""}`,
         },
       ],
     },
@@ -113,7 +124,7 @@ const PositionUpdateForm = () => {
   const initialValues: PositionPostTypes = {
     name: specificUser?.name || "",
     company: Number(specificUser?.company_detail?.id) || 0,
-    user: specificUser?.user?.id || 0,
+    user: Number(userId) || 0,
     parent: specificUser?.parent?.id || 0,
     type_of_employment: specificUser?.type_of_employment || "",
     description: specificUser?.description || "",

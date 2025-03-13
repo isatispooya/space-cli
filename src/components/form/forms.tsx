@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formik, Form, Field, FieldProps, FormikValues } from "formik";
 import { motion } from "framer-motion";
@@ -101,7 +102,8 @@ const Forms = <T extends FormikValues>({
         }
       }}
     >
-      {({ errors, touched, isSubmitting, setFieldValue, values }) => (
+      {({ errors, touched, isSubmitting, setFieldValue }) => (
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

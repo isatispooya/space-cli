@@ -5,7 +5,6 @@ import { useUserData } from "../../users/hooks";
 import { Forms, Toast } from "../../../components";
 import { useCompany } from "../../companies/hooks";
 import { CompanyTypes } from "../../companies/types";
-import { useNavigate } from "react-router-dom";
 import { PositionPostTypes, PositionTypes } from "../types";
 import { ErrorResponse, FormField } from "../../../types";
 import { UserData } from "../../users/types";
@@ -21,7 +20,7 @@ const formatDate = (date: Date | string): string => {
 };
 
 const PositionCreate = () => {
-  const navigate = useNavigate();
+ 
   const { data: companies } = useCompany.useGet();
   const { refetch } = usePosition.useGet();
   const { data: users } = useUserData();
