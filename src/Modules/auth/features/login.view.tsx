@@ -11,6 +11,7 @@ import { useAnnouncements } from "../hooks";
 import { LoaderLg } from "../../../components/loaders";
 import { HiExternalLink } from "react-icons/hi";
 import { FaPhone } from "react-icons/fa";
+import { server } from "@/api/server";
 initTWE({ Input, Ripple });
 
 const Login: React.FC = () => {
@@ -56,7 +57,7 @@ const Login: React.FC = () => {
         <motion.img
           key={currentAnnouncement?.id}
           {...fadeIn(0.05, 20)}
-          src={currentAnnouncement?.picture}
+          src={server + currentAnnouncement?.picture}
           alt={currentAnnouncement?.title || "Login illustration"}
           className="w-full h-full object-cover"
         />

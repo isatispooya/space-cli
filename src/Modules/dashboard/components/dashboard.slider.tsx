@@ -12,7 +12,7 @@ import "../styles/slider.css";
 import { FaShareAlt } from "react-icons/fa";
 import { useInvitation } from "../../invitation/hooks";
 import { useProfile } from "../../userManagment";
-
+import { server } from "@/api/server";
 export interface SlideItem {
   id: number;
   picture: string;
@@ -132,7 +132,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
           <SwiperSlide key={slide.id}>
             <a className="relative w-full h-full block group">
               <img
-                src={slide.picture}
+                src={server + slide.picture}
                 alt={slide.title}
                 className="absolute inset-0 w-full h-full object-contain object-left rounded-lg"
                 loading="lazy"
