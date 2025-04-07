@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   TabulatorFull as Tabulator,
   ColumnDefinition,
@@ -145,7 +146,7 @@ const UnderWritingTable: React.FC = () => {
       paginationButtonCount: 5,
       paginationAddRow: "page",
       paginationMode: "local",
-      selectable: 1,
+      selectableRows: 1,
       headerVisible: true,
       movableColumns: true,
       printAsHtml: true,
