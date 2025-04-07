@@ -134,27 +134,6 @@ const InsurancePayment = () => {
           },
         ]
       : []),
-    {
-      name: "detail",
-      label: "جزئیات",
-      type: "detail",
-      value: [
-        {
-          title: "شماره شبا",
-          value: selectedPayment.insurance_name_detail.sheba,
-        },
-        {
-          title: "شماره حساب",
-          value: selectedPayment.insurance_name_detail.cart_number,
-        },
-        {
-          title: "شماره کارت",
-          value: selectedPayment.insurance_name_detail.cart_number,
-        },
-        { title: "Title 1", value: "Value 1" },
-        { title: "Title 2", value: "Value 2" },
-      ],
-    },
   ];
 
   const initialValues: FishPaymentType = {

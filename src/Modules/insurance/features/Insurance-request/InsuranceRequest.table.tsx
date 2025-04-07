@@ -60,6 +60,16 @@ const InsuranceRequestTable = () => {
       : "-";
   };
 
+  const descriptionExpertFormatter = (cell: CellComponent) => {
+    const value = cell.getValue();
+    return value || "-";
+  };
+
+  const descriptionUserFormatter = (cell: CellComponent) => {
+    const value = cell.getValue();
+    return value || "-";
+  };
+
   const columns = () => [
     {
       title: "نام بیمه",
@@ -96,6 +106,20 @@ const InsuranceRequestTable = () => {
       hozAlign: "center",
       headerHozAlign: "center",
     },
+    {
+      title : "توضیحات ",
+      field : "description_user",
+      formatter : descriptionUserFormatter,
+      hozAlign : "center",
+      headerHozAlign : "center",
+    },
+    {
+      title : "توضیحات کارشناس",
+      field : "description_expert",
+      formatter : descriptionExpertFormatter,
+      hozAlign : "center",
+      headerHozAlign : "center",
+    }
   ];
 
   const data =
@@ -106,6 +130,8 @@ const InsuranceRequestTable = () => {
       price: request.price,
       insurance_status: request.insurance_status,
       insurance_name_draft_file: request.insurance_name_draft_file,
+      description_user: request.description_detail?.[0]?.description_user,
+      description_expert: request.description_detail?.[0]?.description_expert,
     })) || [];
 
   return (

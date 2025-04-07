@@ -16,19 +16,7 @@ const RequestsTable = () => {
 
   const statusTranslations = getStatusTranslations(hasPermission);
 
-  const draftFileFormatter = (cell: CellComponent) => {
-    const file = cell.getValue();
-    return file
-      ? `
-      <div class="flex justify-center items-center">
-        <button 
-          onclick="window.open('${server + file}', '_blank')" 
-          class="px-2 py-1 text-sm bg-gray-100 text-gray-800 rounded hover:bg-gray-200 w-32 transition duration-200">
-          دریافت فایل
-        </button>
-      </div>`
-      : "-";
-  };
+
 
   const columns = () => [
     {
@@ -83,11 +71,23 @@ const RequestsTable = () => {
       hozAlign: "center",
       headerHozAlign: "center",
     },
-
     {
-      title: "پیش نویس بیمه نامه",
+      title: "مشاهده بیمه نامه",
       field: "insurance_name_draft_file",
-      formatter: draftFileFormatter,
+      formatter: (cell: CellComponent) => {
+        const file = cell.getValue();
+        const status = cell.getRow().getData().insurance_status;
+        return file
+          ? `
+          <div class="flex justify-center items-center">
+            <button 
+              onclick="window.open('${server + file}', '_blank')" 
+              class="px-2 py-1 text-sm bg-gray-100 text-gray-800 rounded hover:bg-gray-200 w-32 transition duration-200">
+              ${status === "finished" ? "مشاهده بیمه نامه" : "دریافت فایل"}
+            </button>
+          </div>`
+          : "-";
+      },
       hozAlign: "center",
       headerHozAlign: "center",
     },

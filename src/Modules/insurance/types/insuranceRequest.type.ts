@@ -9,7 +9,8 @@ export interface InsuranceRequest {
   };
   file_attachment?: string;
   description_detail?: Array<{    // جزئیات توضیحات (اختیاری)
-    description_user: string;     // توضیحات کاربر
+    description_user: string; 
+    description_expert: string;
   }>;
   file_detail?: Array<{          // جزئیات فایل‌ها (اختیاری)
     file_name: number;           // شناسه فایل
