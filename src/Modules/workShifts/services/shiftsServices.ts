@@ -38,6 +38,16 @@ const shiftsServices = {
     );
     return response.data;
   },
+  updateShifts: async (
+    SetShiftUser: WorkShiftTypes["SetShiftUserPostType"],
+    data: WorkShiftTypes["ShiftPayload"]
+  ) => {
+    const response = await api.patch(
+      `/timeflow/update-shift/${SetShiftUser.shift_id}/`,
+      data
+    );
+    return response.data;
+  },
 };
 
 export default shiftsServices;

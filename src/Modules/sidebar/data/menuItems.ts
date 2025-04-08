@@ -45,7 +45,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت شیفت ها",
         path: "/shifts/table",
-        codename: ["parent_user"],
+        codename: ["parent_user" , "view_shift"],
       },
     ],
   },

@@ -40,6 +40,7 @@ const ShiftsAssignForm = () => {
         name: item.name,
       }));
       setShifts(formattedShifts);
+      console.log("Formatted shifts:", formattedShifts);
     }
   }, [shiftsNamesData]);
 
@@ -112,12 +113,10 @@ const ShiftsAssignForm = () => {
         onChange={(value) => handleShiftChange(value, assignment.userId)}
         options={[
           { value: "", label: "انتخاب شیفت" },
-          ...(shiftsNamesData
-            ? shiftsNamesData.map((shift) => ({
-                value: shift.id.toString(),
-                label: shift.name,
-              }))
-            : []),
+          ...shifts.map((shift) => ({
+            value: shift.id.toString(),
+            label: shift.name,
+          })),
         ]}
         className="w-1/3"
         disabled={assignment.isRegistered && !assignment.isEditing}

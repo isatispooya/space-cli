@@ -41,7 +41,6 @@ const ContactView: React.FC = () => {
       initial="hidden"
       animate="visible"
     >
-   
       <motion.div
         variants={itemVariants}
         className="flex items-center gap-3 mb-8"
@@ -55,10 +54,8 @@ const ContactView: React.FC = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-
         <motion.div variants={itemVariants} className="space-y-4">
           <div className="bg-white/90  rounded-xl p-4 shadow-lg space-y-4">
-   
             {[
               {
                 icon: FaMapMarkerAlt,
@@ -92,7 +89,6 @@ const ContactView: React.FC = () => {
               </motion.div>
             ))}
 
-    
             <div className="pt-3 border-t border-[#CACACA]">
               <h3 className="font-semibold mb-3 text-sm text-[#02205F]">
                 شبکه‌های اجتماعی

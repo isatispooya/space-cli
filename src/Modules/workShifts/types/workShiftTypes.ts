@@ -273,6 +273,11 @@ export interface ShiftName {
   owner: number;
 }
 
+export interface UpdateShiftPayload {
+  shiftname: string;
+  day: WorkShiftTypes["ShiftDay"][];
+}
+
 export type WorkShiftTypes = {
   Shift: Shift;
   CompanyAddress: CompanyAddress;
@@ -300,6 +305,7 @@ export type WorkShiftTypes = {
   ShiftItemProps: ShiftItemProps;
   ShiftScheduleProps: ShiftScheduleProps;
   ShiftName: ShiftName;
+  UpdateShiftPayload: UpdateShiftPayload;
 };
 
 export default WorkShiftTypes;
