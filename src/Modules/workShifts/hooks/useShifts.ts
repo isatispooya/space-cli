@@ -54,6 +54,22 @@ const useShifts = {
       mutationFn: (SetShiftUser: WorkShiftTypes["SetShiftUserPostType"]) =>
         shiftsServices.createShiftsassign(SetShiftUser),
     }),
+
+  useUpdateShift: () =>
+    useMutation<
+      unknown,
+      Error,
+      { id: string; data: WorkShiftTypes["ShiftUpdatePayload"] }
+    >({
+      mutationKey: ["shifts"],
+      mutationFn: ({ id, data }) => shiftsServices.updateShifts(id, data),
+    }),
+
+  useDeleteShift: () =>
+    useMutation<unknown, Error, { id: string }>({
+      mutationKey: ["shifts"],
+      mutationFn: ({ id }) => shiftsServices.deleteShifts(id),
+    }),
 };
 
 export default useShifts;

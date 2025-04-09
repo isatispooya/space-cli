@@ -13,6 +13,7 @@ interface DynamicListProps<T> {
   onLoadMore: () => void; // تابع بارگذاری بیشتر داده‌ها
   renderItem: (item: T) => React.ReactNode; // تابع رندر کردن هر آیتم
   noResultsMessage?: string;
+  hideSearch?: boolean; // New prop with default value false
 }
 
 const DynamicList = <T extends object>({
@@ -25,6 +26,7 @@ const DynamicList = <T extends object>({
   onLoadMore,
   renderItem,
   noResultsMessage = "نتیجه‌ای یافت نشد.",
+  hideSearch = false, // Default to false, meaning search is visible by default
 }: DynamicListProps<T>) => {
   // اطمینان حاصل کنید که data همیشه یک آرایه است
   const safeData = Array.isArray(data) ? data : [];
@@ -52,15 +54,17 @@ const DynamicList = <T extends object>({
 
   return (
     <div className="rounded-lg shadow-lg bg-white p-4">
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="جستجو..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
-        />
-      </div>
+      {!hideSearch && ( // Only render search bar if hideSearch is false
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="جستجو..."
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+          />
+        </div>
+      )}
 
       <ul className="space-y-2 mt-4">
         {filteredData.length > 0 ? (

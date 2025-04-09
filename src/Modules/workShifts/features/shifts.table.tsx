@@ -4,10 +4,13 @@ import { LoaderLg, TabulatorTable, SelectInput } from "../../../components";
 import useShifts from "../hooks/useShifts";
 import { useState, useMemo } from "react";
 import { shiftTypes } from "../types";
+import { weekDaysName } from "../data";
+import { useNavigate } from "react-router-dom";
 
 const ShiftsTable = () => {
   const { data, isLoading } = useShifts.useGetShifts();
   const [selectedShift, setSelectedShift] = useState("");
+  const navigate = useNavigate();
 
   const uniqueShifts = useMemo(() => {
     if (!data || !Array.isArray(data)) return [];
@@ -28,7 +31,8 @@ const ShiftsTable = () => {
         start_time: item.start_time,
         end_time: item.end_time,
         work_day: item.work_day ? "بله" : "خیر",
-        day_of_week: item.day_of_week,
+        day_of_week: weekDaysName.find((day) => day.id === item.day_of_week)
+          ?.name,
       }));
   }, [data, selectedShift]);
 
@@ -57,16 +61,27 @@ const ShiftsTable = () => {
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
-      <SelectInput
-        options={uniqueShifts.map((shiftName) => ({
-          value: shiftName,
-          label: shiftName,
-        }))}
-        label="شیفت ها"
-        value={selectedShift}
-        onChange={(value) => setSelectedShift(value)}
-        className="w-full mx-auto"
-      />
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex-1 max-w-md">
+          <SelectInput
+            options={uniqueShifts.map((shiftName) => ({
+              value: shiftName,
+              label: shiftName,
+            }))}
+            label="شیفت ها"
+            value={selectedShift}
+            onChange={(value) => setSelectedShift(value)}
+            className="w-full"
+          />
+        </div>
+        <button
+          onClick={() => navigate("/shifts/update&del")}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors mr-4 flex items-center"
+        >
+          <span>مدیریت شیفت‌ها</span>
+        </button>
+      </div>
+
       <div className="overflow-x-auto">
         {Array.isArray(data) && data.length > 0 ? (
           <TabulatorTable

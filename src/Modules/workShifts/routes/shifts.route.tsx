@@ -24,6 +24,12 @@ const ShiftsAssignPage = lazy(() =>
   }))
 );
 
+const ShiftsUpdateDelPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ShiftsUpdateDelPage,
+  }))
+);
+
 const ShiftsRoutes = [
   {
     path: "/shifts",
@@ -40,6 +46,10 @@ const ShiftsRoutes = [
       {
         path: "assign",
         element: <ShiftsAssignPage />,
+      },
+      {
+        path: "update&del",
+        element: <ShiftsUpdateDelPage />,
       },
     ],
   },

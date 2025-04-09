@@ -1,8 +1,13 @@
 import { ColumnDefinition } from "tabulator-tables";
 import { MenuItem } from "../components/table/actionMenus";
 
+interface RowData {
+  id?: number | string;
+  [key: string]: unknown;
+}
+
 interface UseTableActionsProps {
-  getItems: (rowData: any) => MenuItem[];
+  getItems: (rowData: RowData) => MenuItem[];
 }
 
 export const useTableActions = ({ getItems }: UseTableActionsProps) => {
@@ -10,7 +15,7 @@ export const useTableActions = ({ getItems }: UseTableActionsProps) => {
     title: "عملیات",
     field: "actions",
     headerSort: false,
-    headerFilter: false,
+    headerFilter: undefined,
     width: 100,
     hozAlign: "center" as const,
     headerHozAlign: "center" as const,
@@ -93,7 +98,7 @@ export const useTableActions = ({ getItems }: UseTableActionsProps) => {
 
       return button;
     },
-    cellClick: () => {}, // Empty function to prevent default behavior
+    cellClick: () => {},
   });
 
   return { renderActionColumn };

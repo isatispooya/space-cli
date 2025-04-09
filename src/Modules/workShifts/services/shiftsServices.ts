@@ -38,14 +38,17 @@ const shiftsServices = {
     );
     return response.data;
   },
+
   updateShifts: async (
-    SetShiftUser: WorkShiftTypes["SetShiftUserPostType"],
-    data: WorkShiftTypes["ShiftPayload"]
+    id: string,
+    data: WorkShiftTypes["ShiftUpdatePayload"]
   ) => {
-    const response = await api.patch(
-      `/timeflow/update-shift/${SetShiftUser.shift_id}/`,
-      data
-    );
+    const response = await api.patch(`/timeflow/update-shift/${id}/`, data);
+    return response.data;
+  },
+
+  deleteShifts: async (id: string) => {
+    const response = await api.delete(`/timeflow/delete-shift/${id}/`);
     return response.data;
   },
 };
