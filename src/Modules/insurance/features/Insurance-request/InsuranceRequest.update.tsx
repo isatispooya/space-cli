@@ -43,7 +43,6 @@ const InsuranceRequestUpdate: React.FC = () => {
     uploadedFiles,
     setUploadedFiles,
     filesToDelete,
-
     uploadFile,
     setUploadFile,
     price,
@@ -91,9 +90,17 @@ const InsuranceRequestUpdate: React.FC = () => {
     if (file) setUploadFile(file);
   };
 
+  const handleClearUploadFile = () => {
+    setUploadFile(null);
+  };
+
   const handleDraftFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setDraftFile(file);
+  };
+
+  const handleClearDraftFile = () => {
+    setDraftFile(null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -242,6 +249,7 @@ const InsuranceRequestUpdate: React.FC = () => {
                 label="آپلود بیمه نامه"
                 onChange={handleUploadFileChange}
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                onClear={handleClearUploadFile}
               />
 
               {draftFile && (
@@ -255,6 +263,7 @@ const InsuranceRequestUpdate: React.FC = () => {
                 label="آپلود پیش نویس بیمه نامه"
                 onChange={handleDraftFileChange}
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                onClear={handleClearDraftFile}
               />
               <FormInput
                 label="قیمت"

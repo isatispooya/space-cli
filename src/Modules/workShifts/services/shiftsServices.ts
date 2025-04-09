@@ -51,6 +51,11 @@ const shiftsServices = {
     const response = await api.delete(`/timeflow/delete-shift/${id}/`);
     return response.data;
   },
+
+  deleteShiftsDay: async (id: string) => {
+    const response = await api.delete(`/timeflow/delete-shift-date/${id}/`);
+    return response.data;
+  },
 };
 
 export default shiftsServices;

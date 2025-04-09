@@ -1,7 +1,7 @@
 import { DynamicList } from "@/components";
 import { useShifts } from "../hooks";
 import { SelectInput } from "@/components";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useEffect, useCallback } from "react";
 import { shiftTypes } from "../types";
 import {
   Switch,
@@ -11,10 +11,6 @@ import {
   Chip,
   Box,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Button,
 } from "@mui/material";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -29,7 +25,27 @@ import {
   Close as CloseIcon,
   Delete as DeleteIcon,
 } from "@mui/icons-material";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectSelectedShift,
+  selectEditingId,
+  selectDeleteDialogOpen,
+  selectDeleteEntireShiftDialogOpen,
+  selectShiftToDelete,
+  selectEditForm,
+  selectSearchQuery,
+  selectVisibleItems,
+  setSelectedShift,
+  setEditingId,
+  setDeleteDialogOpen,
+  setDeleteEntireShiftDialogOpen,
+  setShiftToDelete,
+  setEditForm,
+  updateEditForm,
+  setSearchQuery,
+  setVisibleItems,
+} from "../store/shiftsForm.store";
+import { Dialog } from "@/components/modals";
 moment.loadPersian({ usePersianDigits: true });
 
 export interface ShiftUpdatePayload {
@@ -49,7 +65,6 @@ const TimePickerField = ({
   value: string;
   onChange: (time: string) => void;
 }) => {
-  // Using a simple approach to get it working
   const defaultValue = label === "ورود" ? "08:00:00" : "17:00:00";
 
   return (
@@ -89,62 +104,21 @@ const TimePickerField = ({
 };
 
 const ShiftsUpdateDel = () => {
+  const dispatch = useDispatch();
   const { data } = useShifts.useGetShifts();
   const { mutate: updateShift } = useShifts.useUpdateShift();
   const { mutate: deleteShift } = useShifts.useDeleteShift();
-  const [selectedShift, setSelectedShift] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [visibleItems, setVisibleItems] = useState(10);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [deleteEntireShiftDialogOpen, setDeleteEntireShiftDialogOpen] =
-    useState(false);
-
-  const [shiftToDelete, setShiftToDelete] = useState<shiftTypes | null>(null);
-  const [editForm, setEditForm] = useState({
-    start_time: "08:00:00",
-    end_time: "17:00:00",
-    work_day: false,
-  });
-
-  const handleEdit = (item: shiftTypes) => {
-    setEditingId(item.id);
-    setEditForm({
-      start_time: item.start_time || "08:00:00",
-      end_time: item.end_time || "17:00:00",
-      work_day: item.work_day,
-    });
-  };
-
-  const handleCancel = () => {
-    setEditingId(null);
-
-    setEditForm({
-      start_time: "08:00:00",
-      end_time: "17:00:00",
-      work_day: false,
-    });
-  };
-
-  const defaultTimes = useMemo(() => {
-    if (!data || !Array.isArray(data) || data.length === 0) {
-      return { start_time: "08:00:00", end_time: "17:00:00" };
-    }
-    return {
-      start_time: data[0].start_time,
-      end_time: data[0].end_time,
-    };
-  }, [data]);
-
-  useEffect(() => {
-    if (!editingId) {
-      setEditForm((prev) => ({
-        ...prev,
-        start_time: defaultTimes.start_time,
-        end_time: defaultTimes.end_time,
-      }));
-    }
-  }, [defaultTimes, editingId]);
+  const { mutate: deleteShiftDay } = useShifts.useDeleteShiftDay();
+  const selectedShift = useSelector(selectSelectedShift);
+  const searchQuery = useSelector(selectSearchQuery);
+  const visibleItems = useSelector(selectVisibleItems);
+  const editingId = useSelector(selectEditingId);
+  const deleteDialogOpen = useSelector(selectDeleteDialogOpen);
+  const deleteEntireShiftDialogOpen = useSelector(
+    selectDeleteEntireShiftDialogOpen
+  );
+  const shiftToDelete = useSelector(selectShiftToDelete);
+  const editForm = useSelector(selectEditForm);
 
   const uniqueShifts = useMemo(() => {
     if (!data || !Array.isArray(data)) return [];
@@ -158,71 +132,114 @@ const ShiftsUpdateDel = () => {
     );
   }, [data, selectedShift]);
 
-  const handleTimeChange = (
-    field: "start_time" | "end_time",
-    value: string
-  ) => {
-    setEditForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleSave = (item: shiftTypes) => {
-    updateShift({
-      id: item.id.toString(),
-      data: {
-        start_time: editForm.start_time,
-        end_time: editForm.end_time,
-        work_day: editForm.work_day,
-        day_of_week: item.day_of_week,
-        date: item.date,
-        shift: item.shift.id,
-      },
-    });
-  };
-
-  const handleDeleteClick = (item: shiftTypes) => {
-    setShiftToDelete(item);
-    setDeleteDialogOpen(true);
-  };
-
-  const handleDeleteConfirm = () => {
-    if (shiftToDelete) {
-      deleteShift({ id: shiftToDelete.id.toString() });
-      setDeleteDialogOpen(false);
-      setShiftToDelete(null);
+  const defaultTimes = useMemo(() => {
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      return { start_time: "08:00:00", end_time: "17:00:00" };
     }
-  };
+    return {
+      start_time: data[0].start_time,
+      end_time: data[0].end_time,
+    };
+  }, [data]);
 
-  const handleDeleteCancel = () => {
-    setDeleteDialogOpen(false);
-    setShiftToDelete(null);
-  };
-
-  const handleDeleteEntireShiftClick = () => {
-    setDeleteEntireShiftDialogOpen(true);
-  };
-
-  const handleDeleteEntireShiftConfirm = () => {
-    if (data && selectedShift) {
-      // Get the first item of the selected shift to get the shift ID
-      const shiftItem = (data as unknown as shiftTypes[]).find(
-        (item) => item.shift.name === selectedShift
+  useEffect(() => {
+    if (!editingId) {
+      dispatch(
+        setEditForm({
+          ...editForm,
+          start_time: defaultTimes.start_time,
+          end_time: defaultTimes.end_time,
+        })
       );
-
-      if (shiftItem && shiftItem.shift.id === 32) {
-    
-        deleteShift( shiftItem.shift.id );
-        setDeleteEntireShiftDialogOpen(false);
-        setSelectedShift("");
-      }
     }
-  };
+  }, [defaultTimes, editingId, dispatch, editForm]);
 
-  const handleDeleteEntireShiftCancel = () => {
-    setDeleteEntireShiftDialogOpen(false);
-  };
+  const handleEdit = useCallback(
+    (item: shiftTypes) => {
+      dispatch(setEditingId(item.id));
+      dispatch(
+        setEditForm({
+          start_time: item.start_time || "08:00:00",
+          end_time: item.end_time || "17:00:00",
+          work_day: item.work_day,
+        })
+      );
+    },
+    [dispatch]
+  );
+
+  const handleCancel = useCallback(() => {
+    dispatch(setEditingId(null));
+    dispatch(
+      setEditForm({
+        start_time: "08:00:00",
+        end_time: "17:00:00",
+        work_day: false,
+      })
+    );
+  }, [dispatch]);
+
+  const handleTimeChange = useCallback(
+    (field: "start_time" | "end_time", value: string) => {
+      dispatch(updateEditForm({ [field]: value }));
+    },
+    [dispatch]
+  );
+
+  const handleDeleteClick = useCallback(
+    (item: shiftTypes) => {
+      dispatch(setShiftToDelete(item));
+      dispatch(setDeleteDialogOpen(true));
+    },
+    [dispatch]
+  );
+
+  const handleDeleteConfirm = useCallback(() => {
+    if (shiftToDelete) {
+      deleteShiftDay({ id: shiftToDelete.id.toString() });
+      dispatch(setDeleteDialogOpen(false));
+      dispatch(setShiftToDelete(null));
+    }
+  }, [dispatch, shiftToDelete, deleteShiftDay]);
+
+  const handleDeleteCancel = useCallback(() => {
+    dispatch(setDeleteDialogOpen(false));
+    dispatch(setShiftToDelete(null));
+  }, [dispatch]);
+
+  const handleDeleteEntireShiftClick = useCallback(() => {
+    dispatch(setDeleteEntireShiftDialogOpen(true));
+  }, [dispatch]);
+
+  const handleDeleteEntireShiftConfirm = useCallback(() => {
+    if (filteredShiftData.length > 0) {
+      const shiftId = filteredShiftData[0].shift.id;
+      deleteShift({ id: shiftId.toString() });
+    }
+    dispatch(setDeleteEntireShiftDialogOpen(false));
+  }, [dispatch, deleteShift, filteredShiftData]);
+
+  const handleDeleteEntireShiftCancel = useCallback(() => {
+    dispatch(setDeleteEntireShiftDialogOpen(false));
+  }, [dispatch]);
+
+  const handleSave = useCallback(
+    (item: shiftTypes) => {
+      updateShift({
+        id: item.id.toString(),
+        data: {
+          start_time: editForm.start_time,
+          end_time: editForm.end_time,
+          work_day: editForm.work_day,
+          day_of_week: item.day_of_week,
+          date: item.date,
+          shift: item.shift.id,
+        },
+      });
+      dispatch(setEditingId(null));
+    },
+    [updateShift, editForm, dispatch]
+  );
 
   const getWeekDayName = (dayNumber: string) => {
     const day = weekDaysName.find((day) => day.id === dayNumber);
@@ -233,106 +250,115 @@ const ShiftsUpdateDel = () => {
     return moment(date).format("jYYYY/jMM/jDD");
   };
 
-  const renderShiftItem = (item: shiftTypes) => (
-    <Paper elevation={1} className="p-4 hover:shadow-md transition-shadow">
-      {editingId === item.id ? (
-        <div className="flex flex-row items-center gap-4">
-          <div className="flex items-center gap-2 min-w-[120px]">
-            <span className="text-gray-600 whitespace-nowrap">تاریخ:</span>
-            <span className="font-medium">{formatToJalali(item.date)}</span>
-          </div>
-          <div className="flex items-center gap-2 min-w-[120px]">
-            <span className="text-gray-600">روز:</span>
-            <span className="font-medium">
-              {getWeekDayName(item.day_of_week)}
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            <TimePickerField
-              label="ورود"
-              value={editForm.start_time}
-              onChange={(value) => handleTimeChange("start_time", value)}
-            />
-            <TimePickerField
-              label="خروج"
-              value={editForm.end_time}
-              onChange={(value) => handleTimeChange("end_time", value)}
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-gray-600">روز کاری:</span>
-            <Switch
-              checked={editForm.work_day}
-              onChange={(e) =>
-                setEditForm((prev) => ({
-                  ...prev,
-                  work_day: e.target.checked,
-                }))
-              }
-              size="small"
-            />
-          </div>
-          <div className="flex gap-2 mr-auto">
-            <IconButton
-              size="small"
-              onClick={() => handleSave(item)}
-              color="primary"
-            >
-              <SaveIcon fontSize="small" />
-            </IconButton>
-            <IconButton size="small" onClick={handleCancel} color="error">
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-row items-center gap-4">
-          <div className="flex items-center gap-2 min-w-[120px]">
-            <span className="text-gray-600">تاریخ:</span>
-            <span className="font-medium">{formatToJalali(item.date)}</span>
-          </div>
-          <div className="flex items-center gap-2 min-w-[120px]">
-            <span className="text-gray-600">روز:</span>
-            <span className="font-medium">
-              {getWeekDayName(item.day_of_week)}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 min-w-[120px]">
-            <span className="text-gray-600">ورود:</span>
-            <span className="font-medium">{item.start_time}</span>
-          </div>
-          <div className="flex items-center gap-2 min-w-[120px]">
-            <span className="text-gray-600">خروج:</span>
-            <span className="font-medium">{item.end_time}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-gray-600">روز کاری:</span>
-            <Chip
-              label={item.work_day ? "بله" : "خیر"}
-              size="small"
-              color={item.work_day ? "success" : "default"}
-              variant="outlined"
-            />
-          </div>
-          <div className="mr-auto flex gap-2">
-            <Tooltip title="ویرایش">
-              <IconButton size="small" onClick={() => handleEdit(item)}>
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="حذف">
+  const renderShiftItem = useCallback(
+    (item: shiftTypes) => (
+      <Paper elevation={1} className="p-4 hover:shadow-md transition-shadow">
+        {editingId === item.id ? (
+          <div className="flex flex-row items-center gap-4">
+            <div className="flex items-center gap-2 min-w-[120px]">
+              <span className="text-gray-600 whitespace-nowrap">تاریخ:</span>
+              <span className="font-medium">{formatToJalali(item.date)}</span>
+            </div>
+            <div className="flex items-center gap-2 min-w-[120px]">
+              <span className="text-gray-600">روز:</span>
+              <span className="font-medium">
+                {getWeekDayName(item.day_of_week)}
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <TimePickerField
+                label="ورود"
+                value={editForm.start_time}
+                onChange={(value) => handleTimeChange("start_time", value)}
+              />
+              <TimePickerField
+                label="خروج"
+                value={editForm.end_time}
+                onChange={(value) => handleTimeChange("end_time", value)}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">روز کاری:</span>
+              <Switch
+                checked={editForm.work_day}
+                onChange={(e) =>
+                  dispatch(updateEditForm({ work_day: e.target.checked }))
+                }
+                size="small"
+              />
+            </div>
+            <div className="flex gap-2 mr-auto">
               <IconButton
                 size="small"
-                onClick={() => handleDeleteClick(item)}
-                color="error"
+                onClick={() => handleSave(item)}
+                color="primary"
               >
-                <DeleteIcon fontSize="small" />
+                <SaveIcon fontSize="small" />
               </IconButton>
-            </Tooltip>
+              <IconButton size="small" onClick={handleCancel} color="error">
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </div>
           </div>
-        </div>
-      )}
-    </Paper>
+        ) : (
+          <div className="flex flex-row items-center gap-4">
+            <div className="flex items-center gap-2 min-w-[120px]">
+              <span className="text-gray-600">تاریخ:</span>
+              <span className="font-medium">{formatToJalali(item.date)}</span>
+            </div>
+            <div className="flex items-center gap-2 min-w-[120px]">
+              <span className="text-gray-600">روز:</span>
+              <span className="font-medium">
+                {getWeekDayName(item.day_of_week)}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 min-w-[120px]">
+              <span className="text-gray-600">ورود:</span>
+              <span className="font-medium">{item.start_time}</span>
+            </div>
+            <div className="flex items-center gap-2 min-w-[120px]">
+              <span className="text-gray-600">خروج:</span>
+              <span className="font-medium">{item.end_time}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">روز کاری:</span>
+              <Chip
+                label={item.work_day ? "بله" : "خیر"}
+                size="small"
+                color={item.work_day ? "success" : "default"}
+                variant="outlined"
+              />
+            </div>
+            <div className="mr-auto flex gap-2">
+              <Tooltip title="ویرایش">
+                <IconButton size="small" onClick={() => handleEdit(item)}>
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="حذف">
+                <IconButton
+                  size="small"
+                  onClick={() => handleDeleteClick(item)}
+                  color="error"
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+        )}
+      </Paper>
+    ),
+    [
+      editingId,
+      editForm,
+      handleEdit,
+      handleCancel,
+      handleTimeChange,
+      handleDeleteClick,
+      handleSave,
+      dispatch,
+    ]
   );
 
   return (
@@ -345,7 +371,7 @@ const ShiftsUpdateDel = () => {
           }))}
           label="شیفت ها"
           value={selectedShift}
-          onChange={(value) => setSelectedShift(value)}
+          onChange={(value) => dispatch(setSelectedShift(value))}
           className="w-full"
         />
         {selectedShift && (
@@ -366,99 +392,83 @@ const ShiftsUpdateDel = () => {
         hideSearch={true}
         searchQuery={searchQuery}
         visibleItems={visibleItems}
-        onSearchChange={setSearchQuery}
+        onSearchChange={(value) => dispatch(setSearchQuery(value))}
         onItemClick={() => {}}
-        onLoadMore={() => setVisibleItems((prev) => prev + 10)}
+        onLoadMore={() => dispatch(setVisibleItems(visibleItems + 10))}
         renderItem={renderShiftItem}
       />
 
       <Dialog
-        open={deleteDialogOpen}
+        isOpen={deleteDialogOpen}
         onClose={handleDeleteCancel}
-        aria-labelledby="delete-dialog-title"
-        maxWidth="xs"
-        fullWidth
+        size="sm"
+        header="حذف شیفت"
+        hideFooter={false}
+        footer={
+          <div className="flex gap-2">
+            <button
+              onClick={handleDeleteCancel}
+              className="px-4 py-2 text-gray-600 hover:text-gray-700 rounded-md border border-gray-300"
+            >
+              انصراف
+            </button>
+            <button
+              onClick={handleDeleteConfirm}
+              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            >
+              حذف
+            </button>
+          </div>
+        }
       >
-        <DialogTitle id="delete-dialog-title" className="text-center">
-          تایید حذف شیفت
-        </DialogTitle>
-        <DialogContent>
-          <Typography>
-            آیا از حذف این شیفت مطمئن هستید؟
-            {shiftToDelete && (
-              <Box
-                component="span"
-                sx={{ display: "block", mt: 1, color: "text.secondary" }}
-              >
+        <div className="py-4">
+          <p className="text-gray-700 text-right">
+            آیا از حذف این شیفت اطمینان دارید؟
+          </p>
+          {shiftToDelete && (
+            <div className="mt-2 p-3 bg-gray-50 rounded-md">
+              <p className="text-sm text-gray-600">
                 تاریخ: {formatToJalali(shiftToDelete.date)}
-                <br />
+              </p>
+              <p className="text-sm text-gray-600">
                 روز: {getWeekDayName(shiftToDelete.day_of_week)}
-              </Box>
-            )}
-          </Typography>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: "center", pb: 2 }}>
-          <Button
-            onClick={handleDeleteCancel}
-            variant="outlined"
-            color="primary"
-          >
-            انصراف
-          </Button>
-          <Button
-            onClick={handleDeleteConfirm}
-            variant="contained"
-            color="error"
-            autoFocus
-          >
-            حذف
-          </Button>
-        </DialogActions>
+              </p>
+            </div>
+          )}
+        </div>
       </Dialog>
 
       <Dialog
-        open={deleteEntireShiftDialogOpen}
+        isOpen={deleteEntireShiftDialogOpen}
         onClose={handleDeleteEntireShiftCancel}
-        aria-labelledby="delete-entire-shift-dialog-title"
-        maxWidth="xs"
-        fullWidth
+        size="sm"
+        header="حذف کل شیفت"
+        hideFooter={false}
+        footer={
+          <div className="flex gap-2">
+            <button
+              onClick={handleDeleteEntireShiftCancel}
+              className="px-4 py-2 text-gray-600 hover:text-gray-700 rounded-md border border-gray-300"
+            >
+              انصراف
+            </button>
+            <button
+              onClick={handleDeleteEntireShiftConfirm}
+              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            >
+              حذف
+            </button>
+          </div>
+        }
       >
-        <DialogTitle
-          id="delete-entire-shift-dialog-title"
-          className="text-center"
-        >
-          تایید حذف کل شیفت
-        </DialogTitle>
-        <DialogContent>
-          <Typography>
-            آیا از حذف تمام موارد این شیفت مطمئن هستید؟
-            {selectedShift && (
-              <Box
-                component="span"
-                sx={{ display: "block", mt: 1, color: "text.secondary" }}
-              >
-                نام شیفت: {selectedShift}
-              </Box>
-            )}
-          </Typography>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: "center", pb: 2 }}>
-          <Button
-            onClick={handleDeleteEntireShiftCancel}
-            variant="outlined"
-            color="primary"
-          >
-            انصراف
-          </Button>
-          <Button
-            onClick={handleDeleteEntireShiftConfirm}
-            variant="contained"
-            color="error"
-            autoFocus
-          >
-            حذف
-          </Button>
-        </DialogActions>
+        <div className="py-4">
+          <p className="text-gray-700">
+            آیا از حذف کل شیفت "{selectedShift}" اطمینان دارید؟
+          </p>
+          <p className="mt-2 text-sm text-red-500">
+            این عملیات غیرقابل بازگشت است و تمام روزهای این شیفت حذف خواهند شد.
+          </p>
+        </div>
       </Dialog>
     </>
   );

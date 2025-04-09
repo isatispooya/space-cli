@@ -70,7 +70,7 @@ const TimeflowVerify = ({ onClose }: TimeflowVerifyProps) => {
     navigate("/login");
   };
 
-  // Check if there's any data to display
+ 
   if (!isLoading) {
     const hasOwnLogs =
       notApprovedOwnLogs.filter((log) => log.type !== "logout").length > 0;
@@ -115,7 +115,7 @@ const TimeflowVerify = ({ onClose }: TimeflowVerifyProps) => {
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                {/* Own logs section */}
+             
                 {notApprovedOwnLogs.length > 0 && (
                   <OwnVerify logs={notApprovedOwnLogs} />
                 )}

@@ -22,12 +22,10 @@ const OwnVerify = ({ logs }: OwnLogsSectionProps) => {
   );
   const { mutate: updateUser } = useTimeflow.useUserTimeflowAccept();
 
-  // Handle time changes
   const handleOwnTimeChange = (logId: number, newTime: Date | null) => {
     dispatch(setSelectedOwnTime({ logId, time: newTime }));
   };
 
-  // Update own time
   const handleUpdateOwnTime = (logId: number) => {
     const selectedTime = getTimeValue(
       logId,
@@ -36,6 +34,11 @@ const OwnVerify = ({ logs }: OwnLogsSectionProps) => {
     );
 
     updateOwnLogTime(logId, selectedTime, updateUser, dispatch);
+  };
+
+  const handleSkipOwnTime = (logId: number) => {
+    updateOwnLogTime(logId, null, updateUser, dispatch);
+    dispatch(setOpenOwn(!isOpenOwn));
   };
 
   return (
@@ -99,6 +102,13 @@ const OwnVerify = ({ logs }: OwnLogsSectionProps) => {
                     onClick={() => handleUpdateOwnTime(log.id)}
                   >
                     به‌روزرسانی
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleSkipOwnTime(log.id)}
+                  >
+                    رد
                   </Button>
                 </div>
               </div>

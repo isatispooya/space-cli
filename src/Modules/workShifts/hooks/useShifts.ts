@@ -70,6 +70,12 @@ const useShifts = {
       mutationKey: ["shifts"],
       mutationFn: ({ id }) => shiftsServices.deleteShifts(id),
     }),
+
+  useDeleteShiftDay: () =>
+    useMutation<unknown, Error, { id: string }>({
+      mutationKey: ["shifts"],
+      mutationFn: ({ id }) => shiftsServices.deleteShiftsDay(id),
+    }),
 };
 
 export default useShifts;

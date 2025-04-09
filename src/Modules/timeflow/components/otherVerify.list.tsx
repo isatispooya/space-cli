@@ -50,6 +50,18 @@ const OtherVerify = ({ logs }: OtherLogsSectionProps) => {
     );
   };
 
+  const handleSkipOtherTime = (logId: number, logType: string) => {
+    updateOtherLogTime(
+      logId,
+      null,
+      logType,
+      updateParent,
+      updateLogoutParent,
+      dispatch
+    );
+    dispatch(setOpenOther(!isOpenOther));
+  };
+
   return (
     <Accordian
       title="ورود و خروج زیرمجموعه‌ها"
@@ -115,6 +127,13 @@ const OtherVerify = ({ logs }: OtherLogsSectionProps) => {
                     disabled={log.status_parent === "approved"}
                   >
                     به‌روزرسانی
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleSkipOtherTime(log.id, log.type)}
+                  >
+                    رد
                   </Button>
                 </div>
               </div>
