@@ -164,7 +164,16 @@ const InsuranceRequestUpdate: React.FC = () => {
       );
       setPrice(dataId.price || "");
     }
-  }, [dataId]);
+  }, [
+    dataId,
+    setSelectedInsurance,
+    setStatus,
+    setDraftFile,
+    setUploadFile,
+    setDescription,
+    setDescriptionExpert,
+    setPrice,
+  ]);
 
   useEffect(() => {
     if (dataId?.file_detail) {
@@ -180,7 +189,7 @@ const InsuranceRequestUpdate: React.FC = () => {
       );
       setUploadedFiles(files);
     }
-  }, [dataId]);
+  }, [dataId, uploadedFiles, filesToDelete, setUploadedFiles]);
 
   if (isLoading || isLoadingCurrent || !dataId) {
     return (
