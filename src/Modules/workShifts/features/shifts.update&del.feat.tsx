@@ -146,13 +146,13 @@ const ShiftsUpdateDel = () => {
     if (!editingId) {
       dispatch(
         setEditForm({
-          ...editForm,
           start_time: defaultTimes.start_time,
           end_time: defaultTimes.end_time,
+          work_day: false,
         })
       );
     }
-  }, [defaultTimes, editingId, dispatch, editForm]);
+  }, [defaultTimes, editingId, dispatch]);
 
   const handleEdit = useCallback(
     (item: shiftTypes) => {

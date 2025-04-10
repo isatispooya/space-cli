@@ -2,9 +2,16 @@ import { MainLayout } from "../../../layouts";
 import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../components";
 import { LuTable } from "react-icons/lu";
+import { VscGitStashApply } from "react-icons/vsc";
 
 const TimeFlowPage = () => {
   const toolbarButtons = [
+    {
+      icon: VscGitStashApply,
+      text: "ثبت تردد",
+      permission: ["allow_any"],
+      path: "verify",
+    },
     {
       icon: LuTable,
       text: "جزئیات تردد",

@@ -5,3 +5,4 @@ export { default as MissionPage } from "./mission.page";
 export { default as UsersTimeflowsPage } from "./userstimeflows.page";
 export { default as DetailsTablePage } from "./detailsTable.page";
 export { default as TimeflowReportPage } from "./timefolwReport.page";
+export { default as VerifyTimeflowPage } from "./verifyTimeflow.page";

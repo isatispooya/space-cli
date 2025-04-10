@@ -70,7 +70,6 @@ const TimeflowVerify = ({ onClose }: TimeflowVerifyProps) => {
     navigate("/login");
   };
 
- 
   if (!isLoading) {
     const hasOwnLogs =
       notApprovedOwnLogs.filter((log) => log.type !== "logout").length > 0;
@@ -93,7 +92,6 @@ const TimeflowVerify = ({ onClose }: TimeflowVerifyProps) => {
       >
         <div className="min-h-screen flex items-center justify-center p-4">
           <div className="bg-white/95 rounded-3xl shadow-2xl p-6 max-w-3xl w-full relative">
-            {/* Close Button */}
             <motion.button
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -115,17 +113,14 @@ const TimeflowVerify = ({ onClose }: TimeflowVerifyProps) => {
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-             
                 {notApprovedOwnLogs.length > 0 && (
                   <OwnVerify logs={notApprovedOwnLogs} />
                 )}
 
-                {/* Other logs section */}
                 {notApprovedOtherLogs.length > 0 && (
                   <OtherVerify logs={notApprovedOtherLogs} />
                 )}
 
-                {/* Only render OwnAbsense if there's data */}
                 {userLogins?.own_absence &&
                   userLogins.own_absence.length > 0 && (
                     <OwnAbsense logs={userLogins.own_absence} />

@@ -2,18 +2,16 @@
 import { ReactNode, useState } from "react";
 import { Header } from "../components/layouts/header";
 import { SideBar } from "../Modules/sidebar";
-import TimeflowVerify from "../Modules/timeflow/components/verify";
+import { VerifyReminder } from "@/Modules/timeflow/components";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const MainLayout = ({ children }: LayoutProps) => {
-  const [isVerifyOpen, setIsVerifyOpen] = useState(true);
-
   return (
     <>
-      {isVerifyOpen && <TimeflowVerify onClose={() => setIsVerifyOpen(true)} />}
+      <VerifyReminder />
       <div>
         <SideBar />
         <div>

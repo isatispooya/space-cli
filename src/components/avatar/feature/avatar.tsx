@@ -37,7 +37,6 @@ const UserAvatar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Check if the click is within a MUI picker popup or dialog
       const isPickerPopup =
         (event.target as Element)?.closest(".MuiPickersPopper-root") ||
         (event.target as Element)?.closest(".MuiDialog-root") ||
@@ -45,7 +44,6 @@ const UserAvatar = () => {
         (event.target as Element)?.closest(".MuiPopover-root") ||
         (event.target as Element)?.closest(".MuiModal-root");
 
-      // If clicking on a MUI component, don't close anything
       if (isPickerPopup) {
         return;
       }
@@ -57,8 +55,6 @@ const UserAvatar = () => {
         setIsOpen(false);
       }
 
-      // Don't automatically close the popup here
-      // Let the popup handle its own closing
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -86,6 +82,10 @@ const UserAvatar = () => {
       label: "پروفایل",
       href: "/userManagement/profile",
     },
+    {
+      label: "ثبت زمان ورود",
+      href: "/timeflow/verify",
+    },
     ...(hasPermission
       ? [
           {
@@ -106,10 +106,9 @@ const UserAvatar = () => {
           toast.success("خروج با موفقیت انجام شد");
           navigate("/login");
         },
-        onError: (error ) => {
+        onError: (error) => {
           toast.error("خطا در خروج از سیستم");
           console.error("خطای خروج:", error);
- 
         },
       });
     } else {
