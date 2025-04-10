@@ -36,6 +36,12 @@ const VerifyTimeflowPage = lazy(() =>
   }))
 );
 
+const UpdateTimeFlowPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.UpdateTimeFlowPage,
+  }))
+);
+
 const TimeflowRoutes = [
   {
     path: "/timeflow",
@@ -56,6 +62,10 @@ const TimeflowRoutes = [
       {
         path: "verify",
         element: <VerifyTimeflowPage />,
+      },
+      {
+        path: "update-timeflow/:id",
+        element: <UpdateTimeFlowPage />,
       },
     ],
   },

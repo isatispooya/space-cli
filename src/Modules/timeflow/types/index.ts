@@ -13,3 +13,4 @@ export type { default as LeaveStoreTypes } from "./leaveStore.type";
 export type { default as UsersTimeflowType } from "./userstimeflow.type";
 export type { default as VerifySliceTypes } from "./slices.type";
 export * from "./absensePost.type";
+export * from "./timeflow.type";
