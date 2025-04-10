@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment-jalaali";
 import { PositionPostTypes } from "../types";
 
-// Define interface for user object
 interface UserObject {
   id: number;
   first_name?: string;
@@ -29,6 +28,7 @@ const typeOfEmploymentTranslations: Record<string, string> = {
   freelance: "فریلنسر",
   internship: "کارآموزی",
 };
+
 const PositionUpdateForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -56,7 +56,6 @@ const PositionUpdateForm = () => {
     return <div>Position not found</div>;
   }
 
-  // Extract user data safely
   const userData = specificUser?.user as unknown as UserObject | number;
   const userId = typeof userData === "object" ? userData.id : userData;
   const userFirstName = typeof userData === "object" ? userData.first_name : "";
@@ -103,7 +102,9 @@ const PositionUpdateForm = () => {
       type: "select",
       options: [
         {
-          value: specificUser?.parent?.id.toString() || "",
+          value: specificUser?.parent?.id
+            ? specificUser.parent.id.toString()
+            : "",
           label: specificUser?.parent?.name || "",
         },
       ],

@@ -16,6 +16,12 @@ const PositionsTablePage = lazy(() =>
   }))
 );
 
+const PositionUpdatePage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.PositionUpdatePage,
+  }))
+);
+
 const PositionRoutes = [
   {
     path: "/positions",
@@ -29,7 +35,10 @@ const PositionRoutes = [
         path: "table",
         element: <PositionsTablePage />,
       },
-
+      {
+        path: "update/:id",
+        element: <PositionUpdatePage />,
+      },
     ],
   },
 ];
