@@ -37,6 +37,7 @@ const Dialog = ({
   hideHeader = false,
   hideFooter = false,
   showCloseButton = true,
+  onCloseButtonClick,
   overlayClassName = "",
   contentClassName = "",
   closeOnOutsideClick = true,
@@ -48,7 +49,6 @@ const Dialog = ({
     bottom: "items-end pb-16",
   };
 
-  // Prevent scroll on body when dialog is open
   React.useEffect(() => {
     if (preventScroll) {
       if (isOpen) {
@@ -64,6 +64,12 @@ const Dialog = ({
 
   const handleClose = () => {
     if (queryResult?.isFetching) return;
+    onClose();
+  };
+
+  const handleCloseButtonClick = () => {
+    if (queryResult?.isFetching) return;
+    onCloseButtonClick?.();
     onClose();
   };
 
@@ -133,7 +139,7 @@ const Dialog = ({
                           )}
                           {showCloseButton && (
                             <button
-                              onClick={handleClose}
+                              onClick={handleCloseButtonClick}
                               className="text-gray-400 hover:text-gray-500 transition-colors"
                             >
                               <span className="sr-only">Close</span>

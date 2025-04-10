@@ -26,6 +26,7 @@ const Login: React.FC = () => {
     React.useState(0);
 
   React.useEffect(() => {
+    localStorage.removeItem("verifyReminderShown");
     if (announcements && announcements.length > 1) {
       const timer = setInterval(() => {
         setCurrentAnnouncementIndex((prev) =>
