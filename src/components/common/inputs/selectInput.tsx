@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { BiChevronDown, BiSearch } from "react-icons/bi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 interface Option {
   value: string;
@@ -28,17 +28,15 @@ const SelectInput = ({
 }: SelectInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredOptions, setFilteredOptions] = useState(options);
 
-  // Update filtered options when search term changes
-  useEffect(() => {
-    const filtered = options.filter((option) =>
+
+  const filteredOptions = useMemo(() => {
+    return options.filter((option) =>
       option?.label?.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setFilteredOptions(filtered);
   }, [searchTerm, options]);
 
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;

@@ -1,7 +1,6 @@
 import "moment/locale/fa";
 import { useEffect } from "react";
 import { useTimeflow } from "../hooks";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setOwnLogs, setOtherLogs } from "../store/verifySlice";
 import { RootState } from "../../../store/store";
