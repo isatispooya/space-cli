@@ -1,10 +1,11 @@
 import * as Yup from "yup";
-import { Forms } from "../../../components";
+import { Forms, LoaderLg, NoContent } from "../../../components";
 import { usePosition } from "../hooks";
 import { FormField } from "../../../types";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment-jalaali";
 import { PositionPostTypes } from "../types";
+import { useCompany } from "../../companies/hooks";
 
 interface UserObject {
   id: number;
@@ -35,6 +36,7 @@ const PositionUpdateForm = () => {
 
   const { mutate: updatePosition } = usePosition.useUpdate(Number(id));
   const { data: getUpdatePosition, isPending, refetch } = usePosition.useGet();
+  const { data: companies = [] } = useCompany.useGet();
 
   const formatDate = (date: Date | string): string => {
     const d = new Date(date);
@@ -45,7 +47,7 @@ const PositionUpdateForm = () => {
   };
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <LoaderLg />;
   }
 
   const specificUser = getUpdatePosition?.find(
@@ -53,7 +55,7 @@ const PositionUpdateForm = () => {
   );
 
   if (!getUpdatePosition) {
-    return <div>Position not found</div>;
+    return <NoContent label="نقش یافت نشد" />;
   }
 
   const userData = specificUser?.user as unknown as UserObject | number;
@@ -67,12 +69,10 @@ const PositionUpdateForm = () => {
       name: "company",
       label: "شرکت",
       type: "select",
-      options: [
-        {
-          value: specificUser?.company_detail?.id.toString() || "",
-          label: specificUser?.company_detail?.name || "",
-        },
-      ],
+      options: companies.map((company) => ({
+        value: company.id.toString(),
+        label: company.name,
+      })),
     },
     {
       name: "user",
@@ -89,11 +89,13 @@ const PositionUpdateForm = () => {
       name: "start_date",
       label: "تاریخ شروع",
       type: "date",
+      format: (value: string) => moment(value).format("jYYYY/jMM/jDD"),
     },
     {
       name: "end_date",
       label: "تاریخ پایان",
       type: "date",
+      format: (value: string) => moment(value).format("jYYYY/jMM/jDD"),
     },
     { name: "description", label: "توضیحات", type: "text" },
     {
@@ -145,9 +147,9 @@ const PositionUpdateForm = () => {
         validationSchema as unknown as Yup.ObjectSchema<PositionPostTypes>
       }
       showCloseButton={false}
-      title="بروزرسانی نقش"
-      colors="text-[#29D2C7]"
-      buttonColors="bg-[#29D2C7] hover:bg-[#29D2C7]"
+      title="بروزرسانی سمت"
+      colors="text-[#5677BC]"
+      buttonColors="bg-[#5677BC] hover:bg-[#5677BC]"
       submitButtonText={{
         default: "بروزرسانی نقش",
         loading: "در حال ارسال...",
