@@ -22,6 +22,7 @@ export interface DialogProps {
   hideHeader?: boolean;
   hideFooter?: boolean;
   showCloseButton?: boolean;
+  onCloseButtonClick?: () => void;
   // Styling
   overlayClassName?: string;
   contentClassName?: string;
@@ -33,5 +34,3 @@ export interface DialogProps {
 export type ModalsTypes = {
   DialogProps: DialogProps;
 };
-
-

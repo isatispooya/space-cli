@@ -6,9 +6,10 @@ import { setOwnLogs, setOtherLogs } from "../store/verifySlice";
 import { RootState } from "../../../store/store";
 import Dialog from "../../../components/modals/dialog";
 
+const REMINDER_STORAGE_KEY = "verifyReminderShown";
+
 const VerifyReminder = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [hasChecked, setHasChecked] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { ownLogs, otherLogs } = useSelector(
@@ -41,7 +42,9 @@ const VerifyReminder = () => {
   }, [userLogins, dispatch]);
 
   useEffect(() => {
-    if (!isLoading && !hasChecked && userLogins) {
+    const hasShownReminder = localStorage.getItem(REMINDER_STORAGE_KEY);
+
+    if (!isLoading && !hasShownReminder && userLogins) {
       const hasOwnLogs =
         notApprovedOwnLogs.filter((log) => log.type !== "logout").length > 0;
       const hasOtherLogs = notApprovedOtherLogs.length > 0;
@@ -51,26 +54,18 @@ const VerifyReminder = () => {
       if (hasOwnLogs || hasOtherLogs || hasAbsenceLogs) {
         setIsOpen(true);
       }
-      setHasChecked(true);
     }
-  }, [
-    isLoading,
-    userLogins,
-    notApprovedOwnLogs,
-    notApprovedOtherLogs,
-    hasChecked,
-  ]);
+  }, [isLoading, userLogins, notApprovedOwnLogs, notApprovedOtherLogs]);
 
   const handleClose = () => {
     setIsOpen(false);
-    setHasChecked(true);
+    localStorage.setItem(REMINDER_STORAGE_KEY, "true");
   };
 
   const handleGoToVerify = () => {
-    handleClose();
-    requestAnimationFrame(() => {
-      navigate("/timeflow/verify");
-    });
+    setIsOpen(false);
+    localStorage.setItem(REMINDER_STORAGE_KEY, "true");
+    navigate("/timeflow/verify");
   };
 
   if (!isOpen) return null;
@@ -83,14 +78,10 @@ const VerifyReminder = () => {
       header="یادآوری تایید ورود و خروج"
       animation="scale"
       closeOnOutsideClick={true}
+ 
+      showCloseButton={true}
       footer={
         <div className="flex gap-2 justify-end w-full">
-          <button
-            onClick={handleClose}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-          >
-            بستن
-          </button>
           <button
             onClick={handleGoToVerify}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"

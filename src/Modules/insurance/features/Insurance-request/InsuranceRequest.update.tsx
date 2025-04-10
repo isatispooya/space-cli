@@ -9,13 +9,8 @@ import { FileInput } from "../../../../components";
 import { Spinner } from "../../../../components/loaders";
 import { Toast } from "../../../../components";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import {
-  FormInput,
-  TextAreaInput,
-  ViewFileInput,
-} from "../../../../components";
+import { TextAreaInput, ViewFileInput } from "../../../../components";
 import { FileField } from "../../components";
-import { formatNumber } from "../../../../utils";
 import { ErrorResponse } from "../../../../types";
 import { InsuranceField, InsuranceRequest } from "../../types";
 import { statusOptions } from "../../data";
@@ -187,9 +182,14 @@ const InsuranceRequestUpdate: React.FC = () => {
         }),
         {}
       );
-      setUploadedFiles(files);
+
+      const filteredFiles = Object.fromEntries(
+        Object.entries(files).filter(([key]) => !filesToDelete.includes(key))
+      ) as Record<string, string>;
+
+      setUploadedFiles(filteredFiles);
     }
-  }, [dataId, uploadedFiles, filesToDelete, setUploadedFiles]);
+  }, [dataId?.file_detail, filesToDelete]);
 
   if (isLoading || isLoadingCurrent || !dataId) {
     return (
@@ -273,13 +273,6 @@ const InsuranceRequestUpdate: React.FC = () => {
                 onChange={handleDraftFileChange}
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                 onClear={handleClearDraftFile}
-              />
-              <FormInput
-                label="قیمت"
-                disabled={hasPermission}
-                value={formatNumber(price)}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                className="mt-8 p-2 border rounded-md w-full"
               />
             </div>
           </>
