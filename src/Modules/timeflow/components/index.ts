@@ -12,3 +12,4 @@ export { default as OwnVerify } from "./ownVeify.list";
 export { default as OtherVerify } from "./otherVerify.list";
 export { default as TimeflowDetails } from "./timeflowDetails";
 export { default as VerifyReminder } from "./verifyReminder";
+export { default as UpdateTimeFlow } from "./updateTimeFlow";

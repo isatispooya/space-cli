@@ -1,7 +1,6 @@
 import "moment/locale/fa";
 import { useEffect } from "react";
 import { useTimeflow } from "../hooks";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setOwnLogs, setOtherLogs } from "../store/verifySlice";
 import { RootState } from "../../../store/store";
@@ -39,7 +38,6 @@ const TimeflowVerifyFeat = () => {
     }
   }, [userLogins, dispatch]);
 
-  // Move the check logic outside of useEffect
   const hasNoLogsToVerify =
     !isLoading &&
     (() => {
@@ -52,7 +50,6 @@ const TimeflowVerifyFeat = () => {
       return !hasOwnLogs && !hasOtherLogs && !hasAbsenceLogs;
     })();
 
-  // If there are no logs to verify, show the message
   if (hasNoLogsToVerify) {
     return (
       <div className=" text-center h-screen">
