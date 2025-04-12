@@ -12,6 +12,12 @@ const ConsultationRequestPage = lazy(() =>
   }))
 );
 
+const AdminConsultationPage = lazy(() =>
+  import("../pages").then((module) => ({
+    default: module.AdminConsultationPage,
+  }))
+);
+
 const ConsultationRoutes = [
   {
     path: "/consultation",
@@ -20,6 +26,10 @@ const ConsultationRoutes = [
       {
         path: "request",
         element: <ConsultationRequestPage />,
+      },
+      {
+        path: "admin",
+        element: <AdminConsultationPage />,
       },
     ],
   },

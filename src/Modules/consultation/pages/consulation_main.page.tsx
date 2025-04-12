@@ -9,8 +9,9 @@ const TimeFlowPage = () => {
       icon: FaUserTie,
       text: "درخواست مشاوره",
       permission: ["allow_any"],
-      path: "request",
+      path: "admin",
     },
+
   ];
   return (
     <MainLayout>

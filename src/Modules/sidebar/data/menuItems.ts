@@ -102,6 +102,11 @@ export const menuItems: MenuItem[] = [
         path: "/consultation",
         codename: ["allow_any"],
       },
+      {
+        title: "مدیریت مشاوره",
+        path: "/consultation/admin",
+        codename: ["allow_any"],
+      },
     ],
   },
   {
