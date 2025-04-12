@@ -45,7 +45,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت شیفت ها",
         path: "/shifts/table",
-        codename: ["parent_user" , "view_shift"],
+        codename: ["parent_user", "view_shift"],
       },
     ],
   },
@@ -88,6 +88,19 @@ export const menuItems: MenuItem[] = [
         title: "پذیره نویسی",
         codename: ["unused_precedence_process"],
         path: "/underwriting/table",
+      },
+    ],
+  },
+  {
+    title: "مشاوره",
+    path: "/consultation",
+    icon: FaBuilding,
+    codename: ["allow_any"],
+    submenu: [
+      {
+        title: "درخواست های مشاوره",
+        path: "/consultation",
+        codename: ["allow_any"],
       },
     ],
   },
