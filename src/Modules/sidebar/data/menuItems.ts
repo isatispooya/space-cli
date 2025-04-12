@@ -1,6 +1,6 @@
 import { IconType } from "react-icons";
 import { FaBuilding, FaEnvelope, FaPhone, FaUserTie } from "react-icons/fa";
-import { FaClockRotateLeft } from "react-icons/fa6";
+import { FaClockRotateLeft, FaHandshakeAngle } from "react-icons/fa6";
 
 export interface MenuItem {
   title?: string;
@@ -45,7 +45,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت شیفت ها",
         path: "/shifts/table",
-        codename: ["parent_user" , "view_shift"],
+        codename: ["parent_user", "view_shift"],
       },
     ],
   },
@@ -113,6 +113,25 @@ export const menuItems: MenuItem[] = [
       {
         title: "گفتگو",
         path: "/messenger",
+        codename: ["allow_any"],
+      },
+    ],
+  },
+
+  {
+    title: "مشاوره",
+    path: "/consulting",
+    icon: FaHandshakeAngle,
+    codename: ["allow_any"],
+    submenu: [
+      {
+        title: "درخواست مشاوره",
+        path: "/consulting/request",
+        codename: ["allow_any"],
+      },
+      {
+        title: "مدیریت مشاوره ",
+        path: "/consulting/table",
         codename: ["allow_any"],
       },
     ],
