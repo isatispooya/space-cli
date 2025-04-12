@@ -1,0 +1,1 @@
+export { default as AdminConsultation } from "./admin_Consulation.feat";
