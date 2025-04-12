@@ -6,17 +6,22 @@ const ConsultationMainPage = lazy(() =>
   }))
 );
 
+const ConsultationRequestPage = lazy(() =>
+  import("../pages").then((module) => ({
+    default: module.ConsultationRequestPage,
+  }))
+);
+
 const ConsultationRoutes = [
   {
     path: "/consultation",
     element: <ConsultationMainPage />,
-    // children: [
-    //   {
-    //     path: "request",
-    //     element: <ConsultationRequestPage />,
-    //   },
-
-    // ],
+    children: [
+      {
+        path: "request",
+        element: <ConsultationRequestPage />,
+      },
+    ],
   },
 ];
 
