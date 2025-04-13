@@ -1,1 +1,2 @@
-export { default as ConsultationRequestPage } from "./consultation_request.page";
+export { default as ConsultationFlowPage } from "./consultation_flow.page";
+export { default as ConsultationRequestsPage } from "./consultation_requests.page";

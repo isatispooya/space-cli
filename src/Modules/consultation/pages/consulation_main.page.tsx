@@ -11,6 +11,12 @@ const TimeFlowPage = () => {
       permission: ["allow_any"],
       path: "request",
     },
+    {
+      icon: FaUserTie,
+      text: "سوابق درخواست",
+      permission: ["allow_any"],
+      path: "requests",
+    },
   ];
   return (
     <MainLayout>

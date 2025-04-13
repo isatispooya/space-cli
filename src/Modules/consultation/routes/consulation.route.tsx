@@ -6,9 +6,15 @@ const ConsultationMainPage = lazy(() =>
   }))
 );
 
-const ConsultationRequestPage = lazy(() =>
-  import("../pages").then((module) => ({
-    default: module.ConsultationRequestPage,
+const ConsultationFlowPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ConsultationFlowPage,
+  }))
+);
+
+const ConsultationRequestsPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ConsultationRequestsPage,
   }))
 );
 const AdminConsultationPage = lazy(() =>
@@ -34,7 +40,11 @@ const ConsultationRoutes = [
     children: [
       {
         path: "request",
-        element: <ConsultationRequestPage />,
+        element: <ConsultationFlowPage />,
+      },
+      {
+        path: "requests",
+        element: <ConsultationRequestsPage />,
       },
     ],
   },
