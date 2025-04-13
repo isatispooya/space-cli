@@ -223,6 +223,14 @@ const InsuranceRequestUpdate: React.FC = () => {
               placeholder="انتخاب وضعیت..."
             />
           )}
+          {dataId?.user_detail?.mobile && (
+            <div className="p-2 border rounded-md">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                شماره موبایل کاربر
+              </label>
+              <div className="text-gray-900">{dataId.user_detail.mobile}</div>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -265,14 +273,13 @@ const InsuranceRequestUpdate: React.FC = () => {
             onChange={(e) => setDescription(e.target.value)}
             className="p-2 border rounded-md w-full"
           />
-          {hasPermission && (
-            <TextAreaInput
-              label="توضیحات کارشناسی"
-              value={descriptionExpert}
-              onChange={(e) => setDescriptionExpert(e.target.value)}
-              className="p-2 border rounded-md w-full"
-            />
-          )}
+
+          <TextAreaInput
+            label="توضیحات کارشناسی"
+            value={descriptionExpert}
+            onChange={(e) => setDescriptionExpert(e.target.value)}
+            className="p-2 border rounded-md w-full"
+          />
         </div>
 
         {hasPermission && (
