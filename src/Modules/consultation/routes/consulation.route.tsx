@@ -17,6 +17,21 @@ const ConsultationRequestsPage = lazy(() =>
     default: module.ConsultationRequestsPage,
   }))
 );
+const AdminConsultationPage = lazy(() =>
+  import("../pages").then((module) => ({
+    default: module.AdminConsultationPage,
+  }))
+);
+const AdminConsultationTablePage = lazy(() =>
+  import("../pages").then((module) => ({
+    default: module.AdminConsultationTablePage,
+  }))
+);
+const AdminConsultationFormPage = lazy(() =>
+  import("../pages").then((module) => ({
+    default: module.AdminConsultationFormPage,
+  }))
+);
 
 const ConsultationRoutes = [
   {
@@ -31,6 +46,15 @@ const ConsultationRoutes = [
         path: "requests",
         element: <ConsultationRequestsPage />,
       },
+    ],
+  },
+
+  {
+    path: "/admin",
+    element: <AdminConsultationPage />,
+    children: [
+      { path: "table", element: <AdminConsultationTablePage /> },
+      { path: "form/:id", element: <AdminConsultationFormPage /> },
     ],
   },
 ];
