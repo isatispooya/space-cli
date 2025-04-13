@@ -52,6 +52,8 @@ const AdminConsultationRequestTable = () => {
             ? "تکمیل شده"
             : item.status_of_turn === "cancelled"
             ? "لغو شده"
+            : item.status_of_turn === "open"
+            ? "باز"
             : item.status_of_turn,
         speciality: item.consultant.title,
         price: item.consultant.price.toLocaleString("fa-IR") + " ریال",
