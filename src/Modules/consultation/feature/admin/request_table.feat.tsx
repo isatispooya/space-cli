@@ -106,7 +106,7 @@ const AdminConsultationRequestTable = () => {
 
         const customMenuItems = [
           {
-            label: "ویرایش",
+            label: "تکمیل اطلاعات",
             icon: "⚡",
             action: () => handleEditClick(rowData.id),
           },
