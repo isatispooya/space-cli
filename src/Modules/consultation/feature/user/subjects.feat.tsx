@@ -6,11 +6,7 @@ import { BiSearch } from "react-icons/bi";
 
 const categories = [...new Set(subjects.map((subject) => subject.category))];
 
-interface ConsultationSubjectsProps {
-  onSelect: (subject: SubjectType) => void;
-}
-
-export const ConsultationSubjects = ({ onSelect }: ConsultationSubjectsProps) => {
+export const ConsultationSubjects = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
