@@ -73,9 +73,6 @@ const AdminConsultationRequestTable = () => {
     menus.forEach((menu) => menu.remove());
   };
 
-  const handleView = (id: number) => {
-    navigate(`/admin/consultation/form/${id}`);
-  };
 
   const columns = () => [
     { title: "نام بیمار", field: "patient_name", headerFilter: true },
@@ -112,11 +109,6 @@ const AdminConsultationRequestTable = () => {
             label: "ویرایش",
             icon: "⚡",
             action: () => handleEditClick(rowData.id),
-          },
-          {
-            label: "نمایش",
-            icon: "⚡",
-            action: () => handleView(rowData.id),
           },
         ];
 
