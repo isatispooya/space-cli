@@ -1,8 +1,11 @@
 import "moment/locale/fa";
+import moment from "moment-jalaali";
 import { TabulatorTable } from "../../../../components";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import useConsultingReserveTurnUser from "../../hooks/admin/useConsultingReserveTurnUser";
+import { useUserData } from "@/Modules/users/hooks";
+import { UserData } from "../../types/consultation_request.type";
 
 interface CellComponent {
   getElement: () => HTMLElement;
@@ -24,32 +27,37 @@ const AdminConsultationRequestTable = () => {
   const navigate = useNavigate();
   const { data, isLoading, error } =
     useConsultingReserveTurnUser.useGetConsultingReserveTurnUser();
+  const { data: usersData } = useUserData();
 
   const mappedData = useMemo(() => {
     if (!data) return [];
 
-    return data.map((item) => ({
-      id: item.id,
-      patient_name: `${item.counseling_requester.first_name} ${item.counseling_requester.last_name}`,
-      doctor_name: item.expert
-        ? `${item.expert.first_name} ${item.expert.last_name}`
-        : "تعیین نشده",
-      date: item.date || "تعیین نشده",
-      time: item.date
-        ? new Date(item.date).toLocaleTimeString("fa-IR")
-        : "تعیین نشده",
-      status:
-        item.status_of_turn === "reserved"
-          ? "رزرو شده"
-          : item.status_of_turn === "completed"
-          ? "تکمیل شده"
-          : item.status_of_turn === "cancelled"
-          ? "لغو شده"
-          : item.status_of_turn,
-      speciality: item.consultant.title,
-      price: item.consultant.price.toLocaleString("fa-IR") + " ریال",
-    }));
-  }, [data]);
+    return data.map((item) => {
+      const doctor = usersData?.find((user: UserData) => user.id === Number(item.expert));
+      
+      return {
+        id: item.id,
+        patient_name: `${item.counseling_requester.first_name} ${item.counseling_requester.last_name}`,
+        doctor_name: doctor
+          ? `${doctor.first_name} ${doctor.last_name}`
+          : "تعیین نشده",
+        date: item.date ? moment(item.date).format('jYYYY/jMM/jDD') : "تعیین نشده",
+        time: item.date
+          ? moment(item.date).format('HH:mm')
+          : "تعیین نشده",
+        status:
+          item.status_of_turn === "reserved"
+            ? "رزرو شده"
+            : item.status_of_turn === "completed"
+            ? "تکمیل شده"
+            : item.status_of_turn === "cancelled"
+            ? "لغو شده"
+            : item.status_of_turn,
+        speciality: item.consultant.title,
+        price: item.consultant.price.toLocaleString("fa-IR") + " ریال",
+      };
+    });
+  }, [data, usersData]);
 
   if (isLoading) {
     return <div>در حال بارگذاری...</div>;
@@ -152,8 +160,7 @@ const AdminConsultationRequestTable = () => {
     return {
       نام_بیمار: item.patient_name,
       نام_پزشک: item.doctor_name,
-      تاریخ: item.date,
-      ساعت: item.time,
+      تاریخ_و_ساعت: item.date,
       وضعیت: item.status,
       تخصص: item.speciality,
       هزینه: item.price,

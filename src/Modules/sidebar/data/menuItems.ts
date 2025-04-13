@@ -94,7 +94,7 @@ export const menuItems: MenuItem[] = [
   {
     title: "مشاوره",
     path: "/consultation",
-    icon: FaBuilding,
+    icon: FaHandshakeAngle,
     codename: ["allow_any"],
     submenu: [
       {
@@ -136,24 +136,6 @@ export const menuItems: MenuItem[] = [
     ],
   },
 
-  {
-    title: "مشاوره",
-    path: "/consulting",
-    icon: FaHandshakeAngle,
-    codename: ["allow_any"],
-    submenu: [
-      {
-        title: "درخواست مشاوره",
-        path: "/consulting/request",
-        codename: ["allow_any"],
-      },
-      {
-        title: "مدیریت مشاوره ",
-        path: "/consulting/table",
-        codename: ["allow_any"],
-      },
-    ],
-  },
 
   // {
   //   title: "دسترسی ها",
