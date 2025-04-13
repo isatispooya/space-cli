@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import useInsurance from "../../hooks/useInsurance";
 import { useUserPermissions } from "../../../permissions";
 import { useInsuranceRStore } from "../../store";
-import { SelectInput } from "../../../../components";
+import { FormInput, SelectInput } from "../../../../components";
 import { FileInput } from "../../../../components";
 import { Spinner } from "../../../../components/loaders";
 import { Toast } from "../../../../components";
@@ -104,6 +104,7 @@ const InsuranceRequestUpdate: React.FC = () => {
     const formData = new FormData();
     formData.append("insurance", selectedInsurance);
     formData.append("insurance_status", status);
+    formData.append("description_expert", descriptionExpert);
     Object.entries(files).forEach(([fieldId, file]) => {
       formData.append(`insurance_name_file[${fieldId}]`, file);
     });
@@ -155,7 +156,9 @@ const InsuranceRequestUpdate: React.FC = () => {
       setUploadFile(dataId.insurance_name_file || null);
       setDescription(dataId.description_detail?.[0]?.description_user || "");
       setDescriptionExpert(
-        dataId.description_detail?.[0]?.description_expert || ""
+        dataId.description_detail?.map(
+          (item: { description_expert: string }) => item.description_expert
+        ) || ""
       );
       setPrice(dataId.price || "");
     }
@@ -273,6 +276,12 @@ const InsuranceRequestUpdate: React.FC = () => {
                 onChange={handleDraftFileChange}
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                 onClear={handleClearDraftFile}
+              />
+              <FormInput
+                label="قیمت"
+                value={price}
+                onChange={(e) => setPrice(Number(e.target.value))}
+                className="mt-8 p-2 border rounded-md w-full"
               />
             </div>
           </>
