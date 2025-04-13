@@ -166,6 +166,13 @@ const useTimeflow = {
       mutationFn: (data: AbsensePostType) => timeflowServices.postAbsence(data),
     });
   },
+
+  useGetUserAllTimeflow: ()=> {
+    return useQuery({
+      queryKey: ["user-all-timeflow"],
+      queryFn: () => timeflowServices.getUserAllTimeflow(),
+    });
+  },
 };
 
 export default useTimeflow;

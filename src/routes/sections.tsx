@@ -30,6 +30,7 @@ import { ContactRoutes } from "../Modules/contact";
 import { StreamRoutes } from "../Modules/live";
 import { ShiftsRoutes } from "../Modules/workShifts";
 import PaymentPage from "@/pages/payment.page";
+import { ConsultationRoutes } from "@/Modules/consultation/routes";
 const PaymentResultPage = lazy(() =>
   import("../pages/paymentResultPage").then((module) => ({
     default: module.default,
@@ -65,6 +66,7 @@ const ExistingRoutes = [
   ...ContactRoutes,
   ...StreamRoutes,
   ...ShiftsRoutes,
+  ...ConsultationRoutes,
 ];
 
 export default function Router() {

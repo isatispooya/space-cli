@@ -1,8 +1,7 @@
-import { TimeflowTable } from "../components";
+import UserTimeflowTable from "../components/userTimeflow.table";
 
 const UsersTimeflows = () => {
-  return <TimeflowTable />;
+  return <UserTimeflowTable />;
 };
 
 export default UsersTimeflows;
-    

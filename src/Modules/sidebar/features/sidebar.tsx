@@ -4,20 +4,10 @@ import { menuItems } from "../data/menuItems";
 import CustomMenuItem from "../components/MenuItem";
 import { motion } from "framer-motion";
 import bothLogo from "../../../../public/bothLogo.svg";
-// import { useCallback, useState } from "react";
-// import { SidebarTour } from "../components";
 
 const SideBar = () => {
   const { isOpen, toggleSidebar } = useSidebarStore();
   const { search, setSearch } = useSearchStore();
-  // const [runTour, setRunTour] = useState(() => {
-  //   return !localStorage.getItem("sidebarTourCompleted");
-  // });
-
-  // const handleTourEnd = useCallback(() => {
-  //   setRunTour(false);
-  //   localStorage.setItem("sidebarTourCompleted", "true");
-  // }, []);
 
   const filteredMenuItems = menuItems.filter((item) => {
     // بررسی عنوان اصلی منو

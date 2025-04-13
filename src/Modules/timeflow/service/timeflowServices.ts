@@ -51,8 +51,13 @@ const timeflowServices = {
     );
     return response.data;
   },
-  getTimeflowDetails: async (year: number, month: number): Promise<UserLoginType> => {
-    const response = await api.get(`/timeflow/summery-time-flow/?year=${year}&month=${month}`);
+  getTimeflowDetails: async (
+    year: number,
+    month: number
+  ): Promise<UserLoginType> => {
+    const response = await api.get(
+      `/timeflow/summery-time-flow/?year=${year}&month=${month}`
+    );
     return response.data;
   },
   getMission: async (): Promise<MissionType[]> => {
@@ -77,6 +82,10 @@ const timeflowServices = {
   },
   updateLeave: async (id: number, data: LeaveParentPostType) => {
     const response = await api.patch(`/timeflow/user-leave-log/${id}/`, data);
+    return response.data;
+  },
+  getUserAllTimeflow: async () => {
+    const response = await api.get("/timeflow/user-all-log/");
     return response.data;
   },
 };

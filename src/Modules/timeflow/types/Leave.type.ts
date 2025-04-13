@@ -45,4 +45,4 @@ export interface LeaveType {
   own_logs: Own_logs[];
 }
 
-export default LeaveType;
+export default LeaveType; 
