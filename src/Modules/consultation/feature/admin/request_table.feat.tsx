@@ -25,8 +25,6 @@ const AdminConsultationRequestTable = () => {
   const { data, isLoading, error } =
     useConsultingReserveTurnUser.useGetConsultingReserveTurnUser();
 
-  console.log("API Response Data:", data);
-
   const mappedData = useMemo(() => {
     if (!data) return [];
 
