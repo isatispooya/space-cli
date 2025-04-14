@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactNode, useState, useMemo } from "react";
+import { ReactNode,  useState, useMemo } from "react";
 import { useInvitation } from "../../invitation/hooks";
 import { motion } from "framer-motion";
 import { RiUserReceived2Line } from "react-icons/ri";
 import "moment/locale/fa";
+
 import { useRemainPoints } from "../../points";
 import { useNavigate } from "react-router-dom";
 import { TbSeeding } from "react-icons/tb";
@@ -95,28 +96,28 @@ const DashboardMarketingStat = () => {
       animate={{ opacity: 1, y: 0 }}
       className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
     >
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center">
-          <RiUserReceived2Line className="w-4 h-4 text-[#D2042D]" />
-          <h3 className="text-xs text-[#D2042D] font-bold font-iranSans mr-2">
+          <RiUserReceived2Line className="w-5 h-5 text-[#D2042D]" />
+          <h3 className="text-sm text-[#D2042D] font-bold font-iranSans mr-2">
             باشگاه ایساتیس
           </h3>
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-2">
           <button
             onClick={() => navigate("/points/privileges")}
-            className="flex items-center gap-1 text-[9px] text-[#D2042D] border border-[#D2042D] rounded-lg px-1 py-0.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300"
+            className="flex items-center gap-1 text-xs text-[#D2042D] border border-[#D2042D] rounded-lg px-2 py-1 hover:bg-[#D2042D] hover:text-white transition-all duration-300"
           >
-            <LuCoins className="w-2 h-2" />
+            <LuCoins className="w-3 h-3" />
             <span>امتیازات</span>
           </button>
 
           {hasPermission && (
             <button
               onClick={() => navigate("/rewards/table")}
-              className="flex items-center gap-1 text-[9px] text-[#D2042D] border border-[#D2042D] rounded-lg px-1 py-0.5 hover:bg-[#D2042D] hover:text-white transition-all duration-300"
+              className="flex items-center gap-1 text-xs text-[#D2042D] border border-[#D2042D] rounded-lg px-2 py-1 hover:bg-[#D2042D] hover:text-white transition-all duration-300"
             >
-              <MdCardGiftcard className="w-2 h-2" />
+              <MdCardGiftcard className="w-3 h-3" />
               <span>رفاهی</span>
             </button>
           )}
@@ -127,10 +128,10 @@ const DashboardMarketingStat = () => {
         <div className="flex items-center justify-center w-full">
           <button
             onClick={() => navigate("/invitation/list")}
-            className="text-xl font-bold text-[#A0001C] font-iranSans"
+            className="text-3xl font-bold text-[#A0001C] font-iranSans"
           >
             {invitedUserFiltered?.length || 0}
-            <span className="text-[9px] text-[#D2042D] font-iranSans mx-1">
+            <span className="text-sm text-[#D2042D] font-iranSans mx-1">
               نفر
             </span>
           </button>
@@ -139,26 +140,26 @@ const DashboardMarketingStat = () => {
             className="flex flex-col ml-4"
           >
             <div className="flex items-center">
-              <span className="text-[#A0001C] text-sm font-bold text-left">
+              <span className="text-[#A0001C] text-xl font-bold text-left">
                 {formatNumber(remainPoints?.point_1)}
               </span>
-              <LuCoins className="text-yellow-500 text-[12px] mx-1" />
-              <span className="text-[9px] text-[#D2042D]">(سکه)</span>
+              <LuCoins className="text-yellow-500 text-[16px] mx-1" />
+              <span className="text-sm text-[#D2042D]">(سکه)</span>
             </div>
             <div className="flex items-center">
-              <span className="text-[#A0001C] text-sm font-bold text-left">
+              <span className="text-[#A0001C] text-xl font-bold text-left">
                 {formatNumber(remainPoints?.point_2)}
               </span>
-              <TbSeeding className="text-green-500 text-[12px] mx-1" />
-              <span className="text-[9px] text-[#D2042D]">(بذر)</span>
+              <TbSeeding className="text-green-500 text-[16px] mx-1" />
+              <span className="text-sm text-[#D2042D]">(بذر)</span>
             </div>
           </button>
         </div>
       </div>
 
       <div className="mt-auto pt-4 relative z-10">
-        <div className="flex items-center gap-1 bg-[#ffffff] p-1 rounded-lg shadow-inner hover:bg-gray-100 transition-colors duration-200">
-          <p className="flex-1 text-[9px] text-[#D2042D] font-iranSans truncate">
+        <div className="flex items-center gap-2 bg-[#ffffff] p-2 rounded-lg shadow-inner hover:bg-gray-100 transition-colors duration-200">
+          <p className="flex-1 text-xs text-[#D2042D] font-iranSans truncate">
             {`my.isatispooya.com/login?rf=${
               invitedUserFilteredCode?.[0]?.code || ""
             }`}
@@ -166,7 +167,7 @@ const DashboardMarketingStat = () => {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={handleCopy}
-            className={`px-2 py-1 rounded-md text-[9px] font-medium transition-all duration-200 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ${
               copied
                 ? "bg-[#D2042D] text-[#ffffff]"
                 : "bg-[#D2042D] text-white hover:bg-[#E57350]"

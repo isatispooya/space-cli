@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
-import { FaTools, FaCalculator, FaChartLine, FaHeadset } from "react-icons/fa";
-import { MdAccountBalance } from "react-icons/md";
-import { BsFillJournalBookmarkFill } from "react-icons/bs";
+import { FaTools,  FaHeadset } from "react-icons/fa";
+
 import { Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router-dom";
+import Moshtrak from "../../../assets/moshtrak.png";
+import termeh from "../../../assets/termeh.png";
+import khatam from "../../../assets/khatam.png";
+import exir from "../../../assets/exsir.png";
 
 const tools = [
   {
@@ -17,36 +20,43 @@ const tools = [
   },
   {
     id: "calculator",
-
-    icon: FaCalculator,
+    icon: khatam,
     title: "صندوق سرمایه گذاری خاتم",
     color: "text-gray-400",
     hoverColor: "",
     isActive: false,
+    link: "#",
+    isImage: true,
   },
   {
     id: "investment",
-    icon: FaChartLine,
+    icon: exir,
     title: "صندوق سرمایه گذاری اکسیر",
     color: "text-gray-400",
     hoverColor: "",
     isActive: false,
+    link: "#",
+    isImage: true,
   },
   {
     id: "accounting",
-    icon: MdAccountBalance,
+    icon: termeh,
     title: "صندوق سرمایه گذاری ترمه ",
     color: "text-gray-400",
     hoverColor: "",
     isActive: false,
+    link: "#",
+    isImage: true,
   },
   {
     id: "report",
-    icon: BsFillJournalBookmarkFill,
+    icon: Moshtrak,
     title: "صندوق سرمایه گذاری مشترک ",
     color: "text-gray-400",
     hoverColor: "",
     isActive: false,
+    link: "#",
+    isImage: true,
   },
 ];
 
@@ -86,11 +96,7 @@ const DashboardToolsStat = () => {
               whileTap={tool.isActive ? { scale: 0.95 } : {}}
               data-tooltip-id={tool.id}
               data-tooltip-content={tool.title}
-              onClick={
-                tool.link && tool.isActive
-                  ? () => navigate(tool.link!)
-                  : undefined
-              }
+              onClick={() => tool.isActive && navigate(tool.link)}
               className={`w-8 h-8 rounded-md flex items-center justify-center ${
                 tool.isActive
                   ? tool.hoverColor
@@ -98,7 +104,11 @@ const DashboardToolsStat = () => {
               } transition-colors duration-200`}
               disabled={!tool.isActive}
             >
-              <tool.icon className={`w-4 h-4 ${tool.color}`} />
+              {tool.isImage ? (
+                <img src={tool.icon} alt={tool.title} className="w-4 h-4" />
+              ) : (
+                <tool.icon className={`w-4 h-4 ${tool.color}`} />
+              )}
               <Tooltip
                 id={tool.id}
                 place="top"

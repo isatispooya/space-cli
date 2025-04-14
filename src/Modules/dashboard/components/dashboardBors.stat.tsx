@@ -1,13 +1,7 @@
 import { motion } from "framer-motion";
 import { IoIosArrowBack } from "react-icons/io";
 import { useDashboard } from "../hooks";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { formatNumber } from "../../../utils";
 import Spinner from "../../../components/loaders/spinner";
 
@@ -35,19 +29,19 @@ const DashboardBorsStat = () => {
       animate={{ opacity: 1, y: 0 }}
       className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
     >
-      <div className="flex items-center mb-2">
+      <div className="flex items-center mb-3">
         <img
           src="/assets/Artboard 1 copy 16.png"
           alt="بورس آیکن"
-          className="w-8 h-8"
+          className="w-10 h-10"
         />
-        <h3 className="text-sm text-[#1e40af] font-bold font-iranSans mr-2">
+        <h3 className="text-base text-[#1e40af] font-bold font-iranSans mr-2">
           {title}
         </h3>
       </div>
 
       <div className="flex-grow flex items-center justify-center">
-        <div className="w-full h-20">
+        <div className="w-full h-24">
           {isLoading ? (
             <div className="w-full h-full flex justify-center items-center">
               <Spinner />
@@ -61,11 +55,14 @@ const DashboardBorsStat = () => {
                   cy="50%"
                   labelLine={false}
                   label={false}
-                  outerRadius={25}
+                  outerRadius={35}
                   dataKey="value"
                 >
                   {pieData?.map(
-                    (_entry: { name: string; value: number }, index: number) => (
+                    (
+                      _entry: { name: string; value: number },
+                      index: number
+                    ) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[index % COLORS.length]}
@@ -80,7 +77,7 @@ const DashboardBorsStat = () => {
             </ResponsiveContainer>
           ) : (
             <div className="flex items-center justify-center h-full">
-              <p className="text-xs text-gray-500">
+              <p className="text-sm text-gray-500">
                 داده‌ای برای نمایش وجود ندارد
               </p>
             </div>
@@ -97,11 +94,11 @@ const DashboardBorsStat = () => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full bg-blue-900 hover:bg-blue-700 text-white py-1.5 px-2 rounded-lg 
-                      font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
+            className="w-full bg-blue-900 hover:bg-blue-700 text-white py-2 px-3 rounded-lg 
+                      font-iranSans duration-200 flex items-center justify-center gap-2 text-base"
           >
             <span className="text-white font-bold">پنل بورس</span>
-            <IoIosArrowBack className="w-3 h-3" />
+            <IoIosArrowBack className="w-4 h-4" />
           </motion.button>
         </a>
       </div>

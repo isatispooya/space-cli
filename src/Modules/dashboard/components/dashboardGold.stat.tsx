@@ -8,8 +8,8 @@ const DashboardGoldStat = () => {
       animate={{ opacity: 1, y: 0 }}
       className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
     >
-      <div className="flex items-center mb-2">
-        <h3 className="text-sm text-amber-900 font-bold font-iranSans tracking-tight">
+      <div className="flex items-center mb-3">
+        <h3 className="text-base text-amber-900 font-bold font-iranSans tracking-tight">
           طلای آب شده
         </h3>
       </div>
@@ -17,7 +17,7 @@ const DashboardGoldStat = () => {
       <div className="flex-grow flex items-center justify-center">
         <div className="relative w-full">
           <svg
-            className="absolute w-16 h-10 transform -rotate-12 left-1/2 -translate-x-1/2"
+            className="absolute w-20 h-12 transform -rotate-12 left-1/2 -translate-x-1/2"
             viewBox="0 0 100 60"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ const DashboardGoldStat = () => {
             />
           </svg>
           <svg
-            className="absolute w-14 h-9 transform rotate-6 left-1/2 -translate-x-1/2 top-1"
+            className="absolute w-18 h-11 transform rotate-6 left-1/2 -translate-x-1/2 top-1"
             viewBox="0 0 100 60"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -69,11 +69,11 @@ const DashboardGoldStat = () => {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white py-1.5 px-1 rounded-lg 
-                     font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
+          className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white py-2 px-3 rounded-lg 
+                     font-iranSans duration-200 flex items-center justify-center gap-2 text-base"
         >
           <span className="text-white font-bold">به زودی</span>
-          <IoIosArrowBack className="w-3 h-3" />
+          <IoIosArrowBack className="w-4 h-4" />
         </motion.button>
       </div>
 

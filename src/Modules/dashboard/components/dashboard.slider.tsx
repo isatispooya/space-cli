@@ -158,7 +158,6 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
                 </button>
               </div>
             </a>
-
             <div className="absolute bottom-2 left-0 right-0 z-10 flex justify-center">
               <button
                 onClick={() => handleShare(slide)}
@@ -168,6 +167,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
                 اشتراک گذاری
               </button>
             </div>
+
           </SwiperSlide>
         ))}
       </Swiper>

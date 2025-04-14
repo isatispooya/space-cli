@@ -13,8 +13,8 @@ const formatValue = (value: number) => {
     return (
       <>
         {billionValue}
-        <span className="text-sm text-[#4b0082] font-iranSans"> میلیارد</span>
-        <span className="text-sm text-[#4b0082] font-iranSans"> ریال</span>
+        <span className="text-base text-[#4b0082] font-iranSans"> میلیارد</span>
+        <span className="text-base text-[#4b0082] font-iranSans"> ریال</span>
       </>
     );
   } else if (length > 6) {
@@ -22,8 +22,8 @@ const formatValue = (value: number) => {
     return (
       <>
         {millionValue}
-        <span className="text-sm text-[#4b0082] font-iranSans"> میلیون</span>
-        <span className="text-sm text-[#4b0082] font-iranSans"> ریال</span>
+        <span className="text-base text-[#4b0082] font-iranSans"> میلیون</span>
+        <span className="text-base text-[#4b0082] font-iranSans"> ریال</span>
       </>
     );
   } else if (length > 3) {
@@ -31,8 +31,8 @@ const formatValue = (value: number) => {
     return (
       <>
         {thousandValue}
-        <span className="text-sm text-[#4b0082] font-iranSans"> هزار</span>
-        <span className="text-sm text-[#4b0082] font-iranSans"> ریال</span>
+        <span className="text-base text-[#4b0082] font-iranSans"> هزار</span>
+        <span className="text-base text-[#4b0082] font-iranSans"> ریال</span>
       </>
     );
   }
@@ -64,25 +64,25 @@ const DashboardCrowdStat = () => {
       animate={{ opacity: 1, y: 0 }}
       className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
     >
-      <div className="flex items-center mb-2">
-        <img src={crowdImg} alt="crowd" className="w-8 h-8" />
-        <h3 className="text-sm text-[#4b0082] font-bold font-iranSans mr-2">
+      <div className="flex items-center mb-3">
+        <img src={crowdImg} alt="crowd" className="w-10 h-10" />
+        <h3 className="text-base text-[#4b0082] font-bold font-iranSans mr-2">
           {"ایساتیس کراد"}
         </h3>
       </div>
 
       <div className="flex-grow">
-        <p className="text-[11px] font-bold text-[#4b0082] font-iranSans">
+        <p className="text-sm font-bold text-[#4b0082] font-iranSans">
           {stats?.["total value"]
             ? "مجموع تامین مالی جمعی"
             : "مجموع تامین مالی جمعی"}
         </p>
-        <div className="text-center mt-2">
-          <p className="text-2xl font-bold text-[#4b0082] font-iranSans overflow-hidden text-ellipsis whitespace-nowrap">
+        <div className="text-center mt-3">
+          <p className="text-3xl font-bold text-[#4b0082] font-iranSans overflow-hidden text-ellipsis whitespace-nowrap">
             {!totalValue ? (
               <>
                 0
-                <span className="text-sm text-[#4b0082] font-iranSans">
+                <span className="text-base text-[#4b0082] font-iranSans">
                   {" "}
                   ریال
                 </span>
@@ -99,11 +99,11 @@ const DashboardCrowdStat = () => {
           onClick={handleCrowdUUID}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-purple-900 hover:bg-purple-700 text-white py-1.5 px-2 rounded-lg 
-                    font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
+          className="w-full bg-purple-900 hover:bg-purple-700 text-white py-2 px-3 rounded-lg 
+                    font-iranSans duration-200 flex items-center justify-center gap-2 text-base"
         >
           <span className="text-white font-bold">پنل کراد</span>
-          <IoIosArrowBack className="w-3 h-3" />
+          <IoIosArrowBack className="w-4 h-4" />
         </motion.button>
       </div>
 

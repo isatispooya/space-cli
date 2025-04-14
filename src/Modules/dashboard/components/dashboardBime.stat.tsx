@@ -17,17 +17,19 @@ const DashboardBimeStat = () => {
       animate={{ opacity: 1, y: 0 }}
       className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
     >
-      <div className="flex items-center mb-2">
-        <img src={bimeImg} alt="bime" className="w-8 h-8" />
-        <h3 className="text-sm text-[#1a5c35] font-bold font-iranSans mr-2">
+      <div className="flex items-center mb-3">
+        <img src={bimeImg} alt="bime" className="w-10 h-10" />
+        <h3 className="text-base text-[#1a5c35] font-bold font-iranSans mr-2">
           بیمه ایساتیس
         </h3>
       </div>
 
       <div className="flex-grow flex items-center justify-center">
-        <p className="text-2xl font-bold text-[#1a5c35] font-iranSans">
+        <p className="text-3xl font-bold text-[#1a5c35] font-iranSans">
           {stats?.pishkar || 0}
-          <span className="text-sm text-[#1a5c35] font-iranSans mr-1">عدد</span>
+          <span className="text-base text-[#1a5c35] font-iranSans mr-1">
+            عدد
+          </span>
         </p>
       </div>
 
@@ -36,11 +38,11 @@ const DashboardBimeStat = () => {
           onClick={() => navigate("/requestinsurance/table")}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-green-800 hover:bg-green-600 text-white py-1.5 px-2 rounded-lg 
-                    font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
+          className="w-full bg-green-800 hover:bg-green-600 text-white py-2 px-3 rounded-lg 
+                    font-iranSans duration-200 flex items-center justify-center gap-2 text-base"
         >
           <span className="text-white font-bold">پنل بیمه</span>
-          <IoIosArrowBack className="w-3 h-3" />
+          <IoIosArrowBack className="w-4 h-4" />
         </motion.button>
       </div>
 
