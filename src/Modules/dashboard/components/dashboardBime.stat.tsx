@@ -15,36 +15,29 @@ const DashboardBimeStat = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl transform hover:scale-105"
-      style={{ zIndex: 2 }}
+      className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
     >
-      <div className="flex items-center space-x-4">
-        <img src={bimeImg} alt="bime" className="w-10 h-10" />
-        <h3 className="text-sm text-[#1a5c35] font-bold font-iranSans">
+      <div className="flex items-center mb-2">
+        <img src={bimeImg} alt="bime" className="w-8 h-8" />
+        <h3 className="text-sm text-[#1a5c35] font-bold font-iranSans mr-2">
           بیمه ایساتیس
         </h3>
       </div>
-      <div>
-        <motion.p
-          initial={{ scale: 0.5 }}
-          animate={{ scale: 1 }}
-          className="text-4xl md:text-6xl lg:text-8xl text-center font-bold text-[#1a5c35] mt-2 mb-8 font-iranSans"
-        >
+
+      <div className="flex-grow flex items-center justify-center">
+        <p className="text-2xl font-bold text-[#1a5c35] font-iranSans">
           {stats?.pishkar || 0}
-          <span className="text-sm text-[#1a5c35] font-iranSans">عدد</span>
-        </motion.p>
+          <span className="text-sm text-[#1a5c35] font-iranSans mr-1">عدد</span>
+        </p>
       </div>
 
-      <div
-        onClick={() => {
-          navigate("/requestinsurance/table");
-        }}
-      >
+      <div className="mt-auto pt-4 relative z-10">
         <motion.button
+          onClick={() => navigate("/requestinsurance/table")}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-green-800 hover:bg-green-600 text-white py-1 px-2 rounded-lg 
-                       font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
+          className="w-full bg-green-800 hover:bg-green-600 text-white py-1.5 px-2 rounded-lg 
+                    font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
         >
           <span className="text-white font-bold">پنل بیمه</span>
           <IoIosArrowBack className="w-3 h-3" />
@@ -52,12 +45,11 @@ const DashboardBimeStat = () => {
       </div>
 
       <svg
-        className="absolute bottom-0 rounded-xl left-0 w-full h-32 md:h-48"
+        className="absolute bottom-0 left-0 w-full h-16"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
-        width="100%"
-        style={{ zIndex: -1 }}
+        style={{ zIndex: 0 }}
       >
         <path
           fill="#48bb78"

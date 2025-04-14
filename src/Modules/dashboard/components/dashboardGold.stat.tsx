@@ -3,23 +3,21 @@ import { IoIosArrowBack } from "react-icons/io";
 
 const DashboardGoldStat = () => {
   return (
-    <div className="relative w-full mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative bg-white rounded-xl shadow-md p-4 h-full 
-                   transition-all duration-300 hover:shadow-xl transform hover:scale-105"
-        style={{ zIndex: 2 }}
-      >
-        <div className="flex items-center space-x-4">
-          <h3 className="text-sm text-amber-900 font-bold font-iranSans tracking-tight">
-            طلای آب شده
-          </h3>
-        </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
+    >
+      <div className="flex items-center mb-2">
+        <h3 className="text-sm text-amber-900 font-bold font-iranSans tracking-tight">
+          طلای آب شده
+        </h3>
+      </div>
 
-        <div className="w-full h-36 md:h-56 lg:h-32 flex items-center justify-center relative">
+      <div className="flex-grow flex items-center justify-center">
+        <div className="relative w-full">
           <svg
-            className="absolute w-20 h-12 md:w-32 md:h-20 lg:w-20 lg:h-12 transform -rotate-12"
+            className="absolute w-16 h-10 transform -rotate-12 left-1/2 -translate-x-1/2"
             viewBox="0 0 100 60"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +40,7 @@ const DashboardGoldStat = () => {
             />
           </svg>
           <svg
-            className="absolute w-16 h-10 md:w-28 md:h-16 lg:w-16 lg:h-10 transform rotate-6"
+            className="absolute w-14 h-9 transform rotate-6 left-1/2 -translate-x-1/2 top-1"
             viewBox="0 0 100 60"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -65,33 +63,34 @@ const DashboardGoldStat = () => {
             />
           </svg>
         </div>
+      </div>
 
+      <div className="mt-auto pt-4 relative z-10">
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full mt-10 mb-2  bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white py-1 px-1 rounded-lg 
-                       font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
+          className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white py-1.5 px-1 rounded-lg 
+                     font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
         >
           <span className="text-white font-bold">به زودی</span>
           <IoIosArrowBack className="w-3 h-3" />
         </motion.button>
+      </div>
 
-        <svg
-          className="absolute bottom-0 rounded-lg left-0 w-full h-[100px] md:h-36"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 400"
-          preserveAspectRatio="none"
-          width="100%"
-          style={{ zIndex: -1 }}
-        >
-          <path
-            fill="#fbbf24"
-            fillOpacity="0.2"
-            d="M0,280L48,266.7C96,253,192,226,288,240C384,253,480,306,576,306.7C672,306,768,253,864,233.3C960,213,1056,226,1152,233.3C1248,240,1344,240,1392,240L1440,240L1440,400L1392,400C1344,400,1248,400,1152,400C1056,400,960,400,864,400C768,400,672,400,576,400C480,400,384,400,288,400C192,400,96,400,48,400L0,400Z"
-          />
-        </svg>
-      </motion.div>
-    </div>
+      <svg
+        className="absolute bottom-0 left-0 w-full h-16"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+        style={{ zIndex: 0 }}
+      >
+        <path
+          fill="#fbbf24"
+          fillOpacity="0.2"
+          d="M0,160L48,165.3C96,171,192,181,206,181.3C274.3,181.7,343,181,411,165.3C480,150,549,118,617,122.7C685.7,128,754,170,823,186.7C891.4,202,960,192,1029,170.7C1097.1,150,1166,118,1234,106.7C1302.9,96,1371,106,1406,112L1440,117.3L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"
+        />
+      </svg>
+    </motion.div>
   );
 };
 

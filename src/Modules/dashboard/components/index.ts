@@ -6,3 +6,4 @@ export { default as DashboardGoldStat } from "./dashboardGold.stat";
 export { default as DashboardBimeStat } from "./dashboardBime.stat";
 export { default as DashboardBorsStat } from "./dashboardBors.stat";
 export { default as DashboardCrowdStat } from "./dashboardCrowd.stat";
+export { default as DashboardToolsStat } from "./dashboard_tools.stat";

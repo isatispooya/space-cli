@@ -5,14 +5,6 @@ import crowdImg from "../../../../public/assets/crowdlogo.png";
 import usePostUUID from "../hooks/useuuidpost";
 import toast from "react-hot-toast";
 
-const getMotionDivStyles = () => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  className:
-    "relative bg-white rounded-xl shadow-lg p-6 h-full transition-shadow duration-300 hover:shadow-2xl",
-  style: { zIndex: 1 },
-});
-
 const formatValue = (value: number) => {
   const length = value.toString().length;
 
@@ -67,75 +59,68 @@ const DashboardCrowdStat = () => {
   };
 
   return (
-    <div>
-      <div className="background">{/* پس‌زمینه */}</div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
+    >
+      <div className="flex items-center mb-2">
+        <img src={crowdImg} alt="crowd" className="w-8 h-8" />
+        <h3 className="text-sm text-[#4b0082] font-bold font-iranSans mr-2">
+          {"ایساتیس کراد"}
+        </h3>
+      </div>
 
-      <motion.div {...getMotionDivStyles()}>
-        <div className="flex items-center justify-between space-x-4">
-          <div className="flex items-center">
-            <img src={crowdImg} alt="crowd" className="w-12 h-12" />
-            <h3 className="text-sm text-[#4b0082] font-bold font-iranSans">
-              {"ایساتیس کراد"}
-            </h3>
-          </div>
+      <div className="flex-grow">
+        <p className="text-[11px] font-bold text-[#4b0082] font-iranSans">
+          {stats?.["total value"]
+            ? "مجموع تامین مالی جمعی"
+            : "مجموع تامین مالی جمعی"}
+        </p>
+        <div className="text-center mt-2">
+          <p className="text-2xl font-bold text-[#4b0082] font-iranSans overflow-hidden text-ellipsis whitespace-nowrap">
+            {!totalValue ? (
+              <>
+                0
+                <span className="text-sm text-[#4b0082] font-iranSans">
+                  {" "}
+                  ریال
+                </span>
+              </>
+            ) : (
+              formatValue(totalValue)
+            )}
+          </p>
         </div>
+      </div>
 
-        <div>
-          <motion.p
-            initial={{ scale: 0.5 }}
-            animate={{ scale: 1 }}
-            className="text-[11px] font-bold text-[#4b0082]  font-iranSans"
-          >
-            {stats?.["total value"] || "مجموع تامین مالی جمعی"}
-          </motion.p>
-          <div className="text-center">
-            <motion.p
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1 }}
-              className="text-4xl md:text-6xl lg:text-8xl font-bold text-[#4b0082] mt-4 font-iranSans overflow-hidden text-ellipsis whitespace-nowrap"
-            >
-              {!totalValue ? (
-                <>
-                  0
-                  <span className="text-sm text-[#4b0082] font-iranSans">
-                    {" "}
-                    ریال
-                  </span>
-                </>
-              ) : (
-                formatValue(totalValue)
-              )}
-            </motion.p>
-          </div>
-          <a onClick={handleCrowdUUID}>
-            <motion.button
-              onClick={handleCrowdUUID}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full bg-purple-900 hover:bg-purple-700 text-white py-1 px-2 rounded-lg 
-                       font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
-            >
-              <span className="text-white font-bold">پنل کراد</span>
-              <IoIosArrowBack className="w-3 h-3" />
-            </motion.button>
-          </a>
-        </div>
-
-        <svg
-          className="absolute bottom-0 rounded-xl left-0 w-full h-32 md:h-48"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-          preserveAspectRatio="none"
-          style={{ zIndex: -1 }}
+      <div className="mt-auto pt-4 relative z-10">
+        <motion.button
+          onClick={handleCrowdUUID}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full bg-purple-900 hover:bg-purple-700 text-white py-1.5 px-2 rounded-lg 
+                    font-iranSans duration-200 flex items-center justify-center gap-1 text-sm"
         >
-          <path
-            fill="#4b0082"
-            fillOpacity="0.3"
-            d="M0,160L48,170.7C96,181,192,203,288,213.3C384,224,480,224,576,213.3C672,203,768,181,864,170.7C960,160,1056,160,1152,170.7C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          ></path>
-        </svg>
-      </motion.div>
-    </div>
+          <span className="text-white font-bold">پنل کراد</span>
+          <IoIosArrowBack className="w-3 h-3" />
+        </motion.button>
+      </div>
+
+      <svg
+        className="absolute bottom-0 left-0 w-full h-16"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+        style={{ zIndex: 0 }}
+      >
+        <path
+          fill="#4b0082"
+          fillOpacity="0.3"
+          d="M0,160L48,170.7C96,181,192,203,288,213.3C384,224,480,224,576,213.3C672,203,768,181,864,170.7C960,160,1056,160,1152,170.7C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+        ></path>
+      </svg>
+    </motion.div>
   );
 };
 

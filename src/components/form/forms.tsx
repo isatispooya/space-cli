@@ -16,6 +16,7 @@ import MultiSelect from "../common/inputs/multiSelect";
 
 import FormDetail from "../form/formDetail";
 import { DateSelector } from "../common";
+import DynamicTimePicker from "../timepick/timepicker";
 
 interface FormsProps<T extends Maybe<AnyObject>> {
   formFields: FormField[];
@@ -103,7 +104,6 @@ const Forms = <T extends FormikValues>({
       }}
     >
       {({ errors, touched, isSubmitting, setFieldValue }) => (
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -314,6 +314,28 @@ const Forms = <T extends FormikValues>({
                         placeholder={`جستجو ${field.label}...`}
                         disabled={field.disabled}
                         maxSelect={field.multiSelectProps?.maxSelect}
+                      />
+                    )}
+                  </Field>
+                ) : field.type === "timePicker" ? (
+                  <Field name={field.name}>
+                    {({
+                      field: { value },
+                      form: { setFieldValue },
+                    }: FieldProps) => (
+                      <DynamicTimePicker
+                        label={field.label}
+                        initialValue={value}
+                        onChange={(newTime) => {
+                          handleFieldChange(
+                            field.name,
+                            newTime,
+                            setFieldValue,
+                            field.format,
+                            field.onChange
+                          );
+                        }}
+                        sx={{ direction: "ltr" }}
                       />
                     )}
                   </Field>

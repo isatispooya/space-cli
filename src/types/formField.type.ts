@@ -19,7 +19,8 @@ export interface FormField {
     | "viewFile"
     | "dynamic"
     | "detail"
-    | "multiSelect";
+    | "multiSelect"
+    | "timePicker";
 
   options?: { label: string; value: any }[];
   transferListProps?: {

@@ -50,7 +50,7 @@ const UserTimeflowTable = () => {
       {
         icon: "fas fa-eye",
         label: "ویرایش",
-        onClick: () => navigate(`/timeflow/details/${row.getData().id}`),
+        onClick: () => navigate(`/timeflow/edit/${row.getData().id}`),
       },
     ];
 

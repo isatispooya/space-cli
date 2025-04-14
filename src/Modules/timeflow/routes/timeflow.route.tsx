@@ -42,6 +42,12 @@ const UpdateTimeFlowPage = lazy(() =>
   }))
 );
 
+const TimeflowEditPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.TimeflowEditPage,
+  }))
+);
+
 const TimeflowRoutes = [
   {
     path: "/timeflow",
@@ -66,6 +72,10 @@ const TimeflowRoutes = [
       {
         path: "update-timeflow/:id",
         element: <UpdateTimeFlowPage />,
+      },
+      {
+        path: "edit/:id",
+        element: <TimeflowEditPage />,
       },
     ],
   },

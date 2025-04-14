@@ -6,6 +6,7 @@ import {
   MissionParentPostType,
   MissionType,
   SeniorVerifyType,
+  TimeflowEditType,
   TimeflowVerifyType,
   UserLoginType,
   UsersTimeflowType,
@@ -86,6 +87,10 @@ const timeflowServices = {
   },
   getUserAllTimeflow: async () => {
     const response = await api.get("/timeflow/user-all-log/");
+    return response.data;
+  },
+  patchTimeflowEdit: async (id: number, data: TimeflowEditType) => {
+    const response = await api.patch(`/timeflow/user-all-log/${id}/`, data);
     return response.data;
   },
 };
