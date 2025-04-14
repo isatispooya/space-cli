@@ -7,19 +7,19 @@ const dashboardService = {
     return response.data;
   },
   getStats: async (): Promise<StatsTypes> => {
-    const response = await api.get("/marketing/stats/");
+    const response = await api.get("/core/stats/");
     return response.data;
   },
   getCrowd: async (): Promise<CrowdTypes> => {
-    const response = await api.get("/marketing/crwod-dashboard/");
+    const response = await api.get("/core/crwod-dashboard/");
     return response.data;
   },
   getBours: async (): Promise<BoursTypes> => {
-    const response = await api.get("/marketing/bours-dashboard/");
+    const response = await api.get("/core/bours-dashboard/");
     return response.data;
   },
   getPishkar: async () => {
-    const response = await api.get("/marketing/pishkar-dashboard/");
+    const response = await api.get("/core/pishkar-dashboard/");
     return response.data;
   },
 };

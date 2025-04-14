@@ -1,7 +1,7 @@
 import { api } from "../../../api";
 
 const getRemainPoints = async () => {
-  const response = await api.get("/marketing/remain-point/");
+  const response = await api.get("/club/remain-point/");
   return response.data;
 };
 
