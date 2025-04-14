@@ -124,7 +124,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     title: "مکاتبات",
-    path: "/messenger",
+
     icon: FaEnvelope,
     codename: ["allow_any"],
     submenu: [
@@ -133,9 +133,18 @@ export const menuItems: MenuItem[] = [
         path: "/messenger",
         codename: ["allow_any"],
       },
+      {
+        title: "نامه های ارسالی",
+        path: "/letter-sent",
+        codename: ["allow_any"],
+      },
+      {
+        title: "نامه های دریافتی",
+        path: "/letter-receive",
+        codename: ["allow_any"],
+      },
     ],
   },
-
 
   // {
   //   title: "دسترسی ها",

@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { FaTools,  FaHeadset } from "react-icons/fa";
-
+import { FaTools, FaHeadset } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router-dom";
 import Moshtrak from "../../../assets/moshtrak.png";
@@ -68,7 +67,6 @@ const DashboardToolsStat = () => {
       animate={{ opacity: 1, y: 0 }}
       className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
     >
-      {/* هدر */}
       <div className="flex items-center mb-2">
         <FaTools className="w-5 h-5 text-gray-700" />
         <h3 className="text-sm text-[#2D3748] font-bold font-iranSans mr-2">
@@ -76,7 +74,6 @@ const DashboardToolsStat = () => {
         </h3>
       </div>
 
-      {/* محتوای اصلی */}
       <div className="flex-grow flex flex-col">
         <p className="text-lg font-bold text-[#2D3748] font-iranSans text-center">
           ابزارهای مدیریت مالی
@@ -85,8 +82,6 @@ const DashboardToolsStat = () => {
           مدیریت هوشمند دارایی‌ها و سرمایه‌گذاری
         </p>
       </div>
-
-      {/* دکمه‌های آیکونی در یک ردیف */}
       <div className="mt-auto pt-4 relative z-10">
         <div className="flex items-center justify-between gap-2 bg-gray-50 p-2 rounded-lg">
           {tools.map((tool) => (
@@ -119,7 +114,6 @@ const DashboardToolsStat = () => {
         </div>
       </div>
 
-      {/* موج پس‌زمینه */}
       <svg
         className="absolute bottom-0 left-0 w-full h-16"
         xmlns="http://www.w3.org/2000/svg"
