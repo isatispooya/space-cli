@@ -15,3 +15,4 @@ export type { default as VerifySliceTypes } from "./slices.type";
 export * from "./absensePost.type";
 export * from "./timeflow.type";
 export * from "./new.typeee";
+export * from "./timeflowEdit.type";

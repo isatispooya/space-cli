@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Swiper as SwiperClass } from "swiper/types";
+import { motion } from "framer-motion";
 
 import "swiper/css/autoplay";
 import "swiper/css";
@@ -85,7 +86,11 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
   };
 
   return (
-    <div className="relative w-full h-[250px]">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white rounded-xl shadow-lg w-full h-[250px] overflow-hidden transition-shadow duration-300 hover:shadow-xl relative"
+    >
       <Swiper
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
@@ -103,7 +108,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
         }}
         speed={800}
         loop={slides.length > 1}
-        className="!absolute inset-0 rounded-lg overflow-hidden h-full"
+        className="h-full w-full"
         initialSlide={0}
         breakpoints={{
           320: {
@@ -140,33 +145,33 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
 
               <div className="absolute inset-0" />
 
-              <h2 className="absolute top-4 left-0 right-0 mx-4 sm:mx-8 md:mx-8 lg:mx-32 text-base sm:text-sm md:text-xl lg:text-3xl font-bold text-white mb-1 p-2 sm:p-3 md:p-4 z-10">
+              <h2 className="absolute top-4 left-0 right-0 mx-4 text-base font-bold text-white z-10">
                 {slide.title}
               </h2>
 
-              <div className="absolute hover bottom-4 sm:bottom-4 md:bottom-2 lg:bottom-0 left-0 right-5 p-4 md:p-2 z-10 text-right flex justify-center">
+              <div className="absolute bottom-12 left-0 right-0 z-10 flex justify-center">
                 <button
                   onClick={() => (window.location.href = slide.link)}
-                  className="mb-5 w-full sm:w-3/4 md:w-2/4 lg:w-1/2 py-2 bg-green-600 text-white rounded-lg font-medium text-xs sm:text-sm md:text-sm lg:text-lg relative block mx-auto"
+                  className="w-3/4 py-2 bg-green-600 text-white rounded-lg font-medium text-xs"
                 >
                   امکان سرمایه‌گذاری آنلاین
                 </button>
               </div>
             </a>
 
-            <div className="absolute bottom-2 right-0 left-0 lg:left-5 lg:right-5 lg:bottom-2 md:bottom-2 md:left-4 md:right-4 sm:left-3 sm:right-3 z-10 flex justify-center lg:justify-start md:justify-start sm:justify-start ">
+            <div className="absolute bottom-2 left-0 right-0 z-10 flex justify-center">
               <button
                 onClick={() => handleShare(slide)}
                 className="flex items-center bg-white px-3 py-1 rounded-full tour-share-dashboard cursor-pointer"
               >
-                <FaShareAlt className="text-base sm:text-lg md:text-xl text-green-600" />
+                <FaShareAlt className="text-base text-green-600 mr-1" />
                 اشتراک گذاری
               </button>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </motion.div>
   );
 };
 

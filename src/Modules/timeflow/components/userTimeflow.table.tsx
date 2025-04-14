@@ -2,9 +2,13 @@ import { TabulatorTable } from "../../../components";
 import useTimeflow from "../hooks/usetimeflow";
 import { TimeflowStatus } from "../data/timeflow_status";
 import { TimeflowEvent } from "../types";
+import { createActionMenu } from "../../../components/table/actionMenus";
+import { useNavigate } from "react-router-dom";
+import { RowComponent } from "tabulator-tables";
 
 const UserTimeflowTable = () => {
   const { data } = useTimeflow.useGetUserAllTimeflow();
+  const navigate = useNavigate();
 
   const getStatusName = (status: string) => {
     return TimeflowStatus.find((item) => item.value === status)?.name || status;
@@ -41,6 +45,22 @@ const UserTimeflowTable = () => {
     ip_address: item.ip_address,
   }));
 
+  const handleRowAction = (e: MouseEvent, row: RowComponent) => {
+    const items = [
+      {
+        icon: "fas fa-eye",
+        label: "ویرایش",
+        onClick: () => navigate(`/timeflow/edit/${row.getData().id}`),
+      },
+    ];
+
+    createActionMenu({
+      items,
+      position: { x: e.clientX, y: e.clientY },
+      className: "rtl",
+    });
+  };
+
   const columns = () => [
     { title: "شناسه", field: "id" },
     { title: "نوع", field: "type" },
@@ -63,6 +83,14 @@ const UserTimeflowTable = () => {
       formatterParams: Object.fromEntries(
         TimeflowStatus.map((status) => [status.value, status.name])
       ),
+    },
+    {
+      title: "عملیات",
+      formatter: "buttonCross",
+      width: 70,
+      hozAlign: "center",
+      cellClick: handleRowAction,
+      cssClass: "cursor-pointer",
     },
   ];
 

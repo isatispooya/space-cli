@@ -13,6 +13,7 @@ import {
   MissionParentPostType,
   MissionType,
   SeniorVerifyType,
+  TimeflowEditType,
   TimeflowVerifyType,
   UserLoginType,
   UsersTimeflowType,
@@ -171,6 +172,18 @@ const useTimeflow = {
     return useQuery({
       queryKey: ["user-all-timeflow"],
       queryFn: () => timeflowServices.getUserAllTimeflow(),
+    });
+  },
+
+  usePatchTimeflowEdit: (): UseMutationResult<
+    TimeflowEditType,
+    AxiosError,
+    { data: TimeflowEditType; id: number }
+  > => {
+    return useMutation({
+      mutationKey: ["patch-timeflow-edit"],
+      mutationFn: ({ data, id }: { data: TimeflowEditType; id: number }) =>
+        timeflowServices.patchTimeflowEdit(id, data),
     });
   },
 };
