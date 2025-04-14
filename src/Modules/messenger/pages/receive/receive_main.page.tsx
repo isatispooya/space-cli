@@ -9,7 +9,7 @@ const ReceivePage = () => {
       icon: VscGitStashApply,
       text: "نامه های دریافتی",
       permission: ["allow_any"],
-      path: "sent",
+      path: "table",
     },
   ];
   return (

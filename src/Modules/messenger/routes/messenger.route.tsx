@@ -15,6 +15,13 @@ const ReceivePage = lazy(() =>
     default: module.ReceivePage,
   }))
 );
+const ReceiveTablePage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ReceiveTablePage,
+  }))
+);
+
+
 
 const MessengerRoutes = [
   {
@@ -29,7 +36,23 @@ const MessengerRoutes = [
   {
     path: "/letter-receive",
     element: <ReceivePage />,
+    children: [
+      {
+        path: "table",
+        element: <ReceiveTablePage />,
+      },
+    ],
   },
+
+
+
+
+
+
+
+
+
+  
 ];
 
 export default MessengerRoutes;
