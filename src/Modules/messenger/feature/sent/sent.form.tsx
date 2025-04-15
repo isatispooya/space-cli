@@ -125,7 +125,7 @@ const SentForm = () => {
     if (selectedTranscript.length > 0) {
       const newTranscripts = selectedTranscript
         .filter((id) => !formData.transcript.some((t) => t.id === id))
-        .map((id) => ({ id, enabled: true }));
+        .map((id) => ({ id, enabled: false }));
 
       if (newTranscripts.length > 0) {
         setFormData((prev) => ({
