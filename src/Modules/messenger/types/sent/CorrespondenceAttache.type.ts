@@ -15,6 +15,28 @@ export interface CorrespondenceAttachment {
   updated_at: string;
 }
 
+export type FormDataType = {
+  subject: string;
+  text: string;
+  description: string;
+  attachments: number[];
+  receiver_internal: number;
+  receiver_external: string;
+  is_internal: boolean;
+  postcript: string;
+  seal: boolean;
+  signature: boolean;
+  letterhead: boolean;
+  binding: boolean;
+  confidentiality_level: string;
+  priority: string;
+  kind_of_correspondence: string;
+  authority_type: string;
+  authority_correspondence: number;
+  reference: number[];
+  published: boolean;
+};
+
 export interface AttachmentResponse {
   id: number;
   name: string;
@@ -23,4 +45,3 @@ export interface AttachmentResponse {
 }
 
 export type CorrespondenceAttachments = CorrespondenceAttachment[];
-

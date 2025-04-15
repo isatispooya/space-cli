@@ -12,7 +12,6 @@ import {
   TextAreaInput,
 } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
-import { useState } from "react";
 import { usePosition } from "@/Modules/positions/hooks";
 import { PositionTypes } from "@/Modules/positions/types";
 import React from "react";
@@ -23,51 +22,21 @@ import {
 } from "../../types/sent/CorrespondenceAttache.type";
 import { AttachmentDialog } from "../../components/sent";
 import Transcript from "../../components/sent/sent_transcript";
-type FormDataType = {
-  subject: string;
-  text: string;
-  description: string;
-  attachments: number[];
-  receiver_internal: number;
-  receiver_external: string;
-  is_internal: boolean;
-  postcript: string;
-  seal: boolean;
-  signature: boolean;
-  letterhead: boolean;
-  binding: boolean;
-  confidentiality_level: string;
-  priority: string;
-  kind_of_correspondence: string;
-  authority_type: string;
-  authority_correspondence: number;
-  reference: number[];
-  published: boolean;
-};
+import { useSentFormStore } from "../../store/sent/sent.store";
+
 const SentForm = () => {
-  const [formData, setFormData] = useState<FormDataType>({
-    subject: "",
-    text: "",
-    description: "",
-    attachments: [],
-    receiver_internal: 0,
-    receiver_external: "",
-    is_internal: true,
-    postcript: "",
-    seal: false,
-    signature: false,
-    letterhead: false,
-    binding: false,
-    confidentiality_level: "",
-    priority: "",
-    kind_of_correspondence: "",
-    authority_type: "",
-    authority_correspondence: 0,
-    reference: [],
-    published: false,
-  });
-  const [openFileDialog, setOpenFileDialog] = useState(false);
-  const [selectedTranscript, setSelectedTranscript] = useState<string[]>([]);
+  const {
+    formData,
+    openFileDialog,
+    selectedTranscript,
+    handleChange,
+    handleReceiverTypeChange,
+    handleAttachmentAdd,
+    handleAddTranscript,
+    handleTranscriptToggle,
+    setOpenFileDialog,
+    setSelectedTranscript,
+  } = useSentFormStore();
 
   const { data: Position } = usePosition.useGet();
   const { data: Attache } =
@@ -85,54 +54,17 @@ const SentForm = () => {
       : []),
   ];
 
-  console.log(Attache);
-
   const internalUserOptions =
     (Position as PositionTypes[])?.map((position) => ({
       label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
       value: position.user.uniqueIdentifier,
     })) || [];
 
-  const handleChange = (name: string, value: string | string[] | boolean) => {
-    if (name === "attachments") {
-      if (Array.isArray(value) && value.includes("add_attachment")) {
-        setOpenFileDialog(true);
-        const filteredValue = value.filter((v) => v !== "add_attachment");
-        setFormData((prev) => ({
-          ...prev,
-          attachments: filteredValue.map(Number),
-        }));
-        return;
-      }
-    }
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleReceiverTypeChange = (type: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      receiver_external: type,
-    }));
-  };
-
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
       e.preventDefault();
     }
     console.log(formData);
-  };
-
-  const handleAttachmentAdd = (attachmentData: {
-    name: string;
-    file: string;
-  }) => {
-    setFormData((prev) => ({
-      ...prev,
-      attachments: [...prev.attachments, Number(attachmentData.file)],
-    }));
   };
 
   const priorityOptions = [
@@ -168,32 +100,7 @@ const SentForm = () => {
     { label: "مدیر فنی", value: "technical_manager" },
   ];
 
-  const handleAddTranscript = () => {
-    if (selectedTranscript.length > 0) {
-      const newReferences = selectedTranscript
-        .filter((id) => !formData.reference.includes(Number(id)))
-        .map(id => Number(id));
-
-      if (newReferences.length > 0) {
-        setFormData((prev) => ({
-          ...prev,
-          reference: [...prev.reference, ...newReferences],
-        }));
-      }
-    }
-  };
-
-  const handleTranscriptToggle = (id: string) => {
-    const numId = Number(id);
-    setFormData((prev) => ({
-      ...prev,
-      reference: prev.reference.includes(numId) 
-        ? prev.reference.filter(ref => ref !== numId)
-        : [...prev.reference, numId]
-    }));
-  };
-
-  const getTranscriptName = (id: string) => {
+  const getTranscriptName = (id: string): string => {
     const recipient = internalUserOptions.find((option) => option.value === id);
     return recipient ? recipient.label : "";
   };
