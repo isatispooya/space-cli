@@ -1,5 +1,5 @@
 import { api } from "@/api";
-import { CorrespondenceAttachment, AttachmentResponse } from "../../types/sent/CorrespondenceAttache.type";
+import { CorrespondenceAttachment, AttachmentResponse, FormDataType } from "../../types/sent/CorrespondenceAttache.type";
 const correspondenceAttacheService = {
   getAttache: async (): Promise<CorrespondenceAttachment[]> => {
     const response = await api.get("/correspondence/attache/");
@@ -9,6 +9,11 @@ const correspondenceAttacheService = {
     const response = await api.post("/correspondence/attache/", data);
     return response.data;
   },
+  postCorrespondence: async (data: FormDataType): Promise<AttachmentResponse> => {
+    const response = await api.post("/correspondence/correspondence/", data);
+    return response.data;
+  },
+
 };
 
 export default correspondenceAttacheService;

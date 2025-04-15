@@ -1,8 +1,5 @@
 import { Box, Typography, Paper, Switch, List, ListItem } from "@mui/material";
-import {
-  MultiSelect,
-  FormInput,
-} from "../../../../components/common/inputs";
+import { MultiSelect, SelectInput } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 
 interface TranscriptProps {
@@ -116,15 +113,12 @@ const Transcript: React.FC<TranscriptProps> = ({
                       justifyContent: "flex-end",
                     }}
                   >
-                    <FormInput
-                      label=""
-                      value=""
-                      onChange={(e) => handleChange("direction", e.target.value)}
-                      placeholder="جهت"
-                      style={{
-                        width: "200px",
-                      }}
+                    <SelectInput
+                      label="جهت"
+                      onChange={(value) => handleChange("direction", value)}
+                      options={internalUserOptions}
                     />
+
                     <Box
                       sx={{
                         display: "flex",

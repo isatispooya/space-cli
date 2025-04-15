@@ -8,6 +8,7 @@ import correspondenceAttacheService from "../../services/sent/correspondenceAtta
 import {
   CorrespondenceAttachment,
   AttachmentResponse,
+  FormDataType,
 } from "../../types/sent/CorrespondenceAttache.type";
 
 const useCorrespondenceAttachment = {
@@ -24,6 +25,15 @@ const useCorrespondenceAttachment = {
   > => {
     return useMutation({
       mutationFn: correspondenceAttacheService.postAttache,
+    });
+  },
+  usePostCorrespondence: (): UseMutationResult<
+    AttachmentResponse,
+    Error,
+    FormDataType
+  > => {
+    return useMutation({
+      mutationFn: correspondenceAttacheService.postCorrespondence,
     });
   },
 };

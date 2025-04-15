@@ -43,6 +43,7 @@ const SentForm = () => {
     useCorrespondenceAttachment.useGetAttache() as unknown as {
       data: CorrespondenceAttachments;
     };
+const {mutate:postCorrespondence} = useCorrespondenceAttachment.usePostCorrespondence()
 
   const attachmentOptions = [
     { label: "➕ اضافه کردن پیوست", value: "add_attachment" },
@@ -64,7 +65,28 @@ const SentForm = () => {
     if (e) {
       e.preventDefault();
     }
-    console.log(formData);
+    const payload = {
+      subject: formData.subject,
+      text: formData.text,
+      description: formData.description,
+      attachments: formData.attachments,
+      receiver_internal: Number(formData.receiver_internal),
+      receiver_external: formData.receiver_external,
+      is_internal: formData.receiver_external === "internal",
+      postcript: formData.postcript,
+      seal: formData.seal,
+      signature: formData.signature,
+      letterhead: formData.letterhead,
+      binding: formData.binding,
+      confidentiality_level: formData.confidentiality_level,
+      priority: formData.priority,
+      kind_of_correspondence: formData.kind_of_correspondence,
+      authority_type: formData.authority_type,
+      authority_correspondence: Number(formData.authority_correspondence),
+      reference: formData.reference.map(Number),
+      published: true
+    };
+    postCorrespondence(payload);
   };
 
   const priorityOptions = [
