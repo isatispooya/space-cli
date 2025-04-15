@@ -140,7 +140,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "نامه های دریافتی",
-        path: "/letter-receive",
+        path: "/letter-receive/table",
         codename: ["allow_any"],
       },
     ],

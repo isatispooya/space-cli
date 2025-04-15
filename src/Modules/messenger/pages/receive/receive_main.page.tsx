@@ -2,6 +2,7 @@ import { MainLayout } from "../../../../layouts";
 import { Toolbar } from "../../../../components";
 
 import { VscGitStashApply } from "react-icons/vsc";
+import { Outlet } from "react-router-dom";
 
 const ReceivePage = () => {
   const toolbarButtons = [
@@ -9,7 +10,7 @@ const ReceivePage = () => {
       icon: VscGitStashApply,
       text: "نامه های دریافتی",
       permission: ["allow_any"],
-      path: "sent",
+      path: "table",
     },
   ];
   return (
@@ -27,7 +28,9 @@ const ReceivePage = () => {
           <div className="px-6 py-3">
             <Toolbar buttons={toolbarButtons} />
           </div>
-          <div className="flex-grow px-6 bg-white"></div>
+          <div className="flex-grow px-6 bg-white">
+            <Outlet />
+          </div>
         </div>
       </div>
     </MainLayout>
