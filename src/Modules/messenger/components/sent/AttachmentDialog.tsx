@@ -15,7 +15,7 @@ import { AttachmentResponse } from "../../types/sent/CorrespondenceAttache.type"
 interface AttachmentDialogProps {
   open: boolean;
   onClose: () => void;
-  onAttachmentAdd: (attachmentData: { name: string; file: string }) => void;
+  onAttachmentAdd: (attachmentData: { name: string; file: string; id: number }) => void;
 }
 
 const AttachmentDialog: React.FC<AttachmentDialogProps> = ({
@@ -56,6 +56,7 @@ const AttachmentDialog: React.FC<AttachmentDialogProps> = ({
             onAttachmentAdd({
               name: `${attachmentName}`,
               file: response.file,
+              id: response.id,
             });
           },
         });

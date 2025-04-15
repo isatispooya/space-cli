@@ -10,7 +10,7 @@ interface SentFormState {
   setSelectedTranscript: (transcripts: string[]) => void;
   handleChange: (name: string, value: string | string[] | boolean) => void;
   handleReceiverTypeChange: (type: string) => void;
-  handleAttachmentAdd: (attachmentData: { name: string; file: string }) => void;
+  handleAttachmentAdd: (attachmentData: { name: string; file: string ,id:number}) => void;
   handleAddTranscript: () => void;
   handleTranscriptToggle: (id: string) => void;
   resetForm: () => void;
@@ -89,11 +89,11 @@ export const useSentFormStore = create<SentFormState>((set) => ({
       },
     })),
 
-  handleAttachmentAdd: (attachmentData) =>
+  handleAttachmentAdd: () =>
     set((state) => ({
       formData: {
         ...state.formData,
-        attachments: [...state.formData.attachments, Number(attachmentData.file)],
+        attachments: [...state.formData.attachments, Date.now()],
       },
     })),
 

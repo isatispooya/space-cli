@@ -33,7 +33,6 @@ import {
 } from "../../data/sent/sent.data";
 import ReceiverTypeButtons from "../../components/sent/ReceiverTypeButtons";
 
-
 import { FORM_SWITCHES, TEXT_AREA_FIELDS } from "../../data/sent/sent_inputs";
 
 const STYLES = {
@@ -122,14 +121,14 @@ const SentForm: React.FC = () => {
     { label: "➕ اضافه کردن پیوست", value: "add_attachment" },
     ...(Attache?.map((attachment: CorrespondenceAttachment) => ({
       label: `${attachment.name} | ${attachment.user.first_name} ${attachment.user.last_name}`,
-      value: attachment.file,
+      value: attachment.id.toString(),
     })) || []),
   ];
 
   const internalUserOptions =
     (Position as PositionTypes[])?.map((position) => ({
       label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
-      value: position.user.uniqueIdentifier,
+      value: position.id.toString(),
     })) || [];
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
