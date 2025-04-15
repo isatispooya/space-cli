@@ -20,8 +20,11 @@ const ReceiveTablePage = lazy(() =>
     default: module.ReceiveTablePage,
   }))
 );
-
-
+const ReceiveMessagePage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ReceiveMessagePage,
+  }))
+);
 
 const MessengerRoutes = [
   {
@@ -41,18 +44,12 @@ const MessengerRoutes = [
         path: "table",
         element: <ReceiveTablePage />,
       },
+      {
+        path: "message/:id",
+        element: <ReceiveMessagePage />,
+      },
     ],
   },
-
-
-
-
-
-
-
-
-
-  
 ];
 
 export default MessengerRoutes;
