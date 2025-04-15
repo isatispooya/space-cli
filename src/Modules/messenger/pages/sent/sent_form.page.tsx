@@ -1,4 +1,4 @@
-import { SentForm } from "../../feature";
+import SentForm from "../../feature/sent/sent.form";
 
 
 const SentFormPage = () => {
