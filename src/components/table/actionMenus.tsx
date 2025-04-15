@@ -29,7 +29,6 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Adjust position if menu would go off screen
     if (menuRef.current) {
       const rect = menuRef.current.getBoundingClientRect();
       const adjustedStyle = { ...position };
@@ -44,7 +43,17 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
       menuRef.current.style.left = `${adjustedStyle.x}px`;
       menuRef.current.style.top = `${adjustedStyle.y}px`;
     }
-  }, [position]);
+
+    // Add scroll event listener
+    const handleScroll = () => {
+      onClose();
+    };
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [position, onClose]);
 
   return (
     <div
@@ -67,7 +76,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
               }
             }}
             disabled={item.disabled}
-            className={`w-full px-4 py-2 text-right hover:bg-gray-100 flex items-center gap-2
+            className={`w-full px-4 py-2 text-right hover:bg-gray-100 flex items-center gap-2 rtl
               ${
                 item.disabled
                   ? "opacity-50 cursor-not-allowed"
@@ -75,10 +84,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
               }
             `}
           >
-            <i
-              className={item.icon}
-              style={{ color: item.color || "#374151" }}
-            />
+            <span>{item.icon}</span>
             <span>{item.label}</span>
           </button>
         ))}
@@ -92,6 +98,14 @@ interface CreateActionMenuProps {
   className?: string;
 }
 
+interface ReactRoot {
+  unmount: () => void;
+}
+
+interface MenuElement extends HTMLElement {
+  _reactRoot?: ReactRoot;
+}
+
 export const createActionMenu = ({
   items,
   position,
@@ -99,9 +113,9 @@ export const createActionMenu = ({
 }: CreateActionMenuProps): (() => void) => {
   // Remove any existing menus
   const cleanup = () => {
-    const existingMenus = document.querySelectorAll(".popup-menu");
+    const existingMenus = document.querySelectorAll<MenuElement>(".popup-menu");
     existingMenus.forEach((menu) => {
-      const root = (menu as any)._reactRoot;
+      const root = menu._reactRoot;
       if (root) {
         root.unmount();
       }
@@ -113,13 +127,13 @@ export const createActionMenu = ({
   cleanup();
 
   // Create new menu container
-  const menuContainer = document.createElement("div");
+  const menuContainer = document.createElement("div") as MenuElement;
   menuContainer.className = "popup-menu";
   document.body.appendChild(menuContainer);
 
   // Create root
   const root = createRoot(menuContainer);
-  (menuContainer as any)._reactRoot = root;
+  menuContainer._reactRoot = root;
 
   // Handle click outside
   const handleClickOutside = (event: MouseEvent) => {

@@ -2,6 +2,8 @@ import "moment/locale/fa";
 import { TabulatorTable } from "../../../../components";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { createActionMenu } from "../../../../components/table/actionMenus";
+
 interface SentMessage {
   id: number;
   title: string;
@@ -71,11 +73,6 @@ export const SentTable = () => {
     navigate(`/letter-sent/update-form/${row.id}`);
   };
 
-  const closeAllMenus = () => {
-    const menus = document.querySelectorAll(".popup-menu");
-    menus.forEach((menu) => menu.remove());
-  };
-
   const columns = () => [
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
     {
@@ -107,63 +104,28 @@ export const SentTable = () => {
       width: 60,
       cellClick: function (e: Event, cell: CellComponent) {
         e.stopPropagation();
-
         const rowData = cell.getRow().getData();
+        const element = cell.getElement();
+        const rect = element.getBoundingClientRect();
 
-        closeAllMenus();
-
-        const menu = document.createElement("div");
-        menu.className = "popup-menu";
-        menu.setAttribute(
-          "data-cell",
-          cell.getElement().getAttribute("tabulator-field") || ""
-        );
-
-        const customMenuItems = [
-          {
-            label: "ویرایش",
-            icon: "⚡",
-            action: () => handleEdit(rowData),
+        createActionMenu({
+          items: [
+            {
+              label: "ویرایش",
+              icon: "⚡",
+              onClick: () => handleEdit(rowData),
+            },
+            {
+              label: "نمایش",
+              icon: "👀",
+              onClick: () => handleView(rowData),
+            },
+          ],
+          position: {
+            x: rect.left + window.scrollX,
+            y: rect.bottom + window.scrollY,
           },
-          {
-            label: "نمایش",
-            icon: "👀",
-            action: () => handleView(rowData),
-          },
-        ];
-
-        customMenuItems.forEach((item) => {
-          const menuItem = document.createElement("button");
-          menuItem.className = "menu-item";
-          menuItem.innerHTML = `${item.icon} ${item.label}`;
-          menuItem.onclick = () => {
-            item.action();
-            closeAllMenus();
-          };
-          menu.appendChild(menuItem);
         });
-
-        const rect = cell.getElement().getBoundingClientRect();
-        menu.style.left = `${rect.left + window.scrollX}px`;
-        menu.style.top = `${rect.bottom + window.scrollY}px`;
-        document.body.appendChild(menu);
-
-        const handleScroll = () => {
-          closeAllMenus();
-          window.removeEventListener("scroll", handleScroll);
-        };
-        window.addEventListener("scroll", handleScroll);
-
-        setTimeout(() => {
-          const closeMenu = (e: MouseEvent) => {
-            if (!menu.contains(e.target as Node)) {
-              closeAllMenus();
-              document.removeEventListener("click", closeMenu);
-              window.removeEventListener("scroll", handleScroll);
-            }
-          };
-          document.addEventListener("click", closeMenu);
-        }, 0);
       },
     },
   ];

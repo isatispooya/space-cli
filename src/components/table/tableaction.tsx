@@ -48,7 +48,7 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({
         left: `${position.x}px`,
         top: `${position.y}px`,
         background: "white",
-        border: "1px solid #E5E7EB",
+        border: "1px solid #E2EDFA",
         borderRadius: "12px",
         boxShadow:
           "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",

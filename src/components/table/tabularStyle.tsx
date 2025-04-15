@@ -12,9 +12,8 @@ export const TableStyles = createGlobalStyle`
   }
   
   .action-btn:hover {
-    background: #EBF5FF;
+    background: #E2EDFA;
   }
-  
   .tabulator-cell {
     position: relative;
   }
@@ -52,7 +51,7 @@ export const TableStyles = createGlobalStyle`
   }
   
   .menu-item:hover {
-    background: #EBF5FF;
+    background: #E2EDFA;
   }
   
   .menu-item.edit-btn {

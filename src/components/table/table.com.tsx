@@ -40,7 +40,6 @@ const defaultTableOptions: Partial<TabulatorOptions> = {
   paginationButtonCount: 5,
   paginationAddRow: "page",
   paginationMode: "local",
-  selectableRows: 1,
   headerVisible: true,
   movableColumns: true,
   printAsHtml: true,
@@ -149,7 +148,7 @@ const TabulatorTable: React.FC<TableProps> = ({
         )}
         <div
           ref={tableRef}
-          className="flex-1 rounded-2xl overflow-hidden shadow-md border border-gray-100 [&_.tabulator-header]:!bg-gray-50 [&_.tabulator-header_.tabulator-col]:!border-gray-200 [&_.tabulator-row]:!border-gray-100 [&_.tabulator-row.tabulator-row-even]:!bg-gray-50/30 [&_.tabulator-row]:hover:!bg-blue-50/50 [&_.tabulator-footer]:!bg-gray-50 [&_.tabulator]:!border-gray-200 [&_.tabulator-footer]:!overflow-x-auto [&_.tabulator-paginator]:!min-w-[600px]"
+          className="flex-1 rounded-2xl overflow-hidden shadow-md border border-gray-100 "
         />
       </div>
     </>
