@@ -1,4 +1,10 @@
-import { Box, Typography, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Paper,
+  Switch,
+  FormControlLabel,
+} from "@mui/material";
 import {
   FormInput,
   MultiSelect,
@@ -18,27 +24,47 @@ import {
 import { AttachmentDialog } from "../../components/sent";
 import Transcript from "../../components/sent/sent_transcript";
 type FormDataType = {
-  receiverType: string;
-  receiver: string;
   subject: string;
+  text: string;
+  description: string;
+  attachments: number[];
+  receiver_internal: number;
+  receiver_external: string;
+  is_internal: boolean;
+  postcript: string;
+  seal: boolean;
+  signature: boolean;
+  letterhead: boolean;
+  binding: boolean;
+  confidentiality_level: string;
   priority: string;
-  department: string;
-  content: string;
-  attachments: string[];
-  ccRecipients: { id: string; enabled: boolean }[];
-  transcript: { id: string; enabled: boolean }[];
+  kind_of_correspondence: string;
+  authority_type: string;
+  authority_correspondence: number;
+  reference: number[];
+  published: boolean;
 };
 const SentForm = () => {
   const [formData, setFormData] = useState<FormDataType>({
-    receiverType: "internal",
-    receiver: "",
     subject: "",
-    priority: "",
-    department: "",
-    content: "",
+    text: "",
+    description: "",
     attachments: [],
-    ccRecipients: [],
-    transcript: [],
+    receiver_internal: 0,
+    receiver_external: "",
+    is_internal: true,
+    postcript: "",
+    seal: false,
+    signature: false,
+    letterhead: false,
+    binding: false,
+    confidentiality_level: "",
+    priority: "",
+    kind_of_correspondence: "",
+    authority_type: "",
+    authority_correspondence: 0,
+    reference: [],
+    published: false,
   });
   const [openFileDialog, setOpenFileDialog] = useState(false);
   const [selectedTranscript, setSelectedTranscript] = useState<string[]>([]);
@@ -67,14 +93,14 @@ const SentForm = () => {
       value: position.user.uniqueIdentifier,
     })) || [];
 
-  const handleChange = (name: string, value: string | string[]) => {
+  const handleChange = (name: string, value: string | string[] | boolean) => {
     if (name === "attachments") {
       if (Array.isArray(value) && value.includes("add_attachment")) {
         setOpenFileDialog(true);
         const filteredValue = value.filter((v) => v !== "add_attachment");
         setFormData((prev) => ({
           ...prev,
-          attachments: filteredValue,
+          attachments: filteredValue.map(Number),
         }));
         return;
       }
@@ -88,8 +114,7 @@ const SentForm = () => {
   const handleReceiverTypeChange = (type: string) => {
     setFormData((prev) => ({
       ...prev,
-      receiverType: type,
-      receiver: "",
+      receiver_external: type,
     }));
   };
 
@@ -106,7 +131,7 @@ const SentForm = () => {
   }) => {
     setFormData((prev) => ({
       ...prev,
-      attachments: [...prev.attachments, attachmentData.file],
+      attachments: [...prev.attachments, Number(attachmentData.file)],
     }));
   };
 
@@ -121,29 +146,50 @@ const SentForm = () => {
     { label: "فنی", value: "technical" },
   ];
 
+  const letterTypeOptions = [
+    { label: "اداری", value: "administrative" },
+    { label: "رسمی", value: "formal" },
+    { label: "غیر رسمی", value: "informal" },
+    { label: "ارجاع", value: "referral" },
+  ];
+
+  const referralOptions = [
+    { label: "اقدام لازم", value: "action_required" },
+    { label: "جهت اطلاع", value: "for_information" },
+    { label: "پیگیری", value: "follow_up" },
+    { label: "بررسی و گزارش", value: "review_report" },
+  ];
+
+  const referralDetailsOptions = [
+    { label: "مدیر عامل", value: "ceo" },
+    { label: "معاون اداری", value: "admin_deputy" },
+    { label: "معاون مالی", value: "financial_deputy" },
+    { label: "مدیر منابع انسانی", value: "hr_manager" },
+    { label: "مدیر فنی", value: "technical_manager" },
+  ];
+
   const handleAddTranscript = () => {
     if (selectedTranscript.length > 0) {
-      const newTranscripts = selectedTranscript
-        .filter((id) => !formData.transcript.some((t) => t.id === id))
-        .map((id) => ({ id, enabled: false }));
+      const newReferences = selectedTranscript
+        .filter((id) => !formData.reference.includes(Number(id)))
+        .map(id => Number(id));
 
-      if (newTranscripts.length > 0) {
+      if (newReferences.length > 0) {
         setFormData((prev) => ({
           ...prev,
-          transcript: [...prev.transcript, ...newTranscripts],
+          reference: [...prev.reference, ...newReferences],
         }));
       }
     }
   };
 
   const handleTranscriptToggle = (id: string) => {
+    const numId = Number(id);
     setFormData((prev) => ({
       ...prev,
-      transcript: prev.transcript.map((transcript) =>
-        transcript.id === id
-          ? { ...transcript, enabled: !transcript.enabled }
-          : transcript
-      ),
+      reference: prev.reference.includes(numId) 
+        ? prev.reference.filter(ref => ref !== numId)
+        : [...prev.reference, numId]
     }));
   };
 
@@ -167,20 +213,20 @@ const SentForm = () => {
               label="گیرنده داخلی"
               onClick={() => handleReceiverTypeChange("internal")}
               bgColor={
-                formData.receiverType === "internal" ? "#1976d2" : "#94a3b8"
+                formData.receiver_external === "internal" ? "#1976d2" : "#94a3b8"
               }
               hoverColor={
-                formData.receiverType === "internal" ? "#1565c0" : "#64748b"
+                formData.receiver_external === "internal" ? "#1565c0" : "#64748b"
               }
             />
             <ButtonBase
               label="گیرنده خارجی"
               onClick={() => handleReceiverTypeChange("external")}
               bgColor={
-                formData.receiverType === "external" ? "#1976d2" : "#94a3b8"
+                formData.receiver_external === "external" ? "#1976d2" : "#94a3b8"
               }
               hoverColor={
-                formData.receiverType === "external" ? "#1565c0" : "#64748b"
+                formData.receiver_external === "external" ? "#1565c0" : "#64748b"
               }
             />
           </Box>
@@ -192,18 +238,18 @@ const SentForm = () => {
               mb: 3,
             }}
           >
-            {formData.receiverType === "internal" ? (
+            {formData.receiver_external === "internal" ? (
               <SelectInput
                 label="گیرنده داخلی"
-                value={formData.receiver}
-                onChange={(value) => handleChange("receiver", value)}
+                value={formData.receiver_internal.toString()}
+                onChange={(value) => handleChange("receiver_internal", value)}
                 options={internalUserOptions}
               />
             ) : (
               <FormInput
                 label="گیرنده خارجی"
-                value={formData.receiver}
-                onChange={(e) => handleChange("receiver", e.target.value)}
+                value={formData.receiver_external}
+                onChange={(e) => handleChange("receiver_external", e.target.value)}
                 placeholder="گیرنده خارجی"
               />
             )}
@@ -212,9 +258,29 @@ const SentForm = () => {
               value={formData.subject}
               onChange={(e) => handleChange("subject", e.target.value)}
             />
+            <SelectInput
+              label="نوع ارجاع"
+              value={formData.authority_type}
+              onChange={(value) => handleChange("authority_type", value)}
+              options={referralOptions}
+            />
+            {formData.authority_type && (
+              <SelectInput
+                label="ارجاع"
+                value={formData.authority_correspondence.toString()}
+                onChange={(value) => handleChange("authority_correspondence", value)}
+                options={referralDetailsOptions}
+              />
+            )}
+            <SelectInput
+              label="نوع نامه"
+              value={formData.kind_of_correspondence}
+              onChange={(value) => handleChange("kind_of_correspondence", value)}
+              options={letterTypeOptions}
+            />
             <MultiSelect
               label="پیوست‌ها"
-              selectedValues={formData.attachments}
+              selectedValues={formData.attachments.map(String)}
               onChange={(value) => handleChange("attachments", value)}
               options={attachmentOptions}
             />
@@ -226,21 +292,95 @@ const SentForm = () => {
             />
             <SelectInput
               label="محرمانگی"
-              value={formData.department}
-              onChange={(value) => handleChange("department", value)}
+              value={formData.confidentiality_level}
+              onChange={(value) => handleChange("confidentiality_level", value)}
               options={departmentOptions}
             />
           </Box>
-          <TextAreaInput
-            label="متن پیام"
-            value={formData.content}
-            onChange={(e) => handleChange("content", e.target.value)}
-            style={{ marginBottom: "1.5rem" }}
-            rows={4}
-          />
+
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gap: 2,
+              mb: 3,
+            }}
+          >
+            <TextAreaInput
+              label="متن پیام"
+              value={formData.text}
+              onChange={(e) => handleChange("text", e.target.value)}
+              style={{ marginBottom: "1.5rem" }}
+              rows={4}
+            />
+            <TextAreaInput
+              label="توضیحات"
+              value={formData.description}
+              onChange={(e) => handleChange("description", e.target.value)}
+              style={{ marginBottom: "1.5rem" }}
+              rows={4}
+            />
+            <TextAreaInput
+              label="پی نوشت"
+              value={formData.postcript}
+              onChange={(e) => handleChange("postcript", e.target.value)}
+              style={{ marginBottom: "1.5rem" }}
+              rows={4}
+            />
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              gap: 2,
+              mb: 3,
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={formData.seal}
+                  onChange={(e) => handleChange("seal", e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="مهر"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={formData.signature}
+                  onChange={(e) => handleChange("signature", e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="امضا"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={formData.letterhead}
+                  onChange={(e) => handleChange("letterhead", e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="سربرگ"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={formData.binding}
+                  onChange={(e) => handleChange("binding", e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="تعهد آور"
+            />
+          </Box>
 
           <Transcript
-            transcript={formData.transcript}
+            transcript={formData.reference.map(id => ({ id: String(id), enabled: true }))}
             selectedTranscript={selectedTranscript}
             setSelectedTranscript={setSelectedTranscript}
             handleAddTranscript={handleAddTranscript}
