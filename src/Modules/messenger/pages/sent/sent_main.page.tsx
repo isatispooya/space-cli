@@ -3,20 +3,20 @@ import { MainLayout } from "../../../../layouts";
 import { Toolbar } from "../../../../components";
 import { LuTable } from "react-icons/lu";
 import { VscGitStashApply } from "react-icons/vsc";
-
+import { Outlet } from "react-router-dom";
 const SentPage = () => {
   const toolbarButtons = [
     {
       icon: VscGitStashApply,
       text: "نامه های ارسالی",
       permission: ["allow_any"],
-      path: "sent",
+      path: "table",
     },
     {
       icon: LuTable,
       text: "ایجاد نامه",
       permission: ["allow_any"],
-      path: "create",
+      path: "form",
     },
   ];
   return (
@@ -35,6 +35,7 @@ const SentPage = () => {
             <Toolbar buttons={toolbarButtons} />
           </div>
           <div className="flex-grow px-6 bg-white">
+            <Outlet />
           </div>
         </div>
       </div>

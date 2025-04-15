@@ -16,6 +16,28 @@ const ReceivePage = lazy(() =>
   }))
 );
 
+const SentTablePage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.SentTablePage,
+  }))
+);
+const SentMessagePage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.SentMessagePage,
+  }))
+);
+const SentFormPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.SentFormPage,
+  }))
+);
+const SentUpdateFormPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.SentUpdateFormPage,
+  }))
+);
+
+
 const MessengerRoutes = [
   {
     path: "/messenger",
@@ -25,6 +47,24 @@ const MessengerRoutes = [
   {
     path: "/letter-sent",
     element: <SentPage />,
+    children: [
+      {
+        path: "table",
+        element: <SentTablePage />,
+      },
+      {
+        path: "message/:id",
+        element: <SentMessagePage />,
+      },
+      {
+        path: "form",
+        element: <SentFormPage />,
+      },
+      {
+        path: "update-form/:id",
+        element: <SentUpdateFormPage />,
+      },
+    ],
   },
   {
     path: "/letter-receive",

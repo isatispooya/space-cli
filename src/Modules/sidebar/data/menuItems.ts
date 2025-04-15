@@ -135,7 +135,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "نامه های ارسالی",
-        path: "/letter-sent",
+        path: "/letter-sent/table",
         codename: ["allow_any"],
       },
       {
