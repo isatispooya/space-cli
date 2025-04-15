@@ -15,13 +15,13 @@ import { AttachmentResponse } from "../../types/sent/CorrespondenceAttache.type"
 interface AttachmentDialogProps {
   open: boolean;
   onClose: () => void;
-  onAttachmentAdd: (attachmentData: { name: string, file: string }) => void;
+  onAttachmentAdd: (attachmentData: { name: string; file: string }) => void;
 }
 
 const AttachmentDialog: React.FC<AttachmentDialogProps> = ({
   open,
   onClose,
-  onAttachmentAdd
+  onAttachmentAdd,
 }) => {
   const [attachmentName, setAttachmentName] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -37,10 +37,10 @@ const AttachmentDialog: React.FC<AttachmentDialogProps> = ({
 
   const handleDownload = (file: File) => {
     const url = URL.createObjectURL(file);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = file.name;
-    window.open(url, '_blank');
+    window.open(url, "_blank");
     URL.revokeObjectURL(url);
   };
 
@@ -48,13 +48,16 @@ const AttachmentDialog: React.FC<AttachmentDialogProps> = ({
     if (selectedFiles.length > 0 && attachmentName) {
       for (const file of selectedFiles) {
         const formData = new FormData();
-        formData.append('file', file);
-        formData.append('name', `${attachmentName}_${file.name}`);
-        
+        formData.append("file", file);
+        formData.append("name", `${attachmentName}`);
+
         postAttache(formData as unknown as AttachmentResponse, {
           onSuccess: (response) => {
-            onAttachmentAdd({ name: `${attachmentName}_${file.name}`, file: response.file });
-          }
+            onAttachmentAdd({
+              name: `${attachmentName}`,
+              file: response.file,
+            });
+          },
         });
       }
       handleClose();
@@ -68,14 +71,22 @@ const AttachmentDialog: React.FC<AttachmentDialogProps> = ({
   };
 
   const removeFile = (index: number) => {
-    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>انتخاب فایل پیوست</DialogTitle>
       <DialogContent>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: '300px', my: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            minWidth: "300px",
+            my: 2,
+          }}
+        >
           <FormInput
             label="نام پیوست"
             value={attachmentName}
@@ -90,7 +101,14 @@ const AttachmentDialog: React.FC<AttachmentDialogProps> = ({
               onChange={handleFileUpload}
               style={{ display: "none" }}
             />
-            <Box sx={{ width: '100%', marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
+            <Box
+              sx={{
+                width: "100%",
+                marginTop: "10px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <ButtonBase
                 label="انتخاب فایل‌ها"
                 onClick={() => fileInputRef.current?.click()}
@@ -105,14 +123,17 @@ const AttachmentDialog: React.FC<AttachmentDialogProps> = ({
                 فایل‌های انتخاب شده ({selectedFiles.length}):
               </Typography>
               {selectedFiles.map((file, index) => (
-                <Box key={index} sx={{ p: 2, bgcolor: '#f5f5f5', borderRadius: 1, mb: 1 }}>
+                <Box
+                  key={index}
+                  sx={{ p: 2, bgcolor: "#f5f5f5", borderRadius: 1, mb: 1 }}
+                >
                   <Typography variant="body2" sx={{ mb: 1 }}>
                     {file.name}
                   </Typography>
                   <Typography variant="body2" sx={{ mb: 1 }}>
                     حجم: {(file.size / 1024).toFixed(2)} کیلوبایت
                   </Typography>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Box sx={{ display: "flex", gap: 1 }}>
                     <ButtonBase
                       label="دانلود"
                       onClick={() => handleDownload(file)}
@@ -150,4 +171,4 @@ const AttachmentDialog: React.FC<AttachmentDialogProps> = ({
   );
 };
 
-export default AttachmentDialog; 
+export default AttachmentDialog;
