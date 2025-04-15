@@ -1,10 +1,4 @@
-import {
-  Box,
-  Typography,
-  Paper,
-  Switch,
-  FormControlLabel,
-} from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import {
   FormInput,
   MultiSelect,
@@ -19,7 +13,6 @@ import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttac
 import {
   CorrespondenceAttachment,
   CorrespondenceAttachments,
-  FormDataType,
 } from "../../types/sent/CorrespondenceAttache.type";
 import { AttachmentDialog } from "../../components/sent";
 import Transcript from "../../components/sent/sent_transcript";
@@ -32,68 +25,9 @@ import {
   referralDetailsOptions,
 } from "../../data/sent/sent.data";
 import ReceiverTypeButtons from "../../components/sent/ReceiverTypeButtons";
-
-import { FORM_SWITCHES, TEXT_AREA_FIELDS } from "../../data/sent/sent_inputs";
-
-const STYLES = {
-  container: {
-    p: 3,
-    maxWidth: 800,
-    margin: "0 auto",
-  },
-  paper: {
-    p: 4,
-    borderRadius: 2,
-  },
-  title: {
-    mb: 3,
-    fontWeight: "bold",
-    color: "#1976d2",
-  },
-  buttonGroup: {
-    mb: 3,
-    display: "flex",
-    justifyContent: "center",
-  },
-  gridContainer: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    gap: 2,
-    mb: 3,
-  },
-  switchGroup: {
-    display: "flex",
-    justifyContent: "flex-start",
-    gap: 2,
-    mb: 3,
-  },
-  submitButton: {
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: 2,
-  },
-} as const;
-
-const FormSwitches: React.FC<{
-  formData: FormDataType;
-  handleChange: (name: string, value: boolean) => void;
-}> = ({ formData, handleChange }) => (
-  <Box sx={STYLES.switchGroup}>
-    {FORM_SWITCHES.map(({ field, label }) => (
-      <FormControlLabel
-        key={field}
-        control={
-          <Switch
-            checked={formData[field]}
-            onChange={(e) => handleChange(field, e.target.checked)}
-            color="primary"
-          />
-        }
-        label={label}
-      />
-    ))}
-  </Box>
-);
+import { TEXT_AREA_FIELDS } from "../../data/sent/sent_inputs";
+import { STYLES } from "../../style";
+import FormSwitches from "../../components/sent/switch";
 
 const SentForm: React.FC = () => {
   const {
