@@ -125,33 +125,33 @@ const DashboardMarketingStat = () => {
       </div>
 
       <div className="flex-grow flex items-center justify-center">
-        <div className="flex items-center justify-center w-full">
+        <div className="flex items-center justify-center w-full gap-12">
           <button
             onClick={() => navigate("/invitation/list")}
-            className="text-3xl font-bold text-[#A0001C] font-iranSans"
+            className="text-4xl font-bold text-[#A0001C] font-iranSans"
           >
             {invitedUserFiltered?.length || 0}
-            <span className="text-sm text-[#D2042D] font-iranSans mx-1">
+            <span className="text-lg text-[#D2042D] font-iranSans mx-2">
               نفر
             </span>
           </button>
           <button
             onClick={() => navigate("/points/missions")}
-            className="flex flex-col ml-4"
+            className="flex flex-col gap-3"
           >
             <div className="flex items-center">
-              <span className="text-[#A0001C] text-xl font-bold text-left">
+              <span className="text-2xl text-[#A0001C] font-bold text-left">
                 {formatNumber(remainPoints?.point_1)}
               </span>
-              <LuCoins className="text-yellow-500 text-[16px] mx-1" />
-              <span className="text-sm text-[#D2042D]">(سکه)</span>
+              <LuCoins className="text-yellow-500 text-xl mx-2" />
+              <span className="text-lg text-[#D2042D]">(سکه)</span>
             </div>
             <div className="flex items-center">
-              <span className="text-[#A0001C] text-xl font-bold text-left">
+              <span className="text-2xl text-[#A0001C] font-bold text-left">
                 {formatNumber(remainPoints?.point_2)}
               </span>
-              <TbSeeding className="text-green-500 text-[16px] mx-1" />
-              <span className="text-sm text-[#D2042D]">(بذر)</span>
+              <TbSeeding className="text-green-500 text-xl mx-2" />
+              <span className="text-lg text-[#D2042D]">(بذر)</span>
             </div>
           </button>
         </div>

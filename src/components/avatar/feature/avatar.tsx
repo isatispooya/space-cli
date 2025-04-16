@@ -122,7 +122,7 @@ const UserAvatar = () => {
     <>
       <div
         onClick={toggleDropdown}
-        className="flex items-center cursor-pointer border-2 border-gray-100 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50 p-1 rounded-lg shadow-lg hover:bg-[#041685]/10 transition-all duration-300"
+        className="flex items-center z-50 cursor-pointer border-2 border-gray-100 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50 p-1 rounded-lg shadow-lg hover:bg-[#041685]/10 transition-all duration-300"
       >
         {window.innerWidth >= 768 ? (
           <span
