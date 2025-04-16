@@ -1,5 +1,11 @@
 import { IconType } from "react-icons";
-import { FaBuilding, FaEnvelope, FaPhone, FaUserTie } from "react-icons/fa";
+import {
+  FaBuilding,
+  FaCalculator,
+  FaEnvelope,
+  FaPhone,
+  FaUserTie,
+} from "react-icons/fa";
 import { FaClockRotateLeft, FaHandshakeAngle } from "react-icons/fa6";
 
 export interface MenuItem {
@@ -46,6 +52,24 @@ export const menuItems: MenuItem[] = [
         title: "مدیریت شیفت ها",
         path: "/shifts/table",
         codename: ["parent_user", "view_shift"],
+      },
+    ],
+  },
+  {
+    title: "ابزار های مالی",
+    icon: FaCalculator,
+    codename: ["allow_any"],
+    path: "/finTools",
+    submenu: [
+      {
+        title: "میزکار مالی",
+        path: "/finTools",
+        codename: ["allow_any"],
+      },
+      {
+        title: "صندوق خاتم",
+        path: "/khatam",
+        codename: ["allow_any"],
       },
     ],
   },
