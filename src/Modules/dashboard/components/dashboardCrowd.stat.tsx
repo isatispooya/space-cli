@@ -78,7 +78,7 @@ const DashboardCrowdStat = () => {
             : "مجموع تامین مالی جمعی"}
         </p>
         <div className="text-center mt-3">
-          <p className="text-3xl font-bold text-[#4b0082] font-iranSans overflow-hidden text-ellipsis whitespace-nowrap">
+          <p className="text-6xl font-bold text-[#4b0082] font-iranSans overflow-hidden text-ellipsis whitespace-nowrap">
             {!totalValue ? (
               <>
                 0

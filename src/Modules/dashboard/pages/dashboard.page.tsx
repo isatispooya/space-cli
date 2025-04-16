@@ -33,13 +33,13 @@ const DashboardPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
           <div className="lg:col-span-3 grid grid-rows-3 gap-4 h-full">
             <div className="h-full">
+              <DashboardCrowdStat />
+            </div>
+            <div className="h-full">
+              <DashboardToolsStat />
+            </div>
+            <div className="h-full">
               <DashboardMarketingStat />
-            </div>
-            <div className="h-full">
-              <DashboardBimeStat />
-            </div>
-            <div className="h-full">
-              <DashboardBorsStat />
             </div>
           </div>
 
@@ -54,13 +54,13 @@ const DashboardPage = () => {
 
           <div className="lg:col-span-3 grid grid-rows-3 gap-4 h-full">
             <div className="h-full">
+              <DashboardBorsStat />
+            </div>
+            <div className="h-full">
+              <DashboardBimeStat />
+            </div>
+            <div className="h-full">
               <DashboardGoldStat />
-            </div>
-            <div className="h-full">
-              <DashboardCrowdStat />
-            </div>
-            <div className="h-full">
-              <DashboardToolsStat />
             </div>
           </div>
         </div>

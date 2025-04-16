@@ -25,7 +25,7 @@ const DashboardBimeStat = () => {
       </div>
 
       <div className="flex-grow flex items-center justify-center">
-        <p className="text-3xl font-bold text-[#1a5c35] font-iranSans">
+        <p className="text-6xl font-bold text-[#1a5c35] font-iranSans">
           {stats?.pishkar || 0}
           <span className="text-base text-[#1a5c35] font-iranSans mr-1">
             عدد

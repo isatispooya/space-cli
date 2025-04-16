@@ -145,11 +145,11 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
 
               <div className="absolute inset-0" />
 
-              <h2 className="absolute top-4 left-0 right-0 mx-4 text-base font-bold text-white z-10">
+              <h2 className="absolute top-4 text-2xl left-0 right-0 mx-4 font-bold text-white z-10">
                 {slide.title}
               </h2>
 
-              <div className="absolute bottom-12 left-0 right-0 z-10 flex justify-center">
+              <div className="absolute bottom-20 left-0 right-0 z-10 flex justify-center">
                 <button
                   onClick={() => (window.location.href = slide.link)}
                   className="w-3/4 py-2 bg-green-600 text-white rounded-lg font-medium text-xs"
