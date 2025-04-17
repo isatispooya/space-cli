@@ -23,6 +23,7 @@ const initialFormData: FormDataType = {
   attachments: [],
   receiver_internal: 0,
   receiver_external: "",
+  sender_id: 0,
   is_internal: true,
   postcript: "",
   seal: false,
