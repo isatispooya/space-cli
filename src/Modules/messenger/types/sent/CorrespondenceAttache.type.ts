@@ -22,6 +22,7 @@ export type FormDataType = {
   attachments: number[];
   receiver_internal: number;
   receiver_external: string;
+  sender_id: number;
   is_internal: boolean;
   postcript: string;
   seal: boolean;

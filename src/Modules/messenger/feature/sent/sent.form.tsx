@@ -48,8 +48,10 @@ const SentForm: React.FC = () => {
     useCorrespondenceAttachment.useGetAttache() as unknown as {
       data: CorrespondenceAttachments;
     };
-  const { mutate: postCorrespondence } =
+  const { mutate: postCorrespondence, data: Correspondence } =
     useCorrespondenceAttachment.usePostCorrespondence();
+
+  console.log(Correspondence);
 
   const attachmentOptions = [
     { label: "➕ اضافه کردن پیوست", value: "add_attachment" },
@@ -77,6 +79,11 @@ const SentForm: React.FC = () => {
     return recipient ? recipient.label : "";
   };
 
+  const externalUserOptions = [
+    { label: "گیرنده خارجی", value: "external" },
+    { label: "گیرنده داخلی", value: "internal" },
+  ];
+
   return (
     <Box sx={STYLES.container}>
       <Paper elevation={3} sx={STYLES.paper}>
@@ -90,6 +97,12 @@ const SentForm: React.FC = () => {
           />
 
           <Box sx={STYLES.gridContainer}>
+            <SelectInput
+              label="ارسال کننده"
+              value={formData.sender_id.toString()}
+              onChange={(value) => handleChange("sender_id", value)}
+              options={externalUserOptions}
+            />
             {formData.receiver_external === "internal" ? (
               <SelectInput
                 label="گیرنده داخلی"
@@ -107,6 +120,7 @@ const SentForm: React.FC = () => {
                 placeholder="گیرنده خارجی"
               />
             )}
+
             <FormInput
               label="موضوع"
               value={formData.subject}
