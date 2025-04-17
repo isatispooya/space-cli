@@ -1,9 +1,12 @@
-import { motion } from "framer-motion";
 import { IoIosArrowBack } from "react-icons/io";
 import { useDashboard } from "../hooks";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { formatNumber } from "../../../utils";
 import Spinner from "../../../components/loaders/spinner";
+import Card from "../../../components/cards/card";
+import WaveEffect from "../../../ui/wave";
+import "../../../ui/wave.css";
+import { Button } from "@/components"; 
 
 interface PortfolioItem {
   Symbol: string;
@@ -23,13 +26,9 @@ const DashboardBorsStat = () => {
       }))
     : null;
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
-    >
-      <div className="flex items-center mb-3">
+  const content = (
+    <div className="flex flex-col h-full w-full">
+      <div className="flex items-center ">
         <img
           src="/assets/Artboard 1 copy 16.png"
           alt="بورس آیکن"
@@ -85,38 +84,46 @@ const DashboardBorsStat = () => {
         </div>
       </div>
 
-      <div className="mt-auto pt-4 relative z-10">
+      <div className="mt-auto pt-4 relative z-10 w-full">
         <a
           href="https://online.ipb.ir/Account/Login"
           target="_blank"
           className="block w-full"
         >
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full bg-blue-900 hover:bg-blue-700 text-white py-2 px-3 rounded-lg 
-                      font-iranSans duration-200 flex items-center justify-center gap-2 text-base"
+          <Button
+            variant="custom"
+            customColors={{
+              background: "#1e3a8a", 
+              hoverBackground: "#1d4ed8", 
+              text: "white",
+            }}
+            fullWidth
+            animationOnHover="scale"
+            animationOnTap="scale"
+            className="w-full py-2 px-3 rounded-lg font-iranSans text-base "
+            rightIcon={<IoIosArrowBack className="w-4 h-4" />}
           >
-            <span className="text-white font-bold">پنل بورس</span>
-            <IoIosArrowBack className="w-4 h-4" />
-          </motion.button>
+            <span className="font-bold">پنل بورس</span>
+          </Button>
         </a>
       </div>
+    </div>
+  );
 
-      <svg
-        className="absolute bottom-0 left-0 w-full h-16"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1440 320"
-        preserveAspectRatio="none"
-        style={{ zIndex: 0 }}
-      >
-        <path
-          fill="#1e40af"
-          fillOpacity="0.3"
-          d="M0,224L48,213.3C96,203,192,181,288,192C384,203,480,245,576,245.3C672,245,768,203,864,186.7C960,171,1056,181,1152,186.7C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-        ></path>
-      </svg>
-    </motion.div>
+  return (
+    <Card
+      disableAnimation={true}
+      className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl wave-container"
+      contentClassName="h-full p-0"
+      content={content}
+      customStyles={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+      padding="0"
+      footerSlot={<WaveEffect color="blue" />}
+    />
   );
 };
 

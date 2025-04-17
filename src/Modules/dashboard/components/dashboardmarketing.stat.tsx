@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactNode,  useState, useMemo } from "react";
+import { ReactNode, useState, useMemo } from "react";
 import { useInvitation } from "../../invitation/hooks";
-import { motion } from "framer-motion";
 import { RiUserReceived2Line } from "react-icons/ri";
 import "moment/locale/fa";
-
 import { useRemainPoints } from "../../points";
 import { useNavigate } from "react-router-dom";
 import { TbSeeding } from "react-icons/tb";
@@ -12,6 +10,10 @@ import { LuCoins } from "react-icons/lu";
 import { useProfile } from "../../userManagment";
 import { useUserPermissions } from "../../permissions";
 import { MdCardGiftcard } from "react-icons/md";
+import Card from "../../../components/cards/card";
+import WaveEffect from "../../../ui/wave";
+import "../../../ui/wave.css";
+import { motion } from "framer-motion";
 
 export interface StatsProps {
   title: string;
@@ -90,12 +92,8 @@ const DashboardMarketingStat = () => {
     }
   };
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="relative bg-white rounded-xl shadow-md p-4 w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
-    >
+  const content = (
+    <div className="flex flex-col h-full w-full p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center">
           <RiUserReceived2Line className="w-5 h-5 text-[#D2042D]" />
@@ -124,7 +122,7 @@ const DashboardMarketingStat = () => {
         </div>
       </div>
 
-      <div className="flex-grow flex items-center justify-center">
+      <div className="flex-grow flex items-center justify-center mb-6">
         <div className="flex items-center justify-center w-full gap-12">
           <button
             onClick={() => navigate("/invitation/list")}
@@ -157,7 +155,7 @@ const DashboardMarketingStat = () => {
         </div>
       </div>
 
-      <div className="mt-auto pt-4 relative z-10">
+      <div className="mt-auto relative z-10 w-full">
         <div className="flex items-center gap-2 bg-[#ffffff] p-2 rounded-lg shadow-inner hover:bg-gray-100 transition-colors duration-200">
           <p className="flex-1 text-xs text-[#D2042D] font-iranSans truncate">
             {`my.isatispooya.com/login?rf=${
@@ -177,21 +175,24 @@ const DashboardMarketingStat = () => {
           </motion.button>
         </div>
       </div>
+    </div>
+  );
 
-      <svg
-        className="absolute bottom-0 left-0 w-full h-16"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1440 320"
-        preserveAspectRatio="none"
-        style={{ zIndex: 0 }}
-      >
-        <path
-          fill="#A0001C"
-          fillOpacity=".3"
-          d="M0,160L34.3,165.3C68.6,171,137,181,206,192C274.3,203,343,213,411,197.3C480,181,549,139,617,144C685.7,149,754,203,823,224C891.4,245,960,235,1029,213.3C1097.1,192,1166,160,1234,144C1302.9,128,1371,128,1406,128L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"
-        ></path>
-      </svg>
-    </motion.div>
+  return (
+    <Card
+      disableAnimation={true}
+      className="relative bg-white rounded-xl shadow-md w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl wave-container"
+      contentClassName="h-full p-0 flex flex-col"
+      content={content}
+      customStyles={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        padding: 0,
+      }}
+      padding="0"
+      footerSlot={<WaveEffect color="red" />}
+    />
   );
 };
 
