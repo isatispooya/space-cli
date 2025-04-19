@@ -2,7 +2,7 @@ import { TabulatorTable } from "../../../../components";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { createActionMenu } from "../../../../components/table/actionMenus";
-
+import { useReceive } from "../../hooks/receive";
 interface RowData {
   id: number;
   sender: string;
@@ -44,7 +44,7 @@ const TableReceive = () => {
     getElement: () => HTMLElement;
     getRow: () => { getData: () => RowData };
   }
-  
+
   const navigate = useNavigate();
 
   const handleView = (row: RowData) => {
@@ -105,6 +105,12 @@ const TableReceive = () => {
   ];
 
   const mappedData = useMemo(() => staticData, []);
+
+  const { getReceive } = useReceive();
+
+  const { data } = getReceive();
+
+  console.log(data);
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">

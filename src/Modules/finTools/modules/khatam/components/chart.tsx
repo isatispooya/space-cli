@@ -3,7 +3,6 @@ import WaveEffect from "@/ui/wave";
 import * as echarts from "echarts";
 import KHatamPic from "../../../../../assets/khatam.png";
 import { useEffect, useRef } from "react";
-
 import { MainLayout } from "@/layouts";
 
 type EChartsOption = echarts.EChartsOption;
