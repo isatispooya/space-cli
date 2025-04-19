@@ -1,9 +1,12 @@
-import Chart from "../components/chart";
+// import Chart from "../components/chart";
 
 const Khatam = () => {
   return (
     <div className="w-full h-full">
-      <Chart />
+      {/* <Chart /> */}
+
+
+      التتالا
     </div>
   );
 };
