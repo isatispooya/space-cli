@@ -69,11 +69,13 @@ const SentForm: React.FC = () => {
       value: position.id.toString(),
     })) || [];
 
-    const senderOptions =
-    (correspondence?.sender as PositionTypes[])?.map((position) => ({
+
+    const senderUserOptions =
+    (Position as PositionTypes[])?.map((position) => ({
       label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
       value: position.id.toString(),
     })) || [];
+
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
@@ -105,7 +107,7 @@ const SentForm: React.FC = () => {
               label="ارسال کننده"
               value={formData.sender}
               onChange={(value) => handleChange("sender", value)}
-              options={senderOptions}
+              options={senderUserOptions}
             />
             {formData.receiver_external === "internal" ? (
               <SelectInput
