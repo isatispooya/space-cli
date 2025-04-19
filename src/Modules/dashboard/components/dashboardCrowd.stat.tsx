@@ -108,7 +108,7 @@ const DashboardCrowdStat = () => {
           className="font-iranSans text-base"
           onClick={handleCrowdUUID}
         >
-          <span className="font-bold">پنل کراد</span>
+          <span>پنل کراد</span>
         </Button>
       </div>
     </div>

@@ -1,5 +1,7 @@
+import { Khatam } from "../feature";
+
 const KhatamMainPage = () => {
-  return <div>KhatamMainPage</div>;
+  return <Khatam />;
 };
 
 export default KhatamMainPage;

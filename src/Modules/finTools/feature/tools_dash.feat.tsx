@@ -8,15 +8,15 @@ export const FundsDashboard: React.FC = () => {
   };
 
   return (
-    <div className="p-4 md:p-8">
+    <div className="min-h-screen w-full p-2 md:p-4 flex flex-col gap-4">
       {/* Top row with 3 cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[60vh]">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={itemVariants}
           transition={{ duration: 0.3 }}
-          className="h-full"
+          className="w-full h-full"
         >
           <FundCard
             type="khatam"
@@ -32,7 +32,7 @@ export const FundsDashboard: React.FC = () => {
           animate="visible"
           variants={itemVariants}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="h-full"
+          className="w-full h-full"
         >
           <FundCard
             type="exir"
@@ -48,7 +48,7 @@ export const FundsDashboard: React.FC = () => {
           animate="visible"
           variants={itemVariants}
           transition={{ duration: 0.3, delay: 0.2 }}
-          className="h-full"
+          className="w-full h-full"
         >
           <FundCard
             type="termeh"
@@ -66,7 +66,7 @@ export const FundsDashboard: React.FC = () => {
         animate="visible"
         variants={itemVariants}
         transition={{ duration: 0.3, delay: 0.3 }}
-        className="w-full"
+        className="w-full h-[35vh]"
       >
         <FundCard
           type="mosharkat"

@@ -13,6 +13,7 @@ import { server } from "../../../api/server";
 import { useEffect, useState, useMemo } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Spinner from "../../../components/loaders/spinner";
+import { Button } from "@/components";
 // import { useUserPermissions } from "../../permissions";
 
 interface TooltipProps {
@@ -232,16 +233,22 @@ const DashboardChart = () => {
         )}
       </div>
 
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
+      <Button
         onClick={() => (window.location.href = "/shareholders/table")}
-        className="absolute bottom-14 left-1/2 transform -translate-x-1/2 w-40 bg-indigo-900 hover:bg-indigo-700 text-white py-1.5 px-4 rounded-lg 
-                  font-iranSans duration-200 flex items-center justify-center gap-1 text-sm font-bold z-10"
+        variant="custom"
+        customColors={{
+          background: "#02205F",
+          hoverBackground: "#5677BC",
+          text: "white",
+        }}
+        fullWidth
+        animationOnHover="scale"
+        animationOnTap="scale"
+        className="w-full py-2 px-3  rounded-lg font-iranSans text-base"
+        rightIcon={<IoIosArrowBack className="w-4 h-4" />}
       >
-        مدیریت سهام
-        <IoIosArrowBack className="w-3 h-3" />
-      </motion.button>
+        <span>مدیریت سهام</span>
+      </Button>
 
       <div className="absolute bottom-0 left-0 right-0">
         <svg

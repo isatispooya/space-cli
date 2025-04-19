@@ -44,7 +44,7 @@ const DashboardBimeStat = () => {
           className="w-full py-2 px-3  rounded-lg font-iranSans text-base"
           rightIcon={<IoIosArrowBack className="w-4 h-4" />}
         >
-          <span className="font-bold">پنل بیمه</span>
+          <span>پنل بیمه</span>
         </Button>
       </div>
     </div>

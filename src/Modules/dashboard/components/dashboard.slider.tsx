@@ -14,6 +14,7 @@ import { FaShareAlt } from "react-icons/fa";
 import { useInvitation } from "../../invitation/hooks";
 import { useProfile } from "../../userManagment";
 import { server } from "@/api/server";
+import { Button } from "@/components";
 export interface SlideItem {
   id: number;
   picture: string;
@@ -150,24 +151,36 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
               </h2>
 
               <div className="absolute bottom-20 left-0 right-0 z-10 flex justify-center">
-                <button
+                <Button
                   onClick={() => (window.location.href = slide.link)}
-                  className="w-3/4 py-2 bg-green-600 text-white rounded-lg font-medium text-xs"
+                  variant="custom"
+                  size="sm"
+                  customColors={{
+                    background: "#29D2C7",
+                    hoverBackground: "#37f908",
+                    text: "white",
+                  }}
+                  className="w-3/4 py-2 rounded-lg font-medium text-xs"
                 >
                   امکان سرمایه‌گذاری آنلاین
-                </button>
+                </Button>
               </div>
             </a>
             <div className="absolute bottom-2 left-0 right-0 z-10 flex justify-center">
-              <button
+              <Button
                 onClick={() => handleShare(slide)}
-                className="flex items-center bg-white px-3 py-1 rounded-full tour-share-dashboard cursor-pointer"
+                variant="custom"
+                size="sm"
+                customColors={{
+                  background: "#ffffff",
+                  hoverBackground: "#02205F",
+                  text: "green",
+                }}
               >
                 <FaShareAlt className="text-base text-green-600 mr-1" />
                 اشتراک گذاری
-              </button>
+              </Button>
             </div>
-
           </SwiperSlide>
         ))}
       </Swiper>

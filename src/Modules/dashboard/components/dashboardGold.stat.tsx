@@ -2,7 +2,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import Card from "../../../components/cards/card";
 import WaveEffect from "../../../ui/wave";
 import "../../../ui/wave.css";
-import Button from "../../../components/common/buttons/button";
+import { Button } from "@/components";
 
 const DashboardGoldStat = () => {
   const content = (
@@ -78,7 +78,7 @@ const DashboardGoldStat = () => {
           rightIcon={<IoIosArrowBack className="w-4 h-4" />}
           className="font-iranSans text-base"
         >
-          <span className="font-bold">به زودی</span>
+          <span>به زودی</span>
         </Button>
       </div>
     </div>
