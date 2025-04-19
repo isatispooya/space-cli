@@ -36,6 +36,12 @@ const useCorrespondenceAttachment = {
       mutationFn: correspondenceAttacheService.postCorrespondence,
     });
   },
+  useGetCorrespondence: (): UseQueryResult<CorrespondenceAttachment> => {
+    return useQuery({
+      queryKey: ["correspondence"],
+      queryFn: correspondenceAttacheService.getCorrespondence,
+    });
+  },
 };
 
 export default useCorrespondenceAttachment;

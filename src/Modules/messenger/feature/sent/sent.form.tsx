@@ -48,10 +48,12 @@ const SentForm: React.FC = () => {
     useCorrespondenceAttachment.useGetAttache() as unknown as {
       data: CorrespondenceAttachments;
     };
-  const { mutate: postCorrespondence, data: Correspondence } =
+  const { mutate: postCorrespondence } =
     useCorrespondenceAttachment.usePostCorrespondence();
+    const { data: correspondence } = useCorrespondenceAttachment.useGetCorrespondence();
 
-  console.log(Correspondence);
+
+  console.log(correspondence);
 
   const attachmentOptions = [
     { label: "➕ اضافه کردن پیوست", value: "add_attachment" },
@@ -63,6 +65,12 @@ const SentForm: React.FC = () => {
 
   const internalUserOptions =
     (Position as PositionTypes[])?.map((position) => ({
+      label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
+      value: position.id.toString(),
+    })) || [];
+
+    const senderOptions =
+    (correspondence?.sender as PositionTypes[])?.map((position) => ({
       label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
       value: position.id.toString(),
     })) || [];
@@ -79,10 +87,6 @@ const SentForm: React.FC = () => {
     return recipient ? recipient.label : "";
   };
 
-  const externalUserOptions = [
-    { label: "گیرنده خارجی", value: "external" },
-    { label: "گیرنده داخلی", value: "internal" },
-  ];
 
   return (
     <Box sx={STYLES.container}>
@@ -99,9 +103,9 @@ const SentForm: React.FC = () => {
           <Box sx={STYLES.gridContainer}>
             <SelectInput
               label="ارسال کننده"
-              value={formData.sender_id.toString()}
-              onChange={(value) => handleChange("sender_id", value)}
-              options={externalUserOptions}
+              value={formData.sender}
+              onChange={(value) => handleChange("sender", value)}
+              options={senderOptions}
             />
             {formData.receiver_external === "internal" ? (
               <SelectInput
