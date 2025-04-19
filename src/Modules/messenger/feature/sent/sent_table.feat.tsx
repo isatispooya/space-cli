@@ -3,7 +3,7 @@ import { TabulatorTable } from "../../../../components";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { createActionMenu } from "../../../../components/table/actionMenus";
-
+import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 interface SentMessage {
   id: number;
   title: string;
@@ -52,6 +52,7 @@ const staticData = [
 ];
 
 export const SentTable = () => {
+  const { data: correspondence } = useCorrespondenceAttachment.useGetCorrespondence();
   const mappedData = useMemo(() => {
     return staticData.map((item) => ({
       id: item.id,
@@ -63,6 +64,7 @@ export const SentTable = () => {
     }));
   }, []);
   const navigate = useNavigate();
+  console.log(correspondence);
 
   const handleView = (row: SentMessage) => {
     console.log("Viewing message:", row);

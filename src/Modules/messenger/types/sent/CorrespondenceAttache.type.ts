@@ -20,9 +20,10 @@ export type FormDataType = {
   text: string;
   description: string;
   attachments: number[];
+  receiver: number[];
+  sender: number[];
   receiver_internal: number;
   receiver_external: string;
-  sender_id: number;
   is_internal: boolean;
   postcript: string;
   seal: boolean;

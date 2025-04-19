@@ -11,6 +11,7 @@ interface TranscriptProps {
   internalUserOptions: { label: string; value: string }[];
   getTranscriptName: (id: string) => string;
   handleChange: (name: string, value: string | string[]) => void;
+  direction: string;
 }
 
 const Transcript: React.FC<TranscriptProps> = ({
@@ -22,6 +23,7 @@ const Transcript: React.FC<TranscriptProps> = ({
   internalUserOptions,
   getTranscriptName,
   handleChange,
+  direction,
 }) => {
   const handleAdd = () => {
     if (selectedTranscript.length > 0) {
@@ -29,6 +31,29 @@ const Transcript: React.FC<TranscriptProps> = ({
       setSelectedTranscript([]);
     }
   };
+
+  const internalOptions = [
+    {
+      label: "اطلاع رسانی",
+      value: "notification",
+    },
+    {
+      label: "اطلاع",
+      value: "information",
+    },
+    {
+      label: "اقدام",
+      value: "action",
+    },
+    {
+      label: "بایگانی",
+      value: "archive",
+    },
+    {
+      label: "پیگیری",
+      value: "tracking",
+    },
+  ];
 
   return (
     <Box
@@ -115,8 +140,9 @@ const Transcript: React.FC<TranscriptProps> = ({
                   >
                     <SelectInput
                       label="جهت"
+                      value={direction}
+                      options={internalOptions}
                       onChange={(value) => handleChange("direction", value)}
-                      options={internalUserOptions}
                     />
 
                     <Box
