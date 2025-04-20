@@ -13,11 +13,12 @@ import "../../../ui/wave.css";
 import toast from "react-hot-toast";
 import usePostFaraSahm from "../hooks/useFarasahm";
 import { useUserPermissions } from "@/Modules/permissions";
+
 const tools = [
   {
     id: "fara-sahm",
     img: FrashamLogo,
-    title: " فراسهم",
+    title: "فراسهم",
     color: "text-blue-600",
     hoverColor: "hover:bg-blue-100",
     isActive: true,
@@ -32,7 +33,7 @@ const tools = [
     hoverColor: "",
     isActive: false,
     link: "#",
-    isImage: true,
+    codename: "can_access_khatam",
   },
   {
     id: "investment",
@@ -42,7 +43,7 @@ const tools = [
     hoverColor: "",
     isActive: false,
     link: "#",
-    isImage: true,
+    codename: "can_access_exir",
   },
   {
     id: "accounting",
@@ -52,7 +53,7 @@ const tools = [
     hoverColor: "",
     isActive: false,
     link: "#",
-    isImage: true,
+    codename: "can_access_termeh",
   },
   {
     id: "report",
@@ -62,7 +63,7 @@ const tools = [
     hoverColor: "",
     isActive: false,
     link: "#",
-    isImage: true,
+    codename: "can_access_moshtrak",
   },
 ];
 
@@ -71,14 +72,15 @@ const DashboardToolsStat = () => {
   const { mutate: faraSahm } = usePostFaraSahm();
   const { data: Permissions } = useUserPermissions();
 
-  const hasPermission =
-    Array.isArray(Permissions) &&
-    Permissions.some((perm) => perm.codename === tools[0].codename);
-  console.log(hasPermission);
+  const getToolPermission = (tool: typeof tools[number]) => {
+    if (!tool.codename) return false;
+    return (
+      Array.isArray(Permissions) &&
+      Permissions.some((perm) => perm.codename === tool.codename)
+    );
+  };
 
   const handleClick = () => {
-    if (!hasPermission) return;
-
     faraSahm(undefined, {
       onSuccess: (response) => {
         const faraSahmLink = `https://farasahm.fidip.ir/loginspace/${response.cookie}/`;
@@ -93,6 +95,7 @@ const DashboardToolsStat = () => {
 
   const content = (
     <div className="flex flex-col h-full w-full p-4">
+      {/* Header */}
       <div className="flex items-center mb-10">
         <FaTools className="w-5 h-5 text-gray-700" />
         <h3 className="text-sm text-[#2D3748] font-bold font-iranSans mr-2">
@@ -100,6 +103,7 @@ const DashboardToolsStat = () => {
         </h3>
       </div>
 
+      {/* Title */}
       <div className="flex-grow flex flex-col mb-8 ">
         <p className="text-lg font-bold text-[#2D3748] font-iranSans text-center">
           ابزارهای مدیریت مالی
@@ -109,50 +113,45 @@ const DashboardToolsStat = () => {
         </p>
       </div>
 
+      {/* Tools */}
       <div className="mt-auto relative z-10 w-full ">
         <div className="flex items-center justify-between gap-2 bg-gray-50 p-2 rounded-lg">
-          {tools.map((tool) => (
-            <motion.button
-              key={tool.id}
-              whileHover={
-                tool.isActive && !(tool.id === "fara-sahm" && !hasPermission)
-                  ? { scale: 1.05 }
-                  : {}
-              }
-              whileTap={
-                tool.isActive && !(tool.id === "fara-sahm" && !hasPermission)
-                  ? { scale: 0.95 }
-                  : {}
-              }
-              data-tooltip-id={tool.id}
-              data-tooltip-content={tool.title}
-              onClick={() => {
-                if (!tool.isActive) return;
-                if (tool.id === "fara-sahm") {
-                  if (!hasPermission) return;
-                  handleClick();
-                } else {
-                  navigate(tool.link);
-                }
-              }}
-              className={`w-8 h-8 rounded-md flex items-center justify-center ${
-                tool.isActive && !(tool.id === "fara-sahm" && !hasPermission)
-                  ? tool.hoverColor
-                  : "cursor-not-allowed bg-gray-100"
-              } transition-colors duration-200`}
-              disabled={
-                !tool.isActive || (tool.id === "fara-sahm" && !hasPermission)
-              }
-            >
-              <img src={tool.img} alt={tool.title} className="w-4 h-4" />
+          {tools.map((tool) => {
+            const hasAccess = getToolPermission(tool);
+            const isClickable = tool.isActive && hasAccess;
 
-              <Tooltip
-                id={tool.id}
-                place="top"
-                className="font-iranSans text-[10px] z-50"
-              />
-            </motion.button>
-          ))}
+            return (
+              <motion.button
+                key={tool.id}
+                whileHover={isClickable ? { scale: 1.05 } : {}}
+                whileTap={isClickable ? { scale: 0.95 } : {}}
+                data-tooltip-id={tool.id}
+                data-tooltip-content={tool.title}
+                onClick={() => {
+                  if (!isClickable) return;
+
+                  if (tool.id === "fara-sahm") {
+                    handleClick();
+                  } else {
+                    navigate(tool.link);
+                  }
+                }}
+                className={`w-8 h-8 rounded-md flex items-center justify-center ${
+                  isClickable
+                    ? tool.hoverColor
+                    : "cursor-not-allowed bg-gray-100"
+                } transition-colors duration-200`}
+                disabled={!isClickable}
+              >
+                <img src={tool.img} alt={tool.title} className="w-4 h-4" />
+                <Tooltip
+                  id={tool.id}
+                  place="top"
+                  className="font-iranSans text-[10px] z-50"
+                />
+              </motion.button>
+            );
+          })}
         </div>
       </div>
     </div>
