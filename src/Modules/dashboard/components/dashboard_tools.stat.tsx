@@ -1,29 +1,32 @@
 import { motion } from "framer-motion";
-import { FaTools, FaHeadset } from "react-icons/fa";
+import { FaTools } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router-dom";
 import Moshtrak from "../../../assets/moshtrak.png";
 import termeh from "../../../assets/termeh.png";
 import khatam from "../../../assets/khatam.png";
+import FrashamLogo from "../../../assets/farasahm.png";
 import exir from "../../../assets/exsir.png";
 import Card from "../../../components/cards/card";
 import WaveEffect from "../../../ui/wave";
 import "../../../ui/wave.css";
 import toast from "react-hot-toast";
 import usePostFaraSahm from "../hooks/useFarasahm";
+import { useUserPermissions } from "@/Modules/permissions";
 const tools = [
   {
-    id: "consulting",
-    icon: FaHeadset,
-    title: "مشاوره سرمایه گذاری",
+    id: "fara-sahm",
+    img: FrashamLogo,
+    title: " فراسهم",
     color: "text-blue-600",
     hoverColor: "hover:bg-blue-100",
     isActive: true,
-    link: "/consultation/request",
+    link: "https://farasahm.fidip.ir/",
+    codename: "can_connect_to_farasahm",
   },
   {
     id: "calculator",
-    icon: khatam,
+    img: khatam,
     title: "صندوق سرمایه گذاری خاتم",
     color: "text-gray-400",
     hoverColor: "",
@@ -33,7 +36,7 @@ const tools = [
   },
   {
     id: "investment",
-    icon: exir,
+    img: exir,
     title: "صندوق سرمایه گذاری اکسیر",
     color: "text-gray-400",
     hoverColor: "",
@@ -43,7 +46,7 @@ const tools = [
   },
   {
     id: "accounting",
-    icon: termeh,
+    img: termeh,
     title: "صندوق سرمایه گذاری ترمه ",
     color: "text-gray-400",
     hoverColor: "",
@@ -53,7 +56,7 @@ const tools = [
   },
   {
     id: "report",
-    icon: Moshtrak,
+    img: Moshtrak,
     title: "صندوق سرمایه گذاری مشترک ",
     color: "text-gray-400",
     hoverColor: "",
@@ -66,8 +69,16 @@ const tools = [
 const DashboardToolsStat = () => {
   const navigate = useNavigate();
   const { mutate: faraSahm } = usePostFaraSahm();
+  const { data: Permissions } = useUserPermissions();
+
+  const hasPermission =
+    Array.isArray(Permissions) &&
+    Permissions.some((perm) => perm.codename === tools[0].codename);
+  console.log(hasPermission);
 
   const handleClick = () => {
+    if (!hasPermission) return;
+
     faraSahm(undefined, {
       onSuccess: (response) => {
         const faraSahmLink = `https://farasahm.fidip.ir/loginspace/${response.cookie}/`;
@@ -79,7 +90,6 @@ const DashboardToolsStat = () => {
       },
     });
   };
-
 
   const content = (
     <div className="flex flex-col h-full w-full p-4">
@@ -104,23 +114,38 @@ const DashboardToolsStat = () => {
           {tools.map((tool) => (
             <motion.button
               key={tool.id}
-              whileHover={tool.isActive ? { scale: 1.05 } : {}}
-              whileTap={tool.isActive ? { scale: 0.95 } : {}}
+              whileHover={
+                tool.isActive && !(tool.id === "fara-sahm" && !hasPermission)
+                  ? { scale: 1.05 }
+                  : {}
+              }
+              whileTap={
+                tool.isActive && !(tool.id === "fara-sahm" && !hasPermission)
+                  ? { scale: 0.95 }
+                  : {}
+              }
               data-tooltip-id={tool.id}
               data-tooltip-content={tool.title}
-              onClick={() => tool.isActive && navigate(tool.link)}
+              onClick={() => {
+                if (!tool.isActive) return;
+                if (tool.id === "fara-sahm") {
+                  if (!hasPermission) return;
+                  handleClick();
+                } else {
+                  navigate(tool.link);
+                }
+              }}
               className={`w-8 h-8 rounded-md flex items-center justify-center ${
-                tool.isActive
+                tool.isActive && !(tool.id === "fara-sahm" && !hasPermission)
                   ? tool.hoverColor
                   : "cursor-not-allowed bg-gray-100"
               } transition-colors duration-200`}
-              disabled={!tool.isActive}
+              disabled={
+                !tool.isActive || (tool.id === "fara-sahm" && !hasPermission)
+              }
             >
-              {tool.isImage ? (
-                <img src={tool.icon} alt={tool.title} className="w-4 h-4" />
-              ) : (
-                <tool.icon className={`w-4 h-4 ${tool.color}`} />
-              )}
+              <img src={tool.img} alt={tool.title} className="w-4 h-4" />
+
               <Tooltip
                 id={tool.id}
                 place="top"
@@ -135,7 +160,7 @@ const DashboardToolsStat = () => {
 
   return (
     <Card
-      onClick={handleClick}
+      onClick={undefined}
       disableAnimation={true}
       className="relative bg-white rounded-xl shadow-md w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl wave-container"
       contentClassName="h-full p-0 flex flex-col"
