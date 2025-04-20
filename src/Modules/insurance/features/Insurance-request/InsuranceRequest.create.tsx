@@ -11,7 +11,7 @@ import { MultiSelect } from "../../../../components";
 import { useInsuranceStore } from "../../store";
 import { server } from "@/api";
 import { LuFileDown } from "react-icons/lu";
-
+ 
 const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
   const { mutate: postFields, isPending: isPostLoading } =
