@@ -45,6 +45,7 @@ const formatValue = (value: number) => {
 const DashboardCrowdStat = () => {
   const { data: stats } = useDashboard.useGetCrowd();
   const { mutate: crowdUUID } = usePostUUID();
+  
 
   const totalValue = Number(stats?.["total value"]);
 

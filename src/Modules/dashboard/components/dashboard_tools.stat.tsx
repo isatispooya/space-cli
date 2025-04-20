@@ -9,7 +9,8 @@ import exir from "../../../assets/exsir.png";
 import Card from "../../../components/cards/card";
 import WaveEffect from "../../../ui/wave";
 import "../../../ui/wave.css";
-
+import toast from "react-hot-toast";
+import usePostFaraSahm from "../hooks/useFarasahm";
 const tools = [
   {
     id: "consulting",
@@ -64,6 +65,21 @@ const tools = [
 
 const DashboardToolsStat = () => {
   const navigate = useNavigate();
+  const { mutate: faraSahm } = usePostFaraSahm();
+
+  const handleClick = () => {
+    faraSahm(undefined, {
+      onSuccess: (response) => {
+        const faraSahmLink = `https://farasahm.fidip.ir/loginspace/${response.cookie}/`;
+        window.open(faraSahmLink, "_blank");
+      },
+      onError: (error) => {
+        toast.error(`خطایی رخ داده است: ${error.message}`);
+        window.location.href = "https://farasahm.fidip.ir/";
+      },
+    });
+  };
+
 
   const content = (
     <div className="flex flex-col h-full w-full p-4">
@@ -119,6 +135,7 @@ const DashboardToolsStat = () => {
 
   return (
     <Card
+      onClick={handleClick}
       disableAnimation={true}
       className="relative bg-white rounded-xl shadow-md w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl wave-container"
       contentClassName="h-full p-0 flex flex-col"
