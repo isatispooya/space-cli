@@ -42,6 +42,7 @@
     "http-server": "^14.1.1",
     "jalali-moment": "^3.3.11",
     "jalali-react-datepicker": "^1.2.3",
+    "lucide-react": "^0.501.0",
     "luxon": "^3.5.0",
     "moment-jalaali": "^0.10.4",
     "prop-types": "^15.8.1",

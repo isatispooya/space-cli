@@ -5,3 +5,4 @@ export { default as Privileges } from "./Privileges/Privileges.tsx";
 export { default as Rewards } from "./RewardsTable/rewardstable.tsx";
 export { default as Requests } from "./GiftRequest/requests.tsx";
 export { default as PlansView } from "./Coin/planCoins.view.tsx";
+export { default as RewardsCategory } from "./RewardsTable/rewards_category.feat.tsx";

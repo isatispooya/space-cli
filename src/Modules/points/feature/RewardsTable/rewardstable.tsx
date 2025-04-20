@@ -5,7 +5,7 @@ import { columns } from "./rewardsTable.colum";
 import { ExelData } from "./rewardsTable.exel";
 import { PrivilegesTypes } from "../../types/RewardsTable.type";
 
-const RewardsTable = () => {
+const RewardsTable = ({ fiterSelected }: { fiterSelected: string[] }) => {
   const { data: Welfare } = useWelfare();
 
   const mappedData = Welfare?.map((item: PrivilegesTypes) => {
@@ -28,10 +28,10 @@ const RewardsTable = () => {
   });
 
   return (
-    <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
+    <div className="w-full bg-white rounded-3xl relative flex flex-col">
       <div className="overflow-x-auto">
         <TabulatorTable
-          data={mappedData || []}
+          data={fiterSelected?.length > 0 ? mappedData : []}
           columns={columns()}
           title="رفاهی"
           showActions={true}
