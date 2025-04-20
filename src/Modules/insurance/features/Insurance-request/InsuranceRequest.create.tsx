@@ -9,6 +9,8 @@ import { ErrorResponse } from "@/types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { MultiSelect } from "../../../../components";
 import { useInsuranceStore } from "../../store";
+import { server } from "@/api";
+import { LuFileDown } from "react-icons/lu";
 
 const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
@@ -149,6 +151,16 @@ const InsuranceRequestCreate: React.FC = () => {
                   onChange={(e) => handleFileChange(field.id.toString(), e)}
                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                 />
+                {field.example_file && (
+                  <a
+                    href={`${server}${field.example_file}`}
+                    download
+                    className="flex items-center text-gray-500 mt-2 text-xs hover:text-gray-700 transition duration-300 ease-in-out transform hover:scale-103"
+                  >
+                    <LuFileDown className="mr-4 ml-1" />
+                    دانلود فایل نمونه
+                  </a>
+                )}
               </div>
             ))}
           </div>

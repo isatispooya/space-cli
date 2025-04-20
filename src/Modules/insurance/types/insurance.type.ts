@@ -5,6 +5,7 @@ export interface InsuranceTypes {
     insurance_name: number;
     name: string;
     updated_at: string;
+    example_file: string;
   }[];
   id: number;
   name: string;
