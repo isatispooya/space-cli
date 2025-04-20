@@ -11,7 +11,7 @@ interface TranscriptProps {
   internalUserOptions: { label: string; value: string }[];
   getTranscriptName: (id: string) => string;
   handleChange: (name: string, value: string | string[]) => void;
-  direction: string;
+  direction?: string;
 }
 
 const Transcript: React.FC<TranscriptProps> = ({

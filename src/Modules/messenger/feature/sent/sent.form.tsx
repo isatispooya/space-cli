@@ -105,7 +105,7 @@ const SentForm: React.FC = () => {
           <Box sx={STYLES.gridContainer}>
             <SelectInput
               label="ارسال کننده"
-              value={formData.sender}
+              value={formData.sender.toString()}
               onChange={(value) => handleChange("sender", value)}
               options={senderUserOptions}
             />
