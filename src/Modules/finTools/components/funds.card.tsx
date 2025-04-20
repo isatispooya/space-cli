@@ -26,7 +26,7 @@ const fundsInfo: Record<FundType, FundInfo> = {
     subtitle: "صندوق سرمایه‌گذاری خاتم",
     color: "#3B82F6",
     icon: "📈",
-    route: "/funds/khatam",
+    route: "/khatam",
   },
   termeh: {
     title: "ترمه",
