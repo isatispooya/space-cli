@@ -1,1 +1,1 @@
-export { default as Khatam } from "./khatam";
+export { default as KhatamFeat } from "./khatam.feat";
