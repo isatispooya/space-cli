@@ -52,11 +52,9 @@ export const SentTable = () => {
 
   const navigate = useNavigate();
   const handleView = (row: SentMessage) => {
-    console.log("Viewing message:", row);
     navigate(`/letter-sent/message/${row.id}`);
   };
   const handleEdit = (row: SentMessage) => {
-    console.log("Editing message:", row);
     navigate(`/letter-sent/update-form/${row.id}`);
   };
 

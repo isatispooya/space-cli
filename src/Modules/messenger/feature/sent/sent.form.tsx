@@ -97,8 +97,6 @@ const SentForm: React.FC = () => {
 
       transcript: [apiTranscript],
     };
-
-    console.log("Sending data:", finalData);
     postCorrespondence(finalData);
   };
 

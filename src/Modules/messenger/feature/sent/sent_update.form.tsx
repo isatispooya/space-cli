@@ -27,7 +27,6 @@ const SentUpdateForm = () => {
     if (e) {
       e.preventDefault();
     }
-    console.log(formData);
   };
 
   const priorityOptions = [
