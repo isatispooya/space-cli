@@ -2,7 +2,7 @@ import React from "react";
 import { useUserPro } from "../hooks";
 import { motion } from "framer-motion";
 import { server } from "../../../api/server";
-import defaultAvatar from "../../../../public/assets/user-286-128.png";
+import { profile } from "@/assets";
 import { useParams } from "react-router-dom";
 
 const ProfileView: React.FC = () => {
@@ -121,12 +121,12 @@ const ProfileView: React.FC = () => {
                   src={
                     profile?.profile_image
                       ? server + profile?.profile_image
-                      : defaultAvatar
+                      : profile
                   }
                   alt="پروفایل"
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.currentTarget.src = defaultAvatar;
+                    e.currentTarget.src = profile;
                   }}
                 />
               </div>

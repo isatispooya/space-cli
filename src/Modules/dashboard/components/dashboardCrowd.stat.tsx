@@ -1,6 +1,6 @@
 import { useDashboard } from "../hooks";
 import { IoIosArrowBack } from "react-icons/io";
-import crowdImg from "../../../../public/assets/crowdlogo.png";
+import { crowd } from "@/assets";
 import usePostUUID from "../hooks/useuuidpost";
 import toast from "react-hot-toast";
 import Card from "../../../components/cards/card";
@@ -65,7 +65,7 @@ const DashboardCrowdStat = () => {
   const content = (
     <div className="flex flex-col h-full w-full p-4">
       <div className="flex items-center mb-3">
-        <img src={crowdImg} alt="crowd" className="w-10 h-10" />
+        <img src={crowd} alt="crowd" className="w-10 h-10" />
         <h3 className="text-base text-[#4b0082] font-bold font-iranSans mr-2">
           {"ایساتیس کراد"}
         </h3>

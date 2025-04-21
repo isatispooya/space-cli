@@ -14,6 +14,22 @@ const UserTimeflowTable = () => {
     return TimeflowStatus.find((item) => item.value === status)?.name || status;
   };
 
+  const exportData = (data: any[]) => {
+    return data.map((item) => ({
+      "شناسه": item.id,
+      "نوع": item.type,
+      "نام کاربر": item.userName,
+      "نام کاربری": item.userUsername,
+      "زمان کاربر": item.time_user,
+      "زمان سیستم": item.time_system,
+      "زمان ارشد": item.time_parent,
+      "وضعیت خود": item.status_self,
+      "وضعیت والد": item.status_parent,
+      "مرورگر": item.browser,
+      "آدرس IP": item.ip_address
+    }));
+  };
+
   const TYPE_LABEL = [
     {
       value: "login",
@@ -29,21 +45,23 @@ const UserTimeflowTable = () => {
     return TYPE_LABEL.find((item) => item.value === value)?.label || value;
   };
 
-  const mappedData = data?.map((item: TimeflowEvent) => ({
-    id: item.id,
-    type: getLabel(item.type),
-    userName: `${item.user.first_name} ${item.user.last_name}`,
-    userEmail: item.user.email,
-    userUsername: item.user.username,
-    time_user: new Date(item.time_user).toLocaleString("fa-IR"),
-    time_system: new Date(item.time_system).toLocaleString("fa-IR"),
-    time_parent: new Date(item.time_parent).toLocaleString("fa-IR"),
-    time_device: new Date(item.time_device).toLocaleString("fa-IR"),
-    status_self: getStatusName(item.status_self),
-    status_parent: getStatusName(item.status_parent),
-    browser: item.browser,
-    ip_address: item.ip_address,
-  }));
+  const mappedData = Array.isArray(data)
+    ? data.map((item: TimeflowEvent) => ({
+        id: item.id,
+        type: getLabel(item.type),
+        userName: `${item.user.first_name} ${item.user.last_name}`,
+        userEmail: item.user.email,
+        userUsername: item.user.username,
+        time_user: new Date(item.time_user).toLocaleString("fa-IR"),
+        time_system: new Date(item.time_system).toLocaleString("fa-IR"),
+        time_parent: new Date(item.time_parent).toLocaleString("fa-IR"),
+        time_device: new Date(item.time_device).toLocaleString("fa-IR"),
+        status_self: getStatusName(item.status_self),
+        status_parent: getStatusName(item.status_parent),
+        browser: item.browser,
+        ip_address: item.ip_address,
+      }))
+    : [];
 
   const handleRowAction = (e: MouseEvent, row: RowComponent) => {
     const items = [
@@ -94,6 +112,8 @@ const UserTimeflowTable = () => {
     },
   ];
 
+
+
   return (
     <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
       <div className="overflow-x-auto">
@@ -102,6 +122,7 @@ const UserTimeflowTable = () => {
           columns={columns()}
           title="اطلاعات کاربران"
           showActions={true}
+          formatExportData={exportData}
         />
       </div>
     </div>

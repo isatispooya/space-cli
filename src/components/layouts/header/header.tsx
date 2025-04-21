@@ -1,8 +1,8 @@
 import { Collapse, Ripple, initTWE } from "tw-elements";
 import { UserAvatar } from "../../avatar";
 import { motion } from "framer-motion";
-import LogoWhite from "../../../assets/Artboard 1 copy 17.png"
-import LogoText from "../../../assets/textLogo.png";
+import { maliSvg } from "@/assets";
+import { maliTextLogo } from "@/assets";
 import { useSidebarStore } from "../../../Modules/sidebar/store/sidebar.store";
 import { FiMenu } from "react-icons/fi";
 import Badge from "@mui/material/Badge";
@@ -15,7 +15,7 @@ import { useRemainPoints } from "../../../Modules/points";
 import NotificationComponent from "../../notification/notification";
 import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
-import { CiStreamOn } from "react-icons/ci";           
+import { CiStreamOn } from "react-icons/ci";
 import { useLiveStream } from "../../../Modules/live/hooks";
 
 initTWE({ Collapse, Ripple });
@@ -24,8 +24,6 @@ const Header = () => {
   const { toggleSidebar } = useSidebarStore();
 
   const { data: liveStream } = useLiveStream.useLiveStream();
-
-
 
   const ShowLiveStream = liveStream?.status;
 
@@ -101,9 +99,9 @@ const Header = () => {
                   className="flex items-center cursor-pointer"
                   onClick={() => navigate("/")}
                 >
-                  <img src={LogoWhite} className="w-20 sm:w-16" alt="logo" />
+                  <img src={maliSvg} className="w-20 sm:w-16" alt="logo" />
                   <img
-                    src={LogoText}
+                    src={maliTextLogo}
                     className="w-40 hidden lg:block"
                     alt="logo text"
                   />

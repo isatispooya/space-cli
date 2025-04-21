@@ -1,6 +1,6 @@
 import { useDashboard } from "../hooks";
 import { IoIosArrowBack } from "react-icons/io";
-import bimeImg from "../../../../public/assets/bime.png";
+import { bime } from "@/assets";
 import { useNavigate } from "react-router-dom";
 import Card from "../../../components/cards/card";
 import WaveEffect from "../../../ui/wave";
@@ -14,7 +14,7 @@ const DashboardBimeStat = () => {
   const content = (
     <div className="flex flex-col h-full w-full">
       <div className="flex items-center mb-6">
-        <img src={bimeImg} alt="bime" className="w-10 h-10" />
+        <img src={bime} alt="bime" className="w-10 h-10" />
         <h3 className="text-base text-[#1a5c35] font-bold font-iranSans mr-2">
           بیمه ایساتیس
         </h3>

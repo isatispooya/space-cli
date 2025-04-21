@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useParams } from "react-router-dom";
-import waterMark from "../../../../public/Artboard 1 copy 17.png";
+import { mali } from "@/assets"; 
 import { useTimeflow } from "../hooks";
 import moment from "moment-jalaali";
 import "../styles/timesheet.css";
@@ -348,7 +348,7 @@ const Timesheet = () => {
       <div className="print-container bg-white rounded-xl shadow-lg p-6 border border-gray-200">
         {/* واترمارک لوگو */}
         <img
-          src={waterMark}
+          src={mali}
           alt="لوگوی شرکت"
           className="hidden print:block watermark-logo"
         />

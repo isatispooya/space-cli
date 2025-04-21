@@ -3,7 +3,7 @@ import { IoClose } from "react-icons/io5";
 import { menuItems } from "../data/menuItems";
 import CustomMenuItem from "../components/MenuItem";
 import { motion } from "framer-motion";
-import bothLogo from "../../../../public/bothLogo.svg";
+import { maliTextLogo } from "@/assets";
 
 const SideBar = () => {
   const { isOpen, toggleSidebar } = useSidebarStore();
@@ -44,7 +44,7 @@ const SideBar = () => {
         } custom-scrollbar`}
       >
         <div className="flex items-center justify-between p-4 border-b border-blue-800">
-          <img src={bothLogo} alt="لوگو" className="h-16 w-auto" />
+          <img src={maliTextLogo} alt="لوگو" className="h-16 w-auto" />
           <motion.button
             className="text-2xl text-white p-2 rounded-full hover:bg-white/20 hover:rotate-90 active:scale-90 transition-all duration-300 close-menu-button"
             onClick={toggleSidebar}

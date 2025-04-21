@@ -79,23 +79,21 @@ const TabulatorTable: React.FC<TableProps> = ({
   }, [data]);
 
   const downloadExcel = () => {
-    if (!data) return;
-
-    if (formatExportData) {
-      const exportData = data.map(formatExportData);
-      const workbook = XLSX.utils.book_new();
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, `${title}_${new Date().toISOString()}.xlsx`);
-    } else {
-      tabulator.current?.download(
-        "xlsx",
-        `${title}_${new Date().toISOString()}.xlsx`,
-        {
-          sheetName: title,
-        }
-      );
+    if (!Array.isArray(data)) {
+      console.error("Expected data to be an array, but got:", data);
+      return;
     }
+
+    const formattedData = formatExportData ? formatExportData(data) : data;
+    console.log("Formatted export data:", formattedData);
+
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(
+      workbook,
+      `اطلاعات_کاربران_تاریخچه_زمان_${new Date().toISOString()}.xlsx`
+    );
   };
 
   useEffect(() => {

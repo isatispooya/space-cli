@@ -1,0 +1,16 @@
+export { default as bime } from "./logo/bime.png";
+export { default as mali } from "./logo/mali.png";
+export { default as maliTextLogo } from "./logo/mali_text_logo.png";
+export { default as maliText } from "./logo/mali_text.png";
+export { default as maliSvg } from "./logo/mali_text_logo.svg";
+export { default as termeh } from "./logo/termeh.png";
+export { default as moshtrak } from "./logo/moshtrak.png";
+export { default as khatam } from "./logo/khatam.png";
+export { default as exsir } from "./logo/exsir.png";
+export { default as tools } from "./logo/tools.png";
+export { default as kargozari } from "./logo/kargozari.png";
+export { default as logolicense } from "./logo/logolicense.png";
+export { default as crowd } from "./logo/crowd.png";
+export { default as profile } from "./logo/profile.png";
+export { default as sep } from "./logo/sep.png";
+export { default as closeIcon } from "./logo/close.icon.svg";
