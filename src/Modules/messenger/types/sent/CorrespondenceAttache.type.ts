@@ -29,7 +29,6 @@ export interface TranscriptData {
   correspondence: number | null;
 }
 
-// این تایپ برای داده‌های ارسالی به API استفاده می‌شود
 export interface TranscriptAPIData {
   read_at: string;
   transcript_for: string;
@@ -38,7 +37,6 @@ export interface TranscriptAPIData {
   correspondence: number | null;
 }
 
-// تایپ داده‌های ارسالی به API
 export interface APIFormDataType {
   subject: string;
   text: string;
@@ -86,7 +84,7 @@ export type FormDataType = {
   authority_correspondence: number | null;
   reference: number[];
   referenceData?: ReferenceData[];
-  transcript: TranscriptData;
+  transcript: TranscriptData[];
   published: boolean;
 };
 
@@ -95,6 +93,27 @@ export interface AttachmentResponse {
   name: string;
   file: string;
   size: number;
+}
+
+interface SenderDetails {
+  user: User;
+}
+
+interface ReceiverInternalDetails {
+  user: User;
+}
+
+export interface CorrespondenceItem {
+  id: number;
+  subject: string;
+  sender_details: SenderDetails;
+  receiver_internal_details: ReceiverInternalDetails;
+  created_at: string;
+  priority: string;
+}
+
+export interface CorrespondenceResponse {
+  sender: CorrespondenceItem[];
 }
 
 export type CorrespondenceAttachments = CorrespondenceAttachment[];

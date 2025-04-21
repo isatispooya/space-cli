@@ -6,13 +6,14 @@ import {
 } from "@tanstack/react-query";
 import correspondenceAttacheService from "../../services/sent/correspondenceAttacheService";
 import {
-  CorrespondenceAttachment,
+  CorrespondenceAttachments,
   AttachmentResponse,
   APIFormDataType,
+  CorrespondenceResponse,
 } from "../../types/sent/CorrespondenceAttache.type";
 
 const useCorrespondenceAttachment = {
-  useGetAttache: (): UseQueryResult<CorrespondenceAttachment> => {
+  useGetAttache: (): UseQueryResult<CorrespondenceAttachments> => {
     return useQuery({
       queryKey: ["attache"],
       queryFn: correspondenceAttacheService.getAttache,
@@ -36,7 +37,7 @@ const useCorrespondenceAttachment = {
       mutationFn: correspondenceAttacheService.postCorrespondence,
     });
   },
-  useGetCorrespondence: (): UseQueryResult<CorrespondenceAttachment> => {
+  useGetCorrespondence: (): UseQueryResult<CorrespondenceResponse> => {
     return useQuery({
       queryKey: ["correspondence"],
       queryFn: correspondenceAttacheService.getCorrespondence,

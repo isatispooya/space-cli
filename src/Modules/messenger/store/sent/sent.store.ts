@@ -52,7 +52,7 @@ const initialFormData: FormDataType = {
   authority_correspondence: null,
   reference: [],
   referenceData: [],
-  transcript: defaultTranscript,
+  transcript: [defaultTranscript],
   published: false,
 };
 
@@ -84,10 +84,10 @@ export const useSentFormStore = create<SentFormState>((set) => ({
           transcriptDirections: { ...state.transcriptDirections, [id]: direction },
           formData: {
             ...state.formData,
-            transcript: {
-              ...state.formData.transcript,
+            transcript: state.formData.transcript.map(t => ({
+              ...t,
               transcript_for: direction
-            }
+            }))
           }
         };
       }
@@ -117,10 +117,10 @@ export const useSentFormStore = create<SentFormState>((set) => ({
           formData: {
             ...state.formData,
             sender: numValue,
-            transcript: {
-              ...state.formData.transcript,
+            transcript: state.formData.transcript.map(t => ({
+              ...t,
               position: numValue
-            }
+            }))
           },
         };
       }
@@ -171,11 +171,11 @@ export const useSentFormStore = create<SentFormState>((set) => ({
               ...state.formData,
               reference: [...state.formData.reference, ...newReferences],
               referenceData: [...(state.formData.referenceData || []), ...newReferenceData],
-              transcript: {
-                ...state.formData.transcript,
+              transcript: state.formData.transcript.map(t => ({
+                ...t,
                 transcript_for: lastDirection,
                 position: newReferences[0]
-              }
+              }))
             },
           };
         }
@@ -209,11 +209,11 @@ export const useSentFormStore = create<SentFormState>((set) => ({
             ? state.formData.reference.filter((ref) => ref !== numId)
             : [...state.formData.reference, numId],
           referenceData: updatedReferenceData,
-          transcript: {
-            ...state.formData.transcript,
-            position: isInReference ? state.formData.transcript.position : numId,
-            transcript_for: state.transcriptDirections[id] || state.formData.transcript.transcript_for
-          }
+          transcript: state.formData.transcript.map(t => ({
+            ...t,
+            position: isInReference ? t.position : numId,
+            transcript_for: state.transcriptDirections[id] || t.transcript_for
+          }))
         },
       };
     }),
