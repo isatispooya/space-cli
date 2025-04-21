@@ -8,7 +8,7 @@ export { default as moshtrak } from "./moshtrak.png";
 export { default as khatam } from "./khatam.png";
 export { default as exsir } from "./exsir.png";
 export { default as tools } from "./tools.png";
-export { default as kargozari } from "./kargozari.png";
+export { default as bors } from "./kargozari.png";
 export { default as logolicense } from "./logolicense.png";
 export { default as crowd } from "./crowd.png";
 export { default as profileIcon } from "./profile.png";

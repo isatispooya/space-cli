@@ -14,7 +14,7 @@ import { useEffect, useState, useMemo } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Spinner from "../../../components/loaders/spinner";
 import { Button } from "@/components";
-// import { useUserPermissions } from "../../permissions";
+
 
 interface TooltipProps {
   active?: boolean;

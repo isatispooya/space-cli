@@ -7,6 +7,7 @@ import Card from "../../../components/cards/card";
 import WaveEffect from "../../../ui/wave";
 import "../../../ui/wave.css";
 import { Button } from "@/components"; 
+import { bors } from "@/assets";
 
 interface PortfolioItem {
   Symbol: string;
@@ -30,7 +31,7 @@ const DashboardBorsStat = () => {
     <div className="flex flex-col h-full w-full">
       <div className="flex items-center ">
         <img
-          src="/assets/Artboard 1 copy 16.png"
+          src={bors}
           alt="بورس آیکن"
           className="w-10 h-10"
         />
