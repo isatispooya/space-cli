@@ -1,20 +1,34 @@
-import { create } from 'zustand';
-import { FormDataType } from '../../types/sent/CorrespondenceAttache.type';
+import { create } from "zustand";
+import { FormDataType, ReferenceData, TranscriptData } from "../../types/sent/CorrespondenceAttache.type";
 
 interface SentFormState {
   formData: FormDataType;
   openFileDialog: boolean;
   selectedTranscript: string[];
+  transcriptDirections: { [id: string]: string };
   setFormData: (data: Partial<FormDataType>) => void;
   setOpenFileDialog: (isOpen: boolean) => void;
   setSelectedTranscript: (transcripts: string[]) => void;
+  setTranscriptDirection: (id: string, direction: string) => void;
   handleChange: (name: string, value: string | string[] | boolean) => void;
   handleReceiverTypeChange: (type: string) => void;
-  handleAttachmentAdd: (attachmentData: { name: string; file: string ,id:number}) => void;
+  handleAttachmentAdd: (attachmentData: {
+    name: string;
+    file: string;
+    id: number;
+  }) => void;
   handleAddTranscript: () => void;
   handleTranscriptToggle: (id: string) => void;
   resetForm: () => void;
 }
+
+const defaultTranscript: TranscriptData = {
+  read_at: new Date().toISOString(),
+  transcript_for: "notification",
+  security: false,
+  position: 0,
+  correspondence: null
+};
 
 const initialFormData: FormDataType = {
   subject: "",
@@ -24,7 +38,7 @@ const initialFormData: FormDataType = {
   receiver_internal: 0,
   receiver_external: "",
   receiver: [],
-  sender: [],
+  sender: 0,
   is_internal: true,
   postcript: "",
   seal: false,
@@ -35,8 +49,10 @@ const initialFormData: FormDataType = {
   priority: "",
   kind_of_correspondence: "",
   authority_type: "",
-  authority_correspondence: 0,
+  authority_correspondence: null,
   reference: [],
+  referenceData: [],
+  transcript: defaultTranscript,
   published: false,
 };
 
@@ -44,6 +60,7 @@ export const useSentFormStore = create<SentFormState>((set) => ({
   formData: initialFormData,
   openFileDialog: false,
   selectedTranscript: [],
+  transcriptDirections: {},
 
   setFormData: (data) =>
     set((state) => ({
@@ -59,6 +76,25 @@ export const useSentFormStore = create<SentFormState>((set) => ({
     set(() => ({
       selectedTranscript: transcripts,
     })),
+    
+  setTranscriptDirection: (id, direction) =>
+    set((state) => {
+      if (direction) {
+        return {
+          transcriptDirections: { ...state.transcriptDirections, [id]: direction },
+          formData: {
+            ...state.formData,
+            transcript: {
+              ...state.formData.transcript,
+              transcript_for: direction
+            }
+          }
+        };
+      }
+      return {
+        transcriptDirections: { ...state.transcriptDirections, [id]: direction }
+      };
+    }),
 
   handleChange: (name, value) => {
     set((state) => {
@@ -74,6 +110,21 @@ export const useSentFormStore = create<SentFormState>((set) => ({
           };
         }
       }
+      
+      if (name === "sender" && typeof value === "string") {
+        const numValue = Number(value);
+        return {
+          formData: {
+            ...state.formData,
+            sender: numValue,
+            transcript: {
+              ...state.formData.transcript,
+              position: numValue
+            }
+          },
+        };
+      }
+      
       return {
         formData: {
           ...state.formData,
@@ -107,10 +158,24 @@ export const useSentFormStore = create<SentFormState>((set) => ({
           .map((id) => Number(id));
 
         if (newReferences.length > 0) {
+          const newReferenceData: ReferenceData[] = newReferences.map(id => ({
+            id: id,
+            enabled: true,
+            transcript_for: state.transcriptDirections[id.toString()] || ""
+          }));
+          
+          const lastDirection = state.transcriptDirections[newReferences[0].toString()] || "notification";
+          
           return {
             formData: {
               ...state.formData,
               reference: [...state.formData.reference, ...newReferences],
+              referenceData: [...(state.formData.referenceData || []), ...newReferenceData],
+              transcript: {
+                ...state.formData.transcript,
+                transcript_for: lastDirection,
+                position: newReferences[0]
+              }
             },
           };
         }
@@ -121,12 +186,34 @@ export const useSentFormStore = create<SentFormState>((set) => ({
   handleTranscriptToggle: (id) =>
     set((state) => {
       const numId = Number(id);
+      const isInReference = state.formData.reference.includes(numId);
+      
+      let updatedReferenceData = state.formData.referenceData || [];
+      if (isInReference) {
+        updatedReferenceData = updatedReferenceData.filter(item => item.id !== numId);
+      } else {
+        updatedReferenceData = [
+          ...updatedReferenceData,
+          {
+            id: numId,
+            enabled: true,
+            transcript_for: state.transcriptDirections[id] || ""
+          }
+        ];
+      }
+      
       return {
         formData: {
           ...state.formData,
-          reference: state.formData.reference.includes(numId)
+          reference: isInReference
             ? state.formData.reference.filter((ref) => ref !== numId)
             : [...state.formData.reference, numId],
+          referenceData: updatedReferenceData,
+          transcript: {
+            ...state.formData.transcript,
+            position: isInReference ? state.formData.transcript.position : numId,
+            transcript_for: state.transcriptDirections[id] || state.formData.transcript.transcript_for
+          }
         },
       };
     }),
@@ -136,6 +223,6 @@ export const useSentFormStore = create<SentFormState>((set) => ({
       formData: initialFormData,
       openFileDialog: false,
       selectedTranscript: [],
+      transcriptDirections: {},
     })),
 }));
-

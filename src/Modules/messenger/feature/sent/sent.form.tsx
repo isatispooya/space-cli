@@ -13,6 +13,8 @@ import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttac
 import {
   CorrespondenceAttachment,
   CorrespondenceAttachments,
+  APIFormDataType,
+  TranscriptAPIData,
 } from "../../types/sent/CorrespondenceAttache.type";
 import { AttachmentDialog } from "../../components/sent";
 import Transcript from "../../components/sent/sent_transcript";
@@ -34,6 +36,7 @@ const SentForm: React.FC = () => {
     formData,
     openFileDialog,
     selectedTranscript,
+    transcriptDirections,
     handleChange,
     handleReceiverTypeChange,
     handleAttachmentAdd,
@@ -41,6 +44,7 @@ const SentForm: React.FC = () => {
     handleTranscriptToggle,
     setOpenFileDialog,
     setSelectedTranscript,
+    setTranscriptDirection,
   } = useSentFormStore();
 
   const { data: Position } = usePosition.useGet();
@@ -50,11 +54,8 @@ const SentForm: React.FC = () => {
     };
   const { mutate: postCorrespondence } =
     useCorrespondenceAttachment.usePostCorrespondence();
-    const { data: correspondence } = useCorrespondenceAttachment.useGetCorrespondence();
 
-
-  console.log(correspondence);
-
+  
   const attachmentOptions = [
     { label: "➕ اضافه کردن پیوست", value: "add_attachment" },
     ...(Attache?.map((attachment: CorrespondenceAttachment) => ({
@@ -69,19 +70,37 @@ const SentForm: React.FC = () => {
       value: position.id.toString(),
     })) || [];
 
-
-    const senderUserOptions =
+  const senderUserOptions =
     (Position as PositionTypes[])?.map((position) => ({
       label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
       value: position.id.toString(),
     })) || [];
 
-
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
       e.preventDefault();
     }
-    postCorrespondence(formData);
+    
+    const {   transcript, ...restFormData } = formData;
+    
+    const apiTranscript: TranscriptAPIData = {
+      position: formData.sender || transcript.position,
+      transcript_for: transcript.transcript_for,
+      security: transcript.security,
+      correspondence: null,
+      read_at: new Date().toISOString()
+    };
+    
+    const finalData: APIFormDataType = {
+      ...restFormData,
+      attachments: restFormData.attachments.map(Number),
+      receiver_internal: Number(restFormData.receiver_internal),
+     
+      transcript: [apiTranscript]
+    };
+    
+    console.log("Sending data:", finalData);
+    postCorrespondence(finalData);
   };
 
   const getTranscriptName = (id: string): string => {
@@ -89,6 +108,11 @@ const SentForm: React.FC = () => {
     return recipient ? recipient.label : "";
   };
 
+  const transcriptItems = formData.reference?.map(ref => ({
+    id: ref.toString(),
+    enabled: true,
+    transcript_for: transcriptDirections[ref.toString()] || "notification"
+  })) || [];
 
   return (
     <Box sx={STYLES.container}>
@@ -105,8 +129,8 @@ const SentForm: React.FC = () => {
           <Box sx={STYLES.gridContainer}>
             <SelectInput
               label="ارسال کننده"
-              value={formData.sender.toString()}
-              onChange={(value) => handleChange("sender", value)}
+              value={formData.receiver.toString()}
+              onChange={(value) => handleChange("receiver", value)}
               options={senderUserOptions}
             />
             {formData.receiver_external === "internal" ? (
@@ -141,7 +165,7 @@ const SentForm: React.FC = () => {
             {formData.authority_type && (
               <SelectInput
                 label="ارجاع"
-                value={formData.authority_correspondence.toString()}
+                value={formData.authority_correspondence?.toString() || ""}
                 onChange={(value) =>
                   handleChange("authority_correspondence", value)
                 }
@@ -192,17 +216,15 @@ const SentForm: React.FC = () => {
           <FormSwitches formData={formData} handleChange={handleChange} />
 
           <Transcript
-            transcript={formData.reference.map((id) => ({
-              id: String(id),
-              enabled: true,
-            }))}
+            transcript={transcriptItems}
             selectedTranscript={selectedTranscript}
             setSelectedTranscript={setSelectedTranscript}
             handleAddTranscript={handleAddTranscript}
             handleTranscriptToggle={handleTranscriptToggle}
             internalUserOptions={internalUserOptions}
             getTranscriptName={getTranscriptName}
-            handleChange={handleChange}
+            transcriptDirections={transcriptDirections}
+            setTranscriptDirection={setTranscriptDirection}
           />
 
           <Box sx={STYLES.submitButton}>

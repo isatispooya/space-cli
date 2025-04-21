@@ -1,4 +1,3 @@
-
 export const STYLES = {
     container: {
       p: 3,
@@ -21,7 +20,10 @@ export const STYLES = {
     },
     gridContainer: {
       display: "grid",
-      gridTemplateColumns: "1fr 1fr 1fr",
+      gridTemplateColumns: "repeat(2, 1fr)",
+      "&.three-columns": {
+        gridTemplateColumns: "repeat(3, 1fr)",
+      },
       gap: 2,
       mb: 3,
     },
