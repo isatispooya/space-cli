@@ -2,7 +2,6 @@ import React from "react";
 import { useUserPro } from "../hooks";
 import { motion } from "framer-motion";
 import { server } from "../../../api/server";
-import { profile } from "@/assets";
 import { useParams } from "react-router-dom";
 
 const ProfileView: React.FC = () => {
