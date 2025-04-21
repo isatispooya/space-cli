@@ -2,7 +2,7 @@
 import Logo from "../../../components/common/logo/logo";
 import { fadeIn } from "../animations/fadeIn";
 import { motion } from "framer-motion";
-import typo from "../../../assets/logotypography.png";
+import { maliText } from "@/assets";
 
 const LoginHead = () => {
   return (
@@ -14,7 +14,7 @@ const LoginHead = () => {
         {...fadeIn(0.8, -20)}
         className="mb-2  flex items-center justify-center  text-lg font-semibold"
       >
-        <img src={typo} alt="typo" className=" w-[250px]" />
+        <img src={maliText} alt="typo" className=" w-[250px]" />
       </motion.h4>
     </div>
   );

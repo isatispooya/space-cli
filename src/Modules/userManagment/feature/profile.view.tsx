@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useProfile, useUpdateProfilePicture } from "../hooks";
 import { motion } from "framer-motion";
 import { server } from "../../../api/server";
-import defaultAvatar from "../../../../public/assets/user-286-128.png";
+import { profileIcon } from "@/assets";
 
 const ProfileView: React.FC = () => {
   const { data: profile, refetch } = useProfile();
@@ -133,12 +133,12 @@ const ProfileView: React.FC = () => {
               <div className="w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-lg">
                 <img
                   src={
-                    profile?.profile_image ? server + avatarUrl : defaultAvatar
+                    profile?.profile_image ? server + avatarUrl : profileIcon
                   }
                   alt="پروفایل"
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.currentTarget.src = defaultAvatar;
+                    e.currentTarget.src = profileIcon;
                   }}
                 />
               </div>
