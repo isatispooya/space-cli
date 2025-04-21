@@ -1,0 +1,105 @@
+
+.sent-form-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.enhanced-input, 
+.enhanced-select,
+.enhanced-textarea {
+  border-radius: 8px !important;
+}
+
+.enhanced-input .MuiOutlinedInput-root,
+.enhanced-select .MuiOutlinedInput-root,
+.enhanced-textarea .MuiOutlinedInput-root {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.enhanced-input .MuiOutlinedInput-root:hover,
+.enhanced-select .MuiOutlinedInput-root:hover,
+.enhanced-textarea .MuiOutlinedInput-root:hover {
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2) !important;
+}
+
+.enhanced-input .MuiOutlinedInput-root.Mui-focused,
+.enhanced-select .MuiOutlinedInput-root.Mui-focused,
+.enhanced-textarea .MuiOutlinedInput-root.Mui-focused {
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.3) !important;
+}
+
+.sent-form-container button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease !important;
+  border-radius: 8px !important;
+}
+
+.sent-form-container button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.sent-form-container button:hover:before {
+  left: 100%;
+}
+
+.sent-form-container .MuiSwitch-root {
+  margin-right: 8px;
+}
+
+.sent-form-container .MuiSwitch-switchBase.Mui-checked {
+  color: #1976d2 !important;
+}
+
+.sent-form-container .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  background-color: rgba(25, 118, 210, 0.5) !important;
+}
+
+.sent-form-container .MuiTypography-h5 {
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #1565c0;
+}
+
+.sent-form-container .MuiTypography-h5:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(to right, #1976d2, #64b5f6);
+  border-radius: 2px;
+}
+
+
+.sent-form-container .MuiPaper-root {
+  background-image: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+}
+
+.sent-form-container .MuiFormControl-root {
+  transition: transform 0.2s ease;
+}
+
+.sent-form-container .MuiFormControl-root:hover {
+  transform: translateY(-2px);
+} 

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, Paper, Switch, List, ListItem } from "@mui/material";
 import { MultiSelect, SelectInput } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
+import internalOptions from "../../data/sent/transcript.data";
 
 interface TranscriptItem {
   id: string;
@@ -42,14 +43,6 @@ const Transcript: React.FC<TranscriptProps> = ({
       setSelectedTranscript([]);
     }
   };
-
-  const internalOptions = [
-    { label: "اطلاع رسانی", value: "notification" },
-    { label: "اطلاع", value: "information" },
-    { label: "اقدام", value: "action" },
-    { label: "بایگانی", value: "archive" },
-    { label: "پیگیری", value: "tracking" },
-  ];
 
   return (
     <Box

@@ -30,6 +30,7 @@ import ReceiverTypeButtons from "../../components/sent/ReceiverTypeButtons";
 import { TEXT_AREA_FIELDS } from "../../data/sent/sent_inputs";
 import { STYLES } from "../../style";
 import FormSwitches from "../../components/sent/switch";
+import "./sent.css";
 
 const SentForm: React.FC = () => {
   const {
@@ -113,7 +114,7 @@ const SentForm: React.FC = () => {
     })) || [];
 
   return (
-    <Box sx={STYLES.container}>
+    <Box sx={STYLES.container} className="sent-form-container">
       <Paper elevation={3} sx={STYLES.paper}>
         <Typography variant="h5" sx={STYLES.title}>
           ارسال پیام جدید
@@ -130,6 +131,7 @@ const SentForm: React.FC = () => {
               value={formData.sender.toString()}
               onChange={(value) => handleChange("sender", value)}
               options={senderUserOptions}
+              className="enhanced-select"
             />
             {formData.receiver_external === "internal" ? (
               <SelectInput
@@ -137,6 +139,7 @@ const SentForm: React.FC = () => {
                 value={formData.receiver_internal.toString()}
                 onChange={(value) => handleChange("receiver_internal", value)}
                 options={internalUserOptions}
+                className="enhanced-select"
               />
             ) : (
               <FormInput
@@ -146,6 +149,7 @@ const SentForm: React.FC = () => {
                   handleChange("receiver_external", e.target.value)
                 }
                 placeholder="گیرنده خارجی"
+                className="enhanced-input"
               />
             )}
 
@@ -153,12 +157,14 @@ const SentForm: React.FC = () => {
               label="موضوع"
               value={formData.subject}
               onChange={(e) => handleChange("subject", e.target.value)}
+              className="enhanced-input"
             />
             <SelectInput
               label="نوع ارجاع"
               value={formData.authority_type}
               onChange={(value) => handleChange("authority_type", value)}
               options={referralOptions}
+              className="enhanced-select"
             />
             {formData.authority_type && (
               <SelectInput
@@ -168,6 +174,7 @@ const SentForm: React.FC = () => {
                   handleChange("authority_correspondence", value)
                 }
                 options={referralDetailsOptions}
+                className="enhanced-select"
               />
             )}
             <SelectInput
@@ -177,24 +184,28 @@ const SentForm: React.FC = () => {
                 handleChange("kind_of_correspondence", value)
               }
               options={letterTypeOptions}
+              className="enhanced-select"
             />
             <MultiSelect
               label="پیوست‌ها"
               selectedValues={formData.attachments.map(String)}
               onChange={(value) => handleChange("attachments", value)}
               options={attachmentOptions}
+              className="enhanced-select"
             />
             <SelectInput
               label="اولویت"
               value={formData.priority}
               onChange={(value) => handleChange("priority", value)}
               options={priorityOptions}
+              className="enhanced-select"
             />
             <SelectInput
               label="محرمانگی"
               value={formData.confidentiality_level}
               onChange={(value) => handleChange("confidentiality_level", value)}
               options={departmentOptions}
+              className="enhanced-select"
             />
           </Box>
 
@@ -207,6 +218,7 @@ const SentForm: React.FC = () => {
                 onChange={(e) => handleChange(field, e.target.value)}
                 style={{ marginBottom: "1.5rem" }}
                 rows={4}
+                className="enhanced-textarea"
               />
             ))}
           </Box>
