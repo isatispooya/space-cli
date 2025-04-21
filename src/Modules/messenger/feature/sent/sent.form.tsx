@@ -129,8 +129,8 @@ const SentForm: React.FC = () => {
           <Box sx={STYLES.gridContainer}>
             <SelectInput
               label="ارسال کننده"
-              value={formData.receiver.toString()}
-              onChange={(value) => handleChange("receiver", value)}
+              value={formData.sender.toString()}
+              onChange={(value) => handleChange("sender", value)}
               options={senderUserOptions}
             />
             {formData.receiver_external === "internal" ? (
