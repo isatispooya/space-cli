@@ -1,7 +1,10 @@
 import { KhatamChart, KhatamDetails } from "../components";
 import { MainLayout } from "@/layouts";
+import { useKhatam } from "../hooks";
 
 const KhatamFeat = () => {
+  const { data: symbols } = useKhatam.useGetSymbols();
+  console.log(symbols);
   return (
     <MainLayout>
       <div className="w-full flex flex-col md:flex-row items-center justify-center p-6 bg-gray-100 min-h-screen relative">
