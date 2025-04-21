@@ -2,17 +2,14 @@ import { motion } from "framer-motion";
 import { FaTools } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router-dom";
-import Moshtrak from "../../../assets/moshtrak.png";
-import termeh from "../../../assets/termeh.png";
-import khatam from "../../../assets/khatam.png";
 import FrashamLogo from "../../../assets/farasahm.png";
-import exir from "../../../assets/exsir.png";
 import Card from "../../../components/cards/card";
 import WaveEffect from "../../../ui/wave";
 import "../../../ui/wave.css";
 import toast from "react-hot-toast";
 import usePostFaraSahm from "../hooks/useFarasahm";
 import { useUserPermissions } from "@/Modules/permissions";
+import { exsir, khatam, moshtrak, termeh } from "@/assets";
 
 const tools = [
   {
@@ -37,7 +34,7 @@ const tools = [
   },
   {
     id: "investment",
-    img: exir,
+    img: exsir,
     title: "صندوق سرمایه گذاری اکسیر",
     color: "text-gray-400",
     hoverColor: "",
@@ -57,7 +54,7 @@ const tools = [
   },
   {
     id: "report",
-    img: Moshtrak,
+    img: moshtrak,
     title: "صندوق سرمایه گذاری مشترک ",
     color: "text-gray-400",
     hoverColor: "",
