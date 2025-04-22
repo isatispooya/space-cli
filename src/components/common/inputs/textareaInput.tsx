@@ -5,6 +5,7 @@ interface TextAreaInputProps extends HTMLMotionProps<"textarea"> {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   rows?: number;
+  containerClassName?: string;
 }
 
 const TextAreaInput = ({
@@ -12,10 +13,11 @@ const TextAreaInput = ({
   value,
   onChange,
   rows = 4,
+  containerClassName = "",
   ...props
 }: TextAreaInputProps) => {
   return (
-    <div dir="rtl" className="w-full max-w-sm min-w-[150px]">
+    <div dir="rtl" className={`w-full ${containerClassName}`}>
       <motion.label
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}

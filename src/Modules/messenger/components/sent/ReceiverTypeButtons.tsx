@@ -2,13 +2,6 @@ import React from 'react';
 import { Box } from "@mui/material";
 import { ButtonBase } from "../../../../components/common/buttons";
 
-const STYLES = {
-  buttonGroup: {
-    mb: 3,
-    display: "flex",
-    justifyContent: "center",
-  },
-} as const;
 
 interface ReceiverTypeButtonsProps {
   receiverType: string;
@@ -16,7 +9,7 @@ interface ReceiverTypeButtonsProps {
 }
 
 const ReceiverTypeButtons: React.FC<ReceiverTypeButtonsProps> = ({ receiverType, onTypeChange }) => (
-  <Box sx={STYLES.buttonGroup}>
+  <Box display="flex" mb={4}>
     <ButtonBase
       label="گیرنده داخلی"
       onClick={() => onTypeChange("internal")}

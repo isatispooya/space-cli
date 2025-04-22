@@ -1,5 +1,15 @@
 import React from "react";
-import { Box, Typography, Paper, Switch, List, ListItem } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Paper,
+  Switch,
+  List,
+  ListItem,
+  Grid,
+  Chip,
+  Divider,
+} from "@mui/material";
 import { MultiSelect, SelectInput } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
@@ -54,114 +64,141 @@ const Transcript: React.FC<TranscriptProps> = ({
         border: "1px solid #e0e0e0",
         p: 2,
         borderRadius: 2,
+        bgcolor: "#fafafa",
+        boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
       }}
     >
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center", mb: 2 }}>
-        <Box
-          sx={{ flexGrow: 1, display: "flex", alignItems: "center", gap: 1 }}
-        >
-          <Box sx={{ width: "100%" }}>
-            <MultiSelect
-              label="رونوشت"
-              selectedValues={selectedTranscript}
-              onChange={(value) => setSelectedTranscript(value)}
-              options={internalUserOptions}
-            />
-          </Box>
-          <Box sx={{ mt: 4 }}>
+      {/* بخش افزودن رونوشت جدید */}
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={10}>
+          <MultiSelect
+            label="انتخاب گیرندگان رونوشت"
+            selectedValues={selectedTranscript}
+            onChange={(value) => setSelectedTranscript(value)}
+            options={internalUserOptions}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
             <ButtonBase
-              label="+"
+              label="افزودن"
               onClick={handleAdd}
               bgColor="#1976d2"
               hoverColor="#1565c0"
             />
           </Box>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
 
+      {/* نمایش تعداد رونوشت‌ها */}
       {transcript.length > 0 && (
-        <Paper variant="outlined" sx={{ p: 2 }}>
-          <List
-            sx={{
-              width: "100%",
-              mt: 1,
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
-            }}
+        <Box sx={{ mt: 1, mb: 1 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ display: "flex", alignItems: "center", gap: 1 }}
           >
-            {transcript.map((item) => (
-              <ListItem key={item.id} sx={{ p: 1.5, width: "100%" }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    width: "100%",
-                    gap: 2,
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontWeight: 500,
-                      color: "#1e293b",
-                      fontSize: "0.9rem",
-                      flex: "0 0 200px",
-                    }}
-                  >
-                    {getTranscriptName(item.id)}
-                  </Typography>
+            <Chip
+              label={transcript.length}
+              size="small"
+              color="primary"
+              sx={{ fontWeight: "bold", height: 22, minWidth: 22 }}
+            />
+            گیرنده رونوشت انتخاب شده است
+          </Typography>
+        </Box>
+      )}
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 3,
-                      flex: 1,
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <SelectInput
-                      label="جهت"
-                      value={transcriptDirections[item.id] || item.transcript_for || ""}
-                      options={internalOptions}
-                      onChange={(value) =>
-                        handleDirectionChange(item.id, value)
-                      }
-                    />
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                        minWidth: "120px",
-                      }}
-                    >
-                      <Typography sx={{ fontSize: "0.8rem", color: "#64748b" }}>
-                        {item.enabled ? "مخفی" : "نمایش"}
-                      </Typography>
-                      <Switch
-                        checked={item.enabled}
-                        onChange={() => handleTranscriptToggle(item.id)}
-                        size="small"
+      {/* لیست رونوشت‌ها */}
+      {transcript.length > 0 && (
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 2,
+            borderRadius: 2,
+            bgcolor: "#fff",
+            boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 2px",
+          }}
+        >
+          <List sx={{ p: 0 }}>
+            {transcript.map((item, index) => (
+              <React.Fragment key={item.id}>
+                <ListItem sx={{ px: 1, py: 1.5 }}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={4}>
+                      <Typography
                         sx={{
-                          "& .MuiSwitch-switchBase.Mui-checked": {
-                            color: "#3b82f6",
-                          },
-                          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
-                            {
-                              backgroundColor: "#93c5fd",
-                            },
+                          fontWeight: 500,
+                          color: "#1e293b",
+                          fontSize: "0.9rem",
                         }}
+                      >
+                        {getTranscriptName(item.id)}
+                      </Typography>
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                      <SelectInput
+                        label="جهت رونوشت"
+                        value={
+                          transcriptDirections[item.id] ||
+                          item.transcript_for ||
+                          ""
+                        }
+                        options={internalOptions}
+                        onChange={(value) =>
+                          handleDirectionChange(item.id, value)
+                        }
                       />
-                    </Box>
-                  </Box>
-                </Box>
-              </ListItem>
+                    </Grid>
+
+                    {/* وضعیت نمایش */}
+                    <Grid item xs={12} md={4}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-end",
+                          gap: 1,
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontSize: "0.9rem", color: "#64748b" }}
+                        >
+                          {item.enabled ? "مخفی" : "نمایش"}
+                        </Typography>
+                        <Switch
+                          checked={item.enabled}
+                          onChange={() => handleTranscriptToggle(item.id)}
+                          size="small"
+                          sx={{
+                            "& .MuiSwitch-switchBase.Mui-checked": {
+                              color: "#3b82f6",
+                            },
+                            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                              {
+                                backgroundColor: "#93c5fd",
+                              },
+                          }}
+                        />
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+                {index < transcript.length - 1 && <Divider sx={{ my: 0.5 }} />}
+              </React.Fragment>
             ))}
           </List>
         </Paper>
+      )}
+
+      {transcript.length === 0 && (
+        <Box sx={{ p: 2, textAlign: "center" }}>
+          <Typography variant="body2" color="text.secondary">
+            هیچ گیرنده رونوشتی انتخاب نشده است. از لیست بالا گیرندگان را انتخاب
+            و اضافه کنید.
+          </Typography>
+        </Box>
       )}
     </Box>
   );

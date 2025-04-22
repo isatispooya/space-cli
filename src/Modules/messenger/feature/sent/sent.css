@@ -1,23 +1,9 @@
-
-.sent-form-container {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .enhanced-input, 
 .enhanced-select,
 .enhanced-textarea {
   border-radius: 8px !important;
+  width: 100%;
+  transition: all 0.2s ease;
 }
 
 .enhanced-input .MuiOutlinedInput-root,
@@ -42,7 +28,7 @@
 .sent-form-container button {
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease !important;
+  transition: all 0.3s ease;
   border-radius: 8px !important;
 }
 
@@ -97,9 +83,47 @@
 }
 
 .sent-form-container .MuiFormControl-root {
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease; 
 }
 
 .sent-form-container .MuiFormControl-root:hover {
   transform: translateY(-2px);
+}
+
+.full-width-text {
+  width: 100% !important;
+}
+
+.full-width-text .MuiOutlinedInput-root {
+  width: 100% !important;
+}
+
+.full-width-text textarea {
+  width: 100% !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Responsive styles for sent form */
+@media (max-width: 600px) {
+  .sent-form-container button {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .enhanced-textarea textarea {
+    min-height: 80px;
+  }
+}
+
+/* Enhanced input styles */
+.enhanced-input:focus,
+.enhanced-select:focus,
+.enhanced-textarea:focus {
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
 } 

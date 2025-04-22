@@ -29,13 +29,11 @@ const SelectInput = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-
   const filteredOptions = useMemo(() => {
     return options.filter((option) =>
       option?.label?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, options]);
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -58,6 +56,14 @@ const SelectInput = ({
   };
 
   const selectedOption = options.find((opt) => opt.value === value);
+
+  // محاسبه ارتفاع برای دراپ‌دان با توجه به تعداد گزینه‌ها - حداکثر 3 آیتم
+  const getOptionHeight = (count: number) => {
+    const optionHeight = 36; // ارتفاع هر آیتم
+    const maxVisibleItems = 3; // حداکثر تعداد آیتم‌های قابل نمایش
+    const totalItems = Math.min(count, maxVisibleItems);
+    return totalItems * optionHeight;
+  };
 
   return (
     <div
@@ -105,7 +111,14 @@ const SelectInput = ({
                 />
               </div>
             </div>
-            <div className="max-h-60 overflow-y-auto">
+            <div 
+              className="overflow-y-auto"
+              style={{ 
+                maxHeight: `${getOptionHeight(filteredOptions.length)}px`,
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#cbd5e1 #f8fafc'
+              }}
+            >
               {filteredOptions.map((option) => (
                 <div
                   key={option.value}
