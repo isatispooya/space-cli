@@ -13,7 +13,6 @@ const TimeflowVerifyFeat = () => {
     (state: RootState) => state.verify
   );
 
-
   const { data: userLogins, isLoading } = useTimeflow.useGetUsersLogin();
   const notApprovedOwnLogs = ownLogs.filter(
     (log) => log.status_self === "pending"
@@ -50,22 +49,12 @@ const TimeflowVerifyFeat = () => {
       return !hasOwnLogs && !hasOtherLogs && !hasAbsenceLogs;
     })();
 
-  if (hasNoLogsToVerify) {
-    return (
-      <div className=" text-center h-screen">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          هیچ گزارشی برای تایید وجود ندارد
-        </h1>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen  py-8">
       <div className="container mx-auto px-4">
         <div className="bg-white rounded-3xl shadow-lg p-6 max-w-3xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            تأیید ورود و خروج
+            تردد
           </h1>
 
           {isLoading ? (
@@ -74,16 +63,25 @@ const TimeflowVerifyFeat = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              {notApprovedOwnLogs.length > 0 && (
-                <OwnVerify logs={notApprovedOwnLogs} />
-              )}
+              {hasNoLogsToVerify ? (
+                <div className="text-center py-8 text-gray-500">
+                  هیچ تردد تایید نشده‌ای وجود ندارد
+                </div>
+              ) : (
+                <>
+                  {notApprovedOwnLogs.length > 0 ? (
+                    <OwnVerify logs={notApprovedOwnLogs} />
+                  ) : null}
 
-              {notApprovedOtherLogs.length > 0 && (
-                <OtherVerify logs={notApprovedOtherLogs} />
-              )}
+                  {notApprovedOtherLogs.length > 0 ? (
+                    <OtherVerify logs={notApprovedOtherLogs} />
+                  ) : null}
 
-              {userLogins?.own_absence && userLogins.own_absence.length > 0 && (
-                <OwnAbsense logs={userLogins.own_absence} />
+                  {userLogins?.own_absence &&
+                  userLogins.own_absence.length > 0 ? (
+                    <OwnAbsense logs={userLogins.own_absence} />
+                  ) : null}
+                </>
               )}
             </div>
           )}

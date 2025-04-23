@@ -1,6 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { Button } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { Accordian } from "@/components";
@@ -36,14 +42,13 @@ const OwnVerify = ({ logs }: OwnLogsSectionProps) => {
     updateOwnLogTime(logId, selectedTime, updateUser, dispatch);
   };
 
-  const handleSkipOwnTime = (logId: number) => {
-    updateOwnLogTime(logId, null, updateUser, dispatch);
-    dispatch(setOpenOwn(!isOpenOwn));
+  const handleChange = (logId: number) => {
+    console.log(logId);
   };
 
   return (
     <Accordian
-      title="ورود"
+      title="تردد"
       isOpen={isOpenOwn}
       onToggle={() => dispatch(setOpenOwn(!isOpenOwn))}
     >
@@ -78,6 +83,7 @@ const OwnVerify = ({ logs }: OwnLogsSectionProps) => {
                     وضعیت: در انتظار
                   </p>
                 </div>
+
                 <div className="flex flex-col gap-2">
                   <TimePicker
                     label="انتخاب زمان"
@@ -96,19 +102,29 @@ const OwnVerify = ({ logs }: OwnLogsSectionProps) => {
                     }
                     sx={{ direction: "ltr" }}
                   />
+
+                  <FormControl fullWidth>
+                    <InputLabel id={`select-label-${log.id}`}>نوع</InputLabel>
+                    <Select
+                      labelId={`select-label-${log.id}`}
+                      value={log.type}
+                      label="نوع"
+                      onChange={() => handleChange(log.id)}
+                    >
+                      <MenuItem value="login">ورود</MenuItem>
+                      <MenuItem value="logout">خروج</MenuItem>
+                      <MenuItem value="leave">مرخصی</MenuItem>
+                      <MenuItem value="end-leave">پایان مرخصی</MenuItem>
+                      <MenuItem value="start-mission">شروع ماموریت</MenuItem>
+                      <MenuItem value="end-mission">پایان ماموریت</MenuItem>
+                    </Select>
+                  </FormControl>
                   <Button
                     variant="contained"
                     color="primary"
                     onClick={() => handleUpdateOwnTime(log.id)}
                   >
                     به‌روزرسانی
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => handleSkipOwnTime(log.id)}
-                  >
-                    رد
                   </Button>
                 </div>
               </div>

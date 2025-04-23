@@ -2,7 +2,7 @@ import { TabulatorTable } from "../../../components";
 import useTimeflow from "../hooks/usetimeflow";
 import { TimeflowStatus } from "../data/timeflow_status";
 import { TimeflowEvent } from "../types";
-import { createActionMenu } from "../../../components/table/actionMenus";
+import { createActionMenu, MenuItem } from "../../../components/table/actionMenus";
 import { useNavigate } from "react-router-dom";
 import { RowComponent } from "tabulator-tables";
 
@@ -46,34 +46,35 @@ const UserTimeflowTable = () => {
   };
 
   const mappedData = Array.isArray(data)
-    ? data.map((item: TimeflowEvent) => ({
-        id: item.id,
-        type: getLabel(item.type),
-        userName: `${item.user.first_name} ${item.user.last_name}`,
-        userEmail: item.user.email,
-        userUsername: item.user.username,
-        time_user: new Date(item.time_user).toLocaleString("fa-IR"),
-        time_system: new Date(item.time_system).toLocaleString("fa-IR"),
-        time_parent: new Date(item.time_parent).toLocaleString("fa-IR"),
-        time_device: new Date(item.time_device).toLocaleString("fa-IR"),
-        status_self: getStatusName(item.status_self),
-        status_parent: getStatusName(item.status_parent),
-        browser: item.browser,
-        ip_address: item.ip_address,
-      }))
+    ? data
+        .filter((item: TimeflowEvent) => item.type !== "login_without_work")
+        .map((item: TimeflowEvent) => ({
+          id: item.id,
+          type: getLabel(item.type),
+          userName: `${item.user.first_name} ${item.user.last_name}`,
+          userEmail: item.user.email,
+          userUsername: item.user.username,
+          time_user: new Date(item.time_user).toLocaleString("fa-IR"),
+          time_system: new Date(item.time_system).toLocaleString("fa-IR"),
+          time_parent: new Date(item.time_parent).toLocaleString("fa-IR"),
+          time_device: new Date(item.time_device).toLocaleString("fa-IR"),
+          status_parent: getStatusName(item.status_parent),
+          browser: item.browser,
+          ip_address: item.ip_address,
+        }))
     : [];
 
   const handleRowAction = (e: MouseEvent, row: RowComponent) => {
     const items = [
       {
-        icon: "fas fa-eye",
+        
         label: "ویرایش",
         onClick: () => navigate(`/timeflow/edit/${row.getData().id}`),
       },
     ];
 
     createActionMenu({
-      items,
+      items: items as MenuItem[],
       position: { x: e.clientX, y: e.clientY },
       className: "rtl",
     });
@@ -85,15 +86,6 @@ const UserTimeflowTable = () => {
     { title: "نام کاربر", field: "userName" },
     { title: "زمان کاربر", field: "time_user" },
     { title: "زمان ارشد", field: "time_parent" },
-
-    {
-      title: "وضعیت خود",
-      field: "status_self",
-      formatter: "lookup",
-      formatterParams: Object.fromEntries(
-        TimeflowStatus.map((status) => [status.value, status.name])
-      ),
-    },
     {
       title: "وضعیت والد",
       field: "status_parent",

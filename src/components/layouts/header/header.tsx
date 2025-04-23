@@ -17,6 +17,13 @@ import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
 import { CiStreamOn } from "react-icons/ci";
 import { useLiveStream } from "../../../Modules/live/hooks";
+import { useProfile } from "../../../Modules/userManagment/hooks/useProfile";
+import Chip from "@mui/material/Chip";
+
+interface ExtendedProfileData {
+  status_position?: string;
+  [key: string]: unknown;
+}
 
 initTWE({ Collapse, Ripple });
 
@@ -24,6 +31,33 @@ const Header = () => {
   const { toggleSidebar } = useSidebarStore();
 
   const { data: liveStream } = useLiveStream.useLiveStream();
+  const statusLabels = {
+    login: "ورود",
+    logout: "خروج",
+    leave: "مرخصی",
+    "end-leave": "پایان مرخصی",
+    "start-mission": "شروع ماموریت",
+    "end-mission": "پایان ماموریت",
+  };
+
+  const statusColors = {
+    login: "success",
+    logout: "default",
+    leave: "warning",
+    "end-leave": "info",
+    "start-mission": "primary",
+    "end-mission": "secondary",
+  };
+
+  const { data: profileData } = useProfile();
+
+  const userStatus =
+    (profileData as unknown as ExtendedProfileData)?.status_position ||
+    "logout";
+  const statusLabel =
+    statusLabels[userStatus as keyof typeof statusLabels] || "نامشخص";
+  const statusColor =
+    statusColors[userStatus as keyof typeof statusColors] || "default";
 
   const ShowLiveStream = liveStream?.status;
 
@@ -129,6 +163,31 @@ const Header = () => {
                 </span>
               </motion.div>
             )}
+
+            <Tooltip title="وضعیت" placement="bottom" arrow>
+              <Chip
+                label={statusLabel}
+                color={
+                  statusColor as
+                    | "default"
+                    | "primary"
+                    | "secondary"
+                    | "error"
+                    | "info"
+                    | "success"
+                    | "warning"
+                }
+                size="small"
+                className="mx-2 text-xs font-bold"
+                sx={{
+                  height: "24px",
+                  fontSize: "0.7rem",
+                  fontWeight: "bold",
+                  display: { xs: "none", sm: "flex" },
+                }}
+              />
+            </Tooltip>
+
             <Badge
               sx={{
                 position: "relative",

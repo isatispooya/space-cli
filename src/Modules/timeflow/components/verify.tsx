@@ -104,7 +104,7 @@ const TimeflowVerify = ({ onClose }: TimeflowVerifyProps) => {
             </motion.button>
 
             <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              تأیید ورود و خروج
+               تردد 
             </h1>
 
             {isLoading ? (

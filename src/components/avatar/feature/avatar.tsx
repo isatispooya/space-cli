@@ -54,7 +54,6 @@ const UserAvatar = () => {
       ) {
         setIsOpen(false);
       }
-
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -82,15 +81,11 @@ const UserAvatar = () => {
       label: "پروفایل",
       href: "/userManagement/profile",
     },
-    {
-      label: "ثبت زمان ورود",
-      href: "/timeflow/verify",
-    },
     ...(hasPermission
       ? [
           {
-            label: "ثبت زمان خروج",
-            onClick: () => setIsPopupOpen(true),
+            label: "ثبت تردد",
+            href: "/timeflow/verify",
           },
         ]
       : []),
@@ -173,7 +168,6 @@ const UserAvatar = () => {
                     <li key={index}>
                       <a
                         href={item.href}
-                        onClick={item.onClick}
                         className="block px-4 py-2.5 hover:bg-[#041685]/10 transition-colors duration-200 font-medium"
                       >
                         {item.label}
