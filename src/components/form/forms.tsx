@@ -13,7 +13,6 @@ import { useState } from "react";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import FileInput from "../common/inputs/uploadInput";
 import MultiSelect from "../common/inputs/multiSelect";
-
 import FormDetail from "../form/formDetail";
 import { DateSelector } from "../common";
 import DynamicTimePicker from "../timepick/timepicker";
@@ -335,7 +334,7 @@ const Forms = <T extends FormikValues>({
                             field.onChange
                           );
                         }}
-                        sx={{ direction: "ltr" }}
+                        direction="ltr"
                       />
                     )}
                   </Field>
