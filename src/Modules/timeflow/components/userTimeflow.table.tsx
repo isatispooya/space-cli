@@ -2,7 +2,10 @@ import { TabulatorTable } from "../../../components";
 import useTimeflow from "../hooks/usetimeflow";
 import { TimeflowStatus } from "../data/timeflow_status";
 import { TimeflowEvent } from "../types";
-import { createActionMenu, MenuItem } from "../../../components/table/actionMenus";
+import {
+  createActionMenu,
+  MenuItem,
+} from "../../../components/table/actionMenus";
 import { useNavigate } from "react-router-dom";
 import { RowComponent } from "tabulator-tables";
 
@@ -16,8 +19,8 @@ const UserTimeflowTable = () => {
 
   const exportData = (data: any[]) => {
     return data.map((item) => ({
-      "شناسه": item.id,
-      "نوع": item.type,
+      شناسه: item.id,
+      نوع: item.type,
       "نام کاربر": item.userName,
       "نام کاربری": item.userUsername,
       "زمان کاربر": item.time_user,
@@ -25,8 +28,8 @@ const UserTimeflowTable = () => {
       "زمان ارشد": item.time_parent,
       "وضعیت خود": item.status_self,
       "وضعیت والد": item.status_parent,
-      "مرورگر": item.browser,
-      "آدرس IP": item.ip_address
+      مرورگر: item.browser,
+      "آدرس IP": item.ip_address,
     }));
   };
 
@@ -67,7 +70,6 @@ const UserTimeflowTable = () => {
   const handleRowAction = (e: MouseEvent, row: RowComponent) => {
     const items = [
       {
-        
         label: "ویرایش",
         onClick: () => navigate(`/timeflow/edit/${row.getData().id}`),
       },
@@ -96,15 +98,28 @@ const UserTimeflowTable = () => {
     },
     {
       title: "عملیات",
-      formatter: "buttonCross",
-      width: 70,
+      field: "actions",
       hozAlign: "center",
-      cellClick: handleRowAction,
+      headerSort: false,
       cssClass: "cursor-pointer",
+      formatter: () => {
+        const element = document.createElement("button");
+        element.style.display = "flex";
+        element.style.border = "none";
+        element.style.background = "transparent";
+        element.style.cursor = "pointer";
+        element.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 0 24 24" width="20" fill="currentColor">
+            <path d="M0 0h24v24H0V0z" fill="none"/>
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM21.41 6.34c.39-.39.39-1.02 
+            0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+        `;
+        return element;
+      },
+      cellClick: handleRowAction,
     },
   ];
-
-
 
   return (
     <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
