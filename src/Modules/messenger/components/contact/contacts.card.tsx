@@ -19,13 +19,10 @@ const ContactsCard = ({
   const hasUnseenMessages = (userId: string) => {
     if (!messages || !profileData) return false;
 
-    // Get current user's uniqueIdentifier
     const currentUserUniqueId = profileData.uniqueIdentifier;
 
     return messages.some((message) => {
-      // Check if this message is from the selected user to the current user
       const isMessageFromThisUser = message.sender === parseInt(userId);
-      // Check if message is to the current user
       const isMessageToCurrentUser =
         message.receiver_details?.uniqueIdentifier === currentUserUniqueId;
       // Check if message is unseen
