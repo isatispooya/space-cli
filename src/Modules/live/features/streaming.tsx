@@ -88,7 +88,7 @@ const Stream: React.FC = () => {
                 height: "100%",
                 border: "none",
               }}
-              src="https://www.aparat.com/embed/live/isatispooyalive"
+              src="https://www.aparat.com/embed/live/isatispooya.com"
               scrolling="no"
               allowFullScreen
               title="Aparat Live Stream"

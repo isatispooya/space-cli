@@ -11,3 +11,11 @@ const useReceive = () => {
 };
 
 export default useReceive;
+
+export const useReceiveById = (id: string) => {
+  const receiveQuery = useQuery({
+    queryKey: ["receiveById", id],
+    queryFn: () => receiveSer.getReceiveById(id),
+  });
+  return { data: receiveQuery.data };
+};

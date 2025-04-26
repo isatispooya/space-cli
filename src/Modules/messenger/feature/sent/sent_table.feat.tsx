@@ -54,8 +54,8 @@ export const SentTable = () => {
   const handleView = (row: SentMessage) => {
     navigate(`/letter-sent/message/${row.id}`);
   };
-  const handleEdit = (row: SentMessage) => {
-    navigate(`/letter-sent/update-form/${row.id}`);
+  const handleEdit = (id: number) => {
+    navigate(`/letter-sent/update-form/${id}`);
   };
 
   const columns = () => [
@@ -103,7 +103,7 @@ export const SentTable = () => {
             {
               label: "ویرایش",
               icon: "⚡",
-              onClick: () => handleEdit(rowData),
+              onClick: () => handleEdit(rowData.id),
             },
             {
               label: "نمایش",

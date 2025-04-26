@@ -1,102 +1,447 @@
-import { Box, Typography, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Paper,
+  Grid,
+  Divider,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
+
 import {
   FormInput,
+  MultiSelect,
   SelectInput,
   TextAreaInput,
 } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
-import { useState } from "react";
+import { usePosition } from "@/Modules/positions/hooks";
+import { PositionTypes } from "@/Modules/positions/types";
+import React, { useState, useEffect } from "react";
+import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
+import {
+  CorrespondenceAttachment,
+  CorrespondenceAttachments,
+  APIFormDataType,
+  TranscriptAPIData,
+} from "../../types/sent/CorrespondenceAttache.type";
+import { AttachmentDialog } from "../../components/sent";
+import Transcript from "../../components/sent/sent_transcript";
+import { useSentFormStore } from "../../store/sent/sent.store";
+import {
+  priorityOptions,
+  departmentOptions,
+  letterTypeOptions,
+  referralOptions,
+  referralDetailsOptions,
+} from "../../data/sent/sent.data";
+import { useParams } from "react-router-dom";
+import { STYLES } from "../../style";
+import FormSwitches from "../../components/sent/switch";
+import "./sent.css";
+import ReceiverTypeButtons from "../../components/sent/ReceiverTypeButtons";
+import { useReceiveById } from "../../hooks/receive/useReceive";
 
-const SentUpdateForm = () => {
-  const [formData, setFormData] = useState({
-    receiver: "",
-    subject: "",
-    priority: "",
-    department: "",
-    content: "",
-  });
+const SentUpdateForm: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const handleChange = (name: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const {
+    formData,
+    openFileDialog,
+    selectedTranscript,
+    transcriptDirections,
+    handleChange,
+    handleAttachmentAdd,
+    handleAddTranscript,
+    handleTranscriptToggle,
+    setOpenFileDialog,
+    setSelectedTranscript,
+    setTranscriptDirection,
+    setFormData,
+  } = useSentFormStore();
+
+  const [useInternalReceiver, setUseInternalReceiver] = useState(true);
+  const { id } = useParams();
+
+  const { data: Position } = usePosition.useGet();
+  const { data: Attache } =
+    useCorrespondenceAttachment.useGetAttache() as unknown as {
+      data: CorrespondenceAttachments;
+    };
+  const { data } = useReceiveById(id || "");
+
+  useEffect(() => {
+    setFormData(data?.sender);
+    setUseInternalReceiver(true);
+  }, [setFormData, data]);
+
+  const { mutate: updateCorrespondence } =
+    useCorrespondenceAttachment.usePostCorrespondence();
+
+  const attachmentOptions =
+    Attache?.map((attachment: CorrespondenceAttachment) => ({
+      label: `${attachment.name} | ${attachment.user.first_name} ${attachment.user.last_name}`,
+      value: attachment.id.toString(),
+    })) || [];
+
+  const internalUserOptions =
+    (Position as PositionTypes[])?.map((position) => ({
+      label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
+      value: position.id.toString(),
+    })) || [];
+
+  const senderUserOptions =
+    (Position as PositionTypes[])?.map((position) => ({
+      label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
+      value: position.id.toString(),
+    })) || [];
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
       e.preventDefault();
     }
+
+    const { transcript, ...restFormData } = formData;
+
+    const apiTranscript: TranscriptAPIData = {
+      position: formData.sender || transcript[0]?.position,
+      transcript_for: transcript[0]?.transcript_for,
+      security: transcript[0]?.security,
+      correspondence: null,
+      read_at: new Date().toISOString(),
+    };
+
+    const finalData: APIFormDataType = {
+      ...restFormData,
+      attachments: restFormData.attachments.map(Number),
+      receiver_internal: Number(restFormData.receiver_internal),
+      transcript: [apiTranscript],
+    };
+    updateCorrespondence(finalData);
   };
 
-  const priorityOptions = [
-    { label: "فوری", value: "urgent" },
-    { label: "عادی", value: "normal" },
-  ];
+  const getTranscriptName = (id: string): string => {
+    const recipient = internalUserOptions.find((option) => option.value === id);
+    return recipient ? recipient.label : "";
+  };
 
-  const departmentOptions = [
-    { label: "منابع انسانی", value: "hr" },
-    { label: "مالی", value: "finance" },
-    { label: "فنی", value: "technical" },
-  ];
+  const transcriptItems =
+    formData.reference?.map((ref) => ({
+      id: ref.toString(),
+      enabled: true,
+      transcript_for: transcriptDirections[ref.toString()] || "notification",
+    })) || [];
 
   return (
-    <Box sx={{ p: 3, maxWidth: 800, margin: "0 auto" }}>
-      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+    <Box
+      sx={{
+        ...STYLES.container,
+        width: "100%",
+        px: { xs: 1, sm: 2, md: 3 },
+      }}
+      className="sent-form-container"
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          ...STYLES.paper,
+          p: { xs: 2, sm: 3 },
+          overflow: "hidden",
+        }}
+      >
         <Typography
           variant="h5"
-          sx={{ mb: 3, fontWeight: "bold", color: "#1976d2" }}
+          sx={{
+            ...STYLES.title,
+            fontSize: { xs: "1.2rem", sm: "1.5rem" },
+            mb: { xs: 2, sm: 3 },
+          }}
         >
-            ویرایش پیام
+          ویرایش پیام
         </Typography>
+
         <form onSubmit={handleSubmit}>
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 2,
-              mb: 3,
-            }}
-          >
-            <FormInput
-              label="گیرنده"
-              value={formData.receiver}
-              onChange={(e) => handleChange("receiver", e.target.value)}
+          <Grid container spacing={{ xs: 2, sm: 3 }}>
+            <Grid item xs={12}>
+              <ReceiverTypeButtons
+                receiverType={useInternalReceiver ? "internal" : "external"}
+                onTypeChange={(type) =>
+                  setUseInternalReceiver(type === "internal")
+                }
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Grid container spacing={{ xs: 2, sm: 3 }}>
+                <Grid item xs={12} md={6}>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    gap={{ xs: 1, sm: 2 }}
+                  >
+                    <SelectInput
+                      label="ارسال کننده"
+                      value={formData.sender?.toString() || ""}
+                      onChange={(value) => handleChange("sender", value)}
+                      options={senderUserOptions}
+                      className="enhanced-select"
+                    />
+
+                    {useInternalReceiver ? (
+                      <SelectInput
+                        label="گیرنده داخلی"
+                        value={formData.receiver_internal?.toString() || ""}
+                        onChange={(value) =>
+                          handleChange("receiver_internal", value)
+                        }
+                        options={internalUserOptions}
+                        className="enhanced-select"
+                      />
+                    ) : (
+                      <FormInput
+                        label="گیرنده خارجی"
+                        value={formData.receiver_external || ""}
+                        onChange={(e) =>
+                          handleChange("receiver_external", e.target.value)
+                        }
+                        placeholder="گیرنده خارجی"
+                        className="enhanced-input"
+                      />
+                    )}
+
+                    <FormInput
+                      label="موضوع"
+                      value={formData.subject || ""}
+                      onChange={(e) => handleChange("subject", e.target.value)}
+                      className="enhanced-input"
+                    />
+                  </Box>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Grid container spacing={{ xs: 2, sm: 2 }}>
+                    <Grid item xs={12} sm={7}>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        gap={{ xs: 1, sm: 2 }}
+                      >
+                        <SelectInput
+                          label="اولویت"
+                          value={formData.priority || ""}
+                          onChange={(value) => handleChange("priority", value)}
+                          options={priorityOptions}
+                          className="enhanced-select"
+                        />
+                        <SelectInput
+                          label="محرمانگی"
+                          value={formData.confidentiality_level || ""}
+                          onChange={(value) =>
+                            handleChange("confidentiality_level", value)
+                          }
+                          options={departmentOptions}
+                          className="enhanced-select"
+                        />
+                        <SelectInput
+                          label="نوع نامه"
+                          value={formData.kind_of_correspondence || ""}
+                          onChange={(value) =>
+                            handleChange("kind_of_correspondence", value)
+                          }
+                          options={letterTypeOptions}
+                          className="enhanced-select"
+                        />
+                      </Box>
+                    </Grid>
+
+                    <Grid item xs={12} sm={5}>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        gap={{ xs: 1, sm: 2 }}
+                      >
+                        <Box
+                          sx={{
+                            mt: { xs: 1, sm: 2 },
+                            width: "100%",
+                            height: { xs: "100px", sm: "130px" },
+                            border: "2px dashed #ccc",
+                            borderRadius: "12px",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                            padding: 1,
+                            bgcolor: "#f9f9f9",
+                            transition: "all 0.3s",
+                            "&:hover": {
+                              backgroundColor: "#e0f7fa",
+                              borderColor: "#1976d2",
+                            },
+                          }}
+                          onClick={() => setOpenFileDialog(true)}
+                        >
+                          <Typography variant="h4" color="primary">
+                            +
+                          </Typography>
+                          <Typography variant="body2">افزودن پیوست</Typography>
+                        </Box>
+
+                        <MultiSelect
+                          label="پیوست‌ها"
+                          selectedValues={
+                            formData.attachments?.map(String) || []
+                          }
+                          onChange={(value) =>
+                            handleChange("attachments", value)
+                          }
+                          options={attachmentOptions}
+                          className="enhanced-select"
+                        />
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextAreaInput
+                label="متن پیام"
+                value={formData.text || ""}
+                onChange={(e) => handleChange("text", e.target.value)}
+                rows={isMobile ? 6 : 8}
+                className="enhanced-textarea"
+                containerClassName="full-width"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: 2,
+                }}
+              >
+                <Box sx={{ width: "100%" }}>
+                  <TextAreaInput
+                    label={"پی نوشت"}
+                    value={formData.postcript || ""}
+                    onChange={(e) => handleChange("postcript", e.target.value)}
+                    rows={isMobile ? 1 : 2}
+                    className="enhanced-textarea"
+                  />
+                </Box>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Grid container spacing={{ xs: 2, sm: 2 }}>
+                <Grid item xs={12} md={4}>
+                  <TextAreaInput
+                    label={"توضیحات"}
+                    value={formData.description || ""}
+                    onChange={(e) =>
+                      handleChange("description", e.target.value)
+                    }
+                    rows={1}
+                    className="enhanced-textarea"
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <SelectInput
+                    label="نوع ارجاع"
+                    value={formData.authority_type || ""}
+                    onChange={(value) => handleChange("authority_type", value)}
+                    options={referralOptions}
+                    className="enhanced-select"
+                  />
+                </Grid>
+                {formData.authority_type && (
+                  <Grid item xs={12} md={4}>
+                    <SelectInput
+                      label="ارجاع"
+                      value={
+                        formData.authority_correspondence?.toString() || ""
+                      }
+                      onChange={(value) =>
+                        handleChange("authority_correspondence", value)
+                      }
+                      options={referralDetailsOptions}
+                      className="enhanced-select"
+                    />
+                  </Grid>
+                )}
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
+            <Grid container spacing={{ xs: 2, sm: 3 }}>
+              <Grid item xs={12}>
+                <Box sx={{ mt: 1 }}>
+                  <FormSwitches
+                    formData={formData}
+                    handleChange={handleChange}
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
+            <Typography
+              variant="subtitle1"
+              sx={{
+                mb: { xs: 1, sm: 2 },
+                fontWeight: "medium",
+                color: "#555",
+                fontSize: { xs: "0.9rem", sm: "1rem" },
+              }}
+            >
+              رونوشت گیرندگان
+            </Typography>
+            <Transcript
+              transcript={transcriptItems}
+              selectedTranscript={selectedTranscript}
+              setSelectedTranscript={setSelectedTranscript}
+              handleAddTranscript={handleAddTranscript}
+              handleTranscriptToggle={handleTranscriptToggle}
+              internalUserOptions={internalUserOptions}
+              getTranscriptName={getTranscriptName}
+              transcriptDirections={transcriptDirections}
+              setTranscriptDirection={setTranscriptDirection}
             />
-            <FormInput
-              label="موضوع"
-              value={formData.subject}
-              onChange={(e) => handleChange("subject", e.target.value)}
-            />
-            <SelectInput
-              label="اولویت"
-              value={formData.priority}
-              onChange={(value) => handleChange("priority", value)}
-              options={priorityOptions}
-            />
-            <SelectInput
-              label="دپارتمان"
-              value={formData.department}
-              onChange={(value) => handleChange("department", value)}
-              options={departmentOptions}
-            />
-          </Box>
-          <TextAreaInput
-            label="متن پیام"
-            value={formData.content}
-            onChange={(e) => handleChange("content", e.target.value)}
-            style={{ marginBottom: "1.5rem" }}
-            rows={4}
-          />
-          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
-            <ButtonBase
-              label="ویرایش پیام"
-              onClick={handleSubmit}
-              bgColor="#1976d2"
-              hoverColor="#1565c0"
-            />
-          </Box>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                mt: { xs: 1.5, sm: 2 },
+              }}
+            >
+              <ButtonBase
+                label="ویرایش پیام"
+                onClick={handleSubmit}
+                bgColor="#1976d2"
+                hoverColor="#1565c0"
+              />
+            </Box>
+          </Grid>
         </form>
+
+        <AttachmentDialog
+          open={openFileDialog}
+          onClose={() => setOpenFileDialog(false)}
+          onAttachmentAdd={handleAttachmentAdd}
+        />
       </Paper>
     </Box>
   );
