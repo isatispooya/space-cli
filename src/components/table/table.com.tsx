@@ -64,7 +64,6 @@ const TabulatorTable: React.FC<TableProps> = ({
   layout = "fitColumns",
   pagination = true,
   paginationSize = 10,
-  title = "Table",
   showActions = true,
   formatExportData,
 }) => {
