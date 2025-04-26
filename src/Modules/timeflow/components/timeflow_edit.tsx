@@ -57,7 +57,6 @@ const TimeflowEditForm = () => {
       const payload: any = {
         time_user: combined,
         type: typeValue,
-        date: dateValue.format("jYYYY/jMM/jDD"),
       };
 
       edit({ data: payload, id: Number(id) });
