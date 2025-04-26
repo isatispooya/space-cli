@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { ViewDownload } from "../../../../components";
 import toast from "react-hot-toast";
-import logo from "/public/logolicense.png";
-import license from "../../../../../public/assets/image.png";
+import { logolicense } from "@/assets";
+
 
 const LicenseView: FC = () => {
   const handleDownload = () => {
@@ -15,12 +15,12 @@ const LicenseView: FC = () => {
       <ViewDownload
         title="مجوز پذیره نویسی"
         description="مجوز پذیره نویسی"
-        regulatorLogo={logo}
+        regulatorLogo={logolicense}
         regulatorText="اداره کل ثبت اسناد و املاک استان یزد"
         downloadLink="مجوز پذیره نویسی"
         toastMessage="در حال دانلود فایل"
         isImg={true}
-        img={license}
+     
         toastError="در حال حاضر فایلی برای دانلود وجود ندارد"
         downloadButtonText="دانلود مجوز پذیره نویسی"
         onDownload={handleDownload}

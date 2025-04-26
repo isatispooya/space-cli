@@ -1,5 +1,5 @@
 import { Button } from "@/components";
-import KHatamPic from "../../../../../assets/khatam.png";
+import {khatam} from "@/assets"
 import { motion } from "framer-motion";
 
 const KhatamDetails = () => (
@@ -17,7 +17,7 @@ const KhatamDetails = () => (
       transition={{ duration: 0.6, delay: 0.2 }}
     >
       <img
-        src={KHatamPic}
+        src={khatam}
         alt="Khatam ETF Logo"
         className="h-20 w-auto transition-transform duration-300 hover:scale-110"
       />

@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { AgreementPopup } from "../../components";
 import { formatNumber } from "../../../../utils";
-import Sep from "../../../../../public/assets/sep.png";
+import {sep} from "@/assets" 
 import { ErrorIcon, toast } from "react-hot-toast";
 import { AxiosError } from "axios";
 import { FaCheckCircle } from "react-icons/fa";
@@ -471,7 +471,7 @@ const CreateUnderWritingForm = () => {
             {isGatewayType && (
               <div className="flex justify-start items-center my-4">
                 <img
-                  src={Sep}
+                  src={sep}
                   alt="SEP Bank Logo"
                   className="h-16 object-contain"
                 />
