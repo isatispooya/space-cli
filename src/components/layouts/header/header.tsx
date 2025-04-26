@@ -5,11 +5,8 @@ import { maliSvg } from "@/assets";
 import { maliTextLogo } from "@/assets";
 import { useSidebarStore } from "../../../Modules/sidebar/store/sidebar.store";
 import { FiMenu } from "react-icons/fi";
-import Badge from "@mui/material/Badge";
 import { useState, useRef, useEffect } from "react";
-import { useCorrespondencesData } from "../../notification/hook/notification.get";
 import { useNavigate } from "react-router-dom";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Tooltip from "@mui/material/Tooltip";
 import { useRemainPoints } from "../../../Modules/points";
 import NotificationComponent from "../../notification/notification";
@@ -17,13 +14,7 @@ import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
 import { CiStreamOn } from "react-icons/ci";
 import { useLiveStream } from "../../../Modules/live/hooks";
-import { useProfile } from "../../../Modules/userManagment/hooks/useProfile";
-import Chip from "@mui/material/Chip";
 
-interface ExtendedProfileData {
-  status_position?: string;
-  [key: string]: unknown;
-}
 
 initTWE({ Collapse, Ripple });
 
@@ -31,33 +22,8 @@ const Header = () => {
   const { toggleSidebar } = useSidebarStore();
 
   const { data: liveStream } = useLiveStream.useLiveStream();
-  const statusLabels = {
-    login: "ورود",
-    logout: "خروج",
-    leave: "مرخصی",
-    "end-leave": "پایان مرخصی",
-    "start-mission": "شروع ماموریت",
-    "end-mission": "پایان ماموریت",
-  };
 
-  const statusColors = {
-    login: "success",
-    logout: "default",
-    leave: "warning",
-    "end-leave": "info",
-    "start-mission": "primary",
-    "end-mission": "secondary",
-  };
 
-  const { data: profileData } = useProfile();
-
-  const userStatus =
-    (profileData as unknown as ExtendedProfileData)?.status_position ||
-    "logout";
-  const statusLabel =
-    statusLabels[userStatus as keyof typeof statusLabels] || "نامشخص";
-  const statusColor =
-    statusColors[userStatus as keyof typeof statusColors] || "default";
 
   const ShowLiveStream = liveStream?.status;
 
@@ -66,10 +32,6 @@ const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationIconRef = useRef<SVGSVGElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
-  const { data: notifications } = useCorrespondencesData();
-  const unreadCount =
-    notifications?.filter((notification) => notification.read === false)
-      .length ?? 0;
 
   const formatNumber = (num: number | undefined) => {
     if (num === undefined) return "";
@@ -81,10 +43,6 @@ const Header = () => {
       return `${(num / 1000).toFixed(1)}K`;
     }
     return num.toString();
-  };
-
-  const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -163,55 +121,6 @@ const Header = () => {
                 </span>
               </motion.div>
             )}
-
-            <Tooltip title="وضعیت" placement="bottom" arrow>
-              <Chip
-                label={statusLabel}
-                color={
-                  statusColor as
-                    | "default"
-                    | "primary"
-                    | "secondary"
-                    | "error"
-                    | "info"
-                    | "success"
-                    | "warning"
-                }
-                size="small"
-                className="mx-2 text-xs font-bold"
-                sx={{
-                  height: "24px",
-                  fontSize: "0.7rem",
-                  fontWeight: "bold",
-                  display: { xs: "none", sm: "flex" },
-                }}
-              />
-            </Tooltip>
-
-            <Badge
-              sx={{
-                position: "relative",
-                zIndex: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginLeft: "8px",
-              }}
-              badgeContent={unreadCount}
-              color="error"
-            >
-              <NotificationsNoneIcon
-                ref={notificationIconRef}
-                onClick={toggleNotifications}
-                sx={{
-                  transform: "scale(1.1)",
-                  transition: "transform 0.2s",
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                  color: "#041685",
-                }}
-              />
-            </Badge>
 
             <div className="mr-5">
               {showNotifications && (

@@ -18,18 +18,18 @@ import {
   Paper,
   Box,
   Typography,
-  Avatar,
   alpha,
 } from "@mui/material";
 import { useState } from "react";
 import { LoaderLg, NoContent } from "../../../components";
 import { AccessTime, CalendarMonth, Edit } from "@mui/icons-material";
+import { TimeflowEditType, TimeflowEditMoment } from "../types";
 
 moment.loadPersian({ usePersianDigits: true, dialect: "persian-modern" });
 
 const TimeflowEditForm = () => {
-  const [dateValue, setDateValue] = useState<any>(null);
-  const [timeValue, setTimeValue] = useState<any>(null);
+  const [dateValue, setDateValue] = useState<TimeflowEditMoment | null>(null);
+  const [timeValue, setTimeValue] = useState<TimeflowEditMoment | null>(null);
   const [typeValue, setTypeValue] = useState<string>("");
 
   const { data, refetch, isLoading } = useTimeflow.useGetUserAllTimeflow();
@@ -37,7 +37,9 @@ const TimeflowEditForm = () => {
   const { mutate: edit } = useTimeflow.usePatchTimeflowEdit();
 
   if (isLoading) return <LoaderLg />;
-  const EDITABLE_DATA = data?.find((item: any) => item.id === Number(id));
+  const EDITABLE_DATA = data?.find(
+    (item: TimeflowEditType) => item.id === Number(id)
+  );
   if (!EDITABLE_DATA) return <NoContent label="اطلاعات مورد نظر یافت نشد" />;
 
   if (!dateValue && !timeValue && EDITABLE_DATA) {
@@ -49,13 +51,9 @@ const TimeflowEditForm = () => {
 
   const handleSubmit = () => {
     if (dateValue && timeValue) {
-      const combined = moment(
-        `${dateValue.format("jYYYY/jMM/jDD")} ${timeValue.format("HH:mm")}`,
-        "jYYYY/jMM/jDD HH:mm"
-      ).toISOString();
-
-      const payload: any = {
-        time_user: combined,
+      const payload: TimeflowEditType = {
+        id: Number(id),
+        time_user: dateValue.toISOString(),
         type: typeValue,
       };
 
@@ -63,8 +61,6 @@ const TimeflowEditForm = () => {
       refetch();
     }
   };
-
-  const { user } = EDITABLE_DATA;
 
   return (
     <LocalizationProvider dateAdapter={AdapterMomentJalaali}>
@@ -115,38 +111,6 @@ const TimeflowEditForm = () => {
                 <Edit sx={{ mr: 1, verticalAlign: "middle", fontSize: 28 }} />
                 ویرایش تردد
               </Typography>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  mt: 2,
-                  position: "relative",
-                  zIndex: 1,
-                }}
-              >
-                <Avatar
-                  sx={{
-                    bgcolor: "#ffffff",
-                    color: "#5677BC",
-                    width: 40,
-                    height: 40,
-                    fontWeight: "bold",
-                    mr: 2,
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  {user.first_name?.[0] || user.username?.[0]}
-                </Avatar>
-                <Box>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    {user.first_name} {user.last_name}
-                  </Typography>
-                  <Typography variant="caption" sx={{ opacity: 0.8 }}>
-                    {user.username}
-                  </Typography>
-                </Box>
-              </Box>
             </Box>
 
             <Box sx={{ p: 4 }}>
@@ -180,8 +144,8 @@ const TimeflowEditForm = () => {
                       }}
                     />
                     <DatePicker
-                      label="تاریخ"
                       disabled={true}
+                      label="تاریخ"
                       value={dateValue}
                       onChange={(newDate) => setDateValue(newDate)}
                       sx={{
