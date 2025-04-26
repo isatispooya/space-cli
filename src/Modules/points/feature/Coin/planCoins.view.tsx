@@ -27,6 +27,7 @@ const PlansView: React.FC<{
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleItems, setVisibleItems] = useState(10);
   const [submittingUserId, setSubmittingUserId] = useState<string | null>(null);
+  const myConstant = 42;
 
   const filteredUsers = Array.isArray(data)
     ? data.filter(
