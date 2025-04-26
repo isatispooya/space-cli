@@ -25,7 +25,7 @@ const MessageOptionsSection: React.FC<MessageOptionsSectionProps> = ({
   return (
     <Grid item xs={12} md={6}>
       <Grid container spacing={{ xs: 2, sm: 2 }}>
-        <Grid item xs={12} sm={7}>
+        <Grid item xs={12} sm={6}>
           <Box
             display="flex"
             flexDirection="column"
@@ -55,7 +55,7 @@ const MessageOptionsSection: React.FC<MessageOptionsSectionProps> = ({
           </Box>
         </Grid>
 
-        <Grid item xs={12} sm={5}>
+        <Grid item xs={12} sm={6}>
           <Box
             display="flex"
             flexDirection="column"
@@ -63,7 +63,7 @@ const MessageOptionsSection: React.FC<MessageOptionsSectionProps> = ({
           >
             <Box
               sx={{
-                mt: { xs: 1, sm: 2 },
+                mt: { xs: 1, sm: 0 },
                 width: "100%",
                 height: { xs: "100px", sm: "130px" },
                 border: "2px dashed #ccc",

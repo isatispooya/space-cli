@@ -1,11 +1,5 @@
-import { Box, Typography, Paper, Grid, Divider, useTheme, useMediaQuery } from "@mui/material";
+import { Box, Typography, Paper, Grid, useTheme, useMediaQuery } from "@mui/material";
 
-import {
-  FormInput,
-  MultiSelect,
-  SelectInput,
-  TextAreaInput,
-} from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import { usePosition } from "@/Modules/positions/hooks";
 import { PositionTypes } from "@/Modules/positions/types";
@@ -17,8 +11,15 @@ import {
   APIFormDataType,
   TranscriptAPIData,
 } from "../../types/sent/CorrespondenceAttache.type";
-import { AttachmentDialog } from "../../components/sent";
-import Transcript from "../../components/sent/sent_transcript";
+import {
+  AttachmentDialog,
+  SenderReceiverSection,
+  MessageOptionsSection,
+  MessageContentSection,
+  AdditionalInfoSection,
+  FormSwitchesSection,
+  TranscriptSection
+} from "../../components/sent";
 import { useSentFormStore } from "../../store/sent/sent.store";
 import {
   priorityOptions,
@@ -28,9 +29,7 @@ import {
   referralDetailsOptions,
 } from "../../data/sent/sent.data";
 import { STYLES } from "../../style";
-import FormSwitches from "../../components/sent/switch";
 import "./sent.css";
-import ReceiverTypeButtons from "../../components/sent/ReceiverTypeButtons";
 
 const SentForm: React.FC = () => {
   const theme = useTheme();
@@ -138,239 +137,58 @@ const SentForm: React.FC = () => {
 
         <form onSubmit={handleSubmit}>
           <Grid container spacing={{ xs: 2, sm: 3 }}>
-            <Grid item xs={12}>
-              <ReceiverTypeButtons
-                receiverType={useInternalReceiver ? "internal" : "external"}
-                onTypeChange={(type) =>
-                  setUseInternalReceiver(type === "internal")
-                }
-              />
-            </Grid>
+            <SenderReceiverSection 
+              formData={formData}
+              handleChange={handleChange}
+              useInternalReceiver={useInternalReceiver}
+              setUseInternalReceiver={setUseInternalReceiver}
+              positionOptions={senderUserOptions}
+            />
 
             <Grid item xs={12}>
               <Grid container spacing={{ xs: 2, sm: 3 }}>
-                <Grid item xs={12} md={6}>
-                  <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
-                    <SelectInput
-                      label="ارسال کننده"
-                      value={formData.sender.toString()}
-                      onChange={(value) => handleChange("sender", value)}
-                      options={senderUserOptions}
-                      className="enhanced-select"
-                    />
-
-                    {useInternalReceiver ? (
-                      <SelectInput
-                        label="گیرنده داخلی"
-                        value={formData.receiver_internal.toString()}
-                        onChange={(value) =>
-                          handleChange("receiver_internal", value)
-                        }
-                        options={internalUserOptions}
-                        className="enhanced-select"
-                      />
-                    ) : (
-                      <FormInput
-                        label="گیرنده خارجی"
-                        value={formData.receiver_external}
-                        onChange={(e) =>
-                          handleChange("receiver_external", e.target.value)
-                        }
-                        placeholder="گیرنده خارجی"
-                        className="enhanced-input"
-                      />
-                    )}
-
-                    <FormInput
-                      label="موضوع"
-                      value={formData.subject}
-                      onChange={(e) =>
-                        handleChange("subject", e.target.value)
-                      }
-                      className="enhanced-input"
-                    />
-                  </Box>
-                </Grid>
-
-                <Grid item xs={12} md={6}>
-                  <Grid container spacing={{ xs: 2, sm: 2 }}>
-                    <Grid item xs={12} sm={7}>
-                      <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
-                        <SelectInput
-                          label="اولویت"
-                          value={formData.priority}
-                          onChange={(value) => handleChange("priority", value)}
-                          options={priorityOptions}
-                          className="enhanced-select"
-                        />
-                        <SelectInput
-                          label="محرمانگی"
-                          value={formData.confidentiality_level}
-                          onChange={(value) =>
-                            handleChange("confidentiality_level", value)
-                          }
-                          options={departmentOptions}
-                          className="enhanced-select"
-                        />
-                        <SelectInput
-                          label="نوع نامه"
-                          value={formData.kind_of_correspondence}
-                          onChange={(value) =>
-                            handleChange("kind_of_correspondence", value)
-                          }
-                          options={letterTypeOptions}
-                          className="enhanced-select"
-                        />
-                      </Box>
-                    </Grid>
-
-                    <Grid item xs={12} sm={5}>
-                      <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
-                        <Box
-                          sx={{
-                            mt: { xs: 1, sm: 2 },
-                            width: "100%",
-                            height: { xs: "100px", sm: "130px" },
-                            border: "2px dashed #ccc",
-                            borderRadius: "12px",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            cursor: "pointer",
-                            padding: 1,
-                            bgcolor: "#f9f9f9",
-                            transition: "all 0.3s",
-                            "&:hover": {
-                              backgroundColor: "#e0f7fa",
-                              borderColor: "#1976d2",
-                            },
-                          }}
-                          onClick={() => setOpenFileDialog(true)}
-                        >
-                          <Typography variant="h4" color="primary">
-                            +
-                          </Typography>
-                          <Typography variant="body2">افزودن پیوست</Typography>
-                        </Box>
-
-                        <MultiSelect
-                          label="پیوست‌ها"
-                          selectedValues={formData.attachments.map(String)}
-                          onChange={(value) =>
-                            handleChange("attachments", value)
-                          }
-                          options={attachmentOptions}
-                          className="enhanced-select"
-                        />
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </Grid>
+                <MessageOptionsSection 
+                  formData={formData}
+                  handleChange={handleChange}
+                  setOpenFileDialog={setOpenFileDialog}
+                  priorityOptions={priorityOptions}
+                  departmentOptions={departmentOptions}
+                  letterTypeOptions={letterTypeOptions}
+                  attachmentOptions={attachmentOptions}
+                />
               </Grid>
             </Grid>
             
-            <Grid item xs={12}>
-              <TextAreaInput
-                label="متن پیام"
-                value={formData.text}
-                onChange={(e) => handleChange("text", e.target.value)}
-                rows={isMobile ? 6 : 8}
-                className="enhanced-textarea"
-                containerClassName="full-width"
-              />
-            </Grid>
+            <MessageContentSection 
+              formData={formData}
+              handleChange={handleChange}
+              isMobile={isMobile}
+            />
             
-            <Grid item xs={12}>
-              <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2 }}>
-                <Box sx={{ width: "100%" }}>
-                  <TextAreaInput
-                    label={"پی نوشت"}
-                    value={formData.postcript}
-                    onChange={(e) => handleChange("postcript", e.target.value)}
-                    rows={isMobile ? 1 : 2}
-                    className="enhanced-textarea"
-                  />
-                </Box>
-              </Box>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Grid container spacing={{ xs: 2, sm: 2 }}>
-                <Grid item xs={12} md={4}>
-                  <TextAreaInput
-                    label={"توضیحات"}
-                    value={formData.description}
-                    onChange={(e) => handleChange("description", e.target.value)}
-                    rows={1}
-                    className="enhanced-textarea"
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <SelectInput
-                    label="نوع ارجاع"
-                    value={formData.authority_type}
-                    onChange={(value) => handleChange("authority_type", value)}
-                    options={referralOptions}
-                    className="enhanced-select"
-                  />
-                </Grid>
-                {formData.authority_type && (
-                  <Grid item xs={12} md={4}>
-                    <SelectInput
-                      label="ارجاع"
-                      value={formData.authority_correspondence?.toString() || ""}
-                      onChange={(value) =>
-                        handleChange("authority_correspondence", value)
-                      }
-                      options={referralDetailsOptions}
-                      className="enhanced-select"
-                    />
-                  </Grid>
-                )}
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
-            <Grid container spacing={{ xs: 2, sm: 3 }}>
-              <Grid item xs={12}>
-                <Box sx={{ mt: 1 }}>
-                  <FormSwitches
-                    formData={formData}
-                    handleChange={handleChange}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
-            <Typography
-              variant="subtitle1"
-              sx={{ 
-                mb: { xs: 1, sm: 2 }, 
-                fontWeight: "medium", 
-                color: "#555",
-                fontSize: { xs: "0.9rem", sm: "1rem" }
-              }}
-            >
-              رونوشت گیرندگان
-            </Typography>
-            <Transcript
-              transcript={transcriptItems}
-              selectedTranscript={selectedTranscript}
-              setSelectedTranscript={setSelectedTranscript}
-              handleAddTranscript={handleAddTranscript}
-              handleTranscriptToggle={handleTranscriptToggle}
-              internalUserOptions={internalUserOptions}
-              getTranscriptName={getTranscriptName}
-              transcriptDirections={transcriptDirections}
-              setTranscriptDirection={setTranscriptDirection}
+            <AdditionalInfoSection 
+              formData={formData}
+              handleChange={handleChange}
+              referralOptions={referralOptions}
+              referralDetailsOptions={referralDetailsOptions}
             />
           </Grid>
+
+          <FormSwitchesSection 
+            formData={formData}
+            handleChange={handleChange}
+          />
+
+          <TranscriptSection 
+            transcriptItems={transcriptItems}
+            selectedTranscript={selectedTranscript}
+            transcriptDirections={transcriptDirections}
+            internalUserOptions={internalUserOptions}
+            getTranscriptName={getTranscriptName}
+            setSelectedTranscript={setSelectedTranscript}
+            handleAddTranscript={handleAddTranscript}
+            handleTranscriptToggle={handleTranscriptToggle}
+            setTranscriptDirection={setTranscriptDirection}
+          />
 
           <Grid item xs={12}>
             <Box sx={{ 
