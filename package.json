@@ -63,6 +63,7 @@
     "react-router-dom": "^6.27.0",
     "react-tabulator": "^0.21.0",
     "react-time-picker": "^7.0.0",
+    "react-toastify": "^11.0.5",
     "react-tooltip": "^5.28.1",
     "recharts": "^2.15.0",
     "stories-react": "^1.1.2",

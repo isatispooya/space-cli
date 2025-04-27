@@ -16,8 +16,20 @@ import { Edit } from "@mui/icons-material";
 import { TimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { useTimeflow } from "../hooks";
+import { ToastContainer, toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 type VerifyType = "login" | "logout" | "absent" | "leave" | "mission" | "";
+
+interface TimeflowVerifyType {
+  time_user: string;
+  type: VerifyType;
+}
+
+interface TimeflowResponse {
+  message: string;
+  error: string;
+}
 
 export default function NewVerifyForm() {
   const [time, setTime] = useState<Dayjs | null>(dayjs());
@@ -27,20 +39,33 @@ export default function NewVerifyForm() {
   const handleSubmit = () => {
     if (!time || !type) return;
 
-    userTimeflow({
-      data: {
-        time_user: time.toISOString(),
-        type,
-      },
-    });
-  };
+    const timeflowData: TimeflowVerifyType = {
+      time_user: time.toISOString(),
+      type,
+    };
 
+    userTimeflow(
+      { data: timeflowData },
+      {
+        onSuccess: (data: unknown) => {
+          const response = data as TimeflowResponse;
+          toast.success(response.message);
+        },
+        onError: (error: unknown) => {
+          const axiosError = error as AxiosError<{ message: string, error: string }>;
+          toast.error(axiosError.response?.data?.error || "خطایی رخ داد");
+        },
+      }
+    );
+  };
   const handleTypeChange = (event: SelectChangeEvent) => {
     setType(event.target.value as VerifyType);
   };
 
   return (
     <AnimatePresence>
+      <ToastContainer />
+
       <motion.div
         key="new-verify-form"
         initial={{ opacity: 0, y: 30 }}
