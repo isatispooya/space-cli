@@ -49,7 +49,7 @@ export interface ShiftAssignResponse {
   };
 }
 
-export interface shiftTypes {
+export interface ShiftTypes {
   id: number;
   shift: {
     id: number;
@@ -294,7 +294,7 @@ export type WorkShiftTypes = {
   ShiftPayload: ShiftPayload;
   SetShiftUserPostType: SetShiftUserPostType;
   ShiftAssignResponse: ShiftAssignResponse;
-  shiftTypes: shiftTypes;
+  ShiftTypes: ShiftTypes;
   FormShiftState: FormShiftState;
   CompanyDetails: CompanyDetails;
   UserBasicInfo: UserBasicInfo;

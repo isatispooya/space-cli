@@ -78,7 +78,9 @@ const SendMsgPopUp = ({
                   visibleItems={10}
                   onSearchChange={setSearchPositionQuery}
                   onItemClick={handlePositionUserClick}
-                  onLoadMore={() => {}}
+                  onLoadMore={() => {
+                    console.log("load more");
+                  }}
                   renderItem={(position: ChatType["UserPositionType"]) => (
                     <UserListItem position={position} />
                   )}

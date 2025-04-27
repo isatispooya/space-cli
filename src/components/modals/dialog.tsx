@@ -1,4 +1,4 @@
-import React, { Fragment, createContext, useContext } from "react";
+import React, { Fragment, createContext } from "react";
 import { Dialog as HeadlessDialog, Transition } from "@headlessui/react";
 import { motion } from "framer-motion";
 import { UseQueryResult } from "@tanstack/react-query";
@@ -15,12 +15,6 @@ interface DialogContextType {
 }
 
 const DialogContext = createContext<DialogContextType | null>(null);
-
-export const useDialog = () => {
-  const context = useContext(DialogContext);
-  if (!context) throw new Error("useDialog must be used within Dialog");
-  return context;
-};
 
 const Dialog = ({
   isOpen,
@@ -79,7 +73,13 @@ const Dialog = ({
         <HeadlessDialog
           as="div"
           className="relative z-50"
-          onClose={closeOnOutsideClick ? handleClose : () => {}}
+          onClose={
+            closeOnOutsideClick
+              ? handleClose
+              : (e) => {
+                  return e;
+                }
+          }
         >
           {/* Backdrop */}
           <Transition.Child

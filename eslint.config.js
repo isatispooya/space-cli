@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 import js from "@eslint/js";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -5,7 +7,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  { ignores: ["dist", "node_modules", ".turbo", ".next"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
@@ -14,7 +16,7 @@ export default tseslint.config(
       globals: globals.browser,
       parser: tseslint.parser,
       parserOptions: {
-        project: true,
+        project: "./tsconfig.json",
         tsconfigRootDir: ".",
       },
     },
@@ -25,19 +27,20 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       "no-empty-function": "error",
+      "no-debugger": "error",
+
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_" },
+      ],
       "@typescript-eslint/naming-convention": [
         "error",
-        {
-          selector: "variable",
-          modifiers: ["const"],
-          format: ["UPPER_CASE"],
-          leadingUnderscore: "allow",
-        },
         {
           selector: "function",
           format: ["camelCase"],
           leadingUnderscore: "allow",
         },
+
         {
           selector: "variable",
           types: ["function"],

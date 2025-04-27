@@ -25,21 +25,21 @@ interface TooltipProps {
   label?: string;
 }
 
-interface barTypes {
+interface BarTypes {
   name: string;
   value: number;
   logo: string;
   shares: number;
 }
 
-interface barPropsTypes {
+interface BarPropsTypes {
   x?: number;
   y?: number;
   width?: number;
   height?: number;
   index?: number;
-  payload?: barTypes;
-  data?: barTypes[];
+  payload?: BarTypes;
+  data?: BarTypes[];
 }
 
 const DashboardChart = () => {
@@ -93,7 +93,7 @@ const DashboardChart = () => {
     return null;
   };
 
-  const CustomBar = (props: barPropsTypes) => {
+  const CustomBar = (props: BarPropsTypes) => {
     const { x = 0, y = 0, width = 0, height = 0, payload } = props;
 
     const minHeight = 5;
