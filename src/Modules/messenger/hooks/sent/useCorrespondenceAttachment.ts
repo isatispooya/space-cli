@@ -37,6 +37,15 @@ const useCorrespondenceAttachment = {
       mutationFn: correspondenceAttacheService.postCorrespondence,
     });
   },
+  useUpdateCorrespondence: (): UseMutationResult<
+    AttachmentResponse,
+    Error,
+    APIFormDataType & { id: number }
+  > => {
+    return useMutation({
+      mutationFn: correspondenceAttacheService.updateCorrespondence,
+    });
+  },
   useGetCorrespondence: (): UseQueryResult<CorrespondenceResponse> => {
     return useQuery({
       queryKey: ["correspondence"],

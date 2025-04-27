@@ -44,7 +44,7 @@ export interface APIFormDataType {
   attachments: number[];
   receiver: number[];
   sender: number;
-  receiver_internal: number;
+  receiver_internal: number | null;
   receiver_external: string;
   is_internal: boolean;
   postcript: string;
@@ -69,7 +69,7 @@ export type FormDataType = {
   attachments: number[];
   receiver: number[];
   sender: number;
-  receiver_internal: number;
+  receiver_internal: number | null;
   receiver_external: string;
   is_internal: boolean;
   postcript: string;
@@ -108,6 +108,8 @@ export interface CorrespondenceItem {
   subject: string;
   sender_details: SenderDetails;
   receiver_internal_details: ReceiverInternalDetails;
+  receiver_external: string;
+  is_internal: boolean;
   created_at: string;
   priority: string;
 }

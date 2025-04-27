@@ -13,6 +13,10 @@ const correspondenceAttacheService = {
     const response = await api.post("/correspondence/correspondence/", data);
     return response.data;
   },
+  updateCorrespondence: async (data: APIFormDataType & { id: number }): Promise<AttachmentResponse> => {
+    const response = await api.patch(`/correspondence/correspondence/${data.id}/`, data);
+    return response.data;
+  },
   getCorrespondence: async (): Promise<CorrespondenceAttachment[]> => {
     const response = await api.get("/correspondence/correspondence/");
     return response.data;

@@ -36,11 +36,11 @@ const SentMessagePage = lazy(() =>
     default: module.SentMessagePage,
   }))
 );
-const SentFormPage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.SentFormPage,
-  }))
-);
+// const SentFormPage = lazy(() =>
+//   import("..").then((module) => ({
+//     default: module.SentFormPage,
+//   }))
+// );
 const SentUpdateFormPage = lazy(() =>
   import("..").then((module) => ({
     default: module.SentUpdateFormPage,
@@ -68,7 +68,7 @@ const MessengerRoutes = [
       },
       {
         path: "form",
-        element: <SentFormPage />,
+        element: <SentUpdateFormPage />,
       },
       {
         path: "update-form/:id",

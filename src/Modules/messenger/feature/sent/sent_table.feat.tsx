@@ -41,10 +41,11 @@ export const SentTable = () => {
         item.sender_details?.user?.first_name +
           " " +
           item.sender_details?.user?.last_name || "نامشخص",
-      receiver:
-        item.receiver_internal_details?.user?.first_name +
-          " " +
-          item.receiver_internal_details?.user?.last_name || "نامشخص",
+      receiver: item.is_internal !== false
+        ? (item.receiver_internal_details?.user?.first_name +
+           " " +
+           item.receiver_internal_details?.user?.last_name || "نامشخص")
+        : (item.receiver_external || "نامشخص"),
       send_date: new Date(item.created_at).toLocaleDateString("fa-IR"),
       message_type: item.priority === "urgent" ? "فوری" : "عادی",
     }));

@@ -63,20 +63,60 @@ const SentUpdateForm: React.FC = () => {
 
   const [useInternalReceiver, setUseInternalReceiver] = useState(true);
   const { id } = useParams();
+  const isEditMode = !!id;
 
   const { data: Position } = usePosition.useGet();
   const { data: Attache } =
     useCorrespondenceAttachment.useGetAttache() as unknown as {
       data: CorrespondenceAttachments;
     };
+
   const { data } = useReceiveById(id || "");
 
   useEffect(() => {
-    setFormData(data?.sender);
-    setUseInternalReceiver(true);
-  }, [setFormData, data]);
+    if (id && data?.sender) {
+      setFormData({
+        ...data.sender,
+        sender: data.sender.sender_details?.id.toString(),
+        receiver_internal: data.sender.receiver_internal_details?.id.toString(),
+        receiver_external:
+          data.sender.receiver_external_details?.name ||
+          data.sender.receiver_external,
+          
+      });
+      setUseInternalReceiver(data.sender.is_internal);
+    } else if (!isEditMode) {
+      setFormData({
+        subject: "",
+        text: "",
+        description: "",
+        attachments: [],
+        receiver: [],
+        sender: undefined as unknown as number,
+        receiver_internal: undefined as unknown as number,
+        receiver_external: "",
+        is_internal: true,
+        postcript: "",
+        seal: false,
+        signature: false,
+        letterhead: false,
+        binding: false,
+        confidentiality_level: "",
+        priority: "",
+        kind_of_correspondence: "",
+        authority_type: "",
+        authority_correspondence: null,
+        reference: [],
+        transcript: [],
+        published: false,
+      });
+      setUseInternalReceiver(true);
+    }
+  }, [setFormData, data, id, isEditMode]);
 
   const { mutate: updateCorrespondence } =
+    useCorrespondenceAttachment.useUpdateCorrespondence();
+    const { mutate: postCorrespondence } =
     useCorrespondenceAttachment.usePostCorrespondence();
 
   const attachmentOptions =
@@ -106,8 +146,8 @@ const SentUpdateForm: React.FC = () => {
 
     const apiTranscript: TranscriptAPIData = {
       position: formData.sender || transcript[0]?.position,
-      transcript_for: transcript[0]?.transcript_for,
-      security: transcript[0]?.security,
+      transcript_for: transcript[0]?.transcript_for || "notification",
+      security: transcript[0]?.security || false,
       correspondence: null,
       read_at: new Date().toISOString(),
     };
@@ -115,10 +155,15 @@ const SentUpdateForm: React.FC = () => {
     const finalData: APIFormDataType = {
       ...restFormData,
       attachments: restFormData.attachments.map(Number),
-      receiver_internal: Number(restFormData.receiver_internal),
+      receiver_internal: Number(restFormData.receiver_internal) || null,
       transcript: [apiTranscript],
     };
-    updateCorrespondence(finalData);
+    
+    if (isEditMode && id) {
+      updateCorrespondence({...finalData, id: Number(id)});
+    } else {
+      postCorrespondence(finalData);
+    }
   };
 
   const getTranscriptName = (id: string): string => {
@@ -158,7 +203,7 @@ const SentUpdateForm: React.FC = () => {
             mb: { xs: 2, sm: 3 },
           }}
         >
-          ویرایش پیام
+          {isEditMode ? "ویرایش پیام" : "ثبت پیام جدید"}
         </Typography>
 
         <form onSubmit={handleSubmit}>
@@ -168,6 +213,9 @@ const SentUpdateForm: React.FC = () => {
                 receiverType={useInternalReceiver ? "internal" : "external"}
                 onTypeChange={(type) =>
                   setUseInternalReceiver(type === "internal")
+                }
+                onIsInternalChange={(isInternal) => 
+                  handleChange("is_internal", isInternal)
                 }
               />
             </Grid>
@@ -407,6 +455,7 @@ const SentUpdateForm: React.FC = () => {
               رونوشت گیرندگان
             </Typography>
             <Transcript
+              data={data}
               transcript={transcriptItems}
               selectedTranscript={selectedTranscript}
               setSelectedTranscript={setSelectedTranscript}
@@ -428,7 +477,7 @@ const SentUpdateForm: React.FC = () => {
               }}
             >
               <ButtonBase
-                label="ویرایش پیام"
+                label={isEditMode ? "ویرایش پیام" : "ثبت پیام"}
                 onClick={handleSubmit}
                 bgColor="#1976d2"
                 hoverColor="#1565c0"

@@ -30,6 +30,7 @@ interface TranscriptProps {
   getTranscriptName: (id: string) => string;
   transcriptDirections: { [id: string]: string };
   setTranscriptDirection: (id: string, value: string) => void;
+  data?: any;
 }
 
 const Transcript: React.FC<TranscriptProps> = ({
@@ -42,6 +43,7 @@ const Transcript: React.FC<TranscriptProps> = ({
   getTranscriptName,
   transcriptDirections,
   setTranscriptDirection,
+  data,
 }) => {
   const handleDirectionChange = (id: string, value: string) => {
     setTranscriptDirection(id, value);
@@ -54,10 +56,12 @@ const Transcript: React.FC<TranscriptProps> = ({
     }
   };
 
+  const hasReferenceData =
+    data?.sender?.reference_details && data.sender.reference_details.length > 0;
+
   return (
     <Box
       sx={{
-        mb: 3,
         display: "flex",
         flexDirection: "column",
         gap: 2,
@@ -107,6 +111,50 @@ const Transcript: React.FC<TranscriptProps> = ({
             گیرنده رونوشت انتخاب شده است
           </Typography>
         </Box>
+      )}
+
+      {/* نمایش لیست رونوشت‌های دریافتی از دیتا */}
+      {hasReferenceData && (
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 2,
+            borderRadius: 2,
+            bgcolor: "#fff",
+            boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 2px",
+            mb: 2,
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{ mb: 1, fontWeight: "medium", color: "#555" }}
+          >
+            رونوشت‌های موجود:
+          </Typography>
+          <List sx={{ p: 0 }}>
+            {data.sender.reference_details.map((item: any, index: number) => (
+              <React.Fragment key={`ref-${item.id}`}>
+                <ListItem sx={{ px: 1, py: 1.5 }}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={8}>
+                      <Typography sx={{ fontSize: "0.9rem", color: "#1e293b" }}>
+                        {item.user?.first_name} {item.user?.last_name}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <Typography sx={{ fontSize: "0.8rem", color: "#64748b" }}>
+                        {item.transcript_for || "اطلاع رسانی"}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+                {index < data.sender.reference_details.length - 1 && (
+                  <Divider sx={{ my: 0.5 }} />
+                )}
+              </React.Fragment>
+            ))}
+          </List>
+        </Paper>
       )}
 
       {/* لیست رونوشت‌ها */}
@@ -192,7 +240,7 @@ const Transcript: React.FC<TranscriptProps> = ({
         </Paper>
       )}
 
-      {transcript.length === 0 && (
+      {transcript.length === 0 && !hasReferenceData && (
         <Box sx={{ p: 2, textAlign: "center" }}>
           <Typography variant="body2" color="text.secondary">
             هیچ گیرنده رونوشتی انتخاب نشده است. از لیست بالا گیرندگان را انتخاب

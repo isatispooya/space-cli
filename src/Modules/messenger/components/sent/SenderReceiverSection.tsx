@@ -47,7 +47,7 @@ const SenderReceiverSection: React.FC<SenderReceiverSectionProps> = ({
               {useInternalReceiver ? (
                 <SelectInput
                   label="گیرنده داخلی"
-                  value={formData.receiver_internal.toString()}
+                  value={formData.receiver_internal?.toString() || ""}
                   onChange={(value) => handleChange("receiver_internal", value)}
                   options={positionOptions}
                   className="enhanced-select"
