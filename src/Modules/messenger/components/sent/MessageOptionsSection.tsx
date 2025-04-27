@@ -23,14 +23,10 @@ const MessageOptionsSection: React.FC<MessageOptionsSectionProps> = ({
   attachmentOptions,
 }) => {
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item>
       <Grid container spacing={{ xs: 2, sm: 2 }}>
-        <Grid item xs={12} sm={6}>
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap={{ xs: 1, sm: 2 }}
-          >
+        <Grid item mt={8}>
+          <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
             <SelectInput
               label="اولویت"
               value={formData.priority}
@@ -48,22 +44,24 @@ const MessageOptionsSection: React.FC<MessageOptionsSectionProps> = ({
             <SelectInput
               label="نوع نامه"
               value={formData.kind_of_correspondence}
-              onChange={(value) => handleChange("kind_of_correspondence", value)}
+              onChange={(value) =>
+                handleChange("kind_of_correspondence", value)
+              }
               options={letterTypeOptions}
               className="enhanced-select"
             />
           </Box>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid item>
           <Box
             display="flex"
             flexDirection="column"
+            mt={10}
             gap={{ xs: 1, sm: 2 }}
           >
             <Box
               sx={{
-                mt: { xs: 1, sm: 0 },
                 width: "100%",
                 height: { xs: "100px", sm: "130px" },
                 border: "2px dashed #ccc",
@@ -83,7 +81,9 @@ const MessageOptionsSection: React.FC<MessageOptionsSectionProps> = ({
               }}
               onClick={() => setOpenFileDialog(true)}
             >
-              <Typography variant="h4" color="primary">+</Typography>
+              <Typography variant="h4" color="primary">
+                +
+              </Typography>
               <Typography variant="body2">افزودن پیوست</Typography>
             </Box>
 
@@ -101,4 +101,4 @@ const MessageOptionsSection: React.FC<MessageOptionsSectionProps> = ({
   );
 };
 
-export default MessageOptionsSection; 
+export default MessageOptionsSection;

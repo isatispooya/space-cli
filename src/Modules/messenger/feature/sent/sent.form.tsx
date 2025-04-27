@@ -1,11 +1,4 @@
-import {
-  Box,
-  Typography,
-  Paper,
-  Grid,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Typography, Paper, Grid, useTheme, useMediaQuery } from "@mui/material";
 
 import { ButtonBase } from "../../../../components/common/buttons";
 import { usePosition } from "@/Modules/positions/hooks";
@@ -25,7 +18,7 @@ import {
   MessageContentSection,
   AdditionalInfoSection,
   FormSwitchesSection,
-  TranscriptSection,
+  TranscriptSection
 } from "../../components/sent";
 import { useSentFormStore } from "../../store/sent/sent.store";
 import {
@@ -40,8 +33,8 @@ import "./sent.css";
 
 const SentForm: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
   const {
     formData,
     openFileDialog,
@@ -121,22 +114,16 @@ const SentForm: React.FC = () => {
     })) || [];
 
   return (
-    <Box
-      sx={{
-        ...STYLES.container,
-        width: "100%",
-        px: { xs: 1, sm: 2, md: 3 },
-      }}
-      className="sent-form-container"
-    >
-      <Paper
-        elevation={3}
-        sx={{
-          ...STYLES.paper,
-          p: { xs: 2, sm: 3 },
-          overflow: "hidden",
-        }}
-      >
+    <Box sx={{
+      ...STYLES.container,
+      width: "100%",
+      px: { xs: 1, sm: 2, md: 3 },
+    }} className="sent-form-container">
+      <Paper elevation={3} sx={{ 
+        ...STYLES.paper, 
+        p: { xs: 2, sm: 3 },
+        overflow: "hidden",
+      }}>
         <Typography
           variant="h5"
           sx={{
@@ -148,19 +135,21 @@ const SentForm: React.FC = () => {
           ارسال پیام جدید
         </Typography>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>  
           <Grid container spacing={{ xs: 2, sm: 3 }}>
-            <SenderReceiverSection
-              formData={formData}
-              handleChange={handleChange}
-              useInternalReceiver={useInternalReceiver}
-              setUseInternalReceiver={setUseInternalReceiver}
-              positionOptions={senderUserOptions}
-            />
+            <Grid item xs={12} md={6}>
+              <SenderReceiverSection 
+                formData={formData}
+                handleChange={handleChange}
+                useInternalReceiver={useInternalReceiver}
+                setUseInternalReceiver={setUseInternalReceiver}
+                positionOptions={senderUserOptions}
+              />
+            </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
               <Grid container spacing={{ xs: 2, sm: 3 }}>
-                <MessageOptionsSection
+                <MessageOptionsSection 
                   formData={formData}
                   handleChange={handleChange}
                   setOpenFileDialog={setOpenFileDialog}
@@ -171,14 +160,14 @@ const SentForm: React.FC = () => {
                 />
               </Grid>
             </Grid>
-
-            <MessageContentSection
+            
+            <MessageContentSection 
               formData={formData}
               handleChange={handleChange}
               isMobile={isMobile}
             />
-
-            <AdditionalInfoSection
+            
+            <AdditionalInfoSection 
               formData={formData}
               handleChange={handleChange}
               referralOptions={referralOptions}
@@ -186,12 +175,12 @@ const SentForm: React.FC = () => {
             />
           </Grid>
 
-          <FormSwitchesSection
+          <FormSwitchesSection 
             formData={formData}
             handleChange={handleChange}
           />
 
-          <TranscriptSection
+          <TranscriptSection 
             transcriptItems={transcriptItems}
             selectedTranscript={selectedTranscript}
             transcriptDirections={transcriptDirections}
@@ -204,13 +193,11 @@ const SentForm: React.FC = () => {
           />
 
           <Grid item xs={12}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                mt: { xs: 1.5, sm: 2 },
-              }}
-            >
+            <Box sx={{ 
+              display: "flex", 
+              justifyContent: "center",
+              mt: { xs: 1.5, sm: 2 }
+            }}>
               <ButtonBase
                 label="ارسال پیام"
                 onClick={handleSubmit}
