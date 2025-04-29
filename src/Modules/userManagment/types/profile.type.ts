@@ -1,4 +1,4 @@
-export type StatusPosition = "login" | "logout" | "mission_start" | "leave_start";
+export type StatusPosition = "login" | "logout" | "mission_start" | "leave_start" | "mission_end" | "leave_end";
 
 export interface ProfileTypes {
   last_login: string;
