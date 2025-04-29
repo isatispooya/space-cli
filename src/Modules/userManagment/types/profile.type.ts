@@ -1,3 +1,5 @@
+export type StatusPosition = "login" | "logout" | "mission_start" | "leave_start";
+
 export interface ProfileTypes {
   last_login: string;
   last_name: string;
@@ -86,4 +88,5 @@ export interface ProfileTypes {
     type: string;
     user: number;
   }[];
+  status_position: StatusPosition;
 }

@@ -7,6 +7,8 @@ export interface UserInfo {
 }
 
 export interface TimeflowEvent {
+  userUsername: string;
+  userName: string;
   id: number;
   browser: string;
   device_type: string;

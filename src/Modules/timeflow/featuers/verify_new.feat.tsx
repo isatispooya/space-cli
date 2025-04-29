@@ -52,7 +52,10 @@ export default function NewVerifyForm() {
           toast.success(response.message);
         },
         onError: (error: unknown) => {
-          const axiosError = error as AxiosError<{ message: string, error: string }>;
+          const axiosError = error as AxiosError<{
+            message: string;
+            error: string;
+          }>;
           toast.error(axiosError.response?.data?.error || "خطایی رخ داد");
         },
       }
@@ -155,9 +158,10 @@ export default function NewVerifyForm() {
               >
                 <MenuItem value="login">ورود</MenuItem>
                 <MenuItem value="logout">خروج</MenuItem>
-                <MenuItem value="absent">غیبت</MenuItem>
-                <MenuItem value="leave">مرخصی</MenuItem>
-                <MenuItem value="mission">ماموریت</MenuItem>
+                <MenuItem value="leave_start">شروع مرخصی</MenuItem>
+                <MenuItem value="leave_end">ورود مرخصی</MenuItem>
+                <MenuItem value="mission_start">شروع ماموریت</MenuItem>
+                <MenuItem value="mission_end">پایان ماموریت</MenuItem>
               </Select>
             </FormControl>
 

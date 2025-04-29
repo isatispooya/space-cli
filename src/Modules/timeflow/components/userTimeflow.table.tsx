@@ -17,7 +17,7 @@ const UserTimeflowTable = () => {
     return TimeflowStatus.find((item) => item.value === status)?.name || status;
   };
 
-  const exportData = (data: any[]) => {
+  const exportData = (data: TimeflowEvent[]) => {
     return data.map((item) => ({
       شناسه: item.id,
       نوع: item.type,
@@ -33,27 +33,16 @@ const UserTimeflowTable = () => {
     }));
   };
 
-  const TYPE_LABEL = [
-    {
-      value: "login",
-      label: "ورود",
-    },
-    {
-      value: "logout",
-      label: "خروج",
-    },
-  ];
 
-  const getLabel = (value: string) => {
-    return TYPE_LABEL.find((item) => item.value === value)?.label || value;
-  };
+
+
 
   const mappedData = Array.isArray(data)
     ? data
         .filter((item: TimeflowEvent) => item.type !== "login_without_work")
         .map((item: TimeflowEvent) => ({
           id: item.id,
-          type: getLabel(item.type),
+          type: item.type,
           userName: `${item.user.first_name} ${item.user.last_name}`,
           userEmail: item.user.email,
           userUsername: item.user.username,

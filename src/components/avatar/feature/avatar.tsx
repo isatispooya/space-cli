@@ -11,6 +11,17 @@ import { toast } from "react-hot-toast";
 import VerifyLogoutPopup from "./verifyLogout.pop";
 import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../Modules/permissions/hooks";
+import { PiPlugsConnected } from "react-icons/pi";
+import { TbPlugConnected } from "react-icons/tb";
+import { StatusPosition } from "../../../Modules/userManagment/types/profile.type";
+
+const status: Record<StatusPosition, { value: string; label: string; icon: JSX.Element; color: string }> = {
+  login: { value: "login", label: "ورود", icon: <PiPlugsConnected />, color: "green" },
+  logout: { value: "logout", label: "خروج", icon: <TbPlugConnected />, color: "red" },
+  mission_start: { value: "mission_start", label: "ماموریت", icon: <TbPlugConnected />, color: "blue" },
+  leave_start: { value: "leave_start", label: "مرخصی", icon: <TbPlugConnected />, color: "yellow" },
+};
+
 const UserAvatar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -18,11 +29,19 @@ const UserAvatar = () => {
   const { data: profileData, isSuccess } = useProfile();
   const navigate = useNavigate();
   const { data: permissions } = useUserPermissions();
+  const logout = useLogout();
 
   const Permissions = permissions || [];
   const hasPermission =
     Array.isArray(Permissions) &&
     Permissions.some((perm) => perm.codename === "position");
+
+  const profileInfo = profileData
+    ? {
+        first_name: profileData.first_name || "",
+        last_name: profileData.last_name || "",
+      }
+    : null;
 
   useEffect(() => {
     if (isSuccess) {
@@ -61,16 +80,6 @@ const UserAvatar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  const { data } = useProfile();
-  const logout = useLogout();
-
-  const profileInfo = data
-    ? {
-        first_name: data.first_name || "",
-        last_name: data.last_name || "",
-      }
-    : null;
 
   const tools = [
     {
@@ -159,10 +168,23 @@ const UserAvatar = () => {
                 className="absolute z-10 mt-3 left-0 bg-white divide-y divide-gray-100 rounded-xl shadow-lg w-48 border border-gray-100 overflow-hidden"
               >
                 {profileInfo && (
-                  <div className="px-4 py-3 text-sm bg-gradient-to-r from-[#041685]/10 to-transparent">
+                  <div className="px-4 py-3 text-sm bg-gradient-to-r from-[#041685]/10 to-transparent flex justify-between">
                     <div className="font-semibold text-gray-800">{`${profileInfo.first_name} ${profileInfo.last_name}`}</div>
+
+                    {profileData?.status_position &&
+                      status[profileData?.status_position] && (
+                        <div
+                          className="flex items-center gap-1 text-sm bg-white font-bold rounded-full p-1"
+                          style={{
+                            color: status[profileData.status_position].color,
+                          }}
+                        >
+                          {status[profileData.status_position].icon}
+                        </div>
+                      )}
                   </div>
                 )}
+
                 <ul className="py-1 text-sm text-gray-700">
                   {tools.map((item, index) => (
                     <li key={index}>
