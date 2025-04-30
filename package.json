@@ -39,6 +39,7 @@
     "file-saver": "^2.0.5",
     "formik": "^2.4.6",
     "framer-motion": "^11.12.0",
+    "html2pdf.js": "^0.10.3",
     "http-server": "^14.1.1",
     "jalali-moment": "^3.3.11",
     "jalali-react-datepicker": "^1.2.3",
