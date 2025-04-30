@@ -20,11 +20,13 @@ const InsurancePayment = () => {
   const { mutate: postFish } = useInsurance.usePostInsurancePaymentFish();
   const { mutate: postDarghah } = useInsurance.usePostInsurancePaymentDarghah();
 
+  const [paymentType, setPaymentType] = useState<string>("1");
+  const [formKey, setFormKey] = useState(0); 
+  
+
   const selectedPayment = insurancePayment?.find(
     (payment: InsuranceRequest) => payment.id === Number(id)
   );
-
-  const [paymentType, setPaymentType] = useState<string>("1");
 
   useEffect(() => {
     if (selectedPayment?.kind_of_payment) {
@@ -64,6 +66,7 @@ const InsurancePayment = () => {
   const handlePaymentTypeChange = (value: string) => {
     console.log("Payment type changed to:", value);
     setPaymentType(value);
+    setFormKey((prev) => prev + 1); // Force form re-render when payment type changes
   };
 
   const formFields: FormField[] = [
@@ -82,12 +85,12 @@ const InsurancePayment = () => {
     {
       name: "kind_of_payment",
       label: "نوع پرداخت",
-      type: "select" as const,
+      type: "radio",
       options: [
         { label: "فیش بانکی", value: "1" },
         { label: "درگاه پرداخت", value: "2" },
       ],
-      onChange: handlePaymentTypeChange,
+      onChange: (value) => handlePaymentTypeChange(value),
     },
     {
       name: "insurance_name",
@@ -197,6 +200,7 @@ const InsurancePayment = () => {
 
   return (
     <Forms
+      key={formKey}
       formFields={formFields}
       initialValues={initialValues}
       title=" پرداخت"

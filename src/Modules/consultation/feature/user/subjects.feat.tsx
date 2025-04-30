@@ -5,6 +5,12 @@ import { translateCategory } from "../../data";
 import { LoaderLg, NoContent } from "@/components";
 import { ConsultationUserType } from "../../types";
 
+enum ConsultationType {
+  ONLINE = "online",
+  PHONE = "phone",
+  IN_PERSON = "in_person",
+}
+
 interface ConsultationSubjectsProps {
   onSelectSubject: (id: string) => void;
   subjects: ConsultationUserType["SubjectsType"];
@@ -91,6 +97,7 @@ const ConsultationSubjects = ({
                   price: subject.price,
                   image: subject.picture,
                   status: subject.status,
+                  kind_of_consultant: subject.kind_of_consultant.map(type => type as ConsultationType)
                 }}
                 onSelect={handleSelectSubject}
               />

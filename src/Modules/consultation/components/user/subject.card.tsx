@@ -22,7 +22,7 @@ interface SubjectCardProps {
   onSelect: (id: string) => void;
 }
 
-export const SubjectCard = ({ subject, onSelect }: SubjectCardProps) => {
+export const SubjectCard = ({ subject }: SubjectCardProps) => {
   return (
     <div
       // onClick={() => onSelect(subject.id)}
@@ -62,10 +62,6 @@ export const SubjectCard = ({ subject, onSelect }: SubjectCardProps) => {
       {/* Footer Area */}
       <div className="flex items-center justify-between p-6 border-t border-gray-100 bg-gradient-to-br from-gray-50 to-white">
         <div>
-          {/* <div className="text-sm font-medium text-gray-600">قیمت</div>
-          <div className="text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            {subject.price.toLocaleString()} تومان
-          </div> */}
         </div>
         <button className="bg-gradient-to-r from-gray-900 to-gray-800 text-white px-6 py-2.5 text-sm rounded-xl hover:from-gray-800 hover:to-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 font-medium">
           انتخاب

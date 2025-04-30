@@ -20,6 +20,8 @@ const status : Record<StatusPosition, { value: string; label: string; icon: JSX.
   logout: { value: "logout", label: "خروج", icon: <TbPlugConnected />, color: "red" },
   mission_start: { value: "mission_start", label: "ماموریت", icon: <TbPlugConnected />, color: "blue" },
   leave_start: { value: "leave_start", label: "مرخصی", icon: <TbPlugConnected />, color: "yellow" },
+  mission_end: { value: "mission_end", label: "پایان ماموریت", icon: <TbPlugConnected />, color: "blue" },
+  leave_end: { value: "leave_end", label: "پایان مرخصی", icon: <TbPlugConnected />, color: "yellow" }
 };
 
 const UserAvatar = () => {
