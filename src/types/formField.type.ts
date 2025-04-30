@@ -20,7 +20,8 @@ export interface FormField {
     | "dynamic"
     | "detail"
     | "multiSelect"
-    | "timePicker";
+    | "timePicker"
+    | "radio";
 
   options?: { label: string; value: any }[];
   transferListProps?: {

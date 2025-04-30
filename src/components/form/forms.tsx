@@ -338,6 +338,46 @@ const Forms = <T extends FormikValues>({
                       />
                     )}
                   </Field>
+                ) : field.type === "radio" ? (
+                  <Field name={field.name}>
+                    {({ field: fieldProps, form: { setFieldValue } }: FieldProps) => (
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                          {field.label}
+                        </label>
+                        <div className="flex space-x-6">
+                          {field.options?.map((option) => (
+                            <div
+                              key={option.value}
+                              className="flex items-center space-x-4"
+                            >
+                              <input
+                                {...fieldProps}
+                                type="radio"
+                                id={`${field.name}-${option.value}`}
+                                value={option.value}
+                                checked={fieldProps.value === option.value}
+                                onChange={(e) => {
+                                  const newValue = e.target.value;
+                                  setFieldValue(field.name, newValue);
+                                  if (field.onChange) {
+                                    field.onChange(newValue);
+                                  }
+                                }}
+                                className="h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 "
+                              />
+                              <label
+                                htmlFor={`${field.name}-${option.value}`}
+                                className="mr-2 block text-sm font-medium text-gray-700  "
+                              >
+                                {option.label}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </Field>
                 ) : (
                   <Field name={field.name}>
                     {({
