@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card } from "@/components";
 import WaveEffect from "@/ui/wave";
 import * as echarts from "echarts";
@@ -9,6 +10,7 @@ interface ChartProps {
   title?: string;
   data: number[];
   labels: string[];
+  symbols: any;
 }
 
 const ChartComponent = ({ data, labels }: ChartProps) => {
@@ -86,13 +88,13 @@ const ChartComponent = ({ data, labels }: ChartProps) => {
   return <div ref={chartRef} style={{ width: "100%", height: "290%" }} />;
 };
 
-const Chart = ({ data, labels }: ChartProps) => (
+const Chart = ({ data, labels, symbols }: ChartProps) => (
   <div className="w-full h-full p-4 flex flex-col justify-end">
     <Card
       disableAnimation
       className="h-full w-full rounded-xl shadow-lg"
       contentClassName="h-full p-0 flex flex-col justify-end"
-      content={<ChartComponent data={data} labels={labels} />}
+      content={<ChartComponent data={data} labels={labels} symbols={symbols} />}
       footerSlot={<WaveEffect color="blue" />}
     />
   </div>

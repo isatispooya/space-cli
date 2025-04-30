@@ -1,7 +1,6 @@
 import { Collapse, Ripple, initTWE } from "tw-elements";
 import { UserAvatar } from "../../avatar";
 import { motion } from "framer-motion";
-import { maliSvg } from "@/assets";
 import { maliTextLogo } from "@/assets";
 import { useSidebarStore } from "../../../Modules/sidebar/store/sidebar.store";
 import { FiMenu } from "react-icons/fi";
@@ -91,10 +90,10 @@ const Header = () => {
                   className="flex items-center cursor-pointer"
                   onClick={() => navigate("/")}
                 >
-                  <img src={maliSvg} className="w-20 sm:w-16" alt="logo" />
+                  
                   <img
                     src={maliTextLogo}
-                    className="w-40 hidden lg:block"
+                    className="w-40 hidden lg:block mr-2"
                     alt="logo text"
                   />
                 </motion.div>

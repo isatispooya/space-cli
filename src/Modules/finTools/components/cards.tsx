@@ -10,6 +10,7 @@ export interface FundCardProps {
   change?: number;
   changePercentage?: number;
   size?: "small" | "medium" | "large";
+  id?: number;
 }
 
 interface FundInfo {
@@ -26,7 +27,7 @@ const fundsInfo: Record<FundType, FundInfo> = {
     subtitle: "صندوق سرمایه‌گذاری خاتم",
     color: "#3B82F6",
     icon: "📈",
-    route: "/khatam",
+    route: "/khatam/:id",
   },
   termeh: {
     title: "ترمه",
@@ -62,6 +63,7 @@ const sizeClasses = {
 const FundCard: React.FC<FundCardProps> = ({
   type,
   value,
+  id,
   change = 0,
   changePercentage = 0,
   size = "medium",
@@ -69,6 +71,13 @@ const FundCard: React.FC<FundCardProps> = ({
   const fundInfo = fundsInfo[type];
   const isPositiveChange = change >= 0;
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (fundInfo.route) {
+      const route = fundInfo.route.replace(":id", id?.toString() || "");
+      navigate(route);
+    }
+  };
 
   return (
     <motion.div
@@ -104,7 +113,7 @@ const FundCard: React.FC<FundCardProps> = ({
 
       <div className="mt-auto pt-6 relative z-10">
         <motion.button
-          onClick={() => fundInfo.route && navigate(fundInfo.route)}
+          onClick={handleClick}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="w-full py-4 px-6 rounded-lg font-iranSans duration-200 flex items-center justify-center gap-2 text-lg text-white"
@@ -113,8 +122,6 @@ const FundCard: React.FC<FundCardProps> = ({
           <span className="font-bold">{fundInfo.subtitle}</span>
         </motion.button>
       </div>
-
-   
     </motion.div>
   );
 };

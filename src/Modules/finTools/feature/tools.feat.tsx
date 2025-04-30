@@ -1,15 +1,23 @@
 import { motion } from "framer-motion";
-import FundCard from "../components/funds.card";
+import FundCard from "../components/cards";
+import { useSymbols } from "../hooks";
+import { Symbol } from "../types";
 
-export const FundsDashboard: React.FC = () => {
+export const ToolsFeat: React.FC = () => {
+  const { data: symbols } = useSymbols.useGetSymbols();
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
 
+  const khatamSymbol = symbols
+    ? Object.values(symbols).find(
+        (symbol: Symbol) => symbol.symbol_detail?.symbol === "خاتم"
+      )
+    : null;
+
   return (
     <div className="min-h-screen w-full p-2 md:p-4 flex flex-col gap-4">
-      {/* Top row with 3 cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[60vh]">
         <motion.div
           initial="hidden"
@@ -24,6 +32,7 @@ export const FundsDashboard: React.FC = () => {
             change={15000}
             changePercentage={2.5}
             size="large"
+            id={khatamSymbol?.id}
           />
         </motion.div>
 
@@ -60,7 +69,6 @@ export const FundsDashboard: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Bottom row with mosharkat card */}
       <motion.div
         initial="hidden"
         animate="visible"
@@ -80,4 +88,4 @@ export const FundsDashboard: React.FC = () => {
   );
 };
 
-export default FundsDashboard;
+export default ToolsFeat;
