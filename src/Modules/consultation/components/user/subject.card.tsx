@@ -1,6 +1,10 @@
-import { motion } from "framer-motion";
-import { Card } from "@/components";
 import { server } from "@/api";
+
+enum ConsultationType {
+  ONLINE = "online",
+  PHONE = "phone",
+  IN_PERSON = "in_person",
+}
 
 interface SubjectType {
   id: string;
@@ -10,6 +14,7 @@ interface SubjectType {
   price: number;
   image: string;
   status: boolean;
+  kind_of_consultant: ConsultationType[];
 }
 
 interface SubjectCardProps {
@@ -19,88 +24,54 @@ interface SubjectCardProps {
 
 export const SubjectCard = ({ subject, onSelect }: SubjectCardProps) => {
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={() => onSelect(subject.id)}
+    <div
+      // onClick={() => onSelect(subject.id)}
+      className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden w-full cursor-pointer border hover:shadow-[0_8px_30px_rgb(0,0,0,0.18)] transition-shadow duration-300"
     >
-      <Card
-        title={subject.title}
-        subtitle={subject.description}
-        content={
-          <div className="flex flex-col space-y-4  p-6">
-            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-2 rounded-full">
-              <img
-                src={server + subject.image}
-                alt={subject.title}
-                className="w-full h-full object-cover rounded-full"
-              />
-            </div>
+      {/* Image Area */}
+      <div className="relative h-72 w-full flex items-center justify-center p-4">
+        <img
+          src={server + subject.image}
+          alt={subject.title}
+          className="h-full w-full object-cover rounded-xl shadow-sm"
+        />
+      </div>
 
-            <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-              {getSubjectFeatures(subject.category).map((feature, index) => (
-                <div key={index} className="flex items-center">
-                  <svg
-                    className="w-4 h-4 mr-2 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                  <span>{feature}</span>
-                </div>
-              ))}
-            </div>
+      {/* Text Content */}
+      <div className="p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl font-bold text-gray-900 tracking-tight">
+            {subject.title}
+          </h3>
+        </div>
 
-            <div className="flex justify-between pt-4 mt-4 border-t border-gray-100 dark:border-gray-700">
-              <div className="text-center">
-                <div className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-                  قیمت
-                </div>
-                <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                  {subject.price.toLocaleString()} تومان
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-                  وضعیت
-                </div>
-                <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                  {subject.status ? "فعال" : "غیرفعال"}
-                </div>
-              </div>
-            </div>
-          </div>
-        }
-        badge={subject.category}
-        hoverEffect={true}
-        glassmorphism={true}
-        borderGradient={true}
-        className="h-full cursor-pointer transition-all duration-300"
-      />
-    </motion.div>
-  );
-};
+        <p className="text-sm leading-relaxed text-gray-700">
+          {subject.description.slice(0, 100)}...
+        </p>
 
-const getSubjectFeatures = (category: string): string[] => {
-  const features: Record<string, string[]> = {
-    online: ["مشاوره آنلاین", "دسترسی آسان", "صرفه‌جویی در زمان"],
-    phone: ["مشاوره تلفنی", "ارتباط مستقیم", "انعطاف‌پذیری زمانی"],
-    // Add more categories as needed
-  };
+        <div className="flex gap-2">
+            <span
+              className="px-3 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded-full"
+            >
+              {subject.kind_of_consultant?.join(", ")}
+            </span>
+          
+        </div>
+      </div>
 
-  return (
-    features[category] || [
-      "مشاوره حرفه‌ای",
-      "راهنمایی متخصص",
-      "رویکرد شخصی‌سازی شده",
-    ]
+      {/* Footer Area */}
+      <div className="flex items-center justify-between p-6 border-t border-gray-100 bg-gradient-to-br from-gray-50 to-white">
+        <div>
+          {/* <div className="text-sm font-medium text-gray-600">قیمت</div>
+          <div className="text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            {subject.price.toLocaleString()} تومان
+          </div> */}
+        </div>
+        <button className="bg-gradient-to-r from-gray-900 to-gray-800 text-white px-6 py-2.5 text-sm rounded-xl hover:from-gray-800 hover:to-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 font-medium">
+          انتخاب
+        </button>
+      </div>
+    </div>
   );
 };
 
