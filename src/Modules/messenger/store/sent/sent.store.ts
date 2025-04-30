@@ -48,7 +48,7 @@ const initialFormData: FormDataType = {
   confidentiality_level: "",
   priority: "",
   kind_of_correspondence: "",
-  authority_type: "",
+  authority_type: "new",
   authority_correspondence: null,
   reference: [],
   referenceData: [],
@@ -186,34 +186,43 @@ export const useSentFormStore = create<SentFormState>((set) => ({
   handleTranscriptToggle: (id) =>
     set((state) => {
       const numId = Number(id);
-      const isInReference = state.formData.reference.includes(numId);
+      const referenceData = state.formData.referenceData || [];
+      const existingItem = referenceData.find(item => item.id === numId);
       
-      let updatedReferenceData = state.formData.referenceData || [];
-      if (isInReference) {
-        updatedReferenceData = updatedReferenceData.filter(item => item.id !== numId);
+      let updatedReferenceData;
+      if (existingItem) {
+        updatedReferenceData = referenceData.map(item =>
+          item.id === numId ? { ...item, enabled: !item.enabled } : item
+        );
       } else {
         updatedReferenceData = [
-          ...updatedReferenceData,
+          ...referenceData,
           {
             id: numId,
             enabled: true,
-            transcript_for: state.transcriptDirections[id] || ""
+            transcript_for: state.transcriptDirections[id]
           }
         ];
       }
+
+      const updatedReference = Array.from(new Set([
+        ...state.formData.reference,
+        numId
+      ]));
+      
+      const currentTranscript = state.formData.transcript[0] || defaultTranscript;
+      const updatedTranscript = {
+        ...currentTranscript,
+        position: numId,
+        transcript_for: state.transcriptDirections[id] || currentTranscript.transcript_for
+      };
       
       return {
         formData: {
           ...state.formData,
-          reference: isInReference
-            ? state.formData.reference.filter((ref) => ref !== numId)
-            : [...state.formData.reference, numId],
+          reference: updatedReference,
           referenceData: updatedReferenceData,
-          transcript: state.formData.transcript.map(t => ({
-            ...t,
-            position: isInReference ? t.position : numId,
-            transcript_for: state.transcriptDirections[id] || t.transcript_for
-          }))
+          transcript: [updatedTranscript]
         },
       };
     }),

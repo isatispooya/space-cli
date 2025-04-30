@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Box,
   Typography,
   Paper,
-  Switch,
   List,
   ListItem,
   Grid,
   Chip,
   Divider,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from "@mui/material";
 import { MultiSelect, SelectInput } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
@@ -17,6 +19,15 @@ import internalOptions from "../../data/sent/transcript.data";
 interface TranscriptItem {
   id: string;
   enabled: boolean;
+  transcript_for?: string;
+}
+
+interface ReferenceDetail {
+  id: string;
+  user?: {
+    first_name: string;
+    last_name: string;
+  };
   transcript_for?: string;
 }
 
@@ -30,10 +41,102 @@ interface TranscriptProps {
   getTranscriptName: (id: string) => string;
   transcriptDirections: { [id: string]: string };
   setTranscriptDirection: (id: string, value: string) => void;
-  data?: any;
+  data?: {
+    sender?: {
+      reference_details: ReferenceDetail[];
+    };
+  };
 }
 
-const Transcript: React.FC<TranscriptProps> = ({
+const TranscriptListItem: React.FC<{
+  item: TranscriptItem;
+  getTranscriptName: (id: string) => string;
+  transcriptDirections: { [id: string]: string };
+  handleDirectionChange: (id: string, value: string) => void;
+  handleTranscriptToggle: (id: string) => void;
+  internalOptions: typeof internalOptions;
+}> = React.memo(({
+  item,
+  getTranscriptName,
+  transcriptDirections,
+  handleDirectionChange,
+  handleTranscriptToggle,
+  internalOptions,
+}) => {
+  const handleVisibilityChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value === "show";
+    if (newValue !== item.enabled) {
+      handleTranscriptToggle(item.id);
+    }
+  }, [item.enabled, item.id, handleTranscriptToggle]);
+
+  return (
+    <ListItem sx={{ px: 1, py: 1.5 }}>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={12} md={4}>
+          <Typography sx={{ fontWeight: 500, color: "#1e293b", fontSize: "0.9rem" }}>
+            {getTranscriptName(item.id)}
+          </Typography>
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <SelectInput
+            label="جهت رونوشت"
+            value={transcriptDirections[item.id] || item.transcript_for || "notification"}
+            options={internalOptions}
+            onChange={(value) => handleDirectionChange(item.id, value)}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 1 }}>
+            <RadioGroup
+              row
+              value={item.enabled ? "show" : "hidden"}
+              onChange={handleVisibilityChange}
+              sx={{ flexWrap: 'nowrap' }}
+            >
+              <FormControlLabel
+                value="show"
+                control={
+                  <Radio
+                    size="small"
+                    checked={item.enabled}
+                    sx={{
+                      color: "#64748b",
+                      '&.Mui-checked': {
+                        color: "#3b82f6",
+                      },
+                    }}
+                  />
+                }
+                label={<Typography sx={{ fontSize: "0.9rem", color: "#64748b" }}>نمایش</Typography>}
+              />
+              <FormControlLabel
+                value="hidden"
+                control={
+                  <Radio
+                    size="small"
+                    checked={!item.enabled}
+                    sx={{
+                      color: "#64748b",
+                      '&.Mui-checked': {
+                        color: "#3b82f6",
+                      },
+                    }}
+                  />
+                }
+                label={<Typography sx={{ fontSize: "0.9rem", color: "#64748b" }}>مخفی</Typography>}
+              />
+            </RadioGroup>
+          </Box>
+        </Grid>
+      </Grid>
+    </ListItem>
+  );
+});
+
+const Transcript: React.FC<TranscriptProps> = React.memo(({
   transcript,
   selectedTranscript,
   setSelectedTranscript,
@@ -45,19 +148,18 @@ const Transcript: React.FC<TranscriptProps> = ({
   setTranscriptDirection,
   data,
 }) => {
-  const handleDirectionChange = (id: string, value: string) => {
+  const handleDirectionChange = useCallback((id: string, value: string) => {
     setTranscriptDirection(id, value);
-  };
+  }, [setTranscriptDirection]);
 
-  const handleAdd = () => {
+  const handleAdd = useCallback(() => {
     if (selectedTranscript.length > 0) {
       handleAddTranscript();
       setSelectedTranscript([]);
     }
-  };
+  }, [selectedTranscript, handleAddTranscript, setSelectedTranscript]);
 
-  const hasReferenceData =
-    data?.sender?.reference_details && data.sender.reference_details.length > 0;
+  const hasReferenceData = data?.sender?.reference_details && data.sender.reference_details.length > 0;
 
   return (
     <Box
@@ -132,7 +234,7 @@ const Transcript: React.FC<TranscriptProps> = ({
             رونوشت‌های موجود:
           </Typography>
           <List sx={{ p: 0 }}>
-            {data.sender.reference_details.map((item: any, index: number) => (
+            {data?.sender?.reference_details?.map((item: ReferenceDetail, index: number) => (
               <React.Fragment key={`ref-${item.id}`}>
                 <ListItem sx={{ px: 1, py: 1.5 }}>
                   <Grid container spacing={2} alignItems="center">
@@ -148,7 +250,7 @@ const Transcript: React.FC<TranscriptProps> = ({
                     </Grid>
                   </Grid>
                 </ListItem>
-                {index < data.sender.reference_details.length - 1 && (
+                {index < (data?.sender?.reference_details?.length || 0) - 1 && (
                   <Divider sx={{ my: 0.5 }} />
                 )}
               </React.Fragment>
@@ -171,68 +273,14 @@ const Transcript: React.FC<TranscriptProps> = ({
           <List sx={{ p: 0 }}>
             {transcript.map((item, index) => (
               <React.Fragment key={item.id}>
-                <ListItem sx={{ px: 1, py: 1.5 }}>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12} md={4}>
-                      <Typography
-                        sx={{
-                          fontWeight: 500,
-                          color: "#1e293b",
-                          fontSize: "0.9rem",
-                        }}
-                      >
-                        {getTranscriptName(item.id)}
-                      </Typography>
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <SelectInput
-                        label="جهت رونوشت"
-                        value={
-                          transcriptDirections[item.id] ||
-                          item.transcript_for ||
-                          ""
-                        }
-                        options={internalOptions}
-                        onChange={(value) =>
-                          handleDirectionChange(item.id, value)
-                        }
-                      />
-                    </Grid>
-
-                    {/* وضعیت نمایش */}
-                    <Grid item xs={12} md={4}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "flex-end",
-                          gap: 1,
-                        }}
-                      >
-                        <Typography
-                          sx={{ fontSize: "0.9rem", color: "#64748b" }}
-                        >
-                          {item.enabled ? "مخفی" : "نمایش"}
-                        </Typography>
-                        <Switch
-                          checked={item.enabled}
-                          onChange={() => handleTranscriptToggle(item.id)}
-                          size="small"
-                          sx={{
-                            "& .MuiSwitch-switchBase.Mui-checked": {
-                              color: "#3b82f6",
-                            },
-                            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
-                              {
-                                backgroundColor: "#93c5fd",
-                              },
-                          }}
-                        />
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </ListItem>
+                <TranscriptListItem
+                  item={item}
+                  getTranscriptName={getTranscriptName}
+                  transcriptDirections={transcriptDirections}
+                  handleDirectionChange={handleDirectionChange}
+                  handleTranscriptToggle={handleTranscriptToggle}
+                  internalOptions={internalOptions}
+                />
                 {index < transcript.length - 1 && <Divider sx={{ my: 0.5 }} />}
               </React.Fragment>
             ))}
@@ -250,6 +298,6 @@ const Transcript: React.FC<TranscriptProps> = ({
       )}
     </Box>
   );
-};
+});
 
 export default Transcript;

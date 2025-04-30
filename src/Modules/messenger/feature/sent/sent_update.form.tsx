@@ -32,8 +32,6 @@ import {
   priorityOptions,
   departmentOptions,
   letterTypeOptions,
-  referralOptions,
-  referralDetailsOptions,
 } from "../../data/sent/sent.data";
 import { useParams } from "react-router-dom";
 import { STYLES } from "../../style";
@@ -61,11 +59,15 @@ const SentUpdateForm: React.FC = () => {
     setFormData,
   } = useSentFormStore();
 
-  const [useInternalReceiver, setUseInternalReceiver] = useState(true);
+  const [useInternalReceiver, setUseInternalReceiver] = useState(
+    formData.is_internal ?? true
+  );
+
   const { id } = useParams();
   const isEditMode = !!id;
 
   const { data: Position } = usePosition.useGet();
+  const { data: PositionAll } = usePosition.useGetAll();
   const { data: Attache } =
     useCorrespondenceAttachment.useGetAttache() as unknown as {
       data: CorrespondenceAttachments;
@@ -82,7 +84,6 @@ const SentUpdateForm: React.FC = () => {
         receiver_external:
           data.sender.receiver_external_details?.name ||
           data.sender.receiver_external,
-          
       });
       setUseInternalReceiver(data.sender.is_internal);
     } else if (!isEditMode) {
@@ -104,7 +105,7 @@ const SentUpdateForm: React.FC = () => {
         confidentiality_level: "",
         priority: "",
         kind_of_correspondence: "",
-        authority_type: "",
+        authority_type: "new",
         authority_correspondence: null,
         reference: [],
         transcript: [],
@@ -114,9 +115,13 @@ const SentUpdateForm: React.FC = () => {
     }
   }, [setFormData, data, id, isEditMode]);
 
+  useEffect(() => {
+    setUseInternalReceiver(formData.is_internal ?? true);
+  }, [formData.is_internal]);
+
   const { mutate: updateCorrespondence } =
     useCorrespondenceAttachment.useUpdateCorrespondence();
-    const { mutate: postCorrespondence } =
+  const { mutate: postCorrespondence } =
     useCorrespondenceAttachment.usePostCorrespondence();
 
   const attachmentOptions =
@@ -126,7 +131,7 @@ const SentUpdateForm: React.FC = () => {
     })) || [];
 
   const internalUserOptions =
-    (Position as PositionTypes[])?.map((position) => ({
+    (PositionAll as PositionTypes[])?.map((position) => ({
       label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
       value: position.id.toString(),
     })) || [];
@@ -146,7 +151,7 @@ const SentUpdateForm: React.FC = () => {
 
     const apiTranscript: TranscriptAPIData = {
       position: formData.sender || transcript[0]?.position,
-      transcript_for: transcript[0]?.transcript_for || "notification",
+      transcript_for: transcript[0]?.transcript_for,
       security: transcript[0]?.security || false,
       correspondence: null,
       read_at: new Date().toISOString(),
@@ -158,9 +163,9 @@ const SentUpdateForm: React.FC = () => {
       receiver_internal: Number(restFormData.receiver_internal) || null,
       transcript: [apiTranscript],
     };
-    
+
     if (isEditMode && id) {
-      updateCorrespondence({...finalData, id: Number(id)});
+      updateCorrespondence({ ...finalData, id: Number(id) });
     } else {
       postCorrespondence(finalData);
     }
@@ -175,7 +180,7 @@ const SentUpdateForm: React.FC = () => {
     formData.reference?.map((ref) => ({
       id: ref.toString(),
       enabled: true,
-      transcript_for: transcriptDirections[ref.toString()] || "notification",
+      transcript_for: transcriptDirections[ref.toString()],
     })) || [];
 
   return (
@@ -211,12 +216,16 @@ const SentUpdateForm: React.FC = () => {
             <Grid item xs={12}>
               <ReceiverTypeButtons
                 receiverType={useInternalReceiver ? "internal" : "external"}
-                onTypeChange={(type) =>
-                  setUseInternalReceiver(type === "internal")
-                }
-                onIsInternalChange={(isInternal) => 
-                  handleChange("is_internal", isInternal)
-                }
+                onTypeChange={(type) => {
+                  setUseInternalReceiver(type === "internal");
+                  handleChange("is_internal", type === "internal");
+                  // Reset receiver values when switching types
+                  if (type === "internal") {
+                    handleChange("receiver_external", "");
+                  } else {
+                    handleChange("receiver_internal", "");
+                  }
+                }}
               />
             </Grid>
 
@@ -388,18 +397,18 @@ const SentUpdateForm: React.FC = () => {
 
             <Grid item xs={12}>
               <Grid container spacing={{ xs: 2, sm: 2 }}>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={12}>
                   <TextAreaInput
                     label={"توضیحات"}
                     value={formData.description || ""}
                     onChange={(e) =>
                       handleChange("description", e.target.value)
                     }
-                    rows={1}
+                    rows={2}
                     className="enhanced-textarea"
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                {/* <Grid item xs={12} md={4}>
                   <SelectInput
                     label="نوع ارجاع"
                     value={formData.authority_type || ""}
@@ -407,8 +416,8 @@ const SentUpdateForm: React.FC = () => {
                     options={referralOptions}
                     className="enhanced-select"
                   />
-                </Grid>
-                {formData.authority_type && (
+                </Grid> */}
+                {/* {formData.authority_type && (
                   <Grid item xs={12} md={4}>
                     <SelectInput
                       label="ارجاع"
@@ -422,7 +431,7 @@ const SentUpdateForm: React.FC = () => {
                       className="enhanced-select"
                     />
                   </Grid>
-                )}
+                )} */}
               </Grid>
             </Grid>
           </Grid>
@@ -474,6 +483,7 @@ const SentUpdateForm: React.FC = () => {
                 display: "flex",
                 justifyContent: "center",
                 mt: { xs: 1.5, sm: 2 },
+                mb: { xs: 5.5, sm: 5 },
               }}
             >
               <ButtonBase

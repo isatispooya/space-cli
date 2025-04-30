@@ -7,12 +7,18 @@ import {
 import { getPositions, patchPosition, postPosition } from "../services";
 import { PositionPostTypes, PositionTypes } from "../types";
 import { AxiosError } from "axios";
-
+import getAllPositions from "../services/allposition.get";
 export const usePosition = {
   useGet: (): UseQueryResult<PositionTypes[]> => {
     return useQuery({
       queryKey: ["positions.get"],
       queryFn: getPositions,
+    });
+  },
+  useGetAll: (): UseQueryResult<PositionTypes[]> => {
+    return useQuery({
+      queryKey: ["positions.getAll"],
+      queryFn: getAllPositions,
     });
   },
   useCreate: (): UseMutationResult<

@@ -52,6 +52,8 @@ const SentForm: React.FC = () => {
   const [useInternalReceiver, setUseInternalReceiver] = useState(true);
 
   const { data: Position } = usePosition.useGet();
+  const { data: PositionAll } = usePosition.useGetAll();
+
   const { data: Attache } =
     useCorrespondenceAttachment.useGetAttache() as unknown as {
       data: CorrespondenceAttachments;
@@ -72,15 +74,17 @@ const SentForm: React.FC = () => {
     })) || [];
 
   const senderUserOptions =
-    (Position as PositionTypes[])?.map((position) => ({
-      label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
-      value: position.id.toString(),
+    (PositionAll as PositionTypes[])?.map((PositionAll) => ({
+      label: `${PositionAll.user.first_name} ${PositionAll.user.last_name} | ${PositionAll.user.uniqueIdentifier}`,
+      value: PositionAll.id.toString(),
     })) || [];
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
       e.preventDefault();
     }
+
+    console.log(senderUserOptions);
 
     const { transcript, ...restFormData } = formData;
 
@@ -106,12 +110,13 @@ const SentForm: React.FC = () => {
     return recipient ? recipient.label : "";
   };
 
-  const transcriptItems =
-    formData.reference?.map((ref) => ({
-      id: ref.toString(),
-      enabled: true,
-      transcript_for: transcriptDirections[ref.toString()] || "notification",
+  const transcriptItems = React.useMemo(() => {
+    return formData.referenceData?.map((refData) => ({
+      id: refData.id.toString(),
+      enabled: refData.enabled,
+      transcript_for: transcriptDirections[refData.id.toString()] || refData.transcript_for || "notification",
     })) || [];
+  }, [formData.referenceData, transcriptDirections]);
 
   return (
     <Box sx={{
