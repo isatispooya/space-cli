@@ -1,5 +1,5 @@
 import { MainLayout } from "@/layouts";
-import ToolsDashboard from "../feature/tools_dash.feat";
+import ToolsDashboard from "../feature/tools.feat";
 
 const FinToolsMainPage = () => {
   return (

@@ -16,8 +16,9 @@ import { Edit } from "@mui/icons-material";
 import { TimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { useTimeflow } from "../hooks";
-import { ToastContainer, toast } from "react-toastify";
+import { Toast } from "@/components";
 import { AxiosError } from "axios";
+import { CheckCircle, X } from "lucide-react";
 
 type VerifyType = "login" | "logout" | "absent" | "leave" | "mission" | "";
 
@@ -49,14 +50,18 @@ export default function NewVerifyForm() {
       {
         onSuccess: (data: unknown) => {
           const response = data as TimeflowResponse;
-          toast.success(response.message);
+          Toast(response.message, <CheckCircle />, "#00C853");
         },
         onError: (error: unknown) => {
           const axiosError = error as AxiosError<{
             message: string;
             error: string;
           }>;
-          toast.error(axiosError.response?.data?.error || "خطایی رخ داد");
+          Toast(
+            axiosError.response?.data?.error || "خطایی رخ داد",
+            <X />,
+            "#FF0000"
+          );
         },
       }
     );
@@ -67,8 +72,6 @@ export default function NewVerifyForm() {
 
   return (
     <AnimatePresence>
-      <ToastContainer />
-
       <motion.div
         key="new-verify-form"
         initial={{ opacity: 0, y: 30 }}

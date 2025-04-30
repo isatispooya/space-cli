@@ -6,9 +6,9 @@ const FinToolsMainPage = lazy(() =>
   }))
 );
 
-const KhatamMainPage = lazy(() =>
-  import("../modules").then((module) => ({
-    default: module.KhatamMainPage,
+const SymbolsMainPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.SymbolsMainPage,
   }))
 );
 
@@ -18,8 +18,8 @@ const FinToolsRoutes = [
     element: <FinToolsMainPage />,
   },
   {
-    path: "/khatam",
-    element: <KhatamMainPage />,
+    path: "/symbols/:id",
+    element: <SymbolsMainPage />,
   },
 ];
 
