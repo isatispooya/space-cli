@@ -2,10 +2,16 @@ import { Chart, Details } from "../components";
 import { MainLayout } from "@/layouts";
 import { useSymbols } from "../hooks";
 import { useParams } from "react-router-dom";
+import { Symbol } from "../types";
 
 const SymbolsFeat = () => {
   const { id } = useParams();
-  const { data: symbol } = useSymbols.useGetSymbolsById(Number(id));
+  const { data: symbolResponse } = useSymbols.useGetSymbolsById(Number(id));
+
+  // Convert SymbolResponse to Symbol if available
+  const symbol: Symbol | undefined = symbolResponse
+    ? symbolResponse[0]
+    : undefined;
 
   return (
     <MainLayout>
@@ -15,7 +21,7 @@ const SymbolsFeat = () => {
             <Chart
               data={[1, 2, 3, 4, 5]}
               labels={["1", "2", "3", "4", "5"]}
-              symbol={symbol}
+              symbols={symbol}
             />
           </div>
         </div>
