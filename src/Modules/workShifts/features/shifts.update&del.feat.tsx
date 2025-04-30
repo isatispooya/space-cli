@@ -1,4 +1,4 @@
-import { DynamicList } from "@/components";
+import { DynamicList, Button } from "@/components";
 import { useShifts } from "../hooks";
 import { SelectInput } from "@/components";
 import { useMemo, useEffect, useCallback } from "react";
@@ -11,7 +11,6 @@ import {
   Chip,
   Box,
   Typography,
-  Button,
 } from "@mui/material";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
@@ -44,8 +43,11 @@ import {
   updateEditForm,
   setSearchQuery,
   setVisibleItems,
+  selectDates,
+  setDates,
 } from "../store/shiftsForm.store";
 import { Dialog } from "@/components/modals";
+import DatePanel from "react-multi-date-picker/plugins/date_panel";
 moment.loadPersian({ usePersianDigits: true });
 
 export interface ShiftUpdatePayload {
@@ -110,6 +112,7 @@ const ShiftsUpdateDel = () => {
   const { mutate: deleteShift } = useShifts.useDeleteShift();
   const { mutate: deleteShiftDay } = useShifts.useDeleteShiftDay();
   const selectedShift = useSelector(selectSelectedShift);
+  const dates = useSelector(selectDates);
   const searchQuery = useSelector(selectSearchQuery);
   const visibleItems = useSelector(selectVisibleItems);
   const editingId = useSelector(selectEditingId);
@@ -361,30 +364,60 @@ const ShiftsUpdateDel = () => {
     ]
   );
 
+  const handleDateChange = (dateObjects: DateObject[]) => {
+    dispatch(setDates(dateObjects));
+  };
+
+
+  console.log(dates)
+
   return (
     <>
-      <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
-        <SelectInput
-          options={uniqueShifts.map((shiftName) => ({
-            value: shiftName,
-            label: shiftName,
-          }))}
-          label="شیفت ها"
-          value={selectedShift}
-          onChange={(value) => dispatch(setSelectedShift(value))}
-          className="w-full"
-        />
+      <div className="flex items-center justify-between gap-4 mb-6 bg-white p-4 rounded-lg shadow-sm">
+        <div className="flex items-center gap-4 flex-1">
+          <SelectInput
+            options={uniqueShifts.map((shiftName) => ({
+              value: shiftName,
+              label: shiftName,
+            }))}
+            label="شیفت ها"
+            value={selectedShift}
+            onChange={(value) => dispatch(setSelectedShift(value))}
+            className="min-w-[200px]"
+          />
+          <DatePicker
+            range
+            calendarPosition="bottem-left"
+            fixMainPosition
+            value={dates}
+            minDate={new DateObject({ calendar: persian }).toFirstOfMonth()}
+            maxDate={new DateObject({ calendar: persian }).toLastOfMonth()}
+            onChange={handleDateChange}
+            plugins={[<DatePanel eachDaysInRange position="left" />]}
+            calendar={persian}
+            locale={persian_fa}
+            format="YYYY/MM/DD"
+            dateSeparator=" - "
+            containerStyle={{
+              height: "40px",
+              minWidth: "260px",
+            }}
+            style={{
+              height: "100%",
+              fontSize: "14px",
+            }}
+          />
+        </div>
         {selectedShift && (
           <Button
-            variant="contained"
-            color="error"
+            color="red"
             onClick={handleDeleteEntireShiftClick}
-            sx={{ whiteSpace: "nowrap" }}
+            className="px-6 py-2 h-[40px] whitespace-nowrap bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors"
           >
             حذف کل شیفت
           </Button>
         )}
-      </Box>
+      </div>
 
       <DynamicList
         data={filteredShiftData}
@@ -445,23 +478,23 @@ const ShiftsUpdateDel = () => {
         header="حذف کل شیفت"
         hideFooter={false}
         footer={
-          <div className="flex gap-2">
+          <div className="flex gap-2 ">
             <button
               onClick={handleDeleteEntireShiftCancel}
-              className="px-4 py-2 text-gray-600 hover:text-gray-700 rounded-md border border-gray-300"
+              className="px-4 py-2  text-gray-600 hover:text-gray-700 rounded-md border border-gray-300"
             >
               انصراف
             </button>
             <button
               onClick={handleDeleteEntireShiftConfirm}
-              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+              className="px-4 py-2  bg-red-500 text-white rounded-md hover:bg-red-600"
             >
               حذف
             </button>
           </div>
         }
       >
-        <div className="py-4">
+        <div className="py-4 text-right">
           <p className="text-gray-700">
             آیا از حذف کل شیفت "{selectedShift}" اطمینان دارید؟
           </p>

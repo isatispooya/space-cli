@@ -83,7 +83,7 @@ const ShiftsTable = () => {
       </div>
 
       <div className="overflow-x-auto">
-        {Array.isArray(data) && data.length > 0 ? (
+        {selectedShift && Array.isArray(data) && data.length > 0 ? (
           <TabulatorTable
             data={mappedData || []}
             columns={columns()}
@@ -92,7 +92,11 @@ const ShiftsTable = () => {
             formatExportData={ExelData}
           />
         ) : (
-          <LoaderLg />
+          <div className="text-center py-8 text-gray-500">
+            {selectedShift
+              ? "هیچ داده‌ای یافت نشد"
+              : "لطفاً یک شیفت را انتخاب کنید"}
+          </div>
         )}
       </div>
     </div>

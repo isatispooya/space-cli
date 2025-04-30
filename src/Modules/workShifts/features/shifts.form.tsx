@@ -152,7 +152,7 @@ const ShiftsForm = () => {
     <div className="min-h-screen flex justify-center items-start p-3">
       <div className="w-full max-w-[1000px]">
         <div className="w-full rounded-2xl p-4 mt-4 bg-white shadow-md">
-          <h2 className="text-[#29D2C7] mb-4 text-left font-medium text-xl">
+          <h2 className="text-[#29D2C7] mb-4 text-right font-medium text-xl">
             برنامه‌ریزی شیفت‌ها
           </h2>
 

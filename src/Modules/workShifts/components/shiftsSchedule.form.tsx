@@ -39,6 +39,20 @@ const ShiftSchedule = ({
         plugins={[<DatePanel eachDaysInRange position="left" />]}
         calendar={persian}
         locale={persian_fa}
+        format="YYYY/MM/DD"
+        dateSeparator=" - "
+        style={{
+          width: "100%",
+          height: "40px",
+          padding: "8.5px 14px",
+          fontSize: "1rem",
+          borderRadius: "4px",
+          border: "1px solid rgba(0, 0, 0, 0.23)",
+          backgroundColor: "transparent",
+        }}
+        containerStyle={{
+          width: "100%",
+        }}
       />
     </Grid>
   </Grid>
