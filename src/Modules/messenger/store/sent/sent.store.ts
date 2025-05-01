@@ -164,18 +164,18 @@ export const useSentFormStore = create<SentFormState>((set) => ({
             transcript_for: state.transcriptDirections[id.toString()] || ""
           }));
           
-          const lastDirection = state.transcriptDirections[newReferences[0].toString()] || "notification";
+          const newTranscripts = newReferences.map(refId => ({
+            ...defaultTranscript,
+            position: refId,
+            transcript_for: state.transcriptDirections[refId.toString()] || "notification"
+          }));
           
           return {
             formData: {
               ...state.formData,
               reference: [...state.formData.reference, ...newReferences],
               referenceData: [...(state.formData.referenceData || []), ...newReferenceData],
-              transcript: state.formData.transcript.map(t => ({
-                ...t,
-                transcript_for: lastDirection,
-                position: newReferences[0]
-              }))
+              transcript: newTranscripts
             },
           };
         }
@@ -210,19 +210,32 @@ export const useSentFormStore = create<SentFormState>((set) => ({
         numId
       ]));
       
-      const currentTranscript = state.formData.transcript[0] || defaultTranscript;
-      const updatedTranscript = {
-        ...currentTranscript,
-        position: numId,
-        transcript_for: state.transcriptDirections[id] || currentTranscript.transcript_for
-      };
+      const existingTranscript = state.formData.transcript.find(t => t.position === numId);
+      let updatedTranscripts;
+      
+      if (existingTranscript) {
+        updatedTranscripts = state.formData.transcript.map(t =>
+          t.position === numId
+            ? { ...t, transcript_for: state.transcriptDirections[id] || t.transcript_for }
+            : t
+        );
+      } else {
+        updatedTranscripts = [
+          ...state.formData.transcript,
+          {
+            ...defaultTranscript,
+            position: numId,
+            transcript_for: state.transcriptDirections[id] || "notification"
+          }
+        ];
+      }
       
       return {
         formData: {
           ...state.formData,
           reference: updatedReference,
           referenceData: updatedReferenceData,
-          transcript: [updatedTranscript]
+          transcript: updatedTranscripts
         },
       };
     }),

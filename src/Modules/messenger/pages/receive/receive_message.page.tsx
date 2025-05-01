@@ -1,10 +1,9 @@
-import { ShowMessage } from "../../feature/receive";
+import { SentMessage } from "../../feature";
 
 const ReceiveMessagePage = () => {
-  return (
-    <div>
-      <ShowMessage />
-    </div>
-  );
+  return <SentMessage />;
 };
+
 export default ReceiveMessagePage;
+
+
