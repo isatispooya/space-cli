@@ -49,8 +49,8 @@ const SentDetail = () => {
   const { data } = useReceiveById(id || "");
   const { data: allposition } = usePosition.useGetAll();
 
-  const userOption = data?.sender?.transcript_details?.map((item: TranscriptDetails) =>
-    item.position.toString()
+  const userOption = data?.sender?.transcript_details?.map(
+    (item: TranscriptDetails) => item.position.toString()
   );
 
   const matchedUsers = allposition
@@ -58,6 +58,8 @@ const SentDetail = () => {
     .map((matched) => ({
       position: `${matched.name}`,
       id: matched.id,
+      firstName: matched.user?.first_name || "",
+      lastName: matched.user?.last_name || "",
     }));
 
   if (!data?.sender) {
@@ -286,31 +288,36 @@ const SentDetail = () => {
                     رونوشت:
                   </Typography>
                   {sender?.transcript_details.map((transcript) => {
-                      const positionText =
-                        matchedUsers?.find(
-                          (user) => user.id === transcript.position
-                        )?.position || "نامشخص";
-                      const referralLabel = getValueLabel(
-                        transcript.transcript_for,
-                        internalOptions
-                      );
+                    const positionInfo = matchedUsers?.find(
+                      (user) => user.id === transcript.position
+                    );
+                    const positionText = positionInfo?.position || "نامشخص";
+                    const userFullName =
+                      positionInfo?.firstName && positionInfo?.lastName
+                        ? `_ ${positionInfo.firstName} ${positionInfo.lastName} `
+                        : "";
+                    const referralLabel = getValueLabel(
+                      transcript.transcript_for,
+                      internalOptions
+                    );
 
-                      return (
-                        <Typography
-                          key={transcript.id}
-                          sx={{
-                            p: 2,
-                            borderRadius: "8px",
-                            mb: 1,
-                            backgroundColor: "background.paper",
-                            fontSize: { xs: "0.9rem", sm: "0.95rem" },
-                            color: "text.primary",
-                          }}
-                        >
-                          {positionText} جهت {referralLabel}
-                        </Typography>
-                      );
-                    })}
+                    return (
+                      <Typography
+                        key={transcript.id}
+                        sx={{
+                          p: 2,
+                          borderRadius: "8px",
+                          mb: 1,
+                          backgroundColor: "background.paper",
+                          fontSize: { xs: "0.9rem", sm: "0.95rem" },
+                          color: "text.primary",
+                        }}
+                      >
+                        {userFullName}
+                        {positionText} جهت {referralLabel}
+                      </Typography>
+                    );
+                  })}
                 </Box>
               </Grid>
             )}

@@ -12,7 +12,6 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel,
 } from "@mui/material";
 import { MultiSelect, SelectInput } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
@@ -67,9 +66,8 @@ const TranscriptListItem: React.FC<{
     internalOptions,
   }) => {
     const handleVisibilityChange = useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = event.target.value === "show";
-        if (newValue !== item.enabled) {
+      (event: React.SyntheticEvent, checked: boolean) => {
+        if (checked !== item.enabled) {
           handleTranscriptToggle(item.id);
         }
       },
