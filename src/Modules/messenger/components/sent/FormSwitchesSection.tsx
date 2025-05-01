@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Box, Divider } from "@mui/material";
 import FormSwitches from "./switch";
-import { FormDataType } from "../../types/sent/CorrespondenceAttache.type";
+import { FormDataType } from "../../types/sent/sent.type";
 
 interface FormSwitchesSectionProps {
   formData: FormDataType;

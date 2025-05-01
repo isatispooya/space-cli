@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import { TextAreaInput } from "../../../../components/common/inputs";
-import { FormDataType } from "../../types/sent/CorrespondenceAttache.type";
+import { FormDataType } from "../../types/sent/sent.type";
 
 interface MessageContentSectionProps {
   formData: FormDataType;

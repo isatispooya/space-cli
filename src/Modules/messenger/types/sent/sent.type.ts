@@ -1,3 +1,22 @@
+export interface SentMessage {
+  id: number;
+  title: string;
+  receiver: string;
+  sender: string;
+  send_date: string;
+  status: string;
+  message_type: string;
+}
+
+
+export interface CellComponent {
+  getElement: () => HTMLElement;
+  getRow: () => { getData: () => SentMessage };
+} 
+
+
+
+
 interface User {
   id: number;
   first_name: string;
@@ -118,5 +137,6 @@ export interface CorrespondenceResponse {
   sender: CorrespondenceItem[];
   receiver: CorrespondenceItem[];
 }
+
 
 export type CorrespondenceAttachments = CorrespondenceAttachment[];

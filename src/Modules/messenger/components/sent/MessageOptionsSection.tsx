@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Box, Typography } from "@mui/material";
 import { SelectInput, MultiSelect } from "../../../../components/common/inputs";
-import { FormDataType } from "../../types/sent/CorrespondenceAttache.type";
+import { FormDataType } from "../../types/sent/sent.type";
 
 interface MessageOptionsSectionProps {
   formData: FormDataType;

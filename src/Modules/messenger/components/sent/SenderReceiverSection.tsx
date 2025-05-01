@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
 import { FormInput, SelectInput } from "../../../../components/common/inputs";
-import { FormDataType } from "../../types/sent/CorrespondenceAttache.type";
+import { FormDataType } from "../../types/sent/sent.type";
 import ReceiverTypeButtons from "./ReceiverTypeButtons";
 
 interface SenderReceiverSectionProps {

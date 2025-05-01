@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { FormDataType, ReferenceData, TranscriptData } from "../../types/sent/CorrespondenceAttache.type";
+import { FormDataType, ReferenceData, TranscriptData } from "../../types/sent/sent.type";
 
 interface SentFormState {
   formData: FormDataType;

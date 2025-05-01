@@ -10,7 +10,7 @@ import {
   AttachmentResponse,
   APIFormDataType,
   CorrespondenceResponse,
-} from "../../types/sent/CorrespondenceAttache.type";
+} from "../../types/sent/sent.type";
 
 const useCorrespondenceAttachment = {
   useGetAttache: (): UseQueryResult<CorrespondenceAttachments> => {

@@ -23,7 +23,7 @@ import {
   CorrespondenceAttachment,
   CorrespondenceAttachments,
   APIFormDataType,
-} from "../../types/sent/CorrespondenceAttache.type";
+} from "../../types/sent/sent.type";
 import { AttachmentDialog } from "../../components/sent";
 import Transcript from "../../components/sent/sent_transcript";
 import { useSentFormStore } from "../../store/sent/sent.store";
