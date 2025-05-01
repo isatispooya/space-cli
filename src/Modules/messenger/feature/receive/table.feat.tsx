@@ -1,32 +1,13 @@
 import "moment/locale/fa";
 import { TabulatorTable } from "../../../../components";
 import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { createActionMenu } from "../../../../components/table/actionMenus";
-
+import columns from "../../data/receive/columnsData";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
-import { CorrespondenceItem } from "../../types/sent/CorrespondenceAttache.type";
-
-interface SentMessage {
-  id: number;
-  title: string;
-  receiver: string;
-  sender: string;
-  send_date: string;
-  status: string;
-  message_type: string;
-}
-
-declare global {
-  interface Window {
-    handleView: (message: SentMessage) => void;
-  }
-}
-
-interface CellComponent {
-  getElement: () => HTMLElement;
-  getRow: () => { getData: () => SentMessage };
-}
+import {
+  CorrespondenceItem,
+  ReceiveMessage,
+} from "../../types/receive/ReceiveMessage.type";
+import ExelData from "../../data/receive/receiveExelData";
 
 export const ReceiveTable = () => {
   const { data: correspondence } =
@@ -49,83 +30,9 @@ export const ReceiveTable = () => {
           : item.receiver_external || "نامشخص",
       send_date: new Date(item.created_at).toLocaleDateString("fa-IR"),
       message_type: item.priority === "urgent" ? "فوری" : "عادی",
+      status: "",
     }));
   }, [correspondence]);
-
-  const navigate = useNavigate();
-  const handleView = (row: SentMessage) => {
-    navigate(`/letter-receive/message/${row.id}`);
-  };
-
-  const columns = () => [
-    { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
-    {
-      title: "ارسال کننده",
-      field: "sender",
-      headerFilter: true,
-      hozAlign: "center",
-    },
-    {
-      title: "گیرنده",
-      field: "receiver",
-      headerFilter: true,
-      hozAlign: "center",
-    },
-    {
-      title: "تاریخ ارسال",
-      field: "send_date",
-      headerFilter: true,
-      hozAlign: "center",
-    },
-    {
-      title: "نوع پیام",
-      field: "message_type",
-      headerFilter: true,
-      hozAlign: "center",
-    },
-    {
-      title: "عملیات",
-      formatter: () => {
-        return '<button class="action-btn">⋮</button>';
-      },
-      hozAlign: "center",
-      headerSort: false,
-      width: 60,
-      cellClick: function (e: Event, cell: CellComponent) {
-        e.stopPropagation();
-        const rowData = cell.getRow().getData();
-        const element = cell.getElement();
-        const rect = element.getBoundingClientRect();
-
-        createActionMenu({
-          items: [
-            {
-              label: "نمایش",
-              icon: "👀",
-              onClick: () => handleView(rowData),
-            },
-          ],
-          position: {
-            x: rect.left + window.scrollX,
-            y: rect.bottom + window.scrollY,
-          },
-        });
-      },
-    },
-  ];
-
-  window.handleView = handleView;
-
-  const ExelData = (item: SentMessage) => {
-    return {
-      عنوان: item.title || "نامشخص",
-      گیرنده: item.receiver || "نامشخص",
-      تاریخ_ارسال: item.send_date || "نامشخص",
-      وضعیت: item.status || "نامشخص",
-      نوع_پیام: item.message_type || "نامشخص",
-      ارسال_کننده: item.sender || "نامشخص",
-    };
-  };
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
@@ -135,7 +42,7 @@ export const ReceiveTable = () => {
           columns={columns()}
           title="پیام های ارسالی"
           showActions={true}
-          formatExportData={ExelData}
+          formatExportData={(item: ReceiveMessage) => ExelData(item)}
         />
       </div>
     </div>
