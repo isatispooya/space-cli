@@ -1,3 +1,10 @@
+export interface BaseUser {
+  id: number;
+  first_name: string;
+  last_name: string;
+  uniqueIdentifier?: string;
+}
+
 export interface SentMessage {
   id: number;
   title: string;
@@ -8,25 +15,14 @@ export interface SentMessage {
   message_type: string;
 }
 
-
 export interface CellComponent {
   getElement: () => HTMLElement;
   getRow: () => { getData: () => SentMessage };
-} 
-
-
-
-
-interface User {
-  id: number;
-  first_name: string;
-  last_name: string;
-  uniqueIdentifier: string;
 }
 
 export interface CorrespondenceAttachment {
   id: number;
-  user: User;
+  user: BaseUser;
   name: string;
   file: string;
   size: number;
@@ -114,12 +110,12 @@ export interface AttachmentResponse {
   size: number;
 }
 
-interface SenderDetails {
-  user: User;
+export interface SenderDetails {
+  user: BaseUser;
 }
 
-interface ReceiverInternalDetails {
-  user: User;
+export interface ReceiverInternalDetails {
+  user: BaseUser;
 }
 
 export interface CorrespondenceItem {
@@ -138,5 +134,67 @@ export interface CorrespondenceResponse {
   receiver: CorrespondenceItem[];
 }
 
-
 export type CorrespondenceAttachments = CorrespondenceAttachment[];
+
+export interface TranscriptDetails {
+  id: number;
+  read_at: string | null;
+  transcript_for: string;
+  security: boolean;
+  created_at: string;
+  updated_at: string;
+  position: number;
+  correspondence: number;
+}
+
+export interface Attachment {
+  id: number;
+  user: BaseUser;
+  name: string;
+  file: string;
+  size: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Position {
+  id: number;
+  name: string;
+  user?: BaseUser;
+}
+
+export interface SenderType {
+  created_at: string;
+  attachments_details?: CorrespondenceAttachment[];
+  number: string;
+  confidentiality_level?: string;
+  subject: string;
+  sender_details?: SenderDetails;
+  receiver_internal_details?: ReceiverInternalDetails;
+  receiver_external?: string;
+  is_internal: boolean;
+  text: string;
+  transcript_details: TranscriptDetails[];
+  postcript?: string;
+}
+
+export interface MatchedUser {
+  position: string;
+  id: number;
+  firstName: string;
+  lastName: string;
+}
+
+export interface MessageHeaderProps {
+  sender: SenderType;
+  formattedDate: string;
+}
+
+export interface MessageContentProps {
+  sender: SenderType;
+}
+
+export interface MessageFooterProps {
+  sender: SenderType;
+  matchedUsers?: MatchedUser[];
+}

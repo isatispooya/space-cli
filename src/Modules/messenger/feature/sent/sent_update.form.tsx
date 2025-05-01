@@ -35,7 +35,6 @@ import {
 import { useParams } from "react-router-dom";
 import { STYLES } from "../../style";
 import FormSwitches from "../../components/sent/switch";
-import "./sent.css";
 import ReceiverTypeButtons from "../../components/sent/ReceiverTypeButtons";
 import { useReceiveById } from "../../hooks/receive/useReceive";
 
