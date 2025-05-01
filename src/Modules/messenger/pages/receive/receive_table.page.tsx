@@ -1,10 +1,7 @@
-import { TableReceive } from "../../feature/receive";
+import { ReceiveTable } from "../../feature/receive/table.feat";
 
 const ReceiveTablePage = () => {
-  return (
-    <div>
-      <TableReceive />
-    </div>
-  );
+  return <ReceiveTable />;
 };
+
 export default ReceiveTablePage;

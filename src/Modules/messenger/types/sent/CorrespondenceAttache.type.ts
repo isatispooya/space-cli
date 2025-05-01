@@ -116,6 +116,7 @@ export interface CorrespondenceItem {
 
 export interface CorrespondenceResponse {
   sender: CorrespondenceItem[];
+  receiver: CorrespondenceItem[];
 }
 
 export type CorrespondenceAttachments = CorrespondenceAttachment[];
