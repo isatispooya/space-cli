@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { server } from "@/api";
+import { khatam } from "@/assets";
 
 export interface FundCardProps {
   symbol: {
@@ -34,7 +35,7 @@ const getFundColor = (type: string) => {
     case "fixincome":
       return "#3B82F6";
     case "equity":
-      return "#48bb78"; 
+      return "#48bb78";
     case "mixed":
       return "#8B5CF6";
     default:
@@ -65,15 +66,15 @@ const FundCard: React.FC<FundCardProps> = ({
     >
       <div className="flex items-center mb-6">
         <img
-          src={server + symbol.photo}
-          alt={symbol.symbol_detail.name}
+          src={symbol?.photo ? server + symbol.photo : khatam}
+          alt={symbol?.symbol_detail?.name || "لوگو"}
           className="h-8 w-8 mr-3 object-contain"
         />
         <h3
           className="text-xl font-bold font-iranSans"
           style={{ color: fundColor }}
         >
-          {symbol.symbol_detail.symbol}
+          {symbol?.symbol_detail?.symbol || "نامشخص"}
         </h3>
       </div>
 
