@@ -23,7 +23,6 @@ import {
   CorrespondenceAttachment,
   CorrespondenceAttachments,
   APIFormDataType,
-  TranscriptAPIData,
 } from "../../types/sent/CorrespondenceAttache.type";
 import { AttachmentDialog } from "../../components/sent";
 import Transcript from "../../components/sent/sent_transcript";
@@ -147,21 +146,31 @@ const SentUpdateForm: React.FC = () => {
       e.preventDefault();
     }
 
-    const { transcript, ...restFormData } = formData;
+    const {...restFormData } = formData;
 
-    const apiTranscript: TranscriptAPIData = {
-      position: formData.sender || transcript[0]?.position,
-      transcript_for: transcript[0]?.transcript_for,
-      security: transcript[0]?.security || false,
+    const apiTranscripts = formData.reference?.map(ref => ({
+      position: Number(ref),
+      transcript_for: transcriptDirections[ref.toString()] || "notification",
+      security: false,
       correspondence: null,
       read_at: new Date().toISOString(),
-    };
+    })) || [];
+
+    if (formData.sender && !apiTranscripts.find(t => t.position === formData.sender)) {
+      apiTranscripts.unshift({
+        position: formData.sender,
+        transcript_for: "notification",
+        security: false,
+        correspondence: null,
+        read_at: new Date().toISOString(),
+      });
+    }
 
     const finalData: APIFormDataType = {
       ...restFormData,
       attachments: restFormData.attachments.map(Number),
       receiver_internal: Number(restFormData.receiver_internal) || null,
-      transcript: [apiTranscript],
+      transcript: apiTranscripts,
     };
 
     if (isEditMode && id) {
