@@ -1,25 +1,11 @@
-import {
-  Box,
-  Paper,
-  Typography,
-  Grid,
-  Divider,
-  useTheme,
-  useMediaQuery,
-
-} from "@mui/material";
+import { Box, Paper, Typography, Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useReceiveById } from "../../hooks/receive/useReceive";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import html2pdf from "html2pdf.js";
-import {
-  departmentOptions,
-  referralOptions,
-} from "../../data/sent/sent.data";
-
-
-
+import { departmentOptions } from "../../data/sent/sent.data";
+import { usePosition } from "@/Modules/positions/hooks";
+import internalOptions from "../../data/sent/transcript.data";
 
 interface TranscriptDetails {
   id: number;
@@ -59,75 +45,20 @@ const getValueLabel = (
 };
 
 const SentDetail = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { id } = useParams();
   const { data } = useReceiveById(id || "");
+  const { data: allposition } = usePosition.useGetAll();
 
-  const handlePrint = () => {
-    const element = document.getElementById("print-content");
-    const opt = {
-      margin: 1,
-      filename: `نامه-${id}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-    };
-
-    html2pdf().set(opt).from(element).save();
-  };
-
-  const InfoRow = ({
-    label,
-    value,
-  }: {
-    label: string;
-    value: string | null | undefined;
-  }) => (
-    <Box
-      sx={{
-        display: "flex",
-        mb: 2.5,
-        alignItems: "flex-start",
-        "&:last-child": {
-          mb: 0,
-        },
-      }}
-    >
-      <Typography
-        sx={{
-          minWidth: { xs: "110px", sm: "160px" },
-          color: "text.secondary",
-          fontSize: { xs: "0.9rem", sm: "0.95rem" },
-          fontWeight: 500,
-          pt: 0.5,
-          position: "relative",
-          "&::after": {
-            content: '":"',
-            position: "absolute",
-            right: "0.5rem",
-            color: "text.disabled",
-          },
-        }}
-      >
-        {label}
-      </Typography>
-
-      <Typography
-        sx={{
-          flex: 1,
-          color: "text.primary",
-          fontSize: { xs: "0.9rem", sm: "0.95rem" },
-          backgroundColor: "background.paper",
-          p: 1,
-          borderRadius: "8px",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-        }}
-      >
-        {value || "---"}
-      </Typography>
-    </Box>
+  const userOption = data?.sender?.transcript_details?.map((item: TranscriptDetails) =>
+    item.position.toString()
   );
+
+  const matchedUsers = allposition
+    ?.filter((position) => userOption?.includes(position.id.toString()))
+    .map((matched) => ({
+      position: `${matched.name}`,
+      id: matched.id,
+    }));
 
   if (!data?.sender) {
     return (
@@ -138,6 +69,7 @@ const SentDetail = () => {
   }
 
   interface SenderType {
+    id: number;
     subject: string;
     priority: string;
     is_internal: boolean;
@@ -147,6 +79,7 @@ const SentDetail = () => {
     created_at: string;
     confidentiality_level: string;
     kind_of_correspondence: string;
+    number: string;
     sender_details?: {
       user?: {
         first_name: string;
@@ -213,10 +146,7 @@ const SentDetail = () => {
                     gap: 1,
                     alignItems: "flex-start",
                     height: "100%",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                     p: 2,
-                    borderRadius: "12px",
-                    minWidth: "200px",
                   }}
                 >
                   {" "}
@@ -230,19 +160,16 @@ const SentDetail = () => {
                     flexDirection: "column",
                     gap: 1,
                     alignItems: "flex-start",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                     p: 2,
-                    borderRadius: "12px",
-                    minWidth: "200px",
                   }}
                 >
                   <Typography>تاریخ : {formattedDate}</Typography>
                   <Typography>
                     پیوست : {sender.attachments_details?.length}
                   </Typography>
-                  <Typography>شماره : {sender.id}</Typography>
+                  <Typography>شماره : {sender.number}</Typography>
                   <Typography>
-                    محرمانگی :{" "}
+                    طبقه بندی :{" "}
                     {getValueLabel(
                       sender.confidentiality_level,
                       departmentOptions
@@ -254,16 +181,6 @@ const SentDetail = () => {
           </Box>
         </Box>
 
-        <Divider
-          sx={{
-            my: 4,
-            borderColor: "rgba(0,0,0,0.1)",
-            "&::before, &::after": {
-              borderColor: "rgba(0,0,0,0.1)",
-            },
-          }}
-        />
-
         {/* BOX2 */}
 
         <Grid container spacing={4}>
@@ -273,23 +190,22 @@ const SentDetail = () => {
                 borderRadius: "16px",
                 p: 2.5,
                 height: "100%",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
               }}
             >
-              <InfoRow label="موضوع" value={sender.subject} />
+              <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 2 }}>
+                موضوع : {sender.subject}
+              </Typography>
 
-              <InfoRow
-                label="ارسال کننده"
-                value={`${sender.sender_details?.user?.first_name} ${sender.sender_details?.user?.last_name}`}
-              />
-              <InfoRow
-                label="دریافت کننده"
-                value={
-                  sender.is_internal
-                    ? `${sender.receiver_internal_details?.user?.first_name} ${sender.receiver_internal_details?.user?.last_name}`
-                    : sender.receiver_external
-                }
-              />
+              <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 2 }}>
+                ارسال کننده :{" "}
+                {`${sender.sender_details?.user?.first_name} ${sender.sender_details?.user?.last_name}`}
+              </Typography>
+              <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 2 }}>
+                دریافت کننده :
+                {sender.is_internal
+                  ? `${sender.receiver_internal_details?.user?.first_name} ${sender.receiver_internal_details?.user?.last_name}`
+                  : sender.receiver_external}
+              </Typography>
             </Box>
           </Grid>
 
@@ -297,38 +213,12 @@ const SentDetail = () => {
             <Box sx={{ mb: 4 }}>
               <Typography
                 sx={{
-                  mb: 2,
-                  color: "text.secondary",
-                  fontSize: { xs: "1rem", sm: "1.1rem" },
-                  fontWeight: 500,
-                }}
-              >
-                متن پیام:
-              </Typography>
-              <Typography
-                sx={{
                   whiteSpace: "pre-wrap",
-                  backgroundColor: "rgba(0,0,0,0.02)",
                   p: 3,
-                  borderRadius: "16px",
                   fontSize: { xs: "0.95rem", sm: "1rem" },
                   lineHeight: 1.8,
                   color: "text.primary",
-                  minHeight: "200px",
-                  border: "1px solid",
-                  borderColor: "divider",
                   position: "relative",
-                  "&::before": {
-                    content: '""',
-                    position: "absolute",
-                    top: 0,
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    width: "98%",
-                    height: "1px",
-                    background: (theme) =>
-                      `linear-gradient(90deg, transparent, ${theme.palette.divider}, transparent)`,
-                  },
                 }}
               >
                 {sender.text}
@@ -342,7 +232,6 @@ const SentDetail = () => {
                 <Box
                   sx={{
                     mb: 4,
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                     p: 2,
                     borderRadius: "12px",
                     minWidth: "200px",
@@ -357,79 +246,31 @@ const SentDetail = () => {
                 <Box
                   sx={{
                     mb: 4,
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                     p: 2,
                     borderRadius: "12px",
                     minWidth: "200px",
                     height: "100%",
                   }}
                 >
-                  <Typography> </Typography>
+                  <Typography>مهر و امضا</Typography>
                 </Box>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
 
-        <Divider
-          sx={{
-            my: 4,
-            borderColor: "rgba(0,0,0,0.1)",
-            "&::before, &::after": {
-              borderColor: "rgba(0,0,0,0.1)",
-            },
-          }}
-        />
-
         {/* BOX3 */}
 
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {/* پی‌نوشت */}
-          {sender.postcript && (
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  height: "100%",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                  p: 2,
-                  borderRadius: "12px",
-                }}
-              >
-                <Typography
-                  sx={{
-                    mb: 2,
-                    color: "text.secondary",
-                    fontSize: { xs: "1rem", sm: "1.1rem" },
-                    fontWeight: 500,
-                  }}
-                >
-                  پی‌نوشت:
-                </Typography>
-                <Typography
-                  sx={{
-                    backgroundColor: "rgba(0,0,0,0.02)",
-                    p: 3,
-                    borderRadius: "16px",
-                    fontSize: { xs: "0.95rem", sm: "1rem" },
-                    lineHeight: 1.8,
-                    color: "text.primary",
-                    minHeight: "120px",
-                  }}
-                >
-                  {sender.postcript}
-                </Typography>
-              </Box>
-            </Grid>
-          )}
 
           {/* رونوشت */}
           {sender.transcript_details &&
             sender.transcript_details.length > 0 && (
-              <Grid item xs={12} md={sender.postcript ? 6 : 12}>
+              <Grid item xs={12} md={12}>
                 <Box
                   sx={{
                     height: "100%",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                     p: 2,
                     borderRadius: "12px",
                   }}
@@ -444,55 +285,63 @@ const SentDetail = () => {
                   >
                     رونوشت:
                   </Typography>
-                  {sender.transcript_details.map((transcript) => (
-                    <Box
-                      key={transcript.id}
-                      sx={{
-                        backgroundColor: "rgba(0,0,0,0.02)",
-                        p: 2,
-                        borderRadius: "8px",
-                        mb: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        "&:last-child": { mb: 0 },
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: { xs: "0.9rem", sm: "0.95rem" },
-                          color: "text.primary",
-                        }}
-                      >
-                        {getValueLabel(
-                          transcript.transcript_for,
-                          referralOptions
-                        )}
-                      </Typography>
-                      {transcript.read_at && (
+                  {sender?.transcript_details.map((transcript) => {
+                      const positionText =
+                        matchedUsers?.find(
+                          (user) => user.id === transcript.position
+                        )?.position || "نامشخص";
+                      const referralLabel = getValueLabel(
+                        transcript.transcript_for,
+                        internalOptions
+                      );
+
+                      return (
                         <Typography
+                          key={transcript.id}
                           sx={{
-                            fontSize: "0.8rem",
-                            color: "text.secondary",
+                            p: 2,
+                            borderRadius: "8px",
+                            mb: 1,
+                            backgroundColor: "background.paper",
+                            fontSize: { xs: "0.9rem", sm: "0.95rem" },
+                            color: "text.primary",
                           }}
                         >
-                          {moment(transcript.read_at)
-                            .locale("fa")
-                            .format("jYYYY/jMM/jDD HH:mm")}
+                          {positionText} جهت {referralLabel}
                         </Typography>
-                      )}
-                    </Box>
-                  ))}
+                      );
+                    })}
                 </Box>
               </Grid>
             )}
+
+          {sender?.postcript && (
+            <Grid item xs={12} md={12}>
+              <Box
+                sx={{
+                  p: 2,
+                  borderRadius: "12px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    mb: 2,
+                    color: "text.secondary",
+                    fontSize: { xs: "1rem", sm: "1.1rem" },
+                    fontWeight: 500,
+                  }}
+                >
+                  پی‌نوشت: {sender.postcript}
+                </Typography>
+              </Box>
+            </Grid>
+          )}
         </Grid>
         <Grid container spacing={3} sx={{ mb: 4 }}>
           <Grid item xs={12} md={12}>
             <Box
               sx={{
                 height: "100%",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                 p: 2,
                 borderRadius: "12px",
               }}
