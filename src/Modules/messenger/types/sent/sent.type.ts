@@ -198,3 +198,39 @@ export interface MessageFooterProps {
   sender: SenderType;
   matchedUsers?: MatchedUser[];
 }
+
+export interface SelectOption {
+  label: string;
+  value: string;
+}
+
+export interface FormOptions {
+  priorityOptions: SelectOption[];
+  departmentOptions: SelectOption[];
+  letterTypeOptions: SelectOption[];
+  senderUserOptions: SelectOption[];
+  internalUserOptions: SelectOption[];
+  attachmentOptions: SelectOption[];
+}
+
+interface SectionProps {
+  formData: APIFormDataType;
+  handleChange: (name: string, value: string | boolean | string[]) => void;
+}
+
+export interface SenderSectionProps extends SectionProps {
+  senderUserOptions: SelectOption[];
+  useInternalReceiver: boolean;
+  internalUserOptions: SelectOption[];
+}
+
+export interface PrioritySectionProps extends SectionProps {
+  priorityOptions: SelectOption[];
+  departmentOptions: SelectOption[];
+  letterTypeOptions: SelectOption[];
+}
+
+export interface AttachmentSectionProps extends SectionProps {
+  setOpenFileDialog: (open: boolean) => void;
+  attachmentOptions: SelectOption[];
+}
