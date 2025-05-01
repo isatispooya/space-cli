@@ -66,7 +66,7 @@ const TranscriptListItem: React.FC<{
     internalOptions,
   }) => {
     const handleVisibilityChange = useCallback(
-      (event: React.SyntheticEvent, checked: boolean) => {
+      (_: React.SyntheticEvent, checked: boolean) => {
         if (checked !== item.enabled) {
           handleTranscriptToggle(item.id);
         }
