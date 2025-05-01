@@ -356,11 +356,9 @@ const SentUpdateForm: React.FC = () => {
 
                         <MultiSelect
                           label="پیوست‌ها"
-                          selectedValues={
-                            formData.attachments?.map(String) || []
-                          }
+                          selectedValues={formData.attachments?.map(String) || []}
                           onChange={(value) =>
-                            handleChange("attachments", value)
+                            handleChange("attachments", value.map(Number))
                           }
                           options={attachmentOptions}
                           className="enhanced-select"
@@ -451,7 +449,9 @@ const SentUpdateForm: React.FC = () => {
                 <Box sx={{ mt: 1 }}>
                   <FormSwitches
                     formData={formData}
-                    handleChange={handleChange}
+                    handleChange={(name: string, value: boolean) => 
+                      handleChange(name as keyof APIFormDataType, value)
+                    }
                   />
                 </Box>
               </Grid>
