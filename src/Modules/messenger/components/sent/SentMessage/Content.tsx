@@ -3,16 +3,16 @@ import { MessageContentProps } from "../../../types/sent/sent.type";
 
 export const MessageContent = ({ sender }: MessageContentProps) => {
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={2}>
       <Grid item xs={12} md={12}>
-        <Box sx={{ borderRadius: "16px", p: 2.5, height: "100%" }}>
-          <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 2 }}>
+        <Box sx={{ borderRadius: "16px", p: 2.5 }}>
+          <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
             موضوع : {sender.subject}
           </Typography>
-          <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 2 }}>
+          <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
             ارسال کننده : {`${sender.sender_details?.user?.first_name} ${sender.sender_details?.user?.last_name}`}
           </Typography>
-          <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 2 }}>
+          <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
             دریافت کننده :
             {sender.is_internal
               ? `${sender.receiver_internal_details?.user?.first_name} ${sender.receiver_internal_details?.user?.last_name}`
@@ -22,11 +22,10 @@ export const MessageContent = ({ sender }: MessageContentProps) => {
       </Grid>
 
       <Grid item xs={12} md={12}>
-        <Box sx={{ mb: 4 }}>
+        <Box>
           <Typography
             sx={{
               whiteSpace: "pre-wrap",
-              p: 3,
               fontSize: { xs: "0.95rem", sm: "1rem" },
               lineHeight: 1.8,
               color: "text.primary",
@@ -41,12 +40,12 @@ export const MessageContent = ({ sender }: MessageContentProps) => {
       <Grid item xs={12} md={12}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            <Box sx={{ mb: 4, p: 2, borderRadius: "12px", minWidth: "200px", height: "100%" }}>
+            <Box sx={{ mb:2, p: 2, borderRadius: "12px"}}>
               <Typography> </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Box sx={{ mb: 4, p: 2, borderRadius: "12px", minWidth: "200px", height: "100%" }}>
+            <Box sx={{ mb: 1, borderRadius: "12px"}}>
               <Typography>مهر و امضا</Typography>
             </Box>
           </Grid>

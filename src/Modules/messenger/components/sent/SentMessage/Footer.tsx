@@ -6,15 +6,14 @@ import { getValueLabel } from "../../../utils/helpers";
 export const MessageFooter = ({ sender, matchedUsers }: MessageFooterProps) => {
   return (
     <>
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <Grid container spacing={2}>
         {sender.transcript_details && sender.transcript_details.length > 0 && (
           <Grid item xs={12} md={12}>
-            <Box sx={{ height: "100%", p: 2, borderRadius: "12px" }}>
+            <Box sx={{ borderRadius: "12px" }}>
               <Typography
                 sx={{
-                  mb: 2,
                   color: "text.secondary",
-                  fontSize: { xs: "1rem", sm: "1.1rem" },
+                  fontSize: { xs: "0.9rem", sm: "1rem" },
                   fontWeight: 500,
                 }}
               >
@@ -38,9 +37,8 @@ export const MessageFooter = ({ sender, matchedUsers }: MessageFooterProps) => {
                   <Typography
                     key={transcript.id}
                     sx={{
-                      p: 2,
+                      p: 0.5,
                       borderRadius: "8px",
-                      mb: 1,
                       backgroundColor: "background.paper",
                       fontSize: { xs: "0.9rem", sm: "0.95rem" },
                       color: "text.primary",
@@ -57,12 +55,11 @@ export const MessageFooter = ({ sender, matchedUsers }: MessageFooterProps) => {
 
         {sender?.postcript && (
           <Grid item xs={12} md={12}>
-            <Box sx={{ p: 2, borderRadius: "12px" }}>
+            <Box sx={{ p: 1, borderRadius: "12px" }}>
               <Typography
                 sx={{
-                  mb: 2,
                   color: "text.secondary",
-                  fontSize: { xs: "1rem", sm: "1.1rem" },
+                  fontSize: { xs: "0.9rem", sm: "0.95rem" },
                   fontWeight: 500,
                 }}
               >
@@ -74,4 +71,4 @@ export const MessageFooter = ({ sender, matchedUsers }: MessageFooterProps) => {
       </Grid>
     </>
   );
-}; 
+};
