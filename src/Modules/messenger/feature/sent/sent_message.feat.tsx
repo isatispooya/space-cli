@@ -146,7 +146,9 @@ const SentDetail = () => {
                 "@media print": {
                   display: "block !important",
                   visibility: "visible !important",
-                  marginTop: "auto !important",
+                  marginTop: "2rem !important",
+                  pageBreakInside: "avoid !important",
+                  position: "relative !important"
                 },
               }}
             >

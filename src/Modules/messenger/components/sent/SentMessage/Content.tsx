@@ -11,12 +11,12 @@ export const MessageContent = ({ sender }: MessageContentProps) => {
           </Typography>
           <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
             ارسال کننده :{" "}
-            {`${sender.sender_details?.user?.first_name} ${sender.sender_details?.user?.last_name} با سمت  ${sender.sender_details?.name}`}
+            {`${sender.sender_details?.user?.first_name} ${sender.sender_details?.user?.last_name}  ${sender.sender_details?.name}`}
           </Typography>
           <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
             دریافت کننده :
             {sender.is_internal
-              ? `${sender.receiver_internal_details?.user?.first_name} ${sender.receiver_internal_details?.user?.last_name}  با سمت  ${sender.receiver_internal_details?.name}`
+              ? `${sender.receiver_internal_details?.user?.first_name} ${sender.receiver_internal_details?.user?.last_name} ${sender.receiver_internal_details?.name}`
               : sender.receiver_external}
           </Typography>
         </Box>
