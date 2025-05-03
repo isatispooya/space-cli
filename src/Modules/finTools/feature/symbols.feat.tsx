@@ -8,10 +8,14 @@ const SymbolsFeat = () => {
   const { id } = useParams();
   const { data: symbolResponse } = useSymbols.useGetSymbolsById(Number(id));
 
-  // Convert SymbolResponse to Symbol if available
   const symbol: Symbol | undefined = symbolResponse
     ? symbolResponse[0]
     : undefined;
+
+  // Extract and format chart data
+  const chartData =
+    symbol?.history_data?.map((item) => item.closing_price_value) || [];
+  const chartLabels = symbol?.history_data?.map((item) => item.date) || [];
 
   return (
     <MainLayout>
@@ -19,8 +23,8 @@ const SymbolsFeat = () => {
         <div className="flex-1 w-full h-full flex items-center justify-center p-6 ">
           <div className="w-full h-96">
             <Chart
-              data={[1, 2, 3, 4, 5]}
-              labels={["1", "2", "3", "4", "5"]}
+              data={chartData.reverse()}
+              labels={chartLabels.reverse()}
               symbols={symbol}
             />
           </div>

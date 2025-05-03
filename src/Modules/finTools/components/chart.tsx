@@ -3,6 +3,7 @@ import { Card } from "@/components";
 import WaveEffect from "@/ui/wave";
 import * as echarts from "echarts";
 import { useEffect, useRef } from "react";
+import { Symbol } from "../types";
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -10,10 +11,10 @@ interface ChartProps {
   title?: string;
   data: number[];
   labels: string[];
-  symbols: any;
+  symbols?: Symbol;
 }
 
-const ChartComponent = ({ data, labels }: ChartProps) => {
+const ChartComponent = ({ data, labels, symbols }: ChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,7 +22,15 @@ const ChartComponent = ({ data, labels }: ChartProps) => {
 
     const chartInstance = echarts.init(chartRef.current);
     const option: EChartsOption = {
-      tooltip: { trigger: "axis" },
+      tooltip: {
+        trigger: "axis",
+        formatter: (params: any) => {
+          const dataIndex = params[0].dataIndex;
+          return `تاریخ: ${labels[dataIndex]}<br/>قیمت: ${data[
+            dataIndex
+          ].toLocaleString()} ریال`;
+        },
+      },
       grid: {
         left: "3%",
         right: "4%",
@@ -34,14 +43,23 @@ const ChartComponent = ({ data, labels }: ChartProps) => {
         data: labels,
         boundaryGap: false,
         axisLine: { lineStyle: { color: "#02205F" } },
+        axisLabel: {
+          formatter: (value: string) => {
+            return value.replace("1404-", "").replace("1403-", "");
+          },
+        },
       },
       yAxis: {
         type: "value",
         axisLine: { show: false },
         splitLine: { lineStyle: { color: "#f5f5f5" } },
+        axisLabel: {
+          formatter: (value: number) => value.toLocaleString(),
+        },
       },
       series: [
         {
+          name: symbols?.description || "قیمت",
           data,
           type: "line",
           smooth: true,
@@ -55,19 +73,19 @@ const ChartComponent = ({ data, labels }: ChartProps) => {
               x2: 0,
               y2: 1,
               colorStops: [
-                { offset: 0, color: "rgba(252, 187, 1, 0.6)" },
-                { offset: 1, color: "rgba(252, 187, 1, 0.05)" },
+                { offset: 0, color: "rgba(59, 130, 246, 0.6)" },
+                { offset: 1, color: "rgba(59, 130, 246, 0.05)" },
               ],
             },
           },
           lineStyle: {
             width: 3,
-            color: "#FCBB01",
-            shadowColor: "rgba(252, 187, 1, 0.3)",
+            color: "#3B82F6",
+            shadowColor: "rgba(59, 130, 246, 0.3)",
             shadowBlur: 10,
           },
           itemStyle: {
-            color: "#FCBB01",
+            color: "#3B82F6",
             borderWidth: 2,
             borderColor: "#fff",
           },
@@ -83,7 +101,7 @@ const ChartComponent = ({ data, labels }: ChartProps) => {
       chartInstance.dispose();
       window.removeEventListener("resize", handleResize);
     };
-  }, [data, labels]);
+  }, [data, labels, symbols]);
 
   return <div ref={chartRef} style={{ width: "100%", height: "290%" }} />;
 };
