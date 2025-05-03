@@ -234,3 +234,14 @@ export interface AttachmentSectionProps extends SectionProps {
   setOpenFileDialog: (open: boolean) => void;
   attachmentOptions: SelectOption[];
 }
+
+export interface ITranscriptResponse {
+  id: number;
+  read_at: string | null;
+  transcript_for: "notification" | "security" | string;
+  security: boolean;
+  created_at: string;
+  updated_at: string;
+  position: number;
+  correspondence: number;
+}

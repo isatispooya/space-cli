@@ -11,6 +11,7 @@ import {
   CorrespondenceAttachment,
   CorrespondenceAttachments,
   APIFormDataType,
+  ITranscriptResponse,
 } from "../../types/sent/sent.type";
 
 import {
@@ -114,6 +115,24 @@ export const useSentFormLogic = (id: string | undefined) => {
     [Position]
   );
 
+  const transcriptDirectionsTyped = transcriptDirections as Record<number, string>;
+
+  const transcriptItems = useMemo<ITranscriptResponse[]>(() => {
+    return (formData.reference || []).map((ref) => {
+      const refNum = Number(ref);
+      return {
+        id: refNum,
+        read_at: null,
+        transcript_for: transcriptDirectionsTyped[refNum] || "notification",
+        security: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        position: refNum,
+        correspondence: Number(id || 0),
+      };
+    });
+  }, [formData.reference, transcriptDirectionsTyped, id]);
+
   useEffect(() => {
     if (id && data?.sender) {
       setFormData({
@@ -166,13 +185,16 @@ export const useSentFormLogic = (id: string | undefined) => {
     const { ...restFormData } = formData;
 
     const apiTranscripts =
-      formData.reference?.map((ref) => ({
-        position: Number(ref),
-        transcript_for: transcriptDirections[ref.toString()] || "notification",
-        security: false,
-        correspondence: null,
-        read_at: new Date().toISOString(),
-      })) || [];
+      formData.reference?.map((ref) => {
+        const refNum = Number(ref);
+        return {
+          position: refNum,
+          transcript_for: transcriptDirectionsTyped[refNum] || "notification",
+          security: false,
+          correspondence: null,
+          read_at: new Date().toISOString(),
+        };
+      }) || [];
 
     if (
       formData.sender &&
@@ -212,30 +234,22 @@ export const useSentFormLogic = (id: string | undefined) => {
   };
 
   const getTranscriptName = useCallback(
-    (id: string): string => {
-      const recipient = internalUserOptions.find(
-        (option) => option.value === id
+    (id: number) => {
+      const position = (PositionAll as PositionTypes[])?.find(
+        (p) => p.id === id
       );
-      return recipient ? recipient.label : "";
+      return position
+        ? `${position.user.first_name} ${position.user.last_name}`
+        : "";
     },
-    [internalUserOptions]
-  );
-
-  const transcriptItems = useMemo(
-    () =>
-      formData.reference?.map((ref) => ({
-        id: ref.toString(),
-        enabled: true,
-        transcript_for: transcriptDirections[ref.toString()],
-      })) || [],
-    [formData.reference, transcriptDirections]
+    [PositionAll]
   );
 
   return {
     formData,
     openFileDialog,
     selectedTranscript,
-    transcriptDirections,
+    transcriptDirections: transcriptDirectionsTyped,
     useInternalReceiver,
     handleChange,
     handleAttachmentAdd,
