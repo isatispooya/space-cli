@@ -22,7 +22,7 @@ export const MessageAttachments = ({ attachments }: AttachmentsProps) => {
   };
 
   return (
-    <Box sx={{ mt: 4, borderTop: "1px solid rgba(0, 0, 0, 0.12)", pt: 3 }}>
+    <Box sx={{ mt: 4, border: "1px solid #e0e0e0", p: 2 , borderRadius: "10px"}}>
       <Typography
         variant="h6"
         sx={{
@@ -43,7 +43,7 @@ export const MessageAttachments = ({ attachments }: AttachmentsProps) => {
       >
         پیوست‌های نامه
       </Typography>
-      <Box sx={{ display: "grid", gap: 2 }}>
+      <Box sx={{ display: "grid" }}>
         {attachments.map((attachment) => (
           <Paper
             key={attachment.id}

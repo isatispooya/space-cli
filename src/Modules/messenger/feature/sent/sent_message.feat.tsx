@@ -93,14 +93,15 @@ const SentDetail = () => {
           },
         }}
       >
-        <Button
-          variant="contained"
-          startIcon={<PrintIcon />}
-          onClick={handlePrint}
-          sx={{ mb: 2, mr: 2 }}
-        >
-          چاپ پیام
-        </Button>
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+          <Button
+            variant="contained"
+            startIcon={<PrintIcon />}
+            onClick={handlePrint}
+          >
+            چاپ پیام
+          </Button>
+        </Box>
         <div id="print-content">
           <MessageHeader sender={data.sender} formattedDate={formattedDate} />
           <MessageContent sender={data.sender} />

@@ -113,6 +113,11 @@ export interface AttachmentResponse {
 export interface SenderDetails {
   user: BaseUser;
   name?: string;
+  company_detail?: {
+    logo: string;
+    address: string;
+    phone: string;
+  };
 }
 
 export interface ReceiverInternalDetails {
