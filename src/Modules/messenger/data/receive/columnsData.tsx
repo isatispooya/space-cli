@@ -12,6 +12,7 @@ const Columns = () => {
 
   return [
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
+    { title: "شماره", field: "number", headerFilter: true, hozAlign: "center" },
     {
       title: "ارسال کننده",
       field: "sender",

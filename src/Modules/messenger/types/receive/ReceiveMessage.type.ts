@@ -18,17 +18,20 @@ export interface CorrespondenceItem {
   created_at: string;
   priority: string;
   is_internal: boolean;
+  number: string;
   sender_details?: {
     user?: {
       first_name: string;
       last_name: string;
     };
+    name?: string;
   };
   receiver_internal_details?: {
     user?: {
       first_name: string;
       last_name: string;
     };
+    name?: string;
   };
   receiver_external?: string;
 }
