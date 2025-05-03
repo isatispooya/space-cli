@@ -7,6 +7,7 @@ import "moment/locale/fa";
 import { MessageHeader } from "../../components/sent/SentMessage/Header";
 import { MessageContent } from "../../components/sent/SentMessage/Content";
 import { MessageFooter } from "../../components/sent/SentMessage/Footer";
+import { MessageAttachments } from "../../components/sent/SentMessage/Attachments";
 import { MatchedUser, TranscriptDetails } from "../../types/sent/sent.type";
 import { LoadingMessage } from "../../components/LoadingMessage";
 
@@ -63,6 +64,7 @@ const SentDetail = () => {
         <MessageHeader sender={data.sender} formattedDate={formattedDate} />
         <MessageContent sender={data.sender} />
         <MessageFooter sender={data.sender} matchedUsers={matchedUsers} />
+        <MessageAttachments attachments={data.sender.attachments_details || []} />
       </Paper>
     </Box>
   );
