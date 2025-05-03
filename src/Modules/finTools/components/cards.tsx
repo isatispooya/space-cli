@@ -84,7 +84,7 @@ const FundCard: React.FC<FundCardProps> = ({
             className="text-5xl md:text-6xl font-bold font-iranSans mb-4"
             style={{ color: fundColor }}
           >
-            {value.toLocaleString()}
+            {value.toLocaleString()} <span className="text-2xl">ریال</span>
           </p>
           <span className="text-lg font-iranSans">
             {isPositiveChange ? "+" : ""}
