@@ -1,8 +1,10 @@
+import React from "react";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { usePosition } from "@/Modules/positions/hooks";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import { useSentFormStore } from "../../store/sent/sent.store";
 import { useReceiveById } from "../../hooks/receive/useReceive";
+import toast from "react-hot-toast";
 
 import { PositionTypes } from "@/Modules/positions/types";
 import {
@@ -48,28 +50,68 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const { mutate: updateCorrespondence } =
     useCorrespondenceAttachment.useUpdateCorrespondence();
+
+  const resetForm = () => {
+    setFormData({
+      subject: "",
+      text: "",
+      description: "",
+      attachments: [],
+      receiver: [],
+      sender: undefined as unknown as number,
+      receiver_internal: undefined as unknown as number,
+      receiver_external: "",
+      is_internal: true,
+      postcript: "",
+      seal: false,
+      signature: false,
+      letterhead: false,
+      binding: false,
+      confidentiality_level: "",
+      priority: "",
+      kind_of_correspondence: "",
+      authority_type: "new",
+      authority_correspondence: null,
+      reference: [],
+      transcript: [],
+      published: false,
+    });
+    setUseInternalReceiver(true);
+  };
+
   const { mutate: postCorrespondence } =
-    useCorrespondenceAttachment.usePostCorrespondence();
+    useCorrespondenceAttachment.usePostCorrespondence({
+      onSuccess: resetForm,
+      onError: () => {
+        toast.error("خطایی رخ داد");
+      },
+    });
 
-  const attachmentOptions = useMemo(() => 
-    Attache?.map((attachment: CorrespondenceAttachment) => ({
-      label: `${attachment.name} | ${attachment.user.first_name} ${attachment.user.last_name}`,
-      value: attachment.id.toString(),
-    })) || [], [Attache]
+  const attachmentOptions = useMemo(
+    () =>
+      Attache?.map((attachment: CorrespondenceAttachment) => ({
+        label: `${attachment.name} | ${attachment.user.first_name} ${attachment.user.last_name}`,
+        value: attachment.id.toString(),
+      })) || [],
+    [Attache]
   );
 
-  const internalUserOptions = useMemo(() => 
-    (PositionAll as PositionTypes[])?.map((position) => ({
-      label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
-      value: position.id.toString(),
-    })) || [], [PositionAll]
+  const internalUserOptions = useMemo(
+    () =>
+      (PositionAll as PositionTypes[])?.map((position) => ({
+        label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
+        value: position.id.toString(),
+      })) || [],
+    [PositionAll]
   );
 
-  const senderUserOptions = useMemo(() => 
-    (Position as PositionTypes[])?.map((position) => ({
-      label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
-      value: position.id.toString(),
-    })) || [], [Position]
+  const senderUserOptions = useMemo(
+    () =>
+      (Position as PositionTypes[])?.map((position) => ({
+        label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
+        value: position.id.toString(),
+      })) || [],
+    [Position]
   );
 
   useEffect(() => {
@@ -121,17 +163,21 @@ export const useSentFormLogic = (id: string | undefined) => {
       e.preventDefault();
     }
 
-    const {...restFormData } = formData;
+    const { ...restFormData } = formData;
 
-    const apiTranscripts = formData.reference?.map(ref => ({
-      position: Number(ref),
-      transcript_for: transcriptDirections[ref.toString()] || "notification",
-      security: false,
-      correspondence: null,
-      read_at: new Date().toISOString(),
-    })) || [];
+    const apiTranscripts =
+      formData.reference?.map((ref) => ({
+        position: Number(ref),
+        transcript_for: transcriptDirections[ref.toString()] || "notification",
+        security: false,
+        correspondence: null,
+        read_at: new Date().toISOString(),
+      })) || [];
 
-    if (formData.sender && !apiTranscripts.find(t => t.position === formData.sender)) {
+    if (
+      formData.sender &&
+      !apiTranscripts.find((t) => t.position === formData.sender)
+    ) {
       apiTranscripts.unshift({
         position: formData.sender,
         transcript_for: "notification",
@@ -165,17 +211,24 @@ export const useSentFormLogic = (id: string | undefined) => {
     }
   };
 
-  const getTranscriptName = useCallback((id: string): string => {
-    const recipient = internalUserOptions.find((option) => option.value === id);
-    return recipient ? recipient.label : "";
-  }, [internalUserOptions]);
+  const getTranscriptName = useCallback(
+    (id: string): string => {
+      const recipient = internalUserOptions.find(
+        (option) => option.value === id
+      );
+      return recipient ? recipient.label : "";
+    },
+    [internalUserOptions]
+  );
 
-  const transcriptItems = useMemo(() => 
-    formData.reference?.map((ref) => ({
-      id: ref.toString(),
-      enabled: true,
-      transcript_for: transcriptDirections[ref.toString()],
-    })) || [], [formData.reference, transcriptDirections]
+  const transcriptItems = useMemo(
+    () =>
+      formData.reference?.map((ref) => ({
+        id: ref.toString(),
+        enabled: true,
+        transcript_for: transcriptDirections[ref.toString()],
+      })) || [],
+    [formData.reference, transcriptDirections]
   );
 
   return {
@@ -203,4 +256,4 @@ export const useSentFormLogic = (id: string | undefined) => {
     departmentOptions,
     letterTypeOptions,
   };
-}; 
+};
