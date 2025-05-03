@@ -4,7 +4,6 @@ import { useSymbols } from "../hooks";
 import { Symbol } from "../types/symbols.type";
 
 export const ToolsFeat: React.FC = () => {
-  const { data: symbols } = useSymbols.useGetSymbols();
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },

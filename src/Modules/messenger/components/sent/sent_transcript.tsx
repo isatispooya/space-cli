@@ -8,132 +8,40 @@ import {
   Grid,
   Chip,
   Divider,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
 } from "@mui/material";
-import { MultiSelect, SelectInput } from "../../../../components/common/inputs";
+import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
-
-interface TranscriptItem {
-  id: string;
-  enabled: boolean;
-  transcript_for?: string;
-}
+import TranscriptListItem from "./TranscriptListItem";
+import { ITranscriptResponse } from "../../types/sent/sent.type";
 
 interface ReferenceDetail {
   id: string;
   user?: {
     first_name: string;
     last_name: string;
+    uniqueIdentifier: string;
   };
+  name?: string;
   transcript_for?: string;
 }
 
 interface TranscriptProps {
-  transcript: TranscriptItem[];
+  transcript: ITranscriptResponse[];
   selectedTranscript: string[];
   setSelectedTranscript: (value: string[]) => void;
   handleAddTranscript: () => void;
-  handleTranscriptToggle: (id: string) => void;
+  handleTranscriptToggle: (id: number) => void;
   internalUserOptions: { label: string; value: string }[];
-  getTranscriptName: (id: string) => string;
-  transcriptDirections: { [id: string]: string };
-  setTranscriptDirection: (id: string, value: string) => void;
+  getTranscriptName: (id: number) => string;
+  transcriptDirections: { [id: number]: string };
+  setTranscriptDirection: (id: number, value: string) => void;
   data?: {
     sender?: {
       reference_details: ReferenceDetail[];
     };
   };
 }
-
-const TranscriptListItem: React.FC<{
-  item: TranscriptItem;
-  getTranscriptName: (id: string) => string;
-  transcriptDirections: { [id: string]: string };
-  handleDirectionChange: (id: string, value: string) => void;
-  handleTranscriptToggle: (id: string) => void;
-  internalOptions: typeof internalOptions;
-}> = React.memo(
-  ({
-    item,
-    getTranscriptName,
-    transcriptDirections,
-    handleDirectionChange,
-    handleTranscriptToggle,
-    internalOptions,
-  }) => {
-    const handleVisibilityChange = useCallback(
-      (event: React.SyntheticEvent, checked: boolean) => {
-        if (checked !== item.enabled) {
-          handleTranscriptToggle(item.id);
-        }
-      },
-      [item.enabled, item.id, handleTranscriptToggle]
-    );
-
-    return (
-      <ListItem sx={{ px: 1, py: 1.5 }}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} md={4}>
-            <Typography
-              sx={{ fontWeight: 500, color: "#1e293b", fontSize: "0.9rem" }}
-            >
-              {getTranscriptName(item.id)}
-            </Typography>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <SelectInput
-              label="جهت رونوشت"
-              value={
-                transcriptDirections[item.id] ||
-                item.transcript_for ||
-                "notification"
-              }
-              options={internalOptions}
-              onChange={(value) => handleDirectionChange(item.id, value)}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                gap: 1,
-              }}
-            >
-              <FormControl>
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="female"
-                  name="radio-buttons-group"
-                >
-                  <FormControlLabel
-                    value="true"
-                    control={<Radio />}
-                    label="نمایش"
-                    onChange={handleVisibilityChange}
-                  />
-                  <FormControlLabel
-                    value="false"
-                    control={<Radio />}
-                    label="مخفی"
-                    onChange={handleVisibilityChange}
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-          </Grid>
-        </Grid>
-      </ListItem>
-    );
-  }
-);
 
 const Transcript: React.FC<TranscriptProps> = React.memo(
   ({
@@ -149,7 +57,7 @@ const Transcript: React.FC<TranscriptProps> = React.memo(
     data,
   }) => {
     const handleDirectionChange = useCallback(
-      (id: string, value: string) => {
+      (id: number, value: string) => {
         setTranscriptDirection(id, value);
       },
       [setTranscriptDirection]
@@ -248,7 +156,7 @@ const Transcript: React.FC<TranscriptProps> = React.memo(
                           <Typography
                             sx={{ fontSize: "0.9rem", color: "#1e293b" }}
                           >
-                            {item.user?.first_name} {item.user?.last_name}
+                            {item.user?.first_name} {item.user?.last_name} | {item.name || 'بدون سمت'} | {item.user?.uniqueIdentifier}
                           </Typography>
                         </Grid>
                         <Grid item xs={12} md={4}>

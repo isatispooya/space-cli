@@ -10,7 +10,7 @@ import { FormInput } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import React, { useState, useRef } from "react";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
-import { AttachmentResponse } from "../../types/sent/CorrespondenceAttache.type";
+import { AttachmentResponse } from "../../types/sent/sent.type";
 
 interface AttachmentDialogProps {
   open: boolean;

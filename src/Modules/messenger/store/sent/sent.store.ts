@@ -1,15 +1,15 @@
 import { create } from "zustand";
-import { FormDataType, ReferenceData, TranscriptData } from "../../types/sent/CorrespondenceAttache.type";
+import { FormDataType, ReferenceData, TranscriptData } from "../../types/sent/sent.type";
 
 interface SentFormState {
   formData: FormDataType;
   openFileDialog: boolean;
   selectedTranscript: string[];
-  transcriptDirections: { [id: string]: string };
+  transcriptDirections: Record<number, string>;
   setFormData: (data: Partial<FormDataType>) => void;
   setOpenFileDialog: (isOpen: boolean) => void;
   setSelectedTranscript: (transcripts: string[]) => void;
-  setTranscriptDirection: (id: string, direction: string) => void;
+  setTranscriptDirection: (id: number, direction: string) => void;
   handleChange: (name: string, value: string | string[] | boolean) => void;
   handleReceiverTypeChange: (type: string) => void;
   handleAttachmentAdd: (attachmentData: {
@@ -18,7 +18,7 @@ interface SentFormState {
     id: number;
   }) => void;
   handleAddTranscript: () => void;
-  handleTranscriptToggle: (id: string) => void;
+  handleTranscriptToggle: (id: number) => void;
   resetForm: () => void;
 }
 
@@ -60,7 +60,7 @@ export const useSentFormStore = create<SentFormState>((set) => ({
   formData: initialFormData,
   openFileDialog: false,
   selectedTranscript: [],
-  transcriptDirections: {},
+  transcriptDirections: {} as Record<number, string>,
 
   setFormData: (data) =>
     set((state) => ({
@@ -79,9 +79,10 @@ export const useSentFormStore = create<SentFormState>((set) => ({
     
   setTranscriptDirection: (id, direction) =>
     set((state) => {
+      const numId = id;
       if (direction) {
         return {
-          transcriptDirections: { ...state.transcriptDirections, [id]: direction },
+          transcriptDirections: { ...state.transcriptDirections, [numId]: direction },
           formData: {
             ...state.formData,
             transcript: state.formData.transcript.map(t => ({
@@ -92,7 +93,7 @@ export const useSentFormStore = create<SentFormState>((set) => ({
         };
       }
       return {
-        transcriptDirections: { ...state.transcriptDirections, [id]: direction }
+        transcriptDirections: { ...state.transcriptDirections, [numId]: direction }
       };
     }),
 
@@ -155,19 +156,19 @@ export const useSentFormStore = create<SentFormState>((set) => ({
       if (state.selectedTranscript.length > 0) {
         const newReferences = state.selectedTranscript
           .filter((id) => !state.formData.reference.includes(Number(id)))
-          .map((id) => Number(id));
+          .map(Number);
 
         if (newReferences.length > 0) {
           const newReferenceData: ReferenceData[] = newReferences.map(id => ({
-            id: id,
+            id,
             enabled: true,
-            transcript_for: state.transcriptDirections[id.toString()] || ""
+            transcript_for: state.transcriptDirections[id] || ""
           }));
           
           const newTranscripts = newReferences.map(refId => ({
             ...defaultTranscript,
             position: refId,
-            transcript_for: state.transcriptDirections[refId.toString()] || "notification"
+            transcript_for: state.transcriptDirections[refId] || "notification"
           }));
           
           return {
@@ -185,7 +186,7 @@ export const useSentFormStore = create<SentFormState>((set) => ({
 
   handleTranscriptToggle: (id) =>
     set((state) => {
-      const numId = Number(id);
+      const numId = id;
       const referenceData = state.formData.referenceData || [];
       const existingItem = referenceData.find(item => item.id === numId);
       
@@ -200,32 +201,7 @@ export const useSentFormStore = create<SentFormState>((set) => ({
           {
             id: numId,
             enabled: true,
-            transcript_for: state.transcriptDirections[id]
-          }
-        ];
-      }
-
-      const updatedReference = Array.from(new Set([
-        ...state.formData.reference,
-        numId
-      ]));
-      
-      const existingTranscript = state.formData.transcript.find(t => t.position === numId);
-      let updatedTranscripts;
-      
-      if (existingTranscript) {
-        updatedTranscripts = state.formData.transcript.map(t =>
-          t.position === numId
-            ? { ...t, transcript_for: state.transcriptDirections[id] || t.transcript_for }
-            : t
-        );
-      } else {
-        updatedTranscripts = [
-          ...state.formData.transcript,
-          {
-            ...defaultTranscript,
-            position: numId,
-            transcript_for: state.transcriptDirections[id] || "notification"
+            transcript_for: state.transcriptDirections[numId] || ""
           }
         ];
       }
@@ -233,10 +209,8 @@ export const useSentFormStore = create<SentFormState>((set) => ({
       return {
         formData: {
           ...state.formData,
-          reference: updatedReference,
-          referenceData: updatedReferenceData,
-          transcript: updatedTranscripts
-        },
+          referenceData: updatedReferenceData
+        }
       };
     }),
 
