@@ -49,7 +49,7 @@ export const MessageHeader = ({
                 overflow: "visible",
               }}
             >
-              {sender.sender_details?.company_detail?.address}
+              {sender.sender_details?.company_detail?.name}
             </Typography>
             <Box
               sx={{

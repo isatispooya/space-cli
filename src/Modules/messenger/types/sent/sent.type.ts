@@ -117,6 +117,7 @@ export interface SenderDetails {
     logo: string;
     address: string;
     phone: string;
+    name: string;
   };
 }
 
