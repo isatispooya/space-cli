@@ -3,7 +3,7 @@ import { WorkShiftTypes } from "../types";
 
 const shiftsServices = {
   getShifts: async (): Promise<WorkShiftTypes["shiftTypes"]> => {
-    const response = await api.get("/timeflow/set-shift/");
+    const response = await api.get("/timeflow/shift/");
     return response.data;
   },
 

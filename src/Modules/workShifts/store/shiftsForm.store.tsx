@@ -1,163 +1,74 @@
-// Redux implementation for shifts form
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DateObject } from "react-multi-date-picker";
-import { WorkShiftTypes, shiftTypes } from "../types";
-import { RootState } from "@/store/store";
+import { create } from "zustand";
 
-// Define the state interface
-export interface ShiftsFormState {
-  shiftName: string;
-  dates: DateObject[];
-  shifts: WorkShiftTypes["FormShiftState"][];
-  isSubmitting: boolean;
-  error: string | null;
-  searchQuery: string;
-  visibleItems: number;
-  selectedShift: string;
-  editingId: number | null;
-  deleteDialogOpen: boolean;
-  deleteEntireShiftDialogOpen: boolean;
-  shiftToDelete: shiftTypes | null;
-  editForm: {
-    start_time: string;
-    end_time: string;
-    work_day: boolean;
-  };
-}
 
-// Initial state
-const initialState: ShiftsFormState = {
-  shiftName: "",
-  dates: [],
-  shifts: [],
-  isSubmitting: false,
-  error: null,
-  searchQuery: "",
-  visibleItems: 10,
-  selectedShift: "",
-  editingId: null,
-  deleteDialogOpen: false,
-  deleteEntireShiftDialogOpen: false,
-  shiftToDelete: null,
-  editForm: {
-    start_time: "08:00:00",
-    end_time: "17:00:00",
-    work_day: false,
-  },
-};
+export const useShiftsFormStore = create<ShiftsFormState & ShiftsFormActions>(
+  (set) => ({
+    // Initial state
+    shiftName: "",
+    dates: [],
+    shifts: [],
+    isSubmitting: false,
+    error: null,
+    searchQuery: "",
+    visibleItems: 10,
+    selectedShift: "",
+    editingId: null,
+    deleteDialogOpen: false,
+    deleteEntireShiftDialogOpen: false,
+    shiftToDelete: null,
+    editForm: {
+      start_time: "08:00:00",
+      end_time: "17:00:00",
+      work_day: false,
+    },
 
-// Create the slice
-export const shiftsFormSlice = createSlice({
-  name: "shiftsForm",
-  initialState,
-  reducers: {
-    setShiftName: (state, action: PayloadAction<string>) => {
-      state.shiftName = action.payload;
-    },
-    setDates: (state, action: PayloadAction<DateObject[]>) => {
-      state.dates = action.payload;
-    },
-    setShifts: (
-      state,
-      action: PayloadAction<WorkShiftTypes["FormShiftState"][]>
-    ) => {
-      state.shifts = action.payload;
-    },
-    setIsSubmitting: (state, action: PayloadAction<boolean>) => {
-      state.isSubmitting = action.payload;
-    },
-    setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
-    },
-    setSearchQuery: (state, action: PayloadAction<string>) => {
-      state.searchQuery = action.payload;
-    },
-    setVisibleItems: (state, action: PayloadAction<number>) => {
-      state.visibleItems = action.payload;
-    },
-    incrementVisibleItems: (state, action: PayloadAction<number>) => {
-      state.visibleItems += action.payload;
-    },
-    setSelectedShift: (state, action: PayloadAction<string>) => {
-      state.selectedShift = action.payload;
-    },
-    setEditingId: (state, action: PayloadAction<number | null>) => {
-      state.editingId = action.payload;
-    },
-    setDeleteDialogOpen: (state, action: PayloadAction<boolean>) => {
-      state.deleteDialogOpen = action.payload;
-    },
-    setDeleteEntireShiftDialogOpen: (state, action: PayloadAction<boolean>) => {
-      state.deleteEntireShiftDialogOpen = action.payload;
-    },
-    setShiftToDelete: (state, action: PayloadAction<shiftTypes | null>) => {
-      state.shiftToDelete = action.payload;
-    },
-    setEditForm: (
-      state,
-      action: PayloadAction<{
-        start_time: string;
-        end_time: string;
-        work_day: boolean;
-      }>
-    ) => {
-      state.editForm = action.payload;
-    },
-    updateEditForm: (
-      state,
-      action: PayloadAction<
-        Partial<{
-          start_time: string;
-          end_time: string;
-          work_day: boolean;
-        }>
-      >
-    ) => {
-      state.editForm = { ...state.editForm, ...action.payload };
-    },
-  },
-});
+    // Actions implementation
+    setShiftName: (name) => set({ shiftName: name }),
+    setDates: (dates) => set({ dates }),
+    setShifts: (shifts) => set({ shifts }),
+    setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
+    setError: (error) => set({ error }),
+    setSearchQuery: (query) => set({ searchQuery: query }),
+    setVisibleItems: (items) => set({ visibleItems: items }),
+    incrementVisibleItems: (amount) =>
+      set((state) => ({ visibleItems: state.visibleItems + amount })),
+    setSelectedShift: (shift) => set({ selectedShift: shift }),
+    setEditingId: (id) => set({ editingId: id }),
+    setDeleteDialogOpen: (open) => set({ deleteDialogOpen: open }),
+    setDeleteEntireShiftDialogOpen: (open) =>
+      set({ deleteEntireShiftDialogOpen: open }),
+    setShiftToDelete: (shift) => set({ shiftToDelete: shift }),
+    setEditForm: (form) => set({ editForm: form }),
+    updateEditForm: (form) =>
+      set((state) => ({ editForm: { ...state.editForm, ...form } })),
+  })
+);
 
-// Export actions
-export const {
-  setShiftName,
-  setDates,
-  setShifts,
-  setIsSubmitting,
-  setError,
-  setSearchQuery,
-  setVisibleItems,
-  incrementVisibleItems,
-  setSelectedShift,
-  setEditingId,
-  setDeleteDialogOpen,
-  setDeleteEntireShiftDialogOpen,
-  setShiftToDelete,
-  setEditForm,
-  updateEditForm,
-} = shiftsFormSlice.actions;
+// =============================================
+// Selectors
+// =============================================
 
-// Export selectors
-export const selectShiftsForm = (state: RootState) => state.shiftsForm;
-export const selectShiftName = (state: RootState) => state.shiftsForm.shiftName;
-export const selectDates = (state: RootState) => state.shiftsForm.dates;
-export const selectShifts = (state: RootState) => state.shiftsForm.shifts;
-export const selectIsSubmitting = (state: RootState) =>
-  state.shiftsForm.isSubmitting;
-export const selectError = (state: RootState) => state.shiftsForm.error;
-export const selectSearchQuery = (state: RootState) =>
-  state.shiftsForm.searchQuery;
-export const selectVisibleItems = (state: RootState) =>
-  state.shiftsForm.visibleItems;
-export const selectSelectedShift = (state: RootState) =>
-  state.shiftsForm.selectedShift;
-export const selectEditingId = (state: RootState) => state.shiftsForm.editingId;
-export const selectDeleteDialogOpen = (state: RootState) =>
-  state.shiftsForm.deleteDialogOpen;
-export const selectDeleteEntireShiftDialogOpen = (state: RootState) =>
-  state.shiftsForm.deleteEntireShiftDialogOpen;
-export const selectShiftToDelete = (state: RootState) =>
-  state.shiftsForm.shiftToDelete;
-export const selectEditForm = (state: RootState) => state.shiftsForm.editForm;
-
-export default shiftsFormSlice.reducer;
+/**
+ * Selectors for accessing specific parts of the store state
+ * These can be used to optimize re-renders by selecting only needed state
+ */
+export const selectShiftsForm = (state: ShiftsFormState) => state;
+export const selectShiftName = (state: ShiftsFormState) => state.shiftName;
+export const selectDates = (state: ShiftsFormState) => state.dates;
+export const selectShifts = (state: ShiftsFormState) => state.shifts;
+export const selectIsSubmitting = (state: ShiftsFormState) =>
+  state.isSubmitting;
+export const selectError = (state: ShiftsFormState) => state.error;
+export const selectSearchQuery = (state: ShiftsFormState) => state.searchQuery;
+export const selectVisibleItems = (state: ShiftsFormState) =>
+  state.visibleItems;
+export const selectSelectedShift = (state: ShiftsFormState) =>
+  state.selectedShift;
+export const selectEditingId = (state: ShiftsFormState) => state.editingId;
+export const selectDeleteDialogOpen = (state: ShiftsFormState) =>
+  state.deleteDialogOpen;
+export const selectDeleteEntireShiftDialogOpen = (state: ShiftsFormState) =>
+  state.deleteEntireShiftDialogOpen;
+export const selectShiftToDelete = (state: ShiftsFormState) =>
+  state.shiftToDelete;
+export const selectEditForm = (state: ShiftsFormState) => state.editForm;

@@ -36,7 +36,7 @@ import {
 const ShiftsForm = () => {
   const dispatch = useDispatch();
 
-  // Select state from Redux store
+
   const shiftName = useSelector(selectShiftName);
   const dates = useSelector(selectDates);
   const shifts = useSelector(selectShifts);

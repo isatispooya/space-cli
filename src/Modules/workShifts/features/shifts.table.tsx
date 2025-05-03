@@ -14,7 +14,13 @@ const ShiftsTable = () => {
 
   const uniqueShifts = useMemo(() => {
     if (!data || !Array.isArray(data)) return [];
-    return Array.from(new Set(data.map((item: shiftTypes) => item.shift.name)));
+    return Array.from(
+      new Set(
+        data
+          .filter((item: shiftTypes) => item) 
+          .map((item: shiftTypes) => item.name)
+      )
+    );
   }, [data]);
 
   const mappedData = useMemo(() => {
@@ -22,17 +28,19 @@ const ShiftsTable = () => {
     return data
       ?.filter(
         (item: shiftTypes) =>
-          selectedShift === "" || item.shift.name === selectedShift
+          selectedShift === "" || item.name === selectedShift
       )
       .map((item) => ({
         id: item.id ?? 0,
-        shift_name: item.shift.name,
-        date: moment(item.date).format("jYYYY/jMM/jDD"),
-        start_time: item.start_time,
-        end_time: item.end_time,
-        work_day: item.work_day ? "بله" : "خیر",
-        day_of_week: weekDaysName.find((day) => day.id === item.day_of_week)
-          ?.name,
+        shift_name: item.name,
+        date: moment(item.created_at).format("jYYYY/jMM/jDD"),
+        start_time: item.shift_dates?.[0]?.start_time || "نامشخص",
+        end_time: item.shift_dates?.[0]?.end_time || "نامشخص",
+        work_day: item.shift_dates?.[0]?.work_day ? "بله" : "خیر",
+        day_of_week:
+          weekDaysName.find(
+            (day) => day.id === item.shift_dates?.[0]?.day_of_week
+          )?.name || "نامشخص",
       }));
   }, [data, selectedShift]);
 
@@ -46,12 +54,12 @@ const ShiftsTable = () => {
 
   const ExelData = (item: shiftTypes) => {
     return {
-      نام_شیفت: item.shift.name || "نامشخص",
-      تاریخ: item.date || "نامشخص",
-      ساعت_شروع: item.start_time || "نامشخص",
-      ساعت_پایان: item.end_time || "نامشخص",
-      روزکاری: item.work_day ?? "نامشخص",
-      روزهفته: item.day_of_week || "نامشخص",
+      نام_شیفت: item.name || "نامشخص",
+      تاریخ: item.created_at || "نامشخص",
+      ساعت_شروع: item.shift_dates?.[0]?.start_time || "نامشخص",
+      ساعت_پایان: item.shift_dates?.[0]?.end_time || "نامشخص",
+      روزکاری: item.shift_dates?.[0]?.work_day ? "بله" : "خیر",
+      روزهفته: item.shift_dates?.[0]?.day_of_week || "نامشخص",
     };
   };
 
@@ -83,16 +91,20 @@ const ShiftsTable = () => {
       </div>
 
       <div className="overflow-x-auto">
-        {Array.isArray(data) && data.length > 0 ? (
+        {selectedShift && Array.isArray(data) && data.length > 0 ? (
           <TabulatorTable
             data={mappedData || []}
             columns={columns()}
-            title="شیفت ه"
+            title="شیفت ها"
             showActions={true}
             formatExportData={ExelData}
           />
         ) : (
-          <LoaderLg />
+          <div className="text-center text-gray-500 py-8">
+            {selectedShift
+              ? "هیچ داده‌ای یافت نشد"
+              : "لطفا یک شیفت را انتخاب کنید"}
+          </div>
         )}
       </div>
     </div>
