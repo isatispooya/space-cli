@@ -78,6 +78,9 @@ const SentDetail = () => {
             "& *": {
               fontSize: "12px !important",
               lineHeight: "1.2 !important",
+              display: "block !important",
+              visibility: "visible !important",
+              opacity: "1 !important",
             },
             "& h1, & h2, & h3, & h4, & h5, & h6": {
               fontSize: "14px !important",
@@ -89,6 +92,8 @@ const SentDetail = () => {
             "& div": {
               padding: "4px !important",
               margin: "2px !important",
+              pageBreakInside: "avoid !important",
+              display: "block !important",
             },
           },
         }}
@@ -103,15 +108,57 @@ const SentDetail = () => {
           </Button>
         </Box>
         <div id="print-content">
-          <MessageHeader sender={data.sender} formattedDate={formattedDate} />
-          <MessageContent sender={data.sender} />
-          <MessageFooter sender={data.sender} matchedUsers={matchedUsers} />
+          <Box
+            sx={{
+              height: "100%",
+              minHeight: "80vh",
+              display: "flex",
+              flexDirection: "column",
+              "@media print": {
+                minHeight: "100vh",
+                display: "flex !important",
+                flexDirection: "column !important",
+                justifyContent: "space-between !important",
+                "& > *": {
+                  marginBottom: "2rem !important",
+                },
+              },
+            }}
+          >
+            <MessageHeader sender={data.sender} formattedDate={formattedDate} />
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                "@media print": {
+                  display: "flex !important",
+                  flexDirection: "column !important",
+                  justifyContent: "center !important",
+                },
+              }}
+            >
+              <MessageContent sender={data.sender} />
+            </Box>
+            <Box
+              sx={{
+                "@media print": {
+                  display: "block !important",
+                  visibility: "visible !important",
+                  marginTop: "auto !important",
+                },
+              }}
+            >
+              <MessageFooter sender={data.sender} matchedUsers={matchedUsers} />
+            </Box>
+          </Box>
+          <Box sx={{ "@media print": { display: "none" } }}>
+            <MessageAttachments
+              attachments={data.sender.attachments_details || []}
+            />
+          </Box>
         </div>
-        <Box sx={{ "@media print": { display: "none" } }}>
-          <MessageAttachments
-            attachments={data.sender.attachments_details || []}
-          />
-        </Box>
       </Paper>
     </Box>
   );
