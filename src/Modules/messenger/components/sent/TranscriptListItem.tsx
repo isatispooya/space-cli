@@ -101,4 +101,4 @@ const TranscriptListItem: React.FC<TranscriptListItemProps> = React.memo(
   }
 );
 
-export default TranscriptListItem; 
+export default TranscriptListItem;

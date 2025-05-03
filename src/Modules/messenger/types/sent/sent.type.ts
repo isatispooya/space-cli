@@ -112,10 +112,12 @@ export interface AttachmentResponse {
 
 export interface SenderDetails {
   user: BaseUser;
+  name?: string;
 }
 
 export interface ReceiverInternalDetails {
   user: BaseUser;
+  name?: string;
 }
 
 export interface CorrespondenceItem {
@@ -127,6 +129,8 @@ export interface CorrespondenceItem {
   is_internal: boolean;
   created_at: string;
   priority: string;
+  number: string;
+  name:string;
 }
 
 export interface CorrespondenceResponse {

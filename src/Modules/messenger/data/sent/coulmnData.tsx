@@ -11,6 +11,13 @@ const columns = ({ handleEdit, handleView }: ColumnProps) => {
   return [
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
     {
+      title: "شماره نامه",
+      field: "number",
+      headerFilter: true,
+      hozAlign: "center",
+    },
+
+    {
       title: "ارسال کننده",
       field: "sender",
       headerFilter: true,
