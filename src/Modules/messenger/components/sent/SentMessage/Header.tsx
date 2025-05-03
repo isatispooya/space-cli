@@ -66,7 +66,7 @@ export const MessageHeader = ({
             >
               <Typography>تاریخ : {formattedDate.split(" ")[0]}</Typography>
               <Typography>
-                پیوست : {sender.attachments_details?.length}
+                پیوست : {sender.attachments_details?.length || "ندارد"}
               </Typography>
               <Typography>شماره : {sender.number}</Typography>
               <Typography>

@@ -7,17 +7,17 @@ export const MessageContent = ({ sender }: MessageContentProps) => {
       <Grid item xs={12} md={12}>
         <Box sx={{ borderRadius: "16px", p: 2.5 }}>
           <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
-            موضوع : {sender.subject}
-          </Typography>
-          <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
-            ارسال کننده :{" "}
+            از:{" "}
             {`${sender.sender_details?.user?.first_name} ${sender.sender_details?.user?.last_name}  ${sender.sender_details?.name}`}
           </Typography>
           <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
-            دریافت کننده :
+            به:
             {sender.is_internal
               ? `${sender.receiver_internal_details?.user?.first_name} ${sender.receiver_internal_details?.user?.last_name} ${sender.receiver_internal_details?.name}`
               : sender.receiver_external}
+          </Typography>
+          <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
+            موضوع : {sender.subject}
           </Typography>
         </Box>
       </Grid>
@@ -45,7 +45,7 @@ export const MessageContent = ({ sender }: MessageContentProps) => {
         sx={{ display: "flex", justifyContent: "flex-end", mr: "100px" }}
       >
         <Box sx={{ mb: 1, borderRadius: "12px" }}>
-          <Typography>مهر و امضا</Typography>
+          <Typography>{sender.is_internal ? "امضا" : "مهر و امضا"}</Typography>
         </Box>
       </Grid>
     </Grid>
