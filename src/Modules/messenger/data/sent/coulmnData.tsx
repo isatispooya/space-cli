@@ -36,7 +36,7 @@ const columns = ({ handleEdit, handleView }: ColumnProps) => {
       hozAlign: "center",
     },
     {
-      title: "نوع پیام",
+      title: "نوع نامه",
       field: "message_type",
       headerFilter: true,
       hozAlign: "center",
