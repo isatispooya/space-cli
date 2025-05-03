@@ -20,7 +20,9 @@ interface ReferenceDetail {
   user?: {
     first_name: string;
     last_name: string;
+    uniqueIdentifier: string;
   };
+  name?: string;
   transcript_for?: string;
 }
 
@@ -154,7 +156,7 @@ const Transcript: React.FC<TranscriptProps> = React.memo(
                           <Typography
                             sx={{ fontSize: "0.9rem", color: "#1e293b" }}
                           >
-                            {item.user?.first_name} {item.user?.last_name}
+                            {item.user?.first_name} {item.user?.last_name} | {item.name || 'بدون سمت'} | {item.user?.uniqueIdentifier}
                           </Typography>
                         </Grid>
                         <Grid item xs={12} md={4}>

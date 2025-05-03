@@ -19,7 +19,7 @@ const PrioritySection: React.FC<PrioritySectionProps> = ({
       className="enhanced-select"
     />
     <SelectInput
-      label="محرمانگی"
+      label="طبقه بندی"
       value={formData.confidentiality_level || ""}
       onChange={(value) => handleChange("confidentiality_level", value)}
       options={departmentOptions}

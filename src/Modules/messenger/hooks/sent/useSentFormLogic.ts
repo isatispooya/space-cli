@@ -100,7 +100,9 @@ export const useSentFormLogic = (id: string | undefined) => {
   const internalUserOptions = useMemo(
     () =>
       (PositionAll as PositionTypes[])?.map((position) => ({
-        label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
+        label: `${position.user.first_name} ${position.user.last_name} | ${
+          position.user.uniqueIdentifier
+        }  | ${position.name || "بدون سمت"}`,
         value: position.id.toString(),
       })) || [],
     [PositionAll]
@@ -109,13 +111,18 @@ export const useSentFormLogic = (id: string | undefined) => {
   const senderUserOptions = useMemo(
     () =>
       (Position as PositionTypes[])?.map((position) => ({
-        label: `${position.user.first_name} ${position.user.last_name} | ${position.user.uniqueIdentifier}`,
+        label: `${position.user.first_name} ${position.user.last_name}  | ${
+          position.user.uniqueIdentifier
+        } | ${position.name || "بدون سمت"}`,
         value: position.id.toString(),
       })) || [],
     [Position]
   );
 
-  const transcriptDirectionsTyped = transcriptDirections as Record<number, string>;
+  const transcriptDirectionsTyped = transcriptDirections as Record<
+    number,
+    string
+  >;
 
   const transcriptItems = useMemo<ITranscriptResponse[]>(() => {
     return (formData.reference || []).map((ref) => {
@@ -239,7 +246,9 @@ export const useSentFormLogic = (id: string | undefined) => {
         (p) => p.id === id
       );
       return position
-        ? `${position.user.first_name} ${position.user.last_name}`
+        ? `${position.user.first_name} ${position.user.last_name} | ${
+            position.user.uniqueIdentifier
+          } | ${position.name || "بدون سمت"} `
         : "";
     },
     [PositionAll]
