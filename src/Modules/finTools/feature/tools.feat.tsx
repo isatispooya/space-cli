@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import FundCard from "../components/cards";
-import { useSymbols } from "../hooks";
-import { Symbol } from "../types/symbols.type";
+import type { Symbol } from "../types/symbols.type";
+import useSymbols from "../hooks/useSymbols";
+
 
 export const ToolsFeat: React.FC = () => {
+  const { data: symbols } = useSymbols.useGetSymbols();
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
