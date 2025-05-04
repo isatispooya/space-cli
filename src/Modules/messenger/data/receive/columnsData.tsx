@@ -5,13 +5,19 @@ import { useNavigate } from "react-router-dom";
 
 const Columns = () => {
   const navigate = useNavigate();
-  
+
   const handleView = (row: ReceiveMessage) => {
     navigate(`/letter-receive/message/${row.id}`);
   };
 
   return [
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
+    {
+      title: "شماره نامه",
+      field: "number",
+      headerFilter: true,
+      hozAlign: "center",
+    },
     {
       title: "ارسال کننده",
       field: "sender",
@@ -31,7 +37,7 @@ const Columns = () => {
       hozAlign: "center",
     },
     {
-      title: "نوع پیام",
+      title: "نوع نامه",
       field: "message_type",
       headerFilter: true,
       hozAlign: "center",

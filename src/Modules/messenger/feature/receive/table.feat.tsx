@@ -18,15 +18,22 @@ export const ReceiveTable = () => {
     return correspondence.receiver.map((item: CorrespondenceItem) => ({
       id: item.id,
       title: item.subject,
+      number: item.number,
       sender:
         item.sender_details?.user?.first_name +
           " " +
-          item.sender_details?.user?.last_name || "نامشخص",
+          item.sender_details?.user?.last_name +
+          " " +
+          "-" +
+          item.sender_details?.name || "نامشخص" + ")",
       receiver:
         item.is_internal !== false
           ? item.receiver_internal_details?.user?.first_name +
               " " +
-              item.receiver_internal_details?.user?.last_name || "نامشخص"
+              item.receiver_internal_details?.user?.last_name +
+              " " +
+              "-" +
+              item.receiver_internal_details?.name || "نامشخص"
           : item.receiver_external || "نامشخص",
       send_date: new Date(item.created_at).toLocaleDateString("fa-IR"),
       message_type: item.priority === "urgent" ? "فوری" : "عادی",
