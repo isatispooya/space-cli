@@ -23,7 +23,8 @@ const Cards = () => {
     national_id: "",
   });
 
-  const { data: staticCompanyData, isLoading } = useCompany.useGetCompanyRasmio();
+  const { data: staticCompanyData, isLoading } =
+    useCompany.useGetCompanyRasmio();
 
   const { mutate: postCompanyRasmio } = useCompany.usePostCompanyRasmio();
 
@@ -122,9 +123,10 @@ const Cards = () => {
           </FlipCardInner>
         </FlipCardContainer>
         {isLoading ? (
-          <div>Loading...</div>
+          <div>درحال بارگذاری</div>
         ) : (
-          Array.isArray(staticCompanyData) && staticCompanyData.map((company: CompanyTypes) => (
+          Array.isArray(staticCompanyData) &&
+          staticCompanyData.map((company: CompanyTypes) => (
             <CardContainer
               key={company.id}
               onClick={() => handleCardClick(company.id)}
