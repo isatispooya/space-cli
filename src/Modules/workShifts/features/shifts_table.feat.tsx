@@ -22,7 +22,6 @@ const ShiftsTableFeat = () => {
 
   useMemo(() => {
     if (dates) {
-      // Convert the dates to match the store type
       const convertedDates = dates.map((date) => ({
         ...date,
         id: date.id.toString(),

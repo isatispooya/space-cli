@@ -30,8 +30,12 @@ const ShareholdTable: React.FC = () => {
       title: "شرکت",
       headerFilter: "list",
       headerFilterParams: {
-        values: shareholders?.map(
-          (row: ShareHoldersNewTypes) => row.company_detail.name
+        values: Array.from(
+          new Set(
+            shareholders?.map(
+              (row: ShareHoldersNewTypes) => row.company_detail.name
+            )
+          )
         ),
       },
     },
@@ -60,13 +64,11 @@ const ShareholdTable: React.FC = () => {
       title: "حق تقدم",
       headerFilter: true,
     },
-
     {
       field: "precedence_used",
       title: "حق تقدم استفاده شده",
       headerFilter: true,
     },
-
     {
       field: "عملیات",
       title: "عملیات",
