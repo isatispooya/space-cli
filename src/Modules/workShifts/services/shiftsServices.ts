@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from "@/api";
 import { ShiftTypes } from "../types";
 
@@ -22,7 +23,10 @@ const shiftsServices = {
     const response = await api.get(`/timeflow/shift-detail/${id}/`);
     return response.data;
   },
-  
+  deleteShifts: async (id: string): Promise<any> => {
+    const { data } = await api.delete(`/timeflow/shift/${id}/`);
+    return data;
+  },
 };
 
 export default shiftsServices;
