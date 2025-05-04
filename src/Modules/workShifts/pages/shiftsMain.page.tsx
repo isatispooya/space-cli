@@ -9,7 +9,7 @@ const TimeFlowPage = () => {
       icon: LuTable,
       text: "ایجاد شیفت",
       permission: ["allow_any"],
-      path: "form",
+      path: "create",
     },
     {
       icon: LuTable,

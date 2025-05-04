@@ -78,13 +78,15 @@ const TabulatorTable: React.FC<TableProps> = ({
   }, [data]);
 
   const downloadExcel = () => {
-    if (!Array.isArray(data)) {
-      console.error("Expected data to be an array, but got:", data);
+    if (!data) {
+      console.error("No data available for export");
       return;
     }
 
-    const formattedData = formatExportData ? formatExportData(data) : data;
-    console.log("Formatted export data:", formattedData);
+    const dataToExport = Array.isArray(data) ? data : [data];
+    const formattedData = formatExportData
+      ? dataToExport.map((item) => formatExportData(item))
+      : dataToExport;
 
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(formattedData);

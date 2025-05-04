@@ -1,54 +1,24 @@
-import { DateObject } from "react-multi-date-picker";
-import WorkShiftTypes, { shiftTypes } from "./workShiftTypes";
-
-export interface statesTypes {
-  shiftName: string;
-  dates: DateObject[];
-  shifts: WorkShiftTypes["FormShiftState"][];
-  isSubmitting: boolean;
-  error: string | null;
-  searchQuery: string;
-  visibleItems: number;
-  selectedShift: string;
-  editingId: number | null;
-  deleteDialogOpen: boolean;
-  deleteEntireShiftDialogOpen: boolean;
-  shiftToDelete: shiftTypes | null;
-  editForm: {
-    start_time: string;
-    end_time: string;
-    work_day: boolean;
-  };
+export interface ShiftDateType {
+  id: string;
+  date: string; // DateField
+  start_time: string; // TimeField
+  end_time: string; // TimeField
+  work_day: boolean; // BooleanField
+  day_of_week: string | null; // CharField
 }
 
-
-export interface SetStatesTypes {
-    // Form data actions
-    setShiftName: (name: string) => void;
-    setDates: (dates: DateObject[]) => void;
-    setShifts: (shifts: WorkShiftTypes["FormShiftState"][]) => void;
-  
-    // UI state actions
-    setIsSubmitting: (isSubmitting: boolean) => void;
-    setError: (error: string | null) => void;
-    setSearchQuery: (query: string) => void;
-    setVisibleItems: (items: number) => void;
-    incrementVisibleItems: (amount: number) => void;
-    setSelectedShift: (shift: string) => void;
-    setEditingId: (id: number | null) => void;
-  
-    // Dialog actions
-    setDeleteDialogOpen: (open: boolean) => void;
-    setDeleteEntireShiftDialogOpen: (open: boolean) => void;
-    setShiftToDelete: (shift: shiftTypes | null) => void;
-  
-    // Edit form actions
-    setEditForm: (form: {
-      start_time: string;
-      end_time: string;
-      work_day: boolean;
-    }) => void;
-    updateEditForm: (
-      form: Partial<{ start_time: string; end_time: string; work_day: boolean }>
-    ) => void;
-  }
+export interface ShiftsStateType {
+  shiftName: string;
+  shiftId: number | null;
+  setShiftName: (name: string) => void;
+  setShiftId: (id: number | null) => void;
+  shiftDates: ShiftDateType[];
+  selectedShiftDate: ShiftDateType | null;
+  setShiftDates: (dates: ShiftDateType[]) => void;
+  addShiftDate: (date: ShiftDateType) => void;
+  updateShiftDate: (date: ShiftDateType) => void;
+  deleteShiftDate: (id: string) => void;
+  setSelectedShiftDate: (date: ShiftDateType | null) => void;
+  clearShiftDates: () => void;
+  resetStore: () => void;
+}
