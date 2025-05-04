@@ -25,6 +25,17 @@ export const companiesService = {
     const response = await api.delete(`/companies/${id}/`);
     return response.data;
   },
+  postCompanyRasmio: async (data: FormData) => {
+    const response = await api.post("/companies/register-company-from-rasmio/", data);
+    return response.data;
+  },
+  getCompanyRasmio: async (id?: number) => {
+    const endpoint = id 
+      ? `/companies/register-company-from-rasmio/${id}/`
+      : '/companies/register-company-from-rasmio/';
+    const response = await api.get(endpoint);
+    return response.data;
+  },
 };
 
 export default companiesService;

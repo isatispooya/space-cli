@@ -5,7 +5,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { companiesService } from "../services";
-import { companypostTypes, CompanyTypes } from "../types";
+import { companypostTypes, CompanyTypes, CompanyResponse, CompanyList } from "../types";
 import { AxiosError } from "axios";
 
 const useCompany = {
@@ -39,6 +39,23 @@ const useCompany = {
     return useMutation({
       mutationKey: ["deleteCompany"],
       mutationFn: (id: number) => companiesService.delete(id),
+    });
+  },
+  usePostCompanyRasmio: (): UseMutationResult<CompanyResponse, Error, FormData> => {
+    return useMutation({
+      mutationKey: ["postCompanyRasmio"],
+      mutationFn: (data: FormData) => companiesService.postCompanyRasmio(data),
+    });
+  },
+
+  useGetCompanyRasmio: (id?: number): UseQueryResult<CompanyList | CompanyTypes, AxiosError> => {
+    return useQuery({
+      queryKey: id ? ["companyRasmio", id] : ["companyRasmio"],
+      queryFn: () => companiesService.getCompanyRasmio(id),
+      select: (data: CompanyList | CompanyTypes) => {
+        console.log('دریافت اطلاعات شرکت با موفقیت انجام شد:', data);
+        return data;
+      }
     });
   },
 };

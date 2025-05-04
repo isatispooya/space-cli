@@ -18,4 +18,19 @@ export interface CompanyTypes {
   type_of_activity: string;
   website: string;
   year_of_establishment: number;
+  title: string;
+  persian_registration_date: string;
+  tel: string;
+  capital: number;
+  registration_type_title: string;
+  registration_unit: string;
+  general_directorate: string;
 }
+
+export interface CompanyResponse {
+  company: {
+    id: number;
+  }
+}
+
+export type CompanyList = CompanyTypes[];

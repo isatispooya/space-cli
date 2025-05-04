@@ -144,6 +144,11 @@ export const menuItems: MenuItem[] = [
         path: "/companies",
         codename: ["view_company"],
       },
+      {
+        title: "مدیریت شرکت‌ها در سامانه رسمیو",
+        path: "/companies/companyrasmio",
+        codename: ["allow_any"],
+      },
     ],
   },
   {

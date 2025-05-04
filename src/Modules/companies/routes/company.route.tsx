@@ -24,6 +24,24 @@ const CompanyEditPage = lazy(() =>
   }))
 );
 
+const RasmioCompanyCards = lazy(() =>
+  import("..").then((module) => ({
+    default: module.RasmioCompanyCards,
+  }))
+);
+
+const RasmioCompanyDetailsPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.RasmioCompanyDetailsPage,
+  }))
+);
+
+const ReasmioCompanyMainPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ReasmioCompanyMainPage,
+  }))
+);
+
 export const CompanyRoutes = [
   {
     path: "/companies",
@@ -42,5 +60,19 @@ export const CompanyRoutes = [
         element: <CompanyEditPage />,
       },
     ],
+  },
+  {
+    path: "/companies/companyrasmio",
+    element: <ReasmioCompanyMainPage />,
+    children: [
+      {
+        path: "cards",
+        element: <RasmioCompanyCards />,
+      },
+    ],
+  },
+  {
+    path: "/companies/companyrasmio/details/:id",
+    element: <RasmioCompanyDetailsPage />,
   },
 ];
