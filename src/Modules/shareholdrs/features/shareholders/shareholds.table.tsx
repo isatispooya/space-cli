@@ -28,7 +28,12 @@ const ShareholdTable: React.FC = () => {
     {
       field: "company",
       title: "شرکت",
-      headerFilter: true,
+      headerFilter: "list",
+      headerFilterParams: {
+        values: shareholders?.map(
+          (row: ShareHoldersNewTypes) => row.company_detail.name
+        ),
+      },
     },
     {
       field: "number_of_shares",

@@ -10,7 +10,7 @@ import {
   AttachmentResponse,
   APIFormDataType,
   CorrespondenceResponse,
-} from "../../types/sent/CorrespondenceAttache.type";
+} from "../../types/sent/sent.type";
 
 const useCorrespondenceAttachment = {
   useGetAttache: (): UseQueryResult<CorrespondenceAttachments> => {
@@ -28,13 +28,18 @@ const useCorrespondenceAttachment = {
       mutationFn: correspondenceAttacheService.postAttache,
     });
   },
-  usePostCorrespondence: (): UseMutationResult<
+  usePostCorrespondence: (options?: { 
+    onSuccess?: () => void,
+    onError?: (error: Error) => void 
+  }): UseMutationResult<
     AttachmentResponse,
     Error,
     APIFormDataType
   > => {
     return useMutation({
       mutationFn: correspondenceAttacheService.postCorrespondence,
+      onSuccess: options?.onSuccess,
+      onError: options?.onError,
     });
   },
   useUpdateCorrespondence: (): UseMutationResult<

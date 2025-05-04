@@ -1,21 +1,18 @@
 import React from "react";
 import { Grid, Typography, Divider } from "@mui/material";
 import Transcript from "./sent_transcript";
+import { ITranscriptResponse } from "../../types/sent/sent.type";
 
 interface TranscriptSectionProps {
-  transcriptItems: {
-    id: string;
-    enabled: boolean;
-    transcript_for: string;
-  }[];
+  transcriptItems: ITranscriptResponse[];
   selectedTranscript: string[];
-  transcriptDirections: { [id: string]: string };
+  transcriptDirections: { [id: number]: string };
   internalUserOptions: { label: string; value: string }[];
-  getTranscriptName: (id: string) => string;
+  getTranscriptName: (id: number) => string;
   setSelectedTranscript: (transcripts: string[]) => void;
   handleAddTranscript: () => void;
-  handleTranscriptToggle: (id: string) => void;
-  setTranscriptDirection: (id: string, direction: string) => void;
+  handleTranscriptToggle: (id: number) => void;
+  setTranscriptDirection: (id: number, direction: string) => void;
 }
 
 const TranscriptSection: React.FC<TranscriptSectionProps> = ({
@@ -58,4 +55,4 @@ const TranscriptSection: React.FC<TranscriptSectionProps> = ({
   );
 };
 
-export default TranscriptSection; 
+export default TranscriptSection;

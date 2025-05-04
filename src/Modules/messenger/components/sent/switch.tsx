@@ -6,7 +6,7 @@ import { FormControlLabel } from "@mui/material";
 import { Switch } from "@mui/material";
 
 import { Box } from "@mui/material";
-import { FormDataType } from "@/Modules/messenger/types/sent/CorrespondenceAttache.type";
+import { FormDataType } from "@/Modules/messenger/types/sent/sent.type";
 
 const FormSwitches: React.FC<{
     formData: FormDataType;

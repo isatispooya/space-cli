@@ -9,7 +9,6 @@ export const departmentOptions = [
     { label: "عادی", value: "normal" },
     { label: "محرمانه", value: "confidential" },
     { label: "سری", value: "secret" },
-    { label: "به کلی سری", value: "top_secret" },
   ];
 
 export const letterTypeOptions = [

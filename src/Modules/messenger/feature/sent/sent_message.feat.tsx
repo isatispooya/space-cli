@@ -1,126 +1,169 @@
-import { Box, Typography, Paper, Chip } from "@mui/material";
+import { Box, Paper, Button } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { useReceiveById } from "../../hooks/receive/useReceive";
+import { usePosition } from "@/Modules/positions/hooks";
+import moment from "moment-jalaali";
+import "moment/locale/fa";
+import { MessageHeader } from "../../components/sent/SentMessage/Header";
+import { MessageContent } from "../../components/sent/SentMessage/Content";
+import { MessageFooter } from "../../components/sent/SentMessage/Footer";
+import { MessageAttachments } from "../../components/sent/SentMessage/Attachments";
+import { MatchedUser, TranscriptDetails } from "../../types/sent/sent.type";
+import { LoadingMessage } from "../../components/LoadingMessage";
+import PrintIcon from "@mui/icons-material/Print";
 
-const sampleSentMessage = {
-  id: "123445678",
-  subject: "پاسخ به درخواست همکاری",
-  receiver: "علی محمدی",
-  sentDate: "۱۴۰۳/۰۱/۱۶ - ۱۰:۳۰",
-  priority: "فوری",
-  department: "منابع انسانی",
-  status: "ارسال شده",
-  content:
-    "با سلام و تشکر از درخواست شما. پس از بررسی رزومه‌تان، مایل هستیم شما را به مصاحبه حضوری دعوت کنیم.",
-};
+const SentDetail = () => {
+  const { id } = useParams();
+  const { data } = useReceiveById(id || "");
+  const { data: allposition } = usePosition.useGetAll();
 
-const SentMessage = () => {
+  const handlePrint = () => {
+    const printContent = document.getElementById("print-content");
+    const originalContents = document.body.innerHTML;
+
+    if (printContent) {
+      document.body.innerHTML = printContent.innerHTML;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload();
+    }
+  };
+
+  if (!data?.sender) {
+    return <LoadingMessage />;
+  }
+
+  const userOption = data.sender.transcript_details?.map(
+    (item: TranscriptDetails) => item.position.toString()
+  );
+
+  const matchedUsers: MatchedUser[] =
+    allposition
+      ?.filter((position) => userOption?.includes(position.id.toString()))
+      .map((matched) => ({
+        position: `${matched.name}`,
+        id: matched.id,
+        firstName: matched.user?.first_name || "",
+        lastName: matched.user?.last_name || "",
+      })) || [];
+
+  const formattedDate = moment(data.sender.created_at)
+    .locale("fa")
+    .format("jYYYY/jMM/jDD HH:mm");
+
   return (
-    <Box sx={{ p: 3, maxWidth: 800, margin: "0 auto" }}>
-      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-        <Typography
-          variant="h5"
-          sx={{ mb: 3, fontWeight: "bold", color: "#1976d2" }}
-        >
-          نامه ارسالی
-        </Typography>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 2,
-            mb: 3,
-          }}
-        >
-          <Typography
-            variant="body1"
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
-          >
-            <span style={{ fontWeight: "bold" }}>شماره نامه:</span>{" "}
-            {sampleSentMessage.id}
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
-          >
-            <span style={{ fontWeight: "bold" }}>تاریخ ارسال:</span>{" "}
-            {sampleSentMessage.sentDate}
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
-          >
-            <span style={{ fontWeight: "bold" }}>موضوع:</span>{" "}
-            {sampleSentMessage.subject}
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
-          >
-            <span style={{ fontWeight: "bold" }}>اولویت:</span>{" "}
-            <Chip
-              label={sampleSentMessage.priority}
-              size="small"
-              sx={{
-                backgroundColor: sampleSentMessage.priority === "فوری" ? "#ffebee" : "#e8f5e9",
-                color: sampleSentMessage.priority === "فوری" ? "#c62828" : "#2e7d32",
-                fontWeight: "medium",
-                fontSize: "0.875rem"
-              }}
-            />
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
-          >
-            <span style={{ fontWeight: "bold" }}>گیرنده:</span>{" "}
-            {sampleSentMessage.receiver}
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
-          >
-            <span style={{ fontWeight: "bold" }}>وضعیت:</span>{" "}
-            <Chip
-              label={sampleSentMessage.status}
-              size="small"
-              sx={{
-                backgroundColor: "#e3f2fd",
-                color: "#1565c0",
-                fontWeight: "medium",
-                fontSize: "0.875rem"
-              }}
-            />
-          </Typography>
-        </Box>
-        <Typography
-          variant="body1"
-          sx={{
-            backgroundColor: "#f8fafc",
-            p: 3,
-            borderRadius: 2,
-            lineHeight: 2,
-            color: "#2d3748",
-            border: "1px solid #e2e8f0",
-            fontSize: "1rem",
-            position: "relative",
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "4px",
-              height: "100%",
-              backgroundColor: "#1976d2",
-              borderRadius: "4px 0 0 4px",
+    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: "1200px", margin: "0 auto" }}>
+      <Paper
+        elevation={3}
+        sx={{
+          p: { xs: 2.5, sm: 4 },
+          borderRadius: "24px",
+          backgroundColor: "#fff",
+          position: "relative",
+          overflow: "hidden",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "6px",
+            background: (theme) =>
+              `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+          },
+          "@media print": {
+            padding: "10px !important",
+            margin: 0,
+            boxShadow: "none",
+            "& *": {
+              fontSize: "12px !important",
+              lineHeight: "1.2 !important",
+              display: "block !important",
+              visibility: "visible !important",
+              opacity: "1 !important",
             },
-          }}
-        >
-          {sampleSentMessage.content}
-        </Typography>
+            "& h1, & h2, & h3, & h4, & h5, & h6": {
+              fontSize: "14px !important",
+              marginBottom: "8px !important",
+            },
+            "& p": {
+              marginBottom: "4px !important",
+            },
+            "& div": {
+              padding: "4px !important",
+              margin: "2px !important",
+              pageBreakInside: "avoid !important",
+              display: "block !important",
+            },
+          },
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+          <Button
+            variant="contained"
+            startIcon={<PrintIcon />}
+            onClick={handlePrint}
+          >
+            چاپ پیام
+          </Button>
+        </Box>
+        <div id="print-content">
+          <Box
+            sx={{
+              height: "100%",
+              minHeight: "80vh",
+              display: "flex",
+              flexDirection: "column",
+              "@media print": {
+                minHeight: "100vh",
+                display: "flex !important",
+                flexDirection: "column !important",
+                justifyContent: "space-between !important",
+                "& > *": {
+                  marginBottom: "2rem !important",
+                },
+              },
+            }}
+          >
+            <MessageHeader sender={data.sender} formattedDate={formattedDate} />
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                "@media print": {
+                  display: "flex !important",
+                  flexDirection: "column !important",
+                  justifyContent: "center !important",
+                },
+              }}
+            >
+              <MessageContent sender={data.sender} />
+            </Box>
+            <Box
+              sx={{
+                "@media print": {
+                  display: "block !important",
+                  visibility: "visible !important",
+                  marginTop: "2rem !important",
+                  pageBreakInside: "avoid !important",
+                  position: "relative !important"
+                },
+              }}
+            >
+              <MessageFooter sender={data.sender} matchedUsers={matchedUsers} />
+            </Box>
+          </Box>
+          <Box sx={{ "@media print": { display: "none" } }}>
+            <MessageAttachments
+              attachments={data.sender.attachments_details || []}
+            />
+          </Box>
+        </div>
       </Paper>
     </Box>
   );
 };
 
-export default SentMessage;
-
-
+export default SentDetail;
