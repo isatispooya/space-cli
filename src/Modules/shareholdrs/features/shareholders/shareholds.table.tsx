@@ -3,11 +3,25 @@ import moment from "moment-jalaali";
 import { ShareholdersTypes } from "../../types/shareholders.type";
 import { useShareholders } from "../../hooks";
 import { LoaderLg } from "../../../../components";
-import { CellComponent, ColumnDefinition } from "tabulator-tables";
+import { CellComponent, ColumnDefinition, Formatter } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 import { createRoot } from "react-dom/client";
 import { ActionMenu } from "../../../../components/table/tableaction";
 import ShareHoldersNewTypes from "../../types/shareHolderss.type";
+
+const formatNumber = (value: number | string | null | undefined): string => {
+  if (value === null || value === undefined || value === "") return "0";
+  const num = Number(value);
+  return isNaN(num) ? "0" : Math.floor(num).toLocaleString();
+};
+
+const numberFormatter: Formatter = (cell: CellComponent) => {
+  return formatNumber(cell.getValue());
+};
+
+const calcFormatter: Formatter = (cell: CellComponent) => {
+  return formatNumber(cell.getValue());
+};
 
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, isPending } = useShareholders.useGet();
@@ -44,9 +58,9 @@ const ShareholdTable: React.FC = () => {
       title: "تعداد سهام",
       headerFilter: true,
       topCalc: "sum",
-      topCalcFormatter: "money",
+      topCalcFormatter: calcFormatter,
       hozAlign: "left",
-      formatter: "money",
+      formatter: numberFormatter,
     },
     {
       field: "first_name",
@@ -63,9 +77,9 @@ const ShareholdTable: React.FC = () => {
       title: "پذیره نویسی",
       headerFilter: true,
       topCalc: "sum",
-      topCalcFormatter: "money",
+      topCalcFormatter: calcFormatter,
       hozAlign: "left",
-      formatter: "money",
+      formatter: numberFormatter,
     },
     {
       field: "uniqueIdentifier",
@@ -77,18 +91,18 @@ const ShareholdTable: React.FC = () => {
       title: "حق تقدم",
       headerFilter: true,
       topCalc: "sum",
-      topCalcFormatter: "money",
+      topCalcFormatter: calcFormatter,
       hozAlign: "left",
-      formatter: "money",
+      formatter: numberFormatter,
     },
     {
       field: "precedence_used",
       title: "حق تقدم استفاده شده",
       headerFilter: true,
       topCalc: "sum",
-      topCalcFormatter: "money",
+      topCalcFormatter: calcFormatter,
       hozAlign: "left",
-      formatter: "money",
+      formatter: numberFormatter,
     },
     {
       field: "عملیات",
