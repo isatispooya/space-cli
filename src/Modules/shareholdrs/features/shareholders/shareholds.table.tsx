@@ -28,12 +28,25 @@ const ShareholdTable: React.FC = () => {
     {
       field: "company",
       title: "شرکت",
-      headerFilter: true,
+      headerFilter: "list",
+      headerFilterParams: {
+        values: Array.from(
+          new Set(
+            shareholders?.map(
+              (row: ShareHoldersNewTypes) => row.company_detail.name
+            )
+          )
+        ),
+      },
     },
     {
       field: "number_of_shares",
       title: "تعداد سهام",
       headerFilter: true,
+      topCalc: "sum",
+      topCalcFormatter: "money",
+      hozAlign: "left",
+      formatter: "money",
     },
     {
       field: "first_name",
@@ -46,6 +59,15 @@ const ShareholdTable: React.FC = () => {
       headerFilter: true,
     },
     {
+      field: "total_successful_underwriting",
+      title: "پذیره نویسی",
+      headerFilter: true,
+      topCalc: "sum",
+      topCalcFormatter: "money",
+      hozAlign: "left",
+      formatter: "money",
+    },
+    {
       field: "uniqueIdentifier",
       title: "کدملی",
       headerFilter: true,
@@ -54,14 +76,20 @@ const ShareholdTable: React.FC = () => {
       field: "precedence_count",
       title: "حق تقدم",
       headerFilter: true,
+      topCalc: "sum",
+      topCalcFormatter: "money",
+      hozAlign: "left",
+      formatter: "money",
     },
-
     {
       field: "precedence_used",
       title: "حق تقدم استفاده شده",
       headerFilter: true,
+      topCalc: "sum",
+      topCalcFormatter: "money",
+      hozAlign: "left",
+      formatter: "money",
     },
-
     {
       field: "عملیات",
       title: "عملیات",
@@ -259,6 +287,20 @@ const ShareholdTable: React.FC = () => {
           title="اطلاعات کاربران"
           showActions={true}
           formatExportData={ExelData}
+          summaryFields={[
+            {
+              field: "number_of_shares",
+              title: "مجموع سهام",
+            },
+            {
+              field: "precedence_count",
+              title: "مجموع حق تقدم",
+            },
+            {
+              field: "precedence_used",
+              title: "مجموع حق تقدم استفاده شده",
+            },
+          ]}
         />
       </div>
     </div>

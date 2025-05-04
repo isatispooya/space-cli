@@ -12,21 +12,15 @@ const ShiftsTablePage = lazy(() =>
   }))
 );
 
-const ShiftsFormPage = lazy(() =>
+const ShiftsCreatePage = lazy(() =>
   import("..").then((module) => ({
-    default: module.ShiftsFormPage,
+    default: module.ShiftsCreatePage,
   }))
 );
 
-const ShiftsAssignPage = lazy(() =>
+const ShiftsEditPage = lazy(() =>
   import("..").then((module) => ({
-    default: module.ShiftsAssignPage,
-  }))
-);
-
-const ShiftsUpdateDelPage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.ShiftsUpdateDelPage,
+    default: module.ShiftsEditPage,
   }))
 );
 
@@ -40,16 +34,12 @@ const ShiftsRoutes = [
         element: <ShiftsTablePage />,
       },
       {
-        path: "form",
-        element: <ShiftsFormPage />,
+        path: "create",
+        element: <ShiftsCreatePage />,
       },
       {
-        path: "assign",
-        element: <ShiftsAssignPage />,
-      },
-      {
-        path: "update&del",
-        element: <ShiftsUpdateDelPage />,
+        path: "edit",
+        element: <ShiftsEditPage />,
       },
     ],
   },

@@ -5,77 +5,49 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { shiftsServices } from "../services";
-import { WorkShiftTypes } from "../types";
+import { ShiftTypes } from "../types";
 import { AxiosError } from "axios";
 
 const useShifts = {
-  useGetShifts: (): UseQueryResult<WorkShiftTypes["shiftTypes"]> => {
+  useGetShifts: (): UseQueryResult<ShiftTypes["getRes"][]> => {
     return useQuery({
       queryKey: ["shifts"],
       queryFn: shiftsServices.getShifts,
     });
   },
-  useCreate: (): UseMutationResult<
-    unknown,
+
+  useCreateShifts: (): UseMutationResult<
+    ShiftTypes["postRes"],
     AxiosError,
-    WorkShiftTypes["ShiftPayload"]
+    ShiftTypes["postReq"]
   > => {
     return useMutation({
-      mutationFn: (data: WorkShiftTypes["ShiftPayload"]) =>
-        shiftsServices.create(data),
+      mutationKey: ["createShifts"],
+      mutationFn: (data: ShiftTypes["postReq"]) =>
+        shiftsServices.createShifts(data),
     });
   },
-  useUpdate: (): UseMutationResult<
-    WorkShiftTypes["ShiftPayload"],
-    Error,
-    { id: string; data: WorkShiftTypes["ShiftPayload"] }
+
+  useCreateShiftsDates: (): UseMutationResult<
+    ShiftTypes["postDatesRes"],
+    AxiosError,
+    ShiftTypes["postDatesReq"]
   > => {
     return useMutation({
-      mutationFn: ({ id, data }) => shiftsServices.update(id, data),
-    });
-  },
-  useGetShiftsassign: () => {
-    return useQuery<WorkShiftTypes["ShiftAssignResponse"][]>({
-      queryKey: ["shiftsassign"],
-      queryFn: shiftsServices.getShiftsassign,
+      mutationKey: ["createShiftsDates"],
+      mutationFn: (data: ShiftTypes["postDatesReq"]) =>
+        shiftsServices.createShiftsDates(data),
     });
   },
 
-  useGetShiftsNames: () => {
-    return useQuery<WorkShiftTypes["ShiftName"][]>({
-      queryKey: ["shiftsnames"],
-      queryFn: shiftsServices.getShiftsNames,
+  useGetShiftsDates: (
+    id: string
+  ): UseQueryResult<ShiftTypes["datesRes"], AxiosError> => {
+    return useQuery({
+      queryKey: ["shiftsDates", id],
+      queryFn: () => shiftsServices.getShiftsDates(id),
     });
   },
-
-  useSetShiftUser: () =>
-    useMutation({
-      mutationKey: ["shiftsassign"],
-      mutationFn: (SetShiftUser: WorkShiftTypes["SetShiftUserPostType"]) =>
-        shiftsServices.createShiftsassign(SetShiftUser),
-    }),
-
-  useUpdateShift: () =>
-    useMutation<
-      unknown,
-      Error,
-      { id: string; data: WorkShiftTypes["ShiftUpdatePayload"] }
-    >({
-      mutationKey: ["shifts"],
-      mutationFn: ({ id, data }) => shiftsServices.updateShifts(id, data),
-    }),
-
-  useDeleteShift: () =>
-    useMutation<unknown, Error, { id: string }>({
-      mutationKey: ["shifts"],
-      mutationFn: ({ id }) => shiftsServices.deleteShifts(id),
-    }),
-
-  useDeleteShiftDay: () =>
-    useMutation<unknown, Error, { id: string }>({
-      mutationKey: ["shifts"],
-      mutationFn: ({ id }) => shiftsServices.deleteShiftsDay(id),
-    }),
 };
 
 export default useShifts;

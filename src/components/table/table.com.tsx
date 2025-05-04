@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo, useCallback } from "react";
 import { RowComponent, TabulatorFull as Tabulator } from "tabulator-tables";
 import type { Options as TabulatorOptions } from "tabulator-tables";
 import { TableStyles } from "./tabularStyle";
@@ -28,6 +28,10 @@ interface TableProps {
   showActions?: boolean;
   formatExportData?: (data: any) => any;
   menuItems?: MenuItem[];
+  summaryFields?: Array<{
+    field: string;
+    title: string;
+  }>;
 }
 
 const defaultTableOptions: Partial<TabulatorOptions> = {
@@ -71,68 +75,93 @@ const TabulatorTable: React.FC<TableProps> = ({
   const tabulator = useRef<any>(null);
 
   const mappedData = useMemo(() => {
+    if (!Array.isArray(data)) return [];
     return data.map((item) => ({
       ...item,
       _id: item.id || item._id,
     }));
   }, [data]);
 
-  const downloadExcel = () => {
-    if (!Array.isArray(data)) {
-      console.error("Expected data to be an array, but got:", data);
-      return;
+  const downloadExcel = useCallback(() => {
+    try {
+      if (!tabulator.current) return;
+      const filteredData = tabulator.current.getData("active") || [];
+      const formattedData = formatExportData
+        ? filteredData.map((item: any) => formatExportData(item))
+        : filteredData;
+
+      const workbook = XLSX.utils.book_new();
+      const worksheet = XLSX.utils.json_to_sheet(formattedData);
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      XLSX.writeFile(
+        workbook,
+        `اطلاعات_کاربران_تاریخچه_زمان_${new Date().toISOString()}.xlsx`
+      );
+    } catch (error) {
+      console.error("Error downloading excel:", error);
     }
-
-    const formattedData = formatExportData ? formatExportData(data) : data;
-    console.log("Formatted export data:", formattedData);
-
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(formattedData);
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    XLSX.writeFile(
-      workbook,
-      `اطلاعات_کاربران_تاریخچه_زمان_${new Date().toISOString()}.xlsx`
-    );
-  };
+  }, [formatExportData]);
 
   useEffect(() => {
-    if (tableRef.current) {
-      tabulator.current = new Tabulator(tableRef.current, {
-        data: mappedData,
-        columns: columns,
-        layout: layout,
-        height: height,
-        pagination: pagination,
-        paginationSize: paginationSize,
-        reactiveData: true,
-        ...defaultTableOptions,
-        ...options,
-      });
-    }
+    const initTable = async () => {
+      try {
+        if (!tableRef.current || !Array.isArray(mappedData)) return;
+
+        if (tabulator.current) {
+          tabulator.current.destroy();
+        }
+
+        const tableOptions = {
+          data: mappedData,
+          columns,
+          layout,
+          height,
+          pagination,
+          paginationSize,
+          reactiveData: true,
+          footerElement: "<strong>جمع</strong>",
+          ...defaultTableOptions,
+          ...options,
+        };
+
+        tabulator.current = new Tabulator(tableRef.current, tableOptions);
+      } catch (error) {
+        console.error("Error initializing table:", error);
+      }
+    };
+
+    initTable();
 
     return () => {
-      if (tabulator.current) {
-        tabulator.current.destroy();
+      try {
+        if (tabulator.current) {
+          tabulator.current.destroy();
+        }
+      } catch (error) {
+        console.error("Error cleaning up table:", error);
       }
     };
   }, [
+    mappedData,
     columns,
     layout,
     height,
     pagination,
     paginationSize,
     options,
-    mappedData,
   ]);
+
+  if (!Array.isArray(data)) {
+    return <div>Invalid data format</div>;
+  }
 
   return (
     <>
       <TableStyles />
-
       <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
         {showActions && (
           <div className="mb-8 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl shadow-sm border border-gray-100">
-            <div className="flex gap-4">
+            <div className="flex items-center gap-8">
               <button
                 onClick={downloadExcel}
                 className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-xl text-sm font-medium flex items-center gap-3 transition-all duration-300"
@@ -145,7 +174,7 @@ const TabulatorTable: React.FC<TableProps> = ({
         )}
         <div
           ref={tableRef}
-          className="flex-1 rounded-2xl overflow-hidden shadow-md border border-gray-100 "
+          className="flex-1 rounded-2xl overflow-hidden shadow-md border border-gray-100"
         />
       </div>
     </>
