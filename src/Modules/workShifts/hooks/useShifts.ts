@@ -74,7 +74,7 @@ const useShifts = {
   useUpdateShiftDates: (): UseMutationResult<
     ShiftTypes["datesRes"],
     AxiosError,
-    { id: string; data: Partial<ShiftTypes["postDatesReq"]> }
+    { id: string; data: ShiftTypes["updateDatesReq"] }
   > => {
     return useMutation({
       mutationKey: ["updateShiftsDates"],
@@ -83,7 +83,7 @@ const useShifts = {
   },
 
   useCreateShiftsAssign: (): UseMutationResult<
-    any,
+    ShiftTypes["updateDatesRes"],
     AxiosError,
     ShiftTypes["assignReq"]
   > => {

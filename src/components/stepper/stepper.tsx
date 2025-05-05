@@ -9,13 +9,13 @@ const getStatusColor = (
 ) => {
   switch (status) {
     case "complete":
-      return customColor?.completed || "bg-blue-500 border-blue-500";
+      return customColor?.completed || "bg-[#5677BC] border-[#5677BC]";
     case "error":
       return customColor?.error || "bg-red-500 border-red-500";
     case "warning":
       return customColor?.warning || "bg-yellow-500 border-yellow-500";
     default:
-      return customColor?.active || "bg-blue-500 border-blue-500";
+      return customColor?.active || "bg-[#5677BC] border-[#5677BC]";
   }
 };
 
@@ -262,7 +262,7 @@ const Stepper = ({
                   initial={disableAnimation ? undefined : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className={`font-medium ${
-                    isCurrent ? "text-blue-500" : "text-gray-900"
+                    isCurrent ? "text-[#5677BC]" : "text-gray-900"
                   }`}
                 >
                   {step.title}

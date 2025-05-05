@@ -12,11 +12,34 @@ export interface ShiftsReqType {
 
 export interface ShiftDateReqType {
   shift: number;
+  day: {
+    date: string;
+    start_time: string;
+    end_time: string;
+    work_day: boolean;
+    day_of_week: string | null;
+  }[];
+}
+
+export interface ShiftDateUpdateReqType {
+  shift: number | undefined;
   date: string;
   start_time: string;
   end_time: string;
   work_day: boolean;
   day_of_week: string | null;
+}
+
+export interface ShiftDateUpdateResType {
+  created_at: string;
+  date: string;
+  day_of_week: string | null;
+  end_time: string;
+  id: number;
+  shift: number;
+  start_time: string;
+  updated_at: string;
+  work_day: boolean;
 }
 
 export interface ShiftDateResType {
@@ -54,6 +77,8 @@ export type ShiftTypes = {
   deleteReq: DeleteShiftReqType;
   deleteRes: DeleteShiftResType;
   assignReq: PostAssignmentsReqType;
+  updateDatesReq: ShiftDateUpdateReqType;
+  updateDatesRes: ShiftDateUpdateResType[];
 };
 
 export default ShiftTypes;

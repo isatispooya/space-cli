@@ -7,11 +7,13 @@ import { useShiftsStore } from "../store";
 import { useNavigate } from "react-router-dom";
 import Toast from "@/components/common/toast/toast";
 import { CheckCircle } from "lucide-react";
+import { useShifts } from "../hooks";
 
 const ShiftCreateFeat: React.FC = () => {
-  const { shiftDates } = useShiftsStore();
+  const { shiftDates, shiftId } = useShiftsStore();
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
+  const { mutate: createShift } = useShifts.useCreateShifts();
 
   const steps = [
     {
@@ -32,18 +34,36 @@ const ShiftCreateFeat: React.FC = () => {
   ];
 
   const handleDateSubmit = () => {
-    if (shiftDates.length > 0) {
+    if (shiftDates.length > 0 && shiftDates[0].day.length > 0) {
       setCurrentStep(2);
     }
   };
 
   const handleSuccess = () => {
-    Toast(
-      "شیفت با موفقیت ایجاد شد",
-      <CheckCircle className="w-5 h-5" />,
-      "bg-green-500"
-    );
-    navigate("/shifts/table");
+    if (!shiftId) return;
+
+    const shiftData = {
+      name: shiftId.toString(),
+      dates: shiftDates,
+    };
+
+    createShift(shiftData, {
+      onSuccess: () => {
+        Toast(
+          "شیفت با موفقیت ایجاد شد",
+          <CheckCircle className="w-5 h-5" />,
+          "bg-green-500"
+        );
+        navigate("/shifts/table");
+      },
+      onError: () => {
+        Toast(
+          "خطایی رخ داده است",
+          <CheckCircle className="w-5 h-5" />,
+          "bg-red-500"
+        );
+      },
+    });
   };
 
   const renderStepContent = (step: number) => {
@@ -53,21 +73,18 @@ const ShiftCreateFeat: React.FC = () => {
       case 1:
         return (
           <div className="mt-4">
-            <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-              <h2 className="text-xl font-semibold text-gray-800">
-                تنظیم زمان‌بندی برای شیفت
-              </h2>
-            </div>
+     
             <ShiftSchedule />
             <div className="mt-6">
               <Button
                 variant="primary"
                 size="lg"
                 fullWidth
-                isDisabled={shiftDates.length === 0}
+                isDisabled={!shiftDates.length || !shiftDates[0].day.length}
                 onClick={handleDateSubmit}
                 animationOnHover="scale"
                 animationOnTap="scale"
+                className="bg-[#008282] hover:bg-[#008282]/90"
                 ripple
                 elevated
               >
@@ -97,6 +114,7 @@ const ShiftCreateFeat: React.FC = () => {
           orientation="horizontal"
           size="small"
           showStepNumbers
+     
         />
       </div>
       {renderStepContent(currentStep)}

@@ -23,8 +23,16 @@ const ShiftsTableFeat = () => {
   useMemo(() => {
     if (dates) {
       const convertedDates = dates.map((date) => ({
-        ...date,
-        id: date.id.toString(),
+        shift: date.shift,
+        day: [
+          {
+            date: date.date,
+            start_time: date.start_time,
+            end_time: date.end_time,
+            work_day: date.work_day,
+            day_of_week: date.day_of_week,
+          },
+        ],
       }));
       setShiftDates(convertedDates);
     }

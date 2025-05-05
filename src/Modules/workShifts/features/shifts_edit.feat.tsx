@@ -9,6 +9,8 @@ import {
   ShiftSelectorCom,
   ShiftDateItemCom,
 } from "../components/edit";
+import ShiftSchedule from "../components/create/shifts_schedule.form";
+import { convertToTimestamp } from "../utils";
 
 const ShiftsEditFeat = () => {
   const {
@@ -18,9 +20,12 @@ const ShiftsEditFeat = () => {
     visibleItems,
     setSearchQuery,
     setVisibleItems,
+    shiftDates: storeShiftDates,
+    setShiftDates,
   } = useShiftsStore();
 
   const { data: shifts, refetch } = useShifts.useGetShifts();
+  const { mutate: createNewDates } = useShifts.useCreateShiftsDates();
   const { data: shiftDates, refetch: refetchDates } =
     useShifts.useGetShiftsDates(shiftId?.toString() || "");
   const { mutate: deleteShift, isPending: isDeleting } =
@@ -40,6 +45,42 @@ const ShiftsEditFeat = () => {
 
   const handleShiftChange = (value: string) => {
     setShiftId(value ? parseInt(value) : null);
+  };
+
+  const handleCreateDates = () => {
+    if (!shiftId || storeShiftDates.length === 0) return;
+
+    const datesToCreate = [
+      {
+        shift: shiftId,
+        day: storeShiftDates[0].day.map((date) => ({
+          date: convertToTimestamp(date.date),
+          start_time: date.start_time,
+          end_time: date.end_time,
+          work_day: date.work_day,
+          day_of_week: date.day_of_week,
+        })),
+      },
+    ];
+
+    createNewDates(datesToCreate, {
+      onSuccess: () => {
+        Toast(
+          "تاریخ‌های جدید با موفقیت اضافه شدند",
+          <CheckCircle size={18} className="text-green-500" />,
+          "bg-green-500"
+        );
+        setShiftDates([]);
+        refetchDates();
+      },
+      onError: () => {
+        Toast(
+          "خطایی رخ داده است",
+          <X size={18} className="text-red-500" />,
+          "bg-red-500"
+        );
+      },
+    });
   };
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -97,16 +138,14 @@ const ShiftsEditFeat = () => {
     updateDates(
       {
         id: dateId.toString(),
-        data: [
-          {
-            shift: date.shift,
-            date: date.date,
-            start_time: field === "start_time" ? value : date.start_time,
-            end_time: field === "end_time" ? value : date.end_time,
-            work_day: date.work_day,
-            day_of_week: date.day_of_week,
-          },
-        ],
+        data: {
+          shift: date.shift,
+          date: date.date,
+          start_time: field === "start_time" ? value : date.start_time,
+          end_time: field === "end_time" ? value : date.end_time,
+          work_day: date.work_day,
+          day_of_week: date.day_of_week,
+        },
       },
       {
         onSuccess: () => {
@@ -135,16 +174,14 @@ const ShiftsEditFeat = () => {
     updateDates(
       {
         id: dateId.toString(),
-        data: [
-          {
-            shift: date.shift,
-            date: date.date,
-            start_time: date.start_time,
-            end_time: date.end_time,
-            work_day: newValue,
-            day_of_week: date.day_of_week,
-          },
-        ],
+        data: {
+          shift: date.shift,
+          date: date.date,
+          start_time: date.start_time,
+          end_time: date.end_time,
+          work_day: newValue,
+          day_of_week: date.day_of_week,
+        },
       },
       {
         onSuccess: () => {
@@ -183,6 +220,27 @@ const ShiftsEditFeat = () => {
       {shiftId && (
         <div className="mt-6">
           <ShiftHeaderCom shiftDates={shiftDates} />
+
+          <div className="mb-6">
+            <div className="mb-4 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-sm">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                افزودن تاریخ‌های جدید
+              </h3>
+              <ShiftSchedule />
+              {storeShiftDates &&
+                storeShiftDates.length > 0 &&
+                storeShiftDates[0]?.day?.length > 0 && (
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      onClick={handleCreateDates}
+                      className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                      افزودن {storeShiftDates[0].day.length} تاریخ جدید
+                    </button>
+                  </div>
+                )}
+            </div>
+          </div>
 
           <DynamicList
             data={shiftDates || []}

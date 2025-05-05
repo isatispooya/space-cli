@@ -2,11 +2,12 @@ import { MainLayout } from "../../../layouts";
 import { Outlet } from "react-router-dom";
 import { Toolbar } from "../../../components";
 import { LuTable } from "react-icons/lu";
+import { Plus, UserRound } from "lucide-react";
 
 const TimeFlowPage = () => {
   const toolbarButtons = [
     {
-      icon: LuTable,
+      icon: Plus,
       text: "ایجاد شیفت",
       permission: ["allow_any"],
       path: "create",
@@ -18,7 +19,7 @@ const TimeFlowPage = () => {
       path: "table",
     },
     {
-      icon: LuTable,
+      icon: UserRound,
       text: "تخصیص شیفت ها",
       permission: ["allow_any"],
       path: "assign",

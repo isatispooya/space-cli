@@ -51,6 +51,7 @@ const ShiftNameCom: React.FC<ShiftNameStepProps> = ({ onSuccess }) => {
         variant="primary"
         size="lg"
         fullWidth
+        className="mt-2 bg-[#008282] hover:bg-[#008282]/90"
         isLoading={isPending}
         isDisabled={isPending || !shiftName.trim()}
         animationOnHover="scale"

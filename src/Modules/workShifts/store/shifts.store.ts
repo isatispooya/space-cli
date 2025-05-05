@@ -1,14 +1,7 @@
 import { create } from "zustand";
 import { ShiftsStateType } from "../types";
 
-interface ExtendedShiftsStateType extends ShiftsStateType {
-  searchQuery: string;
-  visibleItems: number;
-  setSearchQuery: (query: string) => void;
-  setVisibleItems: (items: number | ((prev: number) => number)) => void;
-}
-
-const useShiftsStore = create<ExtendedShiftsStateType>()((set) => ({
+const useShiftsStore = create<ShiftsStateType>()((set) => ({
   shiftName: "",
   shiftId: null,
   setShiftName: (name) => set({ shiftName: name }),
@@ -17,16 +10,36 @@ const useShiftsStore = create<ExtendedShiftsStateType>()((set) => ({
   selectedShiftDate: null,
   setShiftDates: (dates) => set({ shiftDates: dates }),
   addShiftDate: (date) =>
-    set((state) => ({
-      shiftDates: [...state.shiftDates, date],
-    })),
+    set((state) => {
+      const currentShift = state.shiftDates[0]?.shift || 0;
+      const existingShift = state.shiftDates.find(
+        (s) => s.shift === currentShift
+      );
+
+      if (existingShift) {
+        return {
+          shiftDates: state.shiftDates.map((s) =>
+            s.shift === currentShift ? { ...s, day: [...s.day, date] } : s
+          ),
+        };
+      }
+
+      return {
+        shiftDates: [...state.shiftDates, { shift: currentShift, day: [date] }],
+      };
+    }),
   updateShiftDate: (date) =>
     set((state) => ({
-      shiftDates: state.shiftDates.map((d) => (d.id === date.id ? date : d)),
+      shiftDates: state.shiftDates.map((s) =>
+        s.shift === date.shift ? date : s
+      ),
     })),
-  deleteShiftDate: (id) =>
+  deleteShiftDate: (date) =>
     set((state) => ({
-      shiftDates: state.shiftDates.filter((d) => d.id !== id),
+      shiftDates: state.shiftDates.map((s) => ({
+        ...s,
+        day: s.day.filter((d) => d.date !== date),
+      })),
     })),
   setSelectedShiftDate: (date) => set({ selectedShiftDate: date }),
   clearShiftDates: () => set({ shiftDates: [] }),

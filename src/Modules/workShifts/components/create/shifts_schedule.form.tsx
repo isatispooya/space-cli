@@ -8,7 +8,7 @@ import { useState } from "react";
 import "../../styles/datepicker.styles.css";
 
 const ShiftScheduleCom: React.FC = () => {
-  const { setShiftDates } = useShiftsStore();
+  const { setShiftDates, shiftId } = useShiftsStore();
   const [selectedDates, setSelectedDates] = useState<DateObject[]>([]);
 
   const generateDatesBetween = (startDate: DateObject, endDate: DateObject) => {
@@ -34,27 +34,35 @@ const ShiftScheduleCom: React.FC = () => {
       const allDates = generateDatesBetween(dateArray[0], dateArray[1]);
       setSelectedDates(allDates);
 
-      const newShiftDates = allDates.map((date) => ({
-        id: Math.random().toString(36).substr(2, 9),
-        date: date.format("YYYY-MM-DD"),
-        start_time: "08:00",
-        end_time: "17:00",
-        work_day: true,
-        day_of_week: date.weekDay.name,
-      }));
+      const newShiftDates = [
+        {
+          shift: shiftId || 0,
+          day: allDates.map((date) => ({
+            date: date.format("YYYY-MM-DD"),
+            start_time: "08:00",
+            end_time: "17:00",
+            work_day: true,
+            day_of_week: date.weekDay.name,
+          })),
+        },
+      ];
 
       setShiftDates(newShiftDates);
     } else {
       // For single date selection
       setSelectedDates(dateArray);
-      const newShiftDates = dateArray.map((date) => ({
-        id: Math.random().toString(36).substr(2, 9),
-        date: date.format("YYYY-MM-DD"),
-        start_time: "08:00",
-        end_time: "17:00",
-        work_day: true,
-        day_of_week: date.weekDay.name,
-      }));
+      const newShiftDates = [
+        {
+          shift: shiftId || 0,
+          day: dateArray.map((date) => ({
+            date: date.format("YYYY-MM-DD"),
+            start_time: "08:00",
+            end_time: "17:00",
+            work_day: true,
+            day_of_week: date.weekDay.name,
+          })),
+        },
+      ];
 
       setShiftDates(newShiftDates);
     }
@@ -63,7 +71,7 @@ const ShiftScheduleCom: React.FC = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl shadow-sm border border-blue-100">
+        <div className="bg-gray-100 p-6 rounded-xl shadow-sm border border-blue-100">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-500 shadow-lg shadow-blue-200">
@@ -129,8 +137,6 @@ const ShiftScheduleCom: React.FC = () => {
                 calendarPosition="top-center"
                 fixMainPosition
                 value={selectedDates}
-                minDate={new DateObject({ calendar: persian }).toFirstOfMonth()}
-                maxDate={new DateObject({ calendar: persian }).toLastOfMonth()}
                 onChange={handleDateChange}
                 plugins={[<DatePanel eachDaysInRange position="left" />]}
                 calendar={persian}
@@ -152,6 +158,11 @@ const ShiftScheduleCom: React.FC = () => {
                   outline: "none",
                   transition: "all 0.2s ease-in-out",
                 }}
+                minDate={new DateObject({ calendar: persian }).subtract(
+                  1,
+                  "year"
+                )}
+                maxDate={new DateObject({ calendar: persian }).add(1, "year")}
               />
             </div>
           </div>

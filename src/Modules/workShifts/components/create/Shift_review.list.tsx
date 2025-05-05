@@ -2,10 +2,13 @@ import React from "react";
 import { Button } from "@/components";
 import { useShiftsStore } from "../../store";
 import { useShifts } from "../../hooks";
-import { Switch } from "@mui/material";
+
 import { DateObject } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import { ShiftDateType } from "../../types";
+import { Switch } from "@mui/material";
+import { convertToTimestamp } from "../../utils";
 
 interface ShiftReviewStepProps {
   onBack: () => void;
@@ -29,36 +32,33 @@ const ShiftReviewCom: React.FC<ShiftReviewStepProps> = ({
     useShifts.useCreateShiftsDates();
 
   const handleTimeChange = (
-    dateId: string,
+    date: string,
     field: "start_time" | "end_time",
     value: string
   ) => {
-    const date = shiftDates.find((d) => d.id === dateId);
-    if (date) {
+    const shiftDate = shiftDates[0];
+    if (shiftDate) {
+      const updatedDays = shiftDate.day.map((d) =>
+        d.date === date ? { ...d, [field]: value } : d
+      );
       updateShiftDate({
-        ...date,
-        [field]: value,
+        shift: shiftDate.shift,
+        day: updatedDays,
       });
     }
   };
 
-  const handleWorkDayChange = (dateId: string, newValue: boolean) => {
-    const date = shiftDates.find((d) => d.id === dateId);
-    if (date) {
+  const handleWorkDayChange = (date: string, newValue: boolean) => {
+    const shiftDate = shiftDates[0];
+    if (shiftDate) {
+      const updatedDays = shiftDate.day.map((d) =>
+        d.date === date ? { ...d, work_day: newValue } : d
+      );
       updateShiftDate({
-        ...date,
-        work_day: newValue,
+        shift: shiftDate.shift,
+        day: updatedDays,
       });
     }
-  };
-
-  const convertToTimestamp = (dateString: string) => {
-    const persianDate = new DateObject({
-      date: dateString,
-      calendar: persian,
-      locale: persian_fa,
-    });
-    return persianDate.toDate().toISOString().split("T")[0];
   };
 
   const formatPersianDate = (dateString: string) => {
@@ -80,19 +80,23 @@ const ShiftReviewCom: React.FC<ShiftReviewStepProps> = ({
       return;
     }
 
-    if (shiftDates.length === 0) {
+    if (!shiftDates.length || !shiftDates[0].day.length) {
       console.error("No dates selected");
       return;
     }
 
-    const datesToSubmit = shiftDates.map((date) => ({
-      shift: shiftId,
-      date: convertToTimestamp(date.date),
-      start_time: date.start_time,
-      end_time: date.end_time,
-      work_day: date.work_day,
-      day_of_week: date.day_of_week,
-    }));
+    const datesToSubmit = [
+      {
+        shift: shiftId,
+        day: shiftDates[0].day.map((date) => ({
+          date: convertToTimestamp(date.date),
+          start_time: date.start_time,
+          end_time: date.end_time,
+          work_day: date.work_day,
+          day_of_week: date.day_of_week,
+        })),
+      },
+    ];
 
     createShiftsDates(datesToSubmit, {
       onSuccess: () => {
@@ -107,22 +111,24 @@ const ShiftReviewCom: React.FC<ShiftReviewStepProps> = ({
 
   return (
     <div className="mt-4">
-      <div className="mb-6 p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl shadow-sm">
+      <div className="mb-6 p-6 bg-[#5677BC] rounded-xl shadow-sm">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">
+            <h2 className="text-2xl font-bold text-gray-100">
               بررسی و ویرایش تاریخ‌های انتخاب شده
             </h2>
             <div className="mt-2 flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">نام شیفت:</span>
-                <span className="text-blue-600 font-semibold">{shiftName}</span>
+                <span className="text-gray-100">نام شیفت:</span>
+                <span className="text-[#FFFFFF] font-semibold">
+                  {shiftName}
+                </span>
               </div>
               <div className="w-px h-4 bg-gray-300"></div>
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">تعداد روزها:</span>
-                <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  {shiftDates.length} روز
+                <span className="text-gray-100">تعداد روزها:</span>
+                <span className="bg-[#FFFFFF] text-[#5677BC] px-3 py-1 rounded-full text-sm font-medium">
+                  {shiftDates[0]?.day.length || 0} روز
                 </span>
               </div>
             </div>
@@ -131,15 +137,15 @@ const ShiftReviewCom: React.FC<ShiftReviewStepProps> = ({
       </div>
 
       <div className="space-y-4 max-h-[400px] overflow-y-auto p-2 custom-scrollbar">
-        {shiftDates.map((date) => {
+        {shiftDates[0]?.day.map((date: ShiftDateType) => {
           const persianDate = formatPersianDate(date.date);
           return (
             <div
-              key={date.id}
+              key={date.date}
               className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
             >
               <div className="flex items-center gap-6">
-                <div className="flex flex-col items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white">
+                <div className="flex flex-col items-center justify-center w-16 h-16 bg-[#5677BC] rounded-xl text-white">
                   <span className="text-xl font-bold">{persianDate.day}</span>
                   <span className="text-xs opacity-90">
                     {persianDate.monthName}
@@ -151,32 +157,19 @@ const ShiftReviewCom: React.FC<ShiftReviewStepProps> = ({
                     {date.day_of_week}
                   </span>
                   <div className="flex items-center gap-2 mt-1">
-                    <div className="flex items-center gap-3 bg-gray-100 px-3 py-1.5 rounded-lg">
-                      <svg
-                        className="w-4 h-4 text-blue-500 flex-shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+                    <div className="flex items-center gap-3 bg-[#5677BC] px-3 py-1.5 rounded-lg">
                       <div className="flex items-center">
                         <input
                           type="time"
                           value={date.start_time}
                           onChange={(e) =>
                             handleTimeChange(
-                              date.id,
+                              date.date,
                               "start_time",
                               e.target.value
                             )
                           }
-                          className="bg-transparent border-none text-sm text-gray-600 w-[85px] focus:outline-none"
+                          className="bg-transparent border-none text-sm text-gray-100 w-[85px] focus:outline-none"
                         />
                         <span className="text-gray-400 mx-1">-</span>
                         <input
@@ -184,12 +177,12 @@ const ShiftReviewCom: React.FC<ShiftReviewStepProps> = ({
                           value={date.end_time}
                           onChange={(e) =>
                             handleTimeChange(
-                              date.id,
+                              date.date,
                               "end_time",
                               e.target.value
                             )
                           }
-                          className="bg-transparent border-none text-sm text-gray-600 w-[85px] focus:outline-none"
+                          className="bg-transparent border-none text-sm text-gray-100 w-[85px] focus:outline-none"
                         />
                       </div>
                     </div>
@@ -198,21 +191,21 @@ const ShiftReviewCom: React.FC<ShiftReviewStepProps> = ({
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-lg">
-                  <span className="text-sm text-gray-600">روز کاری</span>
+                <div className="flex items-center gap-2 bg-[#5677BC] px-4 py-2 rounded-lg">
+                  <span className="text-sm text-gray-100">روز کاری</span>
                   <Switch
                     checked={date.work_day}
                     onChange={(e) =>
-                      handleWorkDayChange(date.id, e.target.checked)
+                      handleWorkDayChange(date.date, e.target.checked)
                     }
-                    color="primary"
+                    color="warning"
                     size="small"
                   />
                 </div>
                 <Button
                   variant="danger"
                   size="sm"
-                  onClick={() => deleteShiftDate(date.id)}
+                  onClick={() => deleteShiftDate(date.date)}
                   animationOnHover="scale"
                   animationOnTap="scale"
                   ripple
@@ -248,27 +241,26 @@ const ShiftReviewCom: React.FC<ShiftReviewStepProps> = ({
         <Button
           variant="outline"
           size="lg"
-          fullWidth
           onClick={onBack}
           animationOnHover="scale"
           animationOnTap="scale"
           ripple
+          className="flex-1"
         >
-          بازگشت و ویرایش تاریخ‌ها
+          بازگشت
         </Button>
         <Button
           variant="primary"
           size="lg"
-          fullWidth
-          isLoading={isPendingDates}
-          isDisabled={shiftDates.length === 0}
           onClick={handleSubmit}
+          isDisabled={isPendingDates || !shiftDates[0]?.day.length}
           animationOnHover="scale"
           animationOnTap="scale"
           ripple
           elevated
+          className="flex-1"
         >
-          {isPendingDates ? "در حال ذخیره..." : "تایید و ذخیره"}
+          {isPendingDates ? "در حال ثبت..." : "ثبت نهایی"}
         </Button>
       </div>
     </div>

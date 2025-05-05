@@ -30,14 +30,17 @@ const shiftsServices = {
     const { data } = await api.delete(`/timeflow/shift-date/${id}/`);
     return data;
   },
-  updateShiftsDates: async (id: string, data: any): Promise<any> => {
+  updateShiftsDates: async (
+    id: string,
+    data: ShiftTypes["updateDatesReq"]
+  ): Promise<ShiftTypes["updateDatesRes"]> => {
     const response = await api.patch(`/timeflow/shift-date/${id}/`, data);
     return response.data;
   },
   createShiftsAssignments: async (
     data: ShiftTypes["assignReq"]
   ): Promise<any> => {
-    const response = await api.post("/timeflow/shift-assignment/", data);
+    const response = await api.post("/timeflow/set-shift-for-user/", data);
     return response.data;
   },
 };
