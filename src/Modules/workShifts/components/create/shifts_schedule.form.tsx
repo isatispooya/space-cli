@@ -3,7 +3,7 @@ import DatePicker, { DateObject } from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import { useShiftsStore } from "../../store/shifts.store";
+import { useShiftsStore } from "../../store";
 import { useState } from "react";
 import "../../styles/datepicker.styles.css";
 

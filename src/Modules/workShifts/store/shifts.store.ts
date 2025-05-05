@@ -1,7 +1,14 @@
 import { create } from "zustand";
 import { ShiftsStateType } from "../types";
 
-export const useShiftsStore = create<ShiftsStateType>()((set) => ({
+interface ExtendedShiftsStateType extends ShiftsStateType {
+  searchQuery: string;
+  visibleItems: number;
+  setSearchQuery: (query: string) => void;
+  setVisibleItems: (items: number | ((prev: number) => number)) => void;
+}
+
+const useShiftsStore = create<ExtendedShiftsStateType>()((set) => ({
   shiftName: "",
   shiftId: null,
   setShiftName: (name) => set({ shiftName: name }),
@@ -23,11 +30,23 @@ export const useShiftsStore = create<ShiftsStateType>()((set) => ({
     })),
   setSelectedShiftDate: (date) => set({ selectedShiftDate: date }),
   clearShiftDates: () => set({ shiftDates: [] }),
+  searchQuery: "",
+  visibleItems: 10,
+  setSearchQuery: (query) => set({ searchQuery: query }),
+  setVisibleItems: (items) =>
+    set((state) => ({
+      visibleItems:
+        typeof items === "function" ? items(state.visibleItems) : items,
+    })),
   resetStore: () =>
     set({
       shiftName: "",
       shiftId: null,
       shiftDates: [],
       selectedShiftDate: null,
+      searchQuery: "",
+      visibleItems: 10,
     }),
 }));
+
+export default useShiftsStore;

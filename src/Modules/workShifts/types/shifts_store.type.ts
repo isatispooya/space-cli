@@ -10,8 +10,12 @@ export interface ShiftDateType {
 export interface ShiftsStateType {
   shiftName: string;
   shiftId: number | null;
+  searchQuery: string;
+  visibleItems: number;
   setShiftName: (name: string) => void;
   setShiftId: (id: number | null) => void;
+  setSearchQuery: (query: string) => void;
+  setVisibleItems: (items: number | ((prev: number) => number)) => void;
   shiftDates: ShiftDateType[];
   selectedShiftDate: ShiftDateType | null;
   setShiftDates: (dates: ShiftDateType[]) => void;

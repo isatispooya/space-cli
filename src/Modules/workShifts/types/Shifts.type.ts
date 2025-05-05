@@ -31,6 +31,19 @@ export interface ShiftDateResType {
   updated_at: string;
 }
 
+export interface DeleteShiftReqType {
+  id: string;
+}
+
+export interface DeleteShiftResType {
+  message: string;
+}
+
+export interface PostAssignmentsReqType {
+  position_id: number;
+  shift_id: number;
+}
+
 export type ShiftTypes = {
   getRes: GetShiftsResType;
   postReq: ShiftsReqType;
@@ -38,6 +51,9 @@ export type ShiftTypes = {
   postDatesReq: ShiftDateReqType[];
   postDatesRes: ShiftDateResType[];
   datesRes: ShiftDateResType[];
+  deleteReq: DeleteShiftReqType;
+  deleteRes: DeleteShiftResType;
+  assignReq: PostAssignmentsReqType;
 };
 
 export default ShiftTypes;

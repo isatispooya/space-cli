@@ -1,6 +1,6 @@
 import React from "react";
 import { InputBase, Button } from "@/components";
-import { useShiftsStore } from "../../store/shifts.store";
+import { useShiftsStore } from "../../store";
 import { useShifts } from "../../hooks";
 
 interface ShiftNameStepProps {

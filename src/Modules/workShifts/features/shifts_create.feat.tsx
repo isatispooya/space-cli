@@ -3,7 +3,7 @@ import { Button, Stepper } from "@/components";
 import ShiftNameStep from "../components/create/Shift_name.form";
 import ShiftSchedule from "../components/create/shifts_schedule.form";
 import ShiftReviewStep from "../components/create/Shift_review.list";
-import { useShiftsStore } from "../store/shifts.store";
+import { useShiftsStore } from "../store";
 import { useNavigate } from "react-router-dom";
 import Toast from "@/components/common/toast/toast";
 import { CheckCircle } from "lucide-react";

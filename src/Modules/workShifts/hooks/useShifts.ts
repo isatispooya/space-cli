@@ -48,6 +48,51 @@ const useShifts = {
       queryFn: () => shiftsServices.getShiftsDates(id),
     });
   },
+
+  useDeleteShifts: (): UseMutationResult<
+    ShiftTypes["deleteRes"],
+    AxiosError,
+    string
+  > => {
+    return useMutation({
+      mutationKey: ["deleteShifts"],
+      mutationFn: (id: string) => shiftsServices.deleteShifts(id),
+    });
+  },
+
+  useDeleteShiftsDates: (): UseMutationResult<
+    ShiftTypes["deleteRes"],
+    AxiosError,
+    string
+  > => {
+    return useMutation({
+      mutationKey: ["deleteShiftsDates"],
+      mutationFn: (id: string) => shiftsServices.deleteShiftsDates(id),
+    });
+  },
+
+  useUpdateShiftDates: (): UseMutationResult<
+    ShiftTypes["datesRes"],
+    AxiosError,
+    { id: string; data: Partial<ShiftTypes["postDatesReq"]> }
+  > => {
+    return useMutation({
+      mutationKey: ["updateShiftsDates"],
+      mutationFn: ({ id, data }) => shiftsServices.updateShiftsDates(id, data),
+    });
+  },
+
+  useCreateShiftsAssign: (): UseMutationResult<
+    any,
+    AxiosError,
+    ShiftTypes["assignReq"]
+  > => {
+    return useMutation({
+      mutationKey: ["createShiftsAssignments"],
+      mutationFn: (data: ShiftTypes["assignReq"]) =>
+        shiftsServices.createShiftsAssignments(data),
+    });
+  },
 };
 
 export default useShifts;
