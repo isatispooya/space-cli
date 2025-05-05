@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components";
-import { useShiftsStore } from "../../store/shifts.store";
+import { useShiftsStore } from "../../store";
 import { useShifts } from "../../hooks";
 import { Switch } from "@mui/material";
 import { DateObject } from "react-multi-date-picker";

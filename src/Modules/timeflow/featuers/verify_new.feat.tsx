@@ -50,7 +50,11 @@ export default function NewVerifyForm() {
       {
         onSuccess: (data: unknown) => {
           const response = data as TimeflowResponse;
-          Toast(response.message, <CheckCircle />, "#00C853");
+          Toast(
+            response.message,
+            <CheckCircle className="text-green-500" />,
+            "bg-green-500"
+          );
         },
         onError: (error: unknown) => {
           const axiosError = error as AxiosError<{
@@ -59,8 +63,8 @@ export default function NewVerifyForm() {
           }>;
           Toast(
             axiosError.response?.data?.error || "خطایی رخ داد",
-            <X />,
-            "#FF0000"
+            <X className="text-red-500" />,
+            "bg-red-500"
           );
         },
       }

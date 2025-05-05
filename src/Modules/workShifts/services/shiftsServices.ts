@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from "@/api";
 import { ShiftTypes } from "../types";
 
@@ -23,9 +22,23 @@ const shiftsServices = {
     const response = await api.get(`/timeflow/shift-detail/${id}/`);
     return response.data;
   },
-  deleteShifts: async (id: string): Promise<any> => {
+  deleteShifts: async (id: string): Promise<ShiftTypes["deleteRes"]> => {
     const { data } = await api.delete(`/timeflow/shift/${id}/`);
     return data;
+  },
+  deleteShiftsDates: async (id: string): Promise<ShiftTypes["deleteRes"]> => {
+    const { data } = await api.delete(`/timeflow/shift-date/${id}/`);
+    return data;
+  },
+  updateShiftsDates: async (id: string, data: any): Promise<any> => {
+    const response = await api.patch(`/timeflow/shift-date/${id}/`, data);
+    return response.data;
+  },
+  createShiftsAssignments: async (
+    data: ShiftTypes["assignReq"]
+  ): Promise<any> => {
+    const response = await api.post("/timeflow/shift-assignment/", data);
+    return response.data;
   },
 };
 

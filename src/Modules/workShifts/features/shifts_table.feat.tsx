@@ -6,7 +6,7 @@ import { TabulatorTable, SelectInput, LoaderLg, Spinner } from "@/components";
 import { CellComponent } from "tabulator-tables";
 import moment from "moment-jalaali";
 import { ShiftDateResType } from "../types";
-import { useShiftsStore } from "../store/shifts.store";
+import { useShiftsStore } from "../store";
 import { useNavigate } from "react-router-dom";
 
 const ShiftsTableFeat = () => {
