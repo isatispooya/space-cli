@@ -250,18 +250,37 @@ const DashboardChart = () => {
         <span>مدیریت سهام</span>
       </Button>
 
-      <div className="absolute bottom-0 left-0 right-0">
+      <div className="absolute bottom-0 left-0 right-0" style={{ height: "120px" }}>
         <svg
-          className="w-full h-[50px]"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
+          className="absolute bottom-0 left-0 w-full"
+          height="60"
+          viewBox="0 0 100 18"
           preserveAspectRatio="none"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <path
+            d="M0,15 C15,0 35,18 50,12 C65,6 85,20 100,6 L100,18 L0,18 Z"
             fill="#1e40af"
-            fillOpacity="0.3"
-            d="M0,160L34.3,165.3C68.6,171,137,181,206,192C274.3,203,343,213,411,197.3C480,181,549,139,617,144C685.7,149,754,203,823,224C891.4,245,960,235,1029,213.3C1097.1,192,1166,160,1234,144C1302.9,128,1371,128,1406,128L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"
-          ></path>
+            fillOpacity="0.7"
+            className="transition-all duration-300"
+          />
+        </svg>
+
+        <svg
+          className="absolute bottom-0 left-0 w-full"
+          height="40"
+          viewBox="0 0 100 12"
+          preserveAspectRatio="none"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0,6 C20,12 40,3 60,9 C80,15 90,3 100,9 L100,12 L0,12 Z"
+            fill="#1e40af"
+            fillOpacity="0.9"
+            className="transition-all duration-300"
+          />
         </svg>
       </div>
     </motion.div>

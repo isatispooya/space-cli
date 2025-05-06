@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactNode, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useInvitation } from "../../invitation/hooks";
 import { RiUserReceived2Line } from "react-icons/ri";
 import "moment/locale/fa";
@@ -10,24 +10,8 @@ import { LuCoins } from "react-icons/lu";
 import { useProfile } from "../../userManagment";
 import { useUserPermissions } from "../../permissions";
 import { MdCardGiftcard } from "react-icons/md";
-import Card from "../../../components/cards/card";
-import WaveEffect from "../../../ui/wave";
-import "../../../ui/wave.css";
+import DashboardCard from "./DashboardCard";
 import { motion } from "framer-motion";
-
-export interface StatsProps {
-  title: string;
-  value: string | number;
-  icon: ReactNode;
-  change?: number;
-  changeText?: string;
-  changeTimeSpan?: string;
-  trend?: "up" | "down" | "neutral";
-  bgColor?: string;
-  iconColor?: string;
-  route?: string;
-  created_at?: string;
-}
 
 const DashboardMarketingStat = () => {
   const [copied, setCopied] = useState(false);
@@ -92,36 +76,8 @@ const DashboardMarketingStat = () => {
     }
   };
 
-  const content = (
-    <div className="flex flex-col h-full w-full p-4">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center">
-          <RiUserReceived2Line className="w-5 h-5 text-[#D2042D]" />
-          <h3 className="text-sm text-[#D2042D] font-bold font-iranSans mr-2">
-            باشگاه ایساتیس
-          </h3>
-        </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => navigate("/points/privileges")}
-            className="flex items-center gap-1 text-xs text-[#D2042D] border border-[#D2042D] rounded-lg px-2 py-1 hover:bg-[#D2042D] hover:text-white transition-all duration-300"
-          >
-            <LuCoins className="w-3 h-3" />
-            <span>امتیازات</span>
-          </button>
-
-          {hasPermission && (
-            <button
-              onClick={() => navigate("/rewards/table")}
-              className="flex items-center gap-1 text-xs text-[#D2042D] border border-[#D2042D] rounded-lg px-2 py-1 hover:bg-[#D2042D] hover:text-white transition-all duration-300"
-            >
-              <MdCardGiftcard className="w-3 h-3" />
-              <span>رفاهی</span>
-            </button>
-          )}
-        </div>
-      </div>
-
+  const marketingContent = (
+    <>
       <div className="flex-grow flex items-center justify-center mb-6">
         <div className="flex items-center justify-center w-full gap-12">
           <button
@@ -155,7 +111,7 @@ const DashboardMarketingStat = () => {
         </div>
       </div>
 
-      <div className="mt-auto relative z-10 w-full">
+      <div className="mt-auto relative z-10 w-full tour-marketing-share">
         <div className="flex items-center gap-2 bg-[#ffffff] p-2 rounded-lg shadow-inner hover:bg-gray-100 transition-colors duration-200">
           <p className="flex-1 text-xs text-[#D2042D] font-iranSans truncate">
             {`my.isatispooya.com/login?rf=${
@@ -175,23 +131,40 @@ const DashboardMarketingStat = () => {
           </motion.button>
         </div>
       </div>
+    </>
+  );
+
+  const headerButtons = (
+    <div className="flex gap-3 pl-2">
+      <button
+        onClick={() => navigate("/points/privileges")}
+        className="flex items-center gap-1 text-xs text-[#D2042D] border border-[#D2042D] rounded-lg px-2 py-1 hover:bg-[#D2042D] hover:text-white transition-all duration-300"
+      >
+        <LuCoins className="w-3 h-3" />
+        <span>امتیازات</span>
+      </button>
+
+      {hasPermission && (
+        <button
+          onClick={() => navigate("/rewards/table")}
+          className="flex items-center gap-1 text-xs text-[#D2042D] border border-[#D2042D] rounded-lg px-2 py-1 hover:bg-[#D2042D] hover:text-white transition-all duration-300"
+        >
+          <MdCardGiftcard className="w-3 h-3" />
+          <span>رفاهی</span>
+        </button>
+      )}
     </div>
   );
 
   return (
-    <Card
-      disableAnimation={true}
-      className="relative bg-white rounded-xl shadow-md w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl wave-container"
-      contentClassName="h-full p-0 flex flex-col"
-      content={content}
-      customStyles={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        padding: 0,
-      }}
-      padding="0"
-      footerSlot={<WaveEffect color="red" />}
+    <DashboardCard
+      title="باشگاه ایساتیس"
+      icon={<RiUserReceived2Line className="w-5 h-5" />}
+      iconColor="#D2042D"
+      waveColor="red"
+      content={marketingContent}
+      className="tour-marketing-stat"
+      headerButtons={headerButtons}
     />
   );
 };

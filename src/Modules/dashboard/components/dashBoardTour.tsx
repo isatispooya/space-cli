@@ -168,17 +168,17 @@ const DashboardTour: React.FC<TourProps> = ({ runTour, onTourEnd }) => {
       disableBeacon: true,
     },
     {
-      target: ".tour-crowd",
+      target: ".tour-component[class*='tour-crowd']",
       content: "دسترسی سریع به پنل ایساتیس کراد شما ",
       disableBeacon: true,
     },
     {
-      target: ".tour-bime",
+      target: ".tour-component[class*='tour-bime']",
       content: "پنل بیمه شما",
       disableBeacon: true,
     },
     {
-      target: ".tour-bors",
+      target: ".tour-component[class*='tour-bors']",
       content:
         "نمای سهام های شما در کاگزاری ایساتیس پویا و ورود به پنل کارگزاری",
       disableBeacon: true,

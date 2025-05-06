@@ -1,12 +1,8 @@
 import { useDashboard } from "../hooks";
-import { IoIosArrowBack } from "react-icons/io";
 import { crowd } from "@/assets";
 import usePostUUID from "../hooks/useuuidpost";
 import toast from "react-hot-toast";
-import Card from "../../../components/cards/card";
-import WaveEffect from "../../../ui/wave";
-import "../../../ui/wave.css";
-import { Button } from "@/components";
+import DashboardCard from "./DashboardCard";
 
 const formatValue = (value: number) => {
   const length = value.toString().length;
@@ -46,7 +42,6 @@ const DashboardCrowdStat = () => {
   const { data: stats } = useDashboard.useGetCrowd();
   const { mutate: crowdUUID } = usePostUUID();
   
-
   const totalValue = Number(stats?.["total value"]);
 
   const handleCrowdUUID = () => {
@@ -62,73 +57,44 @@ const DashboardCrowdStat = () => {
     });
   };
 
-  const content = (
-    <div className="flex flex-col h-full w-full p-4">
-      <div className="flex items-center mb-3">
-        <img src={crowd} alt="crowd" className="w-10 h-10" />
-        <h3 className="text-base text-[#4b0082] font-bold font-iranSans mr-2">
-          {"ایساتیس کراد"}
-        </h3>
-      </div>
-
-      <div className="flex-grow">
-        <p className="text-sm font-bold text-[#4b0082] font-iranSans">
-          {stats?.["total value"]
-            ? "مجموع تامین مالی جمعی"
-            : "مجموع تامین مالی جمعی"}
-        </p>
-        <div className="text-center mt-3">
-          <p className="text-6xl font-bold text-[#4b0082] font-iranSans overflow-hidden text-ellipsis whitespace-nowrap">
-            {!totalValue ? (
-              <>
-                0
-                <span className="text-base text-[#4b0082] font-iranSans">
-                  {" "}
-                  ریال
-                </span>
-              </>
-            ) : (
-              formatValue(totalValue)
-            )}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-auto relative z-10 w-full">
-        <Button
-          variant="custom"
-          customColors={{
-            background: "#4b0082",
-            hoverBackground: "#6b238e",
-            text: "white",
-          }}
-          fullWidth
-          animationOnHover="scale"
-          animationOnTap="scale"
-          rightIcon={<IoIosArrowBack className="w-4 h-4" />}
-          className="font-iranSans text-base"
-          onClick={handleCrowdUUID}
-        >
-          <span>پنل کراد</span>
-        </Button>
-      </div>
-    </div>
-  );
-
   return (
-    <Card
-      disableAnimation={true}
-      className="relative bg-white rounded-xl shadow-md w-full h-full overflow-hidden transition-all duration-300 hover:shadow-xl wave-container"
-      contentClassName="h-full p-0 flex flex-col"
-      content={content}
-      customStyles={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        padding: 0,
+    <DashboardCard
+      title="ایساتیس کراد"
+      icon={<img src={crowd} alt="crowd" className="w-10 h-10" />}
+      iconColor="#4b0082"
+      waveColor="purple"
+      buttonText="پنل کراد"
+      onButtonClick={handleCrowdUUID}
+      customColors={{
+        background: "#4b0082",
+        hoverBackground: "#6b238e",
+        text: "white",
       }}
-      padding="0"
-      footerSlot={<WaveEffect color="purple" />}
+      content={
+        <div className="flex-grow">
+          <p className="text-sm font-bold text-[#4b0082] font-iranSans">
+            {stats?.["total value"]
+              ? "مجموع تامین مالی جمعی"
+              : "مجموع تامین مالی جمعی"}
+          </p>
+          <div className="text-center mt-3">
+            <p className="text-6xl font-bold text-[#4b0082] font-iranSans overflow-hidden text-ellipsis whitespace-nowrap">
+              {!totalValue ? (
+                <>
+                  0
+                  <span className="text-base text-[#4b0082] font-iranSans">
+                    {" "}
+                    ریال
+                  </span>
+                </>
+              ) : (
+                formatValue(totalValue)
+              )}
+            </p>
+          </div>
+        </div>
+      }
+      className="tour-crowd"
     />
   );
 };
