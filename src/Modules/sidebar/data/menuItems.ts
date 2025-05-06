@@ -147,7 +147,7 @@ export const menuItems: MenuItem[] = [
       {
         title: "مدیریت شرکت‌ها در سامانه رسمیو",
         path: "/companies/companyrasmio",
-        codename: ["allow_any"],
+        codename: ["admin_company_rasmio"],
       },
     ],
   },

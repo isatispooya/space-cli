@@ -70,7 +70,7 @@ const DashboardBorsStat = () => {
   return (
     <DashboardCard
       title={title}
-      icon={<img src={bors} alt="بورس آیکن" className="w-10 h-10" />}
+      icon={<img src={bors} alt="بورس آیکن" className="w-18 h-18" />}
       iconColor="#1e40af"
       waveColor="blue"
       buttonText="پنل بورس"

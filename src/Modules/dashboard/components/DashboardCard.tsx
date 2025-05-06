@@ -42,12 +42,32 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
   className = "",
   headerButtons,
 }) => {
+  const getTitleColor = () => {
+    switch (waveColor) {
+      case "green":
+        return "#16a34a";
+      case "blue":
+        return "#1e40af";
+      case "purple":
+        return "#7e22ce";
+      case "red":
+        return "#dc2626";
+      case "orange":
+        return "#ea580c";
+      case "dark":
+        return "#1e293b";
+      default:
+        return customColors.background;
+    }
+  };
+  
+  const titleColor = getTitleColor();
+  
   const renderContent = (
     <div
       className={`flex flex-col h-full w-full p-2 wave-content ${className}`}
     >
       <div className="flex-shrink-0">
-        {/* Header */}
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center">
             <div
@@ -58,7 +78,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
             </div>
             <h3
               className={`text-xs font-bold font-iranSans mr-1.5`}
-              style={{ color: iconColor }}
+              style={{ color: titleColor }}
             >
               {title}
             </h3>
@@ -67,10 +87,8 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-grow flex flex-col min-h-[140px]">{content}</div>
 
-      {/* Button - Always at the bottom */}
       {buttonText && (
         <div className="w-full pt-1.5 relative z-10 mt-auto flex-shrink-0">
           {isExternalLink && buttonLink ? (

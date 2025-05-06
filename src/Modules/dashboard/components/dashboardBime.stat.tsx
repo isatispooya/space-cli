@@ -10,7 +10,7 @@ const DashboardBimeStat = () => {
   return (
     <DashboardCard
       title="بیمه ایساتیس"
-      icon={<img src={bime} alt="bime" className="w-10 h-10" />}
+      icon={<img src={bime} alt="bime" className="w-18 h-18" />}
       iconColor="#1a5c35"
       waveColor="green"
       buttonText="پنل بیمه"

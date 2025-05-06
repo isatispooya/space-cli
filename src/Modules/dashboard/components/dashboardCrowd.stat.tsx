@@ -60,7 +60,7 @@ const DashboardCrowdStat = () => {
   return (
     <DashboardCard
       title="ایساتیس کراد"
-      icon={<img src={crowd} alt="crowd" className="w-10 h-10" />}
+      icon={<img src={crowd} alt="crowd" className="w-18 h-18 ml-2" />}
       iconColor="#4b0082"
       waveColor="purple"
       buttonText="پنل کراد"
