@@ -26,9 +26,9 @@ const Details = ({ symbol }: { symbol: Symbol | undefined }) => {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <div className="w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="w-24 h-24 rounded-full bg-white shadow-md flex items-center justify-center p-4 relative overflow-hidden">
           <motion.div
-            className="absolute inset-0 bg-blue-100 opacity-20"
+            className="absolute inset-0 opacity-20"
             animate={{
               scale: [1, 1.2, 1],
             }}
