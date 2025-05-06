@@ -4,10 +4,15 @@ import internalOptions from "../../../data/sent/transcript.data";
 import { getValueLabel } from "../../../utils/helpers";
 
 export const MessageFooter = ({ sender, matchedUsers }: MessageFooterProps) => {
+  // فیلتر کردن رونوشت‌هایی که security آنها true نیست
+  const filteredTranscripts = sender.transcript_details?.filter(
+    (transcript) => !transcript.security
+  );
+
   return (
     <>
       <Grid container spacing={2} sx={{ position: 'relative', minHeight: '100%' }}>
-        {sender.transcript_details && sender.transcript_details.length > 0 && (
+        {filteredTranscripts && filteredTranscripts.length > 0 && (
           <Grid item xs={12} md={12}>
             <Box sx={{ borderRadius: "12px" }}>
               <Typography
@@ -19,7 +24,7 @@ export const MessageFooter = ({ sender, matchedUsers }: MessageFooterProps) => {
               >
                 رونوشت:
               </Typography>
-              {sender?.transcript_details.map((transcript) => {
+              {filteredTranscripts.map((transcript) => {
                 const positionInfo = matchedUsers?.find(
                   (user) => user.id === transcript.position
                 );

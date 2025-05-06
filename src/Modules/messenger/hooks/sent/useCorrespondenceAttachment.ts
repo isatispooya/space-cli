@@ -11,6 +11,7 @@ import {
   APIFormDataType,
   CorrespondenceResponse,
 } from "../../types/sent/sent.type";
+import { toast } from "react-toastify";
 
 const useCorrespondenceAttachment = {
   useGetAttache: (): UseQueryResult<CorrespondenceAttachments> => {
@@ -24,18 +25,18 @@ const useCorrespondenceAttachment = {
     Error,
     AttachmentResponse
   > => {
+    const { refetch } = useCorrespondenceAttachment.useGetAttache();
     return useMutation({
       mutationFn: correspondenceAttacheService.postAttache,
+      onSuccess: () => {
+        refetch();
+      },
     });
   },
-  usePostCorrespondence: (options?: { 
-    onSuccess?: () => void,
-    onError?: (error: Error) => void 
-  }): UseMutationResult<
-    AttachmentResponse,
-    Error,
-    APIFormDataType
-  > => {
+  usePostCorrespondence: (options?: {
+    onSuccess?: () => void;
+    onError?: (error: Error) => void;
+  }): UseMutationResult<AttachmentResponse, Error, APIFormDataType> => {
     return useMutation({
       mutationFn: correspondenceAttacheService.postCorrespondence,
       onSuccess: options?.onSuccess,
@@ -49,6 +50,9 @@ const useCorrespondenceAttachment = {
   > => {
     return useMutation({
       mutationFn: correspondenceAttacheService.updateCorrespondence,
+      onSuccess: () => {
+        toast.success("اطلاعات با موفقیت ثبت شد");
+      },
     });
   },
   useGetCorrespondence: (): UseQueryResult<CorrespondenceResponse> => {

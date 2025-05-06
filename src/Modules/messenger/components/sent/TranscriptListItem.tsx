@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   ListItem,
@@ -18,7 +18,7 @@ interface TranscriptListItemProps {
   getTranscriptName: (id: number) => string;
   transcriptDirections: { [id: number]: string };
   handleDirectionChange: (id: number, value: string) => void;
-  handleTranscriptToggle: (id: number) => void;
+  handleTranscriptToggle: (id: number, newValue?: boolean) => void;
   internalOptions: typeof internalOptions;
 }
 
@@ -31,14 +31,19 @@ const TranscriptListItem: React.FC<TranscriptListItemProps> = React.memo(
     handleTranscriptToggle,
     internalOptions,
   }) => {
-    const handleVisibilityChange = useCallback(
-      (_: React.SyntheticEvent, checked: boolean) => {
-        if (checked !== !item.security) {
-          handleTranscriptToggle(item.id);
-        }
-      },
-      [item.security, item.id, handleTranscriptToggle]
-    );
+    const [visibility, setVisibility] = useState(!item.security);
+
+    useEffect(() => {
+      setVisibility(!item.security);
+    }, [item.security]);
+
+    const handleVisibilityChange = (
+      event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      const value = event.target.value === "true";
+      setVisibility(value);
+      handleTranscriptToggle(item.id, !value);
+    };
 
     return (
       <ListItem sx={{ px: 1, py: 1.5 }}>
@@ -75,21 +80,19 @@ const TranscriptListItem: React.FC<TranscriptListItemProps> = React.memo(
             >
               <FormControl>
                 <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue={!item.security ? "true" : "false"}
-                  name="radio-buttons-group"
+                  value={visibility ? "true" : "false"}
+                  onChange={handleVisibilityChange}
+                  row
                 >
                   <FormControlLabel
                     value="true"
                     control={<Radio />}
                     label="نمایش"
-                    onChange={handleVisibilityChange}
                   />
                   <FormControlLabel
                     value="false"
                     control={<Radio />}
                     label="مخفی"
-                    onChange={handleVisibilityChange}
                   />
                 </RadioGroup>
               </FormControl>

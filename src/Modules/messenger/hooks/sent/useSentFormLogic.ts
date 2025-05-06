@@ -101,8 +101,8 @@ export const useSentFormLogic = (id: string | undefined) => {
     () =>
       (PositionAll as PositionTypes[])?.map((position) => ({
         label: `${position.user.first_name} ${position.user.last_name} | ${
-          position.user.uniqueIdentifier
-        }  | ${position.name || "بدون سمت"}`,
+          position.name
+        }  | ${position.company_detail?.name || "بدون سمت"}`,
         value: position.id.toString(),
       })) || [],
     [PositionAll]
@@ -112,8 +112,8 @@ export const useSentFormLogic = (id: string | undefined) => {
     () =>
       (Position as PositionTypes[])?.map((position) => ({
         label: `${position.user.first_name} ${position.user.last_name}  | ${
-          position.user.uniqueIdentifier
-        } | ${position.name || "بدون سمت"}`,
+          position.name
+        } | ${position.company_detail?.name || "بدون سمت"}`,
         value: position.id.toString(),
       })) || [],
     [Position]
@@ -127,18 +127,19 @@ export const useSentFormLogic = (id: string | undefined) => {
   const transcriptItems = useMemo<ITranscriptResponse[]>(() => {
     return (formData.reference || []).map((ref) => {
       const refNum = Number(ref);
+      const isVisible = formData.referenceData?.find(item => item.id === refNum)?.enabled !== false;
       return {
         id: refNum,
         read_at: null,
         transcript_for: transcriptDirectionsTyped[refNum] || "notification",
-        security: false,
+        security: !isVisible,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         position: refNum,
         correspondence: Number(id || 0),
       };
     });
-  }, [formData.reference, transcriptDirectionsTyped, id]);
+  }, [formData.reference, formData.referenceData, transcriptDirectionsTyped, id]);
 
   useEffect(() => {
     if (id && data?.sender) {
@@ -194,27 +195,15 @@ export const useSentFormLogic = (id: string | undefined) => {
     const apiTranscripts =
       formData.reference?.map((ref) => {
         const refNum = Number(ref);
+        const isVisible = formData.referenceData?.find(item => item.id === refNum)?.enabled !== false;
         return {
           position: refNum,
           transcript_for: transcriptDirectionsTyped[refNum] || "notification",
-          security: false,
+          security: !isVisible,
           correspondence: null,
           read_at: new Date().toISOString(),
         };
       }) || [];
-
-    if (
-      formData.sender &&
-      !apiTranscripts.find((t) => t.position === formData.sender)
-    ) {
-      apiTranscripts.unshift({
-        position: formData.sender,
-        transcript_for: "notification",
-        security: false,
-        correspondence: null,
-        read_at: new Date().toISOString(),
-      });
-    }
 
     const finalData: APIFormDataType = {
       ...restFormData,
