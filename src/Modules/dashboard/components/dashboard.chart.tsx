@@ -232,6 +232,7 @@ const DashboardChart = () => {
           </ResponsiveContainer>
         )}
       </div>
+      
 
       <Button
         onClick={() => (window.location.href = "/shareholders/table")}
