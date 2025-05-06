@@ -14,6 +14,7 @@ interface DynamicListProps<T> {
   renderItem: (item: T) => React.ReactNode; // تابع رندر کردن هر آیتم
   noResultsMessage?: string;
   hideSearch?: boolean; // New prop with default value false
+  searchFields?: string[]; // فیلدهایی که باید در آنها جستجو شود
 }
 
 const DynamicList = <T extends object>({
@@ -27,14 +28,36 @@ const DynamicList = <T extends object>({
   renderItem,
   noResultsMessage = "نتیجه‌ای یافت نشد.",
   hideSearch = false, // Default to false, meaning search is visible by default
+  searchFields = [], // فیلدهای پیش‌فرض برای جستجو خالی است
 }: DynamicListProps<T>) => {
   // اطمینان حاصل کنید که data همیشه یک آرایه است
   const safeData = Array.isArray(data) ? data : [];
 
   // فیلتر کردن داده‌ها بر اساس جستجو
-  const filteredData = safeData.filter((item) =>
-    JSON.stringify(item).toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredData = safeData.filter((item) => {
+    if (!searchQuery.trim()) return true; // اگر عبارت جستجو خالی باشد، همه آیتم‌ها را نشان بده
+    
+    const query = searchQuery.toLowerCase();
+    
+    // اگر فیلدهای خاصی برای جستجو مشخص شده باشند، فقط در آنها جستجو کن
+    if (searchFields.length > 0) {
+      return searchFields.some(field => {
+        const value = item[field as keyof T];
+        // اگر مقدار فیلد یک رشته باشد، در آن جستجو کن
+        if (typeof value === 'string') {
+          return value.toLowerCase().includes(query);
+        }
+        // اگر مقدار فیلد یک عدد باشد، آن را به رشته تبدیل کن و جستجو کن
+        if (typeof value === 'number') {
+          return value.toString().toLowerCase().includes(query);
+        }
+        return false;
+      });
+    } else {
+      // در غیر این صورت، کل شیء را به رشته تبدیل کن و جستجو کن (رفتار قبلی)
+      return JSON.stringify(item).toLowerCase().includes(query);
+    }
+  });
 
   const [ref, inView] = useInView({
     threshold: 0.5,
@@ -53,9 +76,9 @@ const DynamicList = <T extends object>({
   }
 
   return (
-    <div className="rounded-lg shadow-lg bg-white p-4">
+    <div className="rounded-lg shadow-lg bg-white p-4 mx-auto max-w-md flex flex-col items-center justify-center">
       {!hideSearch && ( // Only render search bar if hideSearch is false
-        <div className="mb-4">
+        <div className="mb-4 w-full">
           <input
             type="text"
             placeholder="جستجو..."
@@ -66,7 +89,7 @@ const DynamicList = <T extends object>({
         </div>
       )}
 
-      <ul className="space-y-2 mt-4">
+      <ul className="space-y-2 mt-4 w-full">
         {filteredData.length > 0 ? (
           <>
             {filteredData.slice(0, visibleItems).map((item, index) => (

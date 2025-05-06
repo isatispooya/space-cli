@@ -1,3 +1,4 @@
+import { server } from "@/api/server";
 import { ChatType } from "../../types";
 
 const ContactAvatar = ({ user }: { user: ChatType["UserMessageType"] }) => {
@@ -11,9 +12,9 @@ const ContactAvatar = ({ user }: { user: ChatType["UserMessageType"] }) => {
               alt={user.name}
               className="w-full h-full rounded-full"
             />
-          ) : user.avatar ? (
+          ) : server+user.avatar ? (
             <img
-              src={user.avatar}
+              src={server+user.avatar}
               alt={user.name}
               className="w-full h-full rounded-full"
             />

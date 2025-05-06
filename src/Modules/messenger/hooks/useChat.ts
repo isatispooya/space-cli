@@ -22,6 +22,12 @@ const useChat = {
       queryFn: () => chatService.getUsersByPosition(),
     });
   },
+  useGetUserOfPosition: (): UseQueryResult<ChatType["MessagesType"][]> => {
+    return useQuery({
+      queryKey: ["users"],
+      queryFn: () => chatService.getUserOfPosition(),
+    });
+  },
   useGetChatById: (id: number): UseQueryResult<ChatType> => {
     return useQuery({
       queryKey: ["chat", id],
@@ -42,18 +48,14 @@ const useChat = {
     return useMutation({
       mutationKey: ["attachment"],
       mutationFn: async (data: any) => {
-        // اگر data از نوع FormData است، مستقیماً آن را ارسال کنید
         if (data instanceof FormData) {
           return chatService.postAttachment(data);
         }
 
-        // در غیر این صورت، یک FormData جدید ایجاد کنید
         const formData = new FormData();
 
-        // اضافه کردن داده‌ها به FormData
         if (typeof data === "object" && data !== null) {
           Object.keys(data).forEach((key) => {
-            // اگر مقدار آرایه است، هر عنصر را با همان کلید اضافه کنید
             if (Array.isArray(data[key])) {
               data[key].forEach((item: any) => {
                 formData.append(key, item);

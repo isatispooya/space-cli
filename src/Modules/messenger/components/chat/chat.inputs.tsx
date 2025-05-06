@@ -85,7 +85,17 @@ const ChatInput = ({
             "& .MuiInputBase-input": {
               padding: "12px 16px",
               fontSize: "0.95rem",
+              direction: "rtl",
+              textAlign: "right",
             },
+            "& .MuiInputLabel-root": {
+              right: "20px",
+              left: "auto",
+              transformOrigin: "right top",
+            },
+          }}
+          inputProps={{
+            style: { textAlign: "right", direction: "rtl" },
           }}
         />
         <Button
@@ -111,6 +121,7 @@ const ChatInput = ({
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           whileTap={{ scale: 0.95 }}
+          type="button"
         >
           {loading ? (
             <motion.div
