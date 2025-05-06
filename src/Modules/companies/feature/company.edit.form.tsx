@@ -69,7 +69,14 @@ const formFields: FormField[] = [
   { name: "type_of_activity", label: "نوع فعالیت", type: "text" },
   { name: "website", label: "وبسایت", type: "text" },
   { name: "email", label: "ایمیل", type: "email" },
-  { name: "employees", label: "تعداد کارمندان", type: "text" },
+  { name: "title", label: "عنوان", type: "text" },
+  { name: "persian_registration_date", label: "تاریخ ثبت", type: "text" },
+  { name: "tel", label: "تلفن ثابت", type: "text" },
+  { name: "capital", label: "سرمایه", type: "text" },
+  { name: "registration_type_title", label: "عنوان نوع ثبت", type: "text" },
+  { name: "registration_unit", label: "واحد ثبتی", type: "text" },
+  { name: "general_directorate", label: "اداره کل", type: "text" },
+  { name: "total_shares", label: "تعداد سهام", type: "text" },
 ];
 
 const EditCompanyForm = () => {
@@ -94,6 +101,18 @@ const EditCompanyForm = () => {
     website: specificCompany?.website || "",
     email: specificCompany?.email || "",
     address: specificCompany?.address || "",
+    title: specificCompany?.title || "",
+    persian_registration_date: specificCompany?.persian_registration_date || "",
+    tel: specificCompany?.tel || "",
+    capital: specificCompany?.capital || 0,
+    registration_type_title: specificCompany?.registration_type_title || "",
+    registration_unit: specificCompany?.registration_unit || "",
+    general_directorate: specificCompany?.general_directorate || "",
+    letterhead: specificCompany?.letterhead || "",
+    logo: specificCompany?.logo || "",
+    seal: specificCompany?.seal || "",
+    signature: specificCompany?.signature || "",
+    total_shares: specificCompany?.total_shares || 0,
   };
 
   return (
@@ -124,6 +143,8 @@ const EditCompanyForm = () => {
                   phone: String(values.phone),
                   postal_code: String(values.postal_code),
                   national_id: String(values.national_id),
+                  capital: String(values.capital),
+                  total_shares: values.total_shares ? String(values.total_shares) : undefined,
                 },
               },
               {

@@ -2,9 +2,10 @@ import { IconType } from "react-icons";
 import { useUserPermissions } from "../../../Modules/permissions";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ComponentType } from "react";
 
 interface ToolbarButton {
-  icon: IconType;
+  icon: IconType | ComponentType<{ className?: string }>;
   text: string;
   permission: string[];
   path: string;
