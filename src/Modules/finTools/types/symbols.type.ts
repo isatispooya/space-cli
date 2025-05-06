@@ -11,6 +11,7 @@ export interface SymbolDetail {
   orgin: boolean;
   type: string;
   updated_at: string;
+  additional_info?: string;
 }
 
 export interface HistoryData {

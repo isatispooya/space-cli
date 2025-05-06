@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Symbol } from "../types";
 import { useNavigate } from "react-router-dom";
 import { server } from "@/api";
+import { FiExternalLink, FiMessageCircle } from "react-icons/fi";
 
 const Details = ({ symbol }: { symbol: Symbol | undefined }) => {
   const navigate = useNavigate();
@@ -14,65 +15,121 @@ const Details = ({ symbol }: { symbol: Symbol | undefined }) => {
   return (
     <motion.div
       key={symbol.id}
-      className="flex-1 flex flex-col items-center justify-center text-center p-6 text-white min-h-screen"
-      initial={{ opacity: 0, y: 50 }}
+      className="flex-1 flex flex-col items-center justify-startoverflow-hidden p-2  max-w-md mx-auto"
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
       <motion.div
-        className="mb-4"
+        className="mb-1 relative"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <img
-          src={server + symbol?.photo}
-          alt="Khatam ETF Logo"
-          className="h-20 w-auto transition-transform duration-300 hover:scale-110"
-        />
+        <div className="w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center p-4 relative overflow-hidden">
+          <motion.div
+            className="absolute inset-0 bg-blue-100 opacity-20"
+            animate={{
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 3,
+              ease: "easeInOut",
+            }}
+          />
+          <img
+            src={server + symbol?.photo}
+            alt={symbol.symbol_detail?.name || "ETF Logo"}
+            className="h-16 w-auto object-contain z-10"
+          />
+        </div>
       </motion.div>
-      <motion.h1
-        className="text-3xl font-bold mb-4 text-[#02205F] tracking-wide"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
-        {symbol.symbol_detail?.name || "نام صندوق"}
-      </motion.h1>
-      <motion.p
-        className="text-lg max-w-md leading-relaxed text-[#09193C] font-light"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-      >
-        {symbol.description || "توضیحات صندوق"}
-      </motion.p>
+
       <motion.div
-        className="mt-6 flex space-x-4 gap-4"
-        initial={{ opacity: 0, y: 20 }}
+        className="text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        <motion.h1
+          className="text-3xl font-bold mb-3 text-[#02205F] tracking-wide"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          {symbol.symbol_detail?.name || "نام صندوق"}
+        </motion.h1>
+
+        <motion.div
+          className="py-2 px-4 bg-blue-100 rounded-full text-blue-800 text-sm font-medium inline-block mb-4"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.5 }}
+        >
+          {symbol.symbol || "نماد"}
+        </motion.div>
+
+        <motion.div
+          className="w-16 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mx-auto mb-6"
+          initial={{ width: 0 }}
+          animate={{ width: "4rem" }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        />
+
+        <motion.p
+          className="text-lg max-w-md leading-relaxed text-[#09193C] font-light mb-8 bg-white/50 p-4 rounded-xl shadow-sm"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          {symbol.description || "توضیحات صندوق"}
+        </motion.p>
+      </motion.div>
+
+      <motion.div
+        className="mt-2 grid grid-cols-2 gap-2 w-full"
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
+        transition={{ duration: 0.4, delay: 0.4 }}
       >
         <Button
-          size="xl"
           onClick={() => {
             if (symbol.link) {
               window.open(symbol.link, "_blank");
             }
           }}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600"
+          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-md hover:shadow-blue-100 hover:from-blue-600 hover:to-blue-800 transition-all duration-200 flex items-center justify-center gap-1 py-2"
         >
-          خرید
+          <FiExternalLink className="w-4 h-4" />
+          <span>خرید</span>
         </Button>
         <Button
           onClick={() => {
             navigate("/consultation");
           }}
-          className="border-2 bg-transparent border-green-500 text-green-500 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-white transition-all duration-300"
+          className="border bg-white border-green-500 text-green-600 rounded-lg shadow-sm hover:bg-green-500 hover:text-white hover:shadow-green-100 transition-all duration-200 flex items-center justify-center gap-1 py-2"
         >
-          مشاوره
+          <FiMessageCircle className="w-4 h-4" />
+          <span>مشاوره</span>
         </Button>
       </motion.div>
+
+      {symbol.symbol_detail?.additional_info && (
+        <motion.div
+          className="mt-8 w-full bg-white/70 rounded-xl p-4 shadow-sm"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1 }}
+        >
+          <h3 className="text-lg font-medium text-gray-800 mb-2">
+            اطلاعات تکمیلی
+          </h3>
+          <div className="text-sm text-gray-600">
+            {symbol.symbol_detail.additional_info}
+          </div>
+        </motion.div>
+      )}
     </motion.div>
   );
 };
