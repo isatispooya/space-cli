@@ -1,94 +1,13 @@
-import { motion } from "framer-motion";
 import { FaTools } from "react-icons/fa";
-import { Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router-dom";
-import FrashamLogo from "../../../assets/farasahm.png";
 import Card from "../../../components/cards/card";
 import WaveEffect from "../../../ui/wave";
 import "../../../ui/wave.css";
-import toast from "react-hot-toast";
-import usePostFaraSahm from "../hooks/useFarasahm";
-import { useUserPermissions } from "@/Modules/permissions";
-import { exsir, khatam, moshtrak, termeh } from "@/assets";
-
-const tools = [
-  {
-    id: "fara-sahm",
-    img: FrashamLogo,
-    title: "فراسهم",
-    color: "text-blue-600",
-    hoverColor: "hover:bg-blue-100",
-    isActive: true,
-    link: "https://farasahm.fidip.ir/",
-    codename: "can_connect_to_farasahm",
-  },
-  {
-    id: "calculator",
-    img: khatam,
-    title: "صندوق سرمایه گذاری خاتم",
-    color: "text-gray-400",
-    hoverColor: "",
-    isActive: false,
-    link: "#",
-    codename: "can_access_khatam",
-  },
-  {
-    id: "investment",
-    img: exsir,
-    title: "صندوق سرمایه گذاری اکسیر",
-    color: "text-gray-400",
-    hoverColor: "",
-    isActive: false,
-    link: "#",
-    codename: "can_access_exir",
-  },
-  {
-    id: "accounting",
-    img: termeh,
-    title: "صندوق سرمایه گذاری ترمه ",
-    color: "text-gray-400",
-    hoverColor: "",
-    isActive: false,
-    link: "#",
-    codename: "can_access_termeh",
-  },
-  {
-    id: "report",
-    img: moshtrak,
-    title: "صندوق سرمایه گذاری مشترک ",
-    color: "text-gray-400",
-    hoverColor: "",
-    isActive: false,
-    link: "#",
-    codename: "can_access_moshtrak",
-  },
-];
+import { IoIosArrowBack } from "react-icons/io";
+import { Button } from "@/components";
 
 const DashboardToolsStat = () => {
   const navigate = useNavigate();
-  const { mutate: faraSahm } = usePostFaraSahm();
-  const { data: Permissions } = useUserPermissions();
-
-  const getToolPermission = (tool: typeof tools[number]) => {
-    if (!tool.codename) return false;
-    return (
-      Array.isArray(Permissions) &&
-      Permissions.some((perm) => perm.codename === tool.codename)
-    );
-  };
-
-  const handleClick = () => {
-    faraSahm(undefined, {
-      onSuccess: (response) => {
-        const faraSahmLink = `https://farasahm.fidip.ir/loginspace/${response.cookie}/`;
-        window.open(faraSahmLink, "_blank");
-      },
-      onError: (error) => {
-        toast.error(`خطایی رخ داده است: ${error.message}`);
-        window.location.href = "https://farasahm.fidip.ir/";
-      },
-    });
-  };
 
   const content = (
     <div className="flex flex-col h-full w-full p-4">
@@ -111,45 +30,23 @@ const DashboardToolsStat = () => {
       </div>
 
       {/* Tools */}
-      <div className="mt-auto relative z-10 w-full ">
-        <div className="flex items-center justify-between gap-2 bg-gray-50 p-2 rounded-lg">
-          {tools.map((tool) => {
-            const hasAccess = getToolPermission(tool);
-            const isClickable = tool.isActive && hasAccess;
-
-            return (
-              <motion.button
-                key={tool.id}
-                whileHover={isClickable ? { scale: 1.05 } : {}}
-                whileTap={isClickable ? { scale: 0.95 } : {}}
-                data-tooltip-id={tool.id}
-                data-tooltip-content={tool.title}
-                onClick={() => {
-                  if (!isClickable) return;
-
-                  if (tool.id === "fara-sahm") {
-                    handleClick();
-                  } else {
-                    navigate(tool.link);
-                  }
-                }}
-                className={`w-8 h-8 rounded-md flex items-center justify-center ${
-                  isClickable
-                    ? tool.hoverColor
-                    : "cursor-not-allowed bg-gray-100"
-                } transition-colors duration-200`}
-                disabled={!isClickable}
-              >
-                <img src={tool.img} alt={tool.title} className="w-4 h-4" />
-                <Tooltip
-                  id={tool.id}
-                  place="top"
-                  className="font-iranSans text-[10px] z-50"
-                />
-              </motion.button>
-            );
-          })}
-        </div>
+      <div className="mt-auto pt-4 relative z-10 w-full">
+        <Button
+          onClick={() => navigate("/finTools")}
+          variant="custom"
+          customColors={{
+            background: "#2D3748",
+            hoverBackground: "#898989",
+            text: "white",
+          }}
+          fullWidth
+          animationOnHover="scale"
+          animationOnTap="scale"
+          className="w-full py-2 px-3  rounded-lg font-iranSans text-base"
+          rightIcon={<IoIosArrowBack className="w-4 h-4" />}
+        >
+          <span>امورمالی</span>
+        </Button>
       </div>
     </div>
   );
