@@ -8,10 +8,12 @@ import toast, { ErrorIcon } from "react-hot-toast";
 import { Toast } from "../../../../components";
 import { useUserPermissions } from "../../../permissions";
 import { formatNumber } from "../../../../utils";
+import { useProfile } from "@/Modules/userManagment/hooks";
 
 const Request = () => {
   const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
+  const { data: user } = useProfile();
   const { checkPermission } = useUserPermissions();
   const isAdmin = checkPermission(["change_giftuser"]);
 
@@ -46,6 +48,7 @@ const Request = () => {
         id: item.user_detail.id,
       },
       reason: item.reason,
+      account_number: user?.accounts[0].account_number || "",
     })) || [];
 
   const handleStatusChange = (id: number, newStatus: string) => {
@@ -94,6 +97,7 @@ const Request = () => {
         statusMapping[item.status as keyof typeof statusMapping] ||
         "در حال بررسی",
       علت: item.reason || "",
+      "شماره حساب": user?.accounts[0].account_number || "",
       "نام و نام خانوادگی": `${item.user_detail?.first_name || ""} ${
         item.user_detail?.last_name || ""
       }`,
@@ -123,6 +127,7 @@ const Request = () => {
         return formatNumber(cell.getValue());
       },
     },
+
     {
       field: "value",
       title: "ارزش ",
@@ -131,15 +136,6 @@ const Request = () => {
         return formatNumber(rowData.points * rowData.amount * 10);
       },
     },
-    {
-      field: "value",
-      title: "ارزش",
-      formatter: (cell: CellComponent) => {
-        const rowData = cell.getRow().getData();
-        return formatNumber(rowData.gift_detail.point_1 * rowData.amount * 10);
-      },
-    },
-
     {
       field: "status",
       title: "وضعیت",
@@ -212,9 +208,11 @@ const Request = () => {
       },
     },
     {
-      field: "reason",
-      title: "علت",
-      editor: "input",
+      field: "account_number",
+      title: "شماره حساب",
+      formatter: (cell: CellComponent) => {
+        return cell.getValue();
+      },
     },
     {
       field: "user_detail",
