@@ -75,7 +75,7 @@ const ShiftsAssignFeat = () => {
     const isSelected = selectedPositions.includes(position.id);
 
     return (
-      <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div className="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
         <div className="flex items-center gap-4">
           <div className="flex-shrink-0">
             <UserCircle2 className="w-10 h-10 text-gray-400" />
@@ -123,8 +123,8 @@ const ShiftsAssignFeat = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4">
+    <div className="w-full h-full flex flex-col">
+      <div className="flex items-center justify-between gap-4 mb-4">
         <SelectInput
           label="انتخاب شیفت"
           options={shiftOptions}
@@ -149,17 +149,19 @@ const ShiftsAssignFeat = () => {
         </Button>
       </div>
 
-      <DynamicList
-        data={positions || []}
-        isPending={positionsLoading}
-        searchQuery={searchQuery}
-        visibleItems={visibleItems}
-        onSearchChange={setSearchQuery}
-        onItemClick={() => {}}
-        onLoadMore={() => setVisibleItems((v: number) => v + 10)}
-        renderItem={renderPosition}
-        noResultsMessage="موقعیتی یافت نشد."
-      />
+      <div className="flex-1 w-full">
+        <DynamicList
+          data={positions || []}
+          isPending={positionsLoading}
+          searchQuery={searchQuery}
+          visibleItems={visibleItems}
+          onSearchChange={setSearchQuery}
+          onItemClick={() => {}}
+          onLoadMore={() => setVisibleItems((v: number) => v + 10)}
+          renderItem={renderPosition}
+          noResultsMessage="موقعیتی یافت نشد."
+        />
+      </div>
 
       {assignLoading && (
         <div className="text-center text-blue-500 mt-2">

@@ -76,7 +76,7 @@ const DynamicList = <T extends object>({
   }
 
   return (
-    <div className="rounded-lg shadow-lg bg-white p-4 mx-auto max-w-md flex flex-col items-center justify-center">
+    <div className="w-full flex flex-col bg-white rounded-lg shadow-sm p-4">
       {!hideSearch && ( // Only render search bar if hideSearch is false
         <div className="mb-4 w-full">
           <input
