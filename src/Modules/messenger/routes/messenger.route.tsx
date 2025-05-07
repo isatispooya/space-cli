@@ -1,18 +1,8 @@
 import { lazy } from "react";
 
-const MessengerPage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.MessengerPage,
-  }))
-);
 const SentPage = lazy(() =>
   import("..").then((module) => ({
     default: module.SentPage,
-  }))
-);
-const ReceivePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.ReceivePage,
   }))
 );
 const ReceiveTablePage = lazy(() =>
@@ -44,11 +34,6 @@ const SentUpdateFormPage = lazy(() =>
 
 const MessengerRoutes = [
   {
-    path: "/messenger",
-    element: <MessengerPage />,
-  },
-
-  {
     path: "/letter-sent",
     element: <SentPage />,
     children: [
@@ -68,18 +53,12 @@ const MessengerRoutes = [
         path: "update-form/:id",
         element: <SentUpdateFormPage />,
       },
-    ],
-  },
-  {
-    path: "/letter-receive",
-    element: <ReceivePage />,
-    children: [
       {
-        path: "table",
+        path: "receive-table",
         element: <ReceiveTablePage />,
       },
       {
-        path: "message/:id",
+        path: "receive-message/:id",
         element: <ReceiveMessagePage />,
       },
     ],

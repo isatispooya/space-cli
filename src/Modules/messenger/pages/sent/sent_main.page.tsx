@@ -3,20 +3,27 @@ import { MainLayout } from "../../../../layouts";
 import { Toolbar } from "../../../../components";
 import { LuTable } from "react-icons/lu";
 import { VscGitStashApply } from "react-icons/vsc";
+import { MdMarkEmailRead } from "react-icons/md";
 import { Outlet } from "react-router-dom";
 const SentPage = () => {
   const toolbarButtons = [
-    {
-      icon: VscGitStashApply,
-      text: "نامه های ارسالی",
-      permission: ["allow_any"],
-      path: "table",
-    },
     {
       icon: LuTable,
       text: "ایجاد نامه",
       permission: ["allow_any"],
       path: "form",
+    },
+    {
+      icon: MdMarkEmailRead,
+      text: "نامه های دریافتی",
+      permission: ["allow_any"],
+      path: "receive-table",
+    },
+    {
+      icon: VscGitStashApply,
+      text: "نامه های ارسالی",
+      permission: ["allow_any"],
+      path: "table",
     },
   ];
   return (
