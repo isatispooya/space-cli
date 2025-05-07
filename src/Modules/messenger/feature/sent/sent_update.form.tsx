@@ -54,6 +54,7 @@ const SentUpdateForm: React.FC = () => {
     priorityOptions,
     departmentOptions,
     letterTypeOptions,
+    senderUserOptionsOut,
   } = useSentFormLogic(id);
 
   return (
@@ -100,6 +101,7 @@ const SentUpdateForm: React.FC = () => {
                     formData={formData}
                     handleChange={handleChange}
                     senderUserOptions={senderUserOptions}
+                    senderUserOptionsOut={senderUserOptionsOut}
                     useInternalReceiver={useInternalReceiver}
                     internalUserOptions={internalUserOptions}
                   />
@@ -190,6 +192,7 @@ const SentUpdateForm: React.FC = () => {
                 getTranscriptName={getTranscriptName}
                 transcriptDirections={transcriptDirections}
                 setTranscriptDirection={setTranscriptDirection}
+                is_internal={formData.is_internal}
               />
             </Grid>
 

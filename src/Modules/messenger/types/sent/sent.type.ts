@@ -34,6 +34,7 @@ export interface ReferenceData {
   id: number;
   enabled: boolean;
   transcript_for: string;
+  external_text?: string;
 }
 
 export interface TranscriptData {
@@ -42,6 +43,7 @@ export interface TranscriptData {
   security: boolean;
   position: number;
   correspondence: number | null;
+  external_text?: string;
 }
 
 export interface TranscriptAPIData {
@@ -50,6 +52,7 @@ export interface TranscriptAPIData {
   security: boolean;
   position: number;
   correspondence: number | null;
+  external_text?: string;
 }
 
 export interface APIFormDataType {
@@ -230,6 +233,7 @@ interface SectionProps {
 
 export interface SenderSectionProps extends SectionProps {
   senderUserOptions: SelectOption[];
+  senderUserOptionsOut: SelectOption[];
   useInternalReceiver: boolean;
   internalUserOptions: SelectOption[];
 }
@@ -254,4 +258,5 @@ export interface ITranscriptResponse {
   updated_at: string;
   position: number;
   correspondence: number;
+  external_text?: string;
 }

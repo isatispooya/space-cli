@@ -7,33 +7,46 @@ const SenderSection: React.FC<SenderSectionProps> = ({
   formData,
   handleChange,
   senderUserOptions,
+  senderUserOptionsOut,
   useInternalReceiver,
   internalUserOptions,
 }) => (
   <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
-    <SelectInput
-      label="ارسال کننده"
-      value={formData.sender?.toString() || ""}
-      onChange={(value) => handleChange("sender", value)}
-      options={senderUserOptions}
-      className="enhanced-select"
-    />
     {useInternalReceiver ? (
-      <SelectInput
-        label="گیرنده داخلی"
-        value={formData.receiver_internal?.toString() || ""}
-        onChange={(value) => handleChange("receiver_internal", value)}
-        options={internalUserOptions}
-        className="enhanced-select"
-      />
+      <>
+        <SelectInput
+          label="ارسال کننده"
+          value={formData.sender?.toString() || ""}
+          onChange={(value) => handleChange("sender", value)}
+          options={senderUserOptions}
+          className="enhanced-select"
+        />
+
+        <SelectInput
+          label="گیرنده داخلی"
+          value={formData.receiver_internal?.toString() || ""}
+          onChange={(value) => handleChange("receiver_internal", value)}
+          options={internalUserOptions}
+          className="enhanced-select"
+        />
+      </>
     ) : (
-      <FormInput
-        label="گیرنده خارجی"
-        value={formData.receiver_external || ""}
-        onChange={(e) => handleChange("receiver_external", e.target.value)}
-        placeholder="گیرنده خارجی"
-        className="enhanced-input"
-      />
+      <>
+        <SelectInput
+          label="ارسال کننده"
+          value={formData.sender?.toString() || ""}
+          onChange={(value) => handleChange("sender", value)}
+          options={senderUserOptionsOut}
+          className="enhanced-select"
+        />
+        <FormInput
+          label="گیرنده خارجی"
+          value={formData.receiver_external || ""}
+          onChange={(e) => handleChange("receiver_external", e.target.value)}
+          placeholder="گیرنده خارجی"
+          className="enhanced-input"
+        />
+      </>
     )}
     <FormInput
       label="موضوع"
@@ -44,4 +57,4 @@ const SenderSection: React.FC<SenderSectionProps> = ({
   </Box>
 );
 
-export default SenderSection; 
+export default SenderSection;

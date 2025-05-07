@@ -119,6 +119,16 @@ export const useSentFormLogic = (id: string | undefined) => {
     [Position]
   );
 
+
+  const senderUserOptionsOut = useMemo(
+    () =>
+      (Position as PositionTypes[])?.map((position) => ({
+        label: `${position.company_detail?.name || "بدون سمت"}`,
+        value: position.id.toString(),
+      })) || [],
+    [Position]
+  );
+
   const transcriptDirectionsTyped = transcriptDirections as Record<
     number,
     string
@@ -127,8 +137,10 @@ export const useSentFormLogic = (id: string | undefined) => {
   const transcriptItems = useMemo<ITranscriptResponse[]>(() => {
     return (formData.reference || []).map((ref) => {
       const refNum = Number(ref);
-      const isVisible = formData.referenceData?.find(item => item.id === refNum)?.enabled !== false;
-      return {
+      const referenceItem = formData.referenceData?.find(item => item.id === refNum);
+      const isVisible = referenceItem?.enabled !== false;
+      
+      const baseItem = {
         id: refNum,
         read_at: null,
         transcript_for: transcriptDirectionsTyped[refNum] || "notification",
@@ -138,6 +150,15 @@ export const useSentFormLogic = (id: string | undefined) => {
         position: refNum,
         correspondence: Number(id || 0),
       };
+      
+      if (refNum < 0 || referenceItem?.external_text) {
+        return {
+          ...baseItem,
+          external_text: referenceItem?.external_text
+        };
+      }
+      
+      return baseItem;
     });
   }, [formData.reference, formData.referenceData, transcriptDirectionsTyped, id]);
 
@@ -195,13 +216,18 @@ export const useSentFormLogic = (id: string | undefined) => {
     const apiTranscripts =
       formData.reference?.map((ref) => {
         const refNum = Number(ref);
-        const isVisible = formData.referenceData?.find(item => item.id === refNum)?.enabled !== false;
+        const referenceItem = formData.referenceData?.find(item => item.id === refNum);
+        const isVisible = referenceItem?.enabled !== false;
+        
+        const isExternalTranscript = refNum < 0 || referenceItem?.external_text;
+        
         return {
           position: refNum,
           transcript_for: transcriptDirectionsTyped[refNum] || "notification",
           security: !isVisible,
           correspondence: null,
           read_at: new Date().toISOString(),
+          external_text: isExternalTranscript ? referenceItem?.external_text : undefined
         };
       }) || [];
 
@@ -259,6 +285,7 @@ export const useSentFormLogic = (id: string | undefined) => {
     handleSubmit,
     handleReceiverTypeChange,
     senderUserOptions,
+    senderUserOptionsOut,
     internalUserOptions,
     attachmentOptions,
     getTranscriptName,

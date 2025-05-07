@@ -10,9 +10,10 @@ interface TranscriptSectionProps {
   internalUserOptions: { label: string; value: string }[];
   getTranscriptName: (id: number) => string;
   setSelectedTranscript: (transcripts: string[]) => void;
-  handleAddTranscript: () => void;
+  handleAddTranscript: (text?: string) => void;
   handleTranscriptToggle: (id: number) => void;
   setTranscriptDirection: (id: number, direction: string) => void;
+  is_internal?: boolean;
 }
 
 const TranscriptSection: React.FC<TranscriptSectionProps> = ({
@@ -25,6 +26,7 @@ const TranscriptSection: React.FC<TranscriptSectionProps> = ({
   handleAddTranscript,
   handleTranscriptToggle,
   setTranscriptDirection,
+  is_internal = true,
 }) => {
   return (
     <Grid item xs={12}>
@@ -50,6 +52,7 @@ const TranscriptSection: React.FC<TranscriptSectionProps> = ({
         getTranscriptName={getTranscriptName}
         transcriptDirections={transcriptDirections}
         setTranscriptDirection={setTranscriptDirection}
+        is_internal={is_internal}
       />
     </Grid>
   );
