@@ -1,11 +1,11 @@
 import { Button, NoContent } from "@/components";
 import { motion } from "framer-motion";
-import { Symbol } from "../types";
+import { SymbolsType } from "../types";
 import { useNavigate } from "react-router-dom";
 import { server } from "@/api";
 import { FiExternalLink, FiMessageCircle } from "react-icons/fi";
 
-const Details = ({ symbol }: { symbol: Symbol | undefined }) => {
+const Details = ({ symbol }: { symbol: SymbolsType["symbolRes"][0] | undefined }) => {
   const navigate = useNavigate();
 
   if (!symbol) {
@@ -40,7 +40,7 @@ const Details = ({ symbol }: { symbol: Symbol | undefined }) => {
           />
           <img
             src={server + symbol?.photo}
-            alt={symbol.symbol_detail?.name || "ETF Logo"}
+            alt={symbol.description || "ETF Logo"}
             className="h-16 w-auto object-contain z-10"
           />
         </div>
@@ -58,7 +58,7 @@ const Details = ({ symbol }: { symbol: Symbol | undefined }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          {symbol.symbol_detail?.name || "نام صندوق"}
+          {symbol.description || "نام صندوق"}
         </motion.h1>
 
         <motion.div
@@ -115,21 +115,7 @@ const Details = ({ symbol }: { symbol: Symbol | undefined }) => {
         </Button>
       </motion.div>
 
-      {symbol.symbol_detail?.additional_info && (
-        <motion.div
-          className="mt-8 w-full bg-white/70 rounded-xl p-4 shadow-sm"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1 }}
-        >
-          <h3 className="text-lg font-medium text-gray-800 mb-2">
-            اطلاعات تکمیلی
-          </h3>
-          <div className="text-sm text-gray-600">
-            {symbol.symbol_detail.additional_info}
-          </div>
-        </motion.div>
-      )}
+
     </motion.div>
   );
 };

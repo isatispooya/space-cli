@@ -3,7 +3,7 @@ import { Card } from "@/components";
 import WaveEffect from "@/ui/wave";
 import * as echarts from "echarts";
 import { useEffect, useRef } from "react";
-import { Symbol } from "../types";
+import { SymbolsType } from "../types";
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -11,7 +11,7 @@ interface ChartProps {
   title?: string;
   data: number[];
   labels: string[];
-  symbols?: Symbol;
+  symbols?: SymbolsType["symbolRes"][0];
 }
 
 const ChartComponent = ({ data, labels, symbols }: ChartProps) => {
@@ -161,7 +161,7 @@ const Chart = ({ data, labels, symbols }: ChartProps) => (
       content={
         <div className="flex flex-col">
           <div className="px-4 pt-2 pb-1">
-            <h3 className="text-lg font-bold text-gray-800">{symbols?.symbol_detail?.name || "نمودار قیمت"}</h3>
+            <h3 className="text-lg font-bold text-gray-800">{symbols?.description || "نمودار قیمت"}</h3>
             <p className="text-sm text-gray-500">تغییرات قیمت در دوره زمانی</p>
           </div>
           <ChartComponent data={data} labels={labels} symbols={symbols} />
