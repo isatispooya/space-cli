@@ -1,9 +1,11 @@
 import { TabulatorTable } from "@/components";
 import { useSymbols } from "../hooks";
 import { CellComponent } from "tabulator-tables";
+import { Switch, Paper, Typography } from "@mui/material";
+import { useState } from "react";
 
 const AnalysisSymbolFeat = () => {
-  const { data } = useSymbols.useGetSymbolsAnalysis();
+  const [isSimple, setIsSimple] = useState(true);
 
   const columns = [
     {
@@ -92,15 +94,46 @@ const AnalysisSymbolFeat = () => {
     },
   ];
 
+  const { data } = useSymbols.useGetSymbolsAnalysis(isSimple.toString());
+
   return (
-    <TabulatorTable
-      data={data || []}
-      columns={columns}
-      height="600px"
-      pagination={true}
-      paginationSize={10}
-      showActions={true}
-    />
+    <div className="space-y-4">
+      <Paper
+        elevation={1}
+        className="p-4 flex items-center justify-center gap-4 bg-white"
+      >
+        <Typography
+          variant="body1"
+          className={`transition-colors duration-200 ${
+            !isSimple ? "text-primary font-semibold" : "text-gray-600"
+          }`}
+        >
+          مرکب
+        </Typography>
+        <Switch
+          checked={isSimple}
+          onChange={(e) => setIsSimple(e.target.checked)}
+          color="primary"
+          size="medium"
+        />
+        <Typography
+          variant="body1"
+          className={`transition-colors duration-200 ${
+            isSimple ? "text-primary font-semibold" : "text-gray-600"
+          }`}
+        >
+          ساده
+        </Typography>
+      </Paper>
+      <TabulatorTable
+        data={data || []}
+        columns={columns}
+        height="600px"
+        pagination={true}
+        paginationSize={10}
+        showActions={true}
+      />
+    </div>
   );
 };
 
