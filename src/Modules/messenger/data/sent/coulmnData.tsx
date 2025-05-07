@@ -1,6 +1,9 @@
 import { createActionMenu } from "@/components/table/actionMenus";
 import { CellComponent } from "../../types/sent/sent.type";
 import { SentMessage } from "../../types/sent/sent.type";
+import { letterTypeOptions } from "./sent.data";
+import { CellComponent as TabulatorCellComponent } from "tabulator-tables";
+
 
 interface ColumnProps {
   handleEdit: (id: number) => void;
@@ -37,9 +40,22 @@ const columns = ({ handleEdit, handleView }: ColumnProps) => {
     },
     {
       title: "نوع نامه",
-      field: "message_type",
-      headerFilter: true,
+      field: "kind_of_correspondence",
+      editor: "select",
+      editorParams: {
+        values: handleEdit
+      },
+      headerFilter: "list",
+      headerFilterParams: {
+        valuesLookup: true,
+        clearable: true
+      },
       hozAlign: "center",
+      formatter: (cell: TabulatorCellComponent) => {
+        const value = cell.getValue();
+        const option = letterTypeOptions.find(opt => opt.value === value);
+        return option ? option.label : value;
+      }
     },
     {
       title: "عملیات",

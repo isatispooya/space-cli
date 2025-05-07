@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,6 +8,7 @@ import {
   Grid,
   Chip,
   Divider,
+  TextField,
 } from "@mui/material";
 import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
@@ -30,7 +31,7 @@ interface TranscriptProps {
   transcript: ITranscriptResponse[];
   selectedTranscript: string[];
   setSelectedTranscript: (value: string[]) => void;
-  handleAddTranscript: () => void;
+  handleAddTranscript: (text?: string) => void;
   handleTranscriptToggle: (id: number) => void;
   internalUserOptions: { label: string; value: string }[];
   getTranscriptName: (id: number) => string;
@@ -41,6 +42,7 @@ interface TranscriptProps {
       reference_details: ReferenceDetail[];
     };
   };
+  is_internal?: boolean;
 }
 
 const Transcript: React.FC<TranscriptProps> = React.memo(
@@ -55,6 +57,7 @@ const Transcript: React.FC<TranscriptProps> = React.memo(
     transcriptDirections,
     setTranscriptDirection,
     data,
+    is_internal = true,
   }) => {
     const handleDirectionChange = useCallback(
       (id: number, value: string) => {
@@ -62,13 +65,22 @@ const Transcript: React.FC<TranscriptProps> = React.memo(
       },
       [setTranscriptDirection]
     );
+    
+    const [externalTranscriptText, setExternalTranscriptText] = useState("");
 
     const handleAdd = useCallback(() => {
-      if (selectedTranscript.length > 0) {
-        handleAddTranscript();
-        setSelectedTranscript([]);
+      if (is_internal) {
+        if (selectedTranscript.length > 0) {
+          handleAddTranscript();
+          setSelectedTranscript([]);
+        }
+      } else {
+        if (externalTranscriptText.trim() !== "") {
+          handleAddTranscript(externalTranscriptText);
+          setExternalTranscriptText("");
+        }
       }
-    }, [selectedTranscript, handleAddTranscript, setSelectedTranscript]);
+    }, [selectedTranscript, handleAddTranscript, setSelectedTranscript, externalTranscriptText, is_internal]);
 
     const hasReferenceData =
       data?.sender?.reference_details &&
@@ -90,12 +102,25 @@ const Transcript: React.FC<TranscriptProps> = React.memo(
         {/* بخش افزودن رونوشت جدید */}
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={10}>
-            <MultiSelect
-              label="انتخاب گیرندگان رونوشت"
-              selectedValues={selectedTranscript}
-              onChange={(value) => setSelectedTranscript(value)}
-              options={internalUserOptions}
-            />
+            {is_internal ? (
+              <MultiSelect
+                label="انتخاب گیرندگان رونوشت"
+                selectedValues={selectedTranscript}
+                onChange={(value) => setSelectedTranscript(value)}
+                options={internalUserOptions}
+              />
+            ) : (
+              <TextField
+                fullWidth
+                label="گیرندگان رونوشت خارجی"
+                value={externalTranscriptText}
+                onChange={(e) => setExternalTranscriptText(e.target.value)}
+                placeholder="نام گیرنده رونوشت خارجی را وارد کنید"
+                variant="outlined"
+                size="small"
+                sx={{ mt: 1 }}
+              />
+            )}
           </Grid>
           <Grid item xs={2}>
             <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>

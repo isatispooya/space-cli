@@ -17,7 +17,7 @@ interface SentFormState {
     file: string;
     id: number;
   }) => void;
-  handleAddTranscript: () => void;
+  handleAddTranscript: (externalTranscriptText?: string) => void;
   handleTranscriptToggle: (id: number) => void;
   resetForm: () => void;
 }
@@ -151,7 +151,7 @@ export const useSentFormStore = create<SentFormState>((set) => ({
       },
     })),
 
-  handleAddTranscript: () =>
+  handleAddTranscript: (externalTranscriptText?: string) =>
     set((state) => {
       if (state.selectedTranscript.length > 0) {
         const newReferences = state.selectedTranscript
@@ -181,6 +181,33 @@ export const useSentFormStore = create<SentFormState>((set) => ({
           };
         }
       }
+      else if (externalTranscriptText && externalTranscriptText.trim() !== "") {
+        const externalId = -(Date.now());
+        
+        const newReferenceData: ReferenceData = {
+          id: externalId,
+          enabled: true,
+          transcript_for: "notification",
+          external_text: externalTranscriptText
+        };
+        
+        const newTranscript = {
+          ...defaultTranscript,
+          position: externalId,
+          transcript_for: "notification",
+          external_text: externalTranscriptText
+        };
+        
+        return {
+          formData: {
+            ...state.formData,
+            reference: [...state.formData.reference, externalId],
+            referenceData: [...(state.formData.referenceData || []), newReferenceData],
+            transcript: [...state.formData.transcript, newTranscript]
+          },
+        };
+      }
+      
       return state;
     }),
 
