@@ -5,8 +5,15 @@ import DynamicList from "@/components/list/dynamiclist";
 import useShiftsStore from "../store/shifts.store";
 import { GetShiftsResType } from "../types/Shifts.type";
 import { PositionTypes } from "@/Modules/positions/types/postions.type";
-import { UserCircle2, Building2, Save, Check } from "lucide-react";
-import { Button } from "@/components";
+import {
+  UserCircle2,
+  Building2,
+  Save,
+  Check,
+  CheckCircle,
+  X,
+} from "lucide-react";
+import { Button, Toast } from "@/components";
 import { useState } from "react";
 
 const ShiftsAssignFeat = () => {
@@ -58,7 +65,25 @@ const ShiftsAssignFeat = () => {
 
     // Submit each selected position
     selectedPositions.forEach((positionId) => {
-      assignShifts({ shift_id: Number(shiftId), position_id: positionId });
+      assignShifts(
+        { shift_id: Number(shiftId), position_id: positionId },
+        {
+          onSuccess: () => {
+            Toast(
+              "با موفقیت ثبت شد",
+              <CheckCircle size={18} className="text-green-500" />,
+              "bg-green-500"
+            );
+          },
+          onError: () => {
+            Toast(
+              "خطایی رخ داده است",
+              <X size={18} className="text-red-500" />,
+              "bg-red-500"
+            );
+          },
+        }
+      );
     });
 
     // Clear selections after submission
