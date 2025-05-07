@@ -19,6 +19,7 @@ export interface CorrespondenceItem {
   priority: string;
   is_internal: boolean;
   number: string;
+  seen?: boolean;
   sender_details?: {
     user?: {
       first_name: string;

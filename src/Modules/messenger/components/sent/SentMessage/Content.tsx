@@ -1,7 +1,26 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { MessageContentProps } from "../../../types/sent/sent.type";
 
-export const MessageContent = ({ sender }: MessageContentProps) => {
+export const MessageContent = ({
+  sender,
+  allposition,
+}: MessageContentProps) => {
+  let signature: string | undefined;
+
+  if (
+    allposition &&
+    Array.isArray(allposition) &&
+    sender &&
+    sender.sender_details?.user
+  ) {
+    const senderUserId = sender.sender_details.user.id;
+    for (let i = 0; i < allposition.length; i++) {
+      if (allposition[i]?.user?.id === senderUserId) {
+        signature = allposition[i].signature;
+      }
+    }
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={12}>
@@ -22,22 +41,6 @@ export const MessageContent = ({ sender }: MessageContentProps) => {
         </Box>
       </Grid>
 
-      <Grid item xs={12} md={12}>
-        <Box>
-          <Typography
-            sx={{
-              whiteSpace: "pre-wrap",
-              fontSize: { xs: "0.95rem", sm: "1rem" },
-              lineHeight: 1.8,
-              color: "text.primary",
-              position: "relative",
-            }}
-          >
-            {sender.text}
-          </Typography>
-        </Box>
-      </Grid>
-
       <Grid
         item
         xs={12}
@@ -45,7 +48,22 @@ export const MessageContent = ({ sender }: MessageContentProps) => {
         sx={{ display: "flex", justifyContent: "flex-end", mr: "100px" }}
       >
         <Box sx={{ mb: 1, borderRadius: "12px" }}>
-          <Typography>{sender.is_internal ? "امضا" : "مهر و امضا"}</Typography>
+          {sender.is_internal ? (
+            <Typography
+              sx={{
+                whiteSpace: "pre-wrap",
+                fontSize: { xs: "0.95rem", sm: "1rem" },
+                lineHeight: 1.8,
+                color: "text.primary",
+                position: "relative",
+                display: "flex",
+                justifyContent: "left",
+              }}
+            >
+              امضا
+              {signature || "ندارد"}
+            </Typography>
+          ) : null}
         </Box>
       </Grid>
     </Grid>

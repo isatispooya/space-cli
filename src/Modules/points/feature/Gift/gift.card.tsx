@@ -134,9 +134,21 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
 
   const convertAll = () => {
     if (selectedGift) {
-      const totalAmount = selectedGift.is_repetitive
-        ? remainPoints?.point_1 || 0
-        : remainPoints?.point_2 || 0;
+      const isMaftolGift = selectedGift.id === "1" || selectedGift.id === "6";
+      const isCrowdGift = selectedGift.id === "2";
+
+      let totalAmount = remainPoints?.point_1 || 0;
+
+      if (selectedGift.is_repetitive) {
+        if (isMaftolGift && remainPoints?.point_underwrting_maftol) {
+          totalAmount =
+            remainPoints.point_underwrting_maftol.total_point_1 || 0;
+        } else if (isCrowdGift && remainPoints?.point_crowd) {
+          totalAmount = remainPoints.point_crowd.total_point_1 || 0;
+        }
+      } else {
+        totalAmount = remainPoints?.point_2 || 0;
+      }
 
       const gift = gifts.find((g) => g.id.toString() === selectedGift.id);
 
@@ -379,9 +391,22 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 z-10 p-12">
         {filteredGifts.map((item, index) => {
+          const isMaftolGift = item.id === 1 || item.id === 6;
+          const isCrowdGift = item.id === 2;
+
+          let availableCoins = remainPoints?.point_1 || 0;
+
+          if (isMaftolGift && remainPoints?.point_underwrting_maftol) {
+            availableCoins =
+              remainPoints.point_underwrting_maftol.total_point_1 || 0;
+          } else if (isCrowdGift && remainPoints?.point_crowd) {
+            availableCoins = remainPoints.point_crowd.total_point_1 || 0;
+          }
+
           const isButtonDisabled =
-            remainPoints?.point_1 < item.point_1 ||
-            remainPoints?.point_2 < item.point_2;
+            (item.point_1 > 0 && availableCoins < item.point_1) ||
+            (item.point_2 > 0 && (remainPoints?.point_2 || 0) < item.point_2) ||
+            !item?.status;
 
           const buttonText = isButtonDisabled
             ? "برای دریافت این هدیه به امتیاز بیشتری نیاز دارید"
@@ -518,7 +543,12 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
               <span className="font-bold text-gray-900">
                 {formatNumbers(
                   selectedGift?.is_repetitive
-                    ? remainPoints?.point_1
+                    ? (selectedGift.id === "1" || selectedGift.id === "6") &&
+                      remainPoints?.point_underwrting_maftol
+                      ? remainPoints.point_underwrting_maftol.total_point_1
+                      : selectedGift?.id === "2" && remainPoints?.point_crowd
+                      ? remainPoints.point_crowd.total_point_1
+                      : remainPoints?.point_1
                     : remainPoints?.point_2
                 )}
               </span>
@@ -630,11 +660,10 @@ const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
             />
           </DialogContent>
           <DialogActions>
-          
             <Button
               onClick={handleCloseContractDialog}
               color="primary"
-              disabled={!isContractAccepted} 
+              disabled={!isContractAccepted}
             >
               تایید
             </Button>

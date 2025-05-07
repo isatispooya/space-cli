@@ -8,6 +8,7 @@ import {
   ReceiveMessage,
 } from "../../types/receive/ReceiveMessage.type";
 import ExelData from "../../data/receive/receiveExelData";
+import { RowComponent } from "tabulator-tables";
 
 export const ReceiveTable = () => {
   const { data: correspondence } =
@@ -46,9 +47,21 @@ export const ReceiveTable = () => {
         kind_of_correspondence:
           item.priority === "urgent" ? "اعلامیه" : "درخواست",
         status: "",
+        seen: item.seen || false,
       };
     });
   }, [correspondence]);
+
+  const tableOptions = useMemo(() => {
+    return {
+      rowFormatter: (row: RowComponent) => {
+        const data = row.getData();
+        if (data && data.seen === false) {
+          row.getElement().style.backgroundColor = "#f5f5f5";
+        }
+      }
+    };
+  }, []);
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
@@ -61,6 +74,7 @@ export const ReceiveTable = () => {
           formatExportData={(item: ReceiveMessage) => ExelData(item)}
           dateField="send_date"
           showDateFilter={true}
+          options={tableOptions}
         />
       </div>
     </div>
