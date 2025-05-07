@@ -40,7 +40,7 @@ const ShiftScheduleCom: React.FC = () => {
           day: allDates.map((date) => ({
             date: date.format("YYYY-MM-DD"),
             start_time: "08:00",
-            end_time: "17:00",
+            end_time: "15:30",
             work_day: true,
             day_of_week: date.weekDay.name,
           })),
@@ -57,7 +57,7 @@ const ShiftScheduleCom: React.FC = () => {
           day: dateArray.map((date) => ({
             date: date.format("YYYY-MM-DD"),
             start_time: "08:00",
-            end_time: "17:00",
+            end_time: "15:30",
             work_day: true,
             day_of_week: date.weekDay.name,
           })),

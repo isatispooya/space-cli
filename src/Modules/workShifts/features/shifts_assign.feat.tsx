@@ -56,11 +56,9 @@ const ShiftsAssignFeat = () => {
       return;
     }
 
-
     selectedPositions.forEach((positionId) => {
       assignShifts({ shift_id: Number(shiftId), position_id: positionId });
     });
-
 
     setSelectedPositions([]);
   };
