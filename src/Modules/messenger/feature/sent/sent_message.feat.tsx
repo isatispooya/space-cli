@@ -37,6 +37,7 @@ const SentDetail = () => {
     (item: TranscriptDetails) => item.position.toString()
   );
 
+
   const matchedUsers: MatchedUser[] =
     allposition
       ?.filter((position) => userOption?.includes(position.id.toString()))
@@ -139,7 +140,7 @@ const SentDetail = () => {
                 },
               }}
             >
-              <MessageContent sender={data.sender} />
+              <MessageContent sender={data.sender} allposition={allposition} />
             </Box>
             <Box
               sx={{

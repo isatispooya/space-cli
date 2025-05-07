@@ -174,6 +174,7 @@ export interface Position {
   id: number;
   name: string;
   user?: BaseUser;
+  signature?: string;
 }
 
 export interface SenderType {
@@ -187,6 +188,7 @@ export interface SenderType {
   receiver_external?: string;
   is_internal: boolean;
   text: string;
+  content?: string;
   transcript_details: TranscriptDetails[];
   postcript?: string;
 }
@@ -205,6 +207,8 @@ export interface MessageHeaderProps {
 
 export interface MessageContentProps {
   sender: SenderType;
+  signature?: Position[];
+  allposition?: Position[];
 }
 
 export interface MessageFooterProps {
