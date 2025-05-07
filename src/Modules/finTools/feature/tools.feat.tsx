@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import DashboardCard from "../../dashboard/components/DashboardCard";
-import type { Symbol } from "../types/symbols.type";
+import { SymbolsType } from "../types";
 import useSymbols from "../hooks/useSymbols";
 import usePostFaraSahm from "../../dashboard/hooks/useFarasahm";
 import { FaChartLine } from "react-icons/fa";
@@ -119,7 +119,7 @@ export const ToolsFeat: React.FC = () => {
   return (
     <div className="min-h-screen w-full p-2 md:p-4">
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 max-w-10xl mx-auto">
-        {/* کارت‌های استاتیک */}
+
         {staticCards.map((card, index) => (
           <motion.div
             key={card.id}
@@ -144,8 +144,8 @@ export const ToolsFeat: React.FC = () => {
           </motion.div>
         ))}
 
-        {/* کارت‌های پویا */}
-        {symbols?.map((symbol: Symbol, index: number) => {
+    
+        {symbols?.map((symbol: SymbolsType["symbolRes"][0], index: number) => {
           const waveColor = getCardColor(symbol.description);
           return (
             <motion.div

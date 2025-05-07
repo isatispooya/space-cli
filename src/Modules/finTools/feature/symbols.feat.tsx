@@ -1,12 +1,15 @@
-import { Chart, Details, Tabs } from "../components";
+import { Chart, Details } from "../components";
 import { MainLayout } from "@/layouts";
 import { useSymbols } from "../hooks";
 import { useParams } from "react-router-dom";
-import { Symbol } from "../types";
+import { SymbolsType } from "../types";
+import AnalysisSymbolFeat from "./analysis_symbol.feat";
+import { Tabs } from "@/components";
+
 const SymbolsFeat = () => {
   const { id } = useParams();
   const { data: symbolResponse } = useSymbols.useGetSymbolsById(Number(id));
-  const symbol: Symbol | undefined = symbolResponse
+  const symbol: SymbolsType["symbolRes"][0] | undefined = symbolResponse
     ? symbolResponse[0]
     : undefined;
 
@@ -14,7 +17,6 @@ const SymbolsFeat = () => {
     symbol?.history_data?.map((item) => item.closing_price_value) || [];
   const chartLabels = symbol?.history_data?.map((item) => item.date) || [];
 
-  // تب معرفی
   const IntroductionTab = () => (
     <div className="w-full flex flex-col md:flex-row items-start justify-center p-6 relative">
       <div className="flex-1 w-full h-full flex flex-col items-center justify-center p-6">
@@ -33,15 +35,6 @@ const SymbolsFeat = () => {
     </div>
   );
 
-  // تب تحلیل رقبا
-  const CompetitorsTab = () => (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold">تحلیل رقبا</h3>
-      <p className="text-gray-700">محتوای تحلیل رقبا به زودی اضافه خواهد شد.</p>
-    </div>
-  );
-
-  // تب قیمت‌گذاری
   const PricingTab = () => (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">قیمت‌گذاری</h3>
@@ -51,7 +44,11 @@ const SymbolsFeat = () => {
 
   const tabsData = [
     { id: "introduction", label: "معرفی", content: <IntroductionTab /> },
-    { id: "competitors", label: "تحلیل رقبا", content: <CompetitorsTab /> },
+    {
+      id: "competitors",
+      label: "تحلیل رقبا",
+      content: <AnalysisSymbolFeat />,
+    },
     { id: "pricing", label: "قیمت‌گذاری", content: <PricingTab /> },
   ];
 
@@ -59,11 +56,7 @@ const SymbolsFeat = () => {
     <MainLayout>
       <div className="w-full flex flex-col md:flex-row items-start justify-center p-6 relative">
         <div className="w-full bg-white rounded-lg shadow p-4 h-auto">
-          <Tabs
-            tabs={tabsData}
-            defaultActiveTab="introduction"
-            className="w-full justify-center"
-          />
+          <Tabs tabs={tabsData} />
         </div>
       </div>
     </MainLayout>

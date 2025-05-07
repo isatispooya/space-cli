@@ -1,37 +1,35 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export interface SymbolDetail {
-  id: number;
-  symbol: string;
-  name: string;
-  code: string;
-  created_at: string;
-  description: string | null;
-  is_active: boolean;
-  market: string | null;
-  orgin: boolean;
-  type: string;
-  updated_at: string;
-  additional_info?: string;
-}
-
-export interface HistoryData {
-  date: string;
-  closing_price_value: number;
-}
-
-export interface Symbol {
-  id: number;
-  chart_data: any[];
+export interface SymbolsGetResType {
   created_at: string;
   description: string;
+  history_data: {
+    date: string;
+    closing_price_value: number;
+  }[];
+  id: number;
+  last_change: number;
+  last_price: number;
   link: string;
   photo: string;
   symbol: number;
-  symbol_detail: SymbolDetail;
   updated_at: string;
-  history_data: HistoryData[];
-  last_price: number;
-  last_change: number;
 }
 
-export type SymbolResponse = Symbol[];
+export interface SymbolsAnalysisResType {
+  symbol: string;
+  last_price: number;
+  "7_day_return": number;
+  "7_day_rank": number;
+  "30_day_return": number;
+  "30_day_rank": number;
+  "90_day_return": number;
+  "90_day_rank": number;
+  "180_day_return": number;
+  "180_day_rank": number;
+  "365_day_return": number;
+  "365_day_rank": number;
+}
+
+export type SymbolsType = {
+  symbolRes: SymbolsGetResType[];
+  symbolAnalysisRes: SymbolsAnalysisResType[];
+};

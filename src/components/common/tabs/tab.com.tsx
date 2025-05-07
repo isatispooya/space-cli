@@ -10,11 +10,11 @@ interface Tab {
   disabled?: boolean;
 }
 
-interface TabComponentProps {
+interface TabComProps {
   tabs: Tab[];
 }
 
-const TabComponent: React.FC<TabComponentProps> = ({ tabs }) => {
+const Tabs: React.FC<TabComProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
 
   const handleTabClick = (tabId: string) => {
@@ -60,4 +60,4 @@ const TabComponent: React.FC<TabComponentProps> = ({ tabs }) => {
   );
 };
 
-export default TabComponent;
+export default Tabs;
