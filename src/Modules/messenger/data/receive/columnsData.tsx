@@ -2,6 +2,12 @@ import { CellComponent } from "../../types/receive/ReceiveMessage.type";
 import { ReceiveMessage } from "../../types/receive/ReceiveMessage.type";
 import { createActionMenu } from "@/components/table/actionMenus";
 import { useNavigate } from "react-router-dom";
+import {letterTypeOptions} from "../../data/sent/sent.data"
+
+
+interface TabulatorCellFormatter {
+  getValue: () => string;
+}
 
 const Columns = () => {
   const navigate = useNavigate();
@@ -9,6 +15,12 @@ const Columns = () => {
   const handleView = (row: ReceiveMessage) => {
     navigate(`/letter/receive-message/${row.id}`);
   };
+
+  // تهیه مقادیر برای فیلتر و ادیتور
+  const editorValues: Record<string, string> = {};
+  letterTypeOptions.forEach(option => {
+    editorValues[option.value] = option.label;
+  });
 
   return [
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
@@ -38,9 +50,22 @@ const Columns = () => {
     },
     {
       title: "نوع نامه",
-      field: "message_type",
-      headerFilter: true,
+      field: "kind_of_correspondence",
+      editor: "select",
+      editorParams: {
+        values: editorValues
+      },
+      headerFilter: "list",
+      headerFilterParams: {
+        valuesLookup: true,
+        clearable: true
+      },
       hozAlign: "center",
+      formatter: (cell: TabulatorCellFormatter) => {
+        const value = cell.getValue();
+        const option = letterTypeOptions.find(opt => opt.value === value);
+        return option ? option.label : value;
+      }
     },
     {
       title: "عملیات",

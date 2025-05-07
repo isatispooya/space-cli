@@ -36,7 +36,8 @@ export const ReceiveTable = () => {
               item.receiver_internal_details?.name || "نامشخص"
           : item.receiver_external || "نامشخص",
       send_date: new Date(item.created_at).toLocaleDateString("fa-IR"),
-      message_type: item.priority === "urgent" ? "فوری" : "عادی",
+      kind_of_correspondence:
+        item.priority === "urgent" ? "اعلامیه" : "درخواست",
       status: "",
     }));
   }, [correspondence]);
