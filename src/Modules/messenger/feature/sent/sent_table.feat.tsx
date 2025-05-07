@@ -10,10 +10,10 @@ import ExelData from "../../data/sent/sentExelData";
 export const SentTable = () => {
   const navigate = useNavigate();
   const handleView = (row: SentMessage) => {
-    navigate(`/letter-sent/message/${row.id}`);
+    navigate(`/letter/message/${row.id}`);
   };
   const handleEdit = (id: number) => {
-    navigate(`/letter-sent/update-form/${id}`);
+    navigate(`/letter/update-form/${id}`);
   };
 
   const { data: correspondence } =

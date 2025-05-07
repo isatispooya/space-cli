@@ -7,7 +7,7 @@ const Columns = () => {
   const navigate = useNavigate();
 
   const handleView = (row: ReceiveMessage) => {
-    navigate(`/letter-receive/message/${row.id}`);
+    navigate(`/letter/receive-message/${row.id}`);
   };
 
   return [

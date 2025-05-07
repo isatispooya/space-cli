@@ -63,7 +63,6 @@ const ShiftsAssignFeat = () => {
       return;
     }
 
-    // Submit each selected position
     selectedPositions.forEach((positionId) => {
       assignShifts(
         { shift_id: Number(shiftId), position_id: positionId },
@@ -86,16 +85,13 @@ const ShiftsAssignFeat = () => {
       );
     });
 
-    // Clear selections after submission
     setSelectedPositions([]);
   };
 
-  // Handle shift change
   const handleShiftChange = (id: string) => {
     setShiftId(Number(id));
   };
 
-  // Render each position
   const renderPosition = (position: PositionTypes) => {
     const isSelected = selectedPositions.includes(position.id);
 

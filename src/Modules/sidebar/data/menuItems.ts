@@ -88,11 +88,6 @@ export const menuItems: MenuItem[] = [
         codename: ["view_stocktransfer"],
         path: "/transferstock/table",
       },
-      // {
-      //   title: "مدیریت حق تقدم",
-      //   codename: ["add_precedence", "precedence"],
-      //   path: "/precendence/table",
-      // },
       {
         title: "نقل و انتقال حق تقدم",
         codename: ["view_displacementprecedence"],
@@ -103,11 +98,6 @@ export const menuItems: MenuItem[] = [
         codename: ["view_paid_precedence"],
         path: "/purchacePrecendence/table",
       },
-      // {
-      //   title: "تبدیل حق تقدم به سهم",
-      //   codename: ["view_capitalincreasepayment"],
-      //   path: "/capital/table",
-      // },
       {
         title: "پذیره نویسی",
         codename: ["unused_precedence_process"],
@@ -163,55 +153,12 @@ export const menuItems: MenuItem[] = [
         codename: ["allow_any"],
       },
       {
-        title: "نامه های ارسالی",
-        path: "/letter-sent/table",
-        codename: ["allow_any"],
-      },
-      {
-        title: "نامه های دریافتی",
-        path: "/letter-receive/table",
+        title: "نامه ها",
+        path: "/letter/form",
         codename: ["allow_any"],
       },
     ],
   },
-
-  // {
-  //   title: "دسترسی ها",
-  //   path: "/permissions",
-  //   icon: FaUserTie,
-  //   codename: ["view_permission"],
-  //   submenu: [
-  //     {
-  //       title: "مدیریت دسترسی ها",
-  //       path: "/permissions/table",
-  //       codename: ["view_permission"],
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   title: "مدیریت نقش‌ها",
-  //   path: "/positions",
-  //   icon: FaUserTie,
-  //   codename: ["view_position"],
-  //   submenu: [
-  //     {
-  //       title: "مدیریت نقش ها",
-  //       path: "/positions/table",
-  //       codename: ["view_position"],
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   title: "گروه ها",
-  //   path: "/groups",
-  //   icon: FaUserTie,
-  //   codename: ["view_group"],
-  //   submenu: [
-  //     { title: "مدیریت گروه ها", path: "/groups", codename: ["view_group"] },
-  //   ],
-  // },
   {
     title: "همکاری با ما",
     path: "/employments",
@@ -238,20 +185,6 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  // {
-  //   title: "تردد",
-  //   path: "/timeflow",
-  //   icon: FaClockRotateLeft,
-  //   codename: ["position"],
-  //   submenu: [
-  //     {
-  //       title: "گزارش تردد",
-  //       path: "/timeflow/table",
-  //       codename: ["position"],
-  //     },
-  //   ],
-  // },
-
   {
     title: "کارگزاری بیمه",
     path: "/insurance",
