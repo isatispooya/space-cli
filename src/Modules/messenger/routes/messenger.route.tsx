@@ -34,7 +34,7 @@ const SentUpdateFormPage = lazy(() =>
 
 const MessengerRoutes = [
   {
-    path: "/letter-sent",
+    path: "/letter",
     element: <SentPage />,
     children: [
       {

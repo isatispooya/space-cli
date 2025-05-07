@@ -1,7 +1,7 @@
-import { SentMessage } from "../../feature";
+import SentDetail from "../../feature/sent/sent_message.feat";
 
 const ReceiveMessagePage = () => {
-  return <SentMessage />;
+  return <SentDetail />;
 };
 
 export default ReceiveMessagePage;

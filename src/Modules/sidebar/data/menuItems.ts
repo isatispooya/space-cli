@@ -154,7 +154,7 @@ export const menuItems: MenuItem[] = [
       },
       {
         title: "نامه ها",
-        path: "/letter-sent/form",
+        path: "/letter/form",
         codename: ["allow_any"],
       },
     ],
