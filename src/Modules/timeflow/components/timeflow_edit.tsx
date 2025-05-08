@@ -2,12 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment-jalaali";
 import { useTimeflow } from "../hooks";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  DatePicker,
-  TimePicker,
-  LocalizationProvider,
-} from "@mui/x-date-pickers";
-import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
+import { DatePicker, TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   Button,
   FormControl,
@@ -19,13 +15,17 @@ import {
   Box,
   Typography,
   alpha,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { LoaderLg, NoContent } from "../../../components";
-import { AccessTime, CalendarMonth, Edit } from "@mui/icons-material";
-import { TimeflowEditType, TimeflowEditMoment } from "../types";
+import { LoaderLg, NoContent, Toast } from "../../../components";
+import {
+  AccessTime,
+  CalendarMonth,
+  Edit,
+  CheckCircle,
+} from "@mui/icons-material";
+import { TimeflowEditType, TimeflowEditDayjs } from "../types";
+import dayjs from "dayjs";
 
 moment.loadPersian({ usePersianDigits: true, dialect: "persian-modern" });
 
@@ -49,25 +49,14 @@ const typeTranslator = (type: string): string => {
 };
 
 const TimeflowEditForm = () => {
-  const [dateValue, setDateValue] = useState<TimeflowEditMoment | null>(null);
-  const [timeValue, setTimeValue] = useState<TimeflowEditMoment | null>(null);
+  const [dateValue, setDateValue] = useState<TimeflowEditDayjs | null>(null);
+  const [timeValue, setTimeValue] = useState<TimeflowEditDayjs | null>(null);
   const [typeValue, setTypeValue] = useState<string>("");
-  const [success, setSuccess] = useState<boolean>(false);
 
-  const navigate = useNavigate();
-  const { data, refetch, isLoading } = useTimeflow.useGetUserAllTimeflow();
+  const { data, isLoading } = useTimeflow.useGetUserAllTimeflow();
   const { id } = useParams();
-  const { mutate: edit, isSuccess } = useTimeflow.usePatchTimeflowEdit();
-
-  useEffect(() => {
-    if (isSuccess) {
-      setSuccess(true);
-      refetch();
-      setTimeout(() => {
-        navigate("/timeflow");
-      }, 2000);
-    }
-  }, [isSuccess, refetch, navigate]);
+  const { mutate: edit } = useTimeflow.usePatchTimeflowEdit();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!dateValue && !timeValue && data) {
@@ -76,9 +65,9 @@ const TimeflowEditForm = () => {
       );
 
       if (EDITABLE_DATA) {
-        const initialMoment = moment(EDITABLE_DATA.time_user);
-        setDateValue(initialMoment);
-        setTimeValue(initialMoment);
+        const initialTime = dayjs(EDITABLE_DATA.time_user);
+        setDateValue(initialTime);
+        setTimeValue(initialTime);
         setTypeValue(EDITABLE_DATA.type || "");
       }
     }
@@ -100,16 +89,18 @@ const TimeflowEditForm = () => {
         type: typeValue,
       };
 
+      Toast(
+        "با موفقیت بروزرسانی شد",
+        <CheckCircle sx={{ color: "green" }} />,
+        "bg-green-400"
+      );
+      navigate("/timeflow/users-timeflows");
       edit({ data: payload, id: Number(id) });
     }
   };
 
-  const handleSnackbarClose = () => {
-    setSuccess(false);
-  };
-
   return (
-    <LocalizationProvider dateAdapter={AdapterMomentJalaali}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <AnimatePresence>
         <motion.div
           key="edit-form"
@@ -293,20 +284,6 @@ const TimeflowEditForm = () => {
               </Box>
             </Box>
           </Paper>
-
-          <Snackbar
-            open={success}
-            autoHideDuration={2000}
-            onClose={handleSnackbarClose}
-          >
-            <Alert
-              onClose={handleSnackbarClose}
-              severity="success"
-              sx={{ width: "100%" }}
-            >
-              با موفقیت بروزرسانی شد
-            </Alert>
-          </Snackbar>
         </motion.div>
       </AnimatePresence>
     </LocalizationProvider>

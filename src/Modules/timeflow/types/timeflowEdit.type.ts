@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export interface TimeflowEditType {
   id: number;
   time_user: string;
@@ -10,3 +12,4 @@ export interface TimeflowEditFormData {
 }
 
 export type TimeflowEditMoment = moment.Moment;
+export type TimeflowEditDayjs = Dayjs;
