@@ -1,11 +1,19 @@
 import { TabulatorTable } from "@/components";
-import { useSymbols } from "../hooks";
+import { useSymbols } from "../../../hooks";
 import { CellComponent } from "tabulator-tables";
 import { Switch, Paper, Typography } from "@mui/material";
-import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { symbolsStore } from "../../../store";
 
 const AnalysisSymbolFeat = () => {
-  const [isSimple, setIsSimple] = useState(true);
+  const { isSimple, setIsSimple } = symbolsStore();
+  const { id } = useParams();
+  const { data: symbols } = useSymbols.useGetSymbolsById(Number(id));
+  const symbolType = symbols?.[0]?.symbol_detail?.type;
+  const { data } = useSymbols.useGetSymbolsAnalysis(
+    isSimple.toString(),
+    symbolType || ""
+  );
 
   const columns = [
     {
@@ -93,8 +101,6 @@ const AnalysisSymbolFeat = () => {
       headerFilter: true,
     },
   ];
-
-  const { data } = useSymbols.useGetSymbolsAnalysis(isSimple.toString());
 
   return (
     <div className="space-y-4">

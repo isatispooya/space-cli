@@ -1,12 +1,10 @@
 import { MainLayout } from "@/layouts";
-import AnalysisSymbolFeat from "./analysis_symbol.feat";
+import AnalysisSymbolFeat from "../components/symbolsTabs/analysis/analysis_symbol.com";
 import { Tabs } from "@/components";
-import SymbolsPricingCom from "../components/symbolsTabs/symbols_pricing.com";
-import SymbolsIntroCom from "../components/symbolsTabs/symbols_Intro.com";
+import SymbolsPricingCom from "../components/symbolsTabs/pricing/symbols_pricing.com";
+import SymbolsIntroCom from "../components/symbolsTabs/intro/symbols_Intro.com";
 
 const SymbolsFeat = () => {
-
-
   const tabsData = [
     {
       id: "introduction",

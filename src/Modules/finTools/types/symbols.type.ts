@@ -12,8 +12,21 @@ export interface SymbolsGetResType {
   photo: string;
   symbol: number;
   updated_at: string;
+  symbol_detail: {
+    id: number;
+    symbol: string;
+    name: string;
+    code: string;
+    type: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    description: string | null;
+    market: string | null;
+    cisin: string | null;
+    orgin: boolean;
+  };
 }
-
 export interface SymbolsAnalysisResType {
   symbol: string;
   last_price: number;
@@ -29,7 +42,23 @@ export interface SymbolsAnalysisResType {
   "365_day_rank": number;
 }
 
+export interface SymbolsPricingResType {
+  actual_return: number;
+  calculation_type: "compound" | "simple";
+  current_date: string;
+  current_price: number;
+  is_achievable: boolean;
+  symbol: string;
+  target_price: number;
+  table: {
+    date: string;
+    growth_rate: number;
+    target_price: number;
+  }[];
+}
+
 export type SymbolsType = {
   symbolRes: SymbolsGetResType[];
   symbolAnalysisRes: SymbolsAnalysisResType[];
+  pricingRes: SymbolsPricingResType;
 };

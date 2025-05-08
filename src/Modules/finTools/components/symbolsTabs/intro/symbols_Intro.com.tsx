@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import { useSymbols } from "../../hooks";
-import { Chart, Details } from "..";
-import { SymbolsType } from "../../types";
+import { useSymbols } from "../../../hooks";
+import { Chart, Details } from "../..";
+import { SymbolsType } from "../../../types";
 
 const SymbolsIntroCom = () => {
   const { id } = useParams();
