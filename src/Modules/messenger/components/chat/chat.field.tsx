@@ -97,6 +97,7 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
 
       files.forEach((file) => {
         formData.append("file", file);
+        formData.append(`name`, file.name);
       });
 
       uploadAttachment(formData, {

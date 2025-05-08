@@ -31,8 +31,15 @@ const SentUpdateFormPage = lazy(() =>
     default: module.SentUpdateFormPage,
   }))
 );
+const MessengerPage = lazy(() =>
+  import("../pages/messenger_main.page")
+);
 
 const MessengerRoutes = [
+  {
+    path: "/messenger",
+    element: <MessengerPage />,
+  },
   {
     path: "/letter",
     element: <SentPage />,
