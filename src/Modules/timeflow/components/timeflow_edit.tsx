@@ -217,10 +217,10 @@ const TimeflowEditForm = () => {
                   >
                     <MenuItem value="login">ورود</MenuItem>
                     <MenuItem value="logout">خروج</MenuItem>
-                    <MenuItem value="leave">مرخصی</MenuItem>
-                    <MenuItem value="leave-end">پایان مرخصی</MenuItem>
-                    <MenuItem value="mission-start">شروع ماموریت</MenuItem>
-                    <MenuItem value="mission-end">پایان ماموریت</MenuItem>
+                    <MenuItem value="leave_start">شروع مرخصی</MenuItem>
+                    <MenuItem value="leave_end">ورود مرخصی</MenuItem>
+                    <MenuItem value="mission_start">شروع ماموریت</MenuItem>
+                    <MenuItem value="mission_end">پایان ماموریت</MenuItem>
                   </Select>
                 </FormControl>
                 <Button

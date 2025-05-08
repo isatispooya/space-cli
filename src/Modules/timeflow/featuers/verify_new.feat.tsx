@@ -163,12 +163,12 @@ export default function NewVerifyForm() {
                 label="نوع تردد"
                 onChange={handleTypeChange}
               >
-                <MenuItem value="login">ورود</MenuItem>
-                <MenuItem value="logout">خروج</MenuItem>
-                <MenuItem value="leave_start">شروع مرخصی</MenuItem>
-                <MenuItem value="leave_end">ورود مرخصی</MenuItem>
-                <MenuItem value="mission_start">شروع ماموریت</MenuItem>
-                <MenuItem value="mission_end">پایان ماموریت</MenuItem>
+               <MenuItem value="login">ورود</MenuItem>
+                    <MenuItem value="logout">خروج</MenuItem>
+                    <MenuItem value="leave_start">شروع مرخصی</MenuItem>
+                    <MenuItem value="leave_end">ورود مرخصی</MenuItem>
+                    <MenuItem value="mission_start">شروع ماموریت</MenuItem>
+                    <MenuItem value="mission_end">پایان ماموریت</MenuItem>
               </Select>
             </FormControl>
 
