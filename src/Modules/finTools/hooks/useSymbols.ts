@@ -1,6 +1,7 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { SymbolsServices } from "../services";
 import { SymbolsType } from "../types";
+
 const useSymbols = {
   useGetSymbols: (): UseQueryResult<SymbolsType["symbolRes"]> => {
     return useQuery({
@@ -14,10 +15,35 @@ const useSymbols = {
       queryFn: () => SymbolsServices.getSymbolsById(id),
     });
   },
-  useGetSymbolsAnalysis: (): UseQueryResult<SymbolsType["symbolAnalysisRes"]> => {
+  useGetSymbolsAnalysis: (
+    value: string
+  ): UseQueryResult<SymbolsType["symbolAnalysisRes"]> => {
     return useQuery({
-      queryKey: ["symbols-analysis"],
-      queryFn: () => SymbolsServices.getSymbolsAnalysis(),
+      queryKey: ["symbols-analysis", value],
+      queryFn: () => SymbolsServices.getSymbolsAnalysis(value),
+    });
+  },
+  useGetSymbolsPricing: (
+    desiredProfit: number,
+    symbol: number,
+    days: number,
+    calculationType: string
+  ): UseQueryResult<any> => {
+    return useQuery({
+      queryKey: [
+        "symbols-pricing",
+        desiredProfit,
+        symbol,
+        days,
+        calculationType,
+      ],
+      queryFn: () =>
+        SymbolsServices.getSymbolsPricing(
+          desiredProfit,
+          symbol,
+          days,
+          calculationType
+        ),
     });
   },
 };

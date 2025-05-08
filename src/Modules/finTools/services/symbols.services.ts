@@ -10,8 +10,12 @@ const SymbolsServices = {
     const response = await api.get(`/stock_affairs/introduce-symbol/${id}/`);
     return response.data;
   },
-  getSymbolsAnalysis: async () => {
-    const response = await api.get(`/stock_affairs/symbol-return/`);
+  getSymbolsAnalysis: async (value: string) => {
+    const response = await api.get(`/stock_affairs/symbol-return/?calculate=${value}`);
+    return response.data;
+  },
+  getSymbolsPricing: async (desiredProfit: number, symbol: number, days: number, calculationType: string) => {
+    const response = await api.get(`/stock_affairs/symbol-profit-calculator/${desiredProfit}/${symbol}/${days}/${calculationType}/`);
     return response.data;
   },
 };
