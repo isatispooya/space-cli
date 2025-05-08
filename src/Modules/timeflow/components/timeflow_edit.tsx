@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment-jalaali";
 import { useTimeflow } from "../hooks";
 import { AnimatePresence, motion } from "framer-motion";
@@ -19,35 +19,78 @@ import {
   Box,
   Typography,
   alpha,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LoaderLg, NoContent } from "../../../components";
 import { AccessTime, CalendarMonth, Edit } from "@mui/icons-material";
 import { TimeflowEditType, TimeflowEditMoment } from "../types";
 
 moment.loadPersian({ usePersianDigits: true, dialect: "persian-modern" });
 
+const typeTranslator = (type: string): string => {
+  switch (type) {
+    case "login":
+      return "ورود";
+    case "logout":
+      return "خروج";
+    case "leave":
+      return "مرخصی";
+    case "end-leave":
+      return "پایان مرخصی";
+    case "start-mission":
+      return "شروع ماموریت";
+    case "end-mission":
+      return "پایان ماموریت";
+    default:
+      return type;
+  }
+};
+
 const TimeflowEditForm = () => {
   const [dateValue, setDateValue] = useState<TimeflowEditMoment | null>(null);
   const [timeValue, setTimeValue] = useState<TimeflowEditMoment | null>(null);
   const [typeValue, setTypeValue] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
 
+  const navigate = useNavigate();
   const { data, refetch, isLoading } = useTimeflow.useGetUserAllTimeflow();
   const { id } = useParams();
-  const { mutate: edit } = useTimeflow.usePatchTimeflowEdit();
+  const { mutate: edit, isSuccess } = useTimeflow.usePatchTimeflowEdit();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSuccess(true);
+      refetch();
+      setTimeout(() => {
+        navigate("/timeflow");
+      }, 2000);
+    }
+  }, [isSuccess, refetch, navigate]);
+
+  useEffect(() => {
+    if (!dateValue && !timeValue && data) {
+      const EDITABLE_DATA = data?.find(
+        (item: TimeflowEditType) => item.id === Number(id)
+      );
+
+      if (EDITABLE_DATA) {
+        const initialMoment = moment(EDITABLE_DATA.time_user);
+        setDateValue(initialMoment);
+        setTimeValue(initialMoment);
+        setTypeValue(EDITABLE_DATA.type || "");
+      }
+    }
+  }, [data, dateValue, id, timeValue]);
 
   if (isLoading) return <LoaderLg />;
+
   const EDITABLE_DATA = data?.find(
     (item: TimeflowEditType) => item.id === Number(id)
   );
-  if (!EDITABLE_DATA) return <NoContent label="اطلاعات مورد نظر یافت نشد" />;
 
-  if (!dateValue && !timeValue && EDITABLE_DATA) {
-    const initialMoment = moment(EDITABLE_DATA.time_user);
-    setDateValue(initialMoment);
-    setTimeValue(initialMoment);
-    setTypeValue(EDITABLE_DATA.type || "");
-  }
+  if (!EDITABLE_DATA) return <NoContent label="اطلاعات مورد نظر یافت نشد" />;
 
   const handleSubmit = () => {
     if (dateValue && timeValue) {
@@ -58,8 +101,11 @@ const TimeflowEditForm = () => {
       };
 
       edit({ data: payload, id: Number(id) });
-      refetch();
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setSuccess(false);
   };
 
   return (
@@ -214,6 +260,7 @@ const TimeflowEditForm = () => {
                     onChange={(e: SelectChangeEvent) =>
                       setTypeValue(e.target.value)
                     }
+                    renderValue={(value) => typeTranslator(value)}
                   >
                     <MenuItem value="login">ورود</MenuItem>
                     <MenuItem value="logout">خروج</MenuItem>
@@ -246,6 +293,20 @@ const TimeflowEditForm = () => {
               </Box>
             </Box>
           </Paper>
+
+          <Snackbar
+            open={success}
+            autoHideDuration={2000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              با موفقیت بروزرسانی شد
+            </Alert>
+          </Snackbar>
         </motion.div>
       </AnimatePresence>
     </LocalizationProvider>
