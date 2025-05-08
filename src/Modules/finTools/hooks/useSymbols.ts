@@ -16,19 +16,21 @@ const useSymbols = {
     });
   },
   useGetSymbolsAnalysis: (
-    value: string
+    value: string,
+    symbol_type: string
   ): UseQueryResult<SymbolsType["symbolAnalysisRes"]> => {
     return useQuery({
-      queryKey: ["symbols-analysis", value],
-      queryFn: () => SymbolsServices.getSymbolsAnalysis(value),
+      queryKey: ["symbols-analysis", value, symbol_type],
+      queryFn: () => SymbolsServices.getSymbolsAnalysis(value, symbol_type),
     });
   },
+
   useGetSymbolsPricing: (
     desiredProfit: number,
     symbol: number,
     days: number,
     calculationType: string
-  ): UseQueryResult<any> => {
+  ): UseQueryResult<SymbolsType["pricingRes"]> => {
     return useQuery({
       queryKey: [
         "symbols-pricing",
