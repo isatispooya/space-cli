@@ -55,10 +55,11 @@ const TimeflowDetails = () => {
     }
   };
 
-  const mappedData = data?.map((item: any) => ({
-    ...item,
-    date: moment(item.date).format("jYYYY/jMM/jDD"),
-    time_start: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(
+  const mappedData = Array.isArray(data?.other_logs)
+    ? data?.other_logs.map((item: any) => ({
+        ...item,
+        date: moment(item.date).format("jYYYY/jMM/jDD"),
+        time_start: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(
       item.time_start,
       "HH:mm:ss"
     ).format("HH:mm")}`,
@@ -70,8 +71,9 @@ const TimeflowDetails = () => {
     user_id: item.user_id,
     first_name: item.user_detail.first_name,
     last_name: item.user_detail.last_name,
-    uniqueIdentifier: item.user_detail.uniqueIdentifier,
-  }));
+        uniqueIdentifier: item.user_detail.uniqueIdentifier,
+      }))
+    : [];
 
   if (isLoading) {
     return <LoaderLg />;

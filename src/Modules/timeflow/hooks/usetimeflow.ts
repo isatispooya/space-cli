@@ -49,7 +49,7 @@ const useTimeflow = {
   useGetTimeflowDetails: (
     year: number,
     month: number
-  ): UseQueryResult<UserLoginType[]> => {
+  ): UseQueryResult<UserLoginType> => {
     return useQuery({
       queryKey: ["timeflow-details", year, month],
       queryFn: ({ queryKey }) => {
