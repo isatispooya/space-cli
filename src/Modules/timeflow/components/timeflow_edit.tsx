@@ -1,9 +1,13 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import moment from "moment-jalaali";
 import { useTimeflow } from "../hooks";
 import { AnimatePresence, motion } from "framer-motion";
-import { DatePicker, TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import {
+  DatePicker,
+  TimePicker,
+  LocalizationProvider,
+} from "@mui/x-date-pickers";
+import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
 import {
   Button,
   FormControl,
@@ -16,70 +20,34 @@ import {
   Typography,
   alpha,
 } from "@mui/material";
-import { useState, useEffect } from "react";
-import { LoaderLg, NoContent, Toast } from "../../../components";
-import {
-  AccessTime,
-  CalendarMonth,
-  Edit,
-  CheckCircle,
-} from "@mui/icons-material";
-import { TimeflowEditType, TimeflowEditDayjs } from "../types";
-import dayjs from "dayjs";
+import { useState } from "react";
+import { LoaderLg, NoContent } from "../../../components";
+import { AccessTime, CalendarMonth, Edit } from "@mui/icons-material";
+import { TimeflowEditType, TimeflowEditMoment } from "../types";
 
 moment.loadPersian({ usePersianDigits: true, dialect: "persian-modern" });
 
-const typeTranslator = (type: string): string => {
-  switch (type) {
-    case "login":
-      return "ورود";
-    case "logout":
-      return "خروج";
-    case "leave":
-      return "مرخصی";
-    case "end-leave":
-      return "پایان مرخصی";
-    case "start-mission":
-      return "شروع ماموریت";
-    case "end-mission":
-      return "پایان ماموریت";
-    default:
-      return type;
-  }
-};
-
 const TimeflowEditForm = () => {
-  const [dateValue, setDateValue] = useState<TimeflowEditDayjs | null>(null);
-  const [timeValue, setTimeValue] = useState<TimeflowEditDayjs | null>(null);
+  const [dateValue, setDateValue] = useState<TimeflowEditMoment | null>(null);
+  const [timeValue, setTimeValue] = useState<TimeflowEditMoment | null>(null);
   const [typeValue, setTypeValue] = useState<string>("");
 
-  const { data, isLoading } = useTimeflow.useGetUserAllTimeflow();
+  const { data, refetch, isLoading } = useTimeflow.useGetUserAllTimeflow();
   const { id } = useParams();
   const { mutate: edit } = useTimeflow.usePatchTimeflowEdit();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!dateValue && !timeValue && data) {
-      const EDITABLE_DATA = data?.find(
-        (item: TimeflowEditType) => item.id === Number(id)
-      );
-
-      if (EDITABLE_DATA) {
-        const initialTime = dayjs(EDITABLE_DATA.time_user);
-        setDateValue(initialTime);
-        setTimeValue(initialTime);
-        setTypeValue(EDITABLE_DATA.type || "");
-      }
-    }
-  }, [data, dateValue, id, timeValue]);
 
   if (isLoading) return <LoaderLg />;
-
   const EDITABLE_DATA = data?.find(
     (item: TimeflowEditType) => item.id === Number(id)
   );
-
   if (!EDITABLE_DATA) return <NoContent label="اطلاعات مورد نظر یافت نشد" />;
+
+  if (!dateValue && !timeValue && EDITABLE_DATA) {
+    const initialMoment = moment(EDITABLE_DATA.time_user);
+    setDateValue(initialMoment);
+    setTimeValue(initialMoment);
+    setTypeValue(EDITABLE_DATA.type || "");
+  }
 
   const handleSubmit = () => {
     if (dateValue && timeValue) {
@@ -89,18 +57,13 @@ const TimeflowEditForm = () => {
         type: typeValue,
       };
 
-      Toast(
-        "با موفقیت بروزرسانی شد",
-        <CheckCircle sx={{ color: "green" }} />,
-        "bg-green-400"
-      );
-      navigate("/timeflow/users-timeflows");
       edit({ data: payload, id: Number(id) });
+      refetch();
     }
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterMomentJalaali}>
       <AnimatePresence>
         <motion.div
           key="edit-form"
@@ -251,17 +214,15 @@ const TimeflowEditForm = () => {
                     onChange={(e: SelectChangeEvent) =>
                       setTypeValue(e.target.value)
                     }
-                    renderValue={(value) => typeTranslator(value)}
                   >
                     <MenuItem value="login">ورود</MenuItem>
                     <MenuItem value="logout">خروج</MenuItem>
                     <MenuItem value="leave">مرخصی</MenuItem>
-                    <MenuItem value="end-leave">پایان مرخصی</MenuItem>
-                    <MenuItem value="start-mission">شروع ماموریت</MenuItem>
-                    <MenuItem value="end-mission">پایان ماموریت</MenuItem>
+                    <MenuItem value="leave-end">پایان مرخصی</MenuItem>
+                    <MenuItem value="mission-start">شروع ماموریت</MenuItem>
+                    <MenuItem value="mission-end">پایان ماموریت</MenuItem>
                   </Select>
                 </FormControl>
-
                 <Button
                   variant="contained"
                   fullWidth

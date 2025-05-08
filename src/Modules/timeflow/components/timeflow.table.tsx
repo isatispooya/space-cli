@@ -15,18 +15,17 @@ const typeTranslator = (type: string): string => {
       return "خروج";
     case "leave":
       return "مرخصی";
-    case "end-leave":
+    case "leave-end":
       return "پایان مرخصی";
-    case "start-mission":
+    case "mission-start":
       return "شروع ماموریت";
-    case "end-mission":
+    case "mission-end":
       return "پایان ماموریت";
-    case "working":
-      return "زمان حضور";
     default:
       return type;
   }
 };
+
 
 const TimeflowTable = () => {
   const { data, isLoading } = useTimeflow.useGetTimeflow();
@@ -109,7 +108,8 @@ const TimeflowTable = () => {
   ];
 
   const handleEdit = (rowData: TimeflowData) => {
-    console.log("Edit clicked for:", rowData);
+    console.log("Edit clicked for rowData:", rowData);
+    console.log("Type:", rowData.type, "TypeRaw:", rowData.typeRaw);
     navigate(`/timeflow/update-timeflow/${rowData.id}`);
   };
 

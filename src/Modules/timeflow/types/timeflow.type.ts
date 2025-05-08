@@ -4,6 +4,7 @@ export interface TimeflowData {
   time_start: string;
   time_end: string;
   type: string;
+  typeRaw?: string;
   user_id: number;
   user_detail: {
     id: number;
