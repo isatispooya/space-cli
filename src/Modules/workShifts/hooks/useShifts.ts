@@ -9,7 +9,7 @@ import { ShiftTypes } from "../types";
 import { AxiosError } from "axios";
 
 const useShifts = {
-  useGetShifts: (): UseQueryResult<ShiftTypes["getRes"]> => {
+  useGetShifts: (): UseQueryResult<ShiftTypes["getRes"][]> => {
     return useQuery({
       queryKey: ["shifts"],
       queryFn: shiftsServices.getShifts,

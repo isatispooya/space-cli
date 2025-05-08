@@ -23,7 +23,7 @@ interface Own_logs {
   user_agent: string;
 }
 
-interface Other_logs {
+export interface Other_logs {
   browser: string | null;
   device_type: string;
   id: number;
@@ -69,8 +69,6 @@ interface UserDetail {
   mobile: string;
   profile_image: string;
 }
-
-
 
 interface UserLoginType {
   other_logs: Other_logs[];

@@ -2,7 +2,7 @@ import { api } from "@/api";
 import { ShiftTypes } from "../types";
 
 const shiftsServices = {
-  getShifts: async (): Promise<ShiftTypes["getRes"]> => {
+  getShifts: async (): Promise<ShiftTypes["getRes"][]> => {
     const { data } = await api.get("/timeflow/shift/");
     return data;
   },

@@ -15,7 +15,7 @@ import {
 import { AxiosError } from "axios";
 
 const useTimeflow = {
-  useGetUsersLogin: (): UseQueryResult<UserLoginType[]> => {
+  useGetUsersLogin: (): UseQueryResult<UserLoginType> => {
     return useQuery({
       queryKey: ["users-login"],
       queryFn: () => timeflowServices.getUsersLogin(),
