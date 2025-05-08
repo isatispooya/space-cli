@@ -31,7 +31,7 @@ const SendMsgPopUp = ({
   const [filteredPositionUsers, setFilteredPositionUsers] = useState<
     UserData[]
   >([]);
-  const [visibleItemsCount, setVisibleItemsCount] = useState<number>(50); 
+  const [visibleItemsCount, setVisibleItemsCount] = useState<number>(50);
 
   const searchableFields = [
     "first_name",
@@ -50,7 +50,7 @@ const SendMsgPopUp = ({
         first_name: user.first_name || "",
         last_name: user.last_name || "",
         uniqueIdentifier: user.uniqueIdentifier || "",
-        profile_image: server+user.profile_image || null,
+        profile_image: server + user.profile_image || null,
         online: user.online || false,
         last_seen: user.last_seen || null,
         mobile: user.mobile || "",
@@ -59,15 +59,10 @@ const SendMsgPopUp = ({
       }));
       setFilteredPositionUsers(mappedUsers);
       if (mappedUsers.length > 0) {
-        console.log(`Loading all ${mappedUsers.length} users`);
         setVisibleItemsCount(mappedUsers.length);
       }
     }
   }, [positionUsers]);
-
-  useEffect(() => {
-    console.log("Current filteredPositionUsers:", filteredPositionUsers);
-  }, [filteredPositionUsers]);
 
   const handleLoadMore = useCallback(() => {
     setVisibleItemsCount((prev) => {
@@ -127,7 +122,6 @@ const SendMsgPopUp = ({
             initial="hidden"
             animate="visible"
             exit="hidden"
-
             className="fixed inset-0 bg-black bg-opacity-50 z-50 flex p-4 sm:p-6 justify-center items-center"
             onClick={() => setShowAllUsers(false)}
           >

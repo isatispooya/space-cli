@@ -16,12 +16,6 @@ const useChat = {
       refetchInterval: 10000,
     });
   },
-  useGetUsersByPosition: () => {
-    return useQuery({
-      queryKey: ["users"],
-      queryFn: () => chatService.getUsersByPosition(),
-    });
-  },
   useGetUserOfPosition: (): UseQueryResult<ChatType["MessagesType"][]> => {
     return useQuery({
       queryKey: ["users"],

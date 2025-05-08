@@ -27,17 +27,41 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   useEffect(() => {
     if (chatData && Array.isArray(chatData) && profileData) {
       let formattedMessages = chatData
-        .map((msg) => ({
-          id: msg.id,
-          text: msg.message,
-          sender: `${msg.sender_details.first_name} ${msg.sender_details.last_name}`,
-          timestamp: new Date(msg.created_at).toLocaleTimeString("fa-IR", {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-          isCurrentUser: msg.sender_details.id === profileData?.id,
-          createdAt: new Date(msg.created_at).getTime(),
-        }))
+        .map((msg) => {
+          return {
+            id: msg.id,
+            text: msg.message,
+            sender: `${msg.sender_details.first_name} ${msg.sender_details.last_name}`,
+            timestamp: new Date(msg.created_at).toLocaleTimeString("fa-IR", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            isCurrentUser: msg.sender_details.id === profileData?.id,
+            createdAt: new Date(msg.created_at).getTime(),
+            attachment:
+              msg.attachment ||
+              (msg.attach_details ? msg.attach_details.file : null),
+            attachmentName: msg.attachment
+              ? msg.attachment.split("/").pop()
+              : msg.attach_details
+              ? msg.attach_details.name
+              : null,
+            attachmentType: msg.attachment
+              ? msg.attachment.split(".").pop()?.toLowerCase()
+              : msg.attach_details
+              ? msg.attach_details.name.split(".").pop()?.toLowerCase()
+              : null,
+            attachmentSize: msg.attach_details ? msg.attach_details.size : null,
+            senderDetails: msg.sender_details,
+            receiverDetails: msg.receiver_details,
+            seen: msg.seen || false,
+            isDeleted: msg.is_deleted || false,
+            senderId: msg.sender,
+            receiverId: msg.receiver,
+            attachId: msg.attach ? Number(msg.attach) : null,
+            attachDetails: msg.attach_details,
+          };
+        })
         .sort((a, b) => a.createdAt - b.createdAt);
 
       if (selectedUser && selectedUser.id) {
@@ -59,6 +83,28 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
             }),
             isCurrentUser: msg.sender_details.id === profileData?.id,
             createdAt: new Date(msg.created_at).getTime(),
+            attachment:
+              msg.attachment ||
+              (msg.attach_details ? msg.attach_details.file : null),
+            attachmentName: msg.attachment
+              ? msg.attachment.split("/").pop()
+              : msg.attach_details
+              ? msg.attach_details.name
+              : null,
+            attachmentType: msg.attachment
+              ? msg.attachment.split(".").pop()?.toLowerCase()
+              : msg.attach_details
+              ? msg.attach_details.name.split(".").pop()?.toLowerCase()
+              : null,
+            attachmentSize: msg.attach_details ? msg.attach_details.size : null,
+            senderDetails: msg.sender_details,
+            receiverDetails: msg.receiver_details,
+            seen: msg.seen || false,
+            isDeleted: msg.is_deleted || false,
+            senderId: msg.sender,
+            receiverId: msg.receiver,
+            attachId: msg.attach ? Number(msg.attach) : null,
+            attachDetails: msg.attach_details,
           }))
           .sort((a, b) => a.createdAt - b.createdAt);
       }
@@ -89,53 +135,125 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   const handleSendMessage = () => {
     if ((newMessage.trim() === "" && files.length === 0) || loading) return;
 
+    const messageText =
+      newMessage.trim() || (files.length > 0 ? "فایل پیوست" : "");
+
     if (files.length > 0) {
       const formData = new FormData();
 
-      formData.append("message", newMessage);
+      formData.append("message", messageText);
       formData.append("receiver", selectedUser?.id ? selectedUser.id : "0");
+      formData.append("sender", profileData?.id.toString() || "0");
 
       files.forEach((file) => {
         formData.append("file", file);
+        formData.append(`name`, file.name);
       });
 
-      uploadAttachment(formData, {
-        onSuccess: () => {
-          setFiles([]);
-          setNewMessage("");
-          refetch();
-        },
-        onError: (error) => {
-          console.error("خطا در آپلود فایل:", error);
-        },
-      });
-
-      if (newMessage.trim() === "") {
-        scrollToBottom();
-        return;
-      }
-    }
-
-    if (newMessage.trim() !== "" && files.length === 0) {
-      const newMsg: ChatType["SingleMessageType"] = {
+      const temporaryMsg: ChatType["SingleMessageType"] = {
         id:
-          messages.length > 0 ? Math.max(...messages.map((m) => m.id)) + 1 : 1,
-        text: newMessage,
-        sender: "کاربر",
+          messages.length > 0
+            ? Math.max(...messages.map((m) => m.id)) + 999
+            : 999,
+        text: messageText,
+        sender: profileData
+          ? `${profileData.first_name} ${profileData.last_name}`
+          : "کاربر",
         timestamp: new Date().toLocaleTimeString("fa-IR", {
           hour: "2-digit",
           minute: "2-digit",
         }),
         isCurrentUser: true,
         createdAt: new Date().getTime(),
+        attachmentName: files[0].name,
+        attachment: "در حال آپلود...",
+        attachmentType: files[0].name.split(".").pop()?.toLowerCase(),
+        attachmentSize: files[0].size,
+        seen: false,
+        isDeleted: false,
+      };
+
+      setMessages([...messages, temporaryMsg]);
+      scrollToBottom();
+
+      uploadAttachment(formData, {
+        onSuccess: (response) => {
+          if (response && response.id) {
+            const messageData: ChatType["postMessegeType"] = {
+              content: messageText,
+              receiver: selectedUser?.id ? parseInt(selectedUser.id) : 0,
+              message: messageText,
+              attach: response.id,
+            };
+
+            createChat(messageData, {
+              onSuccess: () => {
+                setNewMessage("");
+                refetch();
+              },
+              onError: (error) => {
+                console.error("خطا در ارسال پیام:", error);
+                setMessages(messages.filter((m) => m.id !== temporaryMsg.id));
+              },
+            });
+          }
+
+          setFiles([]);
+          setNewMessage("");
+        },
+        onError: (error) => {
+          console.error("خطا در آپلود فایل:", error);
+          setMessages(messages.filter((m) => m.id !== temporaryMsg.id));
+        },
+      });
+    } else if (messageText) {
+      const newMsg: ChatType["SingleMessageType"] = {
+        id:
+          messages.length > 0 ? Math.max(...messages.map((m) => m.id)) + 1 : 1,
+        text: messageText,
+        sender: profileData
+          ? `${profileData.first_name} ${profileData.last_name}`
+          : "کاربر",
+        timestamp: new Date().toLocaleTimeString("fa-IR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        isCurrentUser: true,
+        createdAt: new Date().getTime(),
+        attachment: null,
+        seen: false,
+        isDeleted: false,
+        senderDetails: profileData
+          ? {
+              id: profileData.id,
+              first_name: profileData.first_name,
+              last_name: profileData.last_name,
+              uniqueIdentifier: profileData.uniqueIdentifier,
+              profile_image: profileData.profile_image,
+            }
+          : undefined,
+        receiverDetails:
+          selectedUser && profileData
+            ? {
+                id: parseInt(selectedUser.id),
+                first_name: selectedUser.name.split(" ")[0] || "",
+                last_name:
+                  selectedUser.name.split(" ").slice(1).join(" ") || "",
+                uniqueIdentifier: "",
+                profile_image: selectedUser.avatar || null,
+              }
+            : undefined,
+        senderId: profileData?.id,
+        receiverId: selectedUser?.id ? parseInt(selectedUser.id) : undefined,
       };
 
       setMessages([...messages, newMsg]);
 
       const messageData: ChatType["postMessegeType"] = {
-        content: newMessage,
+        content: messageText,
         receiver: selectedUser?.id ? parseInt(selectedUser.id) : 0,
-        message: newMessage,
+        message: messageText,
+        attach: 0,
       };
 
       createChat(messageData, {
@@ -145,6 +263,7 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
         },
         onError: (error) => {
           console.error("خطا در ارسال پیام:", error);
+          setMessages(messages.filter((m) => m.id !== newMsg.id));
         },
       });
 
@@ -162,7 +281,6 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
       handleSendMessage();
     }
   };
-
   return (
     <Paper
       elevation={3}

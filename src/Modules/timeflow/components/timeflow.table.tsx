@@ -6,6 +6,28 @@ import { ExelData } from "../data";
 import { useNavigate } from "react-router-dom";
 import { TimeflowData } from "../types/timeflow.type";
 
+// تابع تبدیل نوع تردد از انگلیسی به فارسی
+const typeTranslator = (type: string): string => {
+  switch (type) {
+    case "login":
+      return "ورود";
+    case "logout":
+      return "خروج";
+    case "leave":
+      return "مرخصی";
+    case "end-leave":
+      return "پایان مرخصی";
+    case "start-mission":
+      return "شروع ماموریت";
+    case "end-mission":
+      return "پایان ماموریت";
+    case "working":
+      return "زمان حضور";
+    default:
+      return type;
+  }
+};
+
 const TimeflowTable = () => {
   const { data, isLoading } = useTimeflow.useGetTimeflow();
   const navigate = useNavigate();
@@ -21,7 +43,8 @@ const TimeflowTable = () => {
       item.time_end,
       "HH:mm:ss"
     ).format("HH:mm")}`,
-    type: item.type === "working" ? "زمان حضور" : " غیبت",
+    typeRaw: item.type,
+    type: typeTranslator(item.type),
     user_id: item.user_id,
     first_name: item.user_detail.first_name,
     last_name: item.user_detail.last_name,

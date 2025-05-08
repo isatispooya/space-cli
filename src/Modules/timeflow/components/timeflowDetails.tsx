@@ -17,6 +17,26 @@ type CellComponent = {
   getElement: () => HTMLElement;
 };
 
+// تابع تبدیل نوع تردد از انگلیسی به فارسی
+const typeTranslator = (type: string): string => {
+  switch (type) {
+    case "login":
+      return "ورود";
+    case "logout":
+      return "خروج";
+    case "leave":
+      return "مرخصی";
+    case "end-leave":
+      return "پایان مرخصی";
+    case "start-mission":
+      return "شروع ماموریت";
+    case "end-mission":
+      return "پایان ماموریت";
+    default:
+      return type;
+  }
+};
+
 const TimeflowDetails = () => {
   const [selectedDate, setSelectedDate] = useState(
     new DateObject({ calendar: persian, locale: persian_fa })
@@ -78,6 +98,14 @@ const TimeflowDetails = () => {
       title: "کد ملی",
       field: "uniqueIdentifier",
       headerFilter: true,
+    },
+    {
+      title: "نوع تردد",
+      field: "type",
+      headerFilter: true,
+      formatter: (cell) => {
+        return typeTranslator(cell.getValue());
+      },
     },
     {
       title: "غیبت",
