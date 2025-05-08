@@ -7,165 +7,372 @@ import {
 } from "@mui/material";
 import { ChatType } from "../../types";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import DownloadIcon from "@mui/icons-material/Download";
 import ImageIcon from "@mui/icons-material/Image";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import DownloadIcon from "@mui/icons-material/Download";
 import { useState } from "react";
+import { server } from "@/api";
 
 const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+  const getFileExtension = (filename?: string) => {
+    if (!filename) return "";
+    return filename.split(".").pop()?.toLowerCase() || "";
+  };
+
   const getFileIcon = () => {
     if (message.attachDetails) {
-      const fileExtension = message.attachDetails.name
-        .split(".")
-        .pop()
-        ?.toLowerCase();
+      const fileExtension = getFileExtension(message.attachDetails.name);
 
-      if (
-        fileExtension &&
-        ["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension)
-      ) {
+      if (["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension)) {
         return <ImageIcon fontSize="small" />;
       } else if (fileExtension === "pdf") {
         return <PictureAsPdfIcon fontSize="small" />;
-      } else {
-        return <InsertDriveFileIcon fontSize="small" />;
       }
+      return <InsertDriveFileIcon fontSize="small" />;
     }
 
     if (!message.attachment || message.attachment === "در حال آپلود...") {
       return <AttachFileIcon fontSize="small" />;
     }
 
-    const fileExtension =
-      message.attachmentType ||
-      message.attachment.split(".").pop()?.toLowerCase();
+    const fileExtension = message.attachmentType || getFileExtension(message.attachment);
 
-    if (
-      fileExtension &&
-      ["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension)
-    ) {
+    if (["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension)) {
       return <ImageIcon fontSize="small" />;
     } else if (fileExtension === "pdf") {
       return <PictureAsPdfIcon fontSize="small" />;
-    } else {
-      return <InsertDriveFileIcon fontSize="small" />;
     }
+    return <InsertDriveFileIcon fontSize="small" />;
   };
 
   const isImage = () => {
     if (message.attachDetails) {
-      const fileExtension = message.attachDetails.name
-        .split(".")
-        .pop()
-        ?.toLowerCase();
-      return (
-        fileExtension &&
-        ["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension)
-      );
+      const fileExtension = getFileExtension(message.attachDetails.name);
+      return ["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension);
     }
 
     if (!message.attachment || message.attachment === "در حال آپلود...") {
       return false;
     }
 
-    const fileExtension =
-      message.attachmentType ||
-      message.attachment.split(".").pop()?.toLowerCase();
-    return (
-      fileExtension &&
-      ["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension)
-    );
-  };
-
-  const handleDownload = () => {
-    if (message.attachDetails) {
-      try {
-        const fileUrl = message.attachDetails.file.startsWith("http")
-          ? message.attachDetails.file
-          : `${window.location.origin}${message.attachDetails.file}`;
-        const link = document.createElement("a");
-        link.href = fileUrl;
-        link.download = message.attachDetails.name || "file";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error("خطا در دانلود فایل:", error);
-        alert("خطا در دانلود فایل. لطفاً دوباره تلاش کنید.");
-      }
-      return;
-    }
-
-    if (!message.attachment || message.attachment === "در حال آپلود...") {
-      return;
-    }
-
-    try {
-      const fileUrl = message.attachment.startsWith("http")
-        ? message.attachment
-        : `${window.location.origin}${message.attachment}`;
-
-      const link = document.createElement("a");
-      link.href = fileUrl;
-      link.download = message.attachmentName || "file";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("خطا در دانلود فایل:", error);
-    }
+    const fileExtension = message.attachmentType || getFileExtension(message.attachment);
+    return ["jpg", "jpeg", "png", "gif", "webp"].includes(fileExtension);
   };
 
   const getFileUrl = () => {
     if (message.attachDetails) {
-      return message.attachDetails.file.startsWith("http")
-        ? message.attachDetails.file
-        : `${window.location.origin}${message.attachDetails.file}`;
+      return message.attachDetails.file;
     }
-
+    
     if (!message.attachment || message.attachment === "در حال آپلود...") {
       return "";
     }
-
-    return message.attachment.startsWith("http")
-      ? message.attachment
-      : `${window.location.origin}${message.attachment}`;
+    
+    return message.attachment;
   };
 
   const getFileName = () => {
     if (message.attachDetails) {
       return message.attachDetails.name;
     }
-
-    return (
-      message.attachmentName || message.attachment?.split("/").pop() || "فایل"
-    );
+    
+    return message.attachmentName || message.attachment?.split("/").pop() || "فایل";
   };
 
   const getFileSize = () => {
+    let size = 0;
+    
     if (message.attachDetails) {
-      const sizeInKB = message.attachDetails.size / 1024;
-      if (sizeInKB < 1024) {
-        return `${Math.round(sizeInKB)} KB`;
-      } else {
-        return `${(sizeInKB / 1024).toFixed(2)} MB`;
-      }
+      size = message.attachDetails.size;
+    } else if (message.attachmentSize) {
+      size = message.attachmentSize;
+    } else {
+      return "";
     }
-
-    if (message.attachmentSize) {
-      const sizeInKB = message.attachmentSize / 1024;
-      if (sizeInKB < 1024) {
-        return `${Math.round(sizeInKB)} KB`;
-      } else {
-        return `${(sizeInKB / 1024).toFixed(2)} MB`;
-      }
+    
+    const sizeInKB = size / 1024;
+    if (sizeInKB < 1024) {
+      return `${Math.round(sizeInKB)} KB`;
     }
+    return `${(sizeInKB / 1024).toFixed(2)} MB`;
+  };
 
-    return "";
+  const openFileInNewTab = (url: string) => {
+    if (url) {
+      window.open(server + url, "_blank");
+    }
+  };
+
+  const downloadFile = (url: string, fileName: string) => {
+    if (url) {
+      const link = document.createElement("a");
+      link.href = server + url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  const getBubbleStyles = (isCurrentUser: boolean) => ({
+    boxShadow: isCurrentUser
+      ? "0 4px 12px rgba(86,119,188,0.2)"
+      : "0 2px 10px rgba(0,0,0,0.05)",
+    borderRadius: isCurrentUser
+      ? "18px 4px 18px 18px"
+      : "4px 18px 18px 18px",
+    transition: "all 0.3s ease",
+    padding: "12px 16px",
+    background: isCurrentUser
+      ? "linear-gradient(135deg, #5677BC 0%, #09193C 100%)"
+      : "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
+    "&:hover": {
+      transform: "translateY(-2px)",
+      boxShadow: isCurrentUser
+        ? "0 6px 16px rgba(86,119,188,0.25)"
+        : "0 4px 14px rgba(0,0,0,0.08)",
+    },
+  });
+
+  const renderUploadingFile = () => (
+    <Box
+      sx={{
+        padding: "12px",
+        borderRadius: "8px",
+        backgroundColor: message.isCurrentUser
+          ? "rgba(255,255,255,0.1)"
+          : "rgba(0,0,0,0.05)",
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        width: "100%",
+      }}
+    >
+      {getFileIcon()}
+      <Box sx={{ flex: 1, overflow: "hidden" }}>
+        <Typography
+          variant="body2"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            fontWeight: 500,
+          }}
+        >
+          {getFileName()}
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{
+            color: message.isCurrentUser
+              ? "rgba(255,255,255,0.7)"
+              : "rgba(0,0,0,0.5)",
+          }}
+        >
+          در حال آپلود...
+        </Typography>
+      </Box>
+      <CircularProgress
+        size={20}
+        thickness={5}
+        sx={{
+          color: message.isCurrentUser ? "white" : "#5677BC",
+          animationDuration: "1s",
+        }}
+      />
+    </Box>
+  );
+
+  const renderImageFile = () => (
+    <Box sx={{ position: "relative", width: "100%" }}>
+      {!imageLoaded && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "200px",
+            width: "100%",
+            backgroundColor: message.isCurrentUser
+              ? "rgba(255,255,255,0.1)"
+              : "rgba(0,0,0,0.05)",
+            borderRadius: "8px",
+          }}
+        >
+          <CircularProgress
+            size={30}
+            sx={{
+              color: message.isCurrentUser ? "white" : "#5677BC",
+            }}
+          />
+        </Box>
+      )}
+      <Box
+        component="img"
+        src={getFileUrl()}
+        alt={getFileName()}
+        onLoad={() => setImageLoaded(true)}
+        onError={() => setImageError(true)}
+        onClick={() => openFileInNewTab(getFileUrl())}
+        sx={{
+          display: imageLoaded ? "block" : "none",
+          maxWidth: "100%",
+          maxHeight: "300px",
+          borderRadius: "8px",
+          objectFit: "contain",
+          backgroundColor: message.isCurrentUser
+            ? "rgba(255,255,255,0.1)"
+            : "rgba(0,0,0,0.05)",
+          cursor: "pointer",
+        }}
+      />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mt: 1,
+          width: "100%",
+        }}
+      >
+        <Typography
+          variant="caption"
+          sx={{
+            color: message.isCurrentUser
+              ? "rgba(255,255,255,0.7)"
+              : "rgba(0,0,0,0.5)",
+          }}
+        >
+          {getFileName()}
+          {getFileSize() && ` (${getFileSize()})`}
+        </Typography>
+        <Box sx={{ display: "flex" }}>
+          <IconButton
+            size="small"
+            onClick={() => openFileInNewTab(getFileUrl())}
+            sx={{
+              color: message.isCurrentUser ? "white" : "#5677BC",
+              opacity: 0.8,
+              "&:hover": {
+                opacity: 1,
+                backgroundColor: message.isCurrentUser
+                  ? "rgba(255,255,255,0.1)"
+                  : "rgba(0,0,0,0.05)",
+              },
+              mr: 0.5,
+            }}
+          >
+            <OpenInNewIcon fontSize="small" />
+          </IconButton>
+          <IconButton
+            size="small"
+            onClick={() => downloadFile(getFileUrl(), getFileName())}
+            sx={{
+              color: message.isCurrentUser ? "white" : "#5677BC",
+              opacity: 0.8,
+              "&:hover": {
+                opacity: 1,
+                backgroundColor: message.isCurrentUser
+                  ? "rgba(255,255,255,0.1)"
+                  : "rgba(0,0,0,0.05)",
+              },
+            }}
+          >
+            <DownloadIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      </Box>
+    </Box>
+  );
+
+  const renderNormalFile = () => (
+    <Box>
+      <Box
+        sx={{
+          padding: "12px",
+          borderRadius: "8px",
+          backgroundColor: message.isCurrentUser
+            ? "rgba(255,255,255,0.1)"
+            : "rgba(0,0,0,0.05)",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          cursor: "pointer",
+          transition: "all 0.2s",
+          "&:hover": {
+            backgroundColor: message.isCurrentUser
+              ? "rgba(255,255,255,0.15)"
+              : "rgba(0,0,0,0.08)",
+          },
+        }}
+        onClick={() => openFileInNewTab(getFileUrl())}
+      >
+        {getFileIcon()}
+        <Box sx={{ flex: 1, overflow: "hidden" }}>
+          <Typography
+            variant="body2"
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              fontWeight: 500,
+            }}
+          >
+            {getFileName()}
+          </Typography>
+          {getFileSize() && (
+            <Typography
+              variant="caption"
+              sx={{
+                color: message.isCurrentUser
+                  ? "rgba(255,255,255,0.7)"
+                  : "rgba(0,0,0,0.5)",
+              }}
+            >
+              {getFileSize()}
+            </Typography>
+          )}
+        </Box>
+        <Box sx={{ display: "flex" }}>
+          <IconButton
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              downloadFile(getFileUrl(), getFileName());
+            }}
+            sx={{
+              color: message.isCurrentUser ? "white" : "#5677BC",
+              opacity: 0.8,
+              "&:hover": {
+                opacity: 1,
+                backgroundColor: message.isCurrentUser
+                  ? "rgba(255,255,255,0.1)"
+                  : "rgba(0,0,0,0.05)",
+              },
+            }}
+          >
+            <DownloadIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      </Box>
+    </Box>
+  );
+
+  const renderAttachment = () => {
+    if (!message.attachment && !message.attachDetails) return null;
+    
+    if (message.attachment === "در حال آپلود...") {
+      return renderUploadingFile();
+    }
+    
+    if (isImage() && !imageError) {
+      return renderImageFile();
+    }
+    
+    return renderNormalFile();
   };
 
   return (
@@ -198,250 +405,23 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
         className={`max-w-[70%] p-3 rounded-2xl ${
           message.isCurrentUser ? "text-white" : "bg-white"
         }`}
-        sx={{
-          boxShadow: message.isCurrentUser
-            ? "0 4px 12px rgba(86,119,188,0.2)"
-            : "0 2px 10px rgba(0,0,0,0.05)",
-          borderRadius: message.isCurrentUser
-            ? "18px 4px 18px 18px"
-            : "4px 18px 18px 18px",
-          transition: "all 0.3s ease",
-          padding: "12px 16px",
-          background: message.isCurrentUser
-            ? "linear-gradient(135deg, #5677BC 0%, #09193C 100%)"
-            : "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
-          "&:hover": {
-            transform: "translateY(-2px)",
-            boxShadow: message.isCurrentUser
-              ? "0 6px 16px rgba(86,119,188,0.25)"
-              : "0 4px 14px rgba(0,0,0,0.08)",
-          },
-        }}
+        sx={getBubbleStyles(message.isCurrentUser)}
       >
-        <Typography
-          variant="body1"
-          className="leading-relaxed"
-          sx={{
-            fontWeight: 400,
-            display:
-              message.text === "فایل پیوست" && message.attachment
-                ? "none"
-                : "block",
-          }}
-        >
-          {message.text}
-        </Typography>
-
-        {/* نمایش فایل پیوست اگر وجود داشته باشد */}
-        {(message.attachment || message.attachDetails) && (
-          <Box
-            sx={{
-              marginTop: message.text !== "فایل پیوست" ? "10px" : "0",
-              borderRadius: "8px",
-              width: "fit-content",
-              maxWidth: "100%",
-              overflow: "hidden",
-            }}
+        {/* متن پیام */}
+        {message.text !== "فایل پیوست" || !message.attachment ? (
+          <Typography
+            variant="body1"
+            className="leading-relaxed"
+            sx={{ fontWeight: 400 }}
           >
-            {message.attachment === "در حال آپلود..." ? (
-              <Box
-                sx={{
-                  padding: "12px",
-                  borderRadius: "8px",
-                  backgroundColor: message.isCurrentUser
-                    ? "rgba(255,255,255,0.1)"
-                    : "rgba(0,0,0,0.05)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  width: "100%",
-                }}
-              >
-                {getFileIcon()}
-                <Box sx={{ flex: 1, overflow: "hidden" }}>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {getFileName()}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      color: message.isCurrentUser
-                        ? "rgba(255,255,255,0.7)"
-                        : "rgba(0,0,0,0.5)",
-                    }}
-                  >
-                    در حال آپلود...
-                  </Typography>
-                </Box>
-                <CircularProgress
-                  size={20}
-                  thickness={5}
-                  sx={{
-                    color: message.isCurrentUser ? "white" : "#5677BC",
-                    animationDuration: "1s",
-                  }}
-                />
-              </Box>
-            ) : isImage() && !imageError ? (
-              <Box sx={{ position: "relative", width: "100%" }}>
-                {!imageLoaded && (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "200px",
-                      width: "100%",
-                      backgroundColor: message.isCurrentUser
-                        ? "rgba(255,255,255,0.1)"
-                        : "rgba(0,0,0,0.05)",
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <CircularProgress
-                      size={30}
-                      sx={{
-                        color: message.isCurrentUser ? "white" : "#5677BC",
-                      }}
-                    />
-                  </Box>
-                )}
-                <Box
-                  component="img"
-                  src={getFileUrl()}
-                  alt={getFileName()}
-                  onLoad={() => setImageLoaded(true)}
-                  onError={() => setImageError(true)}
-                  sx={{
-                    display: imageLoaded ? "block" : "none",
-                    maxWidth: "100%",
-                    maxHeight: "300px",
-                    borderRadius: "8px",
-                    objectFit: "contain",
-                    backgroundColor: message.isCurrentUser
-                      ? "rgba(255,255,255,0.1)"
-                      : "rgba(0,0,0,0.05)",
-                    cursor: "pointer",
-                  }}
-                  onClick={handleDownload}
-                />
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mt: 1,
-                    width: "100%",
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      color: message.isCurrentUser
-                        ? "rgba(255,255,255,0.7)"
-                        : "rgba(0,0,0,0.5)",
-                    }}
-                  >
-                    {getFileName()}
-                    {getFileSize() && ` (${getFileSize()})`}
-                  </Typography>
-                  <IconButton
-                    size="small"
-                    onClick={handleDownload}
-                    sx={{
-                      color: message.isCurrentUser ? "white" : "#5677BC",
-                      opacity: 0.8,
-                      "&:hover": {
-                        opacity: 1,
-                        backgroundColor: message.isCurrentUser
-                          ? "rgba(255,255,255,0.1)"
-                          : "rgba(0,0,0,0.05)",
-                      },
-                    }}
-                  >
-                    <DownloadIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </Box>
-            ) : (
-              <Box>
-                <Box
-                  sx={{
-                    padding: "12px",
-                    borderRadius: "8px",
-                    backgroundColor: message.isCurrentUser
-                      ? "rgba(255,255,255,0.1)"
-                      : "rgba(0,0,0,0.05)",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    cursor: "pointer",
-                    transition: "all 0.2s",
-                    "&:hover": {
-                      backgroundColor: message.isCurrentUser
-                        ? "rgba(255,255,255,0.15)"
-                        : "rgba(0,0,0,0.08)",
-                    },
-                  }}
-                  onClick={handleDownload}
-                >
-                  {getFileIcon()}
-                  <Box sx={{ flex: 1, overflow: "hidden" }}>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        fontWeight: 500,
-                      }}
-                    >
-                      {getFileName()}
-                    </Typography>
-                    {getFileSize() && (
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          color: message.isCurrentUser
-                            ? "rgba(255,255,255,0.7)"
-                            : "rgba(0,0,0,0.5)",
-                        }}
-                      >
-                        {getFileSize()}
-                      </Typography>
-                    )}
-                  </Box>
-                  <IconButton
-                    size="small"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDownload();
-                    }}
-                    sx={{
-                      color: message.isCurrentUser ? "white" : "#5677BC",
-                      opacity: 0.8,
-                      "&:hover": {
-                        opacity: 1,
-                        backgroundColor: message.isCurrentUser
-                          ? "rgba(255,255,255,0.1)"
-                          : "rgba(0,0,0,0.05)",
-                      },
-                    }}
-                  >
-                    <DownloadIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </Box>
-            )}
-          </Box>
-        )}
+            {message.text}
+          </Typography>
+        ) : null}
 
+        {/* فایل پیوست */}
+        {renderAttachment()}
+
+        {/* زمان پیام */}
         <Typography
           variant="caption"
           sx={{
