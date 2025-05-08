@@ -1,5 +1,20 @@
 import { FormikHelpers } from "formik";
 
+export interface attach_details {
+  id: number;
+  name: string;
+  file: string;
+  size: number;
+  created_at: string;
+  updated_at: string;
+  user: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    uniqueIdentifier: string;
+  };
+}
+
 export interface receiver_details {
   first_name: string;
   id: number;
@@ -41,6 +56,8 @@ export interface MessagesType {
   receiver_details: receiver_details;
   sender_details: sender_details;
   updated_at: string;
+  attachment?: string | null;
+  attach_details?: attach_details | null;
 }
 
 export interface SingleMessageType {
@@ -50,6 +67,19 @@ export interface SingleMessageType {
   timestamp: string;
   isCurrentUser: boolean;
   createdAt: number;
+  attachment?: string | null;
+  attachmentType?: string | null;
+  attachmentName?: string | null;
+  attachmentSize?: number | null;
+  read?: boolean;
+  seen?: boolean;
+  isDeleted?: boolean;
+  senderId?: number;
+  receiverId?: number;
+  attachId?: number | null;
+  senderDetails?: sender_details;
+  receiverDetails?: receiver_details;
+  attachDetails?: attach_details | null;
 }
 
 export interface ChatFormProps {
@@ -66,6 +96,7 @@ export interface postMessegeType {
   content: string;
   receiver: number;
   message: string;
+  attach?: number;
 }
 
 export interface postSeenType {
@@ -90,6 +121,19 @@ export interface MessageBubbleProps {
     sender: string;
     text: string;
     timestamp: string;
+    attachment?: string | null;
+    attachmentType?: string | null;
+    attachmentName?: string | null;
+    attachmentSize?: number | null;
+    read?: boolean;
+    seen?: boolean;
+    isDeleted?: boolean;
+    senderId?: number;
+    receiverId?: number;
+    attachId?: number | null;
+    senderDetails?: sender_details;
+    receiverDetails?: receiver_details;
+    attachDetails?: attach_details | null;
   };
 }
 
@@ -99,6 +143,8 @@ export interface ChatInputProps {
   handleSendMessage: () => void;
   handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   loading: boolean;
+  handleFileUpload: () => void;
+  filesCount: number;
 }
 
 export interface NewMessagePopupProps {
@@ -107,9 +153,7 @@ export interface NewMessagePopupProps {
   setShowAllUsers: (show: boolean) => void;
   searchPositionQuery: string;
   setSearchPositionQuery: (query: string) => void;
-  filteredPositionUsers: ChatType["UserPositionType"][];
   handlePositionUserClick: (user: ChatType["UserPositionType"]) => void;
-  positionUsers: ChatType["UserPositionType"][];
 }
 
 export interface UserPositionType {

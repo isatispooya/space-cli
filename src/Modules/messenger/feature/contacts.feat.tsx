@@ -12,13 +12,9 @@ const ContactsFeature = ({
 }: ChatType["ConversationUsersProps"]) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState<ChatType["UserMessageType"][]>([]);
-  const { data: usersData } = useChat.useGetUsersByPosition();
   const { data: messages } = useChat.useGetChat();
   const { data: profileData } = useProfile();
   const [showAllUsers, setShowAllUsers] = useState(false);
-  const [positionUsers, setPositionUsers] = useState<
-    ChatType["UserPositionType"][]
-  >([]);
   const [searchPositionQuery, setSearchPositionQuery] = useState("");
 
   useEffect(() => {
@@ -103,24 +99,6 @@ const ContactsFeature = ({
     setShowAllUsers(false);
   };
 
-  const filteredPositionUsers = useMemo(() => {
-    if (!positionUsers) return [];
-
-    return positionUsers.filter((user) => {
-      const fullName = `${user.user.first_name} ${user.user.last_name}`;
-      return (
-        fullName.toLowerCase().includes(searchPositionQuery.toLowerCase()) ||
-        user.user.uniqueIdentifier.includes(searchPositionQuery)
-      );
-    });
-  }, [positionUsers, searchPositionQuery]);
-
-  useEffect(() => {
-    if (usersData && Array.isArray(usersData)) {
-      setPositionUsers(usersData);
-    }
-  }, [usersData]);
-
   return (
     <div className="user-list-container w-full h-full border-l bg-white shadow-lg rounded-lg transition-all duration-300 hover:shadow-xl flex flex-col relative">
       <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-gradient-to-r from-[#5677BC] to-[#5677BC] text-white rounded-t-xl">
@@ -146,9 +124,7 @@ const ContactsFeature = ({
         setShowAllUsers={setShowAllUsers}
         searchPositionQuery={searchPositionQuery}
         setSearchPositionQuery={setSearchPositionQuery}
-        filteredPositionUsers={filteredPositionUsers}
         handlePositionUserClick={handlePositionUserClick}
-        positionUsers={positionUsers}
       />
     </div>
   );

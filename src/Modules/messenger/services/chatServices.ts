@@ -10,10 +10,7 @@ const ChatServices = {
     const response = await api.get(`/correspondence/chat/${id}/`);
     return response.data;
   },
-  getUsersByPosition: async () => {
-    const response = await api.get("/positions/list-of-position/");
-    return response.data;
-  },
+
   getUserOfPosition: async () => {
     const response = await api.get("/positions/user-list-of-position/");
     return response.data;
