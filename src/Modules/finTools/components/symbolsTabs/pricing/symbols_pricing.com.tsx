@@ -52,6 +52,7 @@ const SymbolsPricingCom = () => {
     },
   ];
 
+  
 
 
   const validationSchema = Yup.object().shape({
