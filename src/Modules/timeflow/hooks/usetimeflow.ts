@@ -15,7 +15,7 @@ import {
 import { AxiosError } from "axios";
 
 const useTimeflow = {
-  useGetUsersLogin: (): UseQueryResult<UserLoginType> => {
+  useGetUsersLogin: (): UseQueryResult<UserLoginType[]> => {
     return useQuery({
       queryKey: ["users-login"],
       queryFn: () => timeflowServices.getUsersLogin(),
@@ -44,7 +44,6 @@ const useTimeflow = {
       mutationFn: ({ data }: { data: TimeflowVerifyType }) =>
         timeflowServices.UserTimeflowAccept(data),
     });
-    
   },
 
   useGetTimeflowDetails: (
@@ -89,7 +88,7 @@ const useTimeflow = {
   },
 
   usePatchTimeflowEdit: (): UseMutationResult<
-  TimeflowEditType,
+    TimeflowEditType,
     AxiosError,
     { data: TimeflowEditType; id: number }
   > => {

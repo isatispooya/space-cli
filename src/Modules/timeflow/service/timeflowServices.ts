@@ -13,7 +13,7 @@ const timeflowServices = {
     const response = await api.get("/timeflow/list-user-logs/");
     return response.data;
   },
-  getUsersLogin: async (): Promise<UserLoginType> => {
+  getUsersLogin: async (): Promise<UserLoginType[]> => {
     const response = await api.get("/timeflow/user-login-log/");
     return response.data;
   },
