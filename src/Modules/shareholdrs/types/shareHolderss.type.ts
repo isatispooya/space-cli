@@ -9,6 +9,7 @@ interface ShareHoldersNewTypes {
     first_name: string;
     last_name: string;
     uniqueIdentifier: string;
+    mobile: string;
   };
   number_of_shares: number;
   precedence_count: number;

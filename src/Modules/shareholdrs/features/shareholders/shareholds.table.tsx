@@ -36,6 +36,7 @@ const ShareholdTable: React.FC = () => {
     number_of_shares: row.number_of_shares,
     precedence_count: row.precedence,
     precedence_used: row.used_precedence,
+    mobile: row.user_detail.mobile,
   }));
 
   const columns = (): ColumnDefinition[] => [
@@ -70,6 +71,11 @@ const ShareholdTable: React.FC = () => {
     {
       field: "last_name",
       title: "نام خانوادگی",
+      headerFilter: true,
+    },
+    {
+      field: "mobile",
+      title: "شماره موبایل",
       headerFilter: true,
     },
     {
@@ -202,6 +208,9 @@ const ShareholdTable: React.FC = () => {
                 rowData.user_detail?.uniqueIdentifier ||
                 "-"
               }</td></tr>
+              <tr><th>شماره موبایل</th><td>${
+                rowData.mobile || rowData.user_detail?.mobile || "-"
+              }</td></tr>
               <tr><th>حق تقدم</th><td>${
                 rowData.precedence_count || rowData.precedence || "0"
               }</td></tr>
@@ -282,6 +291,7 @@ const ShareholdTable: React.FC = () => {
     "تعداد سهام": item.number_of_shares || 0,
     نام: item.user_detail?.first_name || item.first_name,
     "نام خانوادگی": item.user_detail?.last_name || item.last_name,
+    شماره: item.user_detail?.mobile || item.mobile,
     کدملی: item.user_detail?.uniqueIdentifier || item.uniqueIdentifier || "-",
     "حق تقدم": item.precedence || item.precedence_count || 0,
     "حق تقدم استفاده شده":

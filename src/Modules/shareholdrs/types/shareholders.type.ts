@@ -6,6 +6,7 @@ export interface ShareholdersTypes {
   last_name?: string;
   precedence_count?: number;
   uniqueIdentifier?: string;
+  mobile?: string;
   capital_increase_payment?: number | [];
   precedence_used?: number;
   used_precedence?:number;
@@ -23,6 +24,7 @@ export interface ShareholdersTypes {
     first_name?: string;
     last_name?: string;
     uniqueIdentifier?: string;
+    mobile?: string;
   };
 }
 
