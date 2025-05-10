@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
-import LoaderLg from "../components/loaders/loader-lg";
+import { LoaderLg } from "@/components";
 import NotFoundPage from "../pages/not_found.page";
 import Dashboard from "../Modules/dashboard/pages/dashboard.page";
 import { CompanyRoutes } from "../Modules/companies/routes/company.route";
@@ -38,8 +39,6 @@ const PaymentResultPage = lazy(() =>
   }))
 );
 
-const Loader = () => <LoaderLg />;
-
 const ExistingRoutes = [
   ...CompanyRoutes,
   ...LoginRoutes,
@@ -71,17 +70,17 @@ const ExistingRoutes = [
   ...FinToolsRoutes,
 ];
 
-export default function Router() {
+export default function router() {
   const routes = useRoutes([
     ...ExistingRoutes.map((route) => ({
       ...route,
-      element: <Suspense fallback={<Loader />}>{route.element}</Suspense>,
+      element: <Suspense fallback={<LoaderLg />}>{route.element}</Suspense>,
     })),
 
     {
       path: "/paymentResult/",
       element: (
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<LoaderLg />}>
           <PaymentResultPage />
         </Suspense>
       ),
@@ -89,7 +88,7 @@ export default function Router() {
     {
       path: "/payment",
       element: (
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<LoaderLg />}>
           <PaymentPage />
         </Suspense>
       ),
@@ -97,7 +96,7 @@ export default function Router() {
     {
       path: "/",
       element: (
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<LoaderLg />}>
           <Dashboard />
         </Suspense>
       ),
@@ -105,7 +104,7 @@ export default function Router() {
     {
       path: "*",
       element: (
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<LoaderLg />}>
           <NotFoundPage />
         </Suspense>
       ),

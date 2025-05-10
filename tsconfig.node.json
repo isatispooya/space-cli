@@ -1,10 +1,10 @@
 {
-    "compilerOptions": {
-      "composite": true,
-      "skipLibCheck": true,
-      "module": "ESNext",
-      "moduleResolution": "bundler",
-      "allowSyntheticDefaultImports": true
-    },
-    "include": ["vite.config.*"]
-  }
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src", "vite.config.ts", "tailwind.config.ts", "env.d.ts" , "vite-env.d.ts"]
+}

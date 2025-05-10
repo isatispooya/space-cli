@@ -1,4 +1,4 @@
-export interface companypostTypes {
+export interface CompanyPostTypes {
   [key: string]: unknown;
   id?: number;
   name: string;

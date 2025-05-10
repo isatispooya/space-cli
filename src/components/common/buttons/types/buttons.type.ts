@@ -14,8 +14,8 @@ export interface CloseButtonProps extends MotionProps {
   className?: string;
 }
 
-export type buttonTypes = {
+export type ButtonTypes = {
   CloseButtonProps: CloseButtonProps;
 };
 
-export default buttonTypes;
+export default ButtonTypes;

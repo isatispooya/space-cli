@@ -23,7 +23,7 @@ export const useGridStateStore = create<GridStateStore>()(
   persist(
     (set) => ({
       states: {},
-      handleStateChange: (gridId, stateType, newState) =>
+      handleStateChange:  (gridId, stateType, newState) =>
         set((state) => ({
           states: {
             ...state.states,

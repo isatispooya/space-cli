@@ -74,7 +74,9 @@ const ChatFeature = () => {
             selectedUser={selectedUser}
             loading={false}
             onBackClick={() => setShowUserList(true)}
-            onSubmit={() => {}}
+            onSubmit={() => {
+              console.log("submit");
+            }}
           />
         )}
       </div>

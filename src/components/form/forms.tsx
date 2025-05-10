@@ -193,7 +193,9 @@ const Forms = <T extends FormikValues>({
                       <FormDetail
                         data={fieldProps.value}
                         isCopied={false}
-                        setIsCopied={() => {}}
+                        setIsCopied={() => {
+                          console.log("copied");
+                        }}
                       />
                     )}
                   </Field>

@@ -98,7 +98,9 @@ export const useTableActions = ({ getItems }: UseTableActionsProps) => {
 
       return button;
     },
-    cellClick: () => {},
+    cellClick: (e) => {
+      e.stopPropagation();
+    },
   });
 
   return { renderActionColumn };
