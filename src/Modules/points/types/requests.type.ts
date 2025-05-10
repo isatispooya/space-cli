@@ -1,4 +1,4 @@
-export interface RequestTypes {
+export interface RequestType {
   id: number;
   title: string;
   description: string;

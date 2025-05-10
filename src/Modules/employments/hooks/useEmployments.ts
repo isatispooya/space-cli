@@ -6,18 +6,18 @@ import {
   UseQueryResult,
   useQueryClient,
 } from "@tanstack/react-query";
-import { EmploymentsPostTypes, EmploymentsTypes } from "../types";
+import { EmploymentsPostType, EmploymentsType } from "../types";
 import { AxiosError } from "axios";
 
 const useEmployments = {
-  useGetJobOffers: (): UseQueryResult<EmploymentsTypes[]> => {
+  useGetJobOffers: (): UseQueryResult<EmploymentsType[]> => {
     return useQuery({
       queryKey: ["employments"],
       queryFn: employmentServices.getEmployments,
     });
   },
   usePostJobOffer: (): UseMutationResult<
-    EmploymentsPostTypes,
+    EmploymentsPostType,
     AxiosError,
     FormData
   > => {
@@ -28,7 +28,7 @@ const useEmployments = {
       mutationFn: (formData: FormData) => {
         const data = Object.fromEntries(
           formData
-        ) as unknown as EmploymentsPostTypes;
+        ) as unknown as EmploymentsPostType;
         return employmentServices.postJobOffer(data);
       },
       onSuccess: () => {

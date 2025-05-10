@@ -2,13 +2,13 @@ import { motion } from "framer-motion";
 import { BiChevronDown, BiSearch } from "react-icons/bi";
 import { useState, useEffect } from "react";
 
-interface Option {
+interface OptionType {
   value: string;
   label: string;
 }
 
-interface MultiSelectProps {
-  options: Option[];
+interface MultiSelectPropsType {
+  options: OptionType[];
   selectedValues: string[];
   onChange: (values: string[]) => void;
   label?: string;
@@ -18,7 +18,7 @@ interface MultiSelectProps {
   maxSelect?: number;
 }
 
-const MultiSelect = ({
+const MultiSelect: React.FC<MultiSelectPropsType> = ({
   options,
   selectedValues,
   onChange,
@@ -27,13 +27,13 @@ const MultiSelect = ({
   placeholder = "جستجو...",
   disabled = false,
   maxSelect,
-}: MultiSelectProps) => {
+}: MultiSelectPropsType) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredOptions, setFilteredOptions] = useState(options);
 
   useEffect(() => {
-    const filtered = options.filter((option) =>
+    const filtered = options.filter((option: OptionType) =>
       option.label.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredOptions(filtered);

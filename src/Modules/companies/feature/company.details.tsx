@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { CompanyTypes } from "../types";
+import { CompanyType } from "../types";
 
-interface SeeCompanyProps {
-  data: CompanyTypes;
+interface SeeCompanyPropsType {
+  data: CompanyType;
 }
 
-const SeeCompany = ({ data }: SeeCompanyProps) => {
+const SeeCompany = ({ data }: SeeCompanyPropsType) => {
   
   const fields = [
     { label: "نام شرکت", value: data.name },

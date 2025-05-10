@@ -1,11 +1,12 @@
 import { Forms } from "../../../components";
 import * as yup from "yup";
-import { EmploymentsPostTypes } from "../types";
+import { EmploymentsPostType } from "../types";
 import { useCompany } from "../../companies";
+import { CompanyType } from "../../companies/types";
 import { useEmployments } from "../hooks";
 import { FormikHelpers } from "formik";
 import toast from "react-hot-toast";
-import { FormField } from "../../../types";
+import { FormFieldType } from "@/types";
 
 const EmploymentsCreateForm = () => {
   const { data: companies } = useCompany.useGet();
@@ -33,7 +34,7 @@ const EmploymentsCreateForm = () => {
     { label: "بین المللی", value: "intership" },
   ];
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "job_title",
       label: "عنوان شغل",
@@ -75,10 +76,12 @@ const EmploymentsCreateForm = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.map((company: { name: string; id: number }) => ({
-          label: company.name,
-          value: company.id.toString(),
-        })) || [],
+        companies?.flatMap((company: CompanyType[]) =>
+          company.map((c) => ({
+            label: c.name,
+            value: c.id.toString(),
+          }))
+        ) || [],
     },
     {
       name: "gender",
@@ -97,7 +100,7 @@ const EmploymentsCreateForm = () => {
     },
   ];
 
-  const initialValues: EmploymentsPostTypes = {
+  const initialValues: EmploymentsPostType = {
     job_title: "",
     job_location: "",
     job_description: "",
@@ -112,13 +115,13 @@ const EmploymentsCreateForm = () => {
   };
 
   const handleSubmit = async (
-    values: EmploymentsPostTypes,
-    { setSubmitting }: FormikHelpers<EmploymentsPostTypes>
+    values: EmploymentsPostType,
+    { setSubmitting }: FormikHelpers<EmploymentsPostType>
   ) => {
     const formData = new FormData();
 
     Object.keys(values).forEach((key) => {
-      const value = values[key as keyof EmploymentsPostTypes];
+      const value = values[key as keyof EmploymentsPostType];
       if (key === "picture") {
         const fileInput = document.querySelector(
           `input[name="${key}"]`

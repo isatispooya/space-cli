@@ -3,13 +3,13 @@ import { Fragment } from "react";
 import { ReactNode } from "react";
 import { createPortal } from "react-dom";
 
-interface ModalLayoutProps {
+interface ModalLayoutPropsType {
   children: ReactNode;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const ModalLayout = ({ children, isOpen, onClose }: ModalLayoutProps) => {
+const ModalLayout = ({ children, isOpen, onClose }: ModalLayoutPropsType) => {
   const modalContent = (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-[100]" onClose={onClose}>

@@ -1,4 +1,4 @@
-export interface underwritingStoreTypes {
+export interface UnderwritingStoreType {
     id: number;
     setId: (id: number) => void;
     isDescriptionOpen: boolean;

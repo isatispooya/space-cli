@@ -1,22 +1,22 @@
 import { Forms } from "../../../components";
 import * as yup from "yup";
-import { PermissionData } from "../types/permissionData";
+import { PermissionDataType } from "../types/permissionData";
 import { useUserData } from "../../users/hooks";
 import { useSetPermission } from "../hooks";
 import { useParams } from "react-router-dom";
-import { FormField } from "../../../types";
+import { FormFieldType } from "../../../types";
 
-interface FormValues {
+interface FormValuesType {
   user_id: number;
   permission_id: number[];
 }
 
-interface EditPermissionFormProps {
-  data?: PermissionData;
+interface EditPermissionFormPropsType {
+  data?: PermissionDataType;
   onClose?: () => void;
 }
 
-const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
+const EditPermissionForm: React.FC<EditPermissionFormPropsType> = () => {
   const { data: users } = useUserData();
   const { mutate: setPermission } = useSetPermission();
   const { id } = useParams<{ id: string }>();
@@ -26,7 +26,7 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
 
 
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "user_id",
       label: "شناسه کاربر ",
@@ -52,7 +52,7 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
     },
   ];
 
-  const initialValues: FormValues = {
+  const initialValues: FormValuesType = {
     user_id: specificUser?.id || 0,
     permission_id: specificUser?.id ? [specificUser.id] : [],
   };
@@ -69,7 +69,7 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
       ),
   });
 
-  const onSubmit = (values: FormValues) => {
+  const onSubmit = (values: FormValuesType) => {
     setPermission({
       id: values.user_id,
       data: {
@@ -83,7 +83,7 @@ const EditPermissionForm: React.FC<EditPermissionFormProps> = () => {
 
   return (
     <Forms
-      formFields={formFields as FormField[]}
+      formFields={formFields as FormFieldType[]}
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}

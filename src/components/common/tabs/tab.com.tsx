@@ -4,7 +4,7 @@ import TabItem from "./tab.item";
 import TabContent from "./tab.content";
 import { useUserPermissions } from "../../../Modules/permissions";
 
-interface Tab {
+interface TabType {
   id: string;
   label: string;
   content: React.ReactNode;
@@ -12,16 +12,16 @@ interface Tab {
   permission?: string[];
 }
 
-interface TabComProps {
-  tabs: Tab[];
+interface TabComPropsType {
+  tabs: TabType[];
 }
 
-const Tabs: React.FC<TabComProps> = ({ tabs }) => {
+const Tabs: React.FC<TabComPropsType> = ({ tabs }) => {
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
   const { checkPermission } = useUserPermissions();
 
   const handleTabClick = (tabId: string) => {
-    const tab = tabs.find((tab) => tab.id === tabId);
+    const tab = tabs.find((tab: TabType) => tab.id === tabId);
     if (
       tab &&
       !tab.disabled &&

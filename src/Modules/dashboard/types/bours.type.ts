@@ -1,4 +1,4 @@
-export interface BoursTypes {
+export interface BoursType {
   bourse: {
     protfolio: {
       Symbol: string;

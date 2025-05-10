@@ -6,20 +6,20 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { underwritingServices } from "../services";
-import { underwritingTypes } from "../types/underwriting.type";
-import { underwritingCreateTypes } from "../types/underwritingCreate.type";
+import { UnderwritingType } from "../types/underwriting.type";
+import { UnderwritingCreateType } from "../types/underwritingCreate.type";
 import { AxiosError } from "axios";
-import { IUnderwritingReports } from "../types/reports.type";
+import { IUnderwritingReportsType } from "../types/reports.type";
 
 const useUnderwriting = {
-  useGet: (): UseQueryResult<underwritingTypes[]> => {
+  useGet: (): UseQueryResult<UnderwritingType[]> => {
     return useQuery({
       queryKey: ["underwriting"],
       queryFn: underwritingServices.get,
     });
   },
 
-  useGetReports: (): UseQueryResult<IUnderwritingReports> => {
+  useGetReports: (): UseQueryResult<IUnderwritingReportsType> => {
     return useQuery({
       queryKey: ["underwritingReports"],
       queryFn: underwritingServices.getReports,
@@ -29,24 +29,24 @@ const useUnderwriting = {
   useCreate: (): UseMutationResult<
     { redirect_url?: string },
     AxiosError<unknown>,
-    underwritingCreateTypes
+    UnderwritingCreateType
   > => {
     return useMutation({
       mutationKey: ["createUnderwriting"],
-      mutationFn: (data: underwritingCreateTypes) =>
+      mutationFn: (data: UnderwritingCreateType) =>
         underwritingServices.create(data),
     });
   },
 
   useUpdate: (): UseMutationResult<
-    underwritingTypes,
+    UnderwritingType,
     Error,
-    underwritingTypes
+    UnderwritingType
   > => {
     const queryClient = useQueryClient();
     return useMutation({
       mutationKey: ["updateUnderwriting"],
-      mutationFn: (data: underwritingTypes) =>
+      mutationFn: (data: UnderwritingType) =>
         underwritingServices.update(data),
 
       onSettled: () => {
@@ -62,7 +62,7 @@ const useUnderwriting = {
     });
   },
 
-  useGetById: (id: number): UseQueryResult<underwritingTypes> => {
+  useGetById: (id: number): UseQueryResult<UnderwritingType> => {
     return useQuery({
       queryKey: ["underwriting", id],
       queryFn: () => underwritingServices.getById(id),

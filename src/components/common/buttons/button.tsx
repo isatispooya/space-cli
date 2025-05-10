@@ -7,7 +7,7 @@ import {
 } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 
-export type ButtonVariant =
+export type ButtonVariantType =
   | "primary"
   | "secondary"
   | "outline"
@@ -21,11 +21,11 @@ export type ButtonVariant =
   | "link"
   | "custom";
 
-export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+export type ButtonSizeType = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
-export type ButtonShape = "rounded" | "square" | "pill" | "circle";
+export type ButtonShapeType = "rounded" | "square" | "pill" | "circle";
 
-export type ButtonAnimation =
+export type ButtonAnimationType =
   | "scale"
   | "bounce"
   | "pulse"
@@ -33,23 +33,23 @@ export type ButtonAnimation =
   | "slide"
   | "none";
 
-export type LoaderType = "spinner" | "dots" | "pulse" | "custom";
+export type LoaderTypeType = "spinner" | "dots" | "pulse" | "custom";
 
-export interface ButtonProps extends HTMLMotionProps<"button"> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  shape?: ButtonShape;
+export interface ButtonPropsType extends HTMLMotionProps<"button"> {
+  variant?: ButtonVariantType;
+  size?: ButtonSizeType;
+  shape?: ButtonShapeType;
   isLoading?: boolean;
   isDisabled?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   iconOnly?: boolean;
   fullWidth?: boolean;
-  animationOnHover?: ButtonAnimation;
-  animationOnTap?: ButtonAnimation;
+  animationOnHover?: ButtonAnimationType;
+  animationOnTap?: ButtonAnimationType;
   ripple?: boolean;
   rippleColor?: string;
-  loaderType?: LoaderType;
+  loaderType?: LoaderTypeType;
   loaderComponent?: React.ReactNode;
   customColors?: {
     background?: string;
@@ -68,7 +68,7 @@ export interface ButtonProps extends HTMLMotionProps<"button"> {
   children: React.ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<ButtonPropsType> = ({
   variant = "primary",
   size = "md",
   shape = "rounded",
@@ -92,7 +92,7 @@ const Button: React.FC<ButtonProps> = ({
   ...motionProps
 }) => {
   // Animation variants for different hover effects
-  const getHoverAnimation = (type: ButtonAnimation) => {
+  const getHoverAnimation = (type: ButtonAnimationType) => {
     switch (type) {
       case "scale":
         return { scale: 1.05 };
@@ -110,7 +110,7 @@ const Button: React.FC<ButtonProps> = ({
     }
   };
 
-  const getTapAnimation = (type: ButtonAnimation) => {
+  const getTapAnimation = (type: ButtonAnimationType) => {
     switch (type) {
       case "scale":
         return { scale: 0.95 };

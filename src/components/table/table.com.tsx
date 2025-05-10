@@ -14,19 +14,19 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 
-interface MenuItem {
+interface MenuItemType {
   label: string;
   icon: string;
   action: (row: any) => void;
 }
 
-interface DateParts {
+interface DatePartsType {
   year: number;
   month: number;
   day: number;
 }
 
-interface TableProps {
+interface TablePropsType {
   data: any[];
   columns: any[];
   options?: Partial<TabulatorOptions>;
@@ -42,7 +42,7 @@ interface TableProps {
   title?: string;
   showActions?: boolean;
   formatExportData?: (data: any) => any;
-  menuItems?: MenuItem[];
+  menuItems?: MenuItemType[];
   summaryFields?: Array<{
     field: string;
     title: string;
@@ -86,7 +86,7 @@ const PersianDateUtils = {
     );
   },
 
-  parseDate: (dateStr: string): DateParts | null => {
+  parseDate: (dateStr: string): DatePartsType | null => {
     if (!dateStr) return null;
 
     const englishDateStr = PersianDateUtils.convertToEnglishNumbers(dateStr);
@@ -102,7 +102,7 @@ const PersianDateUtils = {
     return null;
   },
 
-  compareDates: (date1: DateParts | null, date2: DateParts | null): number => {
+  compareDates: (date1: DatePartsType | null, date2: DatePartsType | null): number => {
     if (!date1 || !date2) return 0;
 
     if (date1.year !== date2.year) return date1.year - date2.year;
@@ -112,8 +112,8 @@ const PersianDateUtils = {
 
   isDateInRange: (
     dateStr: string,
-    startDate: DateParts,
-    endDate: DateParts
+    startDate: DatePartsType,
+    endDate: DatePartsType
   ): boolean => {
     const dateParts = PersianDateUtils.parseDate(dateStr);
     if (!dateParts) return true;
@@ -124,7 +124,7 @@ const PersianDateUtils = {
     return compareStart >= 0 && compareEnd <= 0;
   },
 
-  dateObjectToParts: (dateObj: DateObject): DateParts => ({
+  dateObjectToParts: (dateObj: DateObject): DatePartsType => ({
     year: dateObj.year,
     month: dateObj.month.number,
     day: dateObj.day,
@@ -137,7 +137,7 @@ const PersianDateUtils = {
   },
 };
 
-const TabulatorTable: React.FC<TableProps> = ({
+const TabulatorTable: React.FC<TablePropsType> = ({
   data,
   columns,
   options = {},

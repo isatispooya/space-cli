@@ -2,9 +2,9 @@ import { Forms } from "../../../components";
 import * as yup from "yup";
 import { FormikHelpers } from "formik";
 import toast from "react-hot-toast";
-import { FormField } from "../../../types";
+import { FormFieldType } from "@/types";
 import { UseEmProcess } from "../hooks";
-import { EmProcessPostTypes } from "../types";
+import { EmProcessPostType } from "../types";
 
 
 const EmploymentsProcessUpdate = () => {
@@ -23,7 +23,7 @@ const EmploymentsProcessUpdate = () => {
       .required("دلایل پایان کار الزامی است"),
   });
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "job_title",
       label: "عنوان شغل",
@@ -66,7 +66,7 @@ const EmploymentsProcessUpdate = () => {
     },
   ];
 
-  const initialValues: EmProcessPostTypes = {
+  const initialValues: EmProcessPostType = {
     job_title: "",
     job_description: "",
     start_date: "",
@@ -78,8 +78,8 @@ const EmploymentsProcessUpdate = () => {
   };
 
   const handleSubmit = async (
-    values: EmProcessPostTypes,
-    { setSubmitting, resetForm }: FormikHelpers<EmProcessPostTypes>
+    values: EmProcessPostType,
+    { setSubmitting, resetForm }: FormikHelpers<EmProcessPostType>
   ) => {
     updateEmprocess(
       { 
@@ -107,7 +107,7 @@ const EmploymentsProcessUpdate = () => {
     <Forms
       formFields={formFields}
       initialValues={initialValues}
-      validationSchema={validationSchema as yup.ObjectSchema<EmProcessPostTypes>}
+      validationSchema={validationSchema as yup.ObjectSchema<EmProcessPostType>}
       colors="text-[#29D2C7]"
       buttonColors="bg-[#29D2C7] hover:bg-[#29D2C7]"
       showCloseButton={true}

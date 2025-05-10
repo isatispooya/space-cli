@@ -1,6 +1,6 @@
-import { api } from "../../../api";
-import { InsurancePostTypes } from "../types";
-import { InsurancePaymentDarghahTypes } from "../types/dargah.type";
+import { api } from "@/api";
+import { InsurancePostType } from "../types";
+import { InsurancePaymentDarghahType } from "../types/dargah.type";
 
 const insuranceService = {
   getFields: async () => {
@@ -15,7 +15,7 @@ const insuranceService = {
     const response = await api.get(`/insurance/insurance-request/${id}/`);
     return response.data;
   },
-  postFields: async (data: InsurancePostTypes) => {
+  postFields: async (data: InsurancePostType) => {
     const response = await api.post("/insurance/insurance-with-fields/", data);
     return response.data;
   },
@@ -63,7 +63,7 @@ const insuranceService = {
     );
     return response.data;
   },
-  postInsurancePaymnetDarghah: async (data: InsurancePaymentDarghahTypes) => {
+  postInsurancePaymnetDarghah: async (data: InsurancePaymentDarghahType) => {
     const response = await api.post(
       "/insurance/payment_insurance_request/",
       data,

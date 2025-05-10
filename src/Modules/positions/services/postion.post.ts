@@ -1,7 +1,7 @@
-import api from "../../../api/api";
-import { PositionPostTypes } from "../types";
+import { api } from "@/api";
+import { PositionPostType } from "../types";
 
-const createPosition = async (data: PositionPostTypes) => {
+const createPosition = async (data: PositionPostType) => {
   const apiData = {
     ...data,
     company: Number(data.company),

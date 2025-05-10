@@ -2,7 +2,7 @@ import React from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
 import { fadeIn } from "../../../Modules/auth/animations/fadeIn";
 
-interface InputLineProps extends HTMLMotionProps<"div"> {
+interface InputLinePropsType extends HTMLMotionProps<"div"> {
   type?: string;
   placeholder?: string;
   name?: string;
@@ -15,7 +15,7 @@ interface InputLineProps extends HTMLMotionProps<"div"> {
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-const InputBase: React.FC<InputLineProps> = ({
+const InputBase: React.FC<InputLinePropsType> = ({
   type = "text",
   label,
   value,

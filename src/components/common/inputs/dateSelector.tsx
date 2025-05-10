@@ -6,7 +6,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { DateObject } from "react-multi-date-picker";
 import "./dateSelector.css";
 
-interface DatePickerComponentProps {
+interface DatePickerComponentPropsType {
   format?: string;
   includeTimePicker?: boolean;
   calendar?: typeof persian;
@@ -16,7 +16,7 @@ interface DatePickerComponentProps {
   onChange?: (date: DateObject | DateObject[] | null) => void;
 }
 
-const DateSelector: React.FC<DatePickerComponentProps> = ({
+const DateSelector: React.FC<DatePickerComponentPropsType> = ({
   format = "DD/MM/YYYY HH:mm",
   includeTimePicker = true,
   calendar = persian,

@@ -1,4 +1,4 @@
-export interface ShortcutsTypes {
+export interface ShortcutsType {
   created_at?: string;
   id: number;
   is_active: boolean;

@@ -1,4 +1,4 @@
-export interface DisplacementPrecendenceTypes {
+export interface DisplacementPrecendenceType {
   buyer: number;
   company: number;
   created_at?: string;

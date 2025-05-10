@@ -5,23 +5,24 @@ import * as echarts from "echarts";
 import { useEffect, useRef } from "react";
 import { SymbolsType } from "../types";
 
-type EChartsOption = echarts.EChartsOption;
 
-interface ChartProps {
+type EChartsOptionType = echarts.EChartsOption;
+
+interface ChartPropsType {
   title?: string;
   data: number[];
   labels: string[];
   symbols?: SymbolsType["symbolRes"][0];
 }
 
-const ChartComponent = ({ data, labels, symbols }: ChartProps) => {
+const ChartComponent = ({ data, labels, symbols }: ChartPropsType) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!chartRef.current) return;
 
     const chartInstance = echarts.init(chartRef.current);
-    const option: EChartsOption = {
+    const option: EChartsOptionType = {
       animation: true,
       animationDuration: 1500,
       animationEasing: 'elasticOut',
@@ -152,7 +153,7 @@ const ChartComponent = ({ data, labels, symbols }: ChartProps) => {
   return <div ref={chartRef} style={{ width: "100%", height: "200px" }} />;
 };
 
-const Chart = ({ data, labels, symbols }: ChartProps) => (
+const Chart = ({ data, labels, symbols }: ChartPropsType) => (
   <div className="w-full h-full p-6 flex flex-col justify-end">
     <Card
       disableAnimation

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface AgreementPopupProps {
+interface AgreementPopupPropsType {
   isOpen: boolean;
   onClose: () => void;
   onAccept: () => void;
@@ -25,7 +25,7 @@ const AgreementPopup = ({
   checkboxLabel = "من با شرایط و قوانین موافقم",
   cancelButtonText = "انصراف",
   acceptButtonText = "تایید",
-}: AgreementPopupProps) => {
+}: AgreementPopupPropsType) => {
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ const AgreementPopup = ({
   const handleCancel = () => {
     setIsChecked(false);
     onClose();
-    navigate('/underwriting/table');
+    navigate("/underwriting/table");
   };
 
   return (

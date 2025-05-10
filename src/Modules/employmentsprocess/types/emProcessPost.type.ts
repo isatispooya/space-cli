@@ -1,4 +1,4 @@
-export interface EmProcessPostTypes {
+export interface EmProcessPostType {
   id?: number;
   job_title: string;
   job_description: string;

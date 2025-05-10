@@ -1,11 +1,11 @@
 import { CellComponent } from "tabulator-tables";
 import { MenuItem, createActionMenu } from "../actionMenus";
 
-interface UseTableActionsProps {
+interface UseTableActionsPropsType {
   getItems: (rowData: any) => MenuItem[];
 }
 
-export const useTableActions = ({ getItems }: UseTableActionsProps) => {
+export const useTableActions = ({ getItems }: UseTableActionsPropsType) => {
   const handleCellClick = (e: any, cell: CellComponent) => {
     e.stopPropagation();
 

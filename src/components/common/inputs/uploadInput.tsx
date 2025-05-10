@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { BiCloudUpload } from "react-icons/bi";
 import { IoMdClose } from "react-icons/io";
 
-interface FileInputProps {
+interface FileInputPropsType {
   label?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
@@ -13,7 +13,7 @@ interface FileInputProps {
   onClear?: () => void;
 }
 
-const FileInput: React.FC<FileInputProps> = ({
+const FileInput: React.FC<FileInputPropsType> = ({
   label,
   value,
   onChange,

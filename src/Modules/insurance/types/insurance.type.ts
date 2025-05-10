@@ -1,4 +1,4 @@
-export interface InsuranceTypes {
+export interface InsuranceType {
   fields?: {
     created_at: string;
     id: number;

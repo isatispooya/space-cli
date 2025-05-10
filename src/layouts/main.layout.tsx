@@ -3,11 +3,11 @@ import { ReactNode } from "react";
 import { Header } from "../components/layouts/header";
 import { SideBar } from "../Modules/sidebar";
 
-interface LayoutProps {
+interface LayoutPropsType {
   children: ReactNode;
 }
 
-const MainLayout = ({ children }: LayoutProps) => {
+const MainLayout = ({ children }: LayoutPropsType) => {
   return (
     <>
       <div>

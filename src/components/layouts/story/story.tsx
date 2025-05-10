@@ -2,7 +2,7 @@ import Stories from "stories-react";
 import "stories-react/dist/index.css";
 import { useState } from "react";
 
-interface StoryProps {
+interface StoryPropsType {
   storyData: {
     url: string;
     type: string;
@@ -14,7 +14,7 @@ interface StoryProps {
   }[];
 }
 
-const Story: React.FC<StoryProps> = ({ storyData }) => {
+const Story: React.FC<StoryPropsType> = ({ storyData }) => {
   const [showStories, setShowStories] = useState(false);
 
   const handleStoriesEnd = () => {

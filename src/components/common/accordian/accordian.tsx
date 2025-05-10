@@ -2,7 +2,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReactNode } from "react";
 
-interface AccordionProps {
+interface AccordionPropsType {
   title: string;
   children: ReactNode;
   isOpen?: boolean;
@@ -16,7 +16,7 @@ const Accordion = ({
   isOpen = false,
   onToggle,
   disabled,
-}: AccordionProps) => {
+}: AccordionPropsType) => {
   const handleToggle = () => {
     if (!disabled && onToggle) {
       onToggle();

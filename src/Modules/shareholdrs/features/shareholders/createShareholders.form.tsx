@@ -2,32 +2,35 @@ import { Forms } from "../../../../components";
 
 import * as Yup from "yup";
 import {
-  CreateShareholderDTO,
-  ShareholdersTypes,
+  CreateShareholderType,
+  ShareholdersType,
 } from "../../types/shareholders.type";
-import { FormField } from "../../../../types";
+import { FormFieldType } from "@/types";
 import { useCompany } from "../../../companies/hooks";
 import { useUserData } from "../../../users/hooks";
 import { FormikHelpers } from "formik";
 import toast from "react-hot-toast";
 import { useShareholders } from "../../hooks";
+import { CompanyType } from "../../../companies/types";
 
 const CreateShareholdersPost = () => {
   const { mutate: postShareholders } = useShareholders.useCreate();
   const { data } = useCompany.useGet();
   const { data: users } = useUserData();
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     { name: "number_of_shares", label: "تعداد سهام", type: "text" as const },
     {
       name: "company",
       label: "شرکت",
       type: "select" as const,
       options:
-        data?.map((company: { name: string; id: number }) => ({
-          label: company.name,
-          value: company.id.toString(),
-        })) || [],
+        data?.flatMap((companyList: CompanyType[]) =>
+          companyList.map((company: CompanyType) => ({
+            label: company.name || "",
+            value: company.id.toString(),
+          }))
+        ) || [],
     },
     {
       name: "user",
@@ -48,7 +51,7 @@ const CreateShareholdersPost = () => {
     },
   ];
 
-  const initialValues: ShareholdersTypes = {
+  const initialValues: ShareholdersType = {
     number_of_shares: 0,
     company: "",
     user: 0,
@@ -88,11 +91,11 @@ const CreateShareholdersPost = () => {
       .optional(),
     updated_at: Yup.string().optional(),
     created_at: Yup.string().optional(),
-  }) as Yup.ObjectSchema<CreateShareholderDTO>;
+  }) as Yup.ObjectSchema<CreateShareholderType>;
 
   const onSubmit = async (
-    values: CreateShareholderDTO,
-    { setSubmitting, resetForm }: FormikHelpers<CreateShareholderDTO>
+    values: CreateShareholderType,
+    { setSubmitting, resetForm }: FormikHelpers<CreateShareholderType>
   ) => {
     try {
       await postShareholders(

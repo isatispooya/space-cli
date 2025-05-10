@@ -12,7 +12,7 @@ import PendingIcon from "@mui/icons-material/Pending";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import "./style.css";
 
-interface NotificationMessage {
+interface NotificationMessageType {
   id: number;
   title: string;
   text: string;
@@ -28,7 +28,7 @@ const NotificationComponent = React.forwardRef<
   const { data } = useCorrespondencesData();
   const markAsReadMutation = useMarkAsRead();
 
-  const [messages, setMessages] = useState<NotificationMessage[]>([]);
+  const [messages, setMessages] = useState<NotificationMessageType[]>([]);
 
   useEffect(() => {
     if (data) {

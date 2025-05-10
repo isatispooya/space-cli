@@ -1,5 +1,5 @@
 import { usePrecendence } from "../../hooks";
-import { PrecedenceTypes } from "../../types/precedence.type";
+import { PrecedenceType } from "../../types/precedence.type";
 import { useNavigate } from "react-router-dom";
 import "moment/locale/fa";
 import { LoaderLg } from "../../../../components";
@@ -14,7 +14,7 @@ const PrecendenceTable: React.FC = () => {
   const navigate = useNavigate();
 
   const mappedData =
-    data?.map((item: PrecedenceTypes) => ({
+    data?.map((item: PrecedenceType) => ({
       id: item.id,
       first_name: (item.user_detail as { first_name: string }).first_name,
       last_name: (item.user_detail as { last_name: string }).last_name,
@@ -125,7 +125,7 @@ const PrecendenceTable: React.FC = () => {
     );
   }
 
-  const ExelData = (item: PrecedenceTypes) => ({
+  const ExelData = (item: PrecedenceType) => ({
     شناسه: item.id,
     نام: (item.user_detail as { first_name: string }).first_name,
     "نام خانوادگی": (item.user_detail as { last_name: string }).last_name,

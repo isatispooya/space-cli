@@ -1,5 +1,5 @@
 import { api } from "../../../api";
-import { ShareholdersTypes } from "../types/shareholders.type";
+import { ShareholdersType } from "../types/shareholders.type";
 
 const shareServices = {
   get: async () => {
@@ -7,12 +7,12 @@ const shareServices = {
     return response.data;
   },
 
-  create: async (data: ShareholdersTypes) => {
+  create: async (data: ShareholdersType) => {
     const response = await api.post("/stock_affairs/shareholders/", data);
     return response.data;
   },
 
-  update: async (id: string, data: ShareholdersTypes) => {
+  update: async (id: string, data: ShareholdersType) => {
     const response = await api.patch(`/stock_affairs/shareholders/${id}/`, data);
     return response.data;
   },

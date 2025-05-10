@@ -1,15 +1,15 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ResetPassParams } from "../types/index.ts";
+import { ResetPassParamsType } from "../types/index.ts";
 import postForgetPass from "../services/forget_pass.patch.ts";
 
 const useForgetPass = (): UseMutationResult<
   { message: string },
   AxiosError,
-  ResetPassParams,
+  ResetPassParamsType,
   unknown
 > => {
-  return useMutation<{ message: string }, AxiosError, ResetPassParams, unknown>(
+  return useMutation<{ message: string }, AxiosError, ResetPassParamsType, unknown>(
     {
       mutationKey: ["forgetPass"],
       mutationFn: postForgetPass,

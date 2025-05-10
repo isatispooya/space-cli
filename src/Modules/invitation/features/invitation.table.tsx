@@ -1,12 +1,12 @@
 import { useInvitation } from "../hooks";
 import "moment/locale/fa";
-import { LoaderLg, TabulatorTable } from "../../../components";
+import { LoaderLg, TabulatorTable } from "@/components";
 import { CellComponent, ColumnDefinition } from "tabulator-tables";
 import moment from "moment-jalaali";
 
 const InvitationTable = () => {
   const { data, isPending } = useInvitation.useGetCodes();
-  
+
   const mappedData = Array.isArray(data)
     ? data.map((item) => ({
         code: `my.isatispooya.com/login?rf=${item.code}`,

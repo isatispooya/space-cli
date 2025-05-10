@@ -5,39 +5,37 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { emProcessServices } from "../services";
-import { EmProcessPostTypes, EmProcessTypes } from "../types";
+import { EmProcessPostType, EmProcessType } from "../types";
 import { AxiosError } from "axios";
 
 const UseEmProcess = {
-  useGet: (): UseQueryResult<EmProcessTypes[], AxiosError> => {
+  useGet: (): UseQueryResult<EmProcessType[], AxiosError> => {
     return useQuery({
       queryKey: ["emProcess"],
       queryFn: emProcessServices.getEmProcess,
     });
   },
   usePost: (): UseMutationResult<
-    EmProcessPostTypes,
+    EmProcessPostType,
     AxiosError,
-    EmProcessPostTypes
+    EmProcessPostType
   > => {
     return useMutation({
       mutationKey: ["emProcessPost"],
       mutationFn: emProcessServices.postEmprocess,
     });
   },
-  useDelete: (): UseMutationResult<EmProcessPostTypes, AxiosError, number> => {
+  useDelete: (): UseMutationResult<EmProcessPostType, AxiosError, number> => {
     return useMutation({
       mutationKey: ["emProcessPost"],
       mutationFn: (id: number) => emProcessServices.deleteEmprocess(id),
     });
   },
 
-
-  
   useUpdate: (): UseMutationResult<
-    EmProcessPostTypes,
+    EmProcessPostType,
     AxiosError,
-    { id: number; data: EmProcessPostTypes }
+    { id: number; data: EmProcessPostType }
   > => {
     return useMutation({
       mutationKey: ["emProcessPost"],

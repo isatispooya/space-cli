@@ -1,4 +1,4 @@
-import { StatusProps } from "../types/card.type";
+import { StatusPropsType } from "../types/card.type";
 
 const statusStyles = {
   success: "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100",
@@ -8,7 +8,7 @@ const statusStyles = {
   info: "bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100",
 };
 
-export const CardStatus = ({ type, message }: StatusProps) => (
+export const CardStatus = ({ type, message }: StatusPropsType) => (
   <div className={`mx-6 mb-4 p-3 rounded-lg ${statusStyles[type]}`}>
     {message}
   </div>

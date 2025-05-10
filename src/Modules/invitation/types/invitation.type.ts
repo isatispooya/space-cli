@@ -1,4 +1,4 @@
-export interface InvitationTypes {
+export interface InvitationType {
   id: number;
   invited_user_detail: {
     first_name: string;

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { useInView } from "react-intersection-observer"; // برای Infinite Scroll
 
-interface DynamicListProps<T> {
+interface DynamicListPropsType<T> {
   data: T[] | null; // داده‌های ورودی
   isPending: boolean; // وضعیت بارگذاری
   searchQuery: string; // مقدار جستجو
@@ -29,7 +29,7 @@ const DynamicList = <T extends object>({
   noResultsMessage = "نتیجه‌ای یافت نشد.",
   hideSearch = false, // Default to false, meaning search is visible by default
   searchFields = [], // فیلدهای پیش‌فرض برای جستجو خالی است
-}: DynamicListProps<T>) => {
+}: DynamicListPropsType<T>) => {
   // اطمینان حاصل کنید که data همیشه یک آرایه است
   const safeData = Array.isArray(data) ? data : [];
 

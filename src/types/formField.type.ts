@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export interface FormField {
+export interface FormFieldType {
   name: string;
   label: string;
   disabled?: boolean;
@@ -27,8 +27,8 @@ export interface FormField {
   transferListProps?: {
     leftTitle?: React.ReactNode;
     rightTitle?: React.ReactNode;
-    leftItems: TransferListItem[];
-    rightItems: TransferListItem[];
+    leftItems: TransferListItemType[];
+    rightItems: TransferListItemType[];
     searchPlaceholder?: string;
     required?: boolean;
     disabled?: boolean;
@@ -59,7 +59,7 @@ export interface FormField {
   format?: (value: any) => any;
 }
 
-export interface TransferListItem {
+export interface TransferListItemType {
   id: number;
   name: string;
   codename: string;

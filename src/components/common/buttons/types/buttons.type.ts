@@ -1,6 +1,6 @@
 import { MotionProps } from "framer-motion";
 
-export interface CloseButtonProps extends MotionProps {
+export interface CloseButtonPropsType extends MotionProps {
   onClick: () => void;
   size?: "sm" | "md" | "lg";
   position?: {
@@ -14,8 +14,8 @@ export interface CloseButtonProps extends MotionProps {
   className?: string;
 }
 
-export type ButtonTypes = {
-  CloseButtonProps: CloseButtonProps;
+export type ButtonType = {
+  CloseButtonProps: CloseButtonPropsType;
 };
 
-export default ButtonTypes;
+export default ButtonType;

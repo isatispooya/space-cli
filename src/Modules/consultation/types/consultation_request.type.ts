@@ -1,9 +1,9 @@
 import { DateObject } from "react-multi-date-picker";
 
 export type ConsultationType = "ONLINE" | "IN_PERSON" | "PHONE";
-export type TurnStatus = "reserved" | "canceled" | "open" | "done";
+export type TurnStatusType = "reserved" | "canceled" | "open" | "done";
 
-export interface UserData {
+export interface UserDataType {
   id: number;
   first_name: string;
   last_name: string;
@@ -12,7 +12,7 @@ export interface UserData {
   phone?: string;
 }
 
-export interface ConsultationRequest {
+export interface ConsultationRequestType {
   requestName: string;
   consultantId: string | number;
   consultationType: ConsultationType[];
@@ -21,10 +21,10 @@ export interface ConsultationRequest {
   endTime: DateObject | null;
   description: string;
   isUrgent: boolean;
-  status: TurnStatus;
+  status: TurnStatusType;
 }
 
-export interface Consultant {
+export interface ConsultantType {
   id: number;
   title: string;
   description: string;
@@ -36,23 +36,23 @@ export interface Consultant {
   updated_at: string;
 }
 
-export interface ConsultingReserveTurn {
+export interface ConsultingReserveTurnType {
   id: number;
-  consultant: Consultant;
-  counseling_requester: UserData;
+  consultant: ConsultantType;
+  counseling_requester: UserDataType;
   date: string;
-  status_of_turn: TurnStatus;
+  status_of_turn: TurnStatusType;
   created_at: string;
   updated_at: string;
   expert: number | null;
 }
 
-export interface User {
+export interface UserType {
   id: number;
   first_name: string;
   last_name: string;
 }
 
-export interface ConsultationRequestFormProps {
+export interface ConsultationRequestFormPropsType {
   id?: string;
 } 

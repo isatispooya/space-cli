@@ -1,5 +1,5 @@
 import { useEmployments } from "../hooks";
-import Accordion from "../../../components/common/accordian/accordian";
+import { Accordian } from "@/components";
 import JobCard from "../components/jobCard";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ const EmploymentsTable = () => {
   return (
     <div className="space-y-4">
       {data?.map((job) => (
-        <Accordion
+        <Accordian
           key={job.id}
           title={job.job_title}
           isOpen={openAccordions[job.id] || false}
@@ -38,7 +38,7 @@ const EmploymentsTable = () => {
             expirationDate={job.expiration_date}
             createdAt={job.created_at}
           />
-        </Accordion>
+        </Accordian>
       ))}
     </div>
   );

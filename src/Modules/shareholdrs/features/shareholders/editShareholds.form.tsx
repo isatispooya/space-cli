@@ -1,11 +1,12 @@
 import toast from "react-hot-toast";
 import { Forms } from "../../../../components";
-import { ShareholdersTypes } from "../../types/shareholders.type";
+import { ShareholdersType } from "../../types/shareholders.type";
 import * as yup from "yup";
 import { useShareholders } from "../../hooks";
 import { useCompany } from "../../../companies/hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { FormField } from "../../../../types";
+import { FormFieldType } from "@/types";
+import { CompanyType } from "../../../companies/types";
 
 const EditShareholdForm: React.FC = () => {
   const { mutate } = useShareholders.useUpdate();
@@ -41,7 +42,7 @@ const EditShareholdForm: React.FC = () => {
     updated_at: yup.string().optional(),
     created_at: yup.string().optional(),
     name: yup.string().required("نام الزامی است"),
-  }) as yup.ObjectSchema<ShareholdersTypes>;
+  }) as yup.ObjectSchema<ShareholdersType>;
 
   const formFields = [
     {
@@ -54,10 +55,12 @@ const EditShareholdForm: React.FC = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.map((company: { name: string; id: number }) => ({
-          label: company.name,
-          value: company.id,
-        })) || [],
+        companies?.flatMap((companyList: CompanyType[]) =>
+          companyList.map((company: CompanyType) => ({
+            label: company.name || "",
+            value: company.id.toString(),
+          }))
+        ) || [],
     },
     {
       name: "user",
@@ -67,20 +70,23 @@ const EditShareholdForm: React.FC = () => {
       options: [
         {
           value: shareholder?.user_detail?.id ?? "",
-          label: shareholder?.user_detail?.first_name + " " + shareholder?.user_detail?.last_name || "",
+          label:
+            shareholder?.user_detail?.first_name +
+              " " +
+              shareholder?.user_detail?.last_name || "",
         },
       ],
     },
   ];
 
-  const initialValues: ShareholdersTypes = {
+  const initialValues: ShareholdersType = {
     number_of_shares: Number(shareholder?.number_of_shares) || 0,
     company: shareholder?.company_detail?.name?.toString() || "",
     user: Number(shareholder?.user_detail?.id) || 0,
     id: Number(shareholder?.id) || 0,
   };
 
-  const onSubmit = (values: ShareholdersTypes) => {
+  const onSubmit = (values: ShareholdersType) => {
     if (shareholder?.id) {
       const formattedValues = {
         ...values,
@@ -107,7 +113,7 @@ const EditShareholdForm: React.FC = () => {
   return (
     <>
       <Forms
-        formFields={formFields as FormField[]}
+        formFields={formFields as FormFieldType[]}
         initialValues={initialValues}
         validationSchema={validationSchema}
         colors="text-[#5677BC]"

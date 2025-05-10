@@ -1,18 +1,18 @@
 import toast from "react-hot-toast";
 import { Forms } from "../../../../components";
 import { useCapital } from "../../hooks";
-import { CapitalIncreaseTypes } from "../../types/capitalIncrease.type";
+import { CapitalIncreaseType } from "../../types/capitalIncrease.type";
 import * as yup from "yup";
 import { useCapitalStore } from "../../store";
-import { FormField } from "../../../../types";
+import { FormFieldType } from "@/types";
 
 const EditCapitalForm: React.FC = () => {
   const { mutate } = useCapital.useUpdate();
   const { id } = useCapitalStore();
   const { data } = useCapital.useGet();
-  const capital = data?.find((item: CapitalIncreaseTypes) => item.id === id);
+  const capital = data?.find((item: CapitalIncreaseType) => item.id === id);
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "company",
       label: "شرکت",
@@ -63,7 +63,7 @@ const EditCapitalForm: React.FC = () => {
     updated_at: yup.string().required(),
   });
 
-  const onSubmit = (values: CapitalIncreaseTypes) => {
+  const onSubmit = (values: CapitalIncreaseType) => {
     if (capital?.id) {
       mutate(
         { id: capital.id, data: values },
@@ -81,9 +81,9 @@ const EditCapitalForm: React.FC = () => {
 
   return (
     <Forms
-      formFields={formFields as FormField[]}
-      initialValues={initialValues as unknown as CapitalIncreaseTypes}
-      validationSchema={validationSchema as unknown as yup.ObjectSchema<CapitalIncreaseTypes>}
+      formFields={formFields as FormFieldType[]}
+      initialValues={initialValues as unknown as CapitalIncreaseType}
+      validationSchema={validationSchema as unknown as yup.ObjectSchema<CapitalIncreaseType>}
       colors="text-[#5677BC]"
       buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
       showCloseButton={true}

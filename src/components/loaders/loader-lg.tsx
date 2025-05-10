@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const LoaderLg = () => {
+const LoaderLg: React.FC = () => {
   return (
     <StyledWrapper>
       <div className="loading-wave">

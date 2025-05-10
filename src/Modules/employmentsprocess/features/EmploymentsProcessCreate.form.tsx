@@ -2,9 +2,9 @@ import { Forms } from "../../../components";
 import * as yup from "yup";
 import { FormikHelpers } from "formik";
 import toast from "react-hot-toast";
-import { FormField } from "../../../types";
+import { FormFieldType } from "@/types";
 import { UseEmProcess } from "../hooks";
-import { EmProcessPostTypes } from "../types";
+import { EmProcessPostType } from "../types";
 
 const EmploymentsProcessCreate = () => {
   const { mutate: postEmprocess } = UseEmProcess.usePost();
@@ -22,7 +22,7 @@ const EmploymentsProcessCreate = () => {
       .required("دلایل پایان کار الزامی است"),
   });
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "job_title",
       label: "عنوان شغل",
@@ -65,7 +65,7 @@ const EmploymentsProcessCreate = () => {
     },
   ];
 
-  const initialValues: EmProcessPostTypes = {
+  const initialValues: EmProcessPostType = {
     job_title: "",
     job_description: "",
     start_date: "",
@@ -77,8 +77,8 @@ const EmploymentsProcessCreate = () => {
   };
 
   const handleSubmit = async (
-    values: EmProcessPostTypes,
-    { setSubmitting, resetForm }: FormikHelpers<EmProcessPostTypes>
+    values: EmProcessPostType,
+    { setSubmitting, resetForm }: FormikHelpers<EmProcessPostType>
   ) => {
     postEmprocess(values, {
       onSuccess: () => {

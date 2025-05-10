@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { stockTransferTypes } from "../../types/stockTransfer.type";
+import { StockTransferType } from "../../types/stockTransfer.type";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useStockTransfer } from "../../hooks";
 import { CustomDataGridToolbar, localeText } from "../../../../utils";
@@ -22,7 +22,7 @@ const StockTransferTable: React.FC = () => {
   const { checkPermission } = useUserPermissions();
 
   const navigate = useNavigate();
-  const [selectedRow, setSelectedRow] = useState<stockTransferTypes | null>(
+  const [selectedRow, setSelectedRow] = useState<StockTransferType | null>(
     null
   );
   const { mutate: deleteStockTransfer } = useStockTransfer.useDelete();
@@ -134,7 +134,7 @@ const StockTransferTable: React.FC = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = stockTransferData.find(
-                (row: stockTransferTypes) => row.id === selectedId
+                (row: StockTransferType) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);

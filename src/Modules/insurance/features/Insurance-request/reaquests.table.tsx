@@ -1,10 +1,10 @@
 import { CellComponent } from "tabulator-tables";
-import TabulatorTable from "../../../../components/table/table.com";
+import {TabulatorTable} from "@/components";
 import { useInsurance } from "../../hooks";
-import { InsuranceRequest } from "../../types";
+import { InsuranceRequestType } from "../../types";
 import { useUserPermissions } from "../../../permissions";
 import getStatusTranslations from "../../data/insurance_status";
-import { server } from "../../../../api";
+import { server } from "@/api";
 
 const RequestsTable = () => {
   const { data: requests } = useInsurance.useGetRequests();
@@ -96,10 +96,10 @@ const RequestsTable = () => {
   const data =
     requests
       ?.filter(
-        (request: InsuranceRequest) =>
+        (request: InsuranceRequestType) =>
           request.insurance_name_file && request.insurance_status === "finished"
       )
-      .map((request: InsuranceRequest) => ({
+      .map((request: InsuranceRequestType) => ({
         id: request.id,
         insurance_name: request.insurance_name_detail,
         user_detail: request.user_detail,

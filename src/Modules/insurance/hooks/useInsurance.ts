@@ -7,15 +7,15 @@ import {
 import { insuranceService } from "../services";
 import { AxiosError } from "axios";
 import {
-  InsurancePostTypes,
-  InsuranceRequestPostTypes,
-  InsuranceTypes,
-  InsuranceUpdateTypes,
+  InsurancePostType,
+  InsuranceRequestPostType,
+  InsuranceType,
+  InsuranceUpdateType,
 } from "../types";
-import { InsurancePaymentDarghahTypes } from "../types/dargah.type";
+import { InsurancePaymentDarghahType } from "../types/dargah.type";
 
 const useInsurance = {
-  useGetFields: (): UseQueryResult<InsuranceTypes[]> =>
+  useGetFields: (): UseQueryResult<InsuranceType[]> =>
     useQuery({
       queryKey: ["insurance-fields"],
       queryFn: insuranceService.getFields,
@@ -34,9 +34,9 @@ const useInsurance = {
     }),
 
   usePostFields: (): UseMutationResult<
-    InsurancePostTypes,
+    InsurancePostType,
     AxiosError<unknown>,
-    InsurancePostTypes
+    InsurancePostType
   > =>
     useMutation({
       mutationKey: ["insurance-requests"],
@@ -46,7 +46,7 @@ const useInsurance = {
   usePostRequest: (
     id?: string
   ): UseMutationResult<
-    InsuranceRequestPostTypes,
+    InsuranceRequestPostType,
     AxiosError<unknown>,
     FormData
   > =>
@@ -57,7 +57,7 @@ const useInsurance = {
 
   useUpdateRequest: (
     id?: string
-  ): UseMutationResult<InsuranceUpdateTypes, AxiosError<unknown>, FormData> =>
+  ): UseMutationResult<InsuranceUpdateType, AxiosError<unknown>, FormData> =>
     useMutation({
       mutationKey: ["insurance-requests", id],
       mutationFn: (data: FormData) =>
@@ -72,20 +72,20 @@ const useInsurance = {
       mutationFn: (id: number) => insuranceService.deleteRequest(id),
     }),
 
-  useGetInsuranceCompanies: (): UseQueryResult<InsuranceTypes[]> =>
+  useGetInsuranceCompanies: (): UseQueryResult<InsuranceType[]> =>
     useQuery({
       queryKey: ["insurance-companies"],
       queryFn: insuranceService.getInsuranceCompanies,
     }),
 
-  useGetInsurancePayment: (): UseQueryResult<InsuranceTypes[]> =>
+  useGetInsurancePayment: (): UseQueryResult<InsuranceType[]> =>
     useQuery({
       queryKey: ["insurance-payment"],
       queryFn: insuranceService.getInsurancePayment,
     }),
 
   usePostInsurancePaymentFish: (): UseMutationResult<
-    InsurancePostTypes,
+    InsurancePostType,
     AxiosError<unknown>,
     FormData
   > =>
@@ -95,13 +95,13 @@ const useInsurance = {
     }),
 
   usePostInsurancePaymentDarghah: (): UseMutationResult<
-    InsurancePostTypes,
+    InsurancePostType,
     AxiosError<unknown>,
-    InsurancePaymentDarghahTypes
+    InsurancePaymentDarghahType
   > =>
     useMutation({
       mutationKey: ["insurance-payment"],
-      mutationFn: (data: InsurancePaymentDarghahTypes) =>
+      mutationFn: (data: InsurancePaymentDarghahType) =>
         insuranceService.postInsurancePaymnetDarghah(data),
     }),
 };

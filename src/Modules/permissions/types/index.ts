@@ -1,2 +1,2 @@
 
-export type { PermissionData, EditPermissionData, CreatePermissionData } from "./permissionData";
+export type { PermissionDataType, EditPermissionDataType, CreatePermissionDataType } from "./permissionData";

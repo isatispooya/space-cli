@@ -1,4 +1,4 @@
-export interface LoginStore {
+export interface LoginStoreType {
   nationalCode: string;
   smsCode: string;
   newPass: string;

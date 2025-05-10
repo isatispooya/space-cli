@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import columns from "../../data/receive/columnsData";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import {
-  CorrespondenceItem,
-  ReceiveMessage,
+  CorrespondenceItemType,
+  ReceiveMessageType,
 } from "../../types/receive/ReceiveMessage.type";
 import ExelData from "../../data/receive/receiveExelData";
 import { RowComponent } from "tabulator-tables";
@@ -16,7 +16,7 @@ export const ReceiveTable = () => {
   const mappedData = useMemo(() => {
     if (!correspondence?.receiver) return [];
 
-    return correspondence.receiver.map((item: CorrespondenceItem) => {
+    return correspondence.receiver.map((item: CorrespondenceItemType) => {
       const date = new Date(item.created_at);
       const year = new Intl.DateTimeFormat('fa', { year: 'numeric' }).format(date);
       const month = new Intl.DateTimeFormat('fa', { month: '2-digit' }).format(date);
@@ -71,7 +71,7 @@ export const ReceiveTable = () => {
           columns={columns()}
           title="پیام های دریافتی"
           showActions={true}
-          formatExportData={(item: ReceiveMessage) => ExelData(item)}
+          formatExportData={(item: ReceiveMessageType) => ExelData(item)}
           dateField="send_date"
           showDateFilter={true}
           options={tableOptions}

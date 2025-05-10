@@ -1,18 +1,18 @@
 import { useState, FC } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-interface DropdownItem {
+interface DropdownItemType {
   id?: string | number;
   label: string;
   value: string | number;
 }
 
-interface DropdownProps {
+interface DropdownPropsType {
   label: string;
-  items: DropdownItem[];
+  items: DropdownItemType[];
 }
 
-const DropdownButton: FC<DropdownProps> = ({ label, items }) => {
+const DropdownButton: FC<DropdownPropsType> = ({ label, items }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -44,7 +44,7 @@ const DropdownButton: FC<DropdownProps> = ({ label, items }) => {
             className="ml-4 mt-2 bg-gray-500 rounded-md p-2 shadow-md"
           >
             {/* Add your dropdown items here */}
-            {items.map((item: DropdownItem) => (
+            {items.map((item: DropdownItemType) => (
               <div key={item.id || item.value}>{item.label}</div>
             ))}
           </motion.div>

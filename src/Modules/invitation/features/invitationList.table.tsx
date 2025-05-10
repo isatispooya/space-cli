@@ -8,13 +8,13 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { LoaderLg } from "../../../components";
-import { InvitationTypes } from "../types";
+import { InvitationType } from "../types";
 import CustomPagination from "../../../utils/paginationTable";
 
-type TableRow = Omit<InvitationTypes, "invitation_code_detail">;
+type TableRowType = Omit<InvitationType, "invitation_code_detail">;
 
 const InvitationListTable = () => {
-  const [selectedRow, setSelectedRow] = useState<TableRow | null>(null);
+  const [selectedRow, setSelectedRow] = useState<TableRowType | null>(null);
   const [pageSizeOptions] = useState([10, 20, 50, 100]);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
@@ -139,7 +139,7 @@ const InvitationListTable = () => {
             const selectedId = newSelectionModel[0];
             const selectedRow = rows.find((row) => row.id === selectedId);
             if (selectedRow) {
-              setSelectedRow(selectedRow as unknown as TableRow);
+              setSelectedRow(selectedRow as unknown as TableRowType);
             }
           } else {
             setSelectedRow(null);

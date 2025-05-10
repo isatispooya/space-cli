@@ -5,7 +5,7 @@ import InputLogin from "../../../components/common/inputs/inputBase";
 import toast from "react-hot-toast";
 import useForgetPassSms from "../hooks/useForgetPassSms";
 import { useLoginStore } from "../stores/loginStore";
-import { ErrorResponse } from "../../../types";
+import { ErrorResponseType } from "../../../types";
 import { AxiosError } from "axios";
 
 const ForgetPassSmsForm: React.FC<{ onVerificationSuccess: () => void }> = ({
@@ -33,7 +33,7 @@ const ForgetPassSmsForm: React.FC<{ onVerificationSuccess: () => void }> = ({
           onVerificationSuccess();
         },
         onError: (error: AxiosError<unknown>) => {
-          const errorMessage = (error.response?.data as ErrorResponse)?.error;
+          const errorMessage = (error.response?.data as ErrorResponseType)?.error;
           toast.error(errorMessage || "خطایی رخ داده است");
         },
       });

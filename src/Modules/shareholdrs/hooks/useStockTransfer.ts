@@ -5,10 +5,10 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import stockTransferServices from "../services/stockTransferServices";
-import { stockTransferTypes } from "../types/stockTransfer.type";
+import { StockTransferType } from "../types/stockTransfer.type";
 
 const useStockTransfer = {
-  useGet: (): UseQueryResult<stockTransferTypes[]> => {
+  useGet: (): UseQueryResult<StockTransferType[]> => {
     return useQuery({
       queryKey: ["stockTransfer"],
       queryFn: stockTransferServices.get,
@@ -16,21 +16,21 @@ const useStockTransfer = {
   },
 
   useCreate: (): UseMutationResult<
-    stockTransferTypes,
+    StockTransferType,
     Error,
-    stockTransferTypes
+    StockTransferType
   > => {
     return useMutation({
       mutationKey: ["createStockTransfer"],
-      mutationFn: (data: stockTransferTypes) =>
+      mutationFn: (data: StockTransferType) =>
         stockTransferServices.create(data),
     });
   },
 
   useUpdate: (): UseMutationResult<
-    stockTransferTypes,
+    StockTransferType,
     Error,
-    { id: string; data: stockTransferTypes }
+    { id: string; data: StockTransferType }
   > => {
     return useMutation({
       mutationKey: ["updateStockTransfer"],

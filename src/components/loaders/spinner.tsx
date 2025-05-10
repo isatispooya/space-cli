@@ -1,6 +1,4 @@
-import { FC } from "react";
-
-const Spinner: FC = () => {
+const Spinner: React.FC = () => {
   return (
     <div role="status" className="flex items-center justify-center">
       <svg

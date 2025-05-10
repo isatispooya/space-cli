@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { InsuranceRequestStore } from "../types";
+import { InsuranceRequestStoreType } from "../types";
 
-const useInsuranceRStore = create<InsuranceRequestStore>((set) => ({
+const useInsuranceRStore = create<InsuranceRequestStoreType>((set) => ({
   selectedInsurance: "",
   setSelectedInsurance: (insurance: string) =>
     set({ selectedInsurance: insurance }),

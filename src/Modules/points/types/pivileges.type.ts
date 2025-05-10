@@ -1,4 +1,4 @@
-export interface PrivilegesTypes {
+export interface PrivilegesType {
   point_1: number;
   point_2: number;
   type: string;

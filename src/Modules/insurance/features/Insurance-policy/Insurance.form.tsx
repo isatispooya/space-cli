@@ -1,9 +1,9 @@
-import { ErrorResponse, FormField } from "../../../../types";
+import { ErrorResponseType, FormFieldType } from "@/types";
 import useInsurance from "../../hooks/useInsurance";
 import { Forms } from "../../../../components";
 import * as yup from "yup";
 import Toast from "../../../../components/common/toast/toast";
-import { InsurancePostTypes } from "../../types";
+import { InsurancePostType } from "../../types";
 import { FormikHelpers } from "formik";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { AxiosError } from "axios";
@@ -20,7 +20,7 @@ const InsurancePolicyCreate: React.FC = () => {
       .min(1, "حداقل یک عنوان فایل الزامی است"),
   });
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "insurance_name",
       label: "نام بیمه",
@@ -46,7 +46,7 @@ const InsurancePolicyCreate: React.FC = () => {
     values: typeof initialValues,
     { setSubmitting, resetForm }: FormikHelpers<typeof initialValues>
   ) => {
-    const formData: InsurancePostTypes = {
+    const formData: InsurancePostType = {
       name: values.insurance_name,
       fields: values.file_titles,
     };
@@ -60,7 +60,7 @@ const InsurancePolicyCreate: React.FC = () => {
         setSubmitting(false);
       },
       onError: (error: AxiosError<unknown>) => {
-        const errorMessage = (error.response?.data as ErrorResponse)?.error;
+        const errorMessage = (error.response?.data as ErrorResponseType)?.error;
         Toast(
           errorMessage || "خطایی پیش آمده است",
           <ErrorIcon />,

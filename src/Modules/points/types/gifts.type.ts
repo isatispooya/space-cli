@@ -1,4 +1,4 @@
-export interface GiftTypes {
+export interface GiftType {
   point_2: number;
   point_1: number;
   id: number;

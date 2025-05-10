@@ -3,22 +3,28 @@ import { useCompany } from "../../../companies/hooks";
 import { useUserData } from "../../../users/hooks";
 import { useDisplacement } from "../../hooks";
 import * as Yup from "yup";
-import { FormField } from "../../../../types";
+import { FormFieldType } from "@/types";
 import toast from "react-hot-toast";
+import { CompanyType } from "../../../companies/types";
 
 const CreateDisplacementForm = () => {
   const { mutate: postDisplacement } = useDisplacement.useCreate();
   const { data: users } = useUserData();
   const { data: companies } = useCompany.useGet();
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "buyer",
       label: "خریدار",
       type: "select" as const,
       options:
         users?.map(
-          (user: { first_name: string; last_name: string; id: number; uniqueIdentifier: string }) => ({
+          (user: {
+            first_name: string;
+            last_name: string;
+            id: number;
+            uniqueIdentifier: string;
+          }) => ({
             label: `${user.first_name} ${user.last_name} | ${user.uniqueIdentifier}`,
             value: user.id.toString(),
           })
@@ -31,7 +37,12 @@ const CreateDisplacementForm = () => {
       type: "select" as const,
       options:
         users?.map(
-          (user: { first_name: string; last_name: string; id: number; uniqueIdentifier: string }) => ({
+          (user: {
+            first_name: string;
+            last_name: string;
+            id: number;
+            uniqueIdentifier: string;
+          }) => ({
             label: `${user.first_name} ${user.last_name} | ${user.uniqueIdentifier}`,
             value: user.id.toString(),
           })
@@ -43,10 +54,12 @@ const CreateDisplacementForm = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.map((company: { name: string; id: number }) => ({
-          label: company.name || "",
-          value: company.id.toString(),
-        })) || [],
+        companies?.flatMap((companyList: CompanyType[]) =>
+          companyList.map((company: CompanyType) => ({
+            label: company.name || "",
+            value: company.id.toString(),
+          }))
+        ) || [],
     },
   ];
 

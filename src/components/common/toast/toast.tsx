@@ -2,7 +2,7 @@ import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 
-interface ToastComponentProps {
+interface ToastComponentPropsType {
   message: string;
   icon: JSX.Element;
   id: string;
@@ -14,7 +14,7 @@ const ToastComponent = ({
   icon,
   id,
   lineColor,
-}: ToastComponentProps) => {
+}: ToastComponentPropsType) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       toast.dismiss(id);

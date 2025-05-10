@@ -1,4 +1,4 @@
-export interface PrecedenceTypes {
+export interface PrecedenceType {
   id: number;
   company: number;
   company_detail?: {

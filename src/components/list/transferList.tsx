@@ -13,34 +13,34 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 
-interface TransferListItem {
+interface TransferListItemType {
   id: number;
   name: string;
   codename: string;
 }
 
-interface TransferListProps {
+interface TransferListPropsType {
   leftTitle?: React.ReactNode;
   rightTitle?: React.ReactNode;
-  leftItems: TransferListItem[];
-  rightItems: TransferListItem[];
-  onChange?: (left: TransferListItem[], right: TransferListItem[]) => void;
+  leftItems: TransferListItemType[];
+  rightItems: TransferListItemType[];
+  onChange?: (left: TransferListItemType[], right: TransferListItemType[]) => void;
   searchPlaceholder?: string;
 }
 
-const not = (a: TransferListItem[], b: TransferListItem[]) => {
+const not = (a: TransferListItemType[], b: TransferListItemType[]) => {
   return a.filter((item) => !b.find((bItem) => bItem.id === item.id));
 };
 
-const intersection = (a: TransferListItem[], b: TransferListItem[]) => {
+const intersection = (a: TransferListItemType[], b: TransferListItemType[]) => {
   return a.filter((item) => b.find((bItem) => bItem.id === item.id));
 };
 
-const union = (a: TransferListItem[], b: TransferListItem[]) => {
+const union = (a: TransferListItemType[], b: TransferListItemType[]) => {
   return [...a, ...not(b, a)];
 };
 
-const TransferList: React.FC<TransferListProps> = ({
+const TransferList: React.FC<TransferListPropsType> = ({
   leftTitle = "Permissions",
   rightTitle = "Selected Permissions",
   leftItems: initialLeftItems = [],
@@ -48,10 +48,10 @@ const TransferList: React.FC<TransferListProps> = ({
   onChange,
   searchPlaceholder = "Search permissions...",
 }) => {
-  const [checked, setChecked] = React.useState<TransferListItem[]>([]);
-  const [left, setLeft] = React.useState<TransferListItem[]>(initialLeftItems);
+  const [checked, setChecked] = React.useState<TransferListItemType[]>([]);
+  const [left, setLeft] = React.useState<TransferListItemType[]>(initialLeftItems);
   const [right, setRight] =
-    React.useState<TransferListItem[]>(initialRightItems);
+    React.useState<TransferListItemType[]>(initialRightItems);
   const [searchLeft, setSearchLeft] = React.useState("");
   const [searchRight, setSearchRight] = React.useState("");
   const leftChecked = intersection(checked, left);
@@ -61,7 +61,7 @@ const TransferList: React.FC<TransferListProps> = ({
     onChange?.(left, right);
   }, [left, right, onChange]);
 
-  const handleToggle = (value: TransferListItem) => () => {
+  const handleToggle = (value: TransferListItemType) => () => {
     const currentIndex = checked.findIndex((item) => item.id === value.id);
     const newChecked = [...checked];
 
@@ -74,10 +74,10 @@ const TransferList: React.FC<TransferListProps> = ({
     setChecked(newChecked);
   };
 
-  const numberOfChecked = (items: TransferListItem[]) =>
+  const numberOfChecked = (items: TransferListItemType[]) =>
     intersection(checked, items || []).length;
 
-  const handleToggleAll = (items: TransferListItem[]) => () => {
+  const handleToggleAll = (items: TransferListItemType[]) => () => {
     const safeItems = items || [];
     if (numberOfChecked(safeItems) === safeItems.length) {
       setChecked(not(checked, safeItems));
@@ -98,7 +98,7 @@ const TransferList: React.FC<TransferListProps> = ({
     setChecked(not(checked, rightChecked));
   };
 
-  const filterItems = (items: TransferListItem[], searchText: string) => {
+  const filterItems = (items: TransferListItemType[], searchText: string) => {
     const safeItems = items || [];
     if (!searchText) return safeItems;
     return safeItems.filter(
@@ -110,7 +110,7 @@ const TransferList: React.FC<TransferListProps> = ({
 
   const customList = (
     title: React.ReactNode,
-    items: TransferListItem[],
+    items: TransferListItemType[],
     searchValue: string,
     onSearchChange: (value: string) => void
   ) => (

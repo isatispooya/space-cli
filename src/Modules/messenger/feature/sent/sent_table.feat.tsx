@@ -4,12 +4,12 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
-import { CorrespondenceItem, SentMessage } from "../../types/sent/sent.type";
+import { CorrespondenceItemType, SentMessageType } from "../../types/sent/sent.type";
 import columns from "../../data/sent/coulmnData";
 import ExelData from "../../data/sent/sentExelData";
 export const SentTable = () => {
   const navigate = useNavigate();
-  const handleView = (row: SentMessage) => {
+  const handleView = (row: SentMessageType) => {
     navigate(`/letter/message/${row.id}`);
   };
   const handleEdit = (id: number) => {
@@ -23,7 +23,7 @@ export const SentTable = () => {
 
     console.log(correspondence.sender);
 
-    return correspondence.receiver.map((item: CorrespondenceItem) => {
+    return correspondence.sender.map((item: CorrespondenceItemType) => {
       const date = new Date(item.created_at);
       const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(
         date

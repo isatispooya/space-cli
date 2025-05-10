@@ -1,5 +1,5 @@
 import api from "../../../api/api";
-import { companypostTypes } from "../types";
+import { CompanyPostType } from "../types";
 
 export const companiesService = {
   get: async () => {
@@ -16,7 +16,7 @@ export const companiesService = {
     return response.data;
   },
 
-  update: async (id: number, data: companypostTypes) => {
+  update: async (id: number, data: CompanyPostType) => {
     const response = await api.patch(`/companies/${id}/`, data);
     return response.data;
   },

@@ -1,4 +1,4 @@
-export interface InvitationTypes {
+export interface InvitationType {
     id: string;
     code: string;
     created_at: string;

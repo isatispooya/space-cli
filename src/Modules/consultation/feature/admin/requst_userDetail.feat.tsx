@@ -1,17 +1,17 @@
-type UserStatus = "reserved" | "canceled" | "open" | "done";
+type UserStatusType = "reserved" | "canceled" | "open" | "done";
 
-interface UserData {
+interface UserDataType {
   id: number;
   first_name: string;
   last_name: string;
   uniqueIdentifier: string;
 }
 
-interface Props {
-  data?: UserData;
+interface PropsType {
+  data?: UserDataType;
 }
 
-const RequestUserDetail: React.FC<Props> = ({ data }) => {
+const RequestUserDetail: React.FC<PropsType> = ({ data }) => {
   if (!data) {
     return (
       <div className="w-full rounded-2xl p-4 bg-white shadow-md">
@@ -28,7 +28,7 @@ const RequestUserDetail: React.FC<Props> = ({ data }) => {
       done: { text: "انجام شده", class: "bg-gray-100 text-gray-800" },
     };
 
-    const status: UserStatus = "open";
+    const status: UserStatusType = "open";
     const config = statusConfig[status];
     return (
       <span

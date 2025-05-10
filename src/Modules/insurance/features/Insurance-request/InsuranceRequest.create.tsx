@@ -5,12 +5,13 @@ import { Spinner } from "../../../../components/loaders";
 import { FileInput } from "../../../../components";
 import { Toast } from "../../../../components";
 import { AxiosError } from "axios";
-import { ErrorResponse } from "@/types";
+import { ErrorResponseType } from "@/types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { MultiSelect } from "../../../../components";
 import { useInsuranceStore } from "../../store";
 import { server } from "@/api";
 import { LuFileDown } from "react-icons/lu";
+import { InsuranceFieldType } from "../../types";
  
 const InsuranceRequestCreate: React.FC = () => {
   const { data: insuranceNames, isLoading } = useInsurance.useGetFields();
@@ -80,7 +81,7 @@ const InsuranceRequestCreate: React.FC = () => {
       },
 
       onError: (error: AxiosError<unknown>) => {
-        const errorMessage = (error.response?.data as ErrorResponse)?.error;
+        const errorMessage = (error.response?.data as ErrorResponseType)?.error;
         Toast(errorMessage || "خطایی رخ داده است", <ErrorIcon />, "bg-red-500");
       },
     });
@@ -144,7 +145,7 @@ const InsuranceRequestCreate: React.FC = () => {
 
         {selectedInsuranceFields.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {selectedInsuranceFields.map((field) => (
+            {selectedInsuranceFields.map((field : InsuranceFieldType) => (
               <div key={field.id}>
                 <FileInput
                   label={field.name}

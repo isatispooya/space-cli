@@ -5,34 +5,38 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import precendenceServices from "../services/precendenceServices";
-import { PrecedenceTypes } from "../types/precedence.type";
+import { PrecedenceType } from "../types/precedence.type";
 
 const usePrecendence = {
-  useGet: (): UseQueryResult<PrecedenceTypes[]> => {
+  useGet: (): UseQueryResult<PrecedenceType[]> => {
     return useQuery({
       queryKey: ["precedence"],
       queryFn: precendenceServices.get,
     });
   },
 
-  useGetById: (id: number): UseQueryResult<PrecedenceTypes> => {
+  useGetById: (id: number): UseQueryResult<PrecedenceType> => {
     return useQuery({
       queryKey: ["precedence", id],
       queryFn: () => precendenceServices.getById(id),
     });
   },
 
-  useCreate: (): UseMutationResult<PrecedenceTypes, Error, PrecedenceTypes> => {
+  useCreate: (): UseMutationResult<
+    PrecedenceType,
+    Error,
+    PrecedenceType
+  > => {
     return useMutation({
       mutationKey: ["createPrecedence"],
-      mutationFn: (data: PrecedenceTypes) => precendenceServices.create(data),
+      mutationFn: (data: PrecedenceType) => precendenceServices.create(data),
     });
   },
 
   useUpdate: (): UseMutationResult<
-    PrecedenceTypes,
+    PrecedenceType,
     Error,
-    { id: string; data: PrecedenceTypes }
+    { id: string; data: PrecedenceType }
   > => {
     return useMutation({
       mutationKey: ["updatePrecedence"],

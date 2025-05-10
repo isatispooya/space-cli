@@ -11,7 +11,7 @@ enum ConsultationType {
   IN_PERSON = "in_person",
 }
 
-interface ConsultationSubjectsProps {
+interface ConsultationSubjectsPropsType {
   onSelectSubject: (id: string) => void;
   subjects: ConsultationUserType["SubjectsType"];
   isLoading: boolean;
@@ -23,7 +23,7 @@ const ConsultationSubjects = ({
   subjects,
   isLoading,
   isError,
-}: ConsultationSubjectsProps) => {
+}: ConsultationSubjectsPropsType) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = subjects

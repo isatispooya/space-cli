@@ -6,7 +6,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { Button } from "@mui/material";
 import * as XLSX from "xlsx";
 import { ErrorIcon, toast } from "react-hot-toast";
-import { ErrorResponse } from "../../../../types";
+import { ErrorResponseType } from "@/types";
 import { AxiosError } from "axios";
 import { LoaderLg, NoContent } from "../../../../components";
 import { FormInput } from "../../../../components";
@@ -69,7 +69,7 @@ const PlansView: React.FC<{
         setSubmittingUserId(null);
       },
       onError: (error: AxiosError<unknown>) => {
-        const errorMessage = (error.response?.data as ErrorResponse)?.error;
+        const errorMessage = (error.response?.data as ErrorResponseType)?.error;
         Toast(errorMessage || "خطایی رخ داده است", <ErrorIcon />, "bg-red-500");
         setSubmittingUserId(null);
       },

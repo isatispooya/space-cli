@@ -8,7 +8,7 @@ import { MessageHeader } from "../../components/sent/SentMessage/Header";
 import { MessageContent } from "../../components/sent/SentMessage/Content";
 import { MessageFooter } from "../../components/sent/SentMessage/Footer";
 import { MessageAttachments } from "../../components/sent/SentMessage/Attachments";
-import { MatchedUser, TranscriptDetails } from "../../types/sent/sent.type";
+import { MatchedUserType, TranscriptDetailsType } from "../../types/sent/sent.type";
 import { LoadingMessage } from "../../components/LoadingMessage";
 import PrintIcon from "@mui/icons-material/Print";
 
@@ -34,11 +34,11 @@ const SentDetail = () => {
   }
 
   const userOption = data.sender.transcript_details?.map(
-    (item: TranscriptDetails) => item.position.toString()
+    (item: TranscriptDetailsType) => item.position.toString()
   );
 
 
-  const matchedUsers: MatchedUser[] =
+  const matchedUsers: MatchedUserType[] =
     allposition
       ?.filter((position) => userOption?.includes(position.id.toString()))
       .map((matched) => ({

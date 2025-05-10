@@ -1,4 +1,4 @@
-export interface ResetPassParams {
+export interface ResetPassParamsType {
   smsCode?: string;
   newPass?: string;
   confirmNewPass?: string;

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { server } from "@/api";
 import { khatam } from "@/assets";
 
-export interface FundCardProps {
+export interface FundCardPropsType {
   symbol: {
     id: number;
     symbol: number;
@@ -43,7 +43,7 @@ const getFundColor = (type: string) => {
   }
 };
 
-const FundCard: React.FC<FundCardProps> = ({
+const FundCard: React.FC<FundCardPropsType> = ({
   symbol,
   value,
   change = 0,

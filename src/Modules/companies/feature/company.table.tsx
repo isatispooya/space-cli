@@ -3,7 +3,7 @@ import CustomDataGridToolbar from "../../../utils/tableToolbar";
 import { localeText } from "../../../utils/localtext";
 import { useCallback, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
-import { CompanyTypes } from "../types";
+import { CompanyType } from "../types";
 import { ModalLayout } from "../../../layouts";
 import { ErrorIcon } from "react-hot-toast";
 import SeeCompany from "./company.details";
@@ -22,7 +22,7 @@ const CompanyTable = () => {
   const { checkPermission } = useUserPermissions();
   const navigate = useNavigate();
   const rows = data || [];
-  const [selectedRow, setSelectedRow] = useState<CompanyTypes | null>(null);
+  const [selectedRow, setSelectedRow] = useState<CompanyType | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -52,7 +52,7 @@ const CompanyTable = () => {
     setIsDeleteOpen(true);
   }, [selectedRow, deleteCompanyMutation]);
 
-  const columns: GridColDef<CompanyTypes>[] = [
+  const columns: GridColDef<CompanyType>[] = [
     {
       field: "name",
       headerName: "نام شرکت",
@@ -150,7 +150,7 @@ const CompanyTable = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = rows.find(
-                (row: CompanyTypes) => row.id === selectedId
+                (row: CompanyType) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);

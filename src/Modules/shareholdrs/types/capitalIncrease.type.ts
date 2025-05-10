@@ -1,5 +1,5 @@
 
-export interface CapitalIncreaseTypes {
+export interface CapitalIncreaseType {
   id: number;
   company: string;
   number_of_shares: string;
@@ -7,5 +7,5 @@ export interface CapitalIncreaseTypes {
   price: string;
   created_at: string;
   updated_at: string;
-  data: CapitalIncreaseTypes[];
+  data: CapitalIncreaseType[];
 }

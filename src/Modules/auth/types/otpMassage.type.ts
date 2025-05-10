@@ -1,3 +1,3 @@
-export interface ApplyNationalCodeResponse {
+export interface ApplyNationalCodeResponseType {
   message: string;
 }

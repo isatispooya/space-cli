@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { FormDataType, ReferenceData, TranscriptData } from "../../types/sent/sent.type";
+import { FormDataType, ReferenceDataType, TranscriptDataType } from "../../types/sent/sent.type";
 
-interface SentFormState {
+interface SentFormStateType {
   formData: FormDataType;
   openFileDialog: boolean;
   selectedTranscript: string[];
@@ -22,7 +22,7 @@ interface SentFormState {
   resetForm: () => void;
 }
 
-const defaultTranscript: TranscriptData = {
+const defaultTranscript: TranscriptDataType = {
   read_at: new Date().toISOString(),
   transcript_for: "notification",
   security: false,
@@ -56,7 +56,7 @@ const initialFormData: FormDataType = {
   published: false,
 };
 
-export const useSentFormStore = create<SentFormState>((set) => ({
+export const useSentFormStore = create<SentFormStateType>((set) => ({
   formData: initialFormData,
   openFileDialog: false,
   selectedTranscript: [],
@@ -159,7 +159,7 @@ export const useSentFormStore = create<SentFormState>((set) => ({
           .map(Number);
 
         if (newReferences.length > 0) {
-          const newReferenceData: ReferenceData[] = newReferences.map(id => ({
+          const newReferenceData: ReferenceDataType[] = newReferences.map(id => ({
             id,
             enabled: true,
             transcript_for: state.transcriptDirections[id] || ""
@@ -184,7 +184,7 @@ export const useSentFormStore = create<SentFormState>((set) => ({
       else if (externalTranscriptText && externalTranscriptText.trim() !== "") {
         const externalId = -(Date.now());
         
-        const newReferenceData: ReferenceData = {
+        const newReferenceData: ReferenceDataType = {
           id: externalId,
           enabled: true,
           transcript_for: "notification",

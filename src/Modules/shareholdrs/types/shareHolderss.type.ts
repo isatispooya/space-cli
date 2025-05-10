@@ -1,4 +1,4 @@
-interface ShareHoldersNewTypes {
+export interface ShareHoldersNewType {
   id: number;
   company_detail: {
     name: string;
@@ -17,4 +17,4 @@ interface ShareHoldersNewTypes {
 
 }
 
-export default ShareHoldersNewTypes;
+export default ShareHoldersNewType;

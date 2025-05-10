@@ -1,6 +1,6 @@
 import { api } from "../../../api";
-import { underwritingTypes } from "../types/underwriting.type";
-import { underwritingCreateTypes } from "../types/underwritingCreate.type";
+import { UnderwritingType } from "../types/underwriting.type";
+import { UnderwritingCreateType } from "../types/underwritingCreate.type";
 
 const underwritingServices = {
   get: async () => {
@@ -11,14 +11,14 @@ const underwritingServices = {
     const response = await api.get(`/stock_affairs/create_underwriting/${id}/`);
     return response.data;
   },
-  create: async (data: underwritingCreateTypes) => {
+  create: async (data: UnderwritingCreateType) => {
     const response = await api.post(
       "/stock_affairs/create_underwriting/",
       data
     );
     return response.data;
   },
-  update: async (data: underwritingTypes) => {
+  update: async (data: UnderwritingType) => {
     const response = await api.patch(
       `/stock_affairs/create_underwriting/${data.id}/`,
       data

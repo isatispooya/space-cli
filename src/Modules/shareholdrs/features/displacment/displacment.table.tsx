@@ -6,7 +6,7 @@ import moment from "moment-jalaali";
 import "moment/locale/fa";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { DisplacementPrecendenceTypes } from "../../types/displacementPrecendence.type";
+import { DisplacementPrecendenceType } from "../../types/displacementPrecendence.type";
 import { tableStyles } from "../../../../ui";
 import Popup from "../../../points/components/popup";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ const DisplacementTable = () => {
   const { checkPermission } = useUserPermissions();
   const navigate = useNavigate();
   const [selectedRow, setSelectedRow] =
-    useState<DisplacementPrecendenceTypes | null>(null);
+    useState<DisplacementPrecendenceType | null>(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const rows = data || [];
@@ -140,7 +140,7 @@ const DisplacementTable = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = rows.find(
-                (row: DisplacementPrecendenceTypes) => row.id === selectedId
+                (row: DisplacementPrecendenceType) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);

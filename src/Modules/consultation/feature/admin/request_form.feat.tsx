@@ -13,22 +13,22 @@ import { useConsultingReserveTurnUserPatch } from "../../hooks/admin/UseConsulti
 import { useUserData } from "@/Modules/users/hooks";
 import {
   ConsultationType,
-  TurnStatus,
-  ConsultationRequestFormProps,
-  UserData,
-  ConsultingReserveTurn,
+  TurnStatusType,
+  ConsultationRequestFormPropsType,
+  UserDataType,
+  ConsultingReserveTurnType,
 } from "../../types/consultation_request.type";
 import { useConsultationStore } from "../../store";
 
-const ConsultationRequestForm: React.FC<ConsultationRequestFormProps> = () => {
+const ConsultationRequestForm: React.FC<ConsultationRequestFormPropsType> = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const { id } = useParams();
   const { data, refetch } =
     useConsultingReserveTurnUserById.useGetConsultingReserveTurnUser(id || "");
-  const consultingData: ConsultingReserveTurn | undefined = data
-    ? ((Array.isArray(data) ? data[0] : data) as ConsultingReserveTurn)
+  const consultingData: ConsultingReserveTurnType | undefined = data
+    ? ((Array.isArray(data) ? data[0] : data) as ConsultingReserveTurnType)
     : undefined;
   const { data: usersData, isLoading: isUsersLoading } = useUserData();
 
@@ -118,7 +118,7 @@ const ConsultationRequestForm: React.FC<ConsultationRequestFormProps> = () => {
         key={type}
         onClick={() => {
           const newTypes = formData.consultationType.includes(type)
-            ? formData.consultationType.filter((t) => t !== type)
+            ? formData.consultationType.filter((t: ConsultationType) => t !== type)
             : [...formData.consultationType, type];
           setFormData({ consultationType: newTypes });
         }}
@@ -185,7 +185,7 @@ const ConsultationRequestForm: React.FC<ConsultationRequestFormProps> = () => {
                 value={formData.consultantId?.toString()}
                 onChange={(value) => setFormData({ consultantId: value })}
                 options={
-                  usersData?.map((user: UserData) => ({
+                  usersData?.map((user: UserDataType) => ({
                     value: user.id.toString(),
                     label: `${user.first_name} ${user.last_name}`,
                     disabled: false,
@@ -198,7 +198,7 @@ const ConsultationRequestForm: React.FC<ConsultationRequestFormProps> = () => {
                 label="وضعیت درخواست"
                 value={formData.status}
                 onChange={(value) =>
-                  setFormData({ status: value as TurnStatus })
+                  setFormData({ status: value as TurnStatusType })
                 }
                 options={[
                   { value: "reserved", label: "رزرو شده" },

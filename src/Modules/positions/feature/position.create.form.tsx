@@ -4,9 +4,9 @@ import { usePosition } from "../hooks";
 import { useUserData } from "../../users/hooks";
 import { Forms, Toast } from "../../../components";
 import { useCompany } from "../../companies/hooks";
-import { CompanyTypes } from "../../companies/types";
-import { PositionPostTypes, PositionTypes, PositionFormTypes } from "../types";
-import { ErrorResponse, FormField } from "../../../types";
+import { CompanyType } from "../../companies/types";
+import { PositionPostType, PositionType, PositionFormType } from "../types";
+import { ErrorResponseType, FormFieldType } from "@/types";
 import { UserData } from "../../users/types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { AxiosError } from "axios";
@@ -41,7 +41,7 @@ const PositionCreate = () => {
     first_name: Yup.string().optional(),
     last_name: Yup.string().optional(),
     company_detail: Yup.object().optional(),
-  }) as Yup.ObjectSchema<PositionFormTypes>;
+  }) as Yup.ObjectSchema<PositionFormType>;
 
   const typeOfEmploymentOptions = [
     "full_time",
@@ -58,7 +58,7 @@ const PositionCreate = () => {
     freelance: "فریلنسر",
     internship: "کارآموزی",
   };
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "name",
       label: "نام نقش",
@@ -71,10 +71,12 @@ const PositionCreate = () => {
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
       options:
-        companies?.map((company: CompanyTypes) => ({
-          value: company.id.toString(),
-          label: company.name,
-        })) || [],
+        companies?.flatMap((companyList: CompanyType[]) =>
+          companyList.map((company: CompanyType) => ({
+            value: company.id.toString(),
+            label: company.name,
+          }))
+        ) || [],
     },
     {
       name: "user",
@@ -113,7 +115,7 @@ const PositionCreate = () => {
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
       options:
-        positions?.map((position: PositionTypes) => ({
+        positions?.map((position: PositionType) => ({
           value: position.id.toString(),
           label: position.name,
         })) || [],
@@ -130,7 +132,7 @@ const PositionCreate = () => {
     },
   ];
 
-  const initialValues: PositionFormTypes = {
+  const initialValues: PositionFormType = {
     name: "",
     company: 0,
     user: 0,
@@ -146,7 +148,7 @@ const PositionCreate = () => {
   };
 
   const handleSubmit = async (
-    values: PositionFormTypes,
+    values: PositionFormType,
     { setSubmitting, resetForm }: any
   ) => {
     try {
@@ -161,14 +163,15 @@ const PositionCreate = () => {
           ? formatDate(new Date(values.end_date).toISOString())
           : null,
       };
-      await createPosition(formData as unknown as PositionPostTypes, {
+      await createPosition(formData as unknown as PositionPostType, {
         onSuccess: () => {
           Toast("نقش با موفقیت ایجاد شد", <CheckmarkIcon />, "bg-green-500");
           resetForm();
           refetch();
         },
         onError: (error: AxiosError<unknown>) => {
-          const errorMessage = (error.response?.data as ErrorResponse)?.error;
+          const errorMessage = (error.response?.data as ErrorResponseType)
+            ?.error;
           Toast(
             errorMessage || "نام کاربری یا رمز عبور اشتباه است",
             <ErrorIcon />,

@@ -1,16 +1,16 @@
 import { ColumnDefinition } from "tabulator-tables";
-import { MenuItem } from "../components/table/actionMenus";
+import { MenuItemType } from "../components/table/actionMenus";
 
-interface RowData {
+interface RowDataType {
   id?: number | string;
   [key: string]: unknown;
 }
 
-interface UseTableActionsProps {
-  getItems: (rowData: RowData) => MenuItem[];
+interface UseTableActionsPropsType {
+  getItems: (rowData: RowDataType) => MenuItemType[];
 }
 
-export const useTableActions = ({ getItems }: UseTableActionsProps) => {
+export const useTableActions = ({ getItems }: UseTableActionsPropsType) => {
   const renderActionColumn = (): ColumnDefinition => ({
     title: "عملیات",
     field: "actions",

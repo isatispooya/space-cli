@@ -1,7 +1,7 @@
 import { UseQueryResult } from "@tanstack/react-query";
 import { animationVariants, sizeClasses } from "../data/dialogVar";
 
-export interface DialogProps {
+export interface DialogPropsType {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
@@ -31,6 +31,6 @@ export interface DialogProps {
   preventScroll?: boolean;
 }
 
-export type ModalsTypes = {
-  DialogProps: DialogProps;
+export type ModalsType = {
+  DialogProps: DialogPropsType;
 };

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-export interface Step {
+export interface StepType {
   title: string;
   description?: string;
   icon?: ReactNode;
@@ -16,8 +16,8 @@ export interface Step {
   };
 }
 
-export interface StepperProps {
-  steps: Step[];
+export interface StepperPropsType {
+  steps: StepType[];
   currentStep: number;
   orientation?: "horizontal" | "vertical";
   className?: string;

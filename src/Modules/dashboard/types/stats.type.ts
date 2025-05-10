@@ -1,14 +1,14 @@
-import { BoursTypes, CrowdTypes, BimeTypes } from "./index";
+import { BoursType, CrowdType, BimeType } from "./index";
 
-export interface StatsTypes {
-  bourse: BoursTypes;
+export interface StatsType {
+  bourse: BoursType;
   companies: {
     logo: string;
     name: string;
     shares: number;
   }[];
-  crowd: CrowdTypes;
-  pishkar: BimeTypes;
+  crowd: CrowdType;
+  pishkar: BimeType;
   status: "success";
   status_code: number;
 }

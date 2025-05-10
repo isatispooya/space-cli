@@ -1,7 +1,7 @@
 import { CellComponent } from "tabulator-tables";
-import TabulatorTable from "../../../../components/table/table.com";
+import { TabulatorTable } from "@/components";
 import { useInsurance } from "../../hooks";
-import { InsuranceRequest } from "../../types";
+import { InsuranceRequestType } from "../../types";
 import { useUserPermissions } from "../../../permissions";
 import { server } from "../../../../api";
 import getStatusTranslations from "../../data/insurance_status";
@@ -123,7 +123,7 @@ const InsuranceRequestTable = () => {
   ];
 
   const data =
-    requests?.map((request: InsuranceRequest) => ({
+    requests?.map((request: InsuranceRequestType) => ({
       id: request.id,
       insurance_name: request.insurance_name_detail,
       user_detail: request.user_detail,

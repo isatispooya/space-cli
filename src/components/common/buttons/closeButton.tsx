@@ -1,11 +1,11 @@
 // CloseButton.tsx
 import { motion, MotionProps } from "framer-motion";
 import React from "react";
-import { buttonTypes } from "./types";
+import { ButtonType } from "./types";
 
-type CloseButtonProps = buttonTypes["CloseButtonProps"] & MotionProps;
+type CloseButtonPropsType = ButtonType["CloseButtonProps"] & MotionProps;
 
-const CloseButton: React.FC<CloseButtonProps> = ({
+const CloseButton: React.FC<CloseButtonPropsType> = ({
   onClick,
   size = "md",
   position,

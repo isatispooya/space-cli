@@ -5,17 +5,17 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { companiesService } from "../services";
-import { companypostTypes, CompanyTypes, CompanyResponse, CompanyList } from "../types";
+import { CompanyPostType, CompanyType, CompanyResponseType, CompanyListType } from "../types";
 import { AxiosError } from "axios";
 
 const useCompany = {
-  useGet: (): UseQueryResult<CompanyTypes[], AxiosError> => {
+  useGet: (): UseQueryResult<CompanyListType[], AxiosError> => {
     return useQuery({
       queryKey: ["companies"],
       queryFn: companiesService.get,
     });
   },
-  useCreate: (): UseMutationResult<companypostTypes, Error, FormData> => {
+  useCreate: (): UseMutationResult<CompanyPostType, Error, FormData> => {
     return useMutation({
       mutationKey: ["createCompany"],
       mutationFn: (data: FormData) => companiesService.create(data),
@@ -26,9 +26,9 @@ const useCompany = {
   },
 
   useUpdate: (): UseMutationResult<
-    companypostTypes,
+    CompanyPostType,
     Error,
-    { id: number; data: companypostTypes }
+    { id: number; data: CompanyPostType }
   > => {
     return useMutation({
       mutationKey: ["updateCompany"],
@@ -41,18 +41,18 @@ const useCompany = {
       mutationFn: (id: number) => companiesService.delete(id),
     });
   },
-  usePostCompanyRasmio: (): UseMutationResult<CompanyResponse, Error, FormData> => {
+  usePostCompanyRasmio: (): UseMutationResult<CompanyResponseType, Error, FormData> => {
     return useMutation({
       mutationKey: ["postCompanyRasmio"],
       mutationFn: (data: FormData) => companiesService.postCompanyRasmio(data),
     });
   },
 
-  useGetCompanyRasmio: (id?: number): UseQueryResult<CompanyList | CompanyTypes, AxiosError> => {
+  useGetCompanyRasmio: (id?: number): UseQueryResult<CompanyListType | CompanyType, AxiosError> => {
     return useQuery({
       queryKey: id ? ["companyRasmio", id] : ["companyRasmio"],
       queryFn: () => companiesService.getCompanyRasmio(id),
-      select: (data: CompanyList | CompanyTypes) => {
+      select: (data: CompanyListType | CompanyType) => {
         console.log('دریافت اطلاعات شرکت با موفقیت انجام شد:', data);
         return data;
       }

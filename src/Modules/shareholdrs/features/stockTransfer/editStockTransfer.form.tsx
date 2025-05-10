@@ -1,13 +1,13 @@
 import toast from "react-hot-toast";
 import { Forms } from "../../../../components";
-import { stockTransferTypes } from "../../types/stockTransfer.type";
+import { StockTransferType } from "../../types/stockTransfer.type";
 import * as yup from "yup";
 import { useStockTransfer } from "../../hooks";
 import { useStockTransferStore } from "../../store";
 import { useUserData } from "../../../users/hooks";
 import { useCompany } from "../../../companies/hooks";
 import { useNavigate } from "react-router-dom";
-
+import { CompanyType } from "../../../companies/types";
 const EditStockTransferForm: React.FC = () => {
   const { mutate } = useStockTransfer.useUpdate();
   const { data: stockTransferData } = useStockTransfer.useGet();
@@ -17,7 +17,7 @@ const EditStockTransferForm: React.FC = () => {
   const { id } = useStockTransferStore();
 
   const stockTransfer = stockTransferData?.find(
-    (item: stockTransferTypes) => item.id === id
+    (item: StockTransferType) => item.id === id
   );
 
   const validationSchema = yup.object().shape({
@@ -26,7 +26,7 @@ const EditStockTransferForm: React.FC = () => {
     seller: yup.number().required("فروشنده الزامی است"),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
     price: yup.number().required("قیمت الزامی است"),
-  }) as yup.ObjectSchema<stockTransferTypes>;
+  }) as yup.ObjectSchema<StockTransferType>;
 
   const formFields = [
     {
@@ -39,10 +39,12 @@ const EditStockTransferForm: React.FC = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.map((company: { name: string; id: number }) => ({
-          label: company.name,
-          value: company.id.toString(),
-        })) || [],
+        companies?.flatMap((companyList: CompanyType[]) =>
+          companyList.map((company: CompanyType) => ({
+            label: company.name || "",
+            value: company.id.toString(),
+          }))
+        ) || [],
     },
     {
       name: "price",
@@ -75,7 +77,7 @@ const EditStockTransferForm: React.FC = () => {
     },
   ];
 
-  const initialValues: stockTransferTypes = {
+  const initialValues: StockTransferType = {
     buyer: parseInt(stockTransfer?.buyer?.toString() || "0"),
     seller: parseInt(stockTransfer?.seller?.toString() || "0"),
     number_of_shares: stockTransfer?.number_of_shares || 0,
@@ -89,7 +91,7 @@ const EditStockTransferForm: React.FC = () => {
   if (!stockTransfer && !id) {
     navigate("/transferstock/table");
   }
-  const onSubmit = (values: stockTransferTypes) => {
+  const onSubmit = (values: StockTransferType) => {
     if (stockTransfer?.id) {
       mutate(
         { id: stockTransfer?.id.toString(), data: values },

@@ -1,4 +1,4 @@
-export interface InsuranceRequestStore {
+export interface InsuranceRequestStoreType {
   selectedInsurance: string;
   setSelectedInsurance: (insurance: string) => void;
   status: string;

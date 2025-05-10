@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-interface ShiftFormProps {
+interface ShiftFormPropsType {
   onSubmit: (shiftName: string) => void;
 }
 
-const ShiftForm: React.FC<ShiftFormProps> = ({ onSubmit }) => {
+const ShiftForm: React.FC<ShiftFormPropsType> = ({ onSubmit }) => {
   const [shiftName, setShiftName] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {

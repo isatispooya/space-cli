@@ -1,7 +1,7 @@
 import { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 
-interface TimePickerProps {
+interface TimePickerPropsType {
   label?: string;
   initialValue?: Date | null;
   onChange?: (date: Date | null) => void;
@@ -15,7 +15,7 @@ const DynamicTimePicker = ({
   onChange,
   className = "",
   direction = "ltr",
-}: TimePickerProps) => {
+}: TimePickerPropsType) => {
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(
     initialValue ? dayjs(initialValue) : null
   );

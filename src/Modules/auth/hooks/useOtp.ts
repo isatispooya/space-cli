@@ -1,17 +1,17 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ApplyNationalCodeParams, ApplyNationalCodeResponse } from "../types";
+import { ApplyNationalCodeParamsType, ApplyNationalCodeResponseType } from "../types";
 import postOtp from "../services/otp.post";
 
 const useApplyNationalCode = (): UseMutationResult<
-  ApplyNationalCodeResponse,
+  ApplyNationalCodeResponseType,
   AxiosError,
-  ApplyNationalCodeParams
+  ApplyNationalCodeParamsType
 > => {
   return useMutation<
-    ApplyNationalCodeResponse,
+    ApplyNationalCodeResponseType,
     AxiosError,
-    ApplyNationalCodeParams
+    ApplyNationalCodeParamsType
   >({
     mutationKey: ["applyNationalCode"],
     mutationFn: postOtp,

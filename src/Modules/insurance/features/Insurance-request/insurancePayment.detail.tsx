@@ -3,13 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useInsurance } from "../../hooks";
 import { Forms } from "../../../../components";
 import * as yup from "yup";
-import { ErrorResponse, FormField } from "../../../../types";
+import { ErrorResponseType, FormFieldType } from "@/types";
 import { Spinner } from "../../../../components/loaders";
 import { formatNumber } from "../../../../utils";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { Toast } from "../../../../components";
 import { AxiosError } from "axios";
-import { FishPaymentType, InsuranceRequest } from "../../types";
+import { FishPaymentType, InsuranceRequestType } from "../../types";
 import { server } from "../../../../api";
 import { useState, useEffect } from "react";
 
@@ -25,7 +25,7 @@ const InsurancePayment = () => {
   
 
   const selectedPayment = insurancePayment?.find(
-    (payment: InsuranceRequest) => payment.id === Number(id)
+    (payment: InsuranceRequestType) => payment.id === Number(id)
   );
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const InsurancePayment = () => {
     setFormKey((prev) => prev + 1); // Force form re-render when payment type changes
   };
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "sheba",
       label: "شماره شبا",
@@ -164,7 +164,7 @@ const InsurancePayment = () => {
           navigate("/requestinsurance/table");
         },
         onError: (error: AxiosError<unknown>) => {
-          const errorMessage = (error.response?.data as ErrorResponse)?.error;
+          const errorMessage = (error.response?.data as ErrorResponseType)?.error;
           Toast(
             errorMessage || "پرداخت با خطا مواجه شد",
             <ErrorIcon />,
@@ -186,7 +186,7 @@ const InsurancePayment = () => {
             )}`;
           },
           onError: (error: AxiosError<unknown>) => {
-            const errorMessage = (error.response?.data as ErrorResponse)?.error;
+            const errorMessage = (error.response?.data as ErrorResponseType)?.error;
             Toast(
               errorMessage || "پرداخت با خطا مواجه شد",
               <ErrorIcon />,

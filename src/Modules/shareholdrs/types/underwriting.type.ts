@@ -1,5 +1,5 @@
-import { PaymentDetail } from "./paymentDetail";
-export interface underwritingTypes {
+import { PaymentDetailType } from "./paymentDetail";
+export interface UnderwritingType {
   id?: number;
   amount?: number;
   type?: string;
@@ -25,12 +25,12 @@ export interface underwritingTypes {
     id: number;
     uniqueIdentifier: string;
   };
-  payment_detail?: PaymentDetail;
+  payment_detail?: PaymentDetailType;
   type_peyment?: string;
   requested_amount?: number;
 }
 
-export interface UnderwritingTypes {
+export interface UnderwritingType {
   id: number;
   type: string;
   price: number;

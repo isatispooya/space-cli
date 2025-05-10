@@ -1,4 +1,4 @@
-export interface ProfileData {
+export interface ProfileDataType {
   id: number;
   first_name: string;
   last_name: string;
@@ -6,13 +6,13 @@ export interface ProfileData {
   profile_image: string | null;
 }
 
-export interface SelectedUser {
+export interface SelectedUserType {
   id: string;
   name: string;
   avatar?: string;
 }
 
-export interface ChatData {
+export interface ChatDataType {
   id: number;
   message: string;
   created_at: string;
@@ -52,16 +52,16 @@ export interface ChatData {
   } | null;
 }
 
-export interface AttachmentResponse {
+export interface AttachmentResponseType {
   id: number;
   [key: string]: unknown;
 }
 
-export interface MessagingServiceTypes {
-  ProfileData: ProfileData;
-  SelectedUser: SelectedUser;
-  ChatData: ChatData;
-  AttachmentResponse: AttachmentResponse;
+export interface MessagingServiceType {
+  ProfileData: ProfileDataType;
+  SelectedUser: SelectedUserType;
+  ChatData: ChatDataType;
+  AttachmentResponse: AttachmentResponseType;
 }
 
-export default MessagingServiceTypes; 
+export default MessagingServiceType; 

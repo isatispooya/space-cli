@@ -1,4 +1,4 @@
-export interface InsuranceState {
+export interface InsuranceStateType {
   selectedInsurance: string;
   selectedCompanies: string[];
   files: Record<string, File>;

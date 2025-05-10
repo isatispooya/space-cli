@@ -1,15 +1,15 @@
-interface DescriptionDetail {
+export interface DescriptionDetailType {
   description_user: string;
   description_expert: string;
 
 }
 
-interface FileDetail {
+export interface FileDetailType {
   file_name: string;
   file_attachment: string;
 }
 
-export interface InsuranceUpdateTypes {
+export interface InsuranceUpdateType {
   insurance: string;
   insurance_status: string;
   insurance_name: string;
@@ -17,11 +17,11 @@ export interface InsuranceUpdateTypes {
   insurance_name_file: File | null;
   insurance_name_draft_file: File | null;
   price: string;
-  file_detail: FileDetail[];
+  file_detail: FileDetailType[];
   file_name: string;
   delete_files?: string[];
   files: {
     [fieldId: string]: File;
   };
-  description_detail?: DescriptionDetail[];
+  description_detail?: DescriptionDetailType[];
 }

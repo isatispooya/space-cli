@@ -4,30 +4,30 @@ import {
   UseMutationResult,
   UseQueryResult,
 } from "@tanstack/react-query";
-import {  CapitalIncreaseCreate } from "../types/capitalCreate.type";
-import { CapitalIncreaseTypes } from "../types/capitalIncrease.type";
+import { CapitalIncreaseCreateType } from "../types/capitalCreate.type";
+import { CapitalIncreaseType } from "../types/capitalIncrease.type";
 import { capitalServices } from "../services";
 
 const useCapital = {
-  useGet: (): UseQueryResult<CapitalIncreaseTypes[]> => {
+  useGet: (): UseQueryResult<CapitalIncreaseType[]> => {
     return useQuery({
       queryKey: ["capital"],
       queryFn: capitalServices.get,
     });
   },
   useCreate: (): UseMutationResult<
-    CapitalIncreaseTypes,
+    CapitalIncreaseType,
     Error,
-    CapitalIncreaseCreate
+    CapitalIncreaseCreateType
   > => {
-    return useMutation<CapitalIncreaseTypes, Error, CapitalIncreaseCreate>({
+    return useMutation<CapitalIncreaseType, Error, CapitalIncreaseCreateType>({
       mutationFn: capitalServices.create,
     });
   },
   useUpdate: (): UseMutationResult<
-    CapitalIncreaseTypes,
+    CapitalIncreaseType,
     Error,
-    { id: number; data: CapitalIncreaseTypes }
+    { id: number; data: CapitalIncreaseType }
   > => {
     return useMutation({
       mutationFn: ({ id, data }) => capitalServices.update(data, id),

@@ -1,5 +1,5 @@
 import { api } from "../../../api";
-import { CreatePermissionData } from "../types";
+import { CreatePermissionDataType } from "../types";
 
 const groupsService = {
   getList: async () => {
@@ -7,7 +7,7 @@ const groupsService = {
     return response.data;
   },
 
-  create: async (data: CreatePermissionData) => {
+  create: async (data: CreatePermissionDataType) => {
     const response = await api.post("/groups/", data);
     return response.data;
   },

@@ -1,7 +1,7 @@
-import { Forms } from "../../../components";
+import { Forms } from "@/components";
 import * as Yup from "yup";
-import { FormField } from "../../../types";
-import { InvitationPostTypes } from "../types";
+import { FormFieldType } from "@/types";
+import { InvitationPostType } from "../types";
 import { useInvitation } from "../hooks";
 import toast from "react-hot-toast";
 
@@ -25,7 +25,7 @@ const InvitationCreateForm = () => {
 
   return (
     <Forms
-      formFields={formFields as unknown as FormField[]}
+      formFields={formFields as unknown as FormFieldType[]}
       initialValues={initialValues}
       validationSchema={validationSchema}
       title="ثبت کد فعال سازی"
@@ -36,7 +36,7 @@ const InvitationCreateForm = () => {
         loading: "در حال ارسال...",
       }}
       onSubmit={async (
-        values: InvitationPostTypes,
+        values: InvitationPostType,
         { setSubmitting, resetForm }
       ) => {
         try {

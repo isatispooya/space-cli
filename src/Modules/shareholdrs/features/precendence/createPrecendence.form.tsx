@@ -1,10 +1,12 @@
 import { Forms } from "../../../../components";
 import { usePrecendence } from "../../hooks";
 import * as Yup from "yup";
-import { FormField } from "../../../../types";
+import { FormFieldType } from "@/types";
 import { useUserData } from "../../../users/hooks";
 import { useCompany } from "../../../companies/hooks";
 import toast from "react-hot-toast";
+import { CompanyType } from "../../../companies/types";
+
 
 const CreatePrecendenceForm = () => {
   const { mutate: postPrecendence } = usePrecendence.useCreate();
@@ -13,17 +15,19 @@ const CreatePrecendenceForm = () => {
 
   const { data: companies } = useCompany.useGet();
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     { name: "precedence", label: "حق تقدم", type: "text" as const },
     {
       name: "company",
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.map((company: { name: string; id: number }) => ({
-          label: company.name || "",
-          value: company.id.toString(),
-        })) || [],
+        companies?.flatMap((companyList: CompanyType[]) =>
+          companyList.map((company: CompanyType) => ({
+            label: company.name || "",
+            value: company.id.toString(),
+          }))
+        ) || [],
     },
     {
       name: "user",

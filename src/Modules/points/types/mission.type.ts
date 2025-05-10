@@ -1,4 +1,4 @@
-export interface MissionTypes {
+export interface MissionType {
   point_2: number;
   point_1: number;
   id: number;

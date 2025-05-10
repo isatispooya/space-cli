@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { underwritingStoreTypes } from "../types/underwritingStore.type";
+import { UnderwritingStoreType } from "../types/underwritingStore.type";
 
- const useUnderwritingStore = create<underwritingStoreTypes>((set) => ({
+const useUnderwritingStore = create<UnderwritingStoreType>((set) => ({
   id: 0,
   setId: (id: number) => set({ id }),
   isDescriptionOpen: false,
@@ -13,6 +13,5 @@ import { underwritingStoreTypes } from "../types/underwritingStore.type";
   setSelectedDescription: (selectedDescription: string) =>
     set({ selectedDescription }),
 }));
-
 
 export default useUnderwritingStore;

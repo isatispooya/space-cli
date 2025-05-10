@@ -1,6 +1,6 @@
-import { LoaderLg } from "../../../components";
+import { LoaderLg } from "@/components";
 import { UseEmProcess } from "../hooks";
-import { EmProcessTypes } from "../types";
+import { EmProcessType } from "../types";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useUserPermissions } from "../../permissions";
 import { useState } from "react";
@@ -18,7 +18,7 @@ const EmploymentsProcessTable = () => {
   const { mutate: deleteEmprocess } = UseEmProcess.useDelete();
   const { checkPermission } = useUserPermissions();
 
-  const [selectedRow, setSelectedRow] = useState<EmProcessTypes | null>(null);
+  const [selectedRow, setSelectedRow] = useState<EmProcessType | null>(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const navigate = useNavigate();
   if (isLoading) {
@@ -105,7 +105,7 @@ const EmploymentsProcessTable = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = rows.find(
-                (row: EmProcessTypes) => row.id === selectedId
+                (row: EmProcessType) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);

@@ -1,13 +1,14 @@
 import * as Yup from "yup";
 import { Forms, LoaderLg, NoContent } from "../../../components";
 import { usePosition } from "../hooks";
-import { FormField } from "../../../types";
+import { FormFieldType } from "@/types";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment-jalaali";
-import { PositionPostTypes } from "../types";
+import { PositionPostType } from "../types";
 import { useCompany } from "../../companies/hooks";
+import { CompanyType } from "../../companies/types";
 
-interface UserObject {
+interface UserObjectType {
   id: number;
   first_name?: string;
   last_name?: string;
@@ -58,21 +59,23 @@ const PositionUpdateForm = () => {
     return <NoContent label="نقش یافت نشد" />;
   }
 
-  const userData = specificUser?.user as unknown as UserObject | number;
+  const userData = specificUser?.user as unknown as UserObjectType | number;
   const userId = typeof userData === "object" ? userData.id : userData;
   const userFirstName = typeof userData === "object" ? userData.first_name : "";
   const userLastName = typeof userData === "object" ? userData.last_name : "";
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     { name: "name", label: "نام نقش", type: "text" },
     {
       name: "company",
       label: "شرکت",
       type: "select",
-      options: companies.map((company) => ({
-        value: company.id.toString(),
-        label: company.name,
-      })),
+      options: companies.flatMap((companyList: CompanyType[]) =>
+        companyList.map((company: CompanyType) => ({
+          value: company.id.toString(),
+          label: company.name,
+        }))
+      ),
     },
     {
       name: "user",
@@ -124,7 +127,7 @@ const PositionUpdateForm = () => {
     },
   ];
 
-  const initialValues: PositionPostTypes = {
+  const initialValues: PositionPostType = {
     name: specificUser?.name || "",
     company: Number(specificUser?.company_detail?.id) || 0,
     user: Number(userId) || 0,
@@ -144,7 +147,7 @@ const PositionUpdateForm = () => {
       formFields={formFields}
       initialValues={initialValues}
       validationSchema={
-        validationSchema as unknown as Yup.ObjectSchema<PositionPostTypes>
+        validationSchema as unknown as Yup.ObjectSchema<PositionPostType>
       }
       showCloseButton={false}
       title="بروزرسانی سمت"

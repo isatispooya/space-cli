@@ -3,7 +3,7 @@ import { motion, HTMLMotionProps } from "framer-motion";
 import { fadeIn } from "../../../Modules/auth/animations/fadeIn";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-interface InputLineProps extends HTMLMotionProps<"div"> {
+interface InputLinePropsType extends HTMLMotionProps<"div"> {
   type?: string;
   placeholder?: string;
   label: string;
@@ -15,7 +15,7 @@ interface InputLineProps extends HTMLMotionProps<"div"> {
   disabled?: boolean;
 }
 
-const PassInput: React.FC<InputLineProps> = ({
+const PassInput: React.FC<InputLinePropsType> = ({
   label,
   value,
   onChange,

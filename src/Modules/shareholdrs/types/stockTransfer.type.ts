@@ -1,4 +1,4 @@
-export interface stockTransferTypes {
+export interface StockTransferType {
   id: number;
   buyer: number;
   seller: number;
@@ -9,7 +9,7 @@ export interface stockTransferTypes {
   user: number;
 }
 
-export type CreateStockTransferDTO = Omit<
-  stockTransferTypes,
+export type CreateStockTransferType = Omit<
+  StockTransferType,
   "id" | "document"
 >;

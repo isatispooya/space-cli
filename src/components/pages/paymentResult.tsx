@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { usePayment } from "../../hooks/usePayment";
 import LoaderLg from "../loaders/loader-lg";
 
-interface ApiError extends Error {
+interface ApiErrorType extends Error {
   response?: {
     data?: {
       error?: string;
@@ -13,7 +13,7 @@ interface ApiError extends Error {
   };
 }
 
-interface ApiResponse {
+interface ApiResponseType {
   message: string;
 }
 
@@ -66,7 +66,7 @@ const PaymentResult = () => {
                 پرداخت موفق بود!
               </h1>
               <p className="text-gray-600 mb-6">
-                {(unusedPurchase.data as ApiResponse)?.message ||
+                {(unusedPurchase.data as ApiResponseType)?.message ||
                   "پرداخت شما با موفقیت انجام شد"}
               </p>
             </>
@@ -77,7 +77,7 @@ const PaymentResult = () => {
                 پرداخت ناموفق
               </h1>
               <p className="text-gray-600 mb-6">
-                {(unusedPurchase.error as ApiError)?.response?.data?.error ||
+                {(unusedPurchase.error as ApiErrorType)?.response?.data?.error ||
                   "خطایی در پرداخت رخ داده است"}
               </p>
             </>

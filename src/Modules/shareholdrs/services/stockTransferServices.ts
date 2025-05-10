@@ -1,17 +1,17 @@
 import { api } from "../../../api";
 
-import { stockTransferTypes } from "../types/stockTransfer.type";
+import { StockTransferType } from "../types/stockTransfer.type";
 
 const stockTransferServices = {
   get: async () => {
     const response = await api.get("/stock_affairs/stock_transfer/");
     return response.data;
   },
-  create: async (data: stockTransferTypes) => {
+  create: async (data: StockTransferType) => {
     const response = await api.post("/stock_affairs/stock_transfer/", data);
     return response.data;
   },
-  update: async (id: string, data: stockTransferTypes) => {
+  update: async (id: string, data: StockTransferType) => {
     const response = await api.patch(
       `/stock_affairs/stock_transfer/${id}/`,
       data

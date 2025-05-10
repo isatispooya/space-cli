@@ -1,4 +1,4 @@
-const ComingSoon = () => {
+const ComingSoon: React.FC = () => {
   return (
     <div className=" dark:bg-gray-800">
       <div className=" flex flex-col justify-center items-center">

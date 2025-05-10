@@ -1,4 +1,4 @@
-export interface EmploymentsTypes {
+export interface EmploymentsType {
   created_at: string;
   eligibility_criteria: string;
   experience: string;
@@ -38,7 +38,7 @@ export interface EmploymentsTypes {
       };
 }
 
-export interface EmploymentsPostTypes extends FormData {
+export interface EmploymentsPostType extends FormData {
   job_title: string;
   job_location: string;
   // ... other fields

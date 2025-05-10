@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-interface SwitchProps {
+interface SwitchPropsType {
   checked?: boolean;
   onChange?: (e: { target: { checked: boolean } }) => void;
   size?: "small" | "medium" | "large";
@@ -17,7 +17,7 @@ const Switch = ({
   color = "pri",
   disabled = false,
   className = "",
-}: SwitchProps) => {
+}: SwitchPropsType) => {
   const [isChecked, setIsChecked] = useState(checked);
 
   useEffect(() => {

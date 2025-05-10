@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { formatNumber } from "../../../../utils";
 import { PlansType } from "../../types";
 import { useCrowdPointsStore } from "../../store";
-import { LoaderLg } from "../../../../components";
-import Accordion from "../../../../components/common/accordian/accordian";
+import { LoaderLg, Accordian } from "@/components";
+
 import PlansView from "../Coin/planCoins.view";
 
 const CrowdPoints = () => {
@@ -63,7 +63,7 @@ const CrowdPoints = () => {
           transition={{ duration: 0.3 }}
           className="rounded-lg shadow-lg bg-white p-4"
         >
-          <Accordion
+          <Accordian
             title="طرح‌های تأمین مالی جمعی"
             isOpen={isOpen}
             onToggle={() => setIsOpen(!isOpen)}
@@ -145,7 +145,7 @@ const CrowdPoints = () => {
                 </>
               )}
             </AnimatePresence>
-          </Accordion>
+          </Accordian>
         </motion.div>
       ) : (
         <motion.div

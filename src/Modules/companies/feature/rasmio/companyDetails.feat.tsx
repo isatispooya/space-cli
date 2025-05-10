@@ -17,7 +17,7 @@ import {
 } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 import { useCompany } from "../../hooks";
-import { CompanyTypes } from "../../types/company.type";
+import { CompanyType } from "../../types/company.type";
 
 const CompanyDetails: React.FC = () => {
   const { id } = useParams();
@@ -25,7 +25,7 @@ const CompanyDetails: React.FC = () => {
 
   if (!companyData || Array.isArray(companyData)) return null;
 
-  const company = companyData as CompanyTypes;
+  const company = companyData as CompanyType;
 
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>

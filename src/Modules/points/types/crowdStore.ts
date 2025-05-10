@@ -1,6 +1,6 @@
 import { PlansType } from "./plans.type";
 
-export interface CrowdPointsStore {
+export interface CrowdPointsStoreType {
   isOpen: boolean;
   data: PlansType[];
   selectedPlan: PlansType | null;

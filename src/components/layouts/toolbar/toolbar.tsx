@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ComponentType } from "react";
 
-interface ToolbarButton {
+interface ToolbarButtonType {
   icon: IconType | ComponentType<{ className?: string }>;
   text: string;
   permission: string[];
@@ -12,12 +12,12 @@ interface ToolbarButton {
   onClick?: () => void;
 }
 
-interface ToolbarProps {
-  buttons?: ToolbarButton[];
+interface ToolbarPropsType {
+  buttons?: ToolbarButtonType[];
   variant?: "default" | "tabs";
 }
 
-const Toolbar = ({ buttons }: ToolbarProps) => {
+const Toolbar: React.FC<ToolbarPropsType> = ({ buttons }) => {
   const { checkPermission } = useUserPermissions();
   const navigate = useNavigate();
   const basePath = window.location.pathname.split("/")[1];

@@ -1,4 +1,4 @@
-export interface CrowdTypes {
+export interface CrowdType {
   "active plan": number;
   "all plan": number;
   "all rate of return": number;

@@ -2,17 +2,13 @@ import "moment/locale/fa";
 import moment from "moment-jalaali";
 import { TabulatorTable } from "../../../../components";
 import { useMemo } from "react";
+import { CellComponent } from "tabulator-tables";
 import { useNavigate } from "react-router-dom";
 import useConsultingReserveTurnUser from "../../hooks/admin/useConsultingReserveTurnUser";
 import { useUserData } from "@/Modules/users/hooks";
-import { UserData } from "../../types/consultation_request.type";
+import { UserDataType } from "../../types/consultation_request.type";
 
-interface CellComponent {
-  getElement: () => HTMLElement;
-  getRow: () => { getData: () => ConsultationRequest };
-}
-
-interface ConsultationRequest {
+interface ConsultationRequestType {
   id: number;
   patient_name: string;
   doctor_name: string;
@@ -33,18 +29,20 @@ const AdminConsultationRequestTable = () => {
     if (!data) return [];
 
     return data.map((item) => {
-      const doctor = usersData?.find((user: UserData) => user.id === Number(item.expert));
-      
+      const doctor = usersData?.find(
+        (user: UserDataType) => user.id === Number(item.expert)
+      );
+
       return {
         id: item.id,
         patient_name: `${item.counseling_requester.first_name} ${item.counseling_requester.last_name}`,
         doctor_name: doctor
           ? `${doctor.first_name} ${doctor.last_name}`
           : "تعیین نشده",
-        date: item.date ? moment(item.date).format('jYYYY/jMM/jDD') : "تعیین نشده",
-        time: item.date
-          ? moment(item.date).format('HH:mm')
+        date: item.date
+          ? moment(item.date).format("jYYYY/jMM/jDD")
           : "تعیین نشده",
+        time: item.date ? moment(item.date).format("HH:mm") : "تعیین نشده",
         status:
           item.status_of_turn === "reserved"
             ? "رزرو شده"
@@ -74,7 +72,6 @@ const AdminConsultationRequestTable = () => {
     const menus = document.querySelectorAll(".popup-menu");
     menus.forEach((menu) => menu.remove());
   };
-
 
   const columns = () => [
     { title: "نام بیمار", field: "patient_name", headerFilter: true },
@@ -150,7 +147,7 @@ const AdminConsultationRequestTable = () => {
     },
   ];
 
-  const ExelData = (item: ConsultationRequest) => {
+  const ExelData = (item: ConsultationRequestType) => {
     return {
       نام_بیمار: item.patient_name,
       نام_پزشک: item.doctor_name,

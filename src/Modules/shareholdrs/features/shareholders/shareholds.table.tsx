@@ -1,6 +1,6 @@
 import "moment/locale/fa";
 import moment from "moment-jalaali";
-import { ShareholdersTypes } from "../../types/shareholders.type";
+import { ShareholdersType } from "../../types/shareholders.type";
 import { useShareholders } from "../../hooks";
 import { LoaderLg } from "../../../../components";
 import { CellComponent, ColumnDefinition, Formatter } from "tabulator-tables";
@@ -116,7 +116,7 @@ const ShareholdTable: React.FC = () => {
     },
   ];
 
-  const handlePrint = (rowData: ShareholdersTypes) => {
+  const handlePrint = (rowData: ShareholdersType) => {
     const printContent = `
       <html>
         <head>
@@ -245,7 +245,7 @@ const ShareholdTable: React.FC = () => {
         {
           icon: "fas fa-print",
           label: "چاپ",
-          onClick: () => handlePrint(rowData as ShareholdersTypes),
+          onClick: () => handlePrint(rowData as ShareholdersType),
           color: "#DC2626",
         },
       ];
@@ -277,7 +277,7 @@ const ShareholdTable: React.FC = () => {
     );
   }
 
-  const ExelData = (item: ShareholdersTypes) => ({
+  const ExelData = (item: ShareholdersType) => ({
     "نام شرکت": item.company_detail?.name || item.company,
     "تعداد سهام": item.number_of_shares || 0,
     نام: item.user_detail?.first_name || item.first_name,

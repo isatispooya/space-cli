@@ -1,17 +1,17 @@
 import React, { useState, ReactNode, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-type Placement = "top" | "right" | "bottom" | "left";
+type PlacementType = "top" | "right" | "bottom" | "left";
 
-interface TooltipProps {
+interface TooltipPropsType {
   content: ReactNode;
-  placement?: Placement;
+  placement?: PlacementType;
   delay?: number;
   className?: string;
   children: ReactNode;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({
+const Tooltip: React.FC<TooltipPropsType> = ({
   content,
   placement = "top",
   delay = 0,
@@ -43,7 +43,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   const baseClasses =
     "absolute z-50 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap";
-  const placementClasses: Record<Placement, string> = {
+  const placementClasses: Record<PlacementType, string> = {
     top: "bottom-full left-1/2 transform -translate-x-1/2 mb-2",
     bottom: "top-full left-1/2 transform -translate-x-1/2 mt-2",
     left: "right-full top-1/2 transform -translate-y-1/2 mr-2",

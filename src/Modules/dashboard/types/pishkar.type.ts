@@ -1,4 +1,4 @@
-export type BimeTypes = {
+export type BimeType = {
   pishkar: number
   count: number;
   status: "success";

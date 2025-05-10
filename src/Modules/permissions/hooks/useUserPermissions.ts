@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { permissionService } from "../services";
 
-interface Permission {
+interface PermissionType {
   codename: string;
   name: string;
   id: number;
@@ -27,7 +27,7 @@ const useUserPermissions = () => {
     }
 
     const hasPermission = permissionArray.some((perm) =>
-      data.some((item: Permission) => item.codename === perm)
+      data.some((item: PermissionType) => item.codename === perm)
     );
 
     return hasPermission;

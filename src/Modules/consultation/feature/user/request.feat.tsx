@@ -2,13 +2,13 @@ import { motion } from "framer-motion";
 import { useConsultUser } from "../../hooks";
 import { Spinner } from "@/components";
 
-interface ConsultationRequestProps {
+interface ConsultationRequestPropsType {
   subjectId: string;
   onCancel: () => void;
   onSuccess: (message: string) => void;
 }
 
-const ConsultationRequest: React.FC<ConsultationRequestProps> = ({
+const ConsultationRequest: React.FC<ConsultationRequestPropsType> = ({
   subjectId,
   onCancel,
   onSuccess,

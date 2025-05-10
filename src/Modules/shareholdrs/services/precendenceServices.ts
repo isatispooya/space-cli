@@ -1,5 +1,5 @@
 import { api } from "../../../api";
-import { PrecedenceTypes } from "../types/precedence.type";
+import { PrecedenceType } from "../types/precedence.type";
 
 const precendenceServices = {
   get: async () => {
@@ -10,11 +10,11 @@ const precendenceServices = {
     const response = await api.get(`/stock_affairs/precedence/${id}/`);
     return response.data;
   },
-  create: async (data: PrecedenceTypes) => {
+  create: async (data: PrecedenceType) => {
     const response = await api.post("/stock_affairs/precedence/", data);
     return response.data;
   },
-  update: async (id: string, data: PrecedenceTypes) => {
+  update: async (id: string, data: PrecedenceType) => {
     const response = await api.patch(`/stock_affairs/precedence/${id}/`, data);
     return response.data;
   },

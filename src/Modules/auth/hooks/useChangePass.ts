@@ -1,15 +1,15 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { patchChangePass } from "../services/change_pass.patch";
-import { ResetPassParams } from "../types/changePass.type";
+import { ResetPassParamsType } from "../types/changePass.type";
 
 const useChangePass = (): UseMutationResult<
   { message: string },
   AxiosError,
-  ResetPassParams,
+  ResetPassParamsType,
   unknown
 > => {
-  return useMutation<{ message: string }, AxiosError, ResetPassParams, unknown>(
+  return useMutation<{ message: string }, AxiosError, ResetPassParamsType, unknown>(
     {
       mutationKey: ["changePass"],
       mutationFn: patchChangePass,

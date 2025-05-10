@@ -1,22 +1,22 @@
 import { Forms } from "../../../components";
 import * as Yup from "yup";
-import { CreatePermissionData } from "../types";
+import { CreatePermissionDataType } from "../types";
 import { useCreatePermission } from "../hooks/permissionPost";
-import { FormField } from "../../../types";
+import { FormFieldType } from "../../../types";
 
 const validationSchema = Yup.object({
   groups: Yup.array().required("گروه الزامی است"),
   user_id: Yup.number().required("کاربر الزامی است"),
-}) as Yup.ObjectSchema<CreatePermissionData>;
+}) as Yup.ObjectSchema<CreatePermissionDataType>;
 
-const initialValues: CreatePermissionData = {
+const initialValues: CreatePermissionDataType = {
   groups: [],
   user_id: 0,
   ids: [],
   name: "",
 };
 
-const formFields: FormField[] = [
+const formFields: FormFieldType[] = [
   { name: "groups", label: "گروه", type: "select" as const },
   { name: "user_id", label: "کاربر", type: "text" as const },
 ];
@@ -25,7 +25,7 @@ export const CreatePermissionsForm: React.FC = () => {
   const { mutate } = useCreatePermission();
   
 
-  const onSubmit = (values: CreatePermissionData) => {
+  const onSubmit = (values: CreatePermissionDataType) => {
     mutate(values);
   };
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-interface NoContentPropsTypes {
+interface NoContentPropsType {
   label: string; 
 }
 
-const NoContent: React.FC<NoContentPropsTypes> = ({ label }) => {
+const NoContent: React.FC<NoContentPropsType> = ({ label }) => {
   return (
     <motion.div
       className="p-4 text-center text-gray-500 flex flex-col items-center justify-center"

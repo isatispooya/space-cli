@@ -1,4 +1,4 @@
-export interface CompanyTypes {
+export interface CompanyType {
   address: string;
   company_type: string;
   description: string;
@@ -27,10 +27,10 @@ export interface CompanyTypes {
   general_directorate: string;
 }
 
-export interface CompanyResponse {
+export interface CompanyResponseType {
   company: {
     id: number;
   }
 }
 
-export type CompanyList = CompanyTypes[];
+export type CompanyListType = CompanyType[];

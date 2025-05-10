@@ -1,6 +1,6 @@
 import { FormikHelpers } from "formik";
 
-export interface attach_details {
+export interface AttachDetailsType {
   id: number;
   name: string;
   file: string;
@@ -15,14 +15,14 @@ export interface attach_details {
   };
 }
 
-export interface receiver_details {
+export interface ReceiverDetailsType {
   first_name: string;
   id: number;
   last_name: string;
   uniqueIdentifier: string;
   profile_image: string | null;
 }
-export interface sender_details {
+export interface SenderDetailsType {
   first_name: string;
   id: number;
   last_name: string;
@@ -30,13 +30,13 @@ export interface sender_details {
   profile_image: string | null;
 }
 
-export interface postAttachmentType {
+export interface PostAttachmentType {
   attachment: File;
   receiver: number;
   message: string;
 }
 
-export interface ChatStateTypes {
+export interface ChatStateType {
   selectedUserId: string | null;
   showAllUsers: boolean;
   searchQuery: string;
@@ -53,11 +53,11 @@ export interface MessagesType {
   receiver: number;
   seen: boolean;
   sender: number;
-  receiver_details: receiver_details;
-  sender_details: sender_details;
+  receiver_details: ReceiverDetailsType;
+  sender_details: SenderDetailsType;
   updated_at: string;
   attachment?: string | null;
-  attach_details?: attach_details | null;
+  attach_details?: AttachDetailsType | null;
 }
 
 export interface SingleMessageType {
@@ -77,12 +77,12 @@ export interface SingleMessageType {
   senderId?: number;
   receiverId?: number;
   attachId?: number | null;
-  senderDetails?: sender_details;
-  receiverDetails?: receiver_details;
-  attachDetails?: attach_details | null;
+  senderDetails?: SenderDetailsType;
+  receiverDetails?: ReceiverDetailsType;
+  attachDetails?: AttachDetailsType | null;
 }
 
-export interface ChatFormProps {
+export interface ChatFormPropsType {
   onSubmit: (
     values: ChatType["postMessegeType"],
     actions: FormikHelpers<ChatType["postMessegeType"]>
@@ -92,14 +92,14 @@ export interface ChatFormProps {
   onBackClick?: () => void;
 }
 
-export interface postMessegeType {
+export interface PostMessegeType {
   content: string;
   receiver: number;
   message: string;
   attach?: number;
 }
 
-export interface postSeenType {
+export interface PostSeenType {
   seen: boolean;
   sender_id: number;
 }
@@ -115,7 +115,7 @@ export interface UserMessageType {
   profile_image: string | null;
 }
 
-export interface MessageBubbleProps {
+export interface MessageBubblePropsType {
   message: {
     isCurrentUser: boolean;
     sender: string;
@@ -131,13 +131,13 @@ export interface MessageBubbleProps {
     senderId?: number;
     receiverId?: number;
     attachId?: number | null;
-    senderDetails?: sender_details;
-    receiverDetails?: receiver_details;
-    attachDetails?: attach_details | null;
+    senderDetails?: SenderDetailsType;
+    receiverDetails?: ReceiverDetailsType;
+    attachDetails?: AttachDetailsType | null;
   };
 }
 
-export interface ChatInputProps {
+export interface ChatInputPropsType {
   newMessage: string;
   setNewMessage: (value: string) => void;
   handleSendMessage: () => void;
@@ -147,7 +147,7 @@ export interface ChatInputProps {
   filesCount: number;
 }
 
-export interface NewMessagePopupProps {
+export interface NewMessagePopupPropsType {
   onSelectUser: (user: { id: string; name: string; avatar?: string }) => void;
   showAllUsers: boolean;
   setShowAllUsers: (show: boolean) => void;
@@ -170,7 +170,7 @@ export interface UserPositionType {
   };
 }
 
-export interface ConversationUsersProps {
+export interface ConversationUsersPropsType {
   onSelectUser: (user: {
     id: string;
     name: string;
@@ -182,19 +182,19 @@ export interface ConversationUsersProps {
 
 export type ChatType = {
   MessagesType: MessagesType;
-  receiver_details: receiver_details;
-  sender_details: sender_details;
-  postMessegeType: postMessegeType;
+  receiver_details: ReceiverDetailsType;
+  sender_details: SenderDetailsType;
+  postMessegeType: PostMessegeType;
   UserMessageType: UserMessageType;
   UserPositionType: UserPositionType;
-  ConversationUsersProps: ConversationUsersProps;
+  ConversationUsersProps: ConversationUsersPropsType;
   SingleMessageType: SingleMessageType;
-  ChatFormProps: ChatFormProps;
-  ChatStateTypes: ChatStateTypes;
-  postSeenType: postSeenType;
-  MessageBubbleProps: MessageBubbleProps;
-  ChatInputProps: ChatInputProps;
-  NewMessagePopupProps: NewMessagePopupProps;
+  ChatFormProps: ChatFormPropsType;
+  ChatStateTypes: ChatStateType;
+  postSeenType: PostSeenType;
+  MessageBubbleProps: MessageBubblePropsType;
+  ChatInputProps: ChatInputPropsType;
+  NewMessagePopupProps: NewMessagePopupPropsType;
 };
 
 export default ChatType;

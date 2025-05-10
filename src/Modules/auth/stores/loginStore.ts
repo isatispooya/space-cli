@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { LoginStore } from "../../auth/types/loginStore.type";
+import { LoginStoreType } from "../../auth/types/loginStore.type";
 
-export const useLoginStore = create<LoginStore>((set) => ({
+export const useLoginStore = create<LoginStoreType>((set) => ({
   nationalCode: "",
   captchaInput: "",
   encryptedResponse: null,

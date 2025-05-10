@@ -1,4 +1,4 @@
-export interface ReceiveMessage {
+export interface ReceiveMessageType {
   id: number;
   title: string;
   receiver: string;
@@ -8,11 +8,11 @@ export interface ReceiveMessage {
   message_type: string;
 }
 
-export interface CorrespondenceReceiver {
-  receiver: CorrespondenceItem[];
+export interface CorrespondenceReceiverType {
+  receiver: CorrespondenceItemType[];
 }
 
-export interface CorrespondenceItem {
+export interface CorrespondenceItemType {
   id: number;
   subject: string;
   created_at: string;
@@ -37,7 +37,3 @@ export interface CorrespondenceItem {
   receiver_external?: string;
 }
 
-export interface CellComponent {
-  getElement: () => HTMLElement;
-  getRow: () => { getData: () => ReceiveMessage };
-} 

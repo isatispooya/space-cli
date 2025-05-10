@@ -1,4 +1,4 @@
-export interface SymbolsStoreType {
+export interface SymbolsStoreeType {
   formValues: {
     desiredProfit: number;
     symbol: number;
@@ -14,4 +14,4 @@ export interface SymbolsStoreType {
   setIsSimple: (isSimple: boolean) => void;
 }
 
-export type SymbolsStore = SymbolsStoreType;
+export type SymbolsStoreType = SymbolsStoreeType;

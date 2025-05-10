@@ -1,4 +1,4 @@
-export interface EmploymentsPostTypes {
+export interface EmploymentsPostType {
   job_title: string;
   job_location: string;
   job_description: string;

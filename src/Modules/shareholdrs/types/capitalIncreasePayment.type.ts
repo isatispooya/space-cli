@@ -1,4 +1,4 @@
-export interface CapitalIncreaseTypes {
+export interface CapitalIncreasePaymentType {
   id: number;
   company: number;
   position: number;
@@ -8,4 +8,7 @@ export interface CapitalIncreaseTypes {
   updated_at: string;
 }
 
-export type CreateCapitalIncreaseDTO = Omit<CapitalIncreaseTypes, 'id'>;
+export type CreateCapitalIncreasePaymentType = Omit<
+  CapitalIncreasePaymentType,
+  "id"
+>;

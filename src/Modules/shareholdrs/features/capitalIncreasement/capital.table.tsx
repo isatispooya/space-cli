@@ -3,7 +3,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import toast from "react-hot-toast";
 import { CustomDataGridToolbar, localeText } from "../../../../utils";
 import { useState } from "react";
-import { CapitalIncreaseTypes } from "../../types/capitalIncrease.type";
+import { CapitalIncreaseType } from "../../types/capitalIncrease.type";
 import { tableStyles } from "../../../../ui";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "moment/locale/fa";
@@ -22,7 +22,7 @@ const CapitalTable: React.FC = () => {
   const { checkPermission } = useUserPermissions();
   const { mutate: deleteCapital } = useCapital.useDelete();
 
-  const [selectedRow, setSelectedRow] = useState<CapitalIncreaseTypes | null>(
+  const [selectedRow, setSelectedRow] = useState<CapitalIncreaseType | null>(
     null
   );
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -122,7 +122,7 @@ const CapitalTable: React.FC = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = rows.find(
-                (row: CapitalIncreaseTypes) => row.id === selectedId
+                (row: CapitalIncreaseType) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);

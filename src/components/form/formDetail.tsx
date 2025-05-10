@@ -2,27 +2,27 @@ import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 
 
-interface Detail {
+interface DetailType {
   title: string;
   value: string;
 }
 
-interface DataItem {
+interface DataItemType {
   name: string;
   label: string;
   type: string; 
-  value: Detail[]; 
+  value: DetailType[]; 
 }
 
 
-interface DetailBoxProps {
-  data: DataItem[];
+interface DetailBoxPropsType {
+  data: DataItemType[];
   isCopied: boolean;
   setIsCopied: (isCopied: boolean) => void;
 }
 
 
-const FormDetail = ({ data = [], isCopied, setIsCopied }: DetailBoxProps) => {
+const FormDetail: React.FC<DetailBoxPropsType> = ({ data = [], isCopied, setIsCopied }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

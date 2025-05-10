@@ -17,7 +17,7 @@ import FormDetail from "../form/formDetail";
 import { DateSelector } from "../common";
 import DynamicTimePicker from "../timepick/timepicker";
 
-interface FormsProps<T extends Maybe<AnyObject>> {
+interface FormsPropsType<T extends Maybe<AnyObject>> {
   formFields: FormField[];
   initialValues: T;
   validationSchema: ObjectSchema<T>;
@@ -53,7 +53,7 @@ const Forms = <T extends FormikValues>({
     borderColor: "border-secondary-500",
     checkedColor: "checked:border-[#5677BC] checked:bg-[#5677BC]",
   },
-}: FormsProps<T>) => {
+}: FormsPropsType<T>) => {
   const [dynamicFieldCounts, setDynamicFieldCounts] = useState<{
     [key: string]: number;
   }>({});

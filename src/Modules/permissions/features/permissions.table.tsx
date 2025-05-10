@@ -1,20 +1,20 @@
 import { useCallback, useState } from "react";
 import { usePermissionList } from "../hooks";
 import { DataGrid } from "@mui/x-data-grid";
-import { PermissionData } from "../types";
+import { PermissionDataType } from "../types";
 import toast from "react-hot-toast";
 import { tableStyles } from "../../../ui";
 import { CustomDataGridToolbar, localeText } from "../../../utils";
 import { FaEdit } from "react-icons/fa";
 import { ModalLayout } from "../../../layouts"; 
 import EditPermissionForm from "./editpermissions.form";
-import { PaginatedResponse } from "../../../types/paginated";
+import { PaginatedResponseType } from "../../../types/paginated";
 import { LoaderLg } from "../../../components";
 import { useNavigate } from "react-router-dom";
 
 const PermissionsTable: React.FC = () => {
   const { data, isPending  } = usePermissionList();
-  const [selectedRow, setSelectedRow] = useState<PermissionData | null>(null);
+  const [selectedRow, setSelectedRow] = useState<PermissionDataType | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ const PermissionsTable: React.FC = () => {
             if (newSelectionModel.length > 0) {
               const selectedId = newSelectionModel[0];
               const selectedRow = data?.find(
-                (row: PermissionData) => row.id === selectedId
+                (row: PermissionDataType) => row.id === selectedId
               );
               if (selectedRow) {
                 setSelectedRow(selectedRow);
@@ -70,7 +70,7 @@ const PermissionsTable: React.FC = () => {
             toolbar: (props) => (
               <CustomDataGridToolbar
                 {...props}
-                data={(data || []) as unknown as PaginatedResponse<Record<string, unknown>>}
+                data={(data || []) as unknown as PaginatedResponseType<Record<string, unknown>>}
                 fileName="گزارش-دسترسی‌ها"
                 showExcelExport={true}
                 actions={{

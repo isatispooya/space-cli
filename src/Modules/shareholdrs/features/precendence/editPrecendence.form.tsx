@@ -2,15 +2,15 @@ import toast from "react-hot-toast";
 import { Forms } from "../../../../components";
 import { usePrecendence } from "../../hooks";
 import * as yup from "yup";
-import { PrecedenceTypes } from "../../types/precedence.type";
+import { PrecedenceType } from "../../types/precedence.type";
 import { useNavigate, useParams } from "react-router-dom";
-import { FormField } from "../../../../types";
+import { FormFieldType } from "@/types";
 
 const EditPrecendenceForm: React.FC = () => {
   const { mutate: updatePrecendence } = usePrecendence.useUpdate();
   const { id } = useParams();
   const { data } = usePrecendence.useGet();
-  const precedence = data?.find((item: PrecedenceTypes) => item.id === Number(id));
+  const precedence = data?.find((item: PrecedenceType) => item.id === Number(id));
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const EditPrecendenceForm: React.FC = () => {
     total_amount: yup.number().required("مقدار کل الزامی است"),
     company_detail: yup.object().optional(),
     user_detail: yup.object().optional(),
-  }) as yup.ObjectSchema<PrecedenceTypes>;
+  }) as yup.ObjectSchema<PrecedenceType>;
 
   const formFields = [
     {
@@ -57,7 +57,7 @@ const EditPrecendenceForm: React.FC = () => {
     },
   ];
 
-  const initialValues: PrecedenceTypes = {
+  const initialValues: PrecedenceType = {
     company: parseInt(precedence?.company.toString() || "0"),
     precedence: precedence?.precedence || 0,
     id: precedence?.id || 0,
@@ -67,7 +67,7 @@ const EditPrecendenceForm: React.FC = () => {
     total_amount: precedence?.total_amount || 0
   };
 
-  const onSubmit = (values: PrecedenceTypes) => {
+  const onSubmit = (values: PrecedenceType) => {
     if (precedence?.id) {
       updatePrecendence(
         { id: precedence?.id.toString(), data: values },
@@ -87,7 +87,7 @@ const EditPrecendenceForm: React.FC = () => {
   return (
     <>
       <Forms
-        formFields={formFields as FormField[]}
+        formFields={formFields as FormFieldType[]}
         initialValues={initialValues}
         validationSchema={validationSchema}
         colors="text-[#5677BC]"

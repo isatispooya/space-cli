@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import React, { useEffect, useRef } from "react";
 
-export interface MenuItem {
+export interface MenuItemType {
   icon: string;
   label: string;
   onClick: () => void;
@@ -10,8 +10,8 @@ export interface MenuItem {
   hidden?: boolean;
 }
 
-interface ActionMenuProps {
-  items: MenuItem[];
+interface ActionMenuPropsType {
+  items: MenuItemType[];
   position: {
     x: number;
     y: number;
@@ -20,7 +20,7 @@ interface ActionMenuProps {
   className?: string;
 }
 
-const ActionMenu: React.FC<ActionMenuProps> = ({
+const ActionMenu: React.FC<ActionMenuPropsType> = ({
   items,
   position,
   onClose,
@@ -92,28 +92,30 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
   );
 };
 
-interface CreateActionMenuProps {
-  items: MenuItem[];
+interface CreateActionMenuPropsType {
+  items: MenuItemType[];
   position: { x: number; y: number };
   className?: string;
 }
 
-interface ReactRoot {
+interface ReactRootType  {
   unmount: () => void;
 }
 
-interface MenuElement extends HTMLElement {
-  _reactRoot?: ReactRoot;
+interface MenuElementType extends HTMLElement {
+  _reactRoot?: ReactRootType;
 }
 
 export const createActionMenu = ({
   items,
   position,
   className,
-}: CreateActionMenuProps): (() => void) => {
+}: CreateActionMenuPropsType): (() => void) => {
   // Remove any existing menus
   const cleanup = () => {
-    const existingMenus = document.querySelectorAll<MenuElement>(".popup-menu");
+    const existingMenus = document.querySelectorAll<MenuElementType>(
+      ".popup-menu"
+    );
     existingMenus.forEach((menu) => {
       const root = menu._reactRoot;
       if (root) {
@@ -127,7 +129,7 @@ export const createActionMenu = ({
   cleanup();
 
   // Create new menu container
-  const menuContainer = document.createElement("div") as MenuElement;
+  const menuContainer = document.createElement("div") as MenuElementType;
   menuContainer.className = "popup-menu";
   document.body.appendChild(menuContainer);
 

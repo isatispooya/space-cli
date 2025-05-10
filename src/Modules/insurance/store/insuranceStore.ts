@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { InsuranceState } from '../types';
+import { InsuranceStateType } from '../types';
 
 
 
@@ -14,7 +14,7 @@ const initialState = {
   uploadFile: null,
 };
 
- const useInsuranceStore = create<InsuranceState>((set) => ({
+ const useInsuranceStore = create<InsuranceStateType>((set) => ({
   ...initialState,
 
   setSelectedInsurance: (value) => set({ selectedInsurance: value }),

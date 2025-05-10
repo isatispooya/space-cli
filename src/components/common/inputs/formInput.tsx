@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HTMLMotionProps, motion } from "framer-motion";
 
-interface FormInputProps extends HTMLMotionProps<"input"> {
+interface FormInputPropsType extends HTMLMotionProps<"input"> {
   label?: string;
   format?: (value: any) => any;
   value?: any;
@@ -17,7 +17,7 @@ const FormInput = ({
   disabled,
   onChange,
   ...props
-}: FormInputProps) => {
+}: FormInputPropsType) => {
   // Format the display value if a format function is provided
   const displayValue = format && value !== undefined ? format(value) : value;
 

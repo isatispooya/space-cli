@@ -1,3 +1,4 @@
+import { ShareHoldersNewType } from "./../types/shareHolderss.type";
 import {
   useQuery,
   useMutation,
@@ -5,12 +6,10 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import shareServices from "../services/shareServices";
-import { ShareholdersTypes } from "../types/shareholders.type";
-import ShareHoldersNewTypes from "../types/shareHolderss.type";
-
+import { ShareholdersType } from "../types/shareholders.type";
 
 const useShareholders = {
-  useGet: (): UseQueryResult<ShareHoldersNewTypes[]> => {
+  useGet: (): UseQueryResult<ShareHoldersNewType[]> => {
     return useQuery({
       queryKey: ["shareholders"],
       queryFn: shareServices.get,
@@ -18,19 +17,19 @@ const useShareholders = {
   },
 
   useCreate: (): UseMutationResult<
-    ShareholdersTypes,
+    ShareholdersType,
     Error,
-    ShareholdersTypes
+    ShareholdersType
   > => {
     return useMutation({
-      mutationFn: (data: ShareholdersTypes) => shareServices.create(data),
+      mutationFn: (data: ShareholdersType) => shareServices.create(data),
     });
   },
 
   useUpdate: (): UseMutationResult<
-    ShareholdersTypes,
+    ShareholdersType,
     Error,
-    { id: string; data: ShareholdersTypes }
+    { id: string; data: ShareholdersType }
   > => {
     return useMutation({
       mutationFn: ({ id, data }) => shareServices.update(id, data),

@@ -1,4 +1,4 @@
-export interface PrivilegesTypes {
+export interface PrivilegesType {
     id: number;
     name: string;
     feild_of_activity: string;
@@ -16,7 +16,7 @@ export interface PrivilegesTypes {
     field_of_activity: string;
     category: string;
   }
-   export interface RewardItem {
+   export interface RewardItemType {
     id: number;
     name: string;
     category: string;
@@ -35,11 +35,11 @@ export interface PrivilegesTypes {
     updated_at: string;
   }
   
-  export interface RewardsTableProps {
-    rewards: RewardItem[];
+  export interface RewardsTablePropsType {
+    rewards: RewardItemType[];
   }
 
-  export interface CategoryIconsProps {
+  export interface CategoryIconsPropsType {
     onCategoryChange?: (category: string | null) => void;
     setSelected: (category: string | null) => void;
     selected: string | null;

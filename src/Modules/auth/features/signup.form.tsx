@@ -9,7 +9,7 @@ import { fadeIn } from "../animations/fadeIn";
 import toast, { ErrorIcon } from "react-hot-toast";
 import Spinner from "../../../components/loaders/spinner";
 import { AxiosError } from "axios";
-import { ErrorResponse } from "../../../types";
+import { ErrorResponseType } from "../../../types";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useCaptcha } from "../hooks";
@@ -96,7 +96,7 @@ const SignupForm = () => {
           setEncryptedResponse("");
         },
         onError: (error: AxiosError<unknown>) => {
-          const errorMessage = (error.response?.data as ErrorResponse)?.error;
+          const errorMessage = (error.response?.data as ErrorResponseType)?.error;
           Toast(
             errorMessage || "خطایی رخ داده است",
             <ErrorIcon />,

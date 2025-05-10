@@ -17,12 +17,12 @@ interface SubjectType {
   kind_of_consultant: ConsultationType[];
 }
 
-interface SubjectCardProps {
+interface SubjectCardPropsType {
   subject: SubjectType;
   onSelect: (id: string) => void;
 }
 
-export const SubjectCard = ({ subject }: SubjectCardProps) => {
+export const SubjectCard = ({ subject }: SubjectCardPropsType) => {
   return (
     <div
       // onClick={() => onSelect(subject.id)}

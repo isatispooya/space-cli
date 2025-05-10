@@ -7,7 +7,7 @@ import Joyride, {
   TooltipRenderProps,
 } from "react-joyride";
 
-interface LoginTourProps {
+interface LoginTourPropsType {
   runTour: boolean;
   onTourEnd: () => void;
 }
@@ -117,7 +117,7 @@ const Tooltip = ({
   </div>
 );
 
-const LoginTour: React.FC<LoginTourProps> = ({ runTour, onTourEnd }) => {
+const LoginTour: React.FC<LoginTourPropsType> = ({ runTour, onTourEnd }) => {
   const steps: Step[] = [
     {
       target: ".tour-login-form",

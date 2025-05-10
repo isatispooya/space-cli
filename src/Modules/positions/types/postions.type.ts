@@ -1,11 +1,11 @@
-export interface User {
+export interface UserType {
   id: number;
   first_name: string;
   last_name: string;
   uniqueIdentifier: string;
 }
 
-export interface PositionFormTypes {
+export interface PositionFormType {
   id: number;
   name: string;
   company: number;
@@ -25,7 +25,7 @@ export interface PositionFormTypes {
   };
 }
 
-export interface PositionTypes {
+export interface PositionType {
   id: number;
   name: string;
   company: number;
@@ -35,7 +35,7 @@ export interface PositionTypes {
   } | null;
   type_of_employment: string | null;
   description: string;
-  user: User;
+  user: UserType;
   start_date: string;
   end_date: string;
   created_at?: string;

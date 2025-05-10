@@ -1,4 +1,4 @@
-export interface ShareholdersTypes {
+export interface ShareholdersType {
   company?: string;
   company_national_id?: string;
   number_of_shares?: number;
@@ -26,4 +26,4 @@ export interface ShareholdersTypes {
   };
 }
 
-export type CreateShareholderDTO = Omit<ShareholdersTypes, "id">;
+export type CreateShareholderType = Omit<ShareholdersType, "id">;

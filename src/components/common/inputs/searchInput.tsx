@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { FiSearch, FiX } from "react-icons/fi";
 
-interface SearchInputProps {
+interface SearchInputPropsType {
   placeholder?: string;
   onSearch?: (value: string) => void;
   className?: string;
@@ -12,7 +12,7 @@ interface SearchInputProps {
   width?: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({
+const SearchInput: React.FC<SearchInputPropsType> = ({
   placeholder = "Search...",
   onSearch,
   className = "",

@@ -12,7 +12,7 @@ import moment from "moment-jalaali";
 import { useNavigate } from "react-router-dom";
 
 // Define interface for user object
-interface UserObject {
+interface UserObjectType {
   id: number;
   first_name?: string;
   last_name?: string;
@@ -68,7 +68,7 @@ const PositionsTable = () => {
   const rows = positions
     ? positions.map((position) => {
         // Extract user data safely
-        const userData = position.user as unknown as UserObject | number;
+        const userData = position.user as unknown as UserObjectType | number;
         const userFirstName =
           typeof userData === "object"
             ? userData.first_name || "نامشخص"

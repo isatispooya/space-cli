@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-interface CategoryFilterProps {
+interface CategoryFilterPropsType {
   categories: string[];
   selectedCategory: string | null;
   onCategorySelect: (category: string) => void;
@@ -10,7 +10,7 @@ const CategoryFilter = ({
   categories,
   selectedCategory,
   onCategorySelect,
-}: CategoryFilterProps) => {
+}: CategoryFilterPropsType) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}

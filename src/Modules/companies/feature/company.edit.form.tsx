@@ -1,13 +1,12 @@
 import * as Yup from "yup";
-import { CompanyTypes } from "../types";
-
+import { CompanyType } from "../types";
 import { useCompany } from "../hooks";
 import Forms from "../../../components/form/forms";
 import toast from "react-hot-toast";
-import { FormField } from "../../../types";
+import { FormFieldType } from "../../../types";
 import { useParams } from "react-router-dom";
 
-interface CompanyTypeOption {
+interface CompanyTypeOptionType {
   value: string;
   label: string;
 }
@@ -39,7 +38,7 @@ const validationSchema = Yup.object().shape({
   file: Yup.mixed(),
 });
 
-const COMPANY_TYPES: CompanyTypeOption[] = [
+const COMPANY_TYPES: CompanyTypeOptionType[] = [
   { value: "private_joint_stock", label: "سهامی خاص" },
   { value: "public_joint_stock", label: "سهامی عام" },
   { value: "limited_liability", label: "مسئولیت محدود" },
@@ -50,7 +49,7 @@ const COMPANY_TYPES: CompanyTypeOption[] = [
   { value: "cooperative", label: "تعاونی" },
 ] as const;
 
-const formFields: FormField[] = [
+const formFields: FormFieldType[] = [
   { name: "name", label: "نام شرکت", type: "text" },
   {
     name: "company_type",
@@ -86,7 +85,7 @@ const EditCompanyForm = () => {
 
   const specificCompany = data?.find((company) => company.id === Number(id));
 
-  const initialValues: CompanyTypes = {
+  const initialValues: CompanyType = {
     id: specificCompany?.id || 0,
     name: specificCompany?.name || "",
     company_type: specificCompany?.company_type || "",
@@ -123,7 +122,7 @@ const EditCompanyForm = () => {
         formFields={formFields}
         initialValues={initialValues}
         validationSchema={
-          validationSchema as unknown as Yup.ObjectSchema<CompanyTypes>
+          validationSchema as unknown as Yup.ObjectSchema<CompanyType>
         }
         buttonColors="bg-[#5677BC] hover:bg-[#02205F]"
         submitButtonText={{
@@ -144,7 +143,9 @@ const EditCompanyForm = () => {
                   postal_code: String(values.postal_code),
                   national_id: String(values.national_id),
                   capital: String(values.capital),
-                  total_shares: values.total_shares ? String(values.total_shares) : undefined,
+                  total_shares: values.total_shares
+                    ? String(values.total_shares)
+                    : undefined,
                 },
               },
               {

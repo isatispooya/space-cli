@@ -1,7 +1,4 @@
-
-
-
-export interface PaymentDetail {
+export interface PaymentDetailType {
   id: number;
   cart_number: string|null;
   error: string|null;

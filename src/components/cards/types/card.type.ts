@@ -1,32 +1,32 @@
 import { ReactNode } from 'react';
 
-export type Priority = 'low' | 'medium' | 'high';
+export type PriorityType = 'low' | 'medium' | 'high';
 export type StatusType = 'success' | 'warning' | 'error' | 'info';
 
-export interface ImageProps {
+export interface ImagePropsType {
   src: string;
   alt: string;
   overlay?: boolean;
   overlayColor?: string;
 }
 
-export interface RibbonProps {
+export interface RibbonPropsType {
   text: string;
   color?: string;
 }
 
-export interface StatusProps {
+export interface StatusPropsType {
   type: StatusType;
   message: string;
 }
 
-export interface ActionProps {
+export interface ActionPropsType {
   icon: ReactNode;
   label: string;
   onClick: () => void;
 }
 
-export interface CardBaseProps {
+export interface CardBasePropsType {
   className?: string;
   animate?: boolean;
   hoverEffect?: boolean;

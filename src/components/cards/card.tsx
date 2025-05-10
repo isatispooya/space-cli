@@ -6,22 +6,22 @@ import { CardStatus } from "./components/card_status";
 import { CardSkeleton } from "./components/card_skeleton";
 import { cardVariants } from "./animations/card.animation";
 import type {
-  CardBaseProps,
-  ImageProps,
-  StatusProps,
-  ActionProps,
-  RibbonProps,
+  CardBasePropsType,
+  ImagePropsType,
+  StatusPropsType,
+  ActionPropsType,
+  RibbonPropsType,
 } from "./types/card.type";
 
-interface CardProps extends CardBaseProps {
+interface CardPropsType extends CardBasePropsType {
   title?: string;
   subtitle?: string;
   content?: React.ReactNode;
-  image?: ImageProps;
+  image?: ImagePropsType;
   badge?: string;
-  status?: StatusProps;
-  actions?: ActionProps[];
-  ribbon?: RibbonProps;
+  status?: StatusPropsType;
+  actions?: ActionPropsType[];
+  ribbon?: RibbonPropsType;
   loading?: boolean;
   skeleton?: boolean;
   expandable?: boolean;
@@ -74,7 +74,7 @@ const Card = ({
   footerSlot,
   onClick,
   disableAnimation = false,
-}: CardProps) => {
+}: CardPropsType) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (skeleton) {

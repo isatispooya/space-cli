@@ -1,10 +1,12 @@
 import { Forms } from "../../../../components";
 import { useStockTransfer } from "../../hooks";
 import * as Yup from "yup";
-import { FormField } from "../../../../types";
+import { FormFieldType } from "@/types";
 import { useCompany } from "../../../companies/hooks";
 import { useUserData } from "../../../users/hooks";
 import toast from "react-hot-toast";
+import { CompanyType } from "../../../companies/types";
+
 
 const CreateStocktransferForm = () => {
   const { mutate: postStocktransfer } = useStockTransfer.useCreate();
@@ -13,7 +15,7 @@ const CreateStocktransferForm = () => {
 
   const { data: users } = useUserData();
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     { name: "number_of_shares", label: "تعداد سهام", type: "text" as const },
     {
       name: "seller",
@@ -46,10 +48,12 @@ const CreateStocktransferForm = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.map((company: { name: string; id: number }) => ({
-          label: company.name || "",
-          value: company.id.toString(),
-        })) || [],
+        companies?.flatMap((companyList: CompanyType[]) =>
+          companyList.map((company: CompanyType) => ({
+            label: company.name || "",
+            value: company.id.toString(),
+          }))
+        ) || [],
     },
   ];
   const initialValues = {

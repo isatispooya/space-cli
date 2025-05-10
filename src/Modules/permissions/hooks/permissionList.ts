@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { permissionService } from "../services";
-import { PermissionData } from "../types";
+import { PermissionDataType } from "../types";
 
 const usePermissionList = () => {
-  return useQuery<PermissionData[]>({
+  return useQuery<PermissionDataType[]>({
     queryKey: ["permissionList"],
     queryFn: async () => {
       const response = await permissionService.getList();

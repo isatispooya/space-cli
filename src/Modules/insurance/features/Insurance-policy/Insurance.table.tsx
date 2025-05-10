@@ -1,8 +1,8 @@
-import TabulatorTable from "../../../../components/table/table.com";
+import { TabulatorTable } from "@/components";
 import useInsurance from "../../hooks/useInsurance";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
-import { InsuranceTypes } from "../../types";
+import { InsuranceType } from "../../types";
 import { CellComponent } from "tabulator-tables";
 
 const InsurancePolicyTable = () => {
@@ -26,7 +26,7 @@ const InsurancePolicyTable = () => {
 
   const processedData =
     fields?.flatMap(
-      (field: InsuranceTypes) =>
+      (field: InsuranceType) =>
         field.fields?.map((subField) => ({
           id: subField.id,
           name: subField.name,

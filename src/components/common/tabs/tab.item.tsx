@@ -1,13 +1,18 @@
 import React from "react";
 
-interface TabItemProps {
+interface TabItemPropsType {
   label: string;
   isActive: boolean;
   isDisabled: boolean;
   onClick: () => void;
 }
 
-const TabItem: React.FC<TabItemProps> = ({ label, isActive, isDisabled, onClick }) => {
+const TabItem: React.FC<TabItemPropsType> = ({
+  label,
+  isActive,
+  isDisabled,
+  onClick,
+}) => {
   return (
     <li className="me-2 flex-shrink-0"> {/* flex-shrink-0 prevents shrinking */}
       <button

@@ -1,4 +1,4 @@
-export interface EmProcessTypes {
+export interface EmProcessType {
   created_at: string;
   end_date: string;
   id: number;

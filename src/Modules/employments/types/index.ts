@@ -1,2 +1,2 @@
 export * from "./Employments.type";
-export type { EmploymentsPostTypes } from "./employments.Post";
+export type { EmploymentsPostType } from "./employments.Post";

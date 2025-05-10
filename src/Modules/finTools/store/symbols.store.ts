@@ -1,14 +1,14 @@
 import { create } from "zustand";
-import { SymbolsStore } from "../types";
+import { SymbolsStoreType } from "../types";
 
-const symbolsStore = create<SymbolsStore>((set) => ({
+const symbolsStore = create<SymbolsStoreType>((set) => ({
   formValues: {
     desiredProfit: 0,
     symbol: 0,
     days: 0,
     calculationType: "",
   },
-  setFormValues: (formValues: SymbolsStore["formValues"]) =>
+  setFormValues: (formValues: SymbolsStoreType["formValues"]) =>
     set({ formValues }),
   currentStep: 0,
   setCurrentStep: (currentStep: number) => set({ currentStep }),

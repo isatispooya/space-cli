@@ -1,5 +1,5 @@
-import { Captcha } from "./captcha.type";
+import { CaptchaType } from "./captcha.type";
 
-export interface CaptchaData {
-  captcha: Captcha;
+export interface CaptchaDataType {
+  captcha: CaptchaType;
 }

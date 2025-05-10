@@ -5,30 +5,30 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import displacementServices from "../services/displacmentServices";
-import { DisplacementPrecendenceTypes } from "../types/displacementPrecendence.type";
+import { DisplacementPrecendenceType } from "../types/displacementPrecendence.type";
 
 const useDisplacement = {
-  useGet: (): UseQueryResult<DisplacementPrecendenceTypes[]> => {
+  useGet: (): UseQueryResult<DisplacementPrecendenceType[]> => {
     return useQuery({
       queryKey: ["displacement"],
       queryFn: displacementServices.get,
     });
   },
   useCreate: (): UseMutationResult<
-    DisplacementPrecendenceTypes,
+    DisplacementPrecendenceType,
     Error,
-    DisplacementPrecendenceTypes
+    DisplacementPrecendenceType
   > => {
     return useMutation({
       mutationKey: ["createDisplacement"],
-      mutationFn: (data: DisplacementPrecendenceTypes) =>
+      mutationFn: (data: DisplacementPrecendenceType) =>
         displacementServices.create(data),
     });
   },
   useUpdate: (): UseMutationResult<
-    DisplacementPrecendenceTypes,
+    DisplacementPrecendenceType,
     Error,
-    { id: string; data: DisplacementPrecendenceTypes }
+    { id: string; data: DisplacementPrecendenceType }
   > => {
     return useMutation({
       mutationKey: ["updateDisplacement"],

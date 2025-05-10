@@ -1,6 +1,6 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 
-interface TextAreaInputProps extends HTMLMotionProps<"textarea"> {
+interface TextAreaInputPropsType extends HTMLMotionProps<"textarea"> {
   label?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -8,14 +8,14 @@ interface TextAreaInputProps extends HTMLMotionProps<"textarea"> {
   containerClassName?: string;
 }
 
-const TextAreaInput = ({
+const TextAreaInput: React.FC<TextAreaInputPropsType> = ({
   label = "Input Label",
   value,
   onChange,
   rows = 4,
   containerClassName = "",
   ...props
-}: TextAreaInputProps) => {
+}: TextAreaInputPropsType) => {
   return (
     <div dir="rtl" className={`w-full ${containerClassName}`}>
       <motion.label

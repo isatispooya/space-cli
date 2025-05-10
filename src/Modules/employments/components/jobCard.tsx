@@ -2,18 +2,18 @@ import { motion } from "framer-motion";
 import { HiLocationMarker, HiCode, HiBriefcase } from "react-icons/hi";
 import { ReactNode } from "react";
 
-interface Skill {
+interface SkillType {
   name: string;
   level: "پیشرفته" | "متوسط" | "مبتدی";
 }
 
-interface JobCardProps {
+interface JobCardPropsType {
   title: string;
   company: string;
   location: string;
   description: string;
   requirements: string[];
-  skills: Skill[];
+  skills: SkillType[];
   experience?: string;
   gender: string;
   kindOfJob: string;
@@ -35,7 +35,7 @@ const JobCard = ({
   expirationDate,
   createdAt,
   children,
-}: JobCardProps) => {
+}: JobCardPropsType) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

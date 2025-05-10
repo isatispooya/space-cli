@@ -5,7 +5,7 @@ import useForgetPass from "../hooks/useForgetPass";
 import toast from "react-hot-toast";
 import PassInput from "../../../components/common/inputs/passInput";
 import { AxiosError } from "axios";
-import { ErrorResponse } from "../../../types";
+import {  ErrorResponseType } from "../../../types";
 import Spinner from "../../../components/loaders/spinner";
 
 const validationSchema = Yup.object().shape({
@@ -41,7 +41,7 @@ const ForgetPassForm = () => {
               window.location.reload();
             },
             onError: (error: AxiosError<unknown>) => {
-              const errorMessage = (error.response?.data as ErrorResponse)
+              const errorMessage = (error.response?.data as ErrorResponseType)
                 ?.error;
 
               toast.error(errorMessage || "خطایی رخ داده است");

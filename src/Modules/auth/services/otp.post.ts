@@ -1,5 +1,5 @@
 import { server } from "../../../api/server";
-import { ApplyNationalCodeParams, ApplyNationalCodeResponse } from "../types";
+import { ApplyNationalCodeParamsType, ApplyNationalCodeResponseType } from "../types";
 import api from "../../../api/api";
 
 const postOtp = async ({
@@ -7,8 +7,8 @@ const postOtp = async ({
   captchaInput,
   encryptedResponse,
   referral,
-}: ApplyNationalCodeParams) => {
-  const response = await api.post<ApplyNationalCodeResponse>(
+}: ApplyNationalCodeParamsType) => {
+  const response = await api.post<ApplyNationalCodeResponseType>(
     `${server}/register/otp/`,
     {
       uniqueIdentifier: nationalCode,

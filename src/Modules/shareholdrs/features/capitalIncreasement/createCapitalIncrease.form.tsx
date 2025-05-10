@@ -3,16 +3,17 @@ import { useCompany } from "../../../companies/hooks";
 import { useUserData } from "../../../users/hooks";
 import { useCapital } from "../../hooks";
 import * as Yup from "yup";
-import { FormField } from "../../../../types";
+import { FormFieldType } from "@/types";
 import toast from "react-hot-toast";
-import { CapitalIncreaseCreate } from "../../types/capitalCreate.type";
+import { CapitalIncreaseCreateType } from "../../types/capitalCreate.type";
+import { CompanyType } from "../../../companies/types";
 
 const CreateCapitalIncreaseForm = () => {
   const { mutate: postCapitalIncrease } = useCapital.useCreate();
   const { data: companies } = useCompany.useGet();
   const { data: users } = useUserData();
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     { name: "amount", label: "تعداد سهام", type: "text" as const },
     { name: "value", label: "قیمت", type: "text" as const },
     {
@@ -20,10 +21,12 @@ const CreateCapitalIncreaseForm = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.map((company: { name: string; id: number }) => ({
-          label: company.name || "",
-          value: company.id.toString(),
-        })) || [],
+        companies?.flatMap((companyList: CompanyType[]) =>
+          companyList.map((company: CompanyType) => ({
+            label: company.name || "",
+            value: company.id.toString(),
+          }))
+        ) || [],
     },
     {
       name: "user",
@@ -31,7 +34,12 @@ const CreateCapitalIncreaseForm = () => {
       type: "select" as const,
       options:
         users?.map(
-          (user: { first_name: string; last_name: string; id: number; uniqueIdentifier: string }) => ({
+          (user: {
+            first_name: string;
+            last_name: string;
+            id: number;
+            uniqueIdentifier: string;
+          }) => ({
             label: `${user.first_name} ${user.last_name} | ${user.uniqueIdentifier}`,
             value: user.id.toString(),
           })
@@ -70,7 +78,7 @@ const CreateCapitalIncreaseForm = () => {
         loading: "در حال ارسال...",
       }}
       onSubmit={async (
-        values: CapitalIncreaseCreate,
+        values: CapitalIncreaseCreateType,
         { setSubmitting, resetForm }
       ) => {
         try {

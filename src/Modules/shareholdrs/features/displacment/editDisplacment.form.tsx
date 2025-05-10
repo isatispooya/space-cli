@@ -1,11 +1,12 @@
 import toast from "react-hot-toast";
 import { Forms } from "../../../../components";
-import { DisplacementPrecendenceTypes } from "../../types/displacementPrecendence.type";
+import { DisplacementPrecendenceType } from "../../types/displacementPrecendence.type";
 import * as yup from "yup";
 import { useDisplacement } from "../../hooks";
 import { useUserData } from "../../../users/hooks";
 import { useCompany } from "../../../companies/hooks";
 import { useNavigate, useParams } from "react-router-dom";
+import { CompanyType } from "../../../companies/types";
 
 const EditDisplacmentForm: React.FC = () => {
   const { mutate } = useDisplacement.useUpdate();
@@ -16,7 +17,7 @@ const EditDisplacmentForm: React.FC = () => {
 
   const navigate = useNavigate();
   const displacement = displacementData?.find(
-    (item: DisplacementPrecendenceTypes) => item.id === Number(id)
+    (item: DisplacementPrecendenceType) => item.id === Number(id)
   );
 
   if (!displacement && !id) {
@@ -63,14 +64,16 @@ const EditDisplacmentForm: React.FC = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.map((company: { name: string; id: number }) => ({
-          label: company.name,
-          value: company.id.toString(),
-        })) || [],
+        companies?.flatMap((companyList: CompanyType[]) =>
+          companyList.map((company: CompanyType) => ({
+            label: company.name,
+            value: company.id.toString(),
+          }))
+        ) || [],
     },
   ];
 
-  const initialValues: DisplacementPrecendenceTypes = {
+  const initialValues: DisplacementPrecendenceType = {
     id: displacement?.id || 0,
     buyer: displacement?.buyer || 0,
     seller: displacement?.seller || 0,
@@ -86,9 +89,9 @@ const EditDisplacmentForm: React.FC = () => {
     company: yup.number().required("شرکت الزامی است"),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),
     price: yup.number().required("قیمت الزامی است"),
-  }) as yup.ObjectSchema<DisplacementPrecendenceTypes>;
+  }) as yup.ObjectSchema<DisplacementPrecendenceType>;
 
-  const onSubmit = (values: DisplacementPrecendenceTypes) => {
+  const onSubmit = (values: DisplacementPrecendenceType) => {
     if (displacement?.id) {
       mutate(
         { data: values, id: displacement?.id.toString() },

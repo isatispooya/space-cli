@@ -1,11 +1,11 @@
-export interface BaseUser {
+export interface BaseUserType {
   id: number;
   first_name: string;
   last_name: string;
   uniqueIdentifier?: string;
 }
 
-export interface SentMessage {
+export interface SentMessageType {
   id: number;
   title: string;
   receiver: string;
@@ -15,14 +15,9 @@ export interface SentMessage {
   message_type: string;
 }
 
-export interface CellComponent {
-  getElement: () => HTMLElement;
-  getRow: () => { getData: () => SentMessage };
-}
-
-export interface CorrespondenceAttachment {
+export interface CorrespondenceAttachmentType {
   id: number;
-  user: BaseUser;
+  user: BaseUserType;
   name: string;
   file: string;
   size: number;
@@ -30,14 +25,14 @@ export interface CorrespondenceAttachment {
   updated_at: string;
 }
 
-export interface ReferenceData {
+export interface ReferenceDataType {
   id: number;
   enabled: boolean;
   transcript_for: string;
   external_text?: string;
 }
 
-export interface TranscriptData {
+export interface TranscriptDataType {
   read_at: string;
   transcript_for: string;
   security: boolean;
@@ -46,7 +41,7 @@ export interface TranscriptData {
   external_text?: string;
 }
 
-export interface TranscriptAPIData {
+export interface TranscriptAPIDataType {
   read_at: string;
   transcript_for: string;
   security: boolean;
@@ -76,7 +71,7 @@ export interface APIFormDataType {
   authority_type: string;
   authority_correspondence: number | null;
   reference: number[];
-  transcript: TranscriptAPIData[];
+  transcript: TranscriptAPIDataType[];
   published: boolean;
 }
 
@@ -101,20 +96,20 @@ export type FormDataType = {
   authority_type: string;
   authority_correspondence: number | null;
   reference: number[];
-  referenceData?: ReferenceData[];
-  transcript: TranscriptData[];
+  referenceData?: ReferenceDataType[];
+  transcript: TranscriptDataType[];
   published: boolean;
 };
 
-export interface AttachmentResponse {
+export interface AttachmentResponseType {
   id: number;
   name: string;
   file: string;
   size: number;
 }
 
-export interface SenderDetails {
-  user: BaseUser;
+export interface SenderDetailsType {
+  user: BaseUserType;
   name?: string;
   company_detail?: {
     logo: string;
@@ -124,32 +119,32 @@ export interface SenderDetails {
   };
 }
 
-export interface ReceiverInternalDetails {
-  user: BaseUser;
+export interface ReceiverInternalDetailsType {
+  user: BaseUserType;
   name?: string;
 }
 
-export interface CorrespondenceItem {
+export interface CorrespondenceItemType {
   id: number;
   subject: string;
-  sender_details: SenderDetails;
-  receiver_internal_details: ReceiverInternalDetails;
+  sender_details: SenderDetailsType;
+  receiver_internal_details: ReceiverInternalDetailsType;
   receiver_external: string;
   is_internal: boolean;
   created_at: string;
   priority: string;
   number: string;
-  name:string;
+  name: string;
 }
 
-export interface CorrespondenceResponse {
-  sender: CorrespondenceItem[];
-  receiver: CorrespondenceItem[];
+export interface CorrespondenceResponseType {
+  sender: CorrespondenceItemType[];
+  receiver: CorrespondenceItemType[];
 }
 
-export type CorrespondenceAttachments = CorrespondenceAttachment[];
+export type CorrespondenceAttachmentsType = CorrespondenceAttachmentType[];
 
-export interface TranscriptDetails {
+export interface TranscriptDetailsType {
   id: number;
   read_at: string | null;
   transcript_for: string;
@@ -160,9 +155,9 @@ export interface TranscriptDetails {
   correspondence: number;
 }
 
-export interface Attachment {
+export interface AttachmentType {
   id: number;
-  user: BaseUser;
+  user: BaseUserType;
   name: string;
   file: string;
   size: number;
@@ -170,90 +165,90 @@ export interface Attachment {
   updated_at: string;
 }
 
-export interface Position {
+export interface PositionType {
   id: number;
   name: string;
-  user?: BaseUser;
+  user?: BaseUserType;
   signature?: string;
 }
 
 export interface SenderType {
   created_at: string;
-  attachments_details?: CorrespondenceAttachment[];
+  attachments_details?: CorrespondenceAttachmentType[];
   number: string;
   confidentiality_level?: string;
   subject: string;
-  sender_details?: SenderDetails;
-  receiver_internal_details?: ReceiverInternalDetails;
+  sender_details?: SenderDetailsType;
+  receiver_internal_details?: ReceiverInternalDetailsType;
   receiver_external?: string;
   is_internal: boolean;
   text: string;
   content?: string;
-  transcript_details: TranscriptDetails[];
+  transcript_details: TranscriptDetailsType[];
   postcript?: string;
 }
 
-export interface MatchedUser {
+export interface MatchedUserType {
   position: string;
   id: number;
   firstName: string;
   lastName: string;
 }
 
-export interface MessageHeaderProps {
+export interface MessageHeaderPropsType {
   sender: SenderType;
   formattedDate: string;
 }
 
-export interface MessageContentProps {
+export interface MessageContentPropsType {
   sender: SenderType;
-  signature?: Position[];
-  allposition?: Position[];
+  signature?: PositionType[];
+  allposition?: PositionType[];
 }
 
-export interface MessageFooterProps {
+export interface MessageFooterPropsType {
   sender: SenderType;
-  matchedUsers?: MatchedUser[];
+  matchedUsers?: MatchedUserType[];
 }
 
-export interface SelectOption {
+export interface SelectOptionType {
   label: string;
   value: string;
 }
 
-export interface FormOptions {
-  priorityOptions: SelectOption[];
-  departmentOptions: SelectOption[];
-  letterTypeOptions: SelectOption[];
-  senderUserOptions: SelectOption[];
-  internalUserOptions: SelectOption[];
-  attachmentOptions: SelectOption[];
+export interface FormOptionsType {
+  priorityOptions: SelectOptionType[];
+  departmentOptions: SelectOptionType[];
+  letterTypeOptions: SelectOptionType[];
+  senderUserOptions: SelectOptionType[];
+  internalUserOptions: SelectOptionType[];
+  attachmentOptions: SelectOptionType[];
 }
 
-interface SectionProps {
+export interface SectionPropsType {
   formData: APIFormDataType;
   handleChange: (name: string, value: string | boolean | string[]) => void;
 }
 
-export interface SenderSectionProps extends SectionProps {
-  senderUserOptions: SelectOption[];
-  senderUserOptionsOut: SelectOption[];
+export interface SenderSectionPropsType extends SectionPropsType {
+  senderUserOptions: SelectOptionType[];
+  senderUserOptionsOut: SelectOptionType[];
   useInternalReceiver: boolean;
-  internalUserOptions: SelectOption[];
+  internalUserOptions: SelectOptionType[];
 }
 
-export interface PrioritySectionProps extends SectionProps {
-  priorityOptions: SelectOption[];
-  departmentOptions: SelectOption[];
-  letterTypeOptions: SelectOption[];
+export interface PrioritySectionPropsType extends SectionPropsType {
+  priorityOptions: SelectOptionType[];
+  departmentOptions: SelectOptionType[];
+  letterTypeOptions: SelectOptionType[];
 }
 
-export interface AttachmentSectionProps extends SectionProps {
+export interface AttachmentSectionPropsType extends SectionPropsType {
   setOpenFileDialog: (open: boolean) => void;
-  attachmentOptions: SelectOption[];
+  attachmentOptions: SelectOptionType[];
 }
 
-export interface ITranscriptResponse {
+export interface ITranscriptResponseType {
   id: number;
   read_at: string | null;
   transcript_for: "notification" | "security" | string;

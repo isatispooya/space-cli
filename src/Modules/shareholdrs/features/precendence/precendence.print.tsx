@@ -4,7 +4,7 @@ import { usePrecendence } from "../../hooks";
 import moment from "jalali-moment";
 import "moment/locale/fa";
 import { useParams } from "react-router-dom";
-import { PrecedenceTypes } from "../../types/precedence.type";
+import { PrecedenceType } from "../../types/precedence.type";
 
 const PrintPrecendence: FC = () => {
   const handlePrint = () => {
@@ -12,7 +12,7 @@ const PrintPrecendence: FC = () => {
   };
   const { id } = useParams();
   const { data, isLoading } = usePrecendence.useGetById(Number(id));
-  const precedence = data as PrecedenceTypes | undefined;
+  const precedence = data as PrecedenceType | undefined;
 
   if (isLoading) {
     return <div>در حال بارگذاری...</div>;

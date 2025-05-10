@@ -1,4 +1,4 @@
-export interface GiftsPost {
+export interface GiftsPostType {
   description: string;
   id: string;
 }

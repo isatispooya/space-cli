@@ -5,37 +5,37 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { getPositions, patchPosition, postPosition } from "../services";
-import { PositionPostTypes, PositionTypes } from "../types";
+import { PositionPostType, PositionType } from "../types";
 import { AxiosError } from "axios";
 import getAllPositions from "../services/allposition.get";
 import getUserOfPosition from "../services/userOfPosition.get";
 export const usePosition = {
-  useGet: (): UseQueryResult<PositionTypes[]> => {
+  useGet: (): UseQueryResult<PositionType[]> => {
     return useQuery({
       queryKey: ["positions.get"],
       queryFn: getPositions,
     });
   },
-  useGetAll: (): UseQueryResult<PositionTypes[]> => {
+  useGetAll: (): UseQueryResult<PositionType[]> => {
     return useQuery({
       queryKey: ["positions.getAll"],
       queryFn: getAllPositions,
     });
   },
-  useGetUserOfPosition: (): UseQueryResult<PositionTypes[]> => {
+  useGetUserOfPosition: (): UseQueryResult<PositionType[]> => {
     return useQuery({
       queryKey: ["positions.getUserOfPosition"],
       queryFn: getUserOfPosition,
     });
   },
   useCreate: (): UseMutationResult<
-    PositionPostTypes,
+    PositionPostType,
     AxiosError,
-    PositionPostTypes
+    PositionPostType
   > => {
     return useMutation({
       mutationKey: ["create-position"],
-      mutationFn: async (data: PositionPostTypes) => {
+      mutationFn: async (data: PositionPostType) => {
         const response = await postPosition(data);
         return response.data;
       },
@@ -44,13 +44,13 @@ export const usePosition = {
   useUpdate: (
     id: number
   ): UseMutationResult<
-    PositionPostTypes,
+    PositionPostType,
     AxiosError,
-    { data: PositionPostTypes }
+    { data: PositionPostType }
   > => {
     return useMutation({
       mutationKey: ["update-position"],
-      mutationFn: async ({ data }: { data: PositionPostTypes }) => {
+      mutationFn: async ({ data }: { data: PositionPostType }) => {
         const response = await patchPosition({ id, data });
         return response.data;
       },

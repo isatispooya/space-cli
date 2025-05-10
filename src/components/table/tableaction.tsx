@@ -1,19 +1,19 @@
 import React, { useEffect, useRef } from "react";
 
-interface MenuItemProps {
+interface MenuItemPropsType {
   icon: string;
   label: string;
   onClick: () => void;
   color?: string;
 }
 
-interface ActionMenuProps {
-  items: MenuItemProps[];
+interface ActionMenuPropsType {
+  items: MenuItemPropsType[];
   position: { x: number; y: number };
   onClose: () => void;
 }
 
-export const ActionMenu: React.FC<ActionMenuProps> = ({
+export const ActionMenu: React.FC<ActionMenuPropsType> = ({
   items,
   position,
   onClose,

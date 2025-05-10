@@ -2,12 +2,12 @@ import { ChangeEvent } from "react";
 import { motion } from "framer-motion";
 import { BiGlasses } from "react-icons/bi";
 
-interface SearchBarProps {
+interface SearchBarPropsType {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchBar = ({ value, onChange }: SearchBarProps) => {
+const SearchBar = ({ value, onChange }: SearchBarPropsType) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}

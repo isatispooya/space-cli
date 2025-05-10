@@ -1,10 +1,10 @@
 import { mali } from "@/assets";
 
-interface LogoProps {
+interface LogoPropsType {
   positionSize: string;
 }
 
-const Logo = ({ positionSize }: LogoProps) => {
+const Logo: React.FC<LogoPropsType> = ({ positionSize }) => {
   return <img src={mali} className={positionSize} />;
 };
 

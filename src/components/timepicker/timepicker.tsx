@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import dayjs from "dayjs";
 
-interface TimePickerProps {
+interface TimePickerPropsType {
   value?: string | Date | dayjs.Dayjs | null;
   onChange?: (time: string | Date) => void;
   is24Hour?: boolean;
@@ -15,7 +15,7 @@ interface TimePickerProps {
   cancelButtonText?: string;
 }
 // do not use this component   _________________________________________________________________
-const TimePicker: React.FC<TimePickerProps> = ({
+const TimePicker: React.FC<TimePickerPropsType> = ({
   value = "",
   onChange,
   is24Hour = true,

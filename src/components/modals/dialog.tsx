@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { UseQueryResult } from "@tanstack/react-query";
 import { IoCloseCircleOutline } from "react-icons/io5";
 
-import { ModalsTypes } from "./types";
+import { ModalsType } from "./types";
 import { animationVariants, sizeClasses } from "./data/dialogVar";
 
 // Dialog Context
@@ -36,7 +36,7 @@ const Dialog = ({
   contentClassName = "",
   closeOnOutsideClick = true,
   preventScroll = true,
-}: ModalsTypes["DialogProps"]) => {
+}: ModalsType["DialogProps"]) => {
   const positionClasses = {
     center: "items-center",
     top: "items-start pt-16",

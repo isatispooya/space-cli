@@ -4,7 +4,7 @@ import toast, { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import PassInput from "../../../components/common/inputs/passInput";
 import InputBase from "../../../components/common/inputs/inputBase";
 import Spinner from "../../../components/loaders/spinner";
-import { ErrorResponse } from "../../../types";
+import { ErrorResponseType } from "../../../types";
 import { AxiosError } from "axios";
 import { Toast } from "../../../components/common";
 const LoginForm = ({
@@ -33,7 +33,7 @@ const LoginForm = ({
           Toast("ورود با موفقیت انجام شد", <CheckmarkIcon />, "bg-green-500");
         },
         onError: (error: AxiosError<unknown>) => {
-          const errorMessage = (error.response?.data as ErrorResponse)?.error;
+          const errorMessage = (error.response?.data as ErrorResponseType)?.error;
           Toast(
             errorMessage || "نام کاربری یا رمز عبور اشتباه است",
             <ErrorIcon />,

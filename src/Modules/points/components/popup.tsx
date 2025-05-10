@@ -1,4 +1,4 @@
-interface PopupProps {
+interface PopupPropsType {
   isOpen: boolean;
   label: string;
   text: string;
@@ -15,7 +15,7 @@ const Popup = ({
   onConfirm,
   onCancel,
   onClose,
-}: PopupProps) => {
+}: PopupPropsType) => {
   return (
     <>
       {isOpen && (

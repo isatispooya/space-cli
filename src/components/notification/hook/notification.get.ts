@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { notificationService } from "../service";
 
-interface NotificationData {
+interface NotificationDataType {
   id: number;
   message: string;
   date: string;
@@ -13,7 +13,7 @@ interface NotificationData {
 }
 
 const useCorrespondencesData = () => {
-  return useQuery<NotificationData[]>({
+  return useQuery<NotificationDataType[]>({
     queryKey: ["notifications"],
     queryFn: notificationService.get,
   });

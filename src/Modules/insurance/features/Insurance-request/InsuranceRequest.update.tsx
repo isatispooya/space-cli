@@ -1,20 +1,25 @@
+import { server } from "@/api";
 import React, { useEffect } from "react";
+import {
+  FormInput,
+  SelectInput,
+  Toast,
+  FileInput,
+  Spinner,
+  ViewFileInput,
+  TextAreaInput,
+} from "@/components";
+
 import { useParams } from "react-router-dom";
 import { AxiosError } from "axios";
 import useInsurance from "../../hooks/useInsurance";
 import { useUserPermissions } from "../../../permissions";
 import { useInsuranceRStore } from "../../store";
-import { FormInput, SelectInput } from "../../../../components";
-import { FileInput } from "../../../../components";
-import { Spinner } from "../../../../components/loaders";
-import { Toast } from "../../../../components";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
-import { TextAreaInput, ViewFileInput } from "../../../../components";
 import { FileField } from "../../components";
-import { ErrorResponse } from "../../../../types";
-import { InsuranceField, InsuranceRequest } from "../../types";
+import { ErrorResponseType } from "@/types";
+import { InsuranceFieldType, InsuranceRequestType } from "../../types";
 import { statusOptions } from "../../data";
-import { server } from "../../../../api";
 
 const InsuranceRequestUpdate: React.FC = () => {
   const { id } = useParams();
@@ -47,7 +52,7 @@ const InsuranceRequestUpdate: React.FC = () => {
   } = useInsuranceRStore();
 
   const dataId = currentInsurance?.find(
-    (item: InsuranceRequest) => item.id === Number(id)
+    (item: InsuranceRequestType) => item.id === Number(id)
   );
   const hasPermission =
     Array.isArray(permissions) &&
@@ -126,7 +131,7 @@ const InsuranceRequestUpdate: React.FC = () => {
         setIsSubmitting(false);
       },
       onError: (error: AxiosError<unknown>) => {
-        const errorMessage = (error.response?.data as ErrorResponse)?.error;
+        const errorMessage = (error.response?.data as ErrorResponseType)?.error;
         Toast(errorMessage || "خطایی رخ داده است", <ErrorIcon />, "bg-red-500");
         setIsSubmitting(false);
       },
@@ -325,7 +330,7 @@ const InsuranceRequestUpdate: React.FC = () => {
           </>
         )}
 
-        {selectedInsuranceFields?.map((field: InsuranceField) => {
+        {selectedInsuranceFields?.map((field: InsuranceFieldType) => {
           const existingFile = getExistingFile(field.id.toString());
           return (
             <FileField

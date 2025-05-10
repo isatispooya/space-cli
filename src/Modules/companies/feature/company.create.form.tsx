@@ -1,6 +1,6 @@
 import Forms from "../../../components/form/forms";
-import { FormField } from "../../../types";
-import { CompanyTypes } from "../types";
+import { FormFieldType } from "../../../types";
+import { CompanyType } from "../types";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FormikHelpers } from "formik";
@@ -18,7 +18,7 @@ const COMPANY_TYPES = [
   { value: "cooperative", label: "تعاونی" },
 ];
 
-const formFields: FormField[] = [
+const formFields: FormFieldType[] = [
   { name: "name", label: "نام شرکت", type: "text" },
   {
     name: "company_type",
@@ -78,22 +78,22 @@ const validationSchema = Yup.object().shape({
 const CreateCompanyForm = () => {
   const { mutate: createCompany } = useCompany.useCreate();
   const navigate = useNavigate();
-  const initialValues: CompanyTypes = formFields.reduce(
+  const initialValues: CompanyType = formFields.reduce(
     (acc, field) => ({
       ...acc,
       [field.name]: "",
     }),
-    {} as CompanyTypes
+    {} as CompanyType
   );
 
   const handleSubmit = async (
-    values: CompanyTypes,
-    { setSubmitting }: FormikHelpers<CompanyTypes>
+    values: CompanyType,
+    { setSubmitting }: FormikHelpers<CompanyType>
   ) => {
     const formData = new FormData();
 
     Object.keys(values).forEach((key) => {
-      const value = values[key as keyof CompanyTypes];
+      const value = values[key as keyof CompanyType];
       if (
         key === "logo" ||
         key === "letterhead" ||
@@ -122,11 +122,11 @@ const CreateCompanyForm = () => {
   };
 
   return (
-    <Forms<CompanyTypes>
+    <Forms<CompanyType>
       formFields={formFields}
       initialValues={initialValues}
       validationSchema={
-        validationSchema as unknown as Yup.ObjectSchema<CompanyTypes>
+        validationSchema as unknown as Yup.ObjectSchema<CompanyType>
       }
       title="ثبت اطلاعات شرکت"
       colors="text-[#29D2C7]"

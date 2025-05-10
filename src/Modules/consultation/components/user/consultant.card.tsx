@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 import { Card } from '@/components'; 
 import type { ConsultantType } from '../../types';
 
-interface ConsultantCardProps {
+interface ConsultantCardPropsType {
   consultant: ConsultantType;
   onSelect: (id: string) => void;
 }
 
- const ConsultantCard = ({ consultant, onSelect }: ConsultantCardProps) => {
+ const ConsultantCard = ({ consultant, onSelect }: ConsultantCardPropsType) => {
   return (
     <motion.div
       whileHover={{ y: -4 }}

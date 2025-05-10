@@ -2,7 +2,7 @@ import { FC } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
-interface ViewDownloadProps {
+interface ViewDownloadPropsType {
   title?: string;
   key?: number;
   description: string;
@@ -18,7 +18,7 @@ interface ViewDownloadProps {
   img?: File | string;
 }
 
-const ViewDownload: FC<ViewDownloadProps> = ({
+const ViewDownload: FC<ViewDownloadPropsType> = ({
   title,
   key,
   description,

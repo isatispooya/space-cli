@@ -1,12 +1,12 @@
 import api from "../../../api/api";
 import { server } from "../../../api/server";
-import { ResetPassParams } from "../types";
+import { ResetPassParamsType } from "../types";
 
 const postForgetPass = async ({
   smsCode,
   newPass,
   confirmNewPass,
-}: ResetPassParams) => {
+}: ResetPassParamsType) => {
   const response = await api.patch(`${server}/forgot-password/`, {
     code: smsCode,
     new_password: newPass,

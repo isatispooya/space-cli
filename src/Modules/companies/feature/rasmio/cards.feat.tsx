@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useCompany from "../../hooks/useCompany";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useState } from "react";
-import { CompanyTypes } from "../../types/company.type";
+import { CompanyType } from "../../types/company.type";
 import {
   CardContainer,
   FlipCardContainer,
@@ -14,7 +14,6 @@ import {
   CardsGrid,
   CompanyName,
   InfoText,
-  CompanyType,
 } from "./styles/cards.styles";
 
 const Cards = () => {
@@ -126,7 +125,7 @@ const Cards = () => {
           <div>درحال بارگذاری</div>
         ) : (
           Array.isArray(staticCompanyData) &&
-          staticCompanyData.map((company: CompanyTypes) => (
+          staticCompanyData.map((company: CompanyType) => (
             <CardContainer
               key={company.id}
               onClick={() => handleCardClick(company.id)}
@@ -138,7 +137,7 @@ const Cards = () => {
               />
               <div className="flex flex-col flex-grow justify-center gap-2">
                 <CompanyName>{company.title}</CompanyName>
-                <CompanyType>{company.registration_type_title}</CompanyType>
+                <InfoText>{company.registration_type_title}</InfoText>
                 <InfoText>{company.address || "ثبت نشده"}</InfoText>
                 <InfoText>{company.description || "ثبت نشده"}</InfoText>
               </div>

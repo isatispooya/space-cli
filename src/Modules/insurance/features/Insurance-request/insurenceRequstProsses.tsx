@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useInsurance } from "../../hooks";
-import Accordion from "../../../../components/common/accordian/accordian";
+import { Accordian } from "@/components";
 import { InsuranceRequestUpdate } from "../..";
 import { InsurancePayment } from ".";
 import { useUserPermissions } from "../../../permissions";
@@ -39,23 +39,23 @@ const InsurenceRequestProsses = () => {
 
   return (
     <div className="w-[80%] mx-auto rounded-lg p-4 flex flex-col gap-4">
-      <Accordion
+      <Accordian
         title="اطلاعات درخواست"
         isOpen={isOpen}
         onToggle={handleToggle}
         disabled={isLocked_step_1}
       >
         <InsuranceRequestUpdate />
-      </Accordion>
+      </Accordian>
 
-      <Accordion
+      <Accordian
         title="پرداخت"
         isOpen={isOpen2}
         onToggle={handleToggle2}
         disabled={isLocked_step_2}
       >
         <InsurancePayment />
-      </Accordion>
+      </Accordian>
     </div>
   );
 };

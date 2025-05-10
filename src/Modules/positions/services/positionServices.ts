@@ -1,5 +1,5 @@
-import { api } from "../../../api";
-import { PositionPostTypes } from "../types";
+import { api } from "@/api";
+import { PositionPostType } from "../types";
 
 const positionService = {
   getList: async () => {
@@ -7,7 +7,7 @@ const positionService = {
     return response.data;
   },
 
-  update: async (id: number, data: PositionPostTypes) => {
+  update: async (id: number, data: PositionPostType) => {
     const response = await api.patch(`/positions/positions/${id}/`, data);
     return response.data;
   },

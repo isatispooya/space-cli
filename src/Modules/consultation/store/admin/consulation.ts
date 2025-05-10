@@ -1,15 +1,15 @@
 import { create } from 'zustand';
-import {  ConsultationRequest, ConsultingReserveTurn } from '../../types/consultation_request.type';
+import {  ConsultationRequestType, ConsultingReserveTurnType } from '../../types/consultation_request.type';
 
-interface ConsultationStore {
-  consultationData: ConsultingReserveTurn | null;
-  formData: ConsultationRequest;
-  setConsultationData: (data: ConsultingReserveTurn | null) => void;
-  setFormData: (data: Partial<ConsultationRequest>) => void;
+interface ConsultationStoreType {
+  consultationData: ConsultingReserveTurnType | null;
+  formData: ConsultationRequestType;
+  setConsultationData: (data: ConsultingReserveTurnType | null) => void;
+  setFormData: (data: Partial<ConsultationRequestType>) => void;
   resetFormData: () => void;
 }
 
-const initialFormData: ConsultationRequest = {
+const initialFormData: ConsultationRequestType = {
   requestName: "",
   consultantId: "",
   consultationType: [],
@@ -21,11 +21,11 @@ const initialFormData: ConsultationRequest = {
   status: "open",
 };
 
-export const useConsultationStore = create<ConsultationStore>((set) => ({
+export const useConsultationStore = create<ConsultationStoreType>((set) => ({
   consultationData: null,
   formData: initialFormData,
   
-  setConsultationData: (data) => set({ consultationData: data }),
+  setConsultationData: (data: ConsultingReserveTurnType | null) => set({ consultationData: data }),
   
   setFormData: (data) => 
     set((state) => ({

@@ -2,13 +2,13 @@ import { motion } from "framer-motion";
 import { BiChevronDown, BiSearch } from "react-icons/bi";
 import { useState, useEffect, useMemo } from "react";
 
-interface Option {
+interface OptionType {
   value: string;
   label: string;
 }
 
-interface SelectInputProps {
-  options: readonly Option[] | Option[];
+interface SelectInputPropsType {
+  options: readonly OptionType[] | OptionType[];
   label?: string;
   value?: string;
   onChange?: (value: string) => void;
@@ -17,7 +17,7 @@ interface SelectInputProps {
   disabled?: boolean;
 }
 
-const SelectInput = ({
+const SelectInput: React.FC<SelectInputPropsType> = ({
   options,
   label,
   value,
@@ -25,12 +25,12 @@ const SelectInput = ({
   className = "",
   placeholder = "جستجو...",
   disabled = false,
-}: SelectInputProps) => {
+}: SelectInputPropsType) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredOptions = useMemo(() => {
-    return options.filter((option) =>
+    return options.filter((option: OptionType) =>
       option?.label?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, options]);

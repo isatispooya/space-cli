@@ -5,23 +5,23 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { getInvitation } from "../services";
-import { InvitationPostTypes, InvitationTypes } from "../types";
+import { InvitationPostType, InvitationType } from "../types";
 
 const useInvitation = {
-  useGetList: (): UseQueryResult<InvitationTypes[]> =>
+  useGetList: (): UseQueryResult<InvitationType[]> =>
     useQuery({
       queryKey: ["invitation"],
       queryFn: getInvitation.getList,
     }),
-  useGetCodes: (): UseQueryResult<InvitationTypes[]> =>
+  useGetCodes: (): UseQueryResult<InvitationType[]> =>
     useQuery({
       queryKey: ["invitation-codes"],
       queryFn: getInvitation.getCodes,
     }),
   useCreateCodes: (): UseMutationResult<
-    InvitationPostTypes,
+    InvitationPostType,
     Error,
-    InvitationPostTypes
+    InvitationPostType
   > =>
     useMutation({
       mutationKey: ["invitation-codes-mutate"],
