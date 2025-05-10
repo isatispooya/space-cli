@@ -47,6 +47,7 @@ export interface ButtonProps extends HTMLMotionProps<"button"> {
   fullWidth?: boolean;
   animationOnHover?: ButtonAnimation;
   animationOnTap?: ButtonAnimation;
+
   ripple?: boolean;
   rippleColor?: string;
   loaderType?: LoaderType;
@@ -80,6 +81,7 @@ const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   animationOnHover = "scale",
   animationOnTap = "scale",
+
   ripple = true,
   rippleColor,
   loaderType = "spinner",
