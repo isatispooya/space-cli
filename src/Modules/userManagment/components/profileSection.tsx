@@ -1,11 +1,11 @@
 import React from "react";
 
-interface ProfileSectionProps {
+interface ProfileSectionPropsType {
   title: string;
   children: React.ReactNode;
 }
 
-const ProfileSection: React.FC<ProfileSectionProps> = ({ title, children }) => (
+const ProfileSection: React.FC<ProfileSectionPropsType> = ({ title, children }) => (
   <section className="mb-12">
     <h2 className="text-xl font-bold text-gray-800 mb-4 border-b-2 pb-2 border-gray-300">
       {title}

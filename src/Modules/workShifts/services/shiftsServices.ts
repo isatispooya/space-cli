@@ -1,44 +1,44 @@
 import { api } from "@/api";
-import { ShiftTypes } from "../types";
+import { ShiftType } from "../types";
 
 const shiftsServices = {
-  getShifts: async (): Promise<ShiftTypes["getRes"]> => {
+  getShifts: async (): Promise<ShiftType["getRes"]> => {
     const { data } = await api.get("/timeflow/shift/");
     return data;
   },
   createShifts: async (
-    shiftData: ShiftTypes["postReq"]
-  ): Promise<ShiftTypes["postRes"]> => {
+    shiftData: ShiftType["postReq"]
+  ): Promise<ShiftType["postRes"]> => {
     const { data } = await api.post("/timeflow/shift/", shiftData);
     return data;
   },
   createShiftsDates: async (
-    datesData: ShiftTypes["postDatesReq"]
-  ): Promise<ShiftTypes["postDatesRes"]> => {
+    datesData: ShiftType["postDatesReq"]
+  ): Promise<ShiftType["postDatesRes"]> => {
     const { data } = await api.post("/timeflow/shift-date/", datesData);
     return data;
   },
-  getShiftsDates: async (id: string): Promise<ShiftTypes["datesRes"]> => {
+  getShiftsDates: async (id: string): Promise<ShiftType["datesRes"]> => {
     const response = await api.get(`/timeflow/shift-detail/${id}/`);
     return response.data;
   },
-  deleteShifts: async (id: string): Promise<ShiftTypes["deleteRes"]> => {
+  deleteShifts: async (id: string): Promise<ShiftType["deleteRes"]> => {
     const { data } = await api.delete(`/timeflow/shift/${id}/`);
     return data;
   },
-  deleteShiftsDates: async (id: string): Promise<ShiftTypes["deleteRes"]> => {
+  deleteShiftsDates: async (id: string): Promise<ShiftType["deleteRes"]> => {
     const { data } = await api.delete(`/timeflow/shift-date/${id}/`);
     return data;
   },
   updateShiftsDates: async (
     id: string,
-    data: ShiftTypes["updateDatesReq"]
-  ): Promise<ShiftTypes["updateDatesRes"]> => {
+    data: ShiftType["updateDatesReq"]
+  ): Promise<ShiftType["updateDatesRes"]> => {
     const response = await api.patch(`/timeflow/shift-date/${id}/`, data);
     return response.data;
   },
   createShiftsAssignments: async (
-    data: ShiftTypes["assignReq"]
+    data: ShiftType["assignReq"]
   ): Promise<any> => {
     const response = await api.post("/timeflow/set-shift-for-user/", data);
     return response.data;

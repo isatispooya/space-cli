@@ -1,20 +1,20 @@
 import { create } from "zustand";
 
-interface SidebarStore {
+interface SidebarStoreType {
   isOpen: boolean;
   toggleSidebar: () => void;
 }
-interface searchStore {
+interface SearchStoreType {
   search: string;
   setSearch: (search: string) => void;
 }
 
-export const useSidebarStore = create<SidebarStore>((set) => ({
+export const useSidebarStore = create<SidebarStoreType>((set) => ({
   isOpen: false,
   toggleSidebar: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
 
-export const useSearchStore = create<searchStore>((set) => ({
+export const useSearchStore = create<SearchStoreType>((set) => ({
   search: "",
-  setSearch: (search: string) =>set({ search }),
+  setSearch: (search: string) => set({ search }),
 }));

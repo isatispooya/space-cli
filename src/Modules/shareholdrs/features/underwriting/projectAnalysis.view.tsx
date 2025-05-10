@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 const ProjectAnalysisView: FC = () => {
   const { data } = useUnusedProcess.useGetList();
 
-  interface IProjectAnalysis {
+  interface IProjectAnalysisType {
     validation_project_description: string;
     validation_project: string;
     validation_project_regulator: string;
@@ -19,7 +19,7 @@ const ProjectAnalysisView: FC = () => {
 
   return (
     <div>
-      {data?.map((item: IProjectAnalysis, index: number) => (
+      {data?.map((item: IProjectAnalysisType, index: number) => (
         <ViewDownload
           target="_blank"
           downloadButtonText="دانلود تحلیل پروژه"

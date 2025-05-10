@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useDashboard } from "../hooks";
 import { LoaderLg } from "../../../components";
 
-interface Shortcut {
+interface ShortcutType {
   id: number;
   title: string;
   link: string;
@@ -43,7 +43,7 @@ const Shortcuts: FC = () => {
             هیچ لیستی موجود نیست
           </div>
         ) : (
-          data?.map((shortcut: Shortcut) => (
+          data?.map((shortcut: ShortcutType) => (
             <motion.div
               key={shortcut.id}
               variants={item}

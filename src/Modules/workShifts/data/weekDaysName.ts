@@ -1,9 +1,9 @@
-type WeekDaysName = {
+type WeekDaysNameType = {
   id: string;
   name: string;
 };
 
-const weekDaysName: WeekDaysName[] = [
+const weekDaysName: WeekDaysNameType[] = [
   { id: "0", name: "شنبه" },
   { id: "1", name: "یکشنبه" },
   { id: "2", name: "دوشنبه" },

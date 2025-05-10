@@ -27,7 +27,7 @@ const UnderwritingDescForm: FC = () => {
     );
   };
 
-  interface UnusedProcessData {
+  interface UnusedProcessDataType {
     description_picture: string;
     announcement_underwriting_description: string;
     description: string;
@@ -38,7 +38,7 @@ const UnderwritingDescForm: FC = () => {
     description_location: string;
   }
   const rf = `${invitation?.[0]?.code || ""}`;
-  const handleShare = async (item: UnusedProcessData) => {
+  const handleShare = async (item: UnusedProcessDataType) => {
     try {
       const shareText = `${item.description}\n\nکد معرف: ${rf}`;
 
@@ -69,7 +69,7 @@ const UnderwritingDescForm: FC = () => {
 
   return (
     <div className="flex flex-col w-full min-h-screen py-12">
-      {unusedProcessData?.map((item: UnusedProcessData, index: number) => (
+      {unusedProcessData?.map((item: UnusedProcessDataType, index: number) => (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

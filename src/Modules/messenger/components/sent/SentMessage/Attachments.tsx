@@ -2,18 +2,18 @@ import { Box, Typography, Paper, Button } from "@mui/material";
 import { AttachFile, Download } from "@mui/icons-material";
 import { server } from "@/api";
 
-interface AttachmentDetail {
+interface AttachmentDetailType {
   id: number;
   name: string;
   file: string;
   size: number;
 }
 
-interface AttachmentsProps {
-  attachments: AttachmentDetail[];
+interface AttachmentsPropsType {
+  attachments: AttachmentDetailType[];
 }
 
-export const MessageAttachments = ({ attachments }: AttachmentsProps) => {
+export const MessageAttachments = ({ attachments }: AttachmentsPropsType) => {
   if (!attachments || attachments.length === 0) return null;
 
   const handleDownload = (fileUrl: string) => {

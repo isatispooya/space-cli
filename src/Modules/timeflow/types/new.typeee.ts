@@ -1,4 +1,4 @@
-export interface UserInfo {
+export interface UserInfoType {
   id: number;
   username: string;
   email: string;
@@ -6,7 +6,7 @@ export interface UserInfo {
   last_name: string;
 }
 
-export interface TimeflowEvent {
+export interface TimeflowEventType {
   userUsername: string;
   userName: string;
   id: number;
@@ -21,8 +21,8 @@ export interface TimeflowEvent {
   time_system: string; // ISO 8601 timestamp with timezone
   time_user: string; // ISO 8601 timestamp with timezone
   type: "login" | string; // Can be expanded with other event types
-  user: UserInfo;
+  user: UserInfoType;
   user_agent: string;
 }
 
-export default TimeflowEvent;
+export default TimeflowEventType;

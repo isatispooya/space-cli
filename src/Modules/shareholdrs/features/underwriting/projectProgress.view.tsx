@@ -7,7 +7,7 @@ import { ViewDownload } from "../../../../components";
 const ProjectProgressView: FC = () => {
   const { data } = useUnusedProcess.useGetList();
 
-  interface IProgressPlan {
+  interface IProgressPlanType {
     progress_plan_description: string;
     progress_plan_regulator: string;
     progress_plan_regulator_logo: string;
@@ -27,7 +27,7 @@ const ProjectProgressView: FC = () => {
 
   return (
     <div>
-      {data?.map((item: IProgressPlan, index: number) => (
+      {data?.map((item: IProgressPlanType, index: number) => (
           <ViewDownload
             key={index}
             title="پیشرفت پروژه"

@@ -1,6 +1,6 @@
 import User from "./userLogs.type";
 
-type OtherLog = {
+export type OtherLogType = {
   id: number;
   status_parent: string;
   time_parent: string;
@@ -10,4 +10,4 @@ type OtherLog = {
   isOwnLog: boolean;
 };
 
-export default OtherLog;
+export default OtherLogType;

@@ -24,8 +24,8 @@ import {
   MoreHorizontal,
   LucideIcon,
 } from "lucide-react";
-type CategoryChoice = [string, string, LucideIcon, string];
-export const CATEGORY_CHOICES: CategoryChoice[] = [
+type CategoryChoiceType = [string, string, LucideIcon, string];
+export const CATEGORY_CHOICES: CategoryChoiceType[] = [
     ["digital", "کالای دیجیتال و الکترونیکی", Laptop, "from-sky-300 to-sky-500"],
     ["mobile", "موبایل و لوازم جانبی", Smartphone, "from-violet-300 to-violet-500"],
     ["office_electronics", "الکترونیک اداری و تجهیزات کامپیوتر", Printer, "from-green-300 to-green-500"],

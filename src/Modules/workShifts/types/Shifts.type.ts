@@ -67,7 +67,7 @@ export interface PostAssignmentsReqType {
   shift_id: number;
 }
 
-export type ShiftTypes = {
+export type ShiftType = {
   getRes: GetShiftsResType;
   postReq: ShiftsReqType;
   postRes: GetShiftsResType;
@@ -81,4 +81,4 @@ export type ShiftTypes = {
   updateDatesRes: ShiftDateUpdateResType[];
 };
 
-export default ShiftTypes;
+export default ShiftType;

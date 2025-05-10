@@ -1,26 +1,26 @@
 import * as Yup from "yup";
-import { underwritingCreateTypes } from "../../types/underwritingCreate.type";
-import { underwritingTypes } from "../../types/underwriting.type";
+import { UnderwritingCreateType } from "../../types/underwritingCreate.type";
+import { UnderwritingType } from "../../types/underwriting.type";
 import { useUnderwriting, useUnusedProcess } from "../../hooks";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { AgreementPopup } from "../../components";
 import { formatNumber } from "../../../../utils";
-import {sep} from "@/assets" 
+import { sep } from "@/assets";
 import { ErrorIcon, toast } from "react-hot-toast";
 import { AxiosError } from "axios";
 import { FaCheckCircle } from "react-icons/fa";
 
-interface ErrorResponse {
+interface ErrorResponseType {
   error: string;
 }
 
-interface SelectOption {
+interface SelectOptionType {
   label: string;
   value: string;
 }
 
-interface UserAccount {
+interface UserAccountType {
   is_default: boolean;
   sheba_number: string;
 }
@@ -37,7 +37,6 @@ const CreateUnderWritingForm = () => {
     { label: "فیش", value: "1" },
     { label: "درگاه", value: "2" },
   ];
-
 
   useEffect(() => {
     setShowPopup(true);
@@ -56,7 +55,7 @@ const CreateUnderWritingForm = () => {
   }, [unusedPrecedenceProcess]);
 
   const companyOptions =
-    unusedPrecedenceProcess?.map((process: underwritingTypes) => ({
+    unusedPrecedenceProcess?.map((process: UnderwritingType) => ({
       label: process.company,
       value: process.id,
     })) || [];
@@ -71,13 +70,13 @@ const CreateUnderWritingForm = () => {
       type: "2",
       document: null,
     },
-  validationSchema: Yup.object({
-    amount: Yup.string()
-      .required("مقدار الزامی است")
-      .matches(/^\d+$/, "فقط اعداد مجاز هستند"), // Ensure only numbers are allowed
-    company: Yup.string().required("شرکت الزامی است"),
-    type: Yup.string().required("نوع الزامی است"),
-  }),
+    validationSchema: Yup.object({
+      amount: Yup.string()
+        .required("مقدار الزامی است")
+        .matches(/^\d+$/, "فقط اعداد مجاز هستند"), // Ensure only numbers are allowed
+      company: Yup.string().required("شرکت الزامی است"),
+      type: Yup.string().required("نوع الزامی است"),
+    }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
         if (values.type === "1") {
@@ -90,39 +89,36 @@ const CreateUnderWritingForm = () => {
             formData.append("document", values.document);
           }
 
-          await postPrecendence(
-            formData as unknown as underwritingCreateTypes,
-            {
-              onSuccess: (response) => {
-                if (response.redirect_url) {
-                  window.open(response.redirect_url, "_blank");
-                }
-                toast.success("عملیات با موفقیت انجام شد");
-              },
-              onError: (error: AxiosError<unknown>) => {
-                const errorMessage = (error.response?.data as ErrorResponse)
-                  ?.error;
-                toast.custom((t) => (
-                  <div
-                    className={`${
-                      t.visible ? "animate-enter" : "animate-leave"
-                    } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-                  >
-                    <div className="flex-1 w-0 p-4">
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 pt-0.5">
-                          <ErrorIcon className="h-10 w-10 rounded-full" />
-                        </div>
-                        <p>{errorMessage || "خطایی رخ داده است"}</p>
+          await postPrecendence(formData as unknown as UnderwritingCreateType, {
+            onSuccess: (response) => {
+              if (response.redirect_url) {
+                window.open(response.redirect_url, "_blank");
+              }
+              toast.success("عملیات با موفقیت انجام شد");
+            },
+            onError: (error: AxiosError<unknown>) => {
+              const errorMessage = (error.response?.data as ErrorResponseType)
+                ?.error;
+              toast.custom((t) => (
+                <div
+                  className={`${
+                    t.visible ? "animate-enter" : "animate-leave"
+                  } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                >
+                  <div className="flex-1 w-0 p-4">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 pt-0.5">
+                        <ErrorIcon className="h-10 w-10 rounded-full" />
                       </div>
+                      <p>{errorMessage || "خطایی رخ داده است"}</p>
                     </div>
                   </div>
-                ));
-              },
-            }
-          );
+                </div>
+              ));
+            },
+          });
         } else {
-          const purchaseData: underwritingCreateTypes = {
+          const purchaseData: UnderwritingCreateType = {
             amount: Number(values.amount),
             type: String(values.type),
             process: String(values.company),
@@ -159,7 +155,7 @@ const CreateUnderWritingForm = () => {
               ));
             },
             onError: (error: AxiosError<unknown>) => {
-              const errorMessage = (error.response?.data as ErrorResponse)
+              const errorMessage = (error.response?.data as ErrorResponseType)
                 ?.error;
               toast.custom((t) => (
                 <div
@@ -192,7 +188,7 @@ const CreateUnderWritingForm = () => {
   const handleCompanyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCompanyId = e.target.value;
     const selectedCompany = unusedPrecedenceProcess?.find(
-      (process: underwritingTypes) => process.id === Number(selectedCompanyId)
+      (process: UnderwritingType) => process.id === Number(selectedCompanyId)
     );
     formik.setFieldValue("company", selectedCompanyId);
     formik.setFieldValue("price", selectedCompany?.price || "");
@@ -210,7 +206,7 @@ const CreateUnderWritingForm = () => {
     formik.setFieldValue("amount", newAmount);
     if (formik.values.company) {
       const selectedCompany = unusedPrecedenceProcess?.find(
-        (process: underwritingTypes) =>
+        (process: UnderwritingType) =>
           process.id === Number(formik.values.company)
       );
       const totalPrice = (selectedCompany?.price || 0) * Number(newAmount);
@@ -229,7 +225,7 @@ const CreateUnderWritingForm = () => {
 
         if (isChequeType && userData.accounts.length > 0) {
           const defaultAccount = userData.accounts.find(
-            (account: UserAccount) => account.is_default
+            (account: UserAccountType) => account.is_default
           );
           if (defaultAccount) {
             formik.setFieldValue("iban", defaultAccount.sheba_number);
@@ -288,7 +284,7 @@ const CreateUnderWritingForm = () => {
                 className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-[#29D2C7] focus:border-transparent"
               >
                 <option value="">انتخاب کنید</option>
-                {companyOptions.map((option: SelectOption) => (
+                {companyOptions.map((option: SelectOptionType) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -407,7 +403,7 @@ const CreateUnderWritingForm = () => {
                 <option className="p-6" value="">
                   انتخاب کنید
                 </option>
-                {typeOptions.map((option: SelectOption) => (
+                {typeOptions.map((option: SelectOptionType) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -532,7 +528,7 @@ const CreateUnderWritingForm = () => {
           onClose={() => setShowPopup(false)}
           terms={
             unusedPrecedenceProcess?.map(
-              (process: underwritingTypes) => process.agreement_text
+              (process: UnderwritingType) => process.agreement_text
             ) || []
           }
           onAccept={() => {

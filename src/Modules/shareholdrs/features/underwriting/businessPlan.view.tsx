@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 const BusinessPlanView: FC = () => {
   const { data } = useUnusedProcess.useGetList();
 
-  interface IBusinessPlan {
+  interface IBusinessPlanType {
     business_plan_description: string;
     business_plan_regulator: string;
     business_plan_regulator_logo: string;
@@ -19,7 +19,7 @@ const BusinessPlanView: FC = () => {
 
   return (
     <div>
-      {data?.map((item: IBusinessPlan, index: number) => (
+      {data?.map((item: IBusinessPlanType, index: number) => (
         <ViewDownload
           key={index}
           title="طرح کسب و کار"

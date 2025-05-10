@@ -5,7 +5,7 @@ import { Edit2 } from "lucide-react";
 import { TabulatorTable, SelectInput, LoaderLg, Spinner } from "@/components";
 import { CellComponent } from "tabulator-tables";
 import moment from "moment-jalaali";
-import { ShiftDateResType } from "../types";
+import { ShiftDateResType, ShiftType } from "../types";
 import { useShiftsStore } from "../store";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ const ShiftsTableFeat = () => {
 
   useMemo(() => {
     if (dates) {
-      const convertedDates = dates.map((date) => ({
+      const convertedDates = dates.map((date: ShiftDateResType) => ({
         shift: date.shift,
         day: [
           {

@@ -1,10 +1,10 @@
 import React from "react";
 import { Grid, Typography, Divider } from "@mui/material";
 import Transcript from "./sent_transcript";
-import { ITranscriptResponse } from "../../types/sent/sent.type";
+import { ITranscriptResponseType } from "../../types/sent/sent.type";
 
-interface TranscriptSectionProps {
-  transcriptItems: ITranscriptResponse[];
+interface TranscriptSectionPropsType {
+  transcriptItems: ITranscriptResponseType[];
   selectedTranscript: string[];
   transcriptDirections: { [id: number]: string };
   internalUserOptions: { label: string; value: string }[];
@@ -16,7 +16,7 @@ interface TranscriptSectionProps {
   is_internal?: boolean;
 }
 
-const TranscriptSection: React.FC<TranscriptSectionProps> = ({
+const TranscriptSection: React.FC<TranscriptSectionPropsType> = ({
   transcriptItems,
   selectedTranscript,
   transcriptDirections,

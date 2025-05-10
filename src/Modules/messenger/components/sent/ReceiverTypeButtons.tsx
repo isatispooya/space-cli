@@ -3,13 +3,13 @@ import { Box } from "@mui/material";
 import { ButtonBase } from "../../../../components/common/buttons";
 
 
-interface ReceiverTypeButtonsProps {
+interface ReceiverTypeButtonsPropsType {
   receiverType: string;
   onTypeChange: (type: "internal" | "external") => void;
   onIsInternalChange?: (isInternal: boolean) => void;
 }
 
-const ReceiverTypeButtons: React.FC<ReceiverTypeButtonsProps> = ({ 
+const ReceiverTypeButtons: React.FC<ReceiverTypeButtonsPropsType> = ({ 
   receiverType, 
   onTypeChange,
   onIsInternalChange 

@@ -1,17 +1,17 @@
 import React from "react";
 import { Menu, SubMenu, MenuItem } from "react-pro-sidebar";
-import { MenuItem as MenuItemType } from "../data/menuItems";
+import { MenuItemType } from "../data/menuItems";
 import { useNavigate } from "react-router-dom";
 import BothLogo from "../assets/bothLogo.svg";
 import { useUserPermissions } from "../../permissions";
 
-interface SideMenuProps {
+interface SideMenuPropsType {
   collapsed: boolean;
   activeSection: MenuItemType | null;
   onClose: () => void;
 }
 
-const SideMenu: React.FC<SideMenuProps> = ({ collapsed, activeSection, onClose }) => {
+const SideMenu: React.FC<SideMenuPropsType> = ({ collapsed, activeSection, onClose }) => {
   const navigate = useNavigate();
   const { checkPermission } = useUserPermissions();
 

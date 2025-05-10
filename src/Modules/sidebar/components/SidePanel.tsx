@@ -3,19 +3,19 @@ import positionIcon from "../assets/position.svg";
 import searchIcon from "../assets/search.svg";
 import profileIcon from "../assets/profile.svg";
 import contactIcon from "../assets/contact.svg";
-import { MenuItem, menuItems } from "../data/menuItems";
+import { MenuItemType, menuItems } from "../data/menuItems";
 import { AiOutlineClose } from "react-icons/ai";
 import { MdDashboard } from "react-icons/md";
 import { IconType } from "react-icons";
 
-interface SidePanelProps {
+interface SidePanelPropsType {
   onToggleCollapse: () => void;
-  onSectionChange: (section: MenuItem | null) => void;
+  onSectionChange: (section: MenuItemType | null) => void;
   collapsed: boolean;
   onClose: () => void;
 }
 
-type IconItem = {
+type IconItemType = {
   src?: string;
   icon?: IconType;
   alt: string;
@@ -28,15 +28,15 @@ const SidePanel = ({
   onSectionChange,
   collapsed,
   onClose,
-}: SidePanelProps) => {
-  const handleIconClick = (menuItem: MenuItem | null) => {
+}: SidePanelPropsType) => {
+  const handleIconClick = (menuItem: MenuItemType | null) => {
     if (collapsed) {
       onToggleCollapse();
     }
     onSectionChange(menuItem);
   };
 
-  const icons: IconItem[] = [
+  const icons: IconItemType[] = [
     {
       src: homeIcon,
       alt: "home",

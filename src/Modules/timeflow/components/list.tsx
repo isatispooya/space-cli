@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import moment from "moment-jalaali";
 import { Chip } from "@mui/material";
 
-interface Log {
+interface LogType {
   id: number;
   user: {
     first_name: string;
@@ -16,12 +16,12 @@ interface Log {
   status_parent: "pending" | "approved" | "rejected";
 }
 
-interface LogListProps {
-  logs: Log[];
+interface LogListPropsType {
+  logs: LogType[];
   onAccept: (logId: number, selectedTime: DateObject) => void;
 }
 
-const LogList: React.FC<LogListProps> = ({ logs, onAccept }) => {
+const LogList: React.FC<LogListPropsType> = ({ logs, onAccept }) => {
   const [selectedTimes, setSelectedTimes] = useState<{
     [key: number]: DateObject | null;
   }>(() => {

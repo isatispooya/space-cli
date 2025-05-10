@@ -3,7 +3,7 @@ import "../styles/pagination.css";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 
-interface CustomPaginationProps {
+interface CustomPaginationPropsType {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rows: any[]; 
   pageSize: number;
@@ -14,7 +14,7 @@ interface CustomPaginationProps {
   onPageSizeChange: (newSize: number) => void;
 }
 
-const CustomPagination: React.FC<CustomPaginationProps> = ({
+const CustomPagination: React.FC<CustomPaginationPropsType> = ({
   rows,
   pageSize,
   paginationModel,

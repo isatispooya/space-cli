@@ -10,12 +10,10 @@ import DatePicker from "react-multi-date-picker";
 import { useState } from "react";
 import { DateObject } from "react-multi-date-picker";
 import { useNavigate } from "react-router-dom";
+import { CellComponent } from "tabulator-tables";
 
 // تعریف تایپ برای سلول جدول
-type CellComponent = {
-  getRow: () => { getData: () => any };
-  getElement: () => HTMLElement;
-};
+
 
 // تابع تبدیل نوع تردد از انگلیسی به فارسی
 const typeTranslator = (type: string): string => {

@@ -2,7 +2,7 @@ import { Button, TextField, Box } from "@mui/material";
 import { FaPaperPlane, FaPaperclip } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-interface ChatInputProps {
+interface ChatInputPropsType {
   newMessage: string;
   setNewMessage: React.Dispatch<React.SetStateAction<string>>;
   handleSendMessage: () => void;
@@ -20,7 +20,7 @@ const ChatInput = ({
   loading,
   handleFileUpload,
   filesCount,
-}: ChatInputProps) => {
+}: ChatInputPropsType) => {
   return (
     <>
       <Box

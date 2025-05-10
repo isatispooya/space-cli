@@ -1,13 +1,13 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-interface FileListProps {
+interface FileListPropsType {
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
 // کامپوننت نمایش فایل‌های انتخاب شده
-const FileList: React.FC<FileListProps> = ({ files, setFiles }) => {
+const FileList: React.FC<FileListPropsType> = ({ files, setFiles }) => {
   if (files.length === 0) return null;
   
   return (

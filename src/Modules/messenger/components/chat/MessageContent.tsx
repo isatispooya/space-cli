@@ -3,13 +3,13 @@ import { Box } from "@mui/material";
 import MessageItem from "./chat.bubble";
 import { ChatType } from "../../types";
 
-interface MessageContentProps {
+interface MessageContentPropsType {
   messages: ChatType["SingleMessageType"][];
   messagesEndRef: React.RefObject<HTMLDivElement>;
 }
 
 // کامپوننت بخش محتوای پیام‌ها
-const MessageContent: React.FC<MessageContentProps> = ({
+const MessageContent: React.FC<MessageContentPropsType> = ({
   messages,
   messagesEndRef,
 }) => {

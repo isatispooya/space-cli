@@ -27,12 +27,12 @@ interface TimeflowVerifyType {
   type: VerifyType;
 }
 
-interface TimeflowResponse {
+interface TimeflowResponseType {
   message: string;
   error: string;
 }
 
-export default function NewVerifyForm() {
+const NewVerifyForm = () => {
   const [time, setTime] = useState<Dayjs | null>(dayjs());
   const [type, setType] = useState<VerifyType>("");
   const { mutate: userTimeflow } = useTimeflow.useUserTimeflow();
@@ -49,7 +49,7 @@ export default function NewVerifyForm() {
       { data: timeflowData },
       {
         onSuccess: (data: unknown) => {
-          const response = data as TimeflowResponse;
+          const response = data as TimeflowResponseType;
           Toast(
             response.message,
             <CheckCircle className="text-green-500" />,

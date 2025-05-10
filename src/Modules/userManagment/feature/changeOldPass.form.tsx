@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useChangeOldPass } from "../hooks";
 import { AxiosError } from "axios";
 
-interface ErrorResponse {
+interface ErrorResponseType {
   message: string;
 }
 
@@ -54,7 +54,7 @@ const ChangePasswordForm = () => {
                               toast.success("رمز عبور با موفقیت بازیابی شد");
                               setSubmitting(false);
                             },
-                            onError: (error: AxiosError<ErrorResponse>) => {
+                            onError: (error: AxiosError<ErrorResponseType>) => {
                               toast.error(
                                 error.response?.data?.message ||
                                   "خطایی رخ داده است"

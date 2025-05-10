@@ -1,14 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
-import { changeOldPassType } from "../types";
+import { ChangeOldPassType } from "../types";
 import { changeOldPass } from "../services";
 import { AxiosError } from "axios";
 
-interface ErrorResponse {
+interface ErrorResponseType {
   message: string;
 }
 
 const useChangeOldPass = () => {
-  return useMutation<void, AxiosError<ErrorResponse>, changeOldPassType>({
+  return useMutation<void, AxiosError<ErrorResponseType>, ChangeOldPassType>({
     mutationKey: ["changeOldPasss"],
     mutationFn: changeOldPass,
   });

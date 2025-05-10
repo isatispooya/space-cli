@@ -4,7 +4,7 @@ import {
   GridToolbarExport,
 } from "@mui/x-data-grid";
 
-interface Action {
+interface ActionType {
   label: string;
   show: boolean;
   onClick: () => void;
@@ -12,7 +12,7 @@ interface Action {
   className?: string;
 }
 
-interface CustomDataGridToolbarProps {
+interface CustomDataGridToolbarPropsType {
   data: {
     count: number;
     next: string | null;
@@ -22,17 +22,17 @@ interface CustomDataGridToolbarProps {
   fileName: string;
   showExcelExport?: boolean;
   actions: {
-    edit?: Action;
-    view?: Action;
-    delete?: Action;
-    import?: Action;
+    edit?: ActionType;
+    view?: ActionType;
+    delete?: ActionType;
+    import?: ActionType;
   };
 }
   
 const CustomDataGridToolbar = ({
   showExcelExport,
   actions,
-}: CustomDataGridToolbarProps) => {
+}: CustomDataGridToolbarPropsType) => {
   return (
     <GridToolbarContainer className="flex justify-between p-2">
       <div className="flex gap-2">

@@ -14,9 +14,9 @@ import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
 import TranscriptListItem from "./TranscriptListItem";
-import { ITranscriptResponse } from "../../types/sent/sent.type";
+import { ITranscriptResponseType } from "../../types/sent/sent.type";
 
-interface ReferenceDetail {
+interface ReferenceDetailType {
   id: string;
   user?: {
     first_name: string;
@@ -27,8 +27,8 @@ interface ReferenceDetail {
   transcript_for?: string;
 }
 
-interface TranscriptProps {
-  transcript: ITranscriptResponse[];
+interface TranscriptPropsType {
+  transcript: ITranscriptResponseType[];
   selectedTranscript: string[];
   setSelectedTranscript: (value: string[]) => void;
   handleAddTranscript: (text?: string) => void;
@@ -39,13 +39,13 @@ interface TranscriptProps {
   setTranscriptDirection: (id: number, value: string) => void;
   data?: {
     sender?: {
-      reference_details: ReferenceDetail[];
+      reference_details: ReferenceDetailType[];
     };
   };
   is_internal?: boolean;
 }
 
-const Transcript: React.FC<TranscriptProps> = React.memo(
+const Transcript: React.FC<TranscriptPropsType> = React.memo(
   ({
     transcript,
     selectedTranscript,
@@ -173,7 +173,7 @@ const Transcript: React.FC<TranscriptProps> = React.memo(
             </Typography>
             <List sx={{ p: 0 }}>
               {data?.sender?.reference_details?.map(
-                (item: ReferenceDetail, index: number) => (
+                (item: ReferenceDetailType, index: number) => (
                   <React.Fragment key={`ref-${item.id}`}>
                     <ListItem sx={{ px: 1, py: 1.5 }}>
                       <Grid container spacing={2} alignItems="center">

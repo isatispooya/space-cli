@@ -1,8 +1,9 @@
+
 import { CellComponent } from "tabulator-tables";
-import { MenuItem, createActionMenu } from "../actionMenus";
+import { MenuItemType, createActionMenu } from "../actionMenus";
 
 interface UseTableActionsPropsType {
-  getItems: (rowData: any) => MenuItem[];
+  getItems: (rowData: any) => MenuItemType[];
 }
 
 export const useTableActions = ({ getItems }: UseTableActionsPropsType) => {

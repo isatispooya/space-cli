@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { CATEGORY_CHOICES } from "./data/categotyData";
 import WaveBackground from "./components/wave_category";
-import { CategoryIconsProps } from "../../types/RewardsTable.type";
+import { CategoryIconsPropsType } from "../../types/RewardsTable.type";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function CategoryIcons({
+const CategoryIcons = ({
   setSelected,
   selected,
-}: CategoryIconsProps) {
+}: CategoryIconsPropsType) => {
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
@@ -120,4 +120,6 @@ export default function CategoryIcons({
       </div>
     </div>
   );
-}
+};
+
+export default CategoryIcons;

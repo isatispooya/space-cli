@@ -1,4 +1,4 @@
-interface StatusTranslation {
+interface StatusTranslationType {
   text: string;
   button?: string;
   url?: string;
@@ -6,7 +6,7 @@ interface StatusTranslation {
 
 const getStatusTranslations = (
   hasPermission: boolean
-): Record<string, StatusTranslation> => ({
+): Record<string, StatusTranslationType> => ({
   pending_review: {
     text: "در انتظار بررسی",
     button: hasPermission ? "بررسی" : "",

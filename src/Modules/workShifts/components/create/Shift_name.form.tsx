@@ -3,11 +3,11 @@ import { InputBase, Button } from "@/components";
 import { useShiftsStore } from "../../store";
 import { useShifts } from "../../hooks";
 
-interface ShiftNameStepProps {
+interface ShiftNameStepPropsType {
   onSuccess: () => void;
 }
 
-const ShiftNameCom: React.FC<ShiftNameStepProps> = ({ onSuccess }) => {
+const ShiftNameCom: React.FC<ShiftNameStepPropsType> = ({ onSuccess }) => {
   const { shiftName, setShiftName, setShiftId } = useShiftsStore();
   const { mutate: createShifts, isPending } = useShifts.useCreateShifts();
 

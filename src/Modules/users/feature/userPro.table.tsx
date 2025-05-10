@@ -1,7 +1,7 @@
 import { useUserPro } from "../hooks";
 import { ColumnDefinition } from "tabulator-tables";
 import { LoaderLg } from "../../../components";
-import { userProType } from "../types";
+import { UserProType } from "../types";
 import TabulatorTable from "../../../components/table/table.com";
 import { CellComponent } from "tabulator-tables";
 import moment from "moment-jalaali";
@@ -120,7 +120,7 @@ const UserProTable: React.FC = () => {
         e.stopPropagation();
 
         // Get the row data for the clicked cell
-        const rowData = cell.getRow().getData() as userProType;
+        const rowData = cell.getRow().getData() as UserProType;
 
         // Close any existing menus
         closeAllMenus();
@@ -183,7 +183,7 @@ const UserProTable: React.FC = () => {
   ];
 
   // Map the data to match the column definitions
-  const mappedData = data?.map((item: userProType) => ({
+  const mappedData = data?.map((item: UserProType) => ({
     id: item.id,
     first_name: item.first_name,
     last_name: item.last_name,
@@ -201,7 +201,7 @@ const UserProTable: React.FC = () => {
   }));
 
   // Format data for Excel export
-  const ExelData = (item: userProType) => ({
+  const ExelData = (item: UserProType) => ({
     نام: item.first_name,
     "نام خانوادگی": item.last_name,
     "کد ملی": item.national_code,

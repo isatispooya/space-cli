@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useUnusedProcess } from "../../hooks";
 import { motion } from "framer-motion";
 
-interface ICreditAnalysis {
+interface ICreditAnalysisType {
   validation_description: string;
   validation: string;
   validation_regulator_logo: string;
@@ -34,7 +34,7 @@ const CreditAnalysisView: FC = () => {
             <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-[#5677BC] rounded-bl-lg" />
             <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-[#5677BC] rounded-br-lg" />
 
-            {data?.map((item: ICreditAnalysis, index: number) => (
+            {data?.map((item: ICreditAnalysisType, index: number) => (
               <div key={index}>
                 <div className="flex flex-col">
                     <img

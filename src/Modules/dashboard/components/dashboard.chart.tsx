@@ -15,8 +15,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import Spinner from "../../../components/loaders/spinner";
 import { Button } from "@/components";
 
-
-interface TooltipProps {
+interface TooltipPropsType {
   active?: boolean;
   payload?: Array<{
     value: number;
@@ -25,21 +24,21 @@ interface TooltipProps {
   label?: string;
 }
 
-interface BarTypes {
+interface BarTypesType {
   name: string;
   value: number;
   logo: string;
   shares: number;
 }
 
-interface BarPropsTypes {
+interface BarPropsType {
   x?: number;
   y?: number;
   width?: number;
   height?: number;
   index?: number;
-  payload?: BarTypes;
-  data?: BarTypes[];
+  payload?: BarTypesType;
+  data?: BarTypesType[];
 }
 
 const DashboardChart = () => {
@@ -68,7 +67,7 @@ const DashboardChart = () => {
 
     return statsChart.companies
       .sort((a, b) => b.shares - a.shares)
-      .map((company) => ({
+      .map((company: { name: string; shares: number; logo: string }) => ({
         name: company.name,
         value: company.shares,
         logo: company.logo,
@@ -79,7 +78,7 @@ const DashboardChart = () => {
     ? { top: 20, right: 70, left: 20, bottom: 15 }
     : { top: 70, right: 30, left: 20, bottom: 15 };
 
-  const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
+  const CustomTooltip = ({ active, payload, label }: TooltipPropsType) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-2 shadow-lg rounded-lg border border-gray-100">
@@ -93,7 +92,7 @@ const DashboardChart = () => {
     return null;
   };
 
-  const CustomBar = (props: BarPropsTypes) => {
+  const CustomBar = (props: BarPropsType) => {
     const { x = 0, y = 0, width = 0, height = 0, payload } = props;
 
     const minHeight = 5;
@@ -250,7 +249,10 @@ const DashboardChart = () => {
         <span>مدیریت سهام</span>
       </Button>
 
-      <div className="absolute bottom-0 left-0 right-0" style={{ height: "120px" }}>
+      <div
+        className="absolute bottom-0 left-0 right-0"
+        style={{ height: "120px" }}
+      >
         <svg
           className="absolute bottom-0 left-0 w-full"
           height="60"

@@ -6,7 +6,7 @@ export interface ShiftDateType {
   day_of_week: string | null; // CharField
 }
 
-export type ShiftDateStructure = {
+export type ShiftDateStructureType = {
   shift: number;
   day: ShiftDateType[];
 };
@@ -20,11 +20,11 @@ export interface ShiftsStateType {
   setShiftId: (id: number | null) => void;
   setSearchQuery: (query: string) => void;
   setVisibleItems: (items: number | ((prev: number) => number)) => void;
-  shiftDates: ShiftDateStructure[];
+  shiftDates: ShiftDateStructureType[];
   selectedShiftDate: ShiftDateType | null;
-  setShiftDates: (dates: ShiftDateStructure[]) => void;
+  setShiftDates: (dates: ShiftDateStructureType[]) => void;
   addShiftDate: (date: ShiftDateType) => void;
-  updateShiftDate: (date: ShiftDateStructure) => void;
+  updateShiftDate: (date: ShiftDateStructureType) => void;
   deleteShiftDate: (date: string) => void;
   setSelectedShiftDate: (date: ShiftDateType | null) => void;
   clearShiftDates: () => void;

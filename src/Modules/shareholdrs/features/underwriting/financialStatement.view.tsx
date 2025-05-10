@@ -20,7 +20,7 @@ const FinancialStatementView: FC = () => {
     show: { opacity: 1, y: 0 },
   };
 
-  interface ProcessTypes {
+  interface ProcessType {
     financial_statement: {
       id: number;
       title: string;
@@ -58,7 +58,7 @@ const FinancialStatementView: FC = () => {
               animate="show"
               className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700"
             >
-              {data?.map((process: ProcessTypes) =>
+              {data?.map((process: ProcessType) =>
                 [...process.financial_statement].reverse().map((statement) => (
                   <motion.tr
                   
@@ -111,7 +111,7 @@ const FinancialStatementView: FC = () => {
             animate="show"
             className="space-y-4"
           >
-            {data?.map((process: ProcessTypes) =>
+            {data?.map((process: ProcessType) =>
               [...process.financial_statement].reverse().map((statement) => (
                 <motion.div
                   key={statement.id}

@@ -1,7 +1,7 @@
 import { server } from "@/api";
 
 // Using a more specific type instead of any
-interface UserDataInterface {
+interface UserDataInterfaceType {
   id: number | string;
   first_name?: string;
   last_name?: string;
@@ -24,7 +24,7 @@ interface UserDataInterface {
 const ContactsList = ({
   position,
 }: {
-  position: UserDataInterface;
+  position: UserDataInterfaceType;
 }) => {
   const firstName = position.first_name  || "";
   const lastName = position.last_name  || "";

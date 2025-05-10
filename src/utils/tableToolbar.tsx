@@ -19,14 +19,14 @@ import {
 
 import * as XLSX from "xlsx";
 
-interface PaginatedResponse<T> {
+interface PaginatedResponseType<T> {
   count: number;
   next: string | null;
   previous: string | null;
   results: T[];
 }
 
-interface ActionButton {
+interface ActionButtonType {
   label: string;
   icon: React.ReactNode;
   onClick: () => void;
@@ -34,17 +34,17 @@ interface ActionButton {
   className?: string;
 }
 
-interface CustomDataGridToolbarProps<T = Record<string, unknown>> {
-  data: T[] | PaginatedResponse<T>;
+interface CustomDataGridToolbarPropsType<T = Record<string, unknown>> {
+  data: T[] | PaginatedResponseType<T>;
   fileName?: string;
   customExcelData?: (data: T[]) => unknown[];
   showExcelExport?: boolean;
   actions?: {
-    edit?: ActionButton;
-    view?: ActionButton;
-    delete?: ActionButton;
-    create?: ActionButton;
-    print?: ActionButton;
+    edit?: ActionButtonType;
+    view?: ActionButtonType;
+    delete?: ActionButtonType;
+    create?: ActionButtonType;
+    print?: ActionButtonType;
   };
 }
 
@@ -54,7 +54,7 @@ const CustomDataGridToolbar = <T extends Record<string, unknown>>({
   customExcelData,
   showExcelExport = true,
   actions,
-}: CustomDataGridToolbarProps<T>) => {
+}: CustomDataGridToolbarPropsType<T>) => {
   const handleExport = useCallback(() => {
     try {
       const dataToExport = Array.isArray(data) ? data : data?.results;

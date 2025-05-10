@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 
 import { Avatar } from "@mui/material";
 
-interface ChatHeaderProps {
+interface ChatHeaderPropsType {
   selectedUser: {
     name: string;
     profile_image?: string | null;
@@ -12,7 +12,7 @@ interface ChatHeaderProps {
   isFullUrl?: boolean;
 }
 
-const ChatHeader = ({ selectedUser }: ChatHeaderProps) => {
+const ChatHeader = ({ selectedUser }: ChatHeaderPropsType) => {
   
 
   return (

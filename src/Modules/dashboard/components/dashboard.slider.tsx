@@ -15,18 +15,18 @@ import { useInvitation } from "../../invitation/hooks";
 import { useProfile } from "../../userManagment";
 import { server } from "@/api/server";
 import { Button } from "@/components";
-export interface SlideItem {
+export interface SlideItemType {
   id: number;
   picture: string;
   title: string;
   link: string;
 }
 
-interface DashboardSliderProps {
-  slides: SlideItem[];
+interface DashboardSliderPropsType {
+  slides: SlideItemType[];
 }
 
-const DashboardSlider = ({ slides }: DashboardSliderProps) => {
+const DashboardSlider = ({ slides }: DashboardSliderPropsType) => {
   const swiperRef = useRef<SwiperClass>();
 
   const { data: invitation } = useInvitation.useGetCodes();
@@ -60,7 +60,7 @@ const DashboardSlider = ({ slides }: DashboardSliderProps) => {
     return null;
   }
 
-  const handleShare = async (slide: SlideItem) => {
+  const handleShare = async (slide: SlideItemType) => {
     const code = filteredInvitationCode;
 
     if (!code) {

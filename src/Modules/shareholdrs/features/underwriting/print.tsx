@@ -4,7 +4,7 @@ import { useUnderwriting } from "../../hooks";
 import moment from "jalali-moment";
 import { useParams } from "react-router-dom";
 // `https://my.isatispooya.com/login?rf=${rf}`
-interface underwritingTypes {
+interface UnderwritingType {
   id: number;
   type: string;
   price: number;
@@ -29,7 +29,7 @@ const PrintUnderwriting: FC = () => {
   const { id } = useParams();
 
   const { data, isLoading } = useUnderwriting.useGetById(Number(id));
-  const underwritingPrint = data as underwritingTypes | undefined;
+  const underwritingPrint = data as UnderwritingType | undefined;
 
   if (isLoading) {
     return <div>در حال بارگذاری...</div>;

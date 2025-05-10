@@ -1,13 +1,13 @@
 import { PaymentDetailType } from "./paymentDetail";
 export interface UnderwritingType {
-  id?: number;
+  id: number;
+  type: string;
+  price: number;
   amount?: number;
-  type?: string;
-  price?: number;
   company?: number;
-  created_at?: string;
+  created_at: string;
   document?: File | null;
-  status?: string;
+  status: string;
   transaction_id?: string;
   updated_at?: string;
   redirect_url?: string;
@@ -19,6 +19,7 @@ export interface UnderwritingType {
   document_type?: string;
   first_name?: string;
   last_name?: string;
+  requested_amount: number;
   user_detail?: {
     first_name: string;
     last_name: string;
@@ -27,22 +28,4 @@ export interface UnderwritingType {
   };
   payment_detail?: PaymentDetailType;
   type_peyment?: string;
-  requested_amount?: number;
 }
-
-export interface UnderwritingType {
-  id: number;
-  type: string;
-  price: number;
-  requested_amount: number;
-  status: string;
-  created_at: string;
-  payment_detail?: {
-    track_id: string;
-  };
-  user_detail?: {
-    first_name: string;
-    last_name: string;
-  };
-}
-

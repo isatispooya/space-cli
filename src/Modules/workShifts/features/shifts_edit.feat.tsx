@@ -11,6 +11,7 @@ import {
 } from "../components/edit";
 import ShiftSchedule from "../components/create/shifts_schedule.form";
 import { convertToTimestamp } from "../utils";
+import {  ShiftDateResType } from "../types";
 
 const ShiftsEditFeat = () => {
   const {
@@ -132,7 +133,7 @@ const ShiftsEditFeat = () => {
     field: "start_time" | "end_time",
     value: string
   ) => {
-    const date = shiftDates?.find((d) => d.id === dateId);
+    const date = shiftDates?.find((d: ShiftDateResType) => d.id === dateId);
     if (!date) return;
 
     updateDates(
@@ -168,7 +169,7 @@ const ShiftsEditFeat = () => {
   };
 
   const handleWorkDayChange = (dateId: number, newValue: boolean) => {
-    const date = shiftDates?.find((d) => d.id === dateId);
+    const date = shiftDates?.find((d: ShiftDateResType) => d.id === dateId);
     if (!date) return;
 
     updateDates(
@@ -248,9 +249,9 @@ const ShiftsEditFeat = () => {
             searchQuery={searchQuery}
             visibleItems={visibleItems}
             onSearchChange={setSearchQuery}
-            onItemClick={() => {}}
+            onItemClick={(item: ShiftDateResType) => {console.log(item)}}
             onLoadMore={() => setVisibleItems(visibleItems + 10)}
-            renderItem={(date) => (
+            renderItem={(date: ShiftDateResType) => (
               <ShiftDateItemCom
                 date={date}
                 onTimeChange={handleTimeChange}

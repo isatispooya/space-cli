@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formik, Form, Field, FieldProps, FormikValues } from "formik";
 import { motion } from "framer-motion";
 import SelectInput from "../common/inputs/selectInput";
 import FormInput from "../common/inputs/formInput";
-import { FormField } from "../../types";
+import { FormFieldType } from "../../types";
 import { FormikHelpers } from "formik";
 import { AnyObject, Maybe, ObjectSchema } from "yup";
 import { RiCloseLargeLine } from "react-icons/ri";
@@ -18,7 +18,7 @@ import { DateSelector } from "../common";
 import DynamicTimePicker from "../timepick/timepicker";
 
 interface FormsPropsType<T extends Maybe<AnyObject>> {
-  formFields: FormField[];
+  formFields: FormFieldType[];
   initialValues: T;
   validationSchema: ObjectSchema<T>;
   onSubmit: (values: T, actions: FormikHelpers<T>) => void;

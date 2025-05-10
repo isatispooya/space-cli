@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 const ShareExpertView: FC = () => {
   const { data } = useUnusedProcess.useGetList();
 
-  interface IFinancialStatement {
+  interface IFinancialStatementType {
     share_expert_description: string;
     share_expert_regulator: string;
     share_expert_regulator_logo: string;
@@ -19,7 +19,7 @@ const ShareExpertView: FC = () => {
 
   return (
     <div>
-      {data?.map((item: IFinancialStatement, index: number) => (
+      {data?.map((item: IFinancialStatementType, index: number) => (
         <ViewDownload
           target="_blank"
           downloadButtonText="دانلود کارشناسی سهامی"

@@ -1,23 +1,23 @@
-import { CellComponent } from "../../types/receive/ReceiveMessage.type";
-import { ReceiveMessage } from "../../types/receive/ReceiveMessage.type";
+import { CellComponent } from "tabulator-tables";
+import { ReceiveMessageType } from "../../types/receive/ReceiveMessage.type";
 import { createActionMenu } from "@/components/table/actionMenus";
 import { useNavigate } from "react-router-dom";
 import { letterTypeOptions } from "../../data/sent/sent.data";
 
 
-interface ExtendedReceiveMessage extends ReceiveMessage {
+interface ExtendedReceiveMessageType extends ReceiveMessageType {
   seen?: boolean;
 }
 
-interface CellFormatterParams {
+interface CellFormatterParamsType {
   getValue: () => string;
-  getRow: () => { getData: () => ExtendedReceiveMessage };
+  getRow: () => { getData: () => ExtendedReceiveMessageType };
   getElement: () => HTMLElement;
 }
 
 const Columns = () => {
   const navigate = useNavigate();
-  const handleView = (row: ExtendedReceiveMessage) => {
+  const handleView = (row: ExtendedReceiveMessageType) => {
     navigate(`/letter/receive-message/${row.id}`);
   };
 
@@ -30,7 +30,7 @@ const Columns = () => {
     {
       field: "seen",
       hozAlign: "center",
-      formatter: (cell: CellFormatterParams) => {
+      formatter: (cell: CellFormatterParamsType) => {
         const row = cell.getRow().getData();
 
         if (row.seen) {
@@ -79,7 +79,7 @@ const Columns = () => {
         clearable: true,
       },
       hozAlign: "center",
-      formatter: (cell: CellFormatterParams) => {
+      formatter: (cell: CellFormatterParamsType) => {
         const value = cell.getValue();
         const option = letterTypeOptions.find((opt) => opt.value === value);
         return option ? option.label : value;
@@ -96,7 +96,7 @@ const Columns = () => {
       width: 60,
       cellClick: function (e: Event, cell: CellComponent) {
         e.stopPropagation();
-        const rowData = cell.getRow().getData() as ExtendedReceiveMessage;
+        const rowData = cell.getRow().getData() as ExtendedReceiveMessageType;
         const element = cell.getElement();
         const rect = element.getBoundingClientRect();
 

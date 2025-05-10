@@ -2,7 +2,7 @@ import Clarity from '@microsoft/clarity';
 
 const projectId = "pvs08hnwmz"
 
-interface IdentifyUserProps {
+interface IdentifyUserPropsType {
     customId: string;
     customSessionId?: string;
     customPageId?: string;

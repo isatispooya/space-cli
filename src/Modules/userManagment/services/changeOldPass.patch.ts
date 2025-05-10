@@ -1,7 +1,7 @@
 import api from "../../../api/api";
-import { changeOldPassType } from "../types";
+import { ChangeOldPassType } from "../types";
 
-const patchOldPass = async (data: changeOldPassType) => {
+const patchOldPass = async (data: ChangeOldPassType) => {
   const response = await api.patch("/change-password/", data);
   return response.data;
 };

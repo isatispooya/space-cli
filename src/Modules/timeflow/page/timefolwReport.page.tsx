@@ -6,7 +6,7 @@ import moment from "moment-jalaali";
 import "../styles/timesheet.css";
 import { server } from "@/api";
 
-interface TimeflowDetail {
+interface TimeflowDetailType {
   user_id: number;
   limit_time: number;
   working: number;
@@ -30,8 +30,8 @@ const Timesheet = () => {
   const { data: timeflowDetails } = useTimeflow.useGetTimeflowDetails(2025, 3);
 
   const userDetail = timeflowDetails?.find(
-    (item: any) => (item as TimeflowDetail).user_id.toString() === id
-  ) as TimeflowDetail | undefined;
+    (item: any) => (item as TimeflowDetailType).user_id.toString() === id
+  ) as TimeflowDetailType | undefined;
 
   const userTimeflowData =
     userData?.filter((item) => item.user_id.toString() === id) || [];

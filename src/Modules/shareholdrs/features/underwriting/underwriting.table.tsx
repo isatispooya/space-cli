@@ -13,7 +13,7 @@ import { ActionMenu } from "../../../../components/table/tableaction.tsx";
 import { TableStyles } from "../../../../components/table/tabularStyle.tsx";
 import { useUserPermissions } from "../../../permissions/index.ts";
 import * as XLSX from "xlsx";
-import { underwritingTypes } from "../../types/underwriting.type";
+import { UnderwritingType } from "../../types/underwriting.type";
 import { server } from "../../../../api/server.ts";
 import { createRoot } from "react-dom/client";
 
@@ -34,7 +34,7 @@ const UnderWritingTable: React.FC = () => {
     XLSX.writeFile(workbook, "underwriting-data.xlsx");
   };
 
-  const formatExportData = (item: underwritingTypes) => ({
+  const formatExportData = (item: UnderwritingType) => ({
     نوع:
       item.type === "2"
         ? "درگاه پرداخت"
@@ -172,7 +172,7 @@ const UnderWritingTable: React.FC = () => {
     };
   }, [data, hasEditPermission]);
 
-  const formatTableData = (item: underwritingTypes) => ({
+  const formatTableData = (item: UnderwritingType) => ({
     ...item,
     type_peyment:
       item.type === "2"

@@ -4,11 +4,13 @@ import { ToastContainer } from "react-toastify";
 
 import Router from "./routes/sections";
 
-export default function App() {
+const App = () => {
   return (
     <>
       <Router />
       <ToastContainer rtl />
     </>
   );
-}
+};
+
+export default App;

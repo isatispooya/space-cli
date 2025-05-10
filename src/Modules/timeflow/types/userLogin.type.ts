@@ -1,4 +1,4 @@
-interface User {
+interface UserType {
   email: string | null;
   first_name: string;
   id: number;
@@ -6,7 +6,7 @@ interface User {
   username: string;
 }
 
-interface Own_logs {
+interface OwnLogsType {
   browser: string | null;
   device_type: string;
   id: number;
@@ -19,11 +19,11 @@ interface Own_logs {
   time_system: string;
   time_user: string;
   type: string;
-  user: User;
+  user: UserType;
   user_agent: string;
 }
 
-interface Other_logs {
+interface OtherLogsType {
   browser: string | null;
   device_type: string;
   id: number;
@@ -36,11 +36,11 @@ interface Other_logs {
   time_system: string;
   time_user: string;
   type: string;
-  user: User;
+  user: UserType;
   user_agent: string;
 }
 
-interface Absence {
+interface AbsenceType {
   date: string;
   time_end: string;
   time_start: string;
@@ -61,7 +61,7 @@ interface Absence {
   working_day: boolean;
 }
 
-interface UserDetail {
+interface UserDetailType {
   id: number;
   first_name: string;
   last_name: string;
@@ -70,13 +70,11 @@ interface UserDetail {
   profile_image: string;
 }
 
-
-
 interface UserLoginType {
-  other_logs: Other_logs[];
-  own_logs: Own_logs[];
-  own_absence: Absence[];
-  user_detail: UserDetail;
+  other_logs: OtherLogsType[];
+  own_logs: OwnLogsType[];
+  own_absence: AbsenceType[];
+  user_detail: UserDetailType;
 }
 
 export default UserLoginType;

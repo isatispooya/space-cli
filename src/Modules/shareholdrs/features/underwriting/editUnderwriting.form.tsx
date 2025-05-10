@@ -2,9 +2,9 @@ import { useUnderwriting } from "../../hooks";
 import { Forms } from "../../../../components";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
-import { underwritingTypes } from "../../types/underwriting.type";
+import { UnderwritingType } from "../../types/underwriting.type";
 import moment from "moment-jalaali";
-import { FormField } from "../../../../types";
+import { FormFieldType } from "../../../../types";
 import toast from "react-hot-toast";
 import { formatNumber } from "../../../../utils";
 import { server } from "../../../../api";
@@ -18,7 +18,7 @@ const EditUnderWritingForm = () => {
   const navigate = useNavigate();
 
   const process = processData?.find(
-    (item: underwritingTypes) => item.id === Number(urlId)
+    (item: UnderwritingType) => item.id === Number(urlId)
   );
 
   if (!process && !urlId) {
@@ -29,9 +29,9 @@ const EditUnderWritingForm = () => {
     id: yup.number().required(),
     process: yup.number().required(),
     status: yup.string().required("ثبت وضعیت الزامی است"),
-  }) as yup.ObjectSchema<underwritingTypes>;
+  }) as yup.ObjectSchema<UnderwritingType>;
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "price",
       label: "قیمت",
@@ -86,7 +86,7 @@ const EditUnderWritingForm = () => {
     },
   ];
 
-  const initialValues: underwritingTypes = {
+  const initialValues: UnderwritingType = {
     id: process?.id || 0,
     price: formatNumber(process?.price || 0) as unknown as number,
     process: process?.process || 0,
@@ -96,10 +96,9 @@ const EditUnderWritingForm = () => {
     user: `${process?.user_detail?.first_name || ""} ${
       process?.user_detail?.last_name || ""
     }`,
-    document: server + process?.document || null,
   };
 
-  const onSubmit = (values: Pick<underwritingTypes, "status">) => {
+  const onSubmit = (values: Pick<UnderwritingType, "status">) => {
     update(
       { id: process?.id, status: values.status },
       {
@@ -118,7 +117,7 @@ const EditUnderWritingForm = () => {
   return (
     <>
       <Forms
-        formFields={formFields as FormField[]}
+        formFields={formFields as FormFieldType[]}
         initialValues={initialValues}
         validationSchema={validationSchema}
         title="ویرایش پرداخت"

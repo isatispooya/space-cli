@@ -4,7 +4,7 @@ import SelectInput from "@/components/common/inputs/selectInput";
 import DynamicList from "@/components/list/dynamiclist";
 import useShiftsStore from "../store/shifts.store";
 import { GetShiftsResType } from "../types/Shifts.type";
-import { PositionTypes } from "@/Modules/positions/types/postions.type";
+import { PositionType } from "@/Modules/positions/types/postions.type";
 import {
   UserCircle2,
   Building2,
@@ -92,7 +92,7 @@ const ShiftsAssignFeat = () => {
     setShiftId(Number(id));
   };
 
-  const renderPosition = (position: PositionTypes) => {
+  const renderPosition = (position: PositionType) => {
     const isSelected = selectedPositions.includes(position.id);
 
     return (
@@ -177,7 +177,7 @@ const ShiftsAssignFeat = () => {
           searchQuery={searchQuery}
           visibleItems={visibleItems}
           onSearchChange={setSearchQuery}
-          onItemClick={() => {}}
+          onItemClick={() => {console.log("item clicked")}}
           onLoadMore={() => setVisibleItems((v: number) => v + 10)}
           renderItem={renderPosition}
           noResultsMessage="موقعیتی یافت نشد."

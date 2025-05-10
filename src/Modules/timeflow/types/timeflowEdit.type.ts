@@ -6,10 +6,10 @@ export interface TimeflowEditType {
   type: string;
 }
 
-export interface TimeflowEditFormData {
+export interface TimeflowEditFormDataType {
   time_user: string;
   type: string;
 }
 
-export type TimeflowEditMoment = moment.Moment;
-export type TimeflowEditDayjs = Dayjs;
+export type TimeflowEditMomentType = moment.Moment;
+export type TimeflowEditDayjsType = Dayjs;

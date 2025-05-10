@@ -3,7 +3,7 @@ import "./wave.css";
 
 type WaveColorType = "green" | "blue" | "purple" | "red" | "orange" | "dark";
 
-interface WaveEffectProps {
+interface WaveEffectPropsType {
   color?: WaveColorType;
   className?: string;
 }
@@ -17,7 +17,7 @@ const colorMap = {
   dark: "#4A5568",
 };
 
-const WaveEffect: React.FC<WaveEffectProps> = ({
+const WaveEffect: React.FC<WaveEffectPropsType> = ({
   color = "green",
   className = "",
 }) => {

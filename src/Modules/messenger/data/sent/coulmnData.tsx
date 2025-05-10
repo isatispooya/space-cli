@@ -1,16 +1,16 @@
 import { createActionMenu } from "@/components/table/actionMenus";
-import { CellComponent } from "../../types/sent/sent.type";
-import { SentMessage } from "../../types/sent/sent.type";
+import { CellComponent } from "tabulator-tables";
+import { SentMessageType } from "../../types/sent/sent.type";
 import { letterTypeOptions } from "./sent.data";
-import { CellComponent as TabulatorCellComponent } from "tabulator-tables";
 
 
-interface ColumnProps {
+
+interface ColumnPropsType {
   handleEdit: (id: number) => void;
-  handleView: (row: SentMessage) => void;
+  handleView: (row: SentMessageType) => void;
 }
 
-const columns = ({ handleEdit, handleView }: ColumnProps) => {
+const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
   return [
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
     {
@@ -51,7 +51,7 @@ const columns = ({ handleEdit, handleView }: ColumnProps) => {
         clearable: true
       },
       hozAlign: "center",
-      formatter: (cell: TabulatorCellComponent) => {
+      formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         const option = letterTypeOptions.find(opt => opt.value === value);
         return option ? option.label : value;

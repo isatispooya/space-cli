@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import { usePosition } from "@/Modules/positions/hooks/usePosition";
 import { server } from "@/api/server";
 
-interface UserData {
+interface UserDataType {
   id: number;
   first_name: string;
   last_name: string;
@@ -29,7 +29,7 @@ const SendMsgPopUp = ({
 }: ChatType["NewMessagePopupProps"]) => {
   const { data: positionUsers, isPending } = usePosition.useGetUserOfPosition();
   const [filteredPositionUsers, setFilteredPositionUsers] = useState<
-    UserData[]
+    UserDataType[]
   >([]);
   const [visibleItemsCount, setVisibleItemsCount] = useState<number>(50);
 
@@ -44,7 +44,7 @@ const SendMsgPopUp = ({
 
   useEffect(() => {
     if (positionUsers && Array.isArray(positionUsers)) {
-      const userData = positionUsers as unknown as UserData[];
+      const userData = positionUsers as unknown as UserDataType[];
       const mappedUsers = userData.map((user) => ({
         id: Number(user.id) || 0,
         first_name: user.first_name || "",
@@ -72,7 +72,7 @@ const SendMsgPopUp = ({
     });
   }, [filteredPositionUsers.length]);
 
-  const handleUserClick = (user: UserData) => {
+  const handleUserClick = (user: UserDataType) => {
     if (onSelectUser) {
       console.log("Selected user:", user);
 
@@ -158,7 +158,7 @@ const SendMsgPopUp = ({
                     onSearchChange={setSearchPositionQuery}
                     onItemClick={handleUserClick}
                     onLoadMore={handleLoadMore}
-                    renderItem={(user: UserData) => (
+                    renderItem={(user: UserDataType) => (
                       <ContactsList position={user} />
                     )}
                     noResultsMessage="کاربری یافت نشد"

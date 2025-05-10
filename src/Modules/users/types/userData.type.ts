@@ -1,15 +1,15 @@
-interface Group {
+export interface GroupType {
     id: number;
     name: string;
 }
 
-interface Permission {
+export interface PermissionType {
     id: number;
     name: string;
     codename: string;
 }
 
-export interface UserData {
+export interface UserDataType {
     id: number;
     username: string;
     email: string | null;
@@ -24,7 +24,7 @@ export interface UserData {
     date_joined: string;
     education_level: string | null;
     gender: 'M' | 'F';
-    groups: Group[];
+    groups: GroupType[];
     is_active: boolean;
     is_staff: boolean;
     is_superuser: boolean;
@@ -43,11 +43,11 @@ export interface UserData {
     status: boolean;
     uniqueIdentifier: string;
     updated_at: string;
-    user_permissions: Permission[];
+    user_permissions: PermissionType[];
 }
 
 
-export interface UserLiteData {
+export interface UserLiteDataType {
     id: number;
     username: string;
     first_name: string;

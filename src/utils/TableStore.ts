@@ -2,14 +2,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface GridState {
+interface GridStateType {
   filterModel: any;
   sortModel: any;
   columnVisibilityModel: any;
 }
 
-interface GridStateStore {
-  states: Record<string, GridState>;
+interface GridStateStoreType {
+  states: Record<string, GridStateType>;
   handleStateChange: (
     gridId: string,
     stateType: "filter" | "sort" | "visibility",
@@ -19,7 +19,7 @@ interface GridStateStore {
   clearAllStates: () => void;
 }
 
-export const useGridStateStore = create<GridStateStore>()(
+export const useGridStateStore = create<GridStateStoreType>()(
   persist(
     (set) => ({
       states: {},

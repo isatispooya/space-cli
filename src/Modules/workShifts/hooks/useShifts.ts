@@ -5,11 +5,11 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { shiftsServices } from "../services";
-import { ShiftTypes } from "../types";
+import { ShiftType } from "../types";
 import { AxiosError } from "axios";
 
 const useShifts = {
-  useGetShifts: (): UseQueryResult<ShiftTypes["getRes"][]> => {
+  useGetShifts: (): UseQueryResult<ShiftType["getRes"][]> => {
     return useQuery({
       queryKey: ["shifts"],
       queryFn: shiftsServices.getShifts,
@@ -17,32 +17,32 @@ const useShifts = {
   },
 
   useCreateShifts: (): UseMutationResult<
-    ShiftTypes["postRes"],
+    ShiftType["postRes"],
     AxiosError,
-    ShiftTypes["postReq"]
+    ShiftType["postReq"]
   > => {
     return useMutation({
       mutationKey: ["createShifts"],
-      mutationFn: (data: ShiftTypes["postReq"]) =>
+      mutationFn: (data: ShiftType["postReq"]) =>
         shiftsServices.createShifts(data),
     });
   },
 
   useCreateShiftsDates: (): UseMutationResult<
-    ShiftTypes["postDatesRes"],
+    ShiftType["postDatesRes"],
     AxiosError,
-    ShiftTypes["postDatesReq"]
+    ShiftType["postDatesReq"]
   > => {
     return useMutation({
       mutationKey: ["createShiftsDates"],
-      mutationFn: (data: ShiftTypes["postDatesReq"]) =>
+      mutationFn: (data: ShiftType["postDatesReq"]) =>
         shiftsServices.createShiftsDates(data),
     });
   },
 
   useGetShiftsDates: (
     id: string
-  ): UseQueryResult<ShiftTypes["datesRes"], AxiosError> => {
+  ): UseQueryResult<ShiftType["datesRes"], AxiosError> => {
     return useQuery({
       queryKey: ["shiftsDates", id],
       queryFn: () => shiftsServices.getShiftsDates(id),
@@ -50,7 +50,7 @@ const useShifts = {
   },
 
   useDeleteShifts: (): UseMutationResult<
-    ShiftTypes["deleteRes"],
+    ShiftType["deleteRes"],
     AxiosError,
     string
   > => {
@@ -61,7 +61,7 @@ const useShifts = {
   },
 
   useDeleteShiftsDates: (): UseMutationResult<
-    ShiftTypes["deleteRes"],
+    ShiftType["deleteRes"],
     AxiosError,
     string
   > => {
@@ -72,9 +72,9 @@ const useShifts = {
   },
 
   useUpdateShiftDates: (): UseMutationResult<
-    ShiftTypes["datesRes"],
+    ShiftType["datesRes"],
     AxiosError,
-    { id: string; data: ShiftTypes["updateDatesReq"] }
+    { id: string; data: ShiftType["updateDatesReq"] }
   > => {
     return useMutation({
       mutationKey: ["updateShiftsDates"],
@@ -83,13 +83,13 @@ const useShifts = {
   },
 
   useCreateShiftsAssign: (): UseMutationResult<
-    ShiftTypes["updateDatesRes"],
+    ShiftType["updateDatesRes"],
     AxiosError,
-    ShiftTypes["assignReq"]
+    ShiftType["assignReq"]
   > => {
     return useMutation({
       mutationKey: ["createShiftsAssignments"],
-      mutationFn: (data: ShiftTypes["assignReq"]) =>
+      mutationFn: (data: ShiftType["assignReq"]) =>
         shiftsServices.createShiftsAssignments(data),
     });
   },

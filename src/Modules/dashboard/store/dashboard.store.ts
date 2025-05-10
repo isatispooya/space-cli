@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
-interface DashboardStore {
+interface DashboardStoreType {
   runTour: boolean;
   setRunTour: (runTour: boolean) => void;
 }
-const useDashboardStore = create<DashboardStore>((set) => ({
+const useDashboardStore = create<DashboardStoreType>((set) => ({
   runTour: !localStorage.getItem("dashboardTourCompleted"),
   setRunTour: (runTour) => set({ runTour }),
 }));

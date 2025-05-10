@@ -10,12 +10,12 @@ import { ShiftDateType } from "../../types";
 import { Switch } from "@mui/material";
 import { convertToTimestamp } from "../../utils";
 
-interface ShiftReviewStepProps {
+interface ShiftReviewStepPropsType {
   onBack: () => void;
   onSuccess: () => void;
 }
 
-const ShiftReviewCom: React.FC<ShiftReviewStepProps> = ({
+const ShiftReviewCom: React.FC<ShiftReviewStepPropsType> = ({
   onBack,
   onSuccess,
 }) => {

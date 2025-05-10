@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import CategoryIcons from "./rewards_category.feat";
 import { CATEGORY_CHOICES } from "./data/categotyData";
-import { RewardItem, RewardsTableProps } from "../../types/RewardsTable.type";
+import { RewardItemType, RewardsTablePropsType } from "../../types/RewardsTable.type";
 
-export default function RewardsTable({ rewards }: RewardsTableProps) {
+const RewardsTable = ({ rewards }: RewardsTablePropsType) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [filteredRewards, setFilteredRewards] = useState<RewardItem[]>(rewards);
+  const [filteredRewards, setFilteredRewards] = useState<RewardItemType[]>(rewards);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -156,4 +156,6 @@ export default function RewardsTable({ rewards }: RewardsTableProps) {
       </div>
     </div>
   );
-}
+};
+
+export default RewardsTable;

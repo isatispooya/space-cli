@@ -7,10 +7,10 @@ import { FaChartLine } from "react-icons/fa";
 import { MdSupportAgent } from "react-icons/md";
 import { toast } from "react-hot-toast";
 import useConsultingReserveTurnUser from "@/Modules/consultation/hooks/admin/useConsultingReserveTurnUser";
-type WaveColor = "blue" | "purple" | "green" | "orange" | "red" | "dark";
+type WaveColorType = "blue" | "purple" | "green" | "orange" | "red" | "dark";
 import farasahm from "@/assets/logo/farasahm.png";
 
-interface FaraSahmResponse {
+interface FaraSahmResponseType {
   cookie: string;
   [key: string]: unknown;
 }
@@ -27,13 +27,13 @@ export const ToolsFeat: React.FC = () => {
     visible: { opacity: 1, y: 0 },
   };
 
-  const getCardColor = (description: string): WaveColor => {
+  const getCardColor = (description: string): WaveColorType => {
     if (description.includes("درآمد ثابت")) return "green";
     if (description.includes("در سهام")) return "blue";
     return "purple";
   };
 
-  const getButtonColors = (waveColor: WaveColor) => {
+  const getButtonColors = (waveColor: WaveColorType) => {
     switch (waveColor) {
       case "green":
         return {
@@ -64,7 +64,7 @@ export const ToolsFeat: React.FC = () => {
 
   const handleFaraSahmClick = () => {
     faraSahm.mutate(undefined, {
-      onSuccess: (response: FaraSahmResponse) => {
+      onSuccess: (response: FaraSahmResponseType) => {
         const faraSahmLink = `https://farasahm.fidip.ir/loginspace/${response.cookie}/`;
         window.open(faraSahmLink, "_blank");
       },
@@ -81,7 +81,7 @@ export const ToolsFeat: React.FC = () => {
       title: "فراسهم",
       icon: <img src={farasahm} alt="fara" className="w-18 h-18" />,
       iconColor: "#16a34a",
-      waveColor: "blue" as WaveColor,
+      waveColor: "blue" as WaveColorType,
       buttonText: "مشاهده",
       buttonLink: "#",
       isExternalLink: false,
@@ -97,7 +97,7 @@ export const ToolsFeat: React.FC = () => {
       title: "مشاوره تخصصی",
       icon: <MdSupportAgent />,
       iconColor: "#7e22ce",
-      waveColor: "purple" as WaveColor,
+      waveColor: "purple" as WaveColorType,
       buttonText: "درخواست",
       buttonLink: "/consultation/request",
       isExternalLink: false,

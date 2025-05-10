@@ -1,4 +1,4 @@
-export interface UsersTypes {
+export interface UsersType {
   accounts: {
     account_number: string;
     bank: string;

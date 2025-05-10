@@ -8,16 +8,16 @@ import {
 } from "react-icons/fa";
 import { FaClockRotateLeft, FaHandshakeAngle } from "react-icons/fa6";
 
-export interface MenuItem {
+export interface MenuItemType {
   title?: string;
   path?: string;
   icon?: IconType;
-  submenu?: MenuItem[];
+  submenu?: MenuItemType[];
   codename?: string[];
-  child?: MenuItem[];
+  child?: MenuItemType[];
 }
 
-export const menuItems: MenuItem[] = [
+export const menuItems: MenuItemType[] = [
   {
     title: "کاربران",
     icon: FaUserTie,

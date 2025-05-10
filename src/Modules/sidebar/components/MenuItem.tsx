@@ -1,17 +1,17 @@
 import { useEffect, useState, useMemo } from "react";
-import { MenuItem as MenuItemType } from "../data/menuItems";
+import { MenuItemType } from "../data/menuItems";
 import { Link } from "react-router-dom";
 import { useSearchStore, useSidebarStore } from "../store";
 import { useUserPermissions } from "../../permissions";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { motion } from "framer-motion";
 
-interface MenuItemProps {
+interface MenuItemPropsType {
   item: MenuItemType;
   className?: string;
 }
 
-const CustomMenuItem: React.FC<MenuItemProps> = ({ item }) => {
+const CustomMenuItem: React.FC<MenuItemPropsType> = ({ item }) => {
   const { search } = useSearchStore();
   const [isOpen, setIsOpen] = useState(false);
   const { checkPermission } = useUserPermissions();

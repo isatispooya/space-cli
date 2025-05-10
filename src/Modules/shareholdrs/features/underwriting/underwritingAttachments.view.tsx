@@ -2,7 +2,7 @@ import { useUnusedProcess } from "../../hooks";
 import { motion } from "framer-motion";
 import { FiDownload, FiFileText } from "react-icons/fi";
 
-interface AppendixItem {
+interface AppendixItemType {
   id: number;
   file: string;
   name: string;
@@ -32,7 +32,7 @@ const UnderwritingAttachmentsView = () => {
   return (
     <div className="relative w-full  mx-auto flex-col rounded-2xl bg-gradient-to-br from-slate-50/80 to-white/90 p-8 ">
       <div className="grid grid-cols-3 gap-6">
-        {appendixItems.map((item: AppendixItem, index: number) => (
+        {appendixItems.map((item: AppendixItemType, index: number) => (
           <motion.div
             key={item.id}
             initial={{ opacity: 0, y: -20 }}

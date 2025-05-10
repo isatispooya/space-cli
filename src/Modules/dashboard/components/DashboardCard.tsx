@@ -5,7 +5,7 @@ import WaveEffect from "../../../ui/wave";
 import "../../../ui/wave.css";
 import { Button } from "@/components";
 
-interface DashboardCardProps {
+interface DashboardCardPropsType {
   title: string;
   icon: ReactNode;
   iconColor?: string;
@@ -24,7 +24,7 @@ interface DashboardCardProps {
   headerButtons?: ReactNode;
 }
 
-const DashboardCard: React.FC<DashboardCardProps> = ({
+const DashboardCard: React.FC<DashboardCardPropsType> = ({
   title,
   icon,
   iconColor,

@@ -1,4 +1,4 @@
-export interface userProType {
+export interface UserProType {
   address: { city: string };
   age: number;
   birth_date: string;

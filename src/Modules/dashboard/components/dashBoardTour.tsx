@@ -8,7 +8,7 @@ import "../../../styles/tour.css";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { IoCheckmark } from "react-icons/io5";
 
-interface TourProps {
+interface TourPropsType {
   runTour: boolean;
   onTourEnd: () => void;
 }
@@ -118,7 +118,7 @@ const Tooltip = ({
   </div>
 );
 
-const DashboardTour: React.FC<TourProps> = ({ runTour, onTourEnd }) => {
+const DashboardTour: React.FC<TourPropsType> = ({ runTour, onTourEnd }) => {
   const steps: Step[] = [
     {
       target: ".tour-slider",

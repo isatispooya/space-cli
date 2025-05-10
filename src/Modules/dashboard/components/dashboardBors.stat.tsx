@@ -5,7 +5,7 @@ import Spinner from "../../../components/loaders/spinner";
 import DashboardCard from "./DashboardCard";
 import { bors } from "@/assets";
 
-interface PortfolioItem {
+interface PortfolioItemType {
   Symbol: string;
   VolumeInPrice: string | number;
 }
@@ -17,7 +17,7 @@ const DashboardBorsStat = () => {
   const title = "کارگزاری ایساتیس پویا (بورس)";
 
   const pieData = data?.bourse.protfolio
-    ? data.bourse.protfolio.map((item: PortfolioItem) => ({
+    ? data.bourse.protfolio.map((item: PortfolioItemType) => ({
         name: item.Symbol,
         value: parseInt(item.VolumeInPrice.toString()),
       }))

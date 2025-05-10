@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 
-interface FieldProps {
+interface FieldPropsType {
   label: string;
   value: string;
 }
 
-export const Field: React.FC<FieldProps> = ({ label, value }) => {
+export const Field: React.FC<FieldPropsType> = ({ label, value }) => {
   return (
     <div>
       <label

@@ -1,5 +1,5 @@
 import { CompanyType } from "../../companies/types";
-import { UserLiteDataType } from "../../users/types";
+import { UserLiteData } from "../../users/types";
 
 export interface ShareholdersType {
   id: number;
@@ -11,7 +11,7 @@ export interface ShareholdersType {
   last_name?: string;
   uniqueIdentifier?: string;
   company_detail?: CompanyType;
-  user_detail?: UserLiteDataType;
+  user_detail?: UserLiteData;
   user: number;
   user_name?: string;
   updated_at?: string;

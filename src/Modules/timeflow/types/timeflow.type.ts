@@ -1,4 +1,4 @@
-export interface TimeflowData {
+export interface TimeflowDataType {
   id: number;
   date: string;
   time_start: string;
@@ -22,7 +22,7 @@ export interface TimeflowVerifyType {
   time_user: string;
 }
 
-export interface TimeflowUpdateData {
+export interface TimeflowUpdateDataType {
   id: number;
   data: TimeflowVerifyType;
 } 

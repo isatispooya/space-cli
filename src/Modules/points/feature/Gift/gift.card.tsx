@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GiftTypes } from "../../types/gifts.type";
+import { GiftType } from "../../types/gifts.type";
 import { useState } from "react";
 import { useRemainPoints } from "../../hooks";
 import { LuCoins } from "react-icons/lu";
@@ -19,6 +19,7 @@ import {
   Paper,
   ClickAwayListener,
   MenuList,
+  Alert,
 } from "@mui/material";
 import * as React from "react";
 import { formatNumber } from "../../../../utils";
@@ -27,8 +28,8 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 import { FormControlLabel, Checkbox } from "@mui/material";
 
-interface GiftCardProps {
-  gifts: GiftTypes[];
+interface GiftCardPropsType {
+  gifts: GiftType[];
   postGift: (data: {
     id: string;
     gift: string;
@@ -37,7 +38,7 @@ interface GiftCardProps {
   }) => void;
 }
 
-interface SelectedGift {
+interface SelectedGiftType {
   id: string;
   description: string;
   is_repetitive: boolean;
@@ -60,17 +61,19 @@ const COLORS = {
   },
 } as const;
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+const alert = React.forwardRef<HTMLDivElement, AlertProps>(function alert(
   props,
   ref
 ) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const GiftCard = ({ gifts, postGift }: GiftCardProps) => {
+const GiftCard = ({ gifts, postGift }: GiftCardPropsType) => {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState<string>("");
-  const [selectedGift, setSelectedGift] = useState<SelectedGift | null>(null);
+  const [selectedGift, setSelectedGift] = useState<SelectedGiftType | null>(
+    null
+  );
   const [isContractAccepted, setIsContractAccepted] = useState(false);
   const [filterTypeSeed, setFilterTypeSeed] = useState<string | null>(null);
   const [filterTypeCoin, setFilterTypeCoin] = useState<

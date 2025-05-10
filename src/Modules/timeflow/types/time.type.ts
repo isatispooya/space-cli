@@ -1,6 +1,7 @@
-type User = { first_name: string; last_name: string };
+import { UserType } from "@/Modules/positions/types";
 
-export type Status =
+
+export type StatusType =
   | "pending"
   | "approved"
   | "rejected"
@@ -8,13 +9,13 @@ export type Status =
   | "leave"
   | "shift_end";
 
-interface TimeEntry {
+export type TimeEntryType = {
   id: number;
-  user: User;
+  user: UserType;
   type: "login" | "logout";
   time: string;
-  status: Status;
+  status: StatusType;
   rejectReason?: string;
 }
 
-export default TimeEntry;
+export default TimeEntryType;
