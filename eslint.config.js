@@ -47,9 +47,18 @@ export default tseslint.config(
           format: ["camelCase", "PascalCase"],
           leadingUnderscore: "allow",
         },
+
         {
           selector: "typeLike",
           format: ["PascalCase"],
+        },
+        {
+          selector: ["interface", "typeAlias"],
+          format: ["PascalCase"],
+          custom: {
+            regex: "Type$",
+            match: true,
+          },
         },
       ],
       "react-refresh/only-export-components": [
