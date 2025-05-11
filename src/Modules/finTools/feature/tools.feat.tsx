@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import useConsultingReserveTurnUser from "@/Modules/consultation/hooks/admin/useConsultingReserveTurnUser";
 type WaveColorType = "blue" | "purple" | "green" | "orange" | "red" | "dark";
 import farasahm from "@/assets/logo/farasahm.png";
+import { betis } from "@/assets";
 
 interface FaraSahmResponseType {
   cookie: string;
@@ -78,7 +79,7 @@ export const ToolsFeat: React.FC = () => {
   const staticCards = [
     {
       id: "farasahm",
-      title: "فراسهم",
+      title: "ویسا",
       icon: <img src={farasahm} alt="fara" className="w-18 h-18" />,
       iconColor: "#16a34a",
       waveColor: "blue" as WaveColorType,
@@ -88,13 +89,45 @@ export const ToolsFeat: React.FC = () => {
       onButtonClick: handleFaraSahmClick,
       content: (
         <div className="flex flex-col items-center justify-center h-full">
-          <p className="text-lg font-bold">ابزار تحلیل فراسهم</p>
+          <p className="text-lg font-bold"> نماد ویسا</p>
+        </div>
+      ),
+    },
+    {
+      id: "farasahm",
+      title: "بازرگام",
+      icon: <img src={farasahm} alt="fara" className="w-18 h-18" />,
+      iconColor: "#dc2626",
+      waveColor: "red" as WaveColor,
+      buttonText: "مشاهده",
+      buttonLink: "#",
+      isExternalLink: false,
+      onButtonClick: handleFaraSahmClick,
+      content: (
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-lg font-bold">نماد بازرگام</p>
+        </div>
+      ),
+    },
+    {
+      id: "farasahm",
+      title: "بتیس",
+      icon: <img src={betis} alt="fara" className="w-18 h-18" />,
+      iconColor: "#16a34a",
+      waveColor: "green" as WaveColor,
+      buttonText: "مشاهده",
+      buttonLink: "#",
+      isExternalLink: false,
+      onButtonClick: handleFaraSahmClick,
+      content: (
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-lg font-bold">نماد بتیس</p>
         </div>
       ),
     },
     {
       id: "consulting",
-      title: "مشاوره تخصصی",
+      title: "مشاوره مالی",
       icon: <MdSupportAgent />,
       iconColor: "#7e22ce",
       waveColor: "purple" as WaveColorType,
@@ -119,7 +152,6 @@ export const ToolsFeat: React.FC = () => {
   return (
     <div className="min-h-screen w-full p-2 md:p-4">
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 max-w-10xl mx-auto">
-
         {staticCards.map((card, index) => (
           <motion.div
             key={card.id}
@@ -144,7 +176,6 @@ export const ToolsFeat: React.FC = () => {
           </motion.div>
         ))}
 
-    
         {symbols?.map((symbol: SymbolsType["symbolRes"][0], index: number) => {
           const waveColor = getCardColor(symbol.description);
           return (

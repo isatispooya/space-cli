@@ -44,13 +44,12 @@ const useTimeflow = {
       mutationFn: ({ data }: { data: TimeflowVerifyType }) =>
         timeflowServices.UserTimeflowAccept(data),
     });
-    
   },
 
   useGetTimeflowDetails: (
     year: number,
     month: number
-  ): UseQueryResult<UserLoginType[]> => {
+  ): UseQueryResult<UserLoginType> => {
     return useQuery({
       queryKey: ["timeflow-details", year, month],
       queryFn: ({ queryKey }) => {
@@ -89,7 +88,7 @@ const useTimeflow = {
   },
 
   usePatchTimeflowEdit: (): UseMutationResult<
-  TimeflowEditType,
+    TimeflowEditType,
     AxiosError,
     { data: TimeflowEditType; id: number }
   > => {

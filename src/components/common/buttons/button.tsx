@@ -80,6 +80,7 @@ const Button: React.FC<ButtonPropsType> = ({
   fullWidth = false,
   animationOnHover = "scale",
   animationOnTap = "scale",
+
   ripple = true,
   rippleColor,
   loaderType = "spinner",

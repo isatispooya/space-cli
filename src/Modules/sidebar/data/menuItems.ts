@@ -66,11 +66,7 @@ export const menuItems: MenuItemType[] = [
         path: "/finTools",
         codename: ["allow_any"],
       },
-      {
-        title: "صندوق خاتم",
-        path: "/khatam",
-        codename: ["allow_any"],
-      },
+
     ],
   },
   {

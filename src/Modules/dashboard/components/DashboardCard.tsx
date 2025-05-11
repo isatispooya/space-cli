@@ -60,9 +60,9 @@ const DashboardCard: React.FC<DashboardCardPropsType> = ({
         return customColors.background;
     }
   };
-  
+
   const titleColor = getTitleColor();
-  
+
   const renderContent = (
     <div
       className={`flex flex-col h-full w-full p-2 wave-content ${className}`}
@@ -110,14 +110,28 @@ const DashboardCard: React.FC<DashboardCardPropsType> = ({
                 <span>{buttonText}</span>
               </Button>
             </a>
+          ) : buttonLink ? (
+            <a
+              href={buttonLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full"
+            >
+              <Button
+                variant="custom"
+                customColors={customColors}
+                fullWidth
+                animationOnHover="scale"
+                animationOnTap="scale"
+                className="w-full py-1 px-2 rounded-md font-iranSans text-xs"
+                rightIcon={<IoIosArrowBack className="w-3 h-3" />}
+              >
+                <span>{buttonText}</span>
+              </Button>
+            </a>
           ) : (
             <Button
-              onClick={
-                onButtonClick ||
-                (buttonLink
-                  ? () => (window.location.href = buttonLink)
-                  : undefined)
-              }
+              onClick={onButtonClick}
               variant="custom"
               customColors={customColors}
               fullWidth

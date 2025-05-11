@@ -71,6 +71,7 @@ const CreateShareholdersPost = () => {
     first_name: Yup.string().optional(),
     last_name: Yup.string().optional(),
     uniqueIdentifier: Yup.string().optional(),
+    mobile: Yup.string().optional(),
     capital_increase_payment: Yup.number().optional(),
     company_detail: Yup.object()
       .shape({
@@ -87,6 +88,7 @@ const CreateShareholdersPost = () => {
         first_name: Yup.string().required("نام کاربر الزامی است"),
         last_name: Yup.string().required("نام خانوادگی کاربر الزامی است"),
         uniqueIdentifier: Yup.string().required("شناسه کاربر الزامی است"),
+        mobile: Yup.string().optional(),
       })
       .optional(),
     updated_at: Yup.string().optional(),

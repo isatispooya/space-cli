@@ -29,9 +29,11 @@ const Timesheet = () => {
   const { data: userData } = useTimeflow.useGetTimeflow();
   const { data: timeflowDetails } = useTimeflow.useGetTimeflowDetails(2025, 3);
 
-  const userDetail = timeflowDetails?.find(
-    (item: any) => (item as TimeflowDetailType).user_id.toString() === id
-  ) as TimeflowDetailType | undefined;
+  const userDetail = Array.isArray(timeflowDetails?.other_logs)
+    ? timeflowDetails?.other_logs.find(
+        (item: any) => (item as TimeflowDetailType).user_id.toString() === id
+      ) as TimeflowDetailType | undefined
+    : undefined;
 
   const userTimeflowData =
     userData?.filter((item) => item.user_id.toString() === id) || [];
@@ -56,7 +58,7 @@ const Timesheet = () => {
       ]
     : [];
 
-  // اطلاعات مجموع کارکرد
+ 
   const workSummary = userDetail
     ? {
         month: "اسفند 1403",

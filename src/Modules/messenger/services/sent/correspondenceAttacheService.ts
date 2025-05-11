@@ -21,7 +21,6 @@ const correspondenceAttacheService = {
     const response = await api.get("/correspondence/correspondence/");
     return response.data;
   },
-
 };
 
 export default correspondenceAttacheService;

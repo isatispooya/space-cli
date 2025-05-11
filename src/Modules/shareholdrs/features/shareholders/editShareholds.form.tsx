@@ -36,6 +36,7 @@ const EditShareholdForm: React.FC = () => {
     first_name: yup.string().optional(),
     last_name: yup.string().optional(),
     uniqueIdentifier: yup.string().optional(),
+    mobile: yup.string().optional(),
     capital_increase_payment: yup.number().optional(),
     company_detail: yup.object().optional(),
     user_detail: yup.object().optional(),

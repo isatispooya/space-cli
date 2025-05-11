@@ -15,3 +15,4 @@ export { default as profileIcon } from "./profile.png";
 export { default as sep } from "./sep.png";
 export { default as closeIcon } from "./close.icon.svg";
 export { default as farasahm } from "./farasahm.png";
+export { default as betis } from "./betis.png";
