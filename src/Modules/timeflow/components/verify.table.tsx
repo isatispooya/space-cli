@@ -2,13 +2,14 @@ import { useTimeflow } from "../hooks";
 import { TabulatorTable } from "../../../components";
 import { CellComponent, ColumnDefinition } from "tabulator-tables";
 import moment from "moment-jalaali";
-import type { Other_logs } from "../types/userLogin.type";
+import type UserLoginType from "../types/userLogin.type";
+type OtherLogsType = UserLoginType["other_logs"][number];
 
 const VerifyTable = () => {
   const { data: userLogin } = useTimeflow.useGetUsersLogin();
 
   const mappedData = Array.isArray(userLogin?.other_logs)
-    ? userLogin.other_logs.map((item: Other_logs) => ({
+    ? userLogin.other_logs.map((item: OtherLogsType) => ({
         user_first_name: item.user.first_name,
         user_last_name: item.user.last_name,
         browser: item.browser,

@@ -1,17 +1,13 @@
-import { TabulatorTable } from "../../../components";
+import { MenuItem, TabulatorTable } from "../../../components";
 import useTimeflow from "../hooks/usetimeflow";
 import { TimeflowStatus } from "../data/timeflow_status";
-import { TimeflowEvent } from "../types";
-import {
-  createActionMenu,
-  MenuItem,
-} from "../../../components/table/actionMenus";
+import { TimeflowEventType } from "../types";
+import { createActionMenu } from "../../../components/table/actionMenus";
 import { useNavigate } from "react-router-dom";
 import { RowComponent } from "tabulator-tables";
-import { StatusPosition } from "@/Modules/userManagment/types";
+import { StatusPositionType } from "@/Modules/userManagment/types";
 import { PiPlugsConnected } from "react-icons/pi";
 import { TbPlugConnected } from "react-icons/tb";
-
 
 const UserTimeflowTable = () => {
   const { data } = useTimeflow.useGetUserAllTimeflow();
@@ -21,8 +17,7 @@ const UserTimeflowTable = () => {
     return TimeflowStatus.find((item) => item.value === status)?.name || status;
   };
 
-
-  const exportData = (data: TimeflowEvent[]) => {
+  const exportData = (data: TimeflowEventType[]) => {
     return data.map((item) => ({
       شناسه: item.id,
       نوع: item.type,
@@ -37,25 +32,55 @@ const UserTimeflowTable = () => {
       "آدرس IP": item.ip_address,
     }));
   };
-  const TYPE_STATUS: Record<StatusPosition, { value: string; label: string; icon: JSX.Element; color: string }> = {
-    login: { value: "login", label: "ورود", icon: <PiPlugsConnected />, color: "green" },
-    logout: { value: "logout", label: "خروج", icon: <TbPlugConnected />, color: "red" },
-    mission_start: { value: "mission_start", label: "ماموریت", icon: <TbPlugConnected />, color: "blue" },
-    leave_start: { value: "leave_start", label: "مرخصی", icon: <TbPlugConnected />, color: "yellow" },
-    mission_end: { value: "mission_end", label: "پایان ماموریت", icon: <TbPlugConnected />, color: "gray" },
-    leave_end: { value: "leave_end", label: "پایان مرخصی", icon: <TbPlugConnected />, color: "gray" },
+  const TYPE_STATUS: Record<
+    StatusPositionType,
+    { value: string; label: string; icon: JSX.Element; color: string }
+  > = {
+    login: {
+      value: "login",
+      label: "ورود",
+      icon: <PiPlugsConnected />,
+      color: "green",
+    },
+    logout: {
+      value: "logout",
+      label: "خروج",
+      icon: <TbPlugConnected />,
+      color: "red",
+    },
+    mission_start: {
+      value: "mission_start",
+      label: "ماموریت",
+      icon: <TbPlugConnected />,
+      color: "blue",
+    },
+    leave_start: {
+      value: "leave_start",
+      label: "مرخصی",
+      icon: <TbPlugConnected />,
+      color: "yellow",
+    },
+    mission_end: {
+      value: "mission_end",
+      label: "پایان ماموریت",
+      icon: <TbPlugConnected />,
+      color: "gray",
+    },
+    leave_end: {
+      value: "leave_end",
+      label: "پایان مرخصی",
+      icon: <TbPlugConnected />,
+      color: "gray",
+    },
   };
-  
-
-
-
 
   const mappedData = Array.isArray(data)
     ? data
-        .filter((item: TimeflowEvent) => item.type !== "login_without_work")
-        .map((item: TimeflowEvent) => ({
+        .filter((item: TimeflowEventType) => item.type !== "login_without_work")
+        .map((item: TimeflowEventType) => ({
           id: item.id,
-          type: TYPE_STATUS[item.type as StatusPosition]?.label || item.type,
+          type:
+            TYPE_STATUS[item.type as StatusPositionType]?.label || item.type,
           userName: `${item.user.first_name} ${item.user.last_name}`,
           userEmail: item.user.email,
           userUsername: item.user.username,

@@ -11,7 +11,6 @@ import { useState } from "react";
 import { DateObject } from "react-multi-date-picker";
 import { useNavigate } from "react-router-dom";
 
-// تابع تبدیل نوع تردد از انگلیسی به فارسی
 const typeTranslator = (type: string): string => {
   switch (type) {
     case "login":
@@ -51,17 +50,17 @@ const TimeflowDetails = () => {
         ...item,
         date: moment(item.date).format("jYYYY/jMM/jDD"),
         time_start: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(
-      item.time_start,
-      "HH:mm:ss"
-    ).format("HH:mm")}`,
-    time_end: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(
-      item.time_end,
-      "HH:mm:ss"
-    ).format("HH:mm")}`,
-    type: item.type === "working" ? "زمان حضور" : " غیبت",
-    user_id: item.user_id,
-    first_name: item.user_detail.first_name,
-    last_name: item.user_detail.last_name,
+          item.time_start,
+          "HH:mm:ss"
+        ).format("HH:mm")}`,
+        time_end: `${moment(item.date).format("jYYYY/jMM/jDD")} ${moment(
+          item.time_end,
+          "HH:mm:ss"
+        ).format("HH:mm")}`,
+        type: item.type === "working" ? "زمان حضور" : " غیبت",
+        user_id: item.user_id,
+        first_name: item.user_detail.first_name,
+        last_name: item.user_detail.last_name,
         uniqueIdentifier: item.user_detail.uniqueIdentifier,
       }))
     : [];
@@ -70,7 +69,6 @@ const TimeflowDetails = () => {
     return <LoaderLg />;
   }
 
-  // تابع بستن تمام منوهای باز
   const closeAllMenus = () => {
     const menus = document.querySelectorAll(".popup-menu");
     menus.forEach((menu) => menu.remove());
@@ -136,13 +134,10 @@ const TimeflowDetails = () => {
       cellClick: function (e: Event, cell: CellComponent) {
         e.stopPropagation();
 
-        // دریافت داده‌های سطر
         const rowData = cell.getRow().getData();
 
-        // بستن منوهای باز
         closeAllMenus();
 
-        // ایجاد منو
         const menu = document.createElement("div");
         menu.className = "popup-menu";
         menu.style.position = "absolute";
@@ -151,8 +146,6 @@ const TimeflowDetails = () => {
         menu.style.borderRadius = "4px";
         menu.style.padding = "8px 0";
         menu.style.zIndex = "1000";
-
-        // ایجاد دکمه پرینت
         const printButton = document.createElement("button");
         printButton.className = "menu-item";
         printButton.style.display = "flex";
@@ -165,31 +158,25 @@ const TimeflowDetails = () => {
         printButton.style.cursor = "pointer";
         printButton.innerHTML = `<i class="fas fa-print" style="color: #02205f; margin-left: 8px;"></i> پرینت`;
 
-        // اضافه کردن رویداد کلیک به دکمه
         printButton.onclick = () => {
           navigate(`/timeflow-report/${rowData.user_id}`);
           closeAllMenus();
         };
 
-        // اضافه کردن دکمه به منو
         menu.appendChild(printButton);
 
-        // تنظیم موقعیت منو
         const rect = cell.getElement().getBoundingClientRect();
         menu.style.left = `${rect.left + window.scrollX}px`;
         menu.style.top = `${rect.bottom + window.scrollY}px`;
 
-        // اضافه کردن منو به صفحه
         document.body.appendChild(menu);
 
-        // بستن منو با اسکرول
         const handleScroll = () => {
           closeAllMenus();
           window.removeEventListener("scroll", handleScroll);
         };
         window.addEventListener("scroll", handleScroll);
 
-        // بستن منو با کلیک خارج از منو
         setTimeout(() => {
           const closeMenu = (e: MouseEvent) => {
             if (!menu.contains(e.target as Node)) {
