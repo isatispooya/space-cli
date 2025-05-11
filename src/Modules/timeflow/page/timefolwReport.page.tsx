@@ -27,7 +27,7 @@ const Timesheet = () => {
   const { id } = useParams<{ id: string }>();
 
   const { data: userData } = useTimeflow.useGetTimeflow();
-  const { data: timeflowDetails } = useTimeflow.useGetTimeflowDetails(2025, 3);
+  const { data: timeflowDetails } = useTimeflow.useGetTimeflowDetails();
 
   const userDetail = Array.isArray(timeflowDetails?.other_logs)
     ? timeflowDetails?.other_logs.find(

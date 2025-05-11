@@ -67,6 +67,14 @@ export interface PostAssignmentsReqType {
   shift_id: number;
 }
 
+export interface PostAssignmentsResType {
+  id: number;
+  position: number;
+  shift: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export type ShiftType = {
   getRes: GetShiftsResType;
   postReq: ShiftsReqType;
@@ -77,6 +85,7 @@ export type ShiftType = {
   deleteReq: DeleteShiftReqType;
   deleteRes: DeleteShiftResType;
   assignReq: PostAssignmentsReqType;
+  assignRes: PostAssignmentsResType;
   updateDatesReq: ShiftDateUpdateReqType;
   updateDatesRes: ShiftDateUpdateResType[];
 };

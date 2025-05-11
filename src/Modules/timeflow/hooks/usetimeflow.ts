@@ -3,6 +3,7 @@ import {
   useQuery,
   UseMutationResult,
   UseQueryResult,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { timeflowServices } from "../service";
 import {
@@ -47,16 +48,11 @@ const useTimeflow = {
   },
 
   useGetTimeflowDetails: (
-    year: number,
-    month: number
   ): UseQueryResult<UserLoginType> => {
     return useQuery({
-      queryKey: ["timeflow-details", year, month],
-      queryFn: ({ queryKey }) => {
-        const [, year, month] = queryKey.map((value) =>
-          parseInt(value as string, 10)
-        );
-        return timeflowServices.getTimeflowDetails(year, month);
+      queryKey: ["timeflow-details" ],
+      queryFn: () => {
+        return timeflowServices.getTimeflowDetails();
       },
     });
   },
@@ -91,11 +87,17 @@ const useTimeflow = {
     TimeflowEditType,
     AxiosError,
     { data: TimeflowEditType; id: number }
+    
   > => {
+    const queryClient = useQueryClient();
+    
     return useMutation({
       mutationKey: ["patch-timeflow-edit"],
       mutationFn: ({ data, id }: { data: TimeflowEditType; id: number }) =>
         timeflowServices.patchTimeflowEdit(id, data),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["user-all-timeflow"] });
+      },
     });
   },
 };

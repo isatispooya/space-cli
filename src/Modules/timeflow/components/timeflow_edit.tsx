@@ -1,13 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment-jalaali";
 import { useTimeflow } from "../hooks";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  DatePicker,
-  TimePicker,
-  LocalizationProvider,
-} from "@mui/x-date-pickers";
-import { AdapterMomentJalaali } from "@mui/x-date-pickers/AdapterMomentJalaali";
+import { DatePicker, TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   Button,
   FormControl,
@@ -20,50 +16,98 @@ import {
   Typography,
   alpha,
 } from "@mui/material";
-import { useState } from "react";
-import { LoaderLg, NoContent } from "../../../components";
-import { AccessTime, CalendarMonth, Edit } from "@mui/icons-material";
-import { TimeflowEditType, TimeflowEditMoment } from "../types";
+import { useState, useEffect } from "react";
+import { LoaderLg, NoContent, Toast } from "../../../components";
+import {
+  AccessTime,
+  CalendarMonth,
+  Edit,
+  CheckCircle,
+} from "@mui/icons-material";
+import { TimeflowEditType, TimeflowEditDayjsType } from "../types";
+import dayjs from "dayjs";
 
 moment.loadPersian({ usePersianDigits: true, dialect: "persian-modern" });
 
+const typeTranslator = (type: string): string => {
+  switch (type) {
+    case "login":
+      return "ورود";
+    case "logout":
+      return "خروج";
+    case "leave":
+      return "مرخصی";
+    case "end-leave":
+      return "پایان مرخصی";
+    case "start-mission":
+      return "شروع ماموریت";
+    case "end-mission":
+      return "پایان ماموریت";
+    default:
+      return type;
+  }
+};
+
 const TimeflowEditForm = () => {
-  const [dateValue, setDateValue] = useState<TimeflowEditMoment | null>(null);
-  const [timeValue, setTimeValue] = useState<TimeflowEditMoment | null>(null);
+  const [dateValue, setDateValue] = useState<TimeflowEditDayjsType | null>(null);
+  const [timeValue, setTimeValue] = useState<TimeflowEditDayjsType | null>(null);
   const [typeValue, setTypeValue] = useState<string>("");
 
-  const { data, refetch, isLoading } = useTimeflow.useGetUserAllTimeflow();
+  const { data, isLoading } = useTimeflow.useGetUserAllTimeflow();
   const { id } = useParams();
   const { mutate: edit } = useTimeflow.usePatchTimeflowEdit();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!dateValue && !timeValue && data) {
+      const EDITABLE_DATA = data?.find(
+        (item: TimeflowEditType) => item.id === Number(id)
+      );
+
+      if (EDITABLE_DATA) {
+        const initialTime = dayjs(EDITABLE_DATA.time_user);
+        setDateValue(initialTime);
+        setTimeValue(initialTime);
+        setTypeValue(EDITABLE_DATA.type || "");
+      }
+    }
+  }, [data, dateValue, id, timeValue]);
 
   if (isLoading) return <LoaderLg />;
+
   const EDITABLE_DATA = data?.find(
     (item: TimeflowEditType) => item.id === Number(id)
   );
-  if (!EDITABLE_DATA) return <NoContent label="اطلاعات مورد نظر یافت نشد" />;
 
-  if (!dateValue && !timeValue && EDITABLE_DATA) {
-    const initialMoment = moment(EDITABLE_DATA.time_user);
-    setDateValue(initialMoment);
-    setTimeValue(initialMoment);
-    setTypeValue(EDITABLE_DATA.type || "");
-  }
+  if (!EDITABLE_DATA) return <NoContent label="اطلاعات مورد نظر یافت نشد" />;
 
   const handleSubmit = () => {
     if (dateValue && timeValue) {
+      const combinedDateTime = dayjs(dateValue)
+        .hour(timeValue.hour())
+        .minute(timeValue.minute())
+        .second(timeValue.second());
+      
+      const formattedDate = combinedDateTime.format('YYYY-MM-DDTHH:mm:ss.SSSSSS+03:30');
+
       const payload: TimeflowEditType = {
         id: Number(id),
-        time_user: dateValue.toISOString(),
+        time_user: formattedDate,
         type: typeValue,
       };
 
+      Toast(
+        "با موفقیت بروزرسانی شد",
+        <CheckCircle sx={{ color: "green" }} />,
+        "bg-green-400"
+      );
+      navigate("/timeflow/users-timeflows");
       edit({ data: payload, id: Number(id) });
-      refetch();
     }
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterMomentJalaali}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <AnimatePresence>
         <motion.div
           key="edit-form"
@@ -214,15 +258,17 @@ const TimeflowEditForm = () => {
                     onChange={(e: SelectChangeEvent) =>
                       setTypeValue(e.target.value)
                     }
+                    renderValue={(value) => typeTranslator(value)}
                   >
                     <MenuItem value="login">ورود</MenuItem>
                     <MenuItem value="logout">خروج</MenuItem>
-                    <MenuItem value="leave_start">شروع مرخصی</MenuItem>
-                    <MenuItem value="leave_end">ورود مرخصی</MenuItem>
-                    <MenuItem value="mission_start">شروع ماموریت</MenuItem>
-                    <MenuItem value="mission_end">پایان ماموریت</MenuItem>
+                    <MenuItem value="leave">مرخصی</MenuItem>
+                    <MenuItem value="end-leave">پایان مرخصی</MenuItem>
+                    <MenuItem value="start-mission">شروع ماموریت</MenuItem>
+                    <MenuItem value="end-mission">پایان ماموریت</MenuItem>
                   </Select>
                 </FormControl>
+
                 <Button
                   variant="contained"
                   fullWidth

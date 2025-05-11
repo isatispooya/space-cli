@@ -36,11 +36,11 @@ const timeflowServices = {
   },
 
   getTimeflowDetails: async (
-    year: number,
-    month: number
+    // year: number,
+    // month: number
   ): Promise<UserLoginType> => {
     const response = await api.get(
-      `/timeflow/summery-time-flow/?year=${year}&month=${month}`
+      `/timeflow/list-user-logs/`
     );
     return response.data;
   },

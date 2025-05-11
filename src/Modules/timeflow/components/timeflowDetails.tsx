@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useTimeflow } from "../hooks";
 import { LoaderLg, TabulatorTable } from "../../../components";
-import { ColumnDefinition } from "tabulator-tables";
+import { CellComponent, ColumnDefinition } from "tabulator-tables";
 import moment from "moment-jalaali";
 import { ExelData } from "../data";
 import persian from "react-date-object/calendars/persian";
@@ -10,10 +10,6 @@ import DatePicker from "react-multi-date-picker";
 import { useState } from "react";
 import { DateObject } from "react-multi-date-picker";
 import { useNavigate } from "react-router-dom";
-import { CellComponent } from "tabulator-tables";
-
-// تعریف تایپ برای سلول جدول
-
 
 // تابع تبدیل نوع تردد از انگلیسی به فارسی
 const typeTranslator = (type: string): string => {
@@ -40,10 +36,7 @@ const TimeflowDetails = () => {
     new DateObject({ calendar: persian, locale: persian_fa })
   );
 
-  const { data, isLoading } = useTimeflow.useGetTimeflowDetails(
-    selectedDate.year,
-    selectedDate.month.number
-  );
+  const { data, isLoading } = useTimeflow.useGetTimeflowDetails();
 
   const navigate = useNavigate();
 

@@ -39,7 +39,7 @@ const shiftsServices = {
   },
   createShiftsAssignments: async (
     data: ShiftType["assignReq"]
-  ): Promise<any> => {
+  ): Promise<ShiftType["assignRes"]> => {
     const response = await api.post("/timeflow/set-shift-for-user/", data);
     return response.data;
   },
