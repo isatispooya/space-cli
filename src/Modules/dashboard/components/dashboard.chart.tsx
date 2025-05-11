@@ -232,24 +232,25 @@ const DashboardChart = () => {
             </BarChart>
           </ResponsiveContainer>
         )}
-      </div>
 
       <Button
         onClick={() => navigate("/shareholders/table")}
-        variant="custom"
         customColors={{
           background: "#02205F",
           hoverBackground: "#5677BC",
           text: "white",
         }}
+        variant="custom"
         fullWidth
         animationOnHover="scale"
         animationOnTap="scale"
-        className="w-full py-2 px-3  rounded-lg font-iranSans text-base"
-        rightIcon={<IoIosArrowBack className="w-4 h-4" />}
+        className="mt-4 hover:mt-0 w-full py-1 px-2 rounded-md font-iranSans text-xs"
+        rightIcon={<IoIosArrowBack className="w-3 h-3" />}
+
       >
         <span>مدیریت سهام</span>
       </Button>
+      </div>
 
       <div
         className="absolute bottom-0 left-0 right-0"
