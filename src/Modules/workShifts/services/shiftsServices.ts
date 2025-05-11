@@ -2,9 +2,10 @@ import { api } from "@/api";
 import { ShiftType } from "../types";
 
 const shiftsServices = {
-  getShifts: async (): Promise<ShiftType["getRes"]> => {
+  getShifts: async (): Promise<ShiftType["getRes"][]> => {
     const { data } = await api.get("/timeflow/shift/");
-    return data;
+    // Ensure data is an array
+    return Array.isArray(data) ? data : [data];
   },
   createShifts: async (
     shiftData: ShiftType["postReq"]
