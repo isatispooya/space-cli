@@ -202,3 +202,5 @@ const NewVerifyForm = () => {
     </AnimatePresence>
   );
 }
+
+export default NewVerifyForm;
