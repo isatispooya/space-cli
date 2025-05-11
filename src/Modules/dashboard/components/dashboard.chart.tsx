@@ -14,6 +14,7 @@ import { useEffect, useState, useMemo } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Spinner from "../../../components/loaders/spinner";
 import { Button } from "@/components";
+import { useNavigate } from "react-router-dom";
 
 interface TooltipPropsType {
   active?: boolean;
@@ -44,6 +45,7 @@ interface BarPropsType {
 const DashboardChart = () => {
   const { data: statsChart, isLoading } = useDashboard.useGetStats();
   const [isVertical, setIsVertical] = useState(false);
+  const navigate = useNavigate();
   // const { data: permissions } = useUserPermissions();
 
   // const hasPermission =
@@ -66,7 +68,7 @@ const DashboardChart = () => {
     }
 
     return statsChart.companies
-      .sort((a, b) => b.shares - a.shares)
+      .sort((a: { shares: number }, b: { shares: number }) => b.shares - a.shares)
       .map((company: { name: string; shares: number; logo: string }) => ({
         name: company.name,
         value: company.shares,
@@ -233,7 +235,7 @@ const DashboardChart = () => {
       </div>
 
       <Button
-        onClick={() => (window.location.href = "/shareholders/table")}
+        onClick={() => navigate("/shareholders/table")}
         variant="custom"
         customColors={{
           background: "#02205F",

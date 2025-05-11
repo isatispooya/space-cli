@@ -11,7 +11,7 @@ const DashboardToolsStat = () => {
       icon={<FaTools className="w-5 h-5" />}
       iconColor="#2D3748"
       waveColor="dark"
-      buttonText="امورمالی"
+      buttonText="ابزار ها"
       onButtonClick={() => navigate("/finTools")}
       customColors={{
         background: "#2D3748",
@@ -21,7 +21,7 @@ const DashboardToolsStat = () => {
       content={
         <div className="flex flex-col items-center mb-8">
           <p className="text-lg font-bold text-[#2D3748] font-iranSans text-center">
-            میزکار
+            ابزار های مالی
           </p>
           <p className="text-xs text-gray-600 mt-1 font-iranSans text-center">
             مدیریت هوشمند دارایی‌ها و سرمایه‌گذاری

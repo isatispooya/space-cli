@@ -84,7 +84,7 @@ export const ToolsFeat: React.FC = () => {
       iconColor: "#16a34a",
       waveColor: "blue" as WaveColorType,
       buttonText: "مشاهده",
-      buttonLink: "#",
+      buttonLink: "",
       isExternalLink: false,
       onButtonClick: handleFaraSahmClick,
       content: (
@@ -100,7 +100,7 @@ export const ToolsFeat: React.FC = () => {
       iconColor: "#dc2626",
       waveColor: "red" as WaveColorType,
       buttonText: "مشاهده",
-      buttonLink: "#",
+      buttonLink: "",
       isExternalLink: false,
       onButtonClick: handleFaraSahmClick,
       content: (
@@ -116,7 +116,7 @@ export const ToolsFeat: React.FC = () => {
       iconColor: "#16a34a",
       waveColor: "green" as WaveColorType,
       buttonText: "مشاهده",
-      buttonLink: "#",
+      buttonLink: "",
       isExternalLink: false,
       onButtonClick: handleFaraSahmClick,
       content: (

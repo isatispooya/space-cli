@@ -1,5 +1,7 @@
 import { LoginView } from "../features";
 
-export const LoginPage = () => {
+ const LoginPage = () => {
   return <LoginView />;
 };
+
+export default LoginPage;
