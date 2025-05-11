@@ -1,8 +1,8 @@
-interface ImportMetaEnv {
+interface ImportMetaEnvType {
     readonly VITE_SERVER_URL: string;
     
   }
   
-  interface ImportMeta {
-    readonly env: ImportMetaEnv;
+  interface ImportMetaType {
+    readonly env: ImportMetaEnvType;
   }
