@@ -1,7 +1,7 @@
 import moment from "moment-jalaali";
 import "moment/locale/fa";
 import { useGiftsUser } from "../../hooks";
-import { RequestTypes, RequestUpdateTypes } from "../../types";
+import { RequestType, RequestUpdateType } from "../../types";
 import { CellComponent } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 import toast, { ErrorIcon } from "react-hot-toast";
@@ -23,8 +23,8 @@ const Request = () => {
     pending: "در حال بررسی",
   };
 
-  const rows: RequestTypes[] =
-    giftsUser?.map((item: RequestTypes) => ({
+  const rows: RequestType[] =
+    giftsUser?.map((item: RequestType) => ({
       id: item.id,
       title: item.gift_detail.display_name,
       description: item.gift_detail.description,
@@ -52,7 +52,7 @@ const Request = () => {
     })) || [];
 
   const handleStatusChange = (id: number, newStatus: string) => {
-    const updatedData: RequestUpdateTypes = {
+    const updatedData: RequestUpdateType = {
       status: newStatus as "delivered" | "cancelled" | "pending",
     };
 
@@ -86,7 +86,7 @@ const Request = () => {
     window.open(`/users/view/${id}`, "_blank");
   };
 
-  const ExelData = (item: RequestTypes) => {
+  const ExelData = (item: RequestType) => {
     return {
       عنوان: item.title || "",
       توضیحات: item.description || "",
@@ -242,7 +242,7 @@ const Request = () => {
       cellClick: function (e: Event, cell: CellComponent) {
         e.stopPropagation();
 
-        const rowData = cell.getRow().getData() as RequestTypes;
+        const rowData = cell.getRow().getData() as RequestType;
         closeAllMenus();
         const menu = document.createElement("div");
         menu.className = "popup-menu";

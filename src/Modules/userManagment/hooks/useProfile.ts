@@ -1,10 +1,10 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import profileService from "../services/profileServices";
 import { AxiosError } from "axios";
-import { ProfileTypes } from "../types";
+import { ProfileType } from "../types";
 // import { identifyUser } from "../../../utils/Clarity";
 
-export const useProfile = (): UseQueryResult<ProfileTypes, AxiosError> => {
+export const useProfile = (): UseQueryResult<ProfileType, AxiosError> => {
   return useQuery({
     queryKey: ["profile"],
     queryFn: profileService.get,

@@ -1,6 +1,6 @@
 import { Button, Forms } from "@/components";
 import * as Yup from "yup";
-import { FormField } from "@/types";
+import { FormFieldType } from "@/types";
 import { useSymbols } from "../../../hooks";
 import { Stepper } from "@/components";
 import PricingTable from "./pricing.table";
@@ -23,7 +23,7 @@ const SymbolsPricingCom = () => {
 
 
 
-  const formFields: FormField[] = [
+  const formFields: FormFieldType[] = [
     {
       name: "days",
       type: "text" as const,

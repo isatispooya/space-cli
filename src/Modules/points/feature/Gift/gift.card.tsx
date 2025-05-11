@@ -24,7 +24,6 @@ import {
 import * as React from "react";
 import { formatNumber } from "../../../../utils";
 import { Link } from "react-router-dom";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 import { FormControlLabel, Checkbox } from "@mui/material";
 
@@ -61,12 +60,6 @@ const COLORS = {
   },
 } as const;
 
-const alert = React.forwardRef<HTMLDivElement, AlertProps>(function alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const GiftCard = ({ gifts, postGift }: GiftCardPropsType) => {
   const [open, setOpen] = useState(false);

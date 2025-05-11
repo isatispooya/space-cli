@@ -1,4 +1,4 @@
-import { MenuItem, TabulatorTable } from "../../../components";
+import { MenuItemType, TabulatorTable } from "../../../components";
 import useTimeflow from "../hooks/usetimeflow";
 import { TimeflowStatus } from "../data/timeflow_status";
 import { TimeflowEventType } from "../types";
@@ -103,7 +103,7 @@ const UserTimeflowTable = () => {
     ];
 
     createActionMenu({
-      items: items as MenuItem[],
+      items: items as MenuItemType[],
       position: { x: e.clientX, y: e.clientY },
       className: "rtl",
     });

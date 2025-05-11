@@ -1,20 +1,20 @@
 import { api } from "../../../api";
-import { BoursTypes, CrowdTypes, ShortcutsTypes, StatsTypes } from "../types";
+import { BoursType, CrowdType, ShortcutsType, StatsType } from "../types";
 
 const dashboardService = {
-  getShortcuts: async (): Promise<ShortcutsTypes[]> => {
+  getShortcuts: async (): Promise<ShortcutsType[]> => {
     const response = await api.get("/core/shortcuts/");
     return response.data;
   },
-  getStats: async (): Promise<StatsTypes> => {
+  getStats: async (): Promise<StatsType> => {
     const response = await api.get("/core/stats/");
     return response.data;
   },
-  getCrowd: async (): Promise<CrowdTypes> => {
+  getCrowd: async (): Promise<CrowdType> => {
     const response = await api.get("/core/crwod-dashboard/");
     return response.data;
   },
-  getBours: async (): Promise<BoursTypes> => {
+  getBours: async (): Promise<BoursType> => {
     const response = await api.get("/core/bours-dashboard/");
     return response.data;
   },

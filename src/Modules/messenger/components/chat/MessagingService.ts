@@ -1,11 +1,11 @@
-import { ChatType, ProfileData, SelectedUser, ChatData } from "../../types";
+import { ChatType, ProfileDataType, SelectedUserType, ChatDataType } from "../../types";
 
 export class MessagingService {
   static createAttachmentMessage(
     messageText: string,
     files: File[],
     messages: ChatType["SingleMessageType"][],
-    profileData: ProfileData
+    profileData: ProfileDataType
   ): ChatType["SingleMessageType"] {
     return {
       id: messages.length > 0 ? Math.max(...messages.map((m) => m.id)) + 999 : 999,
@@ -31,8 +31,8 @@ export class MessagingService {
   static createTextMessage(
     messageText: string,
     messages: ChatType["SingleMessageType"][],
-    profileData: ProfileData,
-    selectedUser: SelectedUser
+    profileData: ProfileDataType,
+    selectedUser: SelectedUserType
   ): ChatType["SingleMessageType"] {
     return {
       id: messages.length > 0 ? Math.max(...messages.map((m) => m.id)) + 1 : 1,
@@ -75,7 +75,7 @@ export class MessagingService {
 
   static createMessageData(
     messageText: string,
-    selectedUser: SelectedUser,
+    selectedUser: SelectedUserType,
     attachId: number = 0
   ): ChatType["postMessegeType"] {
     return {
@@ -87,9 +87,9 @@ export class MessagingService {
   }
 
   static processMessages(
-    chatData: ChatData[],
-    profileData: ProfileData,
-    selectedUser: SelectedUser | null
+    chatData: ChatDataType[],
+    profileData: ProfileDataType,
+    selectedUser: SelectedUserType | null
   ): ChatType["SingleMessageType"][] {
     if (!(chatData && Array.isArray(chatData) && profileData)) return [];
 
@@ -113,7 +113,7 @@ export class MessagingService {
     return formattedMessages;
   }
 
-  private static mapChatDataToMessage = (profileData: ProfileData) => (msg: ChatData): ChatType["SingleMessageType"] => ({
+  private static mapChatDataToMessage = (profileData: ProfileDataType) => (msg: ChatDataType): ChatType["SingleMessageType"] => ({
     id: msg.id,
     text: msg.message,
     sender: `${msg.sender_details.first_name} ${msg.sender_details.last_name}`,

@@ -17,7 +17,7 @@ export const setClarityTag = (key: string, value: string | string[]) => {
     Clarity.setTag(key, value);
 };
 
-export const identifyUser = (IdentifyUserProps:IdentifyUserProps) => {
+export const identifyUser = (IdentifyUserProps:IdentifyUserPropsType) => {
     Clarity.identify(IdentifyUserProps.customId, IdentifyUserProps.customSessionId, IdentifyUserProps.customPageId, IdentifyUserProps.friendlyName);
 };
 

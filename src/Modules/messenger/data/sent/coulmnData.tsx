@@ -81,7 +81,7 @@ const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
             {
               label: "نمایش",
               icon: "👀",
-              onClick: () => handleView(rowData),
+              onClick: () => handleView(rowData as SentMessageType),
             },
           ],
           position: {

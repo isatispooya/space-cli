@@ -6,24 +6,24 @@ import {
 } from "@tanstack/react-query";
 import correspondenceAttacheService from "../../services/sent/correspondenceAttacheService";
 import {
-  CorrespondenceAttachments,
-  AttachmentResponse,
+  CorrespondenceAttachmentsType,
+  AttachmentResponseType,
   APIFormDataType,
-  CorrespondenceResponse,
+  CorrespondenceResponseType,
 } from "../../types/sent/sent.type";
 import { toast } from "react-toastify";
 
 const useCorrespondenceAttachment = {
-  useGetAttache: (): UseQueryResult<CorrespondenceAttachments> => {
+  useGetAttache: (): UseQueryResult<CorrespondenceAttachmentsType> => {
     return useQuery({
       queryKey: ["attache"],
       queryFn: correspondenceAttacheService.getAttache,
     });
   },
   usePostAttache: (): UseMutationResult<
-    AttachmentResponse,
+    AttachmentResponseType,
     Error,
-    AttachmentResponse
+    AttachmentResponseType
   > => {
     const { refetch } = useCorrespondenceAttachment.useGetAttache();
     return useMutation({
@@ -36,7 +36,7 @@ const useCorrespondenceAttachment = {
   usePostCorrespondence: (options?: {
     onSuccess?: () => void;
     onError?: (error: Error) => void;
-  }): UseMutationResult<AttachmentResponse, Error, APIFormDataType> => {
+  }): UseMutationResult<AttachmentResponseType, Error, APIFormDataType> => {
     return useMutation({
       mutationFn: correspondenceAttacheService.postCorrespondence,
       onSuccess: options?.onSuccess,
@@ -44,7 +44,7 @@ const useCorrespondenceAttachment = {
     });
   },
   useUpdateCorrespondence: (): UseMutationResult<
-    AttachmentResponse,
+    AttachmentResponseType,
     Error,
     APIFormDataType & { id: number }
   > => {
@@ -55,7 +55,7 @@ const useCorrespondenceAttachment = {
       },
     });
   },
-  useGetCorrespondence: (): UseQueryResult<CorrespondenceResponse> => {
+  useGetCorrespondence: (): UseQueryResult<CorrespondenceResponseType> => {
     return useQuery({
       queryKey: ["correspondence"],
       queryFn: correspondenceAttacheService.getCorrespondence,

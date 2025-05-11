@@ -1,10 +1,10 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { MessageContentProps } from "../../../types/sent/sent.type";
+import { MessageContentPropsType } from "../../../types/sent/sent.type";
 
 export const MessageContent = ({
   sender,
   allposition,
-}: MessageContentProps) => {
+}: MessageContentPropsType) => {
   let signature: string | undefined;
 
   if (

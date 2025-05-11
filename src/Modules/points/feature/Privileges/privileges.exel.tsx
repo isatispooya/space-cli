@@ -1,6 +1,6 @@
-import { ExelDataPrivileges } from "../../types"; 
+import { ExelDataPrivilegesType } from "../../types/exelData.privileges"; 
 
-export const ExelData = (item: ExelDataPrivileges) => {
+export const ExelData = (item: ExelDataPrivilegesType) => {
   return {
     نام: item.user_first_name || "نامشخص",
     "نام خانوادگی": item.user_last_name || "نامشخص",

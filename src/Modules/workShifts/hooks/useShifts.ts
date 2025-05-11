@@ -83,7 +83,7 @@ const useShifts = {
   },
 
   useCreateShiftsAssign: (): UseMutationResult<
-    ShiftType["updateDatesRes"],
+    ShiftType["assignRes"],
     AxiosError,
     ShiftType["assignReq"]
   > => {

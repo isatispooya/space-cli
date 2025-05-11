@@ -293,6 +293,9 @@ const UnderWritingTable: React.FC = () => {
           id: rowData.id,
           status: newValue,
           requested_amount: rowData.requested_amount || 0,
+          type: rowData.type,
+          price: rowData.price,
+          created_at: rowData.created_at,
         });
       },
       formatter: (cell) => {

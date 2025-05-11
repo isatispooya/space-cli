@@ -6,19 +6,19 @@ import {
 } from "@tanstack/react-query";
 
 import giftUserServices from "../services/giftUserService";
-import { RequestTypes, RequestUpdateTypes } from "../types";
+import { RequestType, RequestUpdateType } from "../types";
 
 const useGiftsUser = {
-  useGetGifts: (): UseQueryResult<RequestTypes[]> => {
+  useGetGifts: (): UseQueryResult<RequestType[]> => {
     return useQuery({
       queryKey: ["giftsUser"],
       queryFn: giftUserServices.get,
     });
   },
   useUpdateGiftsUser: (): UseMutationResult<
-    RequestTypes,
+    RequestType,
     Error,
-    { id: number; data: RequestUpdateTypes }
+    { id: number; data: RequestUpdateType }
   > => {
     return useMutation({
       mutationKey: ["updateGiftsUser"],

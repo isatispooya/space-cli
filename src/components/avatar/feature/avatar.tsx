@@ -13,9 +13,9 @@ import { useNavigate } from "react-router-dom";
 import { useUserPermissions } from "../../../Modules/permissions/hooks";
 import { PiPlugsConnected } from "react-icons/pi";
 import { TbPlugConnected } from "react-icons/tb";
-import { StatusPosition } from "../../../Modules/userManagment/types/profile.type";
+import { StatusPositionType } from "../../../Modules/userManagment/types/profile.type";
 
-const status : Record<StatusPosition, { value: string; label: string; icon: JSX.Element; color: string }> = {
+const status : Record<StatusPositionType, { value: string; label: string; icon: JSX.Element; color: string }> = {
   login: { value: "login", label: "ورود", icon: <PiPlugsConnected />, color: "green" },
   logout: { value: "logout", label: "خروج", icon: <TbPlugConnected />, color: "red" },
   mission_start: { value: "mission_start", label: "ماموریت", icon: <TbPlugConnected />, color: "blue" },

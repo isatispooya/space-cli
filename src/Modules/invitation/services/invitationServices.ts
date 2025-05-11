@@ -1,5 +1,5 @@
 import { api } from "../../../api";
-import { InvitationPostTypes } from "../types";
+import { InvitationPostType } from "../types";
 
 const getInvitation = {
   getList: async () => {
@@ -11,7 +11,7 @@ const getInvitation = {
     return response.data;
   },
 
-  createCodes: async (data: InvitationPostTypes) => {
+  createCodes: async (data: InvitationPostType) => {
     const response = await api.post("/marketing/invitation-code/", data);
     return response.data;
   },

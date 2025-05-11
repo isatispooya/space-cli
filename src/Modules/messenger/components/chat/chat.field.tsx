@@ -5,7 +5,7 @@ import useChat from "../../hooks/useChat";
 import ChatHeader from "./chat.header";
 import ChatInput from "./chat.inputs";
 import useProfile from "@/Modules/userManagment/hooks/useProfile";
-import { ChatData, ChatType, ProfileData, SelectedUser } from "../../types";
+import { ChatType, ProfileDataType, SelectedUserType, ChatDataType } from "../../types";
 import FileList from "./FileList";
 import MessageContent from "./MessageContent";
 import EmptyState from "./EmptyState";
@@ -30,9 +30,9 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   useEffect(() => {
     if (chatData && Array.isArray(chatData) && profileData) {
       const formattedMessages = MessagingService.processMessages(
-        chatData as ChatData[],
-        profileData as ProfileData,
-        selectedUser as SelectedUser
+        chatData as ChatDataType[],
+        profileData as ProfileDataType,
+        selectedUser as SelectedUserType
       );
       setMessages(formattedMessages);
     }
@@ -74,7 +74,7 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
       messageText,
       files,
       messages,
-      profileData as ProfileData
+      profileData as ProfileDataType
     );
 
     setMessages([...messages, temporaryMsg]);
@@ -85,7 +85,7 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
         if (response && response.id) {
           const messageData = MessagingService.createMessageData(
             messageText,
-            selectedUser as SelectedUser,
+            selectedUser as SelectedUserType,
             response.id
           );
 
@@ -116,15 +116,15 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
     const newMsg = MessagingService.createTextMessage(
       messageText,
       messages,
-      profileData as ProfileData,
-      selectedUser as SelectedUser
+      profileData as ProfileDataType,
+      selectedUser as SelectedUserType
     );
 
     setMessages([...messages, newMsg]);
 
     const messageData = MessagingService.createMessageData(
       messageText,
-      selectedUser as SelectedUser
+      selectedUser as SelectedUserType
     );
 
     createChat(messageData, {

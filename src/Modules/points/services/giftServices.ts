@@ -1,5 +1,5 @@
 import { api } from "../../../api";
-import { GiftsPost } from "../types/giftsPost.type";
+import { GiftsPostType } from "../types/giftsPost.type";
 
 
 const giftServices = {
@@ -7,7 +7,7 @@ const giftServices = {
     const response = await api.get("/marketing/gift/");
     return response.data;
   },
-  postGift: async (data: GiftsPost) => {
+  postGift: async (data: GiftsPostType) => {
     const response = await api.post("/marketing/gift-user/", data);
     return response.data;
   },

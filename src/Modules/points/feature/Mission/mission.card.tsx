@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MissionTypes } from "../../types/mission.type";
+import { MissionType } from "../../types/mission.type";
 import { PiSealCheckDuotone } from "react-icons/pi";
 import { LuCoins } from "react-icons/lu";
 import { TbSeeding } from "react-icons/tb";
@@ -14,7 +14,7 @@ const COLORS = {
   },
 } as const;
 
-const MissionCard = ({ missions }: { missions: MissionTypes[] }) => {
+const MissionCard = ({ missions }: { missions: MissionType[] }) => {
   const [filterType, setFilterType] = useState<"all" | "coin" | "seed">("coin");
 
   const filteredMissions = missions

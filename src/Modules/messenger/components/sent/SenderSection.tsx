@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { FormInput, SelectInput } from "../../../../components/common/inputs";
-import { SenderSectionProps } from "../../types/sent/sent.type";
+import { SenderSectionPropsType } from "../../types/sent/sent.type";
 
-const SenderSection: React.FC<SenderSectionProps> = ({
+const SenderSection: React.FC<SenderSectionPropsType> = ({
   formData,
   handleChange,
   senderUserOptions,

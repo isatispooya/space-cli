@@ -1,6 +1,6 @@
-import { ReceiveMessage } from "../../types/receive/ReceiveMessage.type";
+import { ReceiveMessageType } from "../../types/receive/ReceiveMessage.type";
 
-const ExelData = (item: ReceiveMessage) => {
+const ExelData = (item: ReceiveMessageType) => {
   return {
     عنوان: item.title || "نامشخص",
     گیرنده: item.receiver || "نامشخص",

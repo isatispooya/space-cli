@@ -7,7 +7,7 @@ import { useCompany } from "../../companies/hooks";
 import { CompanyType } from "../../companies/types";
 import { PositionPostType, PositionType, PositionFormType } from "../types";
 import { ErrorResponseType, FormFieldType } from "@/types";
-import { UserData } from "../../users/types";
+import { UserDataType } from "../../users/types";
 import { CheckmarkIcon, ErrorIcon } from "react-hot-toast";
 import { AxiosError } from "axios";
 
@@ -84,7 +84,7 @@ const PositionCreate = () => {
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
       options:
-        users?.map((user: UserData) => ({
+        users?.map((user: UserDataType) => ({
           value: user.id,
           label: `${user.first_name || ""} ${user.last_name || ""} | ${
             user.uniqueIdentifier || ""

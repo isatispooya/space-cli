@@ -5,21 +5,21 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { giftServices } from "../services";
-import { GiftTypes } from "../types/gifts.type";
-import { GiftsPost } from "../types/giftsPost.type";
+import { GiftType } from "../types/gifts.type";
+import { GiftsPostType } from "../types/giftsPost.type";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import useRemainPoints from "./useRemainPoints";
 
 const useGifts = {
-  useGetGifts: (): UseQueryResult<GiftTypes[]> => {
+  useGetGifts: (): UseQueryResult<GiftType[]> => {
     return useQuery({
       queryKey: ["gifts"],
       queryFn: giftServices.getGifts,
     });
   },
   usePostGift: (): UseMutationResult<
-    GiftsPost,
+    GiftsPostType,
     AxiosError,
     { id: string; gift: string; description: string }
   > => {

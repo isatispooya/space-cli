@@ -1,7 +1,7 @@
 import React from "react";
-import { ButtonBaseProps } from "@/types";
+import { ButtonBasePropsType } from "@/types";
 
-const ButtonBase: React.FC<ButtonBaseProps> = ({
+const ButtonBase: React.FC<ButtonBasePropsType> = ({
   label,
   onClick,
   disabled,

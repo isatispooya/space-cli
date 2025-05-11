@@ -1,5 +1,5 @@
 import { MainLayout } from "../../../layouts";
-import DashboardSlider, { SlideItem } from "../components/dashboard.slider";
+import DashboardSlider, { SlideItemType } from "../components/dashboard.slider";
 import DashboardChart from "../components/dashboard.chart";
 import { useMemo } from "react";
 import { DashboardMarketingStat, DashboardToolsStat } from "../components";
@@ -17,7 +17,7 @@ const DashboardPage = () => {
   const sliderData = useMemo(
     () =>
       Array.isArray(shortcuts)
-        ? shortcuts.map((shortcut: SlideItem) => ({
+        ? shortcuts.map((shortcut: SlideItemType) => ({
             id: shortcut.id,
             picture: shortcut.picture,
             title: shortcut.title,

@@ -21,7 +21,7 @@ const CompanyTable = () => {
   const { mutate: deleteCompanyMutation } = useCompany.useDelete();
   const { checkPermission } = useUserPermissions();
   const navigate = useNavigate();
-  const rows = data || [];
+  const rows = data as unknown as CompanyType[] || [];
   const [selectedRow, setSelectedRow] = useState<CompanyType | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);

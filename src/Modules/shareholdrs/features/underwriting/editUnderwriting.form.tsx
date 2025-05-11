@@ -96,22 +96,28 @@ const EditUnderWritingForm = () => {
     user: `${process?.user_detail?.first_name || ""} ${
       process?.user_detail?.last_name || ""
     }`,
+    requested_amount: process?.requested_amount || 0,
   };
 
   const onSubmit = (values: Pick<UnderwritingType, "status">) => {
-    update(
-      { id: process?.id, status: values.status },
-      {
-        onSuccess: () => {
-          refetchProcess();
-          toast.success("پرداخت با موفقیت ویرایش شد");
-          navigate("/underwriting/table");
+    if (process) {
+      update(
+        {
+          ...process,
+          status: values.status,
         },
-        onError: () => {
-          toast.error("خطایی رخ داده است");
-        },
-      }
-    );
+        {
+          onSuccess: () => {
+            refetchProcess();
+            toast.success("پرداخت با موفقیت ویرایش شد");
+            navigate("/underwriting/table");
+          },
+          onError: () => {
+            toast.error("خطایی رخ داده است");
+          },
+        }
+      );
+    }
   };
 
   return (

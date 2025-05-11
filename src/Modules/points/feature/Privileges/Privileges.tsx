@@ -1,6 +1,6 @@
 import TabulatorTable from "../../../../components/table/table.com";
 import "moment/locale/fa";
-import { PrivilegesTypes } from "../../types/pivileges.type";
+import { PrivilegesType } from "../../types/pivileges.type";
 import usePoint from "../../hooks/usePoint";
 import { columns } from "./privileges.colum";
 import { ExelData } from "./privileges.exel";
@@ -8,7 +8,7 @@ import { ExelData } from "./privileges.exel";
 const PrivilegesComponent = () => {
   const { data } = usePoint.useGetPoint();
 
-  const mappedData = data?.map((item: PrivilegesTypes) => {
+  const mappedData = data?.map((item: PrivilegesType) => {
     return {
       point_1: item?.point_1 || 0,
       point_2: item?.point_2 || 0,

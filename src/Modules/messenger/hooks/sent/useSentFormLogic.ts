@@ -6,12 +6,12 @@ import { useSentFormStore } from "../../store/sent/sent.store";
 import { useReceiveById } from "../../hooks/receive/useReceive";
 import toast from "react-hot-toast";
 
-import { PositionTypes } from "@/Modules/positions/types";
+import { PositionType } from "@/Modules/positions/types";
 import {
-  CorrespondenceAttachment,
-  CorrespondenceAttachments,
+  CorrespondenceAttachmentType,
+  CorrespondenceAttachmentsType,
   APIFormDataType,
-  ITranscriptResponse,
+  ITranscriptResponseType,
 } from "../../types/sent/sent.type";
 
 import {
@@ -44,7 +44,7 @@ export const useSentFormLogic = (id: string | undefined) => {
   const { data: PositionAll } = usePosition.useGetAll();
   const { data: Attache } =
     useCorrespondenceAttachment.useGetAttache() as unknown as {
-      data: CorrespondenceAttachments;
+      data: CorrespondenceAttachmentsType;
     };
 
   const { data } = useReceiveById(id || "");
@@ -90,7 +90,7 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const attachmentOptions = useMemo(
     () =>
-      Attache?.map((attachment: CorrespondenceAttachment) => ({
+      Attache?.map((attachment: CorrespondenceAttachmentType) => ({
         label: `${attachment.name} | ${attachment.user.first_name} ${attachment.user.last_name}`,
         value: attachment.id.toString(),
       })) || [],
@@ -99,7 +99,7 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const internalUserOptions = useMemo(
     () =>
-      (PositionAll as PositionTypes[])?.map((position) => ({
+      (PositionAll as PositionType[])?.map((position) => ({
         label: `${position.user.first_name} ${position.user.last_name} | ${
           position.name
         }  | ${position.company_detail?.name || "بدون سمت"}`,
@@ -110,7 +110,7 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const senderUserOptions = useMemo(
     () =>
-      (Position as PositionTypes[])?.map((position) => ({
+      (Position as PositionType[])?.map((position) => ({
         label: `${position.user.first_name} ${position.user.last_name}  | ${
           position.name
         } | ${position.company_detail?.name || "بدون سمت"}`,
@@ -122,7 +122,7 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const senderUserOptionsOut = useMemo(
     () =>
-      (Position as PositionTypes[])?.map((position) => ({
+      (Position as PositionType[])?.map((position) => ({
         label: `${position.company_detail?.name || "بدون سمت"}`,
         value: position.id.toString(),
       })) || [],
@@ -134,7 +134,7 @@ export const useSentFormLogic = (id: string | undefined) => {
     string
   >;
 
-  const transcriptItems = useMemo<ITranscriptResponse[]>(() => {
+  const transcriptItems = useMemo<ITranscriptResponseType[]>(() => {
     return (formData.reference || []).map((ref) => {
       const refNum = Number(ref);
       const referenceItem = formData.referenceData?.find(item => item.id === refNum);
@@ -257,7 +257,7 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const getTranscriptName = useCallback(
     (id: number) => {
-      const position = (PositionAll as PositionTypes[])?.find(
+      const position = (PositionAll as PositionType[])?.find(
         (p) => p.id === id
       );
       return position

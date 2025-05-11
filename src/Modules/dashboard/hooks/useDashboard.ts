@@ -7,17 +7,17 @@ import {
 import dashboardServices from "../services/dashboardServices";
 import crowdUUIDservice from "../services/crowdUUIDservice";
 import {
-  BimeTypes,
-  BoursTypes,
-  CrowdTypes,
-  ShortcutsTypes,
-  StatsTypes,
+  BimeType,
+  BoursType,
+  CrowdType,
+  ShortcutsType,
+  StatsType,
 } from "../types";
 
 const useDashboard = {
-  useGetStats: (): UseQueryResult<StatsTypes> =>
+  useGetStats: (): UseQueryResult<StatsType> =>
     useQuery({ queryKey: ["stats"], queryFn: dashboardServices.getStats }),
-  useGetShortcuts: (): UseQueryResult<ShortcutsTypes[]> => {
+  useGetShortcuts: (): UseQueryResult<ShortcutsType[]> => {
     return useQuery({
       queryKey: ["shortcuts"],
       queryFn: dashboardServices.getShortcuts,
@@ -26,19 +26,19 @@ const useDashboard = {
   useCrowdUUID: (): UseMutationResult<void, Error, string> => {
     return useMutation({ mutationFn: crowdUUIDservice.post });
   },
-  useGetCrowd: (): UseQueryResult<CrowdTypes> => {
+  useGetCrowd: (): UseQueryResult<CrowdType> => {
     return useQuery({
       queryKey: ["crowd"],
       queryFn: dashboardServices.getCrowd,
     });
   },
-  useGetBours: (): UseQueryResult<BoursTypes> => {
+  useGetBours: (): UseQueryResult<BoursType> => {
     return useQuery({
       queryKey: ["bours"],
       queryFn: dashboardServices.getBours,
     });
   },
-  useGetPishkar: (): UseQueryResult<BimeTypes> => {
+  useGetPishkar: (): UseQueryResult<BimeType> => {
     return useQuery({
       queryKey: ["pishkar"],
       queryFn: dashboardServices.getPishkar,

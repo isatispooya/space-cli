@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 
-import { Step, StepperProps } from "./types";
+import { StepType, StepperPropsType } from "./types";
 
 const getStatusColor = (
-  status: Step["status"],
-  customColor?: Step["customColor"]
+  status: StepType["status"],
+  customColor?: StepType["customColor"]
 ) => {
   switch (status) {
     case "complete":
@@ -19,7 +19,7 @@ const getStatusColor = (
   }
 };
 
-const getSizeClasses = (size: StepperProps["size"] = "medium") => {
+const getSizeClasses = (size: StepperPropsType["size"] = "medium") => {
   switch (size) {
     case "small":
       return "w-8 h-8 text-sm";
@@ -49,7 +49,7 @@ const Stepper = ({
   completionComponent,
   showCompletionStep = true,
   onComplete,
-}: StepperProps) => {
+}: StepperPropsType) => {
   const isHorizontal = orientation === "horizontal";
   const isCompleted = currentStep >= steps.length;
 
@@ -135,7 +135,7 @@ const Stepper = ({
       aria-valuemax={steps.length}
       aria-valuenow={currentStep}
     >
-      {steps.map((step, index) => {
+      {steps.map((step: StepType, index: number) => {
         const isCompleted = index < currentStep;
         const isCurrent = index === currentStep;
         const isLast = index === steps.length - 1;

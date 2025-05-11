@@ -1,12 +1,12 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import { MessageFooterProps } from "../../../types/sent/sent.type";
+import { MessageFooterPropsType, TranscriptDetailsType, MatchedUserType } from "../../../types/sent/sent.type";
 import internalOptions from "../../../data/sent/transcript.data";
 import { getValueLabel } from "../../../utils/helpers";
 
-export const MessageFooter = ({ sender, matchedUsers }: MessageFooterProps) => {
+export const MessageFooter = ({ sender, matchedUsers }: MessageFooterPropsType) => {
   // فیلتر کردن رونوشت‌هایی که security آنها true نیست
   const filteredTranscripts = sender.transcript_details?.filter(
-    (transcript) => !transcript.security
+    (transcript: TranscriptDetailsType) => !transcript.security
   );
 
   return (
@@ -24,9 +24,9 @@ export const MessageFooter = ({ sender, matchedUsers }: MessageFooterProps) => {
               >
                 رونوشت:
               </Typography>
-              {filteredTranscripts.map((transcript) => {
+              {filteredTranscripts.map((transcript: TranscriptDetailsType) => {
                 const positionInfo = matchedUsers?.find(
-                  (user) => user.id === transcript.position
+                  (user: MatchedUserType) => user.id === transcript.position
                 );
                 const positionText = positionInfo?.position || "نامشخص";
                 const userFullName =

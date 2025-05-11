@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { MessageHeaderProps } from "../../../types/sent/sent.type";
+import { MessageHeaderPropsType } from "../../../types/sent/sent.type";
 
 import { departmentOptions } from "../../../data/sent/sent.data";
 import { getValueLabel } from "../../../utils/helpers";
@@ -8,7 +8,7 @@ import { server } from "@/api";
 export const MessageHeader = ({
   sender,
   formattedDate,
-}: MessageHeaderProps) => {
+}: MessageHeaderPropsType) => {
   return (
     <Box sx={{ position: "relative" }}>
       <Grid container>

@@ -83,7 +83,8 @@ const EditCompanyForm = () => {
   const { data } = useCompany.useGet();
   const { id } = useParams();
 
-  const specificCompany = data?.find((company) => company.id === Number(id));
+  const companies = data as unknown as CompanyType[];
+  const specificCompany = companies?.find((company) => company.id === Number(id));
 
   const initialValues: CompanyType = {
     id: specificCompany?.id || 0,

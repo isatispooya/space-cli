@@ -1,7 +1,7 @@
-import { PrivilegesTypes } from "../../types/RewardsTable.type";
+import { PrivilegesType } from "../../types/RewardsTable.type";
 import moment from "moment-jalaali";
 
-export const ExelData = (item: PrivilegesTypes) => {
+export const ExelData = (item: PrivilegesType) => {
   return {
     نام: item.name || "نامشخص",
     زمینه_فعالیت: item.feild_of_activity || "نامشخص",

@@ -3,12 +3,12 @@ import "moment/locale/fa";
 import useWelfare from "../../hooks/useWelfare";
 import { columns } from "./rewardsTable.colum";
 import { ExelData } from "./rewardsTable.exel";
-import { PrivilegesTypes } from "../../types/RewardsTable.type";
+import { PrivilegesType } from "../../types/RewardsTable.type";
 
 const RewardsTable = ({ fiterSelected }: { fiterSelected: string[] }) => {
   const { data: Welfare } = useWelfare();
 
-  const mappedData = Welfare?.map((item: PrivilegesTypes) => {
+  const mappedData = Welfare?.map((item: PrivilegesType) => {
     return {
       id: item.id,
       name: item.name,
