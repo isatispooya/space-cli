@@ -7,12 +7,22 @@ import {
   UserLoginType,
   UsersTimeflowType,
 } from "../types";
+import { TimeflowVerifyReqType } from "../types/userstimeflow.type";
 
 const timeflowServices = {
   getTimeflow: async (): Promise<UsersTimeflowType[]> => {
     const response = await api.get("/timeflow/list-user-logs/");
     return response.data;
   },
+  getTimeflowSenior: async (): Promise<UsersTimeflowType[]> => {
+    const response = await api.get(`/timeflow/parent-position-users/`);
+    return response.data;
+  },
+  updateTimeflowSenior: async (id: number, data: TimeflowVerifyReqType) => {
+    const response = await api.patch(`/timeflow/parent-position-users/${id}/`, data);
+    return response.data;
+  },
+
   getUsersLogin: async (): Promise<UserLoginType> => {
     const response = await api.get("/timeflow/user-login-log/");
     return response.data;
@@ -35,13 +45,10 @@ const timeflowServices = {
     return response.data;
   },
 
-  getTimeflowDetails: async (
-    // year: number,
-    // month: number
-  ): Promise<UserLoginType> => {
-    const response = await api.get(
-      `/timeflow/list-user-logs/`
-    );
+  getTimeflowDetails: async (): // year: number,
+  // month: number
+  Promise<UserLoginType> => {
+    const response = await api.get(`/timeflow/list-user-logs/`);
     return response.data;
   },
 

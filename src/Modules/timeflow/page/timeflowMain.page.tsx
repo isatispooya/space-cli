@@ -24,7 +24,15 @@ const TimeFlowPage = () => {
       permission: ["allow_any"],
       path: "details-table",
     },
+
+    {
+      icon: LuTable,
+      text: "تردد های زیر مجموعه",
+      permission: ["parent_user"],
+      path: "list",
+    },
   ];
+
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">

@@ -14,12 +14,35 @@ import {
   UsersTimeflowType,
 } from "../types";
 import { AxiosError } from "axios";
+import { TimeflowVerifyReqType } from "../types/userstimeflow.type";
 
 const useTimeflow = {
   useGetUsersLogin: (): UseQueryResult<UserLoginType> => {
     return useQuery({
       queryKey: ["users-login"],
       queryFn: () => timeflowServices.getUsersLogin(),
+    });
+  },
+  useGetTimeflowSenior: (): UseQueryResult<UsersTimeflowType[]> => {
+    return useQuery({
+      queryKey: ["timeflow-senior"],
+      queryFn: () => timeflowServices.getTimeflowSenior(),
+    });
+  },
+  useUpdateTimeflowSenior: (): UseMutationResult<
+    TimeflowVerifyReqType,
+    AxiosError,
+    { id: number; data: TimeflowVerifyReqType }
+  > => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationKey: ["update-timeflow-senior"],
+      mutationFn: ({ id, data }: { id: number; data: TimeflowVerifyReqType }) =>
+        timeflowServices.updateTimeflowSenior(id, data),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["timeflow-senior"] });
+      },
     });
   },
 
@@ -47,10 +70,9 @@ const useTimeflow = {
     });
   },
 
-  useGetTimeflowDetails: (
-  ): UseQueryResult<UserLoginType> => {
+  useGetTimeflowDetails: (): UseQueryResult<UserLoginType> => {
     return useQuery({
-      queryKey: ["timeflow-details" ],
+      queryKey: ["timeflow-details"],
       queryFn: () => {
         return timeflowServices.getTimeflowDetails();
       },
@@ -87,10 +109,9 @@ const useTimeflow = {
     TimeflowEditType,
     AxiosError,
     { data: TimeflowEditType; id: number }
-    
   > => {
     const queryClient = useQueryClient();
-    
+
     return useMutation({
       mutationKey: ["patch-timeflow-edit"],
       mutationFn: ({ data, id }: { data: TimeflowEditType; id: number }) =>

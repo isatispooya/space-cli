@@ -44,6 +44,13 @@ const TimeflowEditPage = lazy(() =>
   }))
 );
 
+const ListPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ListPage,
+  }))
+);
+
+
 const TimeflowRoutes = [
   {
     path: "/timeflow",
@@ -68,6 +75,10 @@ const TimeflowRoutes = [
       {
         path: "edit/:id",
         element: <TimeflowEditPage />,
+      },
+      {
+        path: "list",
+        element: <ListPage />,
       },
     ],
   },
