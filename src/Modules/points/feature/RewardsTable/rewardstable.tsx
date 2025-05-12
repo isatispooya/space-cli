@@ -1,14 +1,11 @@
 import TabulatorTable from "../../../../components/table/table.com";
 import "moment/locale/fa";
-import useWelfare from "../../hooks/useWelfare";
 import { columns } from "./rewardsTable.colum";
 import { ExelData } from "./rewardsTable.exel";
 import { PrivilegesType } from "../../types/RewardsTable.type";
 
-const RewardsTable = ({ fiterSelected }: { fiterSelected: string[] }) => {
-  const { data: Welfare } = useWelfare();
-
-  const mappedData = Welfare?.map((item: PrivilegesType) => {
+const RewardsTable = ({ data }: { data: PrivilegesType[] }) => {
+  const mappedData = data?.map((item: PrivilegesType) => {
     return {
       id: item.id,
       name: item.name,
@@ -31,7 +28,7 @@ const RewardsTable = ({ fiterSelected }: { fiterSelected: string[] }) => {
     <div className="w-full bg-white rounded-3xl relative flex flex-col">
       <div className="overflow-x-auto">
         <TabulatorTable
-          data={fiterSelected?.length > 0 ? mappedData : []}
+          data={mappedData || []}
           columns={columns()}
           title="رفاهی"
           showActions={true}
@@ -41,4 +38,5 @@ const RewardsTable = ({ fiterSelected }: { fiterSelected: string[] }) => {
     </div>
   );
 };
+
 export default RewardsTable;
