@@ -7,16 +7,18 @@ import { PrivilegesType } from "../types/RewardsTable.type";
 const Rewards = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const { data: Welfare } = useWelfare();
-  const category = Welfare?.map((item: PrivilegesType) => item.category);
-  const filteredCategory = category?.filter((item: string) => item !== null);
-  const fiterSelected = filteredCategory?.filter(
-    (item: string) => item === selected
-  );
+
+  // Filter the data based on selected category
+  const filteredData = selected
+    ? Welfare?.filter((item: PrivilegesType) => item.category === selected)
+    : Welfare;
+
   return (
     <div>
       <RewardsCategory setSelected={setSelected} selected={selected} />
-      <RewardsTable fiterSelected={fiterSelected} />
+      <RewardsTable data={filteredData} />
     </div>
-  ); 
+  );
 };
+
 export default Rewards;

@@ -1,13 +1,21 @@
 import { useState, useEffect } from "react";
 import CategoryIcons from "./rewards_category.feat";
 import { CATEGORY_CHOICES } from "./data/categotyData";
-import { RewardItemType, RewardsTablePropsType } from "../../types/RewardsTable.type";
+import {
+  RewardItemType,
+  RewardsTablePropsType,
+} from "../../types/RewardsTable.type";
 
 const RewardsTable = ({ rewards }: RewardsTablePropsType) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [filteredRewards, setFilteredRewards] = useState<RewardItemType[]>(rewards);
+  const [filteredRewards, setFilteredRewards] = useState<RewardItemType[]>(
+    rewards || []
+  );
 
+  // Single effect to handle both initial load and filtering
   useEffect(() => {
+    if (!rewards) return;
+
     if (selectedCategory) {
       const filtered = rewards.filter(
         (reward) => reward.category === selectedCategory
@@ -18,10 +26,6 @@ const RewardsTable = ({ rewards }: RewardsTablePropsType) => {
     }
   }, [selectedCategory, rewards]);
 
-  useEffect(() => {
-    setFilteredRewards(rewards);
-  }, [rewards]);
-
   const getCategoryTitle = (categoryKey: string): string => {
     const category = CATEGORY_CHOICES.find(([key]) => key === categoryKey);
     return category ? category[1] : categoryKey;
@@ -30,6 +34,10 @@ const RewardsTable = ({ rewards }: RewardsTablePropsType) => {
   const handleCategoryChange = (category: string | null) => {
     setSelectedCategory(category);
   };
+
+  if (!rewards) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto px-4">
