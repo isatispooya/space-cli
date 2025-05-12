@@ -1,19 +1,42 @@
 import { server } from "@/api/server";
 import { Box, Typography } from "@mui/material";
-
 import { Avatar } from "@mui/material";
+import defaultUserImage from "@/assets/pictures/user-286-128.png";
 
 interface ChatHeaderPropsType {
   selectedUser: {
     name: string;
     profile_image?: string | null;
+    avatar?: string | null;
   };
   onBackClick?: () => void;
   isFullUrl?: boolean;
 }
 
 const ChatHeader = ({ selectedUser }: ChatHeaderPropsType) => {
-  
+  console.log(selectedUser);
+
+  const isFullUrl = (url: string) => {
+    return url.startsWith("http://") || url.startsWith("https://");
+  };
+
+  const getImageUrl = () => {
+    if (!selectedUser) return defaultUserImage;
+
+    if (selectedUser.profile_image) {
+      return isFullUrl(selectedUser.profile_image)
+        ? selectedUser.profile_image
+        : server + selectedUser.profile_image;
+    }
+
+    if (selectedUser.avatar) {
+      return isFullUrl(selectedUser.avatar)
+        ? selectedUser.avatar
+        : server + selectedUser.avatar;
+    }
+
+    return defaultUserImage;
+  };
 
   return (
     <Box
@@ -28,22 +51,15 @@ const ChatHeader = ({ selectedUser }: ChatHeaderPropsType) => {
         <Avatar
           className="ml-3"
           sx={{
-            bgcolor: "#008282",
+            bgcolor: "#ffffff",
             boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
             width: 45,
             height: 45,
             border: "2px solid rgba(255,255,255,0.8)",
           }}
+          src={getImageUrl()}
         >
-          {selectedUser?.profile_image ? (
-            <img
-              src={server + selectedUser.profile_image}
-              alt={selectedUser.name}
-              className="w-full h-full rounded-full"
-            />
-          ) : (
-            selectedUser?.name.charAt(0)
-          )}
+          {!selectedUser?.profile_image && selectedUser?.name?.charAt(0)}
         </Avatar>
         <div>
           <Typography variant="h6" className="font-semibold">

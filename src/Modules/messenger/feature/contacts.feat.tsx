@@ -37,7 +37,7 @@ const ContactsFeature = ({
             isOnline: Math.random() > 0.5,
             avatar: null,
             uniqueIdentifier: sender.uniqueIdentifier,
-            profile_image: server + sender.profile_image || null,
+            profile_image: sender.profile_image ? server + sender.profile_image : null,
           });
         }
 
@@ -53,7 +53,7 @@ const ContactsFeature = ({
             isOnline: Math.random() > 0.5,
             avatar: null,
             uniqueIdentifier: receiver.uniqueIdentifier,
-            profile_image: server + receiver.profile_image || null,
+            profile_image: receiver.profile_image ? server + receiver.profile_image : null,
           });
         }
       });

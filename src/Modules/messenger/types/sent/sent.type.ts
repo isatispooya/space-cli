@@ -135,6 +135,8 @@ export interface CorrespondenceItemType {
   priority: string;
   number: string;
   name: string;
+  classification?: string;
+  confidentiality_level?: string;
 }
 
 export interface CorrespondenceResponseType {

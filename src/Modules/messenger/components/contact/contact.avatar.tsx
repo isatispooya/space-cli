@@ -1,25 +1,30 @@
 import { server } from "@/api/server";
 import { ChatType } from "../../types";
+import defaultUserImage from "@/assets/pictures/user-286-128.png";
 
 const ContactAvatar = ({ user }: { user: ChatType["UserMessageType"] }) => {
   return (
     <>
       <div className="relative">
-        <div className="avatar w-10 h-10 rounded-full bg-[#5677BC] text-white flex items-center justify-center mr-3">
+        <div className="avatar w-10 h-10 rounded-full bg-[#ffffff] text-white flex items-center justify-center mr-3">
           {user.profile_image ? (
             <img
               src={user.profile_image}
               alt={user.name}
               className="w-full h-full rounded-full"
             />
-          ) : server+user.avatar ? (
+          ) : user.avatar ? (
             <img
               src={server+user.avatar}
               alt={user.name}
               className="w-full h-full rounded-full"
             />
           ) : (
-            <span className="text-md font-semibold">{user.name.charAt(0)}</span>
+            <img
+              src={defaultUserImage}
+              alt={user.name}
+              className="w-full h-full rounded-full"
+            />
           )}
         </div>
         {user.isOnline && (

@@ -60,6 +60,7 @@ export const SentTable = () => {
         kind_of_correspondence:
           item.priority === "urgent" ? "اعلامیه" : "درخواست",
         status: "",
+        confidentiality_level: item.confidentiality_level === "confidential" ? "محرمانه" : item.confidentiality_level === "secret" ? "سری" : item.confidentiality_level === "top_secret" ? "فوق سری" : "عادی",
       };
     });
   }, [correspondence]);

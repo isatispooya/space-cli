@@ -176,7 +176,11 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
       }}
     >
       <ChatHeader
-        selectedUser={selectedUser ? { name: selectedUser.name } : { name: "" }}
+        selectedUser={selectedUser ? { 
+          name: selectedUser.name,
+          avatar: selectedUser.avatar,
+          profile_image: selectedUser.profile_image
+        } : { name: "" }}
         onBackClick={onBackClick}
         isFullUrl={true}
       />

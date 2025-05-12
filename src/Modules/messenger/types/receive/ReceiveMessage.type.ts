@@ -20,12 +20,14 @@ export interface CorrespondenceItemType {
   is_internal: boolean;
   number: string;
   seen?: boolean;
+  confidentiality_level?: string;
   sender_details?: {
     user?: {
       first_name: string;
       last_name: string;
     };
     name?: string;
+    confidentiality_level?: string;
   };
   receiver_internal_details?: {
     user?: {
@@ -33,6 +35,7 @@ export interface CorrespondenceItemType {
       last_name: string;
     };
     name?: string;
+    confidentiality_level?: string;
   };
   receiver_external?: string;
 }

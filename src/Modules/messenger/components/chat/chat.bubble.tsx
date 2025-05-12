@@ -14,6 +14,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useState } from "react";
 import { server } from "@/api";
+import defaultUserImage from "@/assets/pictures/user-286-128.png";
 
 const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -145,8 +146,8 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
         padding: "12px",
         borderRadius: "8px",
         backgroundColor: message.isCurrentUser
-          ? "rgba(255,255,255,0.1)"
-          : "rgba(0,0,0,0.05)",
+          ? "rgba(0,0,0,0.05)"
+          : "rgba(255,255,255,0.1)",
         display: "flex",
         alignItems: "center",
         gap: "8px",
@@ -169,8 +170,8 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
           variant="caption"
           sx={{
             color: message.isCurrentUser
-              ? "rgba(255,255,255,0.7)"
-              : "rgba(0,0,0,0.5)",
+              ? "rgba(0,0,0,0.5)"
+              : "rgba(255,255,255,0.7)",
           }}
         >
           در حال آپلود...
@@ -180,7 +181,7 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
         size={20}
         thickness={5}
         sx={{
-          color: message.isCurrentUser ? "white" : "#5677BC",
+          color: message.isCurrentUser ? "#5677BC" : "white",
           animationDuration: "1s",
         }}
       />
@@ -198,15 +199,15 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
             height: "200px",
             width: "100%",
             backgroundColor: message.isCurrentUser
-              ? "rgba(255,255,255,0.1)"
-              : "rgba(0,0,0,0.05)",
+              ? "rgba(0,0,0,0.05)"
+              : "rgba(255,255,255,0.1)",
             borderRadius: "8px",
           }}
         >
           <CircularProgress
             size={30}
             sx={{
-              color: message.isCurrentUser ? "white" : "#5677BC",
+              color: message.isCurrentUser ? "#5677BC" : "white",
             }}
           />
         </Box>
@@ -225,8 +226,8 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
           borderRadius: "8px",
           objectFit: "contain",
           backgroundColor: message.isCurrentUser
-            ? "rgba(255,255,255,0.1)"
-            : "rgba(0,0,0,0.05)",
+            ? "rgba(0,0,0,0.05)"
+            : "rgba(255,255,255,0.1)",
           cursor: "pointer",
         }}
       />
@@ -243,8 +244,8 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
           variant="caption"
           sx={{
             color: message.isCurrentUser
-              ? "rgba(255,255,255,0.7)"
-              : "rgba(0,0,0,0.5)",
+              ? "rgba(0,0,0,0.5)"
+              : "rgba(255,255,255,0.7)",
           }}
         >
           {getFileName()}
@@ -255,13 +256,13 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
             size="small"
             onClick={() => openFileInNewTab(getFileUrl())}
             sx={{
-              color: message.isCurrentUser ? "white" : "#5677BC",
+              color: message.isCurrentUser ? "#5677BC" : "white",
               opacity: 0.8,
               "&:hover": {
                 opacity: 1,
                 backgroundColor: message.isCurrentUser
-                  ? "rgba(255,255,255,0.1)"
-                  : "rgba(0,0,0,0.05)",
+                  ? "rgba(0,0,0,0.05)"
+                  : "rgba(255,255,255,0.1)",
               },
               mr: 0.5,
             }}
@@ -272,13 +273,13 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
             size="small"
             onClick={() => downloadFile(getFileUrl(), getFileName())}
             sx={{
-              color: message.isCurrentUser ? "white" : "#5677BC",
+              color: message.isCurrentUser ? "#5677BC" : "white",
               opacity: 0.8,
               "&:hover": {
                 opacity: 1,
                 backgroundColor: message.isCurrentUser
-                  ? "rgba(255,255,255,0.1)"
-                  : "rgba(0,0,0,0.05)",
+                  ? "rgba(0,0,0,0.05)"
+                  : "rgba(255,255,255,0.1)",
               },
             }}
           >
@@ -296,8 +297,8 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
           padding: "12px",
           borderRadius: "8px",
           backgroundColor: message.isCurrentUser
-            ? "rgba(255,255,255,0.1)"
-            : "rgba(0,0,0,0.05)",
+            ? "rgba(0,0,0,0.05)"
+            : "rgba(255,255,255,0.1)",
           display: "flex",
           alignItems: "center",
           gap: "8px",
@@ -305,8 +306,8 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
           transition: "all 0.2s",
           "&:hover": {
             backgroundColor: message.isCurrentUser
-              ? "rgba(255,255,255,0.15)"
-              : "rgba(0,0,0,0.08)",
+              ? "rgba(0,0,0,0.08)"
+              : "rgba(255,255,255,0.15)",
           },
         }}
         onClick={() => openFileInNewTab(getFileUrl())}
@@ -328,8 +329,8 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
               variant="caption"
               sx={{
                 color: message.isCurrentUser
-                  ? "rgba(255,255,255,0.7)"
-                  : "rgba(0,0,0,0.5)",
+                  ? "rgba(0,0,0,0.5)"
+                  : "rgba(255,255,255,0.7)",
               }}
             >
               {getFileSize()}
@@ -344,13 +345,13 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
               downloadFile(getFileUrl(), getFileName());
             }}
             sx={{
-              color: message.isCurrentUser ? "white" : "#5677BC",
+              color: message.isCurrentUser ? "#5677BC" : "white",
               opacity: 0.8,
               "&:hover": {
                 opacity: 1,
                 backgroundColor: message.isCurrentUser
-                  ? "rgba(255,255,255,0.1)"
-                  : "rgba(0,0,0,0.05)",
+                  ? "rgba(0,0,0,0.05)"
+                  : "rgba(255,255,255,0.1)",
               },
             }}
           >
@@ -378,7 +379,7 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
   return (
     <Box
       className={`flex mb-4 ${
-        message.isCurrentUser ? "justify-end" : "justify-start"
+        message.isCurrentUser ? "justify-start" : "justify-end"
       }`}
       sx={{
         marginBottom: "16px",
@@ -389,7 +390,7 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
         },
       }}
     >
-      {!message.isCurrentUser && (
+      {message.isCurrentUser && (
         <Avatar
           className="h-9 w-9 ml-2"
           sx={{
@@ -397,22 +398,45 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
             boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
             border: "2px solid #f1f5f9",
           }}
+          src={message.sender_profile_image ? server + message.sender_profile_image : message.sender_avatar ? server + message.sender_avatar : defaultUserImage}
         >
-          {message.sender.charAt(0)}
+          {!message.sender_profile_image && !message.sender_avatar && message.sender?.charAt(0)}
         </Avatar>
       )}
+      
+      {!message.isCurrentUser && (
+        <Avatar
+          className="h-9 w-9 mr-2"
+          sx={{
+            bgcolor: "#09193C",
+            boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+            border: "2px solid #f1f5f9",
+            order: 1
+          }}
+          src={message.sender_profile_image ? server + message.sender_profile_image : message.sender_avatar ? server + message.sender_avatar : defaultUserImage}
+        >
+          {!message.sender_profile_image && !message.sender_avatar && message.sender?.charAt(0)}
+        </Avatar>
+      )}
+      
       <Box
         className={`max-w-[70%] p-3 rounded-2xl ${
-          message.isCurrentUser ? "text-white" : "bg-white"
+          message.isCurrentUser ? "bg-white" : "text-white"
         }`}
-        sx={getBubbleStyles(message.isCurrentUser)}
+        sx={getBubbleStyles(!message.isCurrentUser)}
       >
         {/* متن پیام */}
         {message.text !== "فایل پیوست" || !message.attachment ? (
           <Typography
             variant="body1"
             className="leading-relaxed"
-            sx={{ fontWeight: 400 }}
+            sx={{ 
+              fontWeight: 400,
+              wordBreak: "break-word",
+              whiteSpace: "pre-wrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis"
+            }}
           >
             {message.text}
           </Typography>
@@ -428,8 +452,8 @@ const MessageBubble = ({ message }: ChatType["MessageBubbleProps"]) => {
             display: "block",
             textAlign: message.isCurrentUser ? "left" : "right",
             color: message.isCurrentUser
-              ? "rgba(255,255,255,0.6)"
-              : "rgba(0,0,0,0.4)",
+              ? "rgba(0,0,0,0.4)"
+              : "rgba(255,255,255,0.6)",
             marginTop: "4px",
             fontSize: "0.7rem",
           }}

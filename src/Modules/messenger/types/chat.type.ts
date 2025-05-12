@@ -80,6 +80,8 @@ export interface SingleMessageType {
   senderDetails?: SenderDetailsType;
   receiverDetails?: ReceiverDetailsType;
   attachDetails?: AttachDetailsType | null;
+  sender_avatar?: string | null;
+  sender_profile_image?: string | null;
 }
 
 export interface ChatFormPropsType {
@@ -88,7 +90,7 @@ export interface ChatFormPropsType {
     actions: FormikHelpers<ChatType["postMessegeType"]>
   ) => void;
   loading: boolean;
-  selectedUser?: { id: string; name: string; avatar?: string };
+  selectedUser?: { id: string; name: string; avatar?: string; profile_image?: string };
   onBackClick?: () => void;
 }
 
@@ -134,6 +136,8 @@ export interface MessageBubblePropsType {
     senderDetails?: SenderDetailsType;
     receiverDetails?: ReceiverDetailsType;
     attachDetails?: AttachDetailsType | null;
+    sender_avatar?: string | null;
+    sender_profile_image?: string | null;
   };
 }
 

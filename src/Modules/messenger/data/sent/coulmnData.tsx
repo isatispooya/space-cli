@@ -1,9 +1,7 @@
 import { createActionMenu } from "@/components/table/actionMenus";
 import { CellComponent } from "tabulator-tables";
 import { SentMessageType } from "../../types/sent/sent.type";
-import { letterTypeOptions } from "./sent.data";
-
-
+import { letterTypeOptions, departmentOptions } from "./sent.data";
 
 interface ColumnPropsType {
   handleEdit: (id: number) => void;
@@ -43,19 +41,39 @@ const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
       field: "kind_of_correspondence",
       editor: "select",
       editorParams: {
-        values: handleEdit
+        values: handleEdit,
       },
       headerFilter: "list",
       headerFilterParams: {
         valuesLookup: true,
-        clearable: true
+        clearable: true,
       },
       hozAlign: "center",
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
-        const option = letterTypeOptions.find(opt => opt.value === value);
+        const option = letterTypeOptions.find((opt) => opt.value === value);
         return option ? option.label : value;
-      }
+      },
+    },
+
+    {
+      title: "طبقه بندی",
+      field: "confidentiality_level",
+      editor: "select",
+      editorParams: {
+        values: departmentOptions,
+      },
+      headerFilter: "list",
+      headerFilterParams: {
+        valuesLookup: true,
+        clearable: true,
+      },
+      hozAlign: "center",
+      formatter: (cell: CellComponent) => {
+        const value = cell.getValue();
+        const option = departmentOptions.find((opt) => opt.value === value);
+        return option ? option.label : value;
+      },
     },
     {
       title: "عملیات",
