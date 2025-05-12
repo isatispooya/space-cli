@@ -13,6 +13,8 @@ import * as XLSX from "xlsx";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker, { DateObject } from "react-multi-date-picker";
+import useChat from "../../Modules/messenger/hooks/useChat";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface MenuItemType {
   label: string;
@@ -49,6 +51,9 @@ interface TablePropsType {
   }>;
   dateField?: string;
   showDateFilter?: boolean;
+  showSearchFilter?: boolean;
+  searchFields?: string[];
+  isChat?: boolean;
 }
 
 const defaultTableOptions: Partial<TabulatorOptions> = {
@@ -102,7 +107,10 @@ const PersianDateUtils = {
     return null;
   },
 
-  compareDates: (date1: DatePartsType | null, date2: DatePartsType | null): number => {
+  compareDates: (
+    date1: DatePartsType | null,
+    date2: DatePartsType | null
+  ): number => {
     if (!date1 || !date2) return 0;
 
     if (date1.year !== date2.year) return date1.year - date2.year;
@@ -149,12 +157,30 @@ const TabulatorTable: React.FC<TablePropsType> = ({
   formatExportData,
   dateField = "send_date",
   showDateFilter = false,
+  showSearchFilter = false,
+  searchFields = [],
+  isChat = false,
 }) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const tabulator = useRef<any>(null);
   const [dateRange, setDateRange] = useState<DateObject[]>([]);
   const [applyFilter, setApplyFilter] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const dataCache = useRef(data);
+  const { useSearchChat } = useChat;
+  const searchResult = useSearchChat(isChat ? searchTerm : "");
+  const queryClient = useQueryClient();
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(e.target.value);
+    },
+    []
+  );
+
+  const handleClearSearch = useCallback(() => {
+    setSearchTerm("");
+  }, []);
 
   const mappedData = useMemo(() => {
     if (!Array.isArray(data)) return [];
@@ -177,31 +203,58 @@ const TabulatorTable: React.FC<TablePropsType> = ({
   }, [dateRange]);
 
   const filteredData = useMemo(() => {
+    if (isChat && searchTerm && searchResult.data) {
+      return searchResult.data;
+    }
+    
+    let filtered = mappedData;
+    
     if (
-      !Array.isArray(mappedData) ||
-      !dateField ||
-      !showDateFilter ||
-      !applyFilter ||
-      !dateRangeInfo
+      Array.isArray(filtered) &&
+      dateField &&
+      showDateFilter &&
+      applyFilter &&
+      dateRangeInfo
     ) {
-      return mappedData;
+      filtered = filtered.filter((item) => {
+        if (!item[dateField]) return true;
+
+        try {
+          return PersianDateUtils.isDateInRange(
+            item[dateField],
+            dateRangeInfo.start,
+            dateRangeInfo.end
+          );
+        } catch (error) {
+          console.error("خطا در فیلتر تاریخ:", error);
+          return true;
+        }
+      });
     }
 
-    return mappedData.filter((item) => {
-      if (!item[dateField]) return true;
+    if (!isChat && searchTerm && showSearchFilter && searchFields.length > 0) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter((item) => {
+        return searchFields.some((field) => {
+          const value = item[field];
+          return value && String(value).toLowerCase().includes(term);
+        });
+      });
+    }
 
-      try {
-        return PersianDateUtils.isDateInRange(
-          item[dateField],
-          dateRangeInfo.start,
-          dateRangeInfo.end
-        );
-      } catch (error) {
-        console.error("خطا در فیلتر تاریخ:", error);
-        return true;
-      }
-    });
-  }, [mappedData, dateRangeInfo, dateField, showDateFilter, applyFilter]);
+    return filtered;
+  }, [
+    mappedData, 
+    dateRangeInfo, 
+    dateField, 
+    showDateFilter, 
+    applyFilter, 
+    searchTerm, 
+    showSearchFilter, 
+    searchFields, 
+    isChat, 
+    searchResult.data,
+  ]);
 
   const downloadExcel = useCallback(() => {
     try {
@@ -283,7 +336,7 @@ const TabulatorTable: React.FC<TablePropsType> = ({
       <div className="w-full bg-white shadow-md rounded-2xl relative p-4 flex flex-col mb-[60px]">
         {showActions && (
           <div className="mb-4 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 p-3 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap">
               <button
                 onClick={downloadExcel}
                 className="bg-gradient-to-r mt-3 from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-3 py-1.5 rounded-lg text-md font-medium flex items-center gap-1.5 transition-all duration-300"
@@ -292,8 +345,35 @@ const TabulatorTable: React.FC<TablePropsType> = ({
                 دانلود اکسل
               </button>
 
+              {showSearchFilter && (
+                <div className="flex items-center gap-1.5 mr-1.5 mt-3">
+                  <div className="flex flex-col">
+                    <label className="text-xs text-gray-500 mb-0.5">
+                      جستجو در متن :
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        placeholder="جستجو..."
+                        className="rounded-lg border border-gray-300 text-xs px-3 py-1.5 w-[180px] outline-none focus:border-blue-500 transition-all"
+                      />
+                      {searchTerm && (
+                        <button
+                          onClick={handleClearSearch}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                          <i className="fas fa-times text-xs"></i>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {showDateFilter && (
-                <div className="flex items-center gap-1.5 mr-1.5">
+                <div className="flex items-center gap-1.5 mr-1.5 mt-3">
                   <div className="flex flex-col">
                     <label className="text-xs text-gray-500 mb-0.5">
                       تاریخ:
@@ -344,6 +424,16 @@ const TabulatorTable: React.FC<TablePropsType> = ({
           ref={tableRef}
           className="flex-1 rounded-xl overflow-hidden shadow-sm border border-gray-100"
         />
+        {isChat && searchTerm && searchResult.isLoading && (
+          <div className="w-full text-center py-4 text-gray-500">
+            در حال جستجو...
+          </div>
+        )}
+        {isChat && searchTerm && !searchResult.isLoading && searchResult.data?.length === 0 && (
+          <div className="w-full text-center py-4 text-gray-500">
+            نتیجه‌ای یافت نشد
+          </div>
+        )}
       </div>
     </>
   );

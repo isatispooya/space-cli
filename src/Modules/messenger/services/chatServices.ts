@@ -6,6 +6,10 @@ const ChatServices = {
     const response = await api.get("/correspondence/chat/");
     return response.data;
   },
+  search: async (query: string): Promise<ChatType["MessagesType"][]> => {
+    const response = await api.get(`/correspondence/correspondence/?query=${query}`);
+    return response.data;
+  },
   getById: async (id: number) => {
     const response = await api.get(`/correspondence/chat/${id}/`);
     return response.data;
