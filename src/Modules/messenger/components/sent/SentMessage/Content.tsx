@@ -48,7 +48,7 @@ export const MessageContent = ({
         sx={{ display: "flex", justifyContent: "flex-end", mr: "100px" }}
       >
         <Box sx={{ mb: 1, borderRadius: "12px" }}>
-          {sender.is_internal ? (
+          {sender.is_internal && !sender.published ? (
             <Typography
               sx={{
                 whiteSpace: "pre-wrap",

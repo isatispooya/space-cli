@@ -188,6 +188,7 @@ export interface SenderType {
   content?: string;
   transcript_details: TranscriptDetailsType[];
   postcript?: string;
+  published?: boolean;
 }
 
 export interface MatchedUserType {
