@@ -25,6 +25,8 @@ export class MessagingService {
       attachmentSize: files[0]?.size,
       seen: false,
       isDeleted: false,
+      sender_profile_image: profileData?.profile_image || null,
+      sender_avatar: null,
     };
   }
 
@@ -70,6 +72,8 @@ export class MessagingService {
           : undefined,
       senderId: profileData?.id,
       receiverId: selectedUser?.id ? parseInt(selectedUser.id) : undefined,
+      sender_profile_image: profileData?.profile_image || null,
+      sender_avatar: null,
     };
   }
 
@@ -143,5 +147,7 @@ export class MessagingService {
     receiverId: msg.receiver,
     attachId: msg.attach ? Number(msg.attach) : null,
     attachDetails: msg.attach_details,
+    sender_profile_image: msg.sender_details?.profile_image || null,
+    sender_avatar: null,
   });
 } 

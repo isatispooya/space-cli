@@ -2,7 +2,7 @@ import { CellComponent } from "tabulator-tables";
 import { ReceiveMessageType } from "../../types/receive/ReceiveMessage.type";
 import { createActionMenu } from "@/components/table/actionMenus";
 import { useNavigate } from "react-router-dom";
-import { letterTypeOptions } from "../../data/sent/sent.data";
+import { departmentOptions, letterTypeOptions } from "../../data/sent/sent.data";
 
 
 interface ExtendedReceiveMessageType extends ReceiveMessageType {
@@ -24,6 +24,11 @@ const Columns = () => {
   const editorValues: Record<string, string> = {};
   letterTypeOptions.forEach((option) => {
     editorValues[option.value] = option.label;
+  });
+
+  const departmentValues: Record<string, string> = {};
+  departmentOptions.forEach((option) => {
+    departmentValues[option.value] = option.label;
   });
 
   return [
@@ -82,6 +87,25 @@ const Columns = () => {
       formatter: (cell: CellFormatterParamsType) => {
         const value = cell.getValue();
         const option = letterTypeOptions.find((opt) => opt.value === value);
+        return option ? option.label : value;
+      },
+    },
+    {
+      title: "طبقه بندی",
+      field: "confidentiality_level",
+      editor: "select",
+      editorParams: {
+        values: departmentValues,
+      },
+      headerFilter: "list",
+      headerFilterParams: {
+        valuesLookup: true,
+        clearable: true,
+      },
+      hozAlign: "center",
+      formatter: (cell: CellFormatterParamsType) => {
+        const value = cell.getValue();
+        const option = departmentOptions.find((opt) => opt.value === value);
         return option ? option.label : value;
       },
     },

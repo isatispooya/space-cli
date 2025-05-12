@@ -70,7 +70,7 @@ const ContactsCard = ({
               )}
             </div>
             {user.lastMessage && (
-              <div className="last-message text-xs text-gray-600 truncate mt-1">
+              <div className="last-message text-xs text-gray-600 truncate mt-1 overflow-hidden text-ellipsis max-w-full">
                 {user.lastMessage}
                 {hasUnseenMessages(user.id) && (
                   <span className="inline-block ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] rounded-full">

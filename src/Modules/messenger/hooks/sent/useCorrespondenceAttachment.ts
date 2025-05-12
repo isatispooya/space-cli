@@ -20,7 +20,10 @@ const useCorrespondenceAttachment = {
       queryFn: correspondenceAttacheService.getAttache,
     });
   },
-  usePostAttache: (): UseMutationResult<
+  usePostAttache: (options?: {
+    onSuccess?: () => void;
+    onError?: (error: Error) => void;
+  }): UseMutationResult<
     AttachmentResponseType,
     Error,
     AttachmentResponseType
@@ -30,6 +33,10 @@ const useCorrespondenceAttachment = {
       mutationFn: correspondenceAttacheService.postAttache,
       onSuccess: () => {
         refetch();
+        options?.onSuccess?.();
+      },
+      onError: (error) => {
+        options?.onError?.(error);
       },
     });
   },

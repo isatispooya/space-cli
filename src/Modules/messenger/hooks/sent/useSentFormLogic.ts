@@ -78,6 +78,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       published: false,
     });
     setUseInternalReceiver(true);
+    toast.success("اطلاعات با موفقیت ثبت شد");
   };
 
   const { mutate: postCorrespondence } =
@@ -119,7 +120,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     [Position]
   );
 
-
   const senderUserOptionsOut = useMemo(
     () =>
       (Position as PositionType[])?.map((position) => ({
@@ -137,9 +137,11 @@ export const useSentFormLogic = (id: string | undefined) => {
   const transcriptItems = useMemo<ITranscriptResponseType[]>(() => {
     return (formData.reference || []).map((ref) => {
       const refNum = Number(ref);
-      const referenceItem = formData.referenceData?.find(item => item.id === refNum);
+      const referenceItem = formData.referenceData?.find(
+        (item) => item.id === refNum
+      );
       const isVisible = referenceItem?.enabled !== false;
-      
+
       const baseItem = {
         id: refNum,
         read_at: null,
@@ -150,17 +152,22 @@ export const useSentFormLogic = (id: string | undefined) => {
         position: refNum,
         correspondence: Number(id || 0),
       };
-      
+
       if (refNum < 0 || referenceItem?.external_text) {
         return {
           ...baseItem,
-          external_text: referenceItem?.external_text
+          external_text: referenceItem?.external_text,
         };
       }
-      
+
       return baseItem;
     });
-  }, [formData.reference, formData.referenceData, transcriptDirectionsTyped, id]);
+  }, [
+    formData.reference,
+    formData.referenceData,
+    transcriptDirectionsTyped,
+    id,
+  ]);
 
   useEffect(() => {
     if (id && data?.sender) {
@@ -216,18 +223,22 @@ export const useSentFormLogic = (id: string | undefined) => {
     const apiTranscripts =
       formData.reference?.map((ref) => {
         const refNum = Number(ref);
-        const referenceItem = formData.referenceData?.find(item => item.id === refNum);
+        const referenceItem = formData.referenceData?.find(
+          (item) => item.id === refNum
+        );
         const isVisible = referenceItem?.enabled !== false;
-        
+
         const isExternalTranscript = refNum < 0 || referenceItem?.external_text;
-        
+
         return {
           position: refNum,
           transcript_for: transcriptDirectionsTyped[refNum] || "notification",
           security: !isVisible,
           correspondence: null,
           read_at: new Date().toISOString(),
-          external_text: isExternalTranscript ? referenceItem?.external_text : undefined
+          external_text: isExternalTranscript
+            ? referenceItem?.external_text
+            : undefined,
         };
       }) || [];
 

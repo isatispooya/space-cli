@@ -50,7 +50,7 @@ const SendMsgPopUp = ({
         first_name: user.first_name || "",
         last_name: user.last_name || "",
         uniqueIdentifier: user.uniqueIdentifier || "",
-        profile_image: server + user.profile_image || null,
+        profile_image: user.profile_image ? server + user.profile_image : null,
         online: user.online || false,
         last_seen: user.last_seen || null,
         mobile: user.mobile || "",
@@ -74,8 +74,6 @@ const SendMsgPopUp = ({
 
   const handleUserClick = (user: UserDataType) => {
     if (onSelectUser) {
-      console.log("Selected user:", user);
-
       onSelectUser({
         id: String(user.id),
         name: `${user.first_name} ${user.last_name}`,
@@ -105,7 +103,6 @@ const SendMsgPopUp = ({
       >
         <button
           onClick={() => {
-            console.log("Toggle users list, current state:", !showAllUsers);
             setShowAllUsers(!showAllUsers);
           }}
           className="w-14 h-14 bg-gradient-to-r from-[#5677BC] to-[#4A67A6] rounded-xl shadow-md flex items-center justify-center text-white transition-shadow hover:shadow-lg"

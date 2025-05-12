@@ -48,6 +48,7 @@ export const ReceiveTable = () => {
           item.priority === "urgent" ? "اعلامیه" : "درخواست",
         status: "",
         seen: item.seen || false,
+        confidentiality_level: item.confidentiality_level === "confidential" ? "محرمانه" : item.confidentiality_level === "secret" ? "سری" : item.confidentiality_level === "top_secret" ? "فوق سری" : "عادی",
       };
     });
   }, [correspondence]);
