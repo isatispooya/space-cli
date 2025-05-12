@@ -16,6 +16,13 @@ const useChat = {
       refetchInterval: 10000,
     });
   },
+  useSearchChat: (query: string): UseQueryResult<ChatType["MessagesType"][]> => {
+    return useQuery({
+      queryKey: ["chat", "search", query],
+      queryFn: () => chatService.search(query),
+      enabled: !!query,
+    });
+  },
   useGetUserOfPosition: (): UseQueryResult<ChatType["MessagesType"][]> => {
     return useQuery({
       queryKey: ["users"],
@@ -38,10 +45,14 @@ const useChat = {
       mutationFn: (data: ChatType["postMessegeType"]) => chatService.post(data),
     });
   },
-  useAttachment: (): UseMutationResult<any, AxiosError, any> => {
+  useAttachment: (): UseMutationResult<
+    FormData,
+    AxiosError,
+    FormData
+  > => {
     return useMutation({
       mutationKey: ["attachment"],
-      mutationFn: async (data: any) => {
+      mutationFn: async (data: FormData) => {
         if (data instanceof FormData) {
           return chatService.postAttachment(data);
         }
@@ -51,11 +62,11 @@ const useChat = {
         if (typeof data === "object" && data !== null) {
           Object.keys(data).forEach((key) => {
             if (Array.isArray(data[key])) {
-              data[key].forEach((item: any) => {
-                formData.append(key, item);
+              (data[key] as unknown[]).forEach((item) => {
+                formData.append(key, item as string | Blob);
               });
             } else {
-              formData.append(key, data[key]);
+              formData.append(key, data[key] as string | Blob);
             }
           });
         } else {
