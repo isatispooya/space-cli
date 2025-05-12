@@ -40,3 +40,9 @@ export interface CorrespondenceItemType {
   receiver_external?: string;
 }
 
+export interface ReferralReqType {
+  reference: number;
+  position_id: string;
+  correspondence: number;
+  order: string;
+}

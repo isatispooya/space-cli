@@ -34,6 +34,12 @@ const SentUpdateFormPage = lazy(() =>
 const MessengerPage = lazy(() =>
   import("../pages/messenger_main.page")
 );
+const ReceiveRefferalPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ReceiveRefferalPage,
+  }))
+);
+
 
 const MessengerRoutes = [
   {
@@ -67,6 +73,10 @@ const MessengerRoutes = [
       {
         path: "receive-message/:id",
         element: <ReceiveMessagePage />,
+      },
+      {
+        path: "receive-refferal/:id",
+        element: <ReceiveRefferalPage />,
       },
     ],
   },
