@@ -23,5 +23,6 @@ export interface RequestType {
   };
   amount: number;
   reason: string;
+  account_number?: string;
   
 }

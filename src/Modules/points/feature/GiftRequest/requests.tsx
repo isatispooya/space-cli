@@ -16,7 +16,7 @@ const Request = () => {
   const { data: user } = useProfile();
   const { checkPermission } = useUserPermissions();
   const isAdmin = checkPermission(["change_giftuser"]);
-
+  
   const statusMapping = {
     delivered: "تحویل داده شده",
     cancelled: "لغو شده",
@@ -48,7 +48,7 @@ const Request = () => {
         id: item.user_detail.id,
       },
       reason: item.reason,
-      account_number: user?.accounts[0].account_number || "",
+      account_number: item.account_number || "",
     })) || [];
 
   const handleStatusChange = (id: number, newStatus: string) => {
@@ -97,7 +97,7 @@ const Request = () => {
         statusMapping[item.status as keyof typeof statusMapping] ||
         "در حال بررسی",
       علت: item.reason || "",
-      "شماره حساب": user?.accounts[0].account_number || "",
+      "شماره حساب": item.account_number || user?.accounts?.[0]?.account_number || "",
       "نام و نام خانوادگی": `${item.user_detail?.first_name || ""} ${
         item.user_detail?.last_name || ""
       }`,
