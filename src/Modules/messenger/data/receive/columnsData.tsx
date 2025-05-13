@@ -131,6 +131,11 @@ const Columns = () => {
               icon: "👀",
               onClick: () => handleView(rowData),
             },
+            {
+              label : "ارجاع",
+              icon : "🔄",
+              onClick : () => navigate(`/letter/receive-refferal/${rowData.id}`),
+            }
           ],
           position: {
             x: rect.left + window.scrollX,

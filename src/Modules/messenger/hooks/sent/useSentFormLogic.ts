@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { usePosition } from "@/Modules/positions/hooks";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import { useSentFormStore } from "../../store/sent/sent.store";
-import { useReceiveById } from "../../hooks/receive/useReceive";
+
 import toast from "react-hot-toast";
 
 import { PositionType } from "@/Modules/positions/types";
@@ -19,6 +19,7 @@ import {
   departmentOptions,
   letterTypeOptions,
 } from "../../data/sent/sent.data";
+import { useReceive } from "../receive";
 
 export const useSentFormLogic = (id: string | undefined) => {
   const {
@@ -47,7 +48,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       data: CorrespondenceAttachmentsType;
     };
 
-  const { data } = useReceiveById(id || "");
+  const { data } = useReceive.useGetById(id || "");
 
   const { mutate: updateCorrespondence } =
     useCorrespondenceAttachment.useUpdateCorrespondence();

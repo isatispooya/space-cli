@@ -1,6 +1,5 @@
 import { Box, Paper, Button } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useReceiveById } from "../../hooks/receive/useReceive";
 import { usePosition } from "@/Modules/positions/hooks";
 import moment from "moment-jalaali";
 import "moment/locale/fa";
@@ -11,10 +10,10 @@ import { MessageAttachments } from "../../components/sent/SentMessage/Attachment
 import { MatchedUserType, TranscriptDetailsType } from "../../types/sent/sent.type";
 import { LoadingMessage } from "../../components/LoadingMessage";
 import PrintIcon from "@mui/icons-material/Print";
-
+import { useReceive } from "../../hooks/receive";
 const SentDetail = () => {
   const { id } = useParams();
-  const { data } = useReceiveById(id || "");
+  const { data } = useReceive.useGetById(id || "");
   const { data: allposition } = usePosition.useGetAll();
 
   const handlePrint = () => {
