@@ -13,7 +13,7 @@ interface DashboardCardPropsType {
   buttonText?: string;
   buttonLink?: string;
   onButtonClick?: () => void;
-  waveColor?: "blue" | "green" | "red" | "purple" | "dark" | "orange";
+  waveColor?: "blue" | "green" | "red" | "purple" | "dark" | "orange" | "custom1" | "custom2";
   customColors?: {
     background: string;
     hoverBackground: string;
@@ -56,6 +56,10 @@ const DashboardCard: React.FC<DashboardCardPropsType> = ({
         return "#ea580c";
       case "dark":
         return "#1e293b";
+      case "custom1":
+        return "#0ac9cb";
+      case "custom2":
+        return "#18e9f3";
       default:
         return customColors.background;
     }
