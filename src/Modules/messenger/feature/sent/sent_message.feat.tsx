@@ -50,6 +50,9 @@ const SentDetail = () => {
   const formattedDate = moment(data.sender.created_at)
     .locale("fa")
     .format("jYYYY/jMM/jDD HH:mm");
+    
+  // بررسی وجود letterhead در پاسخ سرور
+  const showLetterhead = data.sender.letterhead !== false;
 
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: "1200px", margin: "0 auto" }}>
@@ -111,7 +114,7 @@ const SentDetail = () => {
           <Box
             sx={{
               height: "100%",
-              minHeight: "80vh",
+              minHeight: showLetterhead ? "80vh" : "auto",
               display: "flex",
               flexDirection: "column",
               "@media print": {
@@ -125,13 +128,16 @@ const SentDetail = () => {
               },
             }}
           >
-            <MessageHeader sender={data.sender} formattedDate={formattedDate} />
+            {showLetterhead && (
+              <MessageHeader sender={data.sender} formattedDate={formattedDate} />
+            )}
             <Box
               sx={{
                 flex: 1,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-end",
+                minHeight: showLetterhead ? undefined : "auto",
                 "@media print": {
                   display: "flex !important",
                   flexDirection: "column !important",
@@ -141,19 +147,21 @@ const SentDetail = () => {
             >
               <MessageContent sender={data.sender} allposition={allposition} />
             </Box>
-            <Box
-              sx={{
-                "@media print": {
-                  display: "block !important",
-                  visibility: "visible !important",
-                  marginTop: "2rem !important",
-                  pageBreakInside: "avoid !important",
-                  position: "relative !important"
-                },
-              }}
-            >
-              <MessageFooter sender={data.sender} matchedUsers={matchedUsers} />
-            </Box>
+            {showLetterhead && (
+              <Box
+                sx={{
+                  "@media print": {
+                    display: "block !important",
+                    visibility: "visible !important",
+                    marginTop: "2rem !important",
+                    pageBreakInside: "avoid !important",
+                    position: "relative !important"
+                  },
+                }}
+              >
+                <MessageFooter sender={data.sender} matchedUsers={matchedUsers} />
+              </Box>
+            )}
           </Box>
           <Box sx={{ "@media print": { display: "none" } }}>
             <MessageAttachments

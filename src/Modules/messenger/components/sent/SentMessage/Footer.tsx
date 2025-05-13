@@ -1,17 +1,29 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import { MessageFooterPropsType, TranscriptDetailsType, MatchedUserType } from "../../../types/sent/sent.type";
+import {
+  MessageFooterPropsType,
+  TranscriptDetailsType,
+  MatchedUserType,
+} from "../../../types/sent/sent.type";
 import internalOptions from "../../../data/sent/transcript.data";
 import { getValueLabel } from "../../../utils/helpers";
 
-export const MessageFooter = ({ sender, matchedUsers }: MessageFooterPropsType) => {
+export const MessageFooter = ({
+  sender,
+  matchedUsers,
+}: MessageFooterPropsType) => {
   // فیلتر کردن رونوشت‌هایی که security آنها true نیست
   const filteredTranscripts = sender.transcript_details?.filter(
     (transcript: TranscriptDetailsType) => !transcript.security
   );
 
+  console.log(sender);
   return (
     <>
-      <Grid container spacing={2} sx={{ position: 'relative', minHeight: '100%' }}>
+      <Grid
+        container
+        spacing={2}
+        sx={{ position: "relative", minHeight: "100%" }}
+      >
         {filteredTranscripts && filteredTranscripts.length > 0 && (
           <Grid item xs={12} md={12}>
             <Box sx={{ borderRadius: "12px" }}>
@@ -31,8 +43,10 @@ export const MessageFooter = ({ sender, matchedUsers }: MessageFooterPropsType) 
                 const positionText = positionInfo?.position || "نامشخص";
                 const userFullName =
                   positionInfo?.firstName && positionInfo?.lastName
-                    ? `_ ${positionInfo.firstName} ${positionInfo.lastName} `
+                    ? `_ ${positionInfo.firstName} ${positionInfo.lastName}`
                     : "";
+                const companyName =
+                  sender?.sender_details?.company_detail?.name || "";
                 const referralLabel = getValueLabel(
                   transcript.transcript_for,
                   internalOptions
@@ -49,8 +63,8 @@ export const MessageFooter = ({ sender, matchedUsers }: MessageFooterPropsType) 
                       color: "text.primary",
                     }}
                   >
-                    {userFullName}
-                    {positionText} جهت {referralLabel}
+                    {userFullName}-{positionText} {companyName} جهت{" "}
+                    {referralLabel}
                   </Typography>
                 );
               })}
@@ -73,18 +87,23 @@ export const MessageFooter = ({ sender, matchedUsers }: MessageFooterPropsType) 
             </Box>
           </Grid>
         )}
-        <Grid item xs={12} md={12} sx={{ 
-          '@media print': {
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            width: '100%',
-            backgroundColor: 'white',
-            padding: '10px',
-            marginBottom: 0
-          }
-        }}>
+        <Grid
+          item
+          xs={12}
+          md={12}
+          sx={{
+            "@media print": {
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              width: "100%",
+              backgroundColor: "white",
+              padding: "10px",
+              marginBottom: 0,
+            },
+          }}
+        >
           <Divider />
           <Box
             sx={{

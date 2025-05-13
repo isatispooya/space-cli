@@ -42,6 +42,8 @@ export interface PositionType {
   sender: string;
   first_name: string;
   last_name: string;
+  signature?: string;
+  seal?: string;
   company_detail?: {
     id: number | string;
     name: string;

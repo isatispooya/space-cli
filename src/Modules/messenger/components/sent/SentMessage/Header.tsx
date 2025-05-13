@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Divider } from "@mui/material";
 import { MessageHeaderPropsType } from "../../../types/sent/sent.type";
 
 import { departmentOptions } from "../../../data/sent/sent.data";
@@ -13,6 +13,24 @@ export const MessageHeader = ({
     <Box sx={{ position: "relative" }}>
       <Grid container>
         <Grid item xs={12}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mb: 2,
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                my: 1,
+              }}
+            >
+              بسم تعالی
+            </Typography>
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -47,6 +65,7 @@ export const MessageHeader = ({
                 flex: 1,
                 wordBreak: "break-word",
                 overflow: "visible",
+                fontWeight: "500",
               }}
             >
               {sender.sender_details?.company_detail?.name}
@@ -75,6 +94,7 @@ export const MessageHeader = ({
               </Typography>
             </Box>
           </Box>
+          <Divider sx={{ width: "100%", mb: 2 }} />
         </Grid>
       </Grid>
     </Box>

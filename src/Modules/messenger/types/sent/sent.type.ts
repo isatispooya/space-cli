@@ -122,6 +122,12 @@ export interface SenderDetailsType {
 export interface ReceiverInternalDetailsType {
   user: BaseUserType;
   name?: string;
+  company_detail?: {
+    logo: string;
+    address: string;
+    phone: string;
+    name: string;
+  };
 }
 
 export interface CorrespondenceItemType {
@@ -172,6 +178,7 @@ export interface PositionType {
   name: string;
   user?: BaseUserType;
   signature?: string;
+  seal?: string;
 }
 
 export interface SenderType {
@@ -189,6 +196,7 @@ export interface SenderType {
   transcript_details: TranscriptDetailsType[];
   postcript?: string;
   published?: boolean;
+  letterhead?: boolean;
 }
 
 export interface MatchedUserType {
@@ -207,6 +215,7 @@ export interface MessageContentPropsType {
   sender: SenderType;
   signature?: PositionType[];
   allposition?: PositionType[];
+  seal?: string;
 }
 
 export interface MessageFooterPropsType {
