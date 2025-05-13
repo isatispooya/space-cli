@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { MessageContentPropsType } from "../../../types/sent/sent.type";
+import { server } from "@/api";
 export const MessageContent = ({
   sender,
   allposition,
@@ -8,11 +9,16 @@ export const MessageContent = ({
   const receiverInternal = sender?.receiver_internal_details;
   const senderCompany = sender?.sender_details?.company_detail?.name;
 
+  // پیدا کردن موقعیت کاربر فرستنده برای دریافت امضا و مهر
   const matchedPosition = allposition?.find(
     (pos) => pos?.user?.id === senderUser?.id
   );
-  const signature = matchedPosition?.signature;
-  const seal = matchedPosition?.seal;
+  
+  // آدرس تصاویر مهر و امضا
+  const signatureImageUrl = matchedPosition?.signature;
+  // از آنجا که seal در تایپ companyDetail تعریف نشده، باید از ts-expect-error استفاده کنیم
+  // @ts-expect-error - در داده‌های واقعی، این فیلد وجود دارد
+  const sealImageUrl = sender?.sender_details?.company_detail?.seal || null;
 
   const senderFullName = `${senderUser?.first_name || ""} ${
     senderUser?.last_name || ""
@@ -24,6 +30,10 @@ export const MessageContent = ({
         receiverInternal?.company_detail?.name || ""
       }`
     : sender.receiver_external;
+
+  // شرط‌های نمایش مهر و امضا
+  const showSeal = ('seal' in sender ? sender.seal : false);
+  const showSignature = ('signature' in sender ? sender.signature : false);
 
   return (
     <Grid container spacing={2}>
@@ -50,25 +60,39 @@ export const MessageContent = ({
           <Box sx={{ borderRadius: 1.5 }}>
             <Typography
               sx={{
-                whiteSpace: "pre-wrap",
-                fontSize: { xs: "0.95rem", sm: "1rem" },
+                fontSize: { xs: "0.90rem", sm: ".95rem" },
                 lineHeight: 1.8,
                 color: "text.primary",
-                mb: 1,
+                textAlign: "center",
+                marginBottom: 1,
               }}
             >
-              مهر {sender.published ? seal : ""}
+              مهر و امضا
             </Typography>
-            <Typography
-              sx={{
-                whiteSpace: "pre-wrap",
-                fontSize: { xs: "0.95rem", sm: "1rem" },
-                lineHeight: 1.8,
-                color: "text.primary",
-              }}
-            >
-              امضا {sender.published ? signature : ""}
-            </Typography>
+            {/* نمایش مهر و امضا در یک ردیف */}
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center' }}>
+              {showSeal && sealImageUrl && (
+                <img 
+                  src={server + sealImageUrl} 
+                  alt="مهر شرکت" 
+                  style={{ 
+                    maxWidth: "160px", 
+                    height: "auto" 
+                  }} 
+                />
+              )}
+              
+              {showSignature && signatureImageUrl && (
+                <img 
+                  src={server + signatureImageUrl} 
+                  alt="امضا" 
+                  style={{ 
+                    maxWidth: "120px", 
+                    height: "auto" 
+                  }} 
+                />
+              )}
+            </Box>
           </Box>
         </Grid>
       )}

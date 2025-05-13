@@ -144,12 +144,10 @@ const SentDetail = () => {
               },
             }}
           >
-            {showLetterhead && (
               <MessageHeader
                 sender={data.sender}
                 formattedDate={formattedDate}
               />
-            )}
             <Box
               sx={{
                 flex: 1,

@@ -9,10 +9,14 @@ export const MessageHeader = ({
   sender,
   formattedDate,
 }: MessageHeaderPropsType) => {
+  const showLetterhead =sender.letterhead !== false;
+
   return (
     <Box sx={{ position: "relative" }}>
       <Grid container>
         <Grid item xs={12}>
+        {showLetterhead && (
+
           <Box
             sx={{
               display: "flex",
@@ -31,6 +35,8 @@ export const MessageHeader = ({
               بسم تعالی
             </Typography>
           </Box>
+                      )}
+
           <Box
             sx={{
               display: "flex",
@@ -41,6 +47,9 @@ export const MessageHeader = ({
               p: 2,
             }}
           >
+                    {showLetterhead && (
+                      <>
+
             <Box
               sx={{
                 width: "150px",
@@ -70,6 +79,8 @@ export const MessageHeader = ({
             >
               {sender.sender_details?.company_detail?.name}
             </Typography>
+            </>
+              )}
             <Box
               sx={{
                 display: "flex",
@@ -77,9 +88,12 @@ export const MessageHeader = ({
                 gap: 1,
                 alignItems: "flex-start",
                 minWidth: "200px",
-                marginLeft: "50px",
+                marginLeft: "auto",
+                marginRight: "0",
                 "@media print": {
                   marginTop: "100px",
+                  marginLeft: "auto",
+                  marginRight: "0",
                 },
               }}
             >
