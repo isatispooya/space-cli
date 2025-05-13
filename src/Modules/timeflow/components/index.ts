@@ -5,3 +5,5 @@ export { default as TimeflowDetails } from "./timeflowDetails";
 export { default as TimeflowEdit } from "./timeflow_edit";
 export { default as Collapse } from "./Collapse";
 export { default as ActionButton } from "./actionButton";
+export { default as ReminderPopup } from "./reminder.popup";
+export { default as TimeflowReminder } from "./timeflowReminder";

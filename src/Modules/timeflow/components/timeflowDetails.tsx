@@ -4,11 +4,6 @@ import { LoaderLg, TabulatorTable } from "../../../components";
 import { CellComponent, ColumnDefinition } from "tabulator-tables";
 import moment from "moment-jalaali";
 import { ExelData } from "../data";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
-import DatePicker from "react-multi-date-picker";
-import { useState } from "react";
-import { DateObject } from "react-multi-date-picker";
 import { useNavigate } from "react-router-dom";
 
 const typeTranslator = (type: string): string => {
@@ -31,19 +26,19 @@ const typeTranslator = (type: string): string => {
 };
 
 const TimeflowDetails = () => {
-  const [selectedDate, setSelectedDate] = useState(
-    new DateObject({ calendar: persian, locale: persian_fa })
-  );
+  // const [selectedDate, setSelectedDate] = useState(
+  //   new DateObject({ calendar: persian, locale: persian_fa })
+  // );
 
   const { data, isLoading } = useTimeflow.useGetTimeflowDetails();
 
   const navigate = useNavigate();
 
-  const handleDateChange = (date: DateObject | null) => {
-    if (date) {
-      setSelectedDate(date);
-    }
-  };
+  // const handleDateChange = (date: DateObject | null) => {
+  //   if (date) {
+  //     setSelectedDate(date);
+  //   }
+  // };
 
   const mappedData = Array.isArray(data?.other_logs)
     ? data?.other_logs.map((item: any) => ({
@@ -194,7 +189,7 @@ const TimeflowDetails = () => {
   return (
     <>
       <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col items-center mb-[100px]">
-        <DatePicker
+        {/* <DatePicker
           onlyMonthPicker
           format="MMMM YYYY"
           calendar={persian}
@@ -211,7 +206,7 @@ const TimeflowDetails = () => {
             fontSize: "1.5rem",
             backgroundColor: "#f9fafb",
           }}
-        />
+        /> */}
         <div className="overflow-x-auto w-full">
           <TabulatorTable
             data={mappedData || []}
