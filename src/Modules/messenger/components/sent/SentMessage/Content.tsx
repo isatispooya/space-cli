@@ -1,6 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { MessageContentPropsType } from "../../../types/sent/sent.type";
 import { server } from "@/api";
+
 export const MessageContent = ({
   sender,
   allposition,
@@ -9,16 +10,12 @@ export const MessageContent = ({
   const receiverInternal = sender?.receiver_internal_details;
   const senderCompany = sender?.sender_details?.company_detail?.name;
 
-  // پیدا کردن موقعیت کاربر فرستنده برای دریافت امضا و مهر
   const matchedPosition = allposition?.find(
     (pos) => pos?.user?.id === senderUser?.id
   );
-  
-  // آدرس تصاویر مهر و امضا
-  const signatureImageUrl = matchedPosition?.signature;
-  // از آنجا که seal در تایپ companyDetail تعریف نشده، باید از ts-expect-error استفاده کنیم
-  // @ts-expect-error - در داده‌های واقعی، این فیلد وجود دارد
-  const sealImageUrl = sender?.sender_details?.company_detail?.seal || null;
+
+  const signatureImageUrl = matchedPosition?.signature as string | undefined;
+  const sealImageUrl = (sender?.sender_details?.company_detail?.seal || null) as string | null;
 
   const senderFullName = `${senderUser?.first_name || ""} ${
     senderUser?.last_name || ""
@@ -31,9 +28,37 @@ export const MessageContent = ({
       }`
     : sender.receiver_external;
 
-  // شرط‌های نمایش مهر و امضا
-  const showSeal = ('seal' in sender ? sender.seal : false);
-  const showSignature = ('signature' in sender ? sender.signature : false);
+  const showSeal = sender.published && ("seal" in sender ? sender.seal : false);
+  const showSignature =
+    sender.published && ("signature" in sender ? sender.signature : false);
+
+  const renderSealAndSignature = () => {
+    return (
+      <div style={{ display: "flex", flexDirection: "row", gap: "16px", alignItems: "center" }}>
+        {showSeal && sealImageUrl ? (
+          <img
+            src={`${server}${sealImageUrl}`}
+            alt="مهر شرکت"
+            style={{
+              maxWidth: "160px",
+              height: "auto",
+            }}
+          />
+        ) : null}
+
+        {showSignature && signatureImageUrl ? (
+          <img
+            src={`${server}${signatureImageUrl}`}
+            alt="امضا"
+            style={{
+              maxWidth: "120px",
+              height: "auto",
+            }}
+          />
+        ) : null}
+      </div>
+    );
+  };
 
   return (
     <Grid container spacing={2}>
@@ -69,30 +94,7 @@ export const MessageContent = ({
             >
               مهر و امضا
             </Typography>
-            {/* نمایش مهر و امضا در یک ردیف */}
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center' }}>
-              {showSeal && sealImageUrl && (
-                <img 
-                  src={server + sealImageUrl} 
-                  alt="مهر شرکت" 
-                  style={{ 
-                    maxWidth: "160px", 
-                    height: "auto" 
-                  }} 
-                />
-              )}
-              
-              {showSignature && signatureImageUrl && (
-                <img 
-                  src={server + signatureImageUrl} 
-                  alt="امضا" 
-                  style={{ 
-                    maxWidth: "120px", 
-                    height: "auto" 
-                  }} 
-                />
-              )}
-            </Box>
+            {renderSealAndSignature()}
           </Box>
         </Grid>
       )}

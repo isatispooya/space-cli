@@ -112,6 +112,7 @@ export interface SenderDetailsType {
   user: BaseUserType;
   name?: string;
   company_detail?: {
+    seal: string;
     logo: string;
     address: string;
     phone: string;
