@@ -1,4 +1,4 @@
-import { Box, Paper, Button } from "@mui/material";
+import { Box, Paper, Button, CircularProgress } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { usePosition } from "@/Modules/positions/hooks";
 import moment from "moment-jalaali";
@@ -7,14 +7,18 @@ import { MessageHeader } from "../../components/sent/SentMessage/Header";
 import { MessageContent } from "../../components/sent/SentMessage/Content";
 import { MessageFooter } from "../../components/sent/SentMessage/Footer";
 import { MessageAttachments } from "../../components/sent/SentMessage/Attachments";
-import { MatchedUserType, TranscriptDetailsType } from "../../types/sent/sent.type";
+import {
+  MatchedUserType,
+  TranscriptDetailsType,
+} from "../../types/sent/sent.type";
 import { LoadingMessage } from "../../components/LoadingMessage";
 import PrintIcon from "@mui/icons-material/Print";
 import { useReceive } from "../../hooks/receive";
 const SentDetail = () => {
   const { id } = useParams();
-  const { data } = useReceive.useGetById(id || "");
-  const { data: allposition } = usePosition.useGetAll();
+  const { data, isLoading } = useReceive.useGetById(id || "");
+  const { data: allposition, isLoading: isLoadingPositions } =
+    usePosition.useGetAll();
 
   const handlePrint = () => {
     const printContent = document.getElementById("print-content");
@@ -28,14 +32,27 @@ const SentDetail = () => {
     }
   };
 
+  if (isLoading || isLoadingPositions) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   if (!data?.sender) {
     return <LoadingMessage />;
   }
-
   const userOption = data.sender.transcript_details?.map(
     (item: TranscriptDetailsType) => item.position.toString()
   );
-
 
   const matchedUsers: MatchedUserType[] =
     allposition
@@ -50,8 +67,7 @@ const SentDetail = () => {
   const formattedDate = moment(data.sender.created_at)
     .locale("fa")
     .format("jYYYY/jMM/jDD HH:mm");
-    
-  // بررسی وجود letterhead در پاسخ سرور
+
   const showLetterhead = data.sender.letterhead !== false;
 
   return (
@@ -129,7 +145,10 @@ const SentDetail = () => {
             }}
           >
             {showLetterhead && (
-              <MessageHeader sender={data.sender} formattedDate={formattedDate} />
+              <MessageHeader
+                sender={data.sender}
+                formattedDate={formattedDate}
+              />
             )}
             <Box
               sx={{
@@ -155,11 +174,14 @@ const SentDetail = () => {
                     visibility: "visible !important",
                     marginTop: "2rem !important",
                     pageBreakInside: "avoid !important",
-                    position: "relative !important"
+                    position: "relative !important",
                   },
                 }}
               >
-                <MessageFooter sender={data.sender} matchedUsers={matchedUsers} />
+                <MessageFooter
+                  sender={data.sender}
+                  matchedUsers={matchedUsers}
+                />
               </Box>
             )}
           </Box>
