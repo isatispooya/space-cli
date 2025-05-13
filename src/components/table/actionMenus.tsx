@@ -44,7 +44,6 @@ const ActionMenu: React.FC<ActionMenuPropsType> = ({
       menuRef.current.style.top = `${adjustedStyle.y}px`;
     }
 
-    // Add scroll event listener
     const handleScroll = () => {
       onClose();
     };
@@ -111,7 +110,6 @@ export const createActionMenu = ({
   position,
   className,
 }: CreateActionMenuPropsType): (() => void) => {
-  // Remove any existing menus
   const cleanup = () => {
     const existingMenus = document.querySelectorAll<MenuElementType>(
       ".popup-menu"
@@ -125,19 +123,15 @@ export const createActionMenu = ({
     });
   };
 
-  // Clean up existing menus
   cleanup();
 
-  // Create new menu container
   const menuContainer = document.createElement("div") as MenuElementType;
   menuContainer.className = "popup-menu";
   document.body.appendChild(menuContainer);
 
-  // Create root
   const root = createRoot(menuContainer);
   menuContainer._reactRoot = root;
 
-  // Handle click outside
   const handleClickOutside = (event: MouseEvent) => {
     if (!menuContainer.contains(event.target as Node)) {
       cleanup();
@@ -145,12 +139,10 @@ export const createActionMenu = ({
     }
   };
 
-  // Delay adding click listener
   requestAnimationFrame(() => {
     document.addEventListener("click", handleClickOutside);
   });
 
-  // Render menu
   root.render(
     <ActionMenu
       items={items}

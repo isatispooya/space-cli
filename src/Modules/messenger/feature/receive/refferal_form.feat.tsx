@@ -11,7 +11,6 @@ const ReferralForm = () => {
   const handleSubmit = async (values: ReferralReqType) => {
     console.log(values);
   };
-  const { mutate: postRefferal, isLoading } = useReceive.usePostRefferal();
   const { data: positions } = usePosition.useGetAll();
 
   const { data: receive } = useReceive.useGetById(id || "");

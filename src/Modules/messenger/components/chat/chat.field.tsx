@@ -5,11 +5,22 @@ import useChat from "../../hooks/useChat";
 import ChatHeader from "./chat.header";
 import ChatInput from "./chat.inputs";
 import useProfile from "@/Modules/userManagment/hooks/useProfile";
-import { ChatType, ProfileDataType, SelectedUserType, ChatDataType } from "../../types";
+import {
+  ChatType,
+  ProfileDataType,
+  SelectedUserType,
+  ChatDataType,
+} from "../../types";
 import FileList from "./FileList";
 import MessageContent from "./MessageContent";
 import EmptyState from "./EmptyState";
 import { MessagingService } from "./MessagingService";
+
+interface AttachmentResponseType {
+  id: number | string;
+  message?: string;
+  status?: number;
+}
 
 const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   onSubmit,
@@ -81,12 +92,13 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
     scrollToBottom();
 
     uploadAttachment(formData, {
-      onSuccess: (response) => {
+      onSuccess: (data: FormData) => {
+        const response = data as unknown as AttachmentResponseType;
         if (response && response.id) {
           const messageData = MessagingService.createMessageData(
             messageText,
             selectedUser as SelectedUserType,
-            response.id
+            Number(response.id)
           );
 
           createChat(messageData, {
@@ -176,24 +188,25 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
       }}
     >
       <ChatHeader
-        selectedUser={selectedUser ? { 
-          name: selectedUser.name,
-          avatar: selectedUser.avatar,
-          profile_image: selectedUser.profile_image
-        } : { name: "" }}
+        selectedUser={
+          selectedUser
+            ? {
+                name: selectedUser.name,
+                avatar: selectedUser.avatar,
+                profile_image: selectedUser.profile_image,
+              }
+            : { name: "" }
+        }
         onBackClick={onBackClick}
         isFullUrl={true}
       />
       <Divider />
-      
+
       {selectedUser ? (
         <>
-          <MessageContent 
-            messages={messages} 
-            messagesEndRef={messagesEndRef} 
-          />
+          <MessageContent messages={messages} messagesEndRef={messagesEndRef} />
           <Divider />
-          
+
           <input
             type="file"
             multiple
@@ -201,9 +214,9 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
             onChange={handleFileChange}
             className="hidden"
           />
-          
+
           <FileList files={files} setFiles={setFiles} />
-          
+
           <ChatInput
             newMessage={newMessage}
             setNewMessage={setNewMessage}
