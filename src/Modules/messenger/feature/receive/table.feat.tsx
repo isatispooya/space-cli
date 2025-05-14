@@ -1,5 +1,5 @@
 import "moment/locale/fa";
-import { TabulatorTable } from "../../../../components";
+import { LoaderLg, TabulatorTable } from "@/components";
 import { useMemo, useState, useCallback } from "react";
 import columns from "../../data/receive/columnsData";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
@@ -15,11 +15,14 @@ import { RowComponent } from "tabulator-tables";
 export const ReceiveTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] =
-    useState<CorrespondenceResponseType>({ sender: [], receiver: [] });
+    useState<CorrespondenceResponseType>({
+      sender: [],
+      receiver: [],
+    });
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 
-  const { data: correspondence } =
+  const { data: correspondence, isLoading } =
     useCorrespondenceAttachment.useGetCorrespondence();
 
   const handleSearch = useCallback(async (query: string) => {
@@ -42,60 +45,77 @@ export const ReceiveTable = () => {
     }
   }, []);
 
+  const formatDate = useCallback((dateString: string) => {
+    const date = new Date(dateString);
+    const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(
+      date
+    );
+    const month = new Intl.DateTimeFormat("fa", { month: "2-digit" }).format(
+      date
+    );
+    const day = new Intl.DateTimeFormat("fa", { day: "2-digit" }).format(date);
+    return `${year}/${month}/${day}`;
+  }, []);
+
+  const formatConfidentialityLevel = useCallback((level?: string) => {
+    switch (level) {
+      case "confidential":
+        return "محرمانه";
+      case "secret":
+        return "سری";
+      case "top_secret":
+        return "فوق سری";
+      default:
+        return "عادی";
+    }
+  }, []);
+
+  const createRowData = useCallback(
+    (item: CorrespondenceItemType) => {
+      const senderName =
+        item.sender_details?.user?.first_name +
+          " " +
+          item.sender_details?.user?.last_name +
+          " " +
+          "-" +
+          item.sender_details?.name || "نامشخص";
+
+      const receiverName =
+        item.is_internal !== false
+          ? item.receiver_internal_details?.user?.first_name +
+              " " +
+              item.receiver_internal_details?.user?.last_name +
+              " " +
+              "-" +
+              item.receiver_internal_details?.name || "نامشخص"
+          : item.receiver_external || "نامشخص";
+
+      return {
+        id: item.id,
+        title: item.subject,
+        number: item.number,
+        sender: senderName,
+        receiver: receiverName,
+        send_date: formatDate(item.created_at),
+        kind_of_correspondence:
+          item.priority === "urgent" ? "اعلامیه" : "درخواست",
+        status: "",
+        seen: item.seen || false,
+        confidentiality_level: formatConfidentialityLevel(
+          item.confidentiality_level
+        ),
+      };
+    },
+    [formatDate, formatConfidentialityLevel]
+  );
+
   const mappedData = useMemo(() => {
     if (
       hasSearched &&
       searchResults.receiver &&
       searchResults.receiver.length > 0
     ) {
-      return searchResults.receiver.map((item: CorrespondenceItemType) => {
-        const date = new Date(item.created_at);
-        const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(
-          date
-        );
-        const month = new Intl.DateTimeFormat("fa", {
-          month: "2-digit",
-        }).format(date);
-        const day = new Intl.DateTimeFormat("fa", { day: "2-digit" }).format(
-          date
-        );
-        const formattedDate = `${year}/${month}/${day}`;
-
-        return {
-          id: item.id,
-          title: item.subject,
-          number: item.number,
-          sender:
-            item.sender_details?.user?.first_name +
-              " " +
-              item.sender_details?.user?.last_name +
-              " " +
-              "-" +
-              item.sender_details?.name || "نامشخص" + ")",
-          receiver:
-            item.is_internal !== false
-              ? item.receiver_internal_details?.user?.first_name +
-                  " " +
-                  item.receiver_internal_details?.user?.last_name +
-                  " " +
-                  "-" +
-                  item.receiver_internal_details?.name || "نامشخص"
-              : item.receiver_external || "نامشخص",
-          send_date: formattedDate,
-          kind_of_correspondence:
-            item.priority === "urgent" ? "اعلامیه" : "درخواست",
-          status: "",
-          seen: item.seen || false,
-          confidentiality_level:
-            item.confidentiality_level === "confidential"
-              ? "محرمانه"
-              : item.confidentiality_level === "secret"
-              ? "سری"
-              : item.confidentiality_level === "top_secret"
-              ? "فوق سری"
-              : "عادی",
-        };
-      });
+      return searchResults.receiver.map(createRowData);
     }
 
     if (
@@ -104,118 +124,24 @@ export const ReceiveTable = () => {
       searchResults.sender.length > 0 &&
       (!searchResults.receiver || searchResults.receiver.length === 0)
     ) {
-      return searchResults.sender.map((item: CorrespondenceItemType) => {
-        const date = new Date(item.created_at);
-        const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(
-          date
-        );
-        const month = new Intl.DateTimeFormat("fa", {
-          month: "2-digit",
-        }).format(date);
-        const day = new Intl.DateTimeFormat("fa", { day: "2-digit" }).format(
-          date
-        );
-        const formattedDate = `${year}/${month}/${day}`;
-
-        return {
-          id: item.id,
-          title: item.subject,
-          number: item.number,
-          sender:
-            item.sender_details?.user?.first_name +
-              " " +
-              item.sender_details?.user?.last_name +
-              " " +
-              "-" +
-              item.sender_details?.name || "نامشخص" + ")",
-          receiver:
-            item.is_internal !== false
-              ? item.receiver_internal_details?.user?.first_name +
-                  " " +
-                  item.receiver_internal_details?.user?.last_name +
-                  " " +
-                  "-" +
-                  item.receiver_internal_details?.name || "نامشخص"
-              : item.receiver_external || "نامشخص",
-          send_date: formattedDate,
-          kind_of_correspondence:
-            item.priority === "urgent" ? "اعلامیه" : "درخواست",
-          status: "",
-          seen: item.seen || false,
-          confidentiality_level:
-            item.confidentiality_level === "confidential"
-              ? "محرمانه"
-              : item.confidentiality_level === "secret"
-              ? "سری"
-              : item.confidentiality_level === "top_secret"
-              ? "فوق سری"
-              : "عادی",
-        };
-      });
+      return searchResults.sender.map(createRowData);
     }
 
     if (!correspondence?.receiver) return [];
+    return correspondence.receiver.map(createRowData);
+  }, [correspondence, searchResults, hasSearched, createRowData]);
 
-    return correspondence.receiver.map((item: CorrespondenceItemType) => {
-      const date = new Date(item.created_at);
-      const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(
-        date
-      );
-      const month = new Intl.DateTimeFormat("fa", { month: "2-digit" }).format(
-        date
-      );
-      const day = new Intl.DateTimeFormat("fa", { day: "2-digit" }).format(
-        date
-      );
-      const formattedDate = `${year}/${month}/${day}`;
-
-      return {
-        id: item.id,
-        title: item.subject,
-        number: item.number,
-        sender:
-          item.sender_details?.user?.first_name +
-            " " +
-            item.sender_details?.user?.last_name +
-            " " +
-            "-" +
-            item.sender_details?.name || "نامشخص" + ")",
-        receiver:
-          item.is_internal !== false
-            ? item.receiver_internal_details?.user?.first_name +
-                " " +
-                item.receiver_internal_details?.user?.last_name +
-                " " +
-                "-" +
-                item.receiver_internal_details?.name || "نامشخص"
-            : item.receiver_external || "نامشخص",
-        send_date: formattedDate,
-        kind_of_correspondence:
-          item.priority === "urgent" ? "اعلامیه" : "درخواست",
-        status: "",
-        seen: item.seen || false,
-        confidentiality_level:
-          item.confidentiality_level === "confidential"
-            ? "محرمانه"
-            : item.confidentiality_level === "secret"
-            ? "سری"
-            : item.confidentiality_level === "top_secret"
-            ? "فوق سری"
-            : "عادی",
-      };
-    });
-  }, [correspondence, searchResults, hasSearched]);
-
-  const tableOptions = useMemo(() => {
-    return {
+  const tableOptions = useMemo(
+    () => ({
       rowFormatter: (row: RowComponent) => {
         const data = row.getData();
         if (data && data.seen === false) {
           row.getElement().style.backgroundColor = "#f5f5f5";
         }
       },
-    };
-  }, []);
+    }),
+    []
+  );
 
   const searchFields = useMemo(
     () => [
@@ -228,6 +154,16 @@ export const ReceiveTable = () => {
     ],
     []
   );
+
+  if (isLoading) {
+    return <LoaderLg />;
+  }
+
+  const noResultsFound =
+    hasSearched &&
+    !isSearching &&
+    (!searchResults.receiver || searchResults.receiver.length === 0) &&
+    (!searchResults.sender || searchResults.sender.length === 0);
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
@@ -255,14 +191,11 @@ export const ReceiveTable = () => {
         </div>
       )}
 
-      {hasSearched &&
-        !isSearching &&
-        (!searchResults.receiver || searchResults.receiver.length === 0) &&
-        (!searchResults.sender || searchResults.sender.length === 0) && (
-          <div className="w-full text-center py-4 text-gray-500">
-            نتیجه‌ای یافت نشد
-          </div>
-        )}
+      {noResultsFound && (
+        <div className="w-full text-center py-4 text-gray-500">
+          نتیجه‌ای یافت نشد
+        </div>
+      )}
 
       <div className="overflow-x-auto">
         <TabulatorTable
@@ -272,7 +205,7 @@ export const ReceiveTable = () => {
           showActions={true}
           formatExportData={(item: ReceiveMessageType) => ExelData(item)}
           dateField="send_date"
-          showDateFilter={hasSearched ? false : true}
+          showDateFilter={!hasSearched}
           showSearchFilter={false}
           searchFields={searchFields}
           options={tableOptions}
@@ -281,4 +214,5 @@ export const ReceiveTable = () => {
     </div>
   );
 };
+
 export default ReceiveTable;
