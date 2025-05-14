@@ -1,7 +1,6 @@
 import { CellComponent } from "tabulator-tables";
 import { ReceiveMessageType } from "../../types/receive/ReceiveMessage.type";
 import { createActionMenu } from "@/components/table/actionMenus";
-import { useNavigate } from "react-router-dom";
 import {
   departmentOptions,
   letterTypeOptions,
@@ -18,11 +17,6 @@ interface CellFormatterParamsType {
 }
 
 const Columns = () => {
-  const navigate = useNavigate();
-  const handleView = (row: ExtendedReceiveMessageType) => {
-    navigate(`/letter/receive-message/${row.id}`);
-  };
-
   const editorValues: Record<string, string> = {};
   letterTypeOptions.forEach((option) => {
     editorValues[option.value] = option.label;
@@ -131,12 +125,12 @@ const Columns = () => {
             {
               label: "نمایش",
               icon: "👀",
-              onClick: () => handleView(rowData),
+              onClick: () => window.location.href = `/letter/receive-message/${rowData.id}`,
             },
             {
               label: "ارجاع",
               icon: "🔄",
-              onClick: () => navigate(`/letter/receive-refferal/${rowData.id}`),
+              onClick: () => window.location.href = `/letter/receive-refferal/${rowData.id}`,
             },
           ],
           position: {

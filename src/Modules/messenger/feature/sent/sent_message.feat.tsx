@@ -11,7 +11,6 @@ import {
   MatchedUserType,
   TranscriptDetailsType,
 } from "../../types/sent/sent.type";
-import { LoadingMessage } from "../../components/LoadingMessage";
 import PrintIcon from "@mui/icons-material/Print";
 import { useReceive } from "../../hooks/receive";
 const SentDetail = () => {
@@ -47,10 +46,7 @@ const SentDetail = () => {
     );
   }
 
-  if (!data?.sender) {
-    return <LoadingMessage />;
-  }
-  const userOption = data.sender.transcript_details?.map(
+  const userOption = data?.sender?.transcript_details?.map(
     (item: TranscriptDetailsType) => item.position.toString()
   );
 
@@ -64,11 +60,11 @@ const SentDetail = () => {
         lastName: matched.user?.last_name || "",
       })) || [];
 
-  const formattedDate = moment(data.sender.created_at)
+  const formattedDate = moment(data?.sender?.created_at)
     .locale("fa")
     .format("jYYYY/jMM/jDD HH:mm");
 
-  const showLetterhead = data.sender.letterhead !== false;
+  const showLetterhead = data?.sender?.letterhead !== false;
 
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: "1200px", margin: "0 auto" }}>
@@ -185,7 +181,7 @@ const SentDetail = () => {
           </Box>
           <Box sx={{ "@media print": { display: "none" } }}>
             <MessageAttachments
-              attachments={data.sender.attachments_details || []}
+              attachments={data?.sender?.attachments_details || []}
             />
           </Box>
         </div>

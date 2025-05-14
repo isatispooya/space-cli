@@ -11,12 +11,9 @@ export const MessageFooter = ({
   sender,
   matchedUsers,
 }: MessageFooterPropsType) => {
-  // فیلتر کردن رونوشت‌هایی که security آنها true نیست
-  const filteredTranscripts = sender.transcript_details?.filter(
+  const filteredTranscripts = sender?.transcript_details?.filter(
     (transcript: TranscriptDetailsType) => !transcript.security
   );
-
-  console.log(sender);
   return (
     <>
       <Grid
@@ -122,11 +119,11 @@ export const MessageFooter = ({
               }}
             >
               <span className="p-4">
-                آدرس:{sender.sender_details?.company_detail?.address}
+                آدرس:{sender?.sender_details?.company_detail?.address}
               </span>
               <span className="p-4">|</span>
               <span className="p-4">
-                تلفن تماس:{sender.sender_details?.company_detail?.phone}
+                تلفن تماس:{sender?.sender_details?.company_detail?.phone}
               </span>
             </Typography>
           </Box>

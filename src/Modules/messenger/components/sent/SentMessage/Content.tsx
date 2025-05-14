@@ -20,17 +20,17 @@ export const MessageContent = ({
   const senderFullName = `${senderUser?.first_name || ""} ${
     senderUser?.last_name || ""
   } ${sender?.sender_details?.name || ""} ${senderCompany || ""}`;
-  const receiverFullName = sender.is_internal
+  const receiverFullName = sender?.is_internal
     ? `${receiverInternal?.user?.first_name || ""} ${
         receiverInternal?.user?.last_name || ""
       } ${receiverInternal?.name || ""} ${
         receiverInternal?.company_detail?.name || ""
       }`
-    : sender.receiver_external;
+    : sender?.receiver_external;
 
-  const showSeal = sender.published && ("seal" in sender ? sender.seal : false);
+  const showSeal = sender?.published && ("seal" in sender ? sender.seal : false);
   const showSignature =
-    sender.published && ("signature" in sender ? sender.signature : false);
+    sender?.published && ("signature" in sender ? sender.signature : false);
 
   const renderSealAndSignature = () => {
     return (
@@ -71,12 +71,12 @@ export const MessageContent = ({
             به: {receiverFullName}
           </Typography>
           <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
-            موضوع: {sender.subject}
+            موضوع: {sender?.subject}
           </Typography>
         </Box>
       </Grid>
 
-      {sender.is_internal && (
+      {sender?.is_internal && (
         <Grid
           item
           xs={12}
