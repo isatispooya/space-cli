@@ -29,14 +29,12 @@ const SentDetail = () => {
   const { data, isLoading } = useReceive.useGetById(id || "");
   const { data: allposition, isLoading: isLoadingPositions } =
     usePosition.useGetAll();
-    
 
   const [published, setPublished] = useState(false);
 
-  // Update published state when data is loaded
   useEffect(() => {
     if (data?.sender) {
-      setPublished(data.sender.published || false);
+      setPublished(data.published || false);
     }
   }, [data]);
 
@@ -50,19 +48,19 @@ const SentDetail = () => {
     setPublished(newPublishedState);
 
     if (id && data?.sender) {
-      const senderId = data.sender.sender_details?.id || 0;
-      const receiverId = data.sender.receiver_internal_details?.id || null;
+      const senderId = data.sender_details?.id || 0;
+      const receiverId = data.receiver_internal_details?.id || null;
 
       // Make sure the receiver and sender aren't the same
       const finalReceiverId = senderId === receiverId ? null : receiverId;
 
       const updateData = {
         id: parseInt(id),
-        subject: data.sender.subject || "",
-        text: data.sender.text || "",
-        description: data.sender.description || "",
+        subject: data.subject || "",
+        text: data.text || "",
+        description: data.description || "",
         attachments:
-          data.sender.attachments_details?.map(
+          data.attachments_details?.map(
             (att: CorrespondenceAttachmentType) => att.id
           ) || [],
         receiver: [],
@@ -70,21 +68,21 @@ const SentDetail = () => {
         receiver_internal: finalReceiverId,
         receiver_external: finalReceiverId
           ? ""
-          : data.sender.receiver_external || "External Receiver",
+          : data.receiver_external || "External Receiver",
         is_internal: finalReceiverId ? true : false,
-        postcript: data.sender.postcript || "",
-        seal: data.sender.seal || false,
-        signature: data.sender.signature || false,
-        letterhead: data.sender.letterhead || false,
-        binding: data.sender.binding || false,
-        confidentiality_level: data.sender.confidentiality_level || "",
-        priority: data.sender.priority || "",
-        kind_of_correspondence: data.sender.kind_of_correspondence || "",
+        postcript: data.postcript || "",
+        seal: data.seal || false,
+        signature: data.signature || false,
+        letterhead: data.letterhead || false,
+        binding: data.binding || false,
+        confidentiality_level: data.confidentiality_level || "",
+        priority: data.priority || "",
+        kind_of_correspondence: data.kind_of_correspondence || "",
         authority_type: "new",
         authority_correspondence: null,
         reference: [],
         transcript:
-          data.sender.transcript_details?.map(
+          data.transcript_details?.map(
             (item: TranscriptDetailsType) => ({
               position: item.position,
               transcript_for: item.transcript_for || "notification",
@@ -233,7 +231,7 @@ const SentDetail = () => {
               },
             }}
           >
-            <MessageHeader sender={data.sender} formattedDate={formattedDate} />
+            <MessageHeader sender={data} formattedDate={formattedDate} />
             <Box
               sx={{
                 flex: 1,
@@ -248,7 +246,7 @@ const SentDetail = () => {
                 },
               }}
             >
-              <MessageContent sender={data.sender} allposition={allposition} />
+              <MessageContent sender={data} allposition={allposition} />
             </Box>
             {showLetterhead && (
               <Box
@@ -263,7 +261,7 @@ const SentDetail = () => {
                 }}
               >
                 <MessageFooter
-                  sender={data.sender}
+                  sender={data}
                   matchedUsers={matchedUsers}
                 />
               </Box>
