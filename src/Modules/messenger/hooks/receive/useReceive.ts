@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { receiveSer } from "../../services/receive";
 import { 
-  CorrespondenceItemType, 
+ 
   CorrespondenceReceiverType, 
   ReferralReqType 
 } from "../../types/receive/ReceiveMessage.type";
@@ -19,7 +19,7 @@ const useReceive = {
     });
   },
 
-  useGetById: (id: string): UseQueryResult<CorrespondenceItemType> => {
+  useGetById: (id: string): UseQueryResult<CorrespondenceReceiverType> => {
     return useQuery({
       queryKey: ["receiveById", id],
       queryFn: () => receiveSer.getReceiveById(id),

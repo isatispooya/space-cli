@@ -171,16 +171,17 @@ export const useSentFormLogic = (id: string | undefined) => {
   ]);
 
   useEffect(() => {
-    if (id && data?.sender) {
+    if (id && data?.sender && data.sender.length > 0) {
+      const senderItem = data.sender[0];
       setFormData({
-        ...data.sender,
-        sender: data.sender.sender_details?.id.toString(),
-        receiver_internal: data.sender.receiver_internal_details?.id.toString(),
+        ...senderItem,
+        sender: senderItem.sender_details?.id ? Number(senderItem.sender_details.id) : undefined as unknown as number,
+        receiver_internal: senderItem.receiver_internal_details?.id ? Number(senderItem.receiver_internal_details.id) : undefined as unknown as number,
         receiver_external:
-          data.sender.receiver_external_details?.name ||
-          data.sender.receiver_external,
+          senderItem.receiver_external_details?.name ||
+          senderItem.receiver_external || "",
       });
-      setUseInternalReceiver(data.sender.is_internal);
+      setUseInternalReceiver(senderItem.is_internal);
     } else if (!id) {
       setFormData({
         subject: "",

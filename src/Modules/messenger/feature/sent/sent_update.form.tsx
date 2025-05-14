@@ -20,7 +20,6 @@ import ReceiverTypeButtons from "../../components/sent/ReceiverTypeButtons";
 import SenderSection from "../../components/sent/SenderSection";
 import PrioritySection from "../../components/sent/PrioritySection";
 import AttachmentSection from "../../components/sent/AttachmentSection";
-
 import { useSentFormLogic } from "../../hooks/sent/useSentFormLogic";
 import { STYLES } from "../../style";
 
@@ -50,7 +49,6 @@ const SentUpdateForm: React.FC = () => {
     attachmentOptions,
     getTranscriptName,
     transcriptItems,
-    data,
     priorityOptions,
     departmentOptions,
     letterTypeOptions,
@@ -182,7 +180,7 @@ const SentUpdateForm: React.FC = () => {
                 رونوشت گیرندگان
               </Typography>
               <Transcript
-                data={data}
+                data={{sender: {reference_details: []}}}
                 transcript={transcriptItems}
                 selectedTranscript={selectedTranscript}
                 setSelectedTranscript={setSelectedTranscript}

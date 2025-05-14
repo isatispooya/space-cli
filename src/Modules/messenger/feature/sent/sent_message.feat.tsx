@@ -10,10 +10,12 @@ import { MessageAttachments } from "../../components/sent/SentMessage/Attachment
 import {
   MatchedUserType,
   TranscriptDetailsType,
+  SenderType,
 } from "../../types/sent/sent.type";
 import { LoadingMessage } from "../../components/LoadingMessage";
 import PrintIcon from "@mui/icons-material/Print";
 import { useReceive } from "../../hooks/receive";
+
 const SentDetail = () => {
   const { id } = useParams();
   const { data, isLoading } = useReceive.useGetById(id || "");
@@ -47,10 +49,13 @@ const SentDetail = () => {
     );
   }
 
-  if (!data?.sender) {
+  if (!data) {
     return <LoadingMessage />;
   }
-  const userOption = data.sender.transcript_details?.map(
+
+  const receivedData = data as unknown as SenderType;
+
+  const userOption = receivedData.transcript_details?.map(
     (item: TranscriptDetailsType) => item.position.toString()
   );
 
@@ -64,11 +69,11 @@ const SentDetail = () => {
         lastName: matched.user?.last_name || "",
       })) || [];
 
-  const formattedDate = moment(data.sender.created_at)
+  const formattedDate = moment(receivedData.created_at)
     .locale("fa")
     .format("jYYYY/jMM/jDD HH:mm");
 
-  const showLetterhead = data.sender.letterhead !== false;
+  const showLetterhead = receivedData.letterhead !== false;
 
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: "1200px", margin: "0 auto" }}>
@@ -144,10 +149,10 @@ const SentDetail = () => {
               },
             }}
           >
-              <MessageHeader
-                sender={data.sender}
-                formattedDate={formattedDate}
-              />
+            <MessageHeader
+              sender={receivedData}
+              formattedDate={formattedDate}
+            />
             <Box
               sx={{
                 flex: 1,
@@ -162,7 +167,7 @@ const SentDetail = () => {
                 },
               }}
             >
-              <MessageContent sender={data.sender} allposition={allposition} />
+              <MessageContent sender={receivedData} allposition={allposition} />
             </Box>
             {showLetterhead && (
               <Box
@@ -177,7 +182,7 @@ const SentDetail = () => {
                 }}
               >
                 <MessageFooter
-                  sender={data.sender}
+                  sender={receivedData}
                   matchedUsers={matchedUsers}
                 />
               </Box>
@@ -185,7 +190,7 @@ const SentDetail = () => {
           </Box>
           <Box sx={{ "@media print": { display: "none" } }}>
             <MessageAttachments
-              attachments={data.sender.attachments_details || []}
+              attachments={receivedData.attachments_details || []}
             />
           </Box>
         </div>

@@ -1,8 +1,5 @@
 import { api } from "../../../api";
-
-interface CrowdPointsDataType {
-  [key: string]: unknown;
-}
+import { PlansCoinsPostType } from "../types/plansCoinsPost.type";
 
 const CrowdPoints = {
   getPlans: async () => {
@@ -13,7 +10,7 @@ const CrowdPoints = {
     const response = await api.get(`/club/participant-crowd/${traceCode}/`);
     return response.data;
   },
-  postCrowdPoints: async (data: CrowdPointsDataType, traceCode: string) => {
+  postCrowdPoints: async (data: PlansCoinsPostType, traceCode: string) => {
     const response = await api.post(
       `/club/point-refrencer-crowd/${traceCode}/`,
       data

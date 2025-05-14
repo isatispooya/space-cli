@@ -60,6 +60,7 @@ const PlansView: React.FC<{
         ? parseInt(coinValues[item.user?.id || "0"], 10)
         : defaultValue,
       refrence: String(item?.refrence?.id || "N/A"),
+      trace_code: plan?.plan?.trace_code,
     };
 
     postCrowdPoints(payload, {
