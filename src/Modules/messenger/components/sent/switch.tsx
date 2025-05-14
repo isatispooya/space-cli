@@ -9,24 +9,25 @@ import { Box } from "@mui/material";
 import { FormDataType } from "@/Modules/messenger/types/sent/sent.type";
 
 const FormSwitches: React.FC<{
-    formData: FormDataType;
-    handleChange: (name: string, value: boolean) => void;
-  }> = ({ formData, handleChange }) => (
-    <Box sx={STYLES.switchGroup}>
-      {FORM_SWITCHES.map(({ field, label }) => (
-        <FormControlLabel
-          key={field}
-          control={
-            <Switch
-              checked={formData[field]}
-              onChange={(e) => handleChange(field, e.target.checked)}
-              color="primary"
-            />
-          }
-          label={label}
-        />
-      ))}
-    </Box>
-  );
+  formData: FormDataType;
+  handleChange: (name: string, value: boolean) => void;
+}> = ({ formData, handleChange }) => (
+  <Box sx={STYLES.switchGroup}>
+    {FORM_SWITCHES.map(({ field, label }) => (
+      <FormControlLabel
+        key={field}
+        control={
+          <Switch
+            checked={formData[field]}
+            onChange={(e) => handleChange(field, e.target.checked)}
+            color="primary"
+            disabled={formData.published && field !== "published"}
+          />
+        }
+        label={label}
+      />
+    ))}
+  </Box>
+);
 
-  export default FormSwitches;
+export default FormSwitches;

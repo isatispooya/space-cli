@@ -6,10 +6,11 @@ import {
   Divider,
   useTheme,
   useMediaQuery,
+  Alert,
 } from "@mui/material";
 
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { TextAreaInput } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
@@ -28,7 +29,9 @@ const SentUpdateForm: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { id } = useParams();
+  const navigate = useNavigate();
   const isEditMode = !!id;
+  const [isPublished, setIsPublished] = useState(false);
 
   const {
     formData,
@@ -57,6 +60,77 @@ const SentUpdateForm: React.FC = () => {
     senderUserOptionsOut,
   } = useSentFormLogic(id);
 
+  useEffect(() => {
+    if (formData.published) {
+      setIsPublished(true);
+    } else {
+      setIsPublished(false);
+    }
+  }, [formData.published]);
+
+  // Custom handler for published switch
+  const handlePublishedChange = (name: string, value: boolean) => {
+    if (name === "published") {
+      if (value === true) {
+        // Show confirmation before publishing
+        if (
+          window.confirm(
+            "آیا از انتشار پیام اطمینان دارید؟ بعد از انتشار امکان ویرایش وجود ندارد."
+          )
+        ) {
+          handleChange(name, value);
+          // Submit the form automatically when published is set to true
+          setTimeout(() => {
+            handleSubmit();
+          }, 100);
+        }
+      } else if (value === false && formData.published === true) {
+        // Show confirmation before unpublishing
+        if (window.confirm("آیا از لغو انتشار پیام اطمینان دارید؟")) {
+          handleChange(name, value);
+        }
+      }
+    } else {
+      handleChange(name, value);
+    }
+  };
+
+  // Show warning but still allow editing until submit
+  const showPublishWarning = formData.published && isEditMode;
+
+  if (isPublished && isEditMode) {
+    return (
+      <Box
+        sx={{
+          ...STYLES.container,
+          width: "100%",
+          px: { xs: 1, sm: 2, md: 3 },
+        }}
+      >
+        <Paper
+          elevation={3}
+          sx={{
+            ...STYLES.paper,
+            p: { xs: 2, sm: 3 },
+            overflow: "hidden",
+          }}
+        >
+          <Alert severity="info" sx={{ mb: 3 }}>
+            این پیام منتشر شده است و دیگر قابل ویرایش نیست.
+          </Alert>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+            <ButtonBase
+              label="بازگشت به لیست پیام‌ها"
+              onClick={() => navigate("/messenger/sent")}
+              bgColor="#1976d2"
+              hoverColor="#1565c0"
+            />
+          </Box>
+        </Paper>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -84,6 +158,13 @@ const SentUpdateForm: React.FC = () => {
         >
           {isEditMode ? "ویرایش پیام" : "ثبت پیام جدید"}
         </Typography>
+
+        {showPublishWarning && (
+          <Alert severity="warning" sx={{ mb: 3 }}>
+            این پیام منتشر شده است. در صورت ذخیره تغییرات، وضعیت انتشار به روز
+            خواهد شد.
+          </Alert>
+        )}
 
         <form onSubmit={handleSubmit}>
           <Grid container spacing={{ xs: 2, sm: 3 }}>
@@ -165,7 +246,10 @@ const SentUpdateForm: React.FC = () => {
 
             <Grid item xs={12}>
               <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
-              <FormSwitches formData={formData} handleChange={handleChange} />
+              <FormSwitches
+                formData={formData}
+                handleChange={handlePublishedChange}
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -205,12 +289,23 @@ const SentUpdateForm: React.FC = () => {
                   mb: { xs: 5.5, sm: 5 },
                 }}
               >
-                <ButtonBase
-                  label={isEditMode ? "ویرایش پیام" : "ثبت پیام"}
-                  onClick={handleSubmit}
-                  bgColor="#1976d2"
-                  hoverColor="#1565c0"
-                />
+                {showPublishWarning ? (
+                  <ButtonBase
+                    label={
+                      formData.published ? "ویرایش و حفظ انتشار" : "ویرایش پیام"
+                    }
+                    onClick={handleSubmit}
+                    bgColor="#1976d2"
+                    hoverColor="#1565c0"
+                  />
+                ) : (
+                  <ButtonBase
+                    label={isEditMode ? "ویرایش پیام" : "ثبت پیام"}
+                    onClick={handleSubmit}
+                    bgColor="#1976d2"
+                    hoverColor="#1565c0"
+                  />
+                )}
               </Box>
             </Grid>
           </Grid>
