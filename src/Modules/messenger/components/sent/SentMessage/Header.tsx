@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Divider } from "@mui/material";
 import { MessageHeaderPropsType } from "../../../types/sent/sent.type";
 
 import { departmentOptions } from "../../../data/sent/sent.data";
@@ -9,10 +9,34 @@ export const MessageHeader = ({
   sender,
   formattedDate,
 }: MessageHeaderPropsType) => {
+  const showLetterhead =sender.letterhead !== false;
+
   return (
     <Box sx={{ position: "relative" }}>
       <Grid container>
         <Grid item xs={12}>
+        {showLetterhead && (
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mb: 2,
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                my: 1,
+              }}
+            >
+              بسم تعالی
+            </Typography>
+          </Box>
+                      )}
+
           <Box
             sx={{
               display: "flex",
@@ -23,6 +47,9 @@ export const MessageHeader = ({
               p: 2,
             }}
           >
+                    {showLetterhead && (
+                      <>
+
             <Box
               sx={{
                 width: "150px",
@@ -47,10 +74,13 @@ export const MessageHeader = ({
                 flex: 1,
                 wordBreak: "break-word",
                 overflow: "visible",
+                fontWeight: "500",
               }}
             >
               {sender.sender_details?.company_detail?.name}
             </Typography>
+            </>
+              )}
             <Box
               sx={{
                 display: "flex",
@@ -58,9 +88,12 @@ export const MessageHeader = ({
                 gap: 1,
                 alignItems: "flex-start",
                 minWidth: "200px",
-                marginLeft: "50px",
+                marginLeft: "auto",
+                marginRight: "0",
                 "@media print": {
                   marginTop: "100px",
+                  marginLeft: "auto",
+                  marginRight: "0",
                 },
               }}
             >
@@ -75,6 +108,7 @@ export const MessageHeader = ({
               </Typography>
             </Box>
           </Box>
+          <Divider sx={{ width: "100%", mb: 2 }} />
         </Grid>
       </Grid>
     </Box>

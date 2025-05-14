@@ -16,7 +16,7 @@ const Request = () => {
   const { data: user } = useProfile();
   const { checkPermission } = useUserPermissions();
   const isAdmin = checkPermission(["change_giftuser"]);
-
+  
   const statusMapping = {
     delivered: "تحویل داده شده",
     cancelled: "لغو شده",
@@ -46,9 +46,10 @@ const Request = () => {
         first_name: item.user_detail.first_name,
         last_name: item.user_detail.last_name,
         id: item.user_detail.id,
+        account_number: item.user_detail.account_number || "",
       },
       reason: item.reason,
-      account_number: user?.accounts[0].account_number || "",
+      account_number: item.user_detail.account_number || "",
     })) || [];
 
   const handleStatusChange = (id: number, newStatus: string) => {
@@ -97,7 +98,7 @@ const Request = () => {
         statusMapping[item.status as keyof typeof statusMapping] ||
         "در حال بررسی",
       علت: item.reason || "",
-      "شماره حساب": user?.accounts[0].account_number || "",
+      "شماره حساب": item.user_detail.account_number || "",
       "نام و نام خانوادگی": `${item.user_detail?.first_name || ""} ${
         item.user_detail?.last_name || ""
       }`,
@@ -208,10 +209,11 @@ const Request = () => {
       },
     },
     {
-      field: "account_number",
+      field: "user_detail.account_number",
       title: "شماره حساب",
       formatter: (cell: CellComponent) => {
-        return cell.getValue();
+        const rowData = cell.getRow().getData();
+        return rowData.user_detail?.account_number || "";
       },
     },
     {

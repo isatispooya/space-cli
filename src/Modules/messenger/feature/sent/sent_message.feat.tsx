@@ -1,4 +1,4 @@
-import { Box, Paper, Button } from "@mui/material";
+import { Box, Paper, Button, CircularProgress } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { usePosition } from "@/Modules/positions/hooks";
 import moment from "moment-jalaali";
@@ -7,14 +7,18 @@ import { MessageHeader } from "../../components/sent/SentMessage/Header";
 import { MessageContent } from "../../components/sent/SentMessage/Content";
 import { MessageFooter } from "../../components/sent/SentMessage/Footer";
 import { MessageAttachments } from "../../components/sent/SentMessage/Attachments";
-import { MatchedUserType, TranscriptDetailsType } from "../../types/sent/sent.type";
+import {
+  MatchedUserType,
+  TranscriptDetailsType,
+} from "../../types/sent/sent.type";
 import { LoadingMessage } from "../../components/LoadingMessage";
 import PrintIcon from "@mui/icons-material/Print";
 import { useReceive } from "../../hooks/receive";
 const SentDetail = () => {
   const { id } = useParams();
-  const { data } = useReceive.useGetById(id || "");
-  const { data: allposition } = usePosition.useGetAll();
+  const { data, isLoading } = useReceive.useGetById(id || "");
+  const { data: allposition, isLoading: isLoadingPositions } =
+    usePosition.useGetAll();
 
   const handlePrint = () => {
     const printContent = document.getElementById("print-content");
@@ -28,14 +32,27 @@ const SentDetail = () => {
     }
   };
 
+  if (isLoading || isLoadingPositions) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   if (!data?.sender) {
     return <LoadingMessage />;
   }
-
   const userOption = data.sender.transcript_details?.map(
     (item: TranscriptDetailsType) => item.position.toString()
   );
-
 
   const matchedUsers: MatchedUserType[] =
     allposition
@@ -50,6 +67,8 @@ const SentDetail = () => {
   const formattedDate = moment(data.sender.created_at)
     .locale("fa")
     .format("jYYYY/jMM/jDD HH:mm");
+
+  const showLetterhead = data.sender.letterhead !== false;
 
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: "1200px", margin: "0 auto" }}>
@@ -111,7 +130,7 @@ const SentDetail = () => {
           <Box
             sx={{
               height: "100%",
-              minHeight: "80vh",
+              minHeight: showLetterhead ? "80vh" : "auto",
               display: "flex",
               flexDirection: "column",
               "@media print": {
@@ -125,13 +144,17 @@ const SentDetail = () => {
               },
             }}
           >
-            <MessageHeader sender={data.sender} formattedDate={formattedDate} />
+              <MessageHeader
+                sender={data.sender}
+                formattedDate={formattedDate}
+              />
             <Box
               sx={{
                 flex: 1,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-end",
+                minHeight: showLetterhead ? undefined : "auto",
                 "@media print": {
                   display: "flex !important",
                   flexDirection: "column !important",
@@ -141,19 +164,24 @@ const SentDetail = () => {
             >
               <MessageContent sender={data.sender} allposition={allposition} />
             </Box>
-            <Box
-              sx={{
-                "@media print": {
-                  display: "block !important",
-                  visibility: "visible !important",
-                  marginTop: "2rem !important",
-                  pageBreakInside: "avoid !important",
-                  position: "relative !important"
-                },
-              }}
-            >
-              <MessageFooter sender={data.sender} matchedUsers={matchedUsers} />
-            </Box>
+            {showLetterhead && (
+              <Box
+                sx={{
+                  "@media print": {
+                    display: "block !important",
+                    visibility: "visible !important",
+                    marginTop: "2rem !important",
+                    pageBreakInside: "avoid !important",
+                    position: "relative !important",
+                  },
+                }}
+              >
+                <MessageFooter
+                  sender={data.sender}
+                  matchedUsers={matchedUsers}
+                />
+              </Box>
+            )}
           </Box>
           <Box sx={{ "@media print": { display: "none" } }}>
             <MessageAttachments

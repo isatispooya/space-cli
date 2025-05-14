@@ -80,7 +80,7 @@ export const SentTable = () => {
               item.sender_details?.user?.last_name +
               " " +
               "-" +
-              item.sender_details?.name || "نامشخص" + ")",
+              item.sender_details?.name || "نامشخص",
           receiver:
             item.is_internal !== false
               ? item.receiver_internal_details?.user?.first_name +
@@ -109,17 +109,20 @@ export const SentTable = () => {
     if (!correspondence?.sender) return [];
 
     return correspondence.sender.map((item: CorrespondenceItemType) => {
-      const date = new Date(item.created_at);
-      const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(
-        date
-      );
-      const month = new Intl.DateTimeFormat("fa", { month: "2-digit" }).format(
-        date
-      );
-      const day = new Intl.DateTimeFormat("fa", { day: "2-digit" }).format(
-        date
-      );
-      const formattedDate = `${year}/${month}/${day}`;
+      let formattedDate = "نامشخص";
+      try {
+        if (item.created_at) {
+          const date = new Date(item.created_at);
+          if (!isNaN(date.getTime())) {
+            const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(date);
+            const month = new Intl.DateTimeFormat("fa", { month: "2-digit" }).format(date);
+            const day = new Intl.DateTimeFormat("fa", { day: "2-digit" }).format(date);
+            formattedDate = `${year}/${month}/${day}`;
+          }
+        }
+      } catch (error) {
+        console.error("خطا در تبدیل تاریخ:", error);
+      }
 
       return {
         id: item.id,
@@ -131,7 +134,7 @@ export const SentTable = () => {
             item.sender_details?.user?.last_name +
             " " +
             "-" +
-            item.sender_details?.name || "نامشخص" + ")",
+            item.sender_details?.name || "نامشخص",
         receiver:
           item.is_internal !== false
             ? item.receiver_internal_details?.user?.first_name +

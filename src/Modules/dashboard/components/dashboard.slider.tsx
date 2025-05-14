@@ -156,8 +156,8 @@ const DashboardSlider = ({ slides }: DashboardSliderPropsType) => {
                   variant="custom"
                   size="sm"
                   customColors={{
-                    background: "#29D2C7",
-                    hoverBackground: "#37f908",
+                    background: "#0da059",
+                    hoverBackground: "#10cb71",
                     text: "white",
                   }}
                   className="w-3/4 py-2 rounded-lg font-medium text-xs"

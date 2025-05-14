@@ -45,10 +45,9 @@ const timeflowServices = {
     return response.data;
   },
 
-  getTimeflowDetails: async (): // year: number,
-  // month: number
+  getTimeflowDetails: async ():
   Promise<UserLoginType> => {
-    const response = await api.get(`/timeflow/list-user-logs/`);
+    const response = await api.get(`/timeflow/parent-position-users/`);
     return response.data;
   },
 

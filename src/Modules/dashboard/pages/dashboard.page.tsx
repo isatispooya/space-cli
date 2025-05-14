@@ -10,6 +10,7 @@ import {
   DashboardBimeStat,
   DashboardBorsStat,
 } from "../components";
+import { TimeflowReminder } from "../../timeflow/components";
 
 const DashboardPage = () => {
   const { data: shortcuts } = useDashboard.useGetShortcuts();
@@ -29,6 +30,8 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
+      <TimeflowReminder />
+      
       <div className="container mx-auto px-4 py-2 relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
           <div className="lg:col-span-3 grid grid-rows-3 gap-4 h-full">
