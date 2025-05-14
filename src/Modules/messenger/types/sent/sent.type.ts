@@ -59,6 +59,8 @@ export interface APIFormDataType {
   sender: number;
   receiver_internal: number | null;
   receiver_external: string;
+  receiver_internal_details?: ReceiverInternalDetailsType;
+  sender_details?: SenderDetailsType;
   is_internal: boolean;
   postcript: string;
   seal: boolean;
@@ -121,6 +123,7 @@ export interface SenderDetailsType {
 }
 
 export interface ReceiverInternalDetailsType {
+  id: number;
   user: BaseUserType;
   name?: string;
   company_detail?: {

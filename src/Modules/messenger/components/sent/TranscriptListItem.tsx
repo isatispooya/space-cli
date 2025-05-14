@@ -12,8 +12,8 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { SelectInput } from "../../../../components/common/inputs";
 import internalOptions from "../../data/sent/transcript.data";
 import { ITranscriptResponseType } from "../../types/sent/sent.type";
@@ -41,9 +41,9 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     const [visibility, setVisibility] = useState(!item.security);
     const isExternalTranscript = item.id < 0 || item.external_text;
     const [externalTexts, setExternalTexts] = useState<string[]>(
-      isExternalTranscript && item.external_text 
-        ? Array.isArray(item.external_text) 
-          ? item.external_text 
+      isExternalTranscript && item.external_text
+        ? Array.isArray(item.external_text)
+          ? item.external_text
           : [item.external_text]
         : [""]
     );
@@ -55,8 +55,8 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     useEffect(() => {
       if (isExternalTranscript && item.external_text) {
         setExternalTexts(
-          Array.isArray(item.external_text) 
-            ? item.external_text 
+          Array.isArray(item.external_text)
+            ? item.external_text
             : [item.external_text]
         );
       }
@@ -100,11 +100,11 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
             {isExternalTranscript ? (
               <Box>
                 <Typography
-                  sx={{ 
-                    fontWeight: 500, 
-                    color: "#1e293b", 
+                  sx={{
+                    fontWeight: 500,
+                    color: "#1e293b",
                     fontSize: "0.9rem",
-                    mb: 1
+                    mb: 1,
                   }}
                 >
                   <Tooltip title="رونوشت گیرنده خارجی" placement="top">
@@ -112,33 +112,35 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
                   </Tooltip>
                 </Typography>
                 {externalTexts.map((text, index) => (
-                  <Box 
-                    key={index} 
-                    sx={{ 
-                      display: 'flex',
-                      alignItems: 'center',
-                      mb: 1
+                  <Box
+                    key={index}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      mb: 1,
                     }}
                   >
                     <TextField
                       fullWidth
                       size="small"
                       value={text}
-                      onChange={(e) => handleExternalTextChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleExternalTextChange(index, e.target.value)
+                      }
                       placeholder="متن رونوشت خارجی"
                       sx={{
                         backgroundColor: "#f8f9fa",
                         borderRadius: 1,
-                        '& .MuiOutlinedInput-root': {
-                          '& fieldset': {
-                            borderColor: '#dee2e6',
-                            borderStyle: 'dashed',
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "#dee2e6",
+                            borderStyle: "dashed",
                           },
                         },
                       }}
                     />
-                    <IconButton 
-                      size="small" 
+                    <IconButton
+                      size="small"
                       onClick={() => removeExternalText(index)}
                       sx={{ ml: 1 }}
                       disabled={externalTexts.length <= 1}
@@ -147,13 +149,13 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
                     </IconButton>
                   </Box>
                 ))}
-                <IconButton 
-                  size="small" 
+                <IconButton
+                  size="small"
                   onClick={addExternalText}
-                  sx={{ 
+                  sx={{
                     mt: 1,
-                    border: '1px dashed #dee2e6',
-                    borderRadius: 1
+                    border: "1px dashed #dee2e6",
+                    borderRadius: 1,
                   }}
                 >
                   <AddIcon fontSize="small" />
@@ -163,7 +165,7 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
               <Typography
                 sx={{ fontWeight: 500, color: "#1e293b", fontSize: "0.9rem" }}
               >
-                {getTranscriptName(item.id)}
+                {getTranscriptName(item.position)}
               </Typography>
             )}
           </Grid>
