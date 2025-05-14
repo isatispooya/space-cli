@@ -3,9 +3,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { usePosition } from "@/Modules/positions/hooks";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import { useSentFormStore } from "../../store/sent/sent.store";
-
 import toast from "react-hot-toast";
-
 import { PositionType } from "@/Modules/positions/types";
 import {
   CorrespondenceAttachmentType,
@@ -13,7 +11,6 @@ import {
   APIFormDataType,
   ITranscriptResponseType,
 } from "../../types/sent/sent.type";
-
 import {
   priorityOptions,
   departmentOptions,
