@@ -18,6 +18,7 @@ const SentDetail = () => {
   const { data, isLoading } = useReceive.useGetById(id || "");
   const { data: allposition, isLoading: isLoadingPositions } =
     usePosition.useGetAll();
+    
 
   const handlePrint = () => {
     const printContent = document.getElementById("print-content");

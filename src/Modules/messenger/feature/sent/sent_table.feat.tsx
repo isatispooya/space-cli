@@ -22,7 +22,7 @@ export const SentTable = () => {
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 
   const handleView = (row: SentMessageType) => {
-    navigate(`/letter/message/${row.id}`);
+    navigate(`/letter/message/${row.id}`);    
   };
   const handleEdit = (id: number) => {
     navigate(`/letter/update-form/${id}`);
