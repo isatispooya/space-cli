@@ -32,17 +32,25 @@ const AttachmentSection: React.FC<AttachmentSectionPropsType> = ({
       }}
       onClick={() => setOpenFileDialog(true)}
     >
-      <Typography variant="h4" color="primary">+</Typography>
+      <Typography variant="h4" color="primary">
+        +
+      </Typography>
       <Typography variant="body2">افزودن پیوست</Typography>
     </Box>
     <MultiSelect
       label="پیوست‌ها"
-      selectedValues={formData.attachments?.map(String) || []}
-      onChange={(value) => handleChange("attachments", value.map(String))}
+      selectedValues={(formData.attachments || []).map(String)}
+      onChange={(value) => {
+        const numericValues = value
+          .filter((v) => v !== "add_attachment")
+          .map((v) => Number(v))
+          .map((v) => String(v));
+        handleChange("attachments", numericValues);
+      }}
       options={attachmentOptions}
       className="enhanced-select"
     />
   </Box>
 );
 
-export default AttachmentSection; 
+export default AttachmentSection;
