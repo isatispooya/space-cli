@@ -9,7 +9,7 @@ export const MessageHeader = ({
   sender,
   formattedDate,
 }: MessageHeaderPropsType) => {
-  const showLetterhead =sender.letterhead !== false;
+  const showLetterhead = sender?.letterhead !== false;
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -60,7 +60,7 @@ export const MessageHeader = ({
               }}
             >
               <img
-                src={server + sender.sender_details?.company_detail?.logo}
+                src={server + sender?.sender_details?.company_detail?.logo}
                 alt="logo"
                 style={{
                   maxWidth: "100%",
@@ -77,7 +77,7 @@ export const MessageHeader = ({
                 fontWeight: "500",
               }}
             >
-              {sender.sender_details?.company_detail?.name}
+              {sender?.sender_details?.company_detail?.name}
             </Typography>
             </>
               )}
@@ -99,12 +99,12 @@ export const MessageHeader = ({
             >
               <Typography>تاریخ : {formattedDate.split(" ")[0]}</Typography>
               <Typography>
-                پیوست : {sender.attachments_details?.length || "ندارد"}
+                پیوست : {sender?.attachments_details?.length || "ندارد"}
               </Typography>
-              <Typography>شماره : {sender.number}</Typography>
+              <Typography>شماره : {sender?.number}</Typography>
               <Typography>
                 طبقه بندی :{" "}
-                {getValueLabel(sender.confidentiality_level, departmentOptions)}
+                {getValueLabel(sender?.confidentiality_level, departmentOptions)}
               </Typography>
             </Box>
           </Box>

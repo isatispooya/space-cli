@@ -3,17 +3,15 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { usePosition } from "@/Modules/positions/hooks";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import { useSentFormStore } from "../../store/sent/sent.store";
-
 import toast from "react-hot-toast";
-
 import { PositionType } from "@/Modules/positions/types";
 import {
   CorrespondenceAttachmentType,
   CorrespondenceAttachmentsType,
   APIFormDataType,
   ITranscriptResponseType,
-} from "../../types/sent/sent.type";
 
+} from "../../types/sent/sent.type";
 import {
   priorityOptions,
   departmentOptions,
@@ -21,35 +19,58 @@ import {
 } from "../../data/sent/sent.data";
 import { useReceive } from "../receive";
 
-// Define a type that matches the actual structure of the data returned from API
-interface ReceivedCorrespondenceType {
-  sender: Array<{
-    subject: string;
-    text: string;
-    description?: string;
-    is_internal: boolean;
-    postcript?: string;
-    seal?: boolean;
-    signature?: boolean;
-    letterhead?: boolean;
-    binding?: boolean;
-    confidentiality_level?: string;
-    priority?: string;
-    kind_of_correspondence?: string;
-    authority_type?: string;
-    authority_correspondence?: number | null;
-    published?: boolean;
-    sender_details?: {
-      id: number;
-    };
-    receiver_internal_details?: {
-      id: number;
-    };
-    receiver_external?: string;
-    receiver_external_details?: {
-      name: string;
-    };
+
+
+interface ReferenceDetailType {
+  id: number;
+  position: number;
+}
+
+interface TranscriptDetailType {
+  read_at: string | null;
+  transcript_for: string;
+  security: boolean;
+  position: number;
+  correspondence: number;
+  user_external?: string;
+}
+
+interface TranscriptDirectionsType {
+  [key: number]: string;
+}
+
+// Define comprehensive interface that covers all the properties used in the component
+interface ResponseDataType {
+  sender_details?: { id: number; user?: Record<string, unknown> };
+  receiver_internal_details?: { id: number };
+  receiver_external_details?: { name: string };
+  receiver_external?: string;
+  attachments_details?: Array<{
+    id: number;
+    name: string;
+    file: string;
+    size: number;
   }>;
+  attachments?: number[];
+  receiver?: number[];
+  reference_details?: ReferenceDetailType[];
+  reference?: number[];
+  transcript_details?: TranscriptDetailType[];
+  is_internal?: boolean;
+  subject?: string;
+  text?: string;
+  description?: string;
+  postcript?: string;
+  seal?: boolean;
+  signature?: boolean;
+  letterhead?: boolean;
+  binding?: boolean;
+  confidentiality_level?: string;
+  priority?: string;
+  kind_of_correspondence?: string;
+  authority_type?: string;
+  authority_correspondence?: number | null;
+  published?: boolean;
 }
 
 export const useSentFormLogic = (id: string | undefined) => {
@@ -66,6 +87,7 @@ export const useSentFormLogic = (id: string | undefined) => {
     setSelectedTranscript,
     setTranscriptDirection,
     setFormData,
+    setAttachmentOptions,
   } = useSentFormStore();
 
   const [useInternalReceiver, setUseInternalReceiver] = useState(
@@ -79,7 +101,10 @@ export const useSentFormLogic = (id: string | undefined) => {
       data: CorrespondenceAttachmentsType;
     };
 
-  const { data } = useReceive.useGetById(id || "") as { data?: ReceivedCorrespondenceType };
+  // Cast the response to our defined interface
+  const { data } = useReceive.useGetById(id || "") as {
+    data: ResponseDataType;
+  };
 
   const { mutate: updateCorrespondence } =
     useCorrespondenceAttachment.useUpdateCorrespondence();
@@ -108,6 +133,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       reference: [],
       transcript: [],
       published: false,
+      referenceData: [],
     });
     setUseInternalReceiver(true);
     toast.success("اطلاعات با موفقیت ثبت شد");
@@ -134,8 +160,8 @@ export const useSentFormLogic = (id: string | undefined) => {
     () =>
       (PositionAll as PositionType[])?.map((position) => ({
         label: `${position.user.first_name} ${position.user.last_name} | ${
-          position.name
-        }  | ${position.company_detail?.name || "بدون سمت"}`,
+          position.name || "بدون سمت"
+        } | ${position.company_detail?.name || "-"}`,
         value: position.id.toString(),
       })) || [],
     [PositionAll]
@@ -202,17 +228,86 @@ export const useSentFormLogic = (id: string | undefined) => {
   ]);
 
   useEffect(() => {
-    if (id && data?.sender && data.sender.length > 0) {
-      const senderItem = data.sender[0];
-      setFormData({
-        ...senderItem,
-        sender: senderItem.sender_details?.id ? Number(senderItem.sender_details.id) : undefined as unknown as number,
-        receiver_internal: senderItem.receiver_internal_details?.id ? Number(senderItem.receiver_internal_details.id) : undefined as unknown as number,
+    if (id && data) {
+      const attachmentIds =
+        data.attachments_details && data.attachments_details.length > 0
+          ? data.attachments_details.map((att) => att.id)
+          : data.attachments || [];
+
+      if (data.attachments_details && data.attachments_details.length > 0) {
+        const attachmentOptions = data.attachments_details.map((att) => ({
+          label: att.name,
+          value: att.id.toString(),
+        }));
+        setAttachmentOptions(attachmentOptions);
+      }
+
+      const transformedData = {
+        subject: data.subject || "",
+        text: data.text || "",
+        description: data.description || "",
+        attachments: attachmentIds,
+        receiver: Array.isArray(data.receiver) ? data.receiver : [],
+        sender: data.sender_details?.id || 0,
+        receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
-          senderItem.receiver_external_details?.name ||
-          senderItem.receiver_external || "",
-      });
-      setUseInternalReceiver(senderItem.is_internal);
+          data.receiver_external_details?.name || data.receiver_external || "",
+        is_internal: data.is_internal ?? true,
+        postcript: data.postcript || "",
+        seal: data.seal ?? false,
+        signature: data.signature ?? false,
+        letterhead: data.letterhead ?? false,
+        binding: data.binding ?? false,
+        confidentiality_level: data.confidentiality_level || "",
+        priority: data.priority || "",
+        kind_of_correspondence: data.kind_of_correspondence || "",
+        authority_type: data.authority_type || "new",
+        authority_correspondence: data.authority_correspondence || null,
+        reference: Array.isArray(data.reference_details)
+          ? data.reference_details.map((ref: ReferenceDetailType) => ref.id)
+          : Array.isArray(data.reference)
+          ? data.reference
+          : [],
+        transcript: Array.isArray(data.transcript_details)
+          ? data.transcript_details.map((t: TranscriptDetailType) => ({
+              read_at: t.read_at,
+              transcript_for: t.transcript_for || "notification",
+              security: t.security ?? false,
+              position: t.position,
+              correspondence: t.correspondence,
+              external_text: t.user_external || undefined,
+            }))
+          : [],
+        published: data.published ?? false,
+        referenceData: Array.isArray(data.transcript_details)
+          ? data.transcript_details.map((t: TranscriptDetailType) => ({
+              id: t.position,
+              enabled: !t.security,
+              transcript_for: t.transcript_for || "notification",
+              external_text: t.user_external,
+            }))
+          : [],
+      };
+
+      setFormData(transformedData);
+      setUseInternalReceiver(data.is_internal ?? true);
+
+      // Handle transcript directions
+      if (Array.isArray(data.transcript_details)) {
+        const directions = data.transcript_details.reduce(
+          (acc: TranscriptDirectionsType, t: TranscriptDetailType) => ({
+            ...acc,
+            [t.position]: t.transcript_for || "notification",
+          }),
+          {}
+        );
+
+        Object.entries(directions).forEach(([id, direction]) => {
+          if (typeof direction === "string") {
+            setTranscriptDirection(Number(id), direction);
+          }
+        });
+      }
     } else if (!id) {
       setFormData({
         subject: "",
@@ -237,10 +332,11 @@ export const useSentFormLogic = (id: string | undefined) => {
         reference: [],
         transcript: [],
         published: false,
+        referenceData: [],
       });
       setUseInternalReceiver(true);
     }
-  }, [setFormData, data, id]);
+  }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
 
   useEffect(() => {
     setUseInternalReceiver(formData.is_internal ?? true);
@@ -306,8 +402,8 @@ export const useSentFormLogic = (id: string | undefined) => {
       );
       return position
         ? `${position.user.first_name} ${position.user.last_name} | ${
-            position.user.uniqueIdentifier
-          } | ${position.name || "بدون سمت"} `
+            position.name || "بدون سمت"
+          } | ${position.company_detail?.name || "-"}`
         : "";
     },
     [PositionAll]

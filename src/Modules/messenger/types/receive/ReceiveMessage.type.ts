@@ -48,7 +48,6 @@ export interface CorrespondenceItemType {
 
 export interface ReferralReqType {
   reference: number;
-  position_id: string;
   correspondence: number;
-  order: string;
+  instruction_text: string;
 }

@@ -1,9 +1,11 @@
 import { CellComponent } from "tabulator-tables";
 import { ReceiveMessageType } from "../../types/receive/ReceiveMessage.type";
-import { createActionMenu } from "@/components/table/actionMenus";
-import { useNavigate } from "react-router-dom";
-import { departmentOptions, letterTypeOptions } from "../../data/sent/sent.data";
-
+import ActionMenu from "@/components/table/actionMenus";
+import {
+  departmentOptions,
+  letterTypeOptions,
+} from "../../data/sent/sent.data";
+import { createRoot } from "react-dom/client";
 
 interface ExtendedReceiveMessageType extends ReceiveMessageType {
   seen?: boolean;
@@ -16,11 +18,6 @@ interface CellFormatterParamsType {
 }
 
 const Columns = () => {
-  const navigate = useNavigate();
-  const handleView = (row: ExtendedReceiveMessageType) => {
-    navigate(`/letter/receive-message/${row.id}`);
-  };
-
   const editorValues: Record<string, string> = {};
   letterTypeOptions.forEach((option) => {
     editorValues[option.value] = option.label;
@@ -30,6 +27,52 @@ const Columns = () => {
   departmentOptions.forEach((option) => {
     departmentValues[option.value] = option.label;
   });
+
+  const handleCellClick = (e: UIEvent, cell: CellComponent) => {
+    e.stopPropagation();
+    if ((e.target as HTMLElement).classList.contains("action-btn")) {
+      const existingMenu = document.querySelector(".popup-menu");
+      if (existingMenu) {
+        existingMenu.remove();
+        return;
+      }
+
+      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const rowData = cell.getRow().getData();
+
+      const menuItems = [
+        {
+          label: "نمایش",
+          icon: "👀",
+          onClick: () =>
+            (window.location.href = `/letter/receive-message/${rowData.id}`),
+        },
+        {
+          label: "ارجاع",
+          icon: "🔄",
+          onClick: () =>
+            (window.location.href = `/letter/receive-refferal/${rowData.id}`),
+        },
+      ];
+
+      const menuPosition = { x: rect.left, y: rect.bottom };
+      const menuContainer = document.createElement("div");
+      menuContainer.className = "popup-menu";
+      document.body.appendChild(menuContainer);
+
+      const root = createRoot(menuContainer);
+      root.render(
+        <ActionMenu
+          items={menuItems}
+          position={menuPosition}
+          onClose={() => {
+            root.unmount();
+            menuContainer.remove();
+          }}
+        />
+      );
+    }
+  };
 
   return [
     {
@@ -65,12 +108,7 @@ const Columns = () => {
       headerFilter: true,
       hozAlign: "center",
     },
-    {
-      title: "تاریخ ارسال",
-      field: "send_date",
-      headerFilter: true,
-      hozAlign: "center",
-    },
+
     {
       title: "نوع نامه",
       field: "kind_of_correspondence",
@@ -109,40 +147,21 @@ const Columns = () => {
         return option ? option.label : value;
       },
     },
+    {
+      title: "تاریخ ارسال",
+      field: "send_date",
+      hozAlign: "center",
+    },
 
     {
+      field: "عملیات",
       title: "عملیات",
-      formatter: () => {
-        return '<button class="action-btn">⋮</button>';
-      },
-      hozAlign: "center",
       headerSort: false,
-      width: 60,
-      cellClick: function (e: Event, cell: CellComponent) {
-        e.stopPropagation();
-        const rowData = cell.getRow().getData() as ExtendedReceiveMessageType;
-        const element = cell.getElement();
-        const rect = element.getBoundingClientRect();
-
-        createActionMenu({
-          items: [
-            {
-              label: "نمایش",
-              icon: "👀",
-              onClick: () => handleView(rowData),
-            },
-            {
-              label : "ارجاع",
-              icon : "🔄",
-              onClick : () => navigate(`/letter/receive-refferal/${rowData.id}`),
-            }
-          ],
-          position: {
-            x: rect.left + window.scrollX,
-            y: rect.bottom + window.scrollY,
-          },
-        });
-      },
+      headerFilter: undefined,
+      hozAlign: "center" as const,
+      headerHozAlign: "center" as const,
+      formatter: () => `<button class="action-btn">⋮</button>`,
+      cellClick: handleCellClick,
     },
   ];
 };

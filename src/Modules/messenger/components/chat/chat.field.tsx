@@ -68,7 +68,6 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
     fileInputRef.current?.click();
   };
 
-  // ارسال پیام با فایل
   const sendMessageWithAttachment = (messageText: string) => {
     const formData = new FormData();
 
@@ -92,8 +91,7 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
     scrollToBottom();
 
     uploadAttachment(formData, {
-      onSuccess: (data: FormData) => {
-        const response = data as unknown as AttachmentResponseType;
+      onSuccess: (response: { id: number }) => {
         if (response && response.id) {
           const messageData = MessagingService.createMessageData(
             messageText,

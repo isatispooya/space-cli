@@ -1,7 +1,8 @@
-import { createActionMenu } from "@/components/table/actionMenus";
+import ActionMenu from "@/components/table/actionMenus";
 import { CellComponent } from "tabulator-tables";
 import { SentMessageType } from "../../types/sent/sent.type";
 import { letterTypeOptions, departmentOptions } from "./sent.data";
+import { createRoot } from "react-dom/client";
 
 interface ColumnPropsType {
   handleEdit: (id: number) => void;
@@ -9,6 +10,49 @@ interface ColumnPropsType {
 }
 
 const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
+  const handleCellClick = (e: UIEvent, cell: CellComponent) => {
+    e.stopPropagation();
+    if ((e.target as HTMLElement).classList.contains("action-btn")) {
+      const existingMenu = document.querySelector(".popup-menu");
+      if (existingMenu) {
+        existingMenu.remove();
+        return;
+      }
+
+      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const rowData = cell.getRow().getData();
+
+      const menuItems = [
+        {
+          label: "ویرایش",
+          icon: "⚡",
+          onClick: () => handleEdit(rowData.id),
+        },
+        {
+          label: "نمایش",
+          icon: "👀",
+          onClick: () => handleView(rowData as SentMessageType),
+        },
+      ];
+
+      const menuPosition = { x: rect.left, y: rect.bottom };
+      const menuContainer = document.createElement("div");
+      menuContainer.className = "popup-menu";
+      document.body.appendChild(menuContainer);
+
+      const root = createRoot(menuContainer);
+      root.render(
+        <ActionMenu
+          items={menuItems}
+          position={menuPosition}
+          onClose={() => {
+            root.unmount();
+            menuContainer.remove();
+          }}
+        />
+      );
+    }
+  };
   return [
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
     {
@@ -30,12 +74,7 @@ const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
       headerFilter: true,
       hozAlign: "center",
     },
-    {
-      title: "تاریخ ارسال",
-      field: "send_date",
-      headerFilter: true,
-      hozAlign: "center",
-    },
+
     {
       title: "نوع نامه",
       field: "kind_of_correspondence",
@@ -76,39 +115,55 @@ const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
       },
     },
     {
-      title: "عملیات",
-      formatter: () => {
-        return '<button class="action-btn">⋮</button>';
-      },
+      title: "تاریخ ارسال",
+      field: "send_date",
       hozAlign: "center",
-      headerSort: false,
-      width: 60,
-      cellClick: function (e: Event, cell: CellComponent) {
-        e.stopPropagation();
-        const rowData = cell.getRow().getData();
-        const element = cell.getElement();
-        const rect = element.getBoundingClientRect();
-
-        createActionMenu({
-          items: [
-            {
-              label: "ویرایش",
-              icon: "⚡",
-              onClick: () => handleEdit(rowData.id),
-            },
-            {
-              label: "نمایش",
-              icon: "👀",
-              onClick: () => handleView(rowData as SentMessageType),
-            },
-          ],
-          position: {
-            x: rect.left + window.scrollX,
-            y: rect.bottom + window.scrollY,
-          },
-        });
-      },
     },
+
+    {
+      field: "عملیات",
+      title: "عملیات",
+      headerSort: false,
+      headerFilter: undefined,
+      hozAlign: "center" as const,
+      headerHozAlign: "center" as const,
+      formatter: () => `<button class="action-btn">⋮</button>`,
+      cellClick: handleCellClick,
+    },
+    // {
+    //   title: "عملیات",
+    //   formatter: () => {
+    //     return '<button class="action-btn">⋮</button>';
+    //   },
+    //   hozAlign: "center",
+    //   headerSort: false,
+    //   width: 60,
+    //   cellClick: function (e: Event, cell: CellComponent) {
+    //     e.stopPropagation();
+    //     const rowData = cell.getRow().getData();
+    //     const element = cell.getElement();
+    //     const rect = element.getBoundingClientRect();
+
+    //     createActionMenu({
+    //       items: [
+    //         {
+    //           label: "ویرایش",
+    //           icon: "⚡",
+    //           onClick: () => handleEdit(rowData.id),
+    //         },
+    //         {
+    //           label: "نمایش",
+    //           icon: "👀",
+    //           onClick: () => handleView(rowData as SentMessageType),
+    //         },
+    //       ],
+    //       position: {
+    //         x: rect.left + window.scrollX,
+    //         y: rect.bottom + window.scrollY,
+    //       },
+    //     });
+    //   },
+    // },
   ];
 };
 

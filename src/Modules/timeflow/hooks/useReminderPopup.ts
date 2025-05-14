@@ -14,6 +14,7 @@ const useReminderPopup = () => {
           const logDate = new Date(log.time_user).toISOString().split('T')[0];
           return logDate === today && log.type === "login";
         });
+        
         const hasPendingSubordinates = userLogin.other_logs.some(log => 
           log.status_parent === "pending"
         );

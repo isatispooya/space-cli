@@ -1,41 +1,28 @@
-import { Forms } from "@/components";
+import { Forms, Toast } from "@/components";
 import { FormFieldType } from "@/types";
 import * as Yup from "yup";
 import { ReferralReqType } from "../../types/receive/ReceiveMessage.type";
 import { useReceive } from "../../hooks/receive";
 import { usePosition } from "@/Modules/positions";
 import { useParams } from "react-router-dom";
+import { Check, X } from "lucide-react";
 
 const ReferralForm = () => {
   const { id } = useParams();
-  const handleSubmit = async (values: ReferralReqType) => {
-    console.log(values);
-  };
+
+  const { mutate: postRefferal } = useReceive.usePostRefferal();
   const { data: positions } = usePosition.useGetAll();
 
-  const { data: receive } = useReceive.useGetById(id || "");
-
-  console.log(receive);
-
-  console.log(positions);
-
   const validationSchema = Yup.object().shape({
-    reference: Yup.number().required("Reference is required"),
-    position_id: Yup.string().required("Position is required"),
-    correspondence: Yup.number().required("Correspondence is required"),
-    order: Yup.string().required("Order is required"),
+    reference: Yup.number().required("ارجاع الزامی است"),
+    correspondence: Yup.number().required("نامه الزامی است"),
+    instruction_text: Yup.string().required("متن ارجاع الزامی است"),
   });
 
-  console.log(id);
   const formFields: FormFieldType[] = [
     {
       name: "reference",
-      label: "Reference",
-      type: "text",
-    },
-    {
-      name: "position_id",
-      label: "سمت",
+      label: "ارجاع به",
       type: "select",
       options: positions?.map((position) => ({
         label:
@@ -48,14 +35,7 @@ const ReferralForm = () => {
       })),
     },
     {
-      name: "correspondence",
-      label: "نامه مرجع",
-      type: "text",
-      value: id,
-      disabled: true,
-    },
-    {
-      name: "order",
+      name: "instruction_text",
       label: "متن ارجاع",
       type: "text",
     },
@@ -63,9 +43,27 @@ const ReferralForm = () => {
 
   const initialValues: ReferralReqType = {
     reference: 0,
-    position_id: "",
-    correspondence: 0,
-    order: "",
+    correspondence: Number(id) || 0,
+    instruction_text: "",
+  };
+
+  const handleSubmit = async (values: ReferralReqType) => {
+    postRefferal(values, {
+      onSuccess: () => {
+        Toast(
+          "ارجاع با موفقیت انجام شد",
+          <Check className="text-green-500" />,
+          "bg-green-500"
+        );
+      },
+      onError: () => {
+        Toast(
+          "ارجاع با مشکل مواجه شد",
+          <X className="text-red-500" />,
+          "bg-red-500"
+        );
+      },
+    });
   };
 
   return (
