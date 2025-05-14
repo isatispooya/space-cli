@@ -39,7 +39,32 @@ interface TranscriptPropsType {
   setTranscriptDirection: (id: number, value: string) => void;
   data?: {
     sender?: {
-      reference_details: ReferenceDetailType[];
+      reference_details?: ReferenceDetailType[];
+      subject?: string;
+      text?: string;
+      description?: string;
+      is_internal?: boolean;
+      postcript?: string;
+      seal?: boolean;
+      signature?: boolean;
+      letterhead?: boolean;
+      binding?: boolean;
+      confidentiality_level?: string;
+      priority?: string;
+      kind_of_correspondence?: string;
+      authority_type?: string;
+      authority_correspondence?: number | null;
+      published?: boolean;
+      sender_details?: {
+        id: number;
+      };
+      receiver_internal_details?: {
+        id: number;
+      };
+      receiver_external?: string;
+      receiver_external_details?: {
+        name: string;
+      };
     };
   };
   is_internal?: boolean;

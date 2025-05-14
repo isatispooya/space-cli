@@ -21,6 +21,37 @@ import {
 } from "../../data/sent/sent.data";
 import { useReceive } from "../receive";
 
+// Define a type that matches the actual structure of the data returned from API
+interface ReceivedCorrespondenceType {
+  sender: Array<{
+    subject: string;
+    text: string;
+    description?: string;
+    is_internal: boolean;
+    postcript?: string;
+    seal?: boolean;
+    signature?: boolean;
+    letterhead?: boolean;
+    binding?: boolean;
+    confidentiality_level?: string;
+    priority?: string;
+    kind_of_correspondence?: string;
+    authority_type?: string;
+    authority_correspondence?: number | null;
+    published?: boolean;
+    sender_details?: {
+      id: number;
+    };
+    receiver_internal_details?: {
+      id: number;
+    };
+    receiver_external?: string;
+    receiver_external_details?: {
+      name: string;
+    };
+  }>;
+}
+
 export const useSentFormLogic = (id: string | undefined) => {
   const {
     formData,
@@ -48,7 +79,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       data: CorrespondenceAttachmentsType;
     };
 
-  const { data } = useReceive.useGetById(id || "");
+  const { data } = useReceive.useGetById(id || "") as { data?: ReceivedCorrespondenceType };
 
   const { mutate: updateCorrespondence } =
     useCorrespondenceAttachment.useUpdateCorrespondence();
