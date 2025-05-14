@@ -2,7 +2,6 @@ import "moment/locale/fa";
 import { LoaderLg, TabulatorTable } from "../../../../components";
 import { useMemo, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import { chatService } from "../../services";
 import {

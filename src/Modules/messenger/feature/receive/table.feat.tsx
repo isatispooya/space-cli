@@ -47,26 +47,18 @@ export const ReceiveTable = () => {
 
   const formatDate = useCallback((dateString: string) => {
     const date = new Date(dateString);
-    const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(
-      date
-    );
-    const month = new Intl.DateTimeFormat("fa", { month: "2-digit" }).format(
-      date
-    );
+    const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(date);
+    const month = new Intl.DateTimeFormat("fa", { month: "2-digit" }).format(date);
     const day = new Intl.DateTimeFormat("fa", { day: "2-digit" }).format(date);
     return `${year}/${month}/${day}`;
   }, []);
 
   const formatConfidentialityLevel = useCallback((level?: string) => {
     switch (level) {
-      case "confidential":
-        return "محرمانه";
-      case "secret":
-        return "سری";
-      case "top_secret":
-        return "فوق سری";
-      default:
-        return "عادی";
+      case "confidential": return "محرمانه";
+      case "secret": return "سری";
+      case "top_secret": return "فوق سری";
+      default: return "عادی";
     }
   }, []);
 

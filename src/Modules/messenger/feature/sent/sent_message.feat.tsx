@@ -1,4 +1,11 @@
-import { Box, Paper, Button, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Button,
+  CircularProgress,
+  Switch,
+  FormControlLabel,
+} from "@mui/material";
 import { useParams } from "react-router-dom";
 import { usePosition } from "@/Modules/positions/hooks";
 import moment from "moment-jalaali";
@@ -10,15 +17,88 @@ import { MessageAttachments } from "../../components/sent/SentMessage/Attachment
 import {
   MatchedUserType,
   TranscriptDetailsType,
+  CorrespondenceAttachmentType,
 } from "../../types/sent/sent.type";
 import { LoadingMessage } from "../../components/LoadingMessage";
 import PrintIcon from "@mui/icons-material/Print";
 import { useReceive } from "../../hooks/receive";
+import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
+import { useState, useEffect } from "react";
+
 const SentDetail = () => {
   const { id } = useParams();
   const { data, isLoading } = useReceive.useGetById(id || "");
   const { data: allposition, isLoading: isLoadingPositions } =
     usePosition.useGetAll();
+
+  const [published, setPublished] = useState(false);
+
+  // Update published state when data is loaded
+  useEffect(() => {
+    if (data?.sender) {
+      setPublished(data.sender.published || false);
+    }
+  }, [data]);
+
+  const { mutate: updateCorrespondence } =
+    useCorrespondenceAttachment.useUpdateCorrespondence();
+
+  const handlePublishedChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newPublishedState = event.target.checked;
+    setPublished(newPublishedState);
+
+    if (id && data?.sender) {
+      const senderId = data.sender.sender_details?.id || 0;
+      const receiverId = data.sender.receiver_internal_details?.id || null;
+
+      // Make sure the receiver and sender aren't the same
+      const finalReceiverId = senderId === receiverId ? null : receiverId;
+
+      const updateData = {
+        id: parseInt(id),
+        subject: data.sender.subject || "",
+        text: data.sender.text || "",
+        description: data.sender.description || "",
+        attachments:
+          data.sender.attachments_details?.map(
+            (att: CorrespondenceAttachmentType) => att.id
+          ) || [],
+        receiver: [],
+        sender: senderId,
+        receiver_internal: finalReceiverId,
+        receiver_external: finalReceiverId
+          ? ""
+          : data.sender.receiver_external || "External Receiver",
+        is_internal: finalReceiverId ? true : false,
+        postcript: data.sender.postcript || "",
+        seal: data.sender.seal || false,
+        signature: data.sender.signature || false,
+        letterhead: data.sender.letterhead || false,
+        binding: data.sender.binding || false,
+        confidentiality_level: data.sender.confidentiality_level || "",
+        priority: data.sender.priority || "",
+        kind_of_correspondence: data.sender.kind_of_correspondence || "",
+        authority_type: "new",
+        authority_correspondence: null,
+        reference: [],
+        transcript:
+          data.sender.transcript_details?.map(
+            (item: TranscriptDetailsType) => ({
+              position: item.position,
+              transcript_for: item.transcript_for || "notification",
+              security: item.security || false,
+              correspondence: null,
+              read_at: item.read_at || new Date().toISOString(),
+            })
+          ) || [],
+        published: newPublishedState,
+      };
+
+      updateCorrespondence(updateData);
+    }
+  };
 
   const handlePrint = () => {
     const printContent = document.getElementById("print-content");
@@ -122,9 +202,21 @@ const SentDetail = () => {
             variant="contained"
             startIcon={<PrintIcon />}
             onClick={handlePrint}
+            sx={{ mx: 1 }}
           >
             چاپ پیام
           </Button>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={published}
+                onChange={handlePublishedChange}
+                color="primary"
+              />
+            }
+            label="انتشار"
+            labelPlacement="start"
+          />
         </Box>
         <div id="print-content">
           <Box
@@ -144,10 +236,7 @@ const SentDetail = () => {
               },
             }}
           >
-              <MessageHeader
-                sender={data.sender}
-                formattedDate={formattedDate}
-              />
+            <MessageHeader sender={data.sender} formattedDate={formattedDate} />
             <Box
               sx={{
                 flex: 1,

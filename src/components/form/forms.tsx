@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Formik, Form, Field, FieldProps, FormikValues } from "formik";
 import { motion } from "framer-motion";
@@ -342,7 +341,10 @@ const Forms = <T extends FormikValues>({
                   </Field>
                 ) : field.type === "radio" ? (
                   <Field name={field.name}>
-                    {({ field: fieldProps, form: { setFieldValue } }: FieldProps) => (
+                    {({
+                      field: fieldProps,
+                      form: { setFieldValue },
+                    }: FieldProps) => (
                       <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-700">
                           {field.label}
