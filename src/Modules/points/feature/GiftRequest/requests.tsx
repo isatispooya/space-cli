@@ -8,12 +8,10 @@ import toast, { ErrorIcon } from "react-hot-toast";
 import { Toast } from "../../../../components";
 import { useUserPermissions } from "../../../permissions";
 import { formatNumber } from "../../../../utils";
-import { useProfile } from "@/Modules/userManagment/hooks";
 
 const Request = () => {
   const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
-  const { data: user } = useProfile();
   const { checkPermission } = useUserPermissions();
   const isAdmin = checkPermission(["change_giftuser"]);
   

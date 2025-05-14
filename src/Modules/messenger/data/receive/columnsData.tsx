@@ -1,6 +1,6 @@
 import { CellComponent } from "tabulator-tables";
 import { ReceiveMessageType } from "../../types/receive/ReceiveMessage.type";
-import ActionMenu, { createActionMenu } from "@/components/table/actionMenus";
+import ActionMenu from "@/components/table/actionMenus";
 import {
   departmentOptions,
   letterTypeOptions,
@@ -163,43 +163,6 @@ const Columns = () => {
       formatter: () => `<button class="action-btn">⋮</button>`,
       cellClick: handleCellClick,
     },
-
-    // {
-    //   title: "عملیات",
-    //   formatter: () => {
-    //     return '<button class="action-btn">⋮</button>';
-    //   },
-    //   hozAlign: "center",
-    //   headerSort: false,
-    //   width: 60,
-    //   cellClick: function (e: Event, cell: CellComponent) {
-    //     e.stopPropagation();
-    //     const rowData = cell.getRow().getData() as ExtendedReceiveMessageType;
-    //     const element = cell.getElement();
-    //     const rect = element.getBoundingClientRect();
-
-    //     createActionMenu({
-    //       items: [
-    //         {
-    //           label: "نمایش",
-    //           icon: "👀",
-    //           onClick: () =>
-    //             (window.location.href = `/letter/receive-message/${rowData.id}`),
-    //         },
-    //         {
-    //           label: "ارجاع",
-    //           icon: "🔄",
-    //           onClick: () =>
-    //             (window.location.href = `/letter/receive-refferal/${rowData.id}`),
-    //         },
-    //       ],
-    //       position: {
-    //         x: rect.left + window.scrollX,
-    //         y: rect.bottom + window.scrollY,
-    //       },
-    //     });
-    //   },
-    // },
   ];
 };
 

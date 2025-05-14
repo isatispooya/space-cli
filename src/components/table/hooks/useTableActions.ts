@@ -1,18 +1,22 @@
-
 import { CellComponent } from "tabulator-tables";
 import { MenuItemType, createActionMenu } from "../actionMenus";
 
+interface RowDataType {
+  id?: number | string;
+  [key: string]: unknown;
+}
+
 interface UseTableActionsPropsType {
-  getItems: (rowData: any) => MenuItemType[];
+  getItems: (rowData: RowDataType) => MenuItemType[];
 }
 
 export const useTableActions = ({ getItems }: UseTableActionsPropsType) => {
-  const handleCellClick = (e: any, cell: CellComponent) => {
+  const handleCellClick = (e: MouseEvent, cell: CellComponent) => {
     e.stopPropagation();
 
-    if (e.target.classList.contains("action-btn")) {
+    if ((e.target as HTMLElement).classList.contains("action-btn")) {
       const rowData = cell.getRow().getData();
-      const rect = e.target.getBoundingClientRect();
+      const rect = (e.target as HTMLElement).getBoundingClientRect();
 
       createActionMenu({
         items: getItems(rowData),
@@ -25,7 +29,7 @@ export const useTableActions = ({ getItems }: UseTableActionsPropsType) => {
     title: "عملیات",
     field: "actions",
     headerSort: false,
-    headerFilter: false as any,
+    headerFilter: false,
     width: 100,
     hozAlign: "center" as const,
     headerHozAlign: "center" as const,

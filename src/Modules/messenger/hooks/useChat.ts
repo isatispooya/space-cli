@@ -16,7 +16,9 @@ const useChat = {
       refetchInterval: 10000,
     });
   },
-  useSearchChat: (query: string): UseQueryResult<ChatType["MessagesType"][]> => {
+  useSearchChat: (
+    query: string
+  ): UseQueryResult<ChatType["MessagesType"][]> => {
     return useQuery({
       queryKey: ["chat", "search", query],
       queryFn: () => chatService.search(query),
@@ -46,7 +48,7 @@ const useChat = {
     });
   },
   useAttachment: (): UseMutationResult<
-    FormData,
+    { id: number },
     AxiosError,
     FormData
   > => {
