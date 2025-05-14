@@ -16,11 +16,7 @@ import MessageContent from "./MessageContent";
 import EmptyState from "./EmptyState";
 import { MessagingService } from "./MessagingService";
 
-interface AttachmentResponseType {
-  id: number | string;
-  message?: string;
-  status?: number;
-}
+
 
 const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   onSubmit,
