@@ -30,12 +30,7 @@ const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
       headerFilter: true,
       hozAlign: "center",
     },
-    {
-      title: "تاریخ ارسال",
-      field: "send_date",
-      headerFilter: true,
-      hozAlign: "center",
-    },
+
     {
       title: "نوع نامه",
       field: "kind_of_correspondence",
@@ -74,6 +69,11 @@ const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
         const option = departmentOptions.find((opt) => opt.value === value);
         return option ? option.label : value;
       },
+    },
+    {
+      title: "تاریخ ارسال",
+      field: "send_date",
+      hozAlign: "center",
     },
     {
       title: "عملیات",

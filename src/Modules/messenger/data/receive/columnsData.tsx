@@ -2,8 +2,10 @@ import { CellComponent } from "tabulator-tables";
 import { ReceiveMessageType } from "../../types/receive/ReceiveMessage.type";
 import { createActionMenu } from "@/components/table/actionMenus";
 import { useNavigate } from "react-router-dom";
-import { departmentOptions, letterTypeOptions } from "../../data/sent/sent.data";
-
+import {
+  departmentOptions,
+  letterTypeOptions,
+} from "../../data/sent/sent.data";
 
 interface ExtendedReceiveMessageType extends ReceiveMessageType {
   seen?: boolean;
@@ -65,12 +67,7 @@ const Columns = () => {
       headerFilter: true,
       hozAlign: "center",
     },
-    {
-      title: "تاریخ ارسال",
-      field: "send_date",
-      headerFilter: true,
-      hozAlign: "center",
-    },
+
     {
       title: "نوع نامه",
       field: "kind_of_correspondence",
@@ -109,6 +106,11 @@ const Columns = () => {
         return option ? option.label : value;
       },
     },
+    {
+      title: "تاریخ ارسال",
+      field: "send_date",
+      hozAlign: "center",
+    },
 
     {
       title: "عملیات",
@@ -132,10 +134,10 @@ const Columns = () => {
               onClick: () => handleView(rowData),
             },
             {
-              label : "ارجاع",
-              icon : "🔄",
-              onClick : () => navigate(`/letter/receive-refferal/${rowData.id}`),
-            }
+              label: "ارجاع",
+              icon: "🔄",
+              onClick: () => navigate(`/letter/receive-refferal/${rowData.id}`),
+            },
           ],
           position: {
             x: rect.left + window.scrollX,
