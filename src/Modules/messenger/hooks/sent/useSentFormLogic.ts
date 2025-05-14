@@ -129,8 +129,10 @@ export const useSentFormLogic = (id: string | undefined) => {
   const internalUserOptions = useMemo(
     () =>
       (PositionAll as PositionType[])?.map((position) => ({
-        label: `${position.user.first_name} ${position.user.last_name}`,
-        value: `${position.user.first_name} ${position.user.last_name}`,
+        label: `${position.user.first_name} ${position.user.last_name} | ${
+          position.name || "بدون سمت"
+        } | ${position.company_detail?.name || "-"}`,
+        value: position.id.toString(),
       })) || [],
     [PositionAll]
   );
@@ -219,7 +221,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         attachments: attachmentIds,
         receiver: Array.isArray(data.receiver) ? data.receiver : [],
         sender: data.sender_details?.id || 0,
-        receiver_internal: data.receiver_internal_details?.id || 0,
+        receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
           data.receiver_external_details?.name || data.receiver_external || "",
         is_internal: data.is_internal ?? true,

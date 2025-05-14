@@ -16,7 +16,11 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
       <>
         <SelectInput
           label="ارسال کننده"
-          value={formData.sender?.toString() || ""}
+          value={
+            (
+              formData.sender || formData.sender_details?.user?.id
+            )?.toString() || ""
+          }
           onChange={(value) => handleChange("sender", value)}
           options={senderUserOptions}
           className="enhanced-select"
@@ -24,7 +28,12 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
 
         <SelectInput
           label="گیرنده داخلی"
-          value={formData.receiver_internal?.toString() || ""}
+          value={
+            (
+              formData.receiver_internal ||
+              formData.receiver_internal_details?.id
+            )?.toString() || ""
+          }
           onChange={(value) => handleChange("receiver_internal", value)}
           options={internalUserOptions}
           className="enhanced-select"
@@ -34,7 +43,11 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
       <>
         <SelectInput
           label="ارسال کننده"
-          value={formData.sender?.toString() || ""}
+          value={
+            (
+              formData.sender || formData.sender_details?.user?.id
+            )?.toString() || ""
+          }
           onChange={(value) => handleChange("sender", value)}
           options={senderUserOptionsOut}
           className="enhanced-select"
