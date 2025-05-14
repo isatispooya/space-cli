@@ -1,4 +1,4 @@
-import ActionMenu, { createActionMenu } from "@/components/table/actionMenus";
+import ActionMenu from "@/components/table/actionMenus";
 import { CellComponent } from "tabulator-tables";
 import { SentMessageType } from "../../types/sent/sent.type";
 import { letterTypeOptions, departmentOptions } from "./sent.data";
