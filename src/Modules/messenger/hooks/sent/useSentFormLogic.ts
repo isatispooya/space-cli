@@ -5,12 +5,65 @@ import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttac
 import { useSentFormStore } from "../../store/sent/sent.store";
 import toast from "react-hot-toast";
 import { PositionType } from "@/Modules/positions/types";
-import {
-  CorrespondenceAttachmentType,
-  CorrespondenceAttachmentsType,
-  APIFormDataType,
-  ITranscriptResponseType,
-} from "../../types/sent/sent.type";
+
+// تعریف نوع‌های مورد نیاز که از فایل external وارد شده‌اند
+interface CorrespondenceAttachmentType {
+  id: number;
+  name: string;
+  user: {
+    first_name: string;
+    last_name: string;
+  };
+}
+
+type CorrespondenceAttachmentsType = CorrespondenceAttachmentType[];
+
+interface ReferenceItemType {
+  id: number;
+  enabled?: boolean;
+  external_text?: string;
+  transcript_for?: string;
+}
+
+interface APIFormDataType {
+  subject?: string;
+  text?: string;
+  description?: string;
+  attachments: number[];
+  receiver?: number[];
+  sender?: number;
+  receiver_internal?: number | null;
+  receiver_external?: string;
+  is_internal?: boolean;
+  postcript?: string;
+  seal?: boolean;
+  signature?: boolean;
+  letterhead?: boolean;
+  binding?: boolean;
+  confidentiality_level?: string;
+  priority?: string;
+  kind_of_correspondence?: string;
+  authority_type?: string;
+  authority_correspondence?: number | null;
+  reference?: number[];
+  transcript?: unknown[];
+  published?: boolean;
+  id?: number;
+}
+
+interface ITranscriptResponseType {
+  id?: number;
+  read_at: string | null;
+  transcript_for: string;
+  security: boolean;
+  position: number;
+  correspondence: number;
+  created_at?: string;
+  updated_at?: string;
+  external_text?: string;
+}
+
+// واردسازی داده‌های مورد نیاز
 import {
   priorityOptions,
   departmentOptions,
@@ -43,6 +96,33 @@ interface TranscriptDirectionsType {
   [key: number]: string;
 }
 
+// تعریف نوع استور فرم
+interface FormDataType {
+  subject?: string;
+  text?: string;
+  description?: string;
+  attachments: number[];
+  receiver: number[];
+  sender?: number;
+  receiver_internal?: number | null;
+  receiver_external?: string;
+  is_internal?: boolean;
+  postcript?: string;
+  seal?: boolean;
+  signature?: boolean;
+  letterhead?: boolean;
+  binding?: boolean;
+  confidentiality_level?: string;
+  priority?: string;
+  kind_of_correspondence?: string;
+  authority_type?: string;
+  authority_correspondence?: number | null;
+  reference?: number[];
+  transcript?: unknown[];
+  published?: boolean;
+  referenceData?: ReferenceItemType[];
+}
+
 export const useSentFormLogic = (id: string | undefined) => {
   const {
     formData,
@@ -58,7 +138,21 @@ export const useSentFormLogic = (id: string | undefined) => {
     setTranscriptDirection,
     setFormData,
     setAttachmentOptions,
-  } = useSentFormStore();
+  } = useSentFormStore() as unknown as {
+    formData: FormDataType;
+    openFileDialog: boolean;
+    selectedTranscript: number | null;
+    transcriptDirections: Record<number, string>;
+    handleChange: (name: string, value: unknown) => void;
+    handleAttachmentAdd: (attachment: { id: number; name: string }) => void;
+    handleAddTranscript: (id: number) => void;
+    handleTranscriptToggle: (id: number) => void;
+    setOpenFileDialog: (open: boolean) => void;
+    setSelectedTranscript: (transcript: string[] | number[] | []) => void;
+    setTranscriptDirection: (id: number, direction: string) => void;
+    setFormData: (data: FormDataType) => void;
+    setAttachmentOptions: (options: { label: string; value: string }[]) => void;
+  };
 
   const [useInternalReceiver, setUseInternalReceiver] = useState(
     formData.is_internal ?? true
@@ -160,10 +254,10 @@ export const useSentFormLogic = (id: string | undefined) => {
   >;
 
   const transcriptItems = useMemo<ITranscriptResponseType[]>(() => {
-    return (formData.reference || []).map((ref) => {
+    return (formData.reference || []).map((ref: number) => {
       const refNum = Number(ref);
       const referenceItem = formData.referenceData?.find(
-        (item) => item.id === refNum
+        (item: ReferenceItemType) => item.id === refNum
       );
       const isVisible = referenceItem?.enabled !== false;
 
@@ -319,10 +413,10 @@ export const useSentFormLogic = (id: string | undefined) => {
     const { ...restFormData } = formData;
 
     const apiTranscripts =
-      formData.reference?.map((ref) => {
+      formData.reference?.map((ref: number) => {
         const refNum = Number(ref);
         const referenceItem = formData.referenceData?.find(
-          (item) => item.id === refNum
+          (item: ReferenceItemType) => item.id === refNum
         );
         const isVisible = referenceItem?.enabled !== false;
 

@@ -15,18 +15,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { SelectInput } from "../../../../components/common/inputs";
-import internalOptions from "../../data/sent/transcript.data";
-import { ITranscriptResponseType } from "../../types/sent/sent.type";
-
-interface TranscriptListItemPropsType {
-  item: ITranscriptResponseType;
-  getTranscriptName: (id: number) => string;
-  transcriptDirections: { [id: number]: string };
-  handleDirectionChange: (id: number, value: string) => void;
-  handleTranscriptToggle: (id: number, newValue?: boolean) => void;
-  internalOptions: typeof internalOptions;
-  handleExternalTextUpdate?: (id: number, text: string | string[]) => void;
-}
+import { TranscriptListItemPropsType } from "../../types/sent/transcript.type";
 
 const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
   ({
@@ -39,7 +28,7 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     handleExternalTextUpdate,
   }) => {
     const [visibility, setVisibility] = useState(!item.security);
-    const isExternalTranscript = item.id < 0 || item.external_text;
+    const isExternalTranscript = (item.id !== undefined && item.id < 0) || !!item.external_text;
     const [externalTexts, setExternalTexts] = useState<string[]>(
       isExternalTranscript && item.external_text
         ? Array.isArray(item.external_text)
@@ -67,14 +56,16 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     ) => {
       const value = event.target.value === "true";
       setVisibility(value);
-      handleTranscriptToggle(item.id, !value);
+      if (item.id !== undefined) {
+        handleTranscriptToggle(item.id);
+      }
     };
 
     const handleExternalTextChange = (index: number, value: string) => {
       const newTexts = [...externalTexts];
       newTexts[index] = value;
       setExternalTexts(newTexts);
-      if (handleExternalTextUpdate) {
+      if (handleExternalTextUpdate && item.id !== undefined) {
         handleExternalTextUpdate(item.id, newTexts);
       }
     };
@@ -87,7 +78,7 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
       if (externalTexts.length > 1) {
         const newTexts = externalTexts.filter((_, i) => i !== index);
         setExternalTexts(newTexts);
-        if (handleExternalTextUpdate) {
+        if (handleExternalTextUpdate && item.id !== undefined) {
           handleExternalTextUpdate(item.id, newTexts);
         }
       }
@@ -165,7 +156,7 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
               <Typography
                 sx={{ fontWeight: 500, color: "#1e293b", fontSize: "0.9rem" }}
               >
-                {getTranscriptName(item.position)}
+                {item.position !== undefined ? getTranscriptName(item.position) : ""}
               </Typography>
             )}
           </Grid>
@@ -174,12 +165,12 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
             <SelectInput
               label="جهت رونوشت"
               value={
-                transcriptDirections[item.id] ||
-                item.transcript_for ||
-                "notification"
+                item.id !== undefined && transcriptDirections[item.id] 
+                  ? transcriptDirections[item.id]
+                  : item.transcript_for || "notification"
               }
               options={internalOptions}
-              onChange={(value) => handleDirectionChange(item.id, value)}
+              onChange={(value) => item.id !== undefined && handleDirectionChange(item.id, value)}
             />
           </Grid>
 
@@ -218,4 +209,4 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
   }
 );
 
-export default TranscriptListItem;
+export default TranscriptListItem; 
