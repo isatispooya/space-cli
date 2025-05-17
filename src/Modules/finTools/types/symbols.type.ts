@@ -57,8 +57,15 @@ export interface SymbolsPricingResType {
   }[];
 }
 
+export interface SymbolCalculatorReqType {
+  symbol: number | null;
+  investment: number | null;
+  date: string | null;
+}
+
 export type SymbolsType = {
   symbolRes: SymbolsGetResType[];
   symbolAnalysisRes: SymbolsAnalysisResType[];
   pricingRes: SymbolsPricingResType;
+  symbolCalculatorReq: SymbolCalculatorReqType;
 };

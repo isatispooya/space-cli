@@ -3,9 +3,13 @@ import AnalysisSymbolFeat from "../components/symbolsTabs/analysis/analysis_symb
 import { Tabs } from "@/components";
 import SymbolsPricingCom from "../components/symbolsTabs/pricing/symbols_pricing.com";
 import SymbolsIntroCom from "../components/symbolsTabs/intro/symbols_Intro.com";
-import { Calculator } from "../components";
+// import { Calculator } from "../components";
+// import { useSymbols } from "../hooks";
+// import { useParams } from "react-router-dom";
 
 const SymbolsFeat = () => {
+  // const { id } = useParams();
+  // const { data } = useSymbols.useGetSymbolsById(Number(id));
   const tabsData = [
     {
       id: "introduction",
@@ -34,7 +38,7 @@ const SymbolsFeat = () => {
           <Tabs tabs={tabsData} />
         </div>
       </div>
-      <Calculator />
+      {/* <Calculator data={data} /> */}
     </MainLayout>
   );
 };
