@@ -34,10 +34,7 @@
     display: none;
   }
 
-  * {
-    -webkit-print-color-adjust: exact !important; /* کروم، سافاری */
-    color-adjust: exact !important; /* فایرفاکس */
-  }
+
 
   /* واترمارک لوگو */
   .watermark-logo {
