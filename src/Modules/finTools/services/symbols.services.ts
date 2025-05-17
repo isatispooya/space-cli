@@ -11,11 +11,28 @@ const SymbolsServices = {
     return response.data;
   },
   getSymbolsAnalysis: async (value: string, symbol_type: string) => {
-    const response = await api.get(`/stock_affairs/symbol-return/?calculate=${value}&symbol_type=${symbol_type}`);
+    const response = await api.get(
+      `/stock_affairs/symbol-return/?calculate=${value}&symbol_type=${symbol_type}`
+    );
     return response.data;
   },
-  getSymbolsPricing: async (desiredProfit: number, symbol: number, days: number, calculationType: string) : Promise<SymbolsType["pricingRes"]> => {
-    const response = await api.get(`/stock_affairs/symbol-profit-calculator/${desiredProfit}/${symbol}/${days}/${calculationType}/`);
+  getSymbolsPricing: async (
+    desiredProfit: number,
+    symbol: number,
+    days: number,
+    calculationType: string
+  ): Promise<SymbolsType["pricingRes"]> => {
+    const response = await api.get(
+      `/stock_affairs/symbol-profit-calculator/${desiredProfit}/${symbol}/${days}/${calculationType}/`
+    );
+    return response.data;
+  },
+
+  postSymbolCalculator: async (data: SymbolsType["symbolCalculatorReq"]) => {
+    const response = await api.post(
+      "/stock_affairs/symbol-annual-profit/",
+      data
+    );
     return response.data;
   },
 };
