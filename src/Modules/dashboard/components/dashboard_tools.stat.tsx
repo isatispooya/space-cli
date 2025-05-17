@@ -11,7 +11,7 @@ const DashboardToolsStat = () => {
       icon={<FaTools className="w-5 h-5" />}
       iconColor="#0ac9cb"
       waveColor="custom1"
-      buttonText="ابزار ها"
+      buttonText="پنل ابزار های مالی"
       onButtonClick={() => navigate("/finTools")}
       customColors={{
         background: "#099ea0",
