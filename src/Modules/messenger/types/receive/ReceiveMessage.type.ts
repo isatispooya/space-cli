@@ -10,6 +10,7 @@ export interface ReceiveMessageType {
 
 export interface CorrespondenceReceiverType {
   receiver: CorrespondenceItemType[];
+  sender: CorrespondenceItemType[];
 }
 
 export interface CorrespondenceItemType {
@@ -22,6 +23,7 @@ export interface CorrespondenceItemType {
   seen?: boolean;
   confidentiality_level?: string;
   sender_details?: {
+    id?: number;
     user?: {
       first_name: string;
       last_name: string;
@@ -30,6 +32,7 @@ export interface CorrespondenceItemType {
     confidentiality_level?: string;
   };
   receiver_internal_details?: {
+    id?: number;
     user?: {
       first_name: string;
       last_name: string;
@@ -38,6 +41,9 @@ export interface CorrespondenceItemType {
     confidentiality_level?: string;
   };
   receiver_external?: string;
+  receiver_external_details?: {
+    name?: string;
+  };
 }
 
 export interface ReferralReqType {

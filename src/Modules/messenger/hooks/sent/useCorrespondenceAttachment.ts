@@ -6,21 +6,12 @@ import {
 } from "@tanstack/react-query";
 import correspondenceAttacheService from "../../services/sent/correspondenceAttacheService";
 import {
-  FormDataType,
-  SenderType as CorrespondenceResponseType,
-  ReferenceDataType,
+  CorrespondenceAttachmentsType,
+  AttachmentResponseType,
+  APIFormDataType,
+  CorrespondenceResponseType,
 } from "../../types/sent/sent.type";
-import {
-  CorrespondenceAttachmentType,
-  AttachmentType as AttachmentResponseType,
-} from "../../types/sent/attachment.type";
 import { toast } from "react-toastify";
-
-type CorrespondenceAttachmentsType = CorrespondenceAttachmentType[];
-type APIFormDataType = Omit<FormDataType, 'referenceData'> & {
-  id?: number;
-  referenceData?: ReferenceDataType[];
-};
 
 const useCorrespondenceAttachment = {
   useGetAttache: (): UseQueryResult<CorrespondenceAttachmentsType> => {

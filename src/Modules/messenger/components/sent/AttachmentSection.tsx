@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { MultiSelect } from "../../../../components/common/inputs";
-import { AttachmentSectionPropsType } from "../../types/sent/attachment.type";
+import { AttachmentSectionPropsType } from "../../types/sent/sent.type";
 
 const AttachmentSection: React.FC<AttachmentSectionPropsType> = ({
   setOpenFileDialog,

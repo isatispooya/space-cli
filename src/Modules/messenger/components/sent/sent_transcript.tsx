@@ -14,11 +14,67 @@ import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
 import TranscriptListItem from "./TranscriptListItem";
-import { 
-  TranscriptPropsType,
-  TranscriptItemType,
-  ReferenceDetailType 
-} from "../../types/sent/transcript.type";
+import { ITranscriptResponseType } from "../../types/sent/sent.type";
+
+interface ReferenceDetailType {
+  id: string;
+  user?: {
+    first_name: string;
+    last_name: string;
+    uniqueIdentifier: string;
+  };
+  name?: string;
+  transcript_for?: string;
+  position?: string;
+  company_name?: string;
+  company_detail?: {
+    name: string;
+  };
+}
+
+interface TranscriptPropsType {
+  transcript: ITranscriptResponseType[];
+  selectedTranscript: string[];
+  setSelectedTranscript: (value: string[]) => void;
+  handleAddTranscript: (text?: string) => void;
+  handleTranscriptToggle: (id: number) => void;
+  internalUserOptions: { label: string; value: string }[];
+  getTranscriptName: (id: number) => string;
+  transcriptDirections: { [id: number]: string };
+  setTranscriptDirection: (id: number, value: string) => void;
+  data?: {
+    transcript_details?: ITranscriptResponseType[];
+    sender?: {
+      reference_details?: ReferenceDetailType[];
+      subject?: string;
+      text?: string;
+      description?: string;
+      is_internal?: boolean;
+      postcript?: string;
+      seal?: boolean;
+      signature?: boolean;
+      letterhead?: boolean;
+      binding?: boolean;
+      confidentiality_level?: string;
+      priority?: string;
+      kind_of_correspondence?: string;
+      authority_type?: string;
+      authority_correspondence?: number | null;
+      published?: boolean;
+      sender_details?: {
+        id: number;
+      };
+      receiver_internal_details?: {
+        id: number;
+      };
+      receiver_external?: string;
+      receiver_external_details?: {
+        name: string;
+      };
+    };
+  };
+  is_internal?: boolean;
+}
 
 const Transcript: React.FC<TranscriptPropsType> = React.memo(
   ({
@@ -46,10 +102,10 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     useEffect(() => {
       if (data?.transcript_details && data.transcript_details.length > 0) {
         const positions = data.transcript_details
-          .map((t: TranscriptItemType) => t.position?.toString())
-          .filter((p: string | undefined): p is string => p !== undefined);
+          .map((t) => t.position?.toString())
+          .filter((p): p is string => p !== undefined);
 
-        data.transcript_details.forEach((t: TranscriptItemType) => {
+        data.transcript_details.forEach((t) => {
           if (t.position && t.transcript_for) {
             setTranscriptDirection(t.position, t.transcript_for);
           }
@@ -57,11 +113,11 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
 
         setSelectedTranscript(positions);
 
-        positions.forEach((pos: string) => {
+        positions.forEach((pos) => {
           const numPos = Number(pos);
-          if (!transcript.some((t: TranscriptItemType) => t.position === numPos)) {
+          if (!transcript.some((t) => t.position === numPos)) {
             const detail = data.transcript_details?.find(
-              (t: TranscriptItemType) => t.position === numPos
+              (t) => t.position === numPos
             );
             if (detail) {
               handleAddTranscript();
@@ -69,7 +125,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           }
         });
       }
-    }, [data?.transcript_details, setTranscriptDirection, setSelectedTranscript, handleAddTranscript, transcript]);
+    }, [data?.transcript_details]);
 
     const handleAdd = useCallback(() => {
       if (is_internal) {
@@ -98,9 +154,9 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     const displayTranscript = [...transcript];
 
     if (data?.transcript_details && data.transcript_details.length > 0) {
-      data.transcript_details.forEach((detail: TranscriptItemType) => {
+      data.transcript_details.forEach((detail) => {
         if (detail.position) {
-          if (!displayTranscript.some((t: TranscriptItemType) => t.position === detail.position)) {
+          if (!displayTranscript.some((t) => t.position === detail.position)) {
             displayTranscript.push(detail);
           }
         }
@@ -276,4 +332,4 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
   }
 );
 
-export default Transcript; 
+export default Transcript;
