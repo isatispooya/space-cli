@@ -1,10 +1,16 @@
 import { Box, Typography, Paper, Button } from "@mui/material";
 import { AttachFile, Download } from "@mui/icons-material";
 import { server } from "@/api";
-import { AttachmentType } from "@/Modules/messenger/types/sent/attachment.type";
+
+interface AttachmentDetailType {
+  id: number;
+  name: string;
+  file: string;
+  size: number;
+}
 
 interface AttachmentsPropsType {
-  attachments: AttachmentType[];
+  attachments: AttachmentDetailType[];
 }
 
 export const MessageAttachments = ({ attachments }: AttachmentsPropsType) => {
@@ -75,17 +81,15 @@ export const MessageAttachments = ({ attachments }: AttachmentsPropsType) => {
               >
                 {attachment.name}
               </Typography>
-              {attachment.size && (
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: "text.secondary",
-                    mt: 0.5,
-                  }}
-                >
-                  حجم فایل: {(attachment.size / 1024).toFixed(1)} کیلوبایت
-                </Typography>
-              )}
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "text.secondary",
+                  mt: 0.5,
+                }}
+              >
+                حجم فایل: {(attachment.size / 1024).toFixed(1)} کیلوبایت
+              </Typography>
             </Box>
             <Box sx={{ ml: 2, display: "flex", alignItems: "center" }}>
               <Button

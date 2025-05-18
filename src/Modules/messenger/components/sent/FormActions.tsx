@@ -1,6 +1,14 @@
 import { Box } from "@mui/material";
 import { ButtonBase } from "../../../../components/common/buttons";
-import { FormActionsPropsType } from "../../types/sent/form.type";
+
+interface FormActionsPropsType {
+  isEditMode: boolean;
+  showPublishWarning: boolean;
+  formData: {
+    published: boolean;
+  };
+  onSubmit: () => void;
+}
 
 const FormActions: React.FC<FormActionsPropsType> = ({
   isEditMode,

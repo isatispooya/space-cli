@@ -16,6 +16,8 @@ import MessageContent from "./MessageContent";
 import EmptyState from "./EmptyState";
 import { MessagingService } from "./MessagingService";
 
+
+
 const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   onSubmit,
   loading,
@@ -90,7 +92,7 @@ const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
           const messageData = MessagingService.createMessageData(
             messageText,
             selectedUser as SelectedUserType,
-            response.id
+            Number(response.id)
           );
 
           createChat(messageData, {

@@ -1,11 +1,4 @@
-import {
-  Box,
-  Paper,
-  Button,
-  CircularProgress,
-  Switch,
-  FormControlLabel,
-} from "@mui/material";
+import { Box, Paper, Button, CircularProgress } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { usePosition } from "@/Modules/positions/hooks";
 import moment from "moment-jalaali";
@@ -17,83 +10,17 @@ import { MessageAttachments } from "../../components/sent/SentMessage/Attachment
 import {
   MatchedUserType,
   TranscriptDetailsType,
-  CorrespondenceAttachmentType,
-} from "../../types/sent";
+  SenderType,
+} from "../../types/sent/sent.type";
+import { LoadingMessage } from "../../components/LoadingMessage";
 import PrintIcon from "@mui/icons-material/Print";
 import { useReceive } from "../../hooks/receive";
-import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
-import { useState, useEffect } from "react";
 
 const SentDetail = () => {
   const { id } = useParams();
   const { data, isLoading } = useReceive.useGetById(id || "");
   const { data: allposition, isLoading: isLoadingPositions } =
     usePosition.useGetAll();
-
-  const [published, setPublished] = useState(false);
-
-  useEffect(() => {
-    if (data?.sender) {
-      setPublished(data.published || false);
-    }
-  }, [data]);
-
-  const { mutate: updateCorrespondence } =
-    useCorrespondenceAttachment.useUpdateCorrespondence();
-
-  const handlePublishedChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newPublishedState = event.target.checked;
-    setPublished(newPublishedState);
-
-    if (id && data?.sender) {
-      const senderId = data.sender_details?.id || 0;
-      const receiverId = data.receiver_internal_details?.id || null;
-      const finalReceiverId = senderId === receiverId ? null : receiverId;
-      const updateData = {
-        id: parseInt(id),
-        subject: data.subject || "",
-        text: data.text || "",
-        description: data.description || "",
-        attachments:
-          data.attachments_details?.map(
-            (att: CorrespondenceAttachmentType) => att.id
-          ) || [],
-        receiver: [],
-        sender: senderId,
-        receiver_internal: finalReceiverId,
-        receiver_external: finalReceiverId
-          ? ""
-          : data.receiver_external || "External Receiver",
-        is_internal: finalReceiverId ? true : false,
-        postcript: data.postcript || "",
-        seal: data.seal || false,
-        signature: data.signature || false,
-        letterhead: data.letterhead || false,
-        binding: data.binding || false,
-        confidentiality_level: data.confidentiality_level || "",
-        priority: data.priority || "",
-        kind_of_correspondence: data.kind_of_correspondence || "",
-        authority_type: "new",
-        authority_correspondence: null,
-        reference: [],
-        transcript:
-          data.transcript_details?.map(
-            (item: TranscriptDetailsType) => ({
-              position: item.position,
-              transcript_for: item.transcript_for || "notification",
-              security: item.security || false,
-              correspondence: null,
-              read_at: item.read_at || new Date().toISOString(),
-            })
-          ) || [],
-        published: newPublishedState,
-      };
-
-      updateCorrespondence(updateData);
-    }
-  };
 
   const handlePrint = () => {
     const printContent = document.getElementById("print-content");
@@ -122,7 +49,13 @@ const SentDetail = () => {
     );
   }
 
-  const userOption = data?.transcript_details?.map(
+  if (!data) {
+    return <LoadingMessage />;
+  }
+
+  const receivedData = data as unknown as SenderType;
+
+  const userOption = receivedData.transcript_details?.map(
     (item: TranscriptDetailsType) => item.position.toString()
   );
 
@@ -136,11 +69,11 @@ const SentDetail = () => {
         lastName: matched.user?.last_name || "",
       })) || [];
 
-  const formattedDate = moment(data?.created_at)
+  const formattedDate = moment(receivedData.created_at)
     .locale("fa")
     .format("jYYYY/jMM/jDD HH:mm");
 
-  const showLetterhead = data?.letterhead !== false;
+  const showLetterhead = receivedData.letterhead !== false;
 
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: "1200px", margin: "0 auto" }}>
@@ -194,21 +127,9 @@ const SentDetail = () => {
             variant="contained"
             startIcon={<PrintIcon />}
             onClick={handlePrint}
-            sx={{ mx: 1 }}
           >
             چاپ پیام
           </Button>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={published}
-                onChange={handlePublishedChange}
-                color="primary"
-              />
-            }
-            label="انتشار"
-            labelPlacement="start"
-          />
         </Box>
         <div id="print-content">
           <Box
@@ -228,7 +149,10 @@ const SentDetail = () => {
               },
             }}
           >
-            <MessageHeader sender={data} formattedDate={formattedDate} letterhead={showLetterhead} />
+            <MessageHeader
+              sender={receivedData}
+              formattedDate={formattedDate}
+            />
             <Box
               sx={{
                 flex: 1,
@@ -243,7 +167,7 @@ const SentDetail = () => {
                 },
               }}
             >
-              <MessageContent sender={data} allposition={allposition || []} />
+              <MessageContent sender={receivedData} allposition={allposition} />
             </Box>
             {showLetterhead && (
               <Box
@@ -258,7 +182,7 @@ const SentDetail = () => {
                 }}
               >
                 <MessageFooter
-                  sender={data}
+                  sender={receivedData}
                   matchedUsers={matchedUsers}
                 />
               </Box>
@@ -266,7 +190,7 @@ const SentDetail = () => {
           </Box>
           <Box sx={{ "@media print": { display: "none" } }}>
             <MessageAttachments
-              attachments={data?.attachments_details || []}
+              attachments={receivedData.attachments_details || []}
             />
           </Box>
         </div>

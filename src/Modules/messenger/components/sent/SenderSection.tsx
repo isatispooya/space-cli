@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { FormInput, SelectInput } from "../../../../components/common/inputs";
-import { SenderSectionType } from "../../types/sent/senderSection.type";
+import { SenderSectionPropsType } from "../../types/sent/sent.type";
 
-const SenderSection: React.FC<SenderSectionType> = ({
+const SenderSection: React.FC<SenderSectionPropsType> = ({
   formData,
   handleChange,
   senderUserOptions,
@@ -16,7 +16,11 @@ const SenderSection: React.FC<SenderSectionType> = ({
       <>
         <SelectInput
           label="ارسال کننده"
-          value={(formData.sender || formData.sender_details?.user?.id || "")}
+          value={
+            (
+              formData.sender || formData.sender_details?.user?.id
+            )?.toString() || ""
+          }
           onChange={(value) => handleChange("sender", value)}
           options={senderUserOptions}
           className="enhanced-select"
@@ -24,7 +28,12 @@ const SenderSection: React.FC<SenderSectionType> = ({
 
         <SelectInput
           label="گیرنده داخلی"
-          value={(formData.receiver_internal || formData.receiver_internal_details?.id || "")}
+          value={
+            (
+              formData.receiver_internal ||
+              formData.receiver_internal_details?.id
+            )?.toString() || ""
+          }
           onChange={(value) => handleChange("receiver_internal", value)}
           options={internalUserOptions}
           className="enhanced-select"
@@ -34,14 +43,18 @@ const SenderSection: React.FC<SenderSectionType> = ({
       <>
         <SelectInput
           label="ارسال کننده"
-          value={(formData.sender || formData.sender_details?.user?.id || "")}
+          value={
+            (
+              formData.sender || formData.sender_details?.user?.id
+            )?.toString() || ""
+          }
           onChange={(value) => handleChange("sender", value)}
           options={senderUserOptionsOut}
           className="enhanced-select"
         />
         <FormInput
           label="گیرنده خارجی"
-          value={formData.receiver_external}
+          value={formData.receiver_external || ""}
           onChange={(e) => handleChange("receiver_external", e.target.value)}
           placeholder="گیرنده خارجی"
           className="enhanced-input"
@@ -50,7 +63,7 @@ const SenderSection: React.FC<SenderSectionType> = ({
     )}
     <FormInput
       label="موضوع"
-      value={formData.subject}
+      value={formData.subject || ""}
       onChange={(e) => handleChange("subject", e.target.value)}
       className="enhanced-input"
     />
