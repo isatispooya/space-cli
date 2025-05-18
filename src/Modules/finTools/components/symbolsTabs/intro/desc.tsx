@@ -1,6 +1,6 @@
 import { Button, NoContent } from "@/components";
 import { motion } from "framer-motion";
-import { SymbolsType } from "../types";
+import { SymbolsType } from "../../../types";
 import { useNavigate } from "react-router-dom";
 import { server } from "@/api";
 import { FiExternalLink, FiMessageCircle } from "react-icons/fi";

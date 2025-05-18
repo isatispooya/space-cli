@@ -1,6 +1,6 @@
 import { useSymbols } from "../../../hooks";
 import { useState } from "react";
-import { InputBase, DateSelector, Button } from "@/components";
+import { InputBase, DateSelector, Button, Toast } from "@/components";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { SymbolsType } from "../../../types";
-
+import { Check, X } from "lucide-react";
 interface CalculatorPropsType {
   data: Array<{
     symbol: number;
@@ -53,13 +53,25 @@ const Calculator = ({ data, onCalculationSuccess }: CalculatorPropsType) => {
 
     postSymbolCalculator(payload, {
       onSuccess: (response) => {
+        Toast(
+          "محاسبه با موفقیت انجام شد",
+          <Check className="bg-green-500" />,
+          "bg-green-500"
+        );
         const result = {
           ...response,
           symbol: data[0].symbol_detail.symbol,
           start_date: gregorianDate,
-          investment: formData.investment,
+          investment: formData.investment!,
         };
         onCalculationSuccess(result);
+      },
+      onError: () => {
+        Toast(
+          "محاسبه با خطا مواجه شد",
+          <X className="bg-red-500" />,
+          "bg-red-500"
+        );
       },
     });
   };

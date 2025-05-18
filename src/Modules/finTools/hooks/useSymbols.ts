@@ -56,7 +56,7 @@ const useSymbols = {
   },
 
   usePostSymbolCalculator: (): UseMutationResult<
-    any,
+    SymbolsType["symbolCalculatorRes"],
     AxiosError,
     SymbolsType["symbolCalculatorReq"]
   > => {
@@ -64,6 +64,18 @@ const useSymbols = {
       mutationKey: ["symbol-calculator"],
       mutationFn: (data: SymbolsType["symbolCalculatorReq"]) =>
         SymbolsServices.postSymbolCalculator(data),
+    });
+  },
+
+  usePostInvestDocument: (): UseMutationResult<
+    SymbolsType["investDocumentRes"],
+    AxiosError,
+    SymbolsType["investDocumentReq"]
+  > => {
+    return useMutation({
+      mutationKey: ["invest-document"],
+      mutationFn: (data: SymbolsType["investDocumentReq"]) =>
+        SymbolsServices.postInvestDocument(data),
     });
   },
 };

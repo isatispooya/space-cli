@@ -70,6 +70,13 @@ export interface SymbolCalculatorResType {
   start_date: string;
   symbol: string;
 }
+export interface InvestDocumentReqType {
+  file_csv: File | null;
+}
+export interface InvestDocumentResType {
+  message: string;
+  status: string;
+}
 
 export type SymbolsType = {
   symbolRes: SymbolsGetResType[];
@@ -77,4 +84,6 @@ export type SymbolsType = {
   pricingRes: SymbolsPricingResType;
   symbolCalculatorReq: SymbolCalculatorReqType;
   symbolCalculatorRes: SymbolCalculatorResType;
+  investDocumentReq: InvestDocumentReqType;
+  investDocumentRes: InvestDocumentResType;
 };

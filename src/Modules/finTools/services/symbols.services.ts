@@ -35,6 +35,16 @@ const SymbolsServices = {
     );
     return response.data;
   },
+
+  postInvestDocument: async (
+    data: SymbolsType["investDocumentReq"]
+  ): Promise<SymbolsType["investDocumentRes"]> => {
+    const response = await api.post(
+      "/stock_affairs/deposit-shareholders/",
+      data
+    );
+    return response.data;
+  },
 };
 
 export default SymbolsServices;

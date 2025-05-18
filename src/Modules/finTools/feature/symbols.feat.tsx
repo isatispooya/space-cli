@@ -1,19 +1,21 @@
 import { MainLayout } from "@/layouts";
-import AnalysisSymbolFeat from "../components/symbolsTabs/analysis/analysis_symbol.com";
 import { Tabs } from "@/components";
-import SymbolsPricingCom from "../components/symbolsTabs/pricing/symbols_pricing.com";
-import SymbolsIntroCom from "../components/symbolsTabs/intro/symbols_Intro.com";
+import {
+  SymbolsIntroCom,
+  SymbolsPricingCom,
+  AnalysisSymbolCom,
+  InvestDocument,
+} from "../components";
 import { useSymbols } from "../hooks";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import CalculationFeat from "./calculation.feat";
+import { CalculationFeat } from ".";
 
 const SymbolsFeat = () => {
   const { id } = useParams();
   const { data } = useSymbols.useGetSymbolsById(Number(id));
   const [activeTab, setActiveTab] = useState("introduction");
 
-  // Check if the symbol is fixed income type
   const isFixedIncome = data?.[0]?.symbol_detail?.type === "fixincome";
 
   // Create base tabs that are always shown
@@ -31,18 +33,23 @@ const SymbolsFeat = () => {
     {
       id: "competitors",
       label: "تحلیل رقبا",
-      content: <AnalysisSymbolFeat />,
-      permission: ["allow_any"],
+      content: <AnalysisSymbolCom />,
+      permission: ["view_all_introduce_symbols"],
     },
     {
       id: "pricing",
       label: "قیمت‌گذاری",
       content: <SymbolsPricingCom />,
-      permission: ["allow_any"],
+      permission: ["view_all_introduce_symbols"],
+    },
+    {
+      id: "calculation",
+      label: "بارگزاری سند سرمایه گذاری",
+      content: <InvestDocument />,
+      permission: ["view_all_introduce_symbols"],
     },
   ];
 
-  // Add calculator tab only for fixed income symbols
   const tabsData = isFixedIncome
     ? [
         ...baseTabs,
