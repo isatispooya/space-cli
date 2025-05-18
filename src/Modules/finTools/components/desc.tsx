@@ -5,11 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { server } from "@/api";
 import { FiExternalLink, FiMessageCircle } from "react-icons/fi";
 import { useConsultUser } from "@/Modules/consultation/hooks";
+import { Calculator as CalculatorIcon } from "lucide-react";
 
 const Details = ({
   symbol,
+  onSwitchToCalculator,
 }: {
   symbol: SymbolsType["symbolRes"][0] | undefined;
+  onSwitchToCalculator: () => void;
 }) => {
   const navigate = useNavigate();
   const { mutate: postSubject } = useConsultUser.usePostSubject();
@@ -35,6 +38,8 @@ const Details = ({
     );
   };
 
+  const isFixedIncome = symbol.symbol_detail?.type === "fixincome";
+
   return (
     <motion.div
       key={symbol.id}
@@ -43,7 +48,6 @@ const Details = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* تصویر لوگو */}
       <motion.div
         className="mb-1 relative"
         initial={{ scale: 0.8, opacity: 0 }}
@@ -108,7 +112,7 @@ const Details = ({
 
       {/* دکمه‌ها */}
       <motion.div
-        className="mt-2 grid grid-cols-2 gap-2 w-full"
+        className="mt-2 grid grid-cols-3 gap-2 w-full"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.4 }}
@@ -119,19 +123,29 @@ const Details = ({
               window.open(symbol.link, "_blank");
             }
           }}
-          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-md hover:shadow-blue-100 hover:from-blue-600 hover:to-blue-800 transition-all duration-200 flex items-center justify-center gap-1 py-2"
+          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-md hover:shadow-blue-100 hover:from-blue-600 hover:to-blue-800 transition-all duration-200 flex items-center justify-center gap-1 py-1.5 px-3 text-sm"
         >
-          <FiExternalLink className="w-4 h-4" />
+          <FiExternalLink className="w-3.5 h-3.5" />
           <span>خرید</span>
         </Button>
 
         <Button
           onClick={handleConsultRequest}
-          className="border bg-white border-green-500 text-green-600 rounded-lg shadow-sm hover:bg-green-500 hover:text-white hover:shadow-green-100 transition-all duration-200 flex items-center justify-center gap-1 py-2"
+          className="border bg-white border-green-500 text-green-600 rounded-lg shadow-sm hover:bg-green-500 hover:text-white hover:shadow-green-100 transition-all duration-200 flex items-center justify-center gap-1 py-1.5 px-3 text-sm"
         >
-          <FiMessageCircle className="w-4 h-4" />
+          <FiMessageCircle className="w-3.5 h-3.5" />
           <span>مشاوره</span>
         </Button>
+
+        {isFixedIncome && (
+          <Button
+            onClick={onSwitchToCalculator}
+            className="border bg-white border-blue-500 text-blue-600 rounded-lg shadow-sm hover:bg-blue-500 hover:text-white hover:shadow-blue-100 transition-all duration-200 flex items-center justify-center gap-1 py-1.5 px-3 text-sm"
+          >
+            <CalculatorIcon />
+            <span>ماشین حساب سود</span>
+          </Button>
+        )}
       </motion.div>
     </motion.div>
   );

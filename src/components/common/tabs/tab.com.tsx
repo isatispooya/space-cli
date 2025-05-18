@@ -14,11 +14,22 @@ interface TabType {
 
 interface TabComPropsType {
   tabs: TabType[];
+  activeTab?: string;
+  onTabChange?: (tabId: string) => void;
 }
 
-const Tabs: React.FC<TabComPropsType> = ({ tabs }) => {
-  const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
+const Tabs: React.FC<TabComPropsType> = ({
+  tabs,
+  activeTab: externalActiveTab,
+  onTabChange,
+}) => {
+  const [internalActiveTab, setInternalActiveTab] = useState<string>(
+    tabs[0].id
+  );
   const { checkPermission } = useUserPermissions();
+
+  const activeTab =
+    externalActiveTab !== undefined ? externalActiveTab : internalActiveTab;
 
   const handleTabClick = (tabId: string) => {
     const tab = tabs.find((tab: TabType) => tab.id === tabId);
@@ -27,23 +38,25 @@ const Tabs: React.FC<TabComPropsType> = ({ tabs }) => {
       !tab.disabled &&
       (!tab.permission || checkPermission(tab.permission))
     ) {
-      setActiveTab(tabId);
+      if (onTabChange) {
+        onTabChange(tabId);
+      } else {
+        setInternalActiveTab(tabId);
+      }
     }
   };
 
   const activeContent = tabs.find((tab) => tab.id === activeTab)?.content;
 
-  // Filter tabs based on permissions
   const filteredTabs = tabs.filter(
     (tab) => !tab.permission || checkPermission(tab.permission)
   );
 
   return (
     <div className="w-full">
-      {/* Tab Navigation */}
       <ul
         className="flex flex-wrap overflow-x-auto text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 sm:flex-nowrap"
-        style={{ scrollbarWidth: "none" }} // Hide scrollbar for horizontal scrolling
+        style={{ scrollbarWidth: "none" }}
       >
         {filteredTabs.map((tab) => (
           <TabItem
@@ -56,7 +69,6 @@ const Tabs: React.FC<TabComPropsType> = ({ tabs }) => {
         ))}
       </ul>
 
-      {/* Tab Content */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activeTab}
