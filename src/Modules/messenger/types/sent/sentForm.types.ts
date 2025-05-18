@@ -37,14 +37,14 @@ export interface CorrespondenceAttachmentType {
 export type CorrespondenceAttachmentsType = CorrespondenceAttachmentType[];
 
 export interface ITranscriptResponseType {
-  id: number;
+  id?: number;
   read_at: string | null;
   transcript_for: string;
   security: boolean;
-  created_at: string;
-  updated_at: string;
   position: number;
   correspondence: number;
+  created_at?: string;
+  updated_at?: string;
   external_text?: string;
 }
 
@@ -66,7 +66,6 @@ export interface ReferenceDataItemType {
   external_text?: string;
 }
 
-// مدل توسعه یافته برای FormDataType با فیلدهای اضافی
 export interface SentFormDataType {
   subject?: string;
   text?: string;
@@ -95,11 +94,29 @@ export interface SentFormDataType {
 }
 
 export interface APIFormDataType {
+  subject?: string;
+  text?: string;
+  description?: string;
   attachments: number[];
-  receiver_internal: number | null;
-  transcript: TranscriptType[];
+  receiver?: number[];
+  sender?: number;
+  receiver_internal?: number | null;
+  receiver_external?: string;
+  is_internal?: boolean;
+  postcript?: string;
+  seal?: boolean;
+  signature?: boolean;
+  letterhead?: boolean;
+  binding?: boolean;
+  confidentiality_level?: string;
+  priority?: string;
+  kind_of_correspondence?: string;
+  authority_type?: string;
+  authority_correspondence?: number | null;
+  reference?: number[];
+  transcript?: unknown[];
+  published?: boolean;
   id?: number;
-  [key: string]: unknown;
 }
 
 // تایپ‌های ساختگی برای هماهنگی با store
@@ -133,4 +150,37 @@ export interface SentFormLogicReturnType {
   priorityOptions: { label: string; value: string }[];
   departmentOptions: { label: string; value: string }[];
   letterTypeOptions: { label: string; value: string }[];
+}
+
+export interface ReferenceItemType {
+  id: number;
+  enabled?: boolean;
+  external_text?: string;
+  transcript_for?: string;
+}
+
+export interface FormDataType {
+  subject?: string;
+  text?: string;
+  description?: string;
+  attachments: number[];
+  receiver: number[];
+  sender?: number;
+  receiver_internal?: number | null;
+  receiver_external?: string;
+  is_internal?: boolean;
+  postcript?: string;
+  seal?: boolean;
+  signature?: boolean;
+  letterhead?: boolean;
+  binding?: boolean;
+  confidentiality_level?: string;
+  priority?: string;
+  kind_of_correspondence?: string;
+  authority_type?: string;
+  authority_correspondence?: number | null;
+  reference?: number[];
+  transcript?: unknown[];
+  published?: boolean;
+  referenceData?: ReferenceItemType[];
 } 

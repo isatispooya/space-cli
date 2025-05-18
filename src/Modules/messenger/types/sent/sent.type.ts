@@ -1,6 +1,6 @@
 import {
   TranscriptDetailType,
-} from "../../hooks/sent/sentForm.types";
+} from "./sentForm.types";
 import { CorrespondenceAttachmentType } from "./attachment.type";
 
 export interface SelectOptionType {
@@ -15,14 +15,7 @@ export interface ReferenceDataType {
   external_text?: string;
 }
 
-export interface TranscriptDataType {
-  read_at: string;
-  transcript_for: string;
-  security: boolean;
-  position: number;
-  correspondence: null;
-  external_text?: string;
-}
+export interface TranscriptDataType {  read_at: string;  transcript_for: string;  security: boolean;  position: number;  correspondence: null;  external_text?: string | string[];}
 
 export interface FormDataType {
   subject: string;

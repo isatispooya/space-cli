@@ -3,10 +3,8 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { usePosition } from "@/Modules/positions/hooks";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import { useSentFormStore } from "../../store/sent/sent.store";
-import toast from "react-hot-toast";
 import { PositionType } from "@/Modules/positions/types";
 
-// تعریف نوع‌های مورد نیاز که از فایل external وارد شده‌اند
 interface CorrespondenceAttachmentType {
   id: number;
   name: string;
@@ -23,32 +21,6 @@ interface ReferenceItemType {
   enabled?: boolean;
   external_text?: string;
   transcript_for?: string;
-}
-
-interface APIFormDataType {
-  subject?: string;
-  text?: string;
-  description?: string;
-  attachments: number[];
-  receiver?: number[];
-  sender?: number;
-  receiver_internal?: number | null;
-  receiver_external?: string;
-  is_internal?: boolean;
-  postcript?: string;
-  seal?: boolean;
-  signature?: boolean;
-  letterhead?: boolean;
-  binding?: boolean;
-  confidentiality_level?: string;
-  priority?: string;
-  kind_of_correspondence?: string;
-  authority_type?: string;
-  authority_correspondence?: number | null;
-  reference?: number[];
-  transcript?: unknown[];
-  published?: boolean;
-  id?: number;
 }
 
 interface ITranscriptResponseType {
@@ -135,7 +107,7 @@ export const useSentFormLogic = (id: string | undefined) => {
     handleTranscriptToggle,
     setOpenFileDialog,
     setSelectedTranscript,
-    setTranscriptDirection,
+
     setFormData,
     setAttachmentOptions,
   } = useSentFormStore() as unknown as {
@@ -149,7 +121,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     handleTranscriptToggle: (id: number) => void;
     setOpenFileDialog: (open: boolean) => void;
     setSelectedTranscript: (transcript: string[] | number[] | []) => void;
-    setTranscriptDirection: (id: number, direction: string) => void;
     setFormData: (data: FormDataType) => void;
     setAttachmentOptions: (options: { label: string; value: string }[]) => void;
   };
@@ -166,48 +137,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     };
 
   const { data } = useReceive.useGetById(id || "");
-
-  const { mutate: updateCorrespondence } =
-    useCorrespondenceAttachment.useUpdateCorrespondence();
-
-  const resetForm = () => {
-    setFormData({
-      subject: "",
-      text: "",
-      description: "",
-      attachments: [],
-      receiver: [],
-      sender: undefined as unknown as number,
-      receiver_internal: undefined as unknown as number,
-      receiver_external: "",
-      is_internal: true,
-      postcript: "",
-      seal: false,
-      signature: false,
-      letterhead: false,
-      binding: false,
-      confidentiality_level: "",
-      priority: "",
-      kind_of_correspondence: "",
-      authority_type: "new",
-      authority_correspondence: null,
-      reference: [],
-      transcript: [],
-      published: false,
-      referenceData: [],
-    });
-    setUseInternalReceiver(true);
-    toast.success("اطلاعات با موفقیت ثبت شد");
-  };
-
-  const { mutate: postCorrespondence } =
-    useCorrespondenceAttachment.usePostCorrespondence({
-      onSuccess: resetForm,
-      onError: () => {
-        toast.error("خطایی رخ داد");
-      },
-    });
-
   const attachmentOptions = useMemo(
     () =>
       Attache?.map((attachment: CorrespondenceAttachmentType) => ({
@@ -367,7 +296,7 @@ export const useSentFormLogic = (id: string | undefined) => {
 
         Object.entries(directions).forEach(([id, direction]) => {
           if (typeof direction === "string") {
-            setTranscriptDirection(Number(id), direction);
+            console.log(id);
           }
         });
       }
@@ -399,7 +328,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       });
       setUseInternalReceiver(true);
     }
-  }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
+  }, [setFormData, data, id, setAttachmentOptions]);
 
   useEffect(() => {
     setUseInternalReceiver(formData.is_internal ?? true);
@@ -408,43 +337,6 @@ export const useSentFormLogic = (id: string | undefined) => {
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
       e.preventDefault();
-    }
-
-    const { ...restFormData } = formData;
-
-    const apiTranscripts =
-      formData.reference?.map((ref: number) => {
-        const refNum = Number(ref);
-        const referenceItem = formData.referenceData?.find(
-          (item: ReferenceItemType) => item.id === refNum
-        );
-        const isVisible = referenceItem?.enabled !== false;
-
-        const isExternalTranscript = refNum < 0 || referenceItem?.external_text;
-
-        return {
-          position: refNum,
-          transcript_for: transcriptDirectionsTyped[refNum] || "notification",
-          security: !isVisible,
-          correspondence: null,
-          read_at: new Date().toISOString(),
-          external_text: isExternalTranscript
-            ? referenceItem?.external_text
-            : undefined,
-        };
-      }) || [];
-
-    const finalData: APIFormDataType = {
-      ...restFormData,
-      attachments: restFormData.attachments.map(Number),
-      receiver_internal: Number(restFormData.receiver_internal) || null,
-      transcript: apiTranscripts,
-    };
-
-    if (id) {
-      updateCorrespondence({ ...finalData, id: Number(id) });
-    } else {
-      postCorrespondence(finalData);
     }
   };
 
@@ -484,7 +376,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     handleTranscriptToggle,
     setOpenFileDialog,
     setSelectedTranscript,
-    setTranscriptDirection,
     handleSubmit,
     handleReceiverTypeChange,
     senderUserOptions,

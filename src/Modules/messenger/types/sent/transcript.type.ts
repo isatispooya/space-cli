@@ -1,5 +1,5 @@
 import internalOptions from "../../data/sent/transcript.data";
-import { ITranscriptResponseType } from "../../hooks/sent/sentForm.types";
+import { ITranscriptResponseType } from "./sentForm.types";
 
 export interface TranscriptItemType {
   position: number;
