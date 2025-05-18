@@ -1,9 +1,5 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import {
-  MessageFooterPropsType,
-  TranscriptDetailsType,
-  MatchedUserType,
-} from "../../../types/sent/sent.type";
+import { MatchedUserType, MessageFooterPropsType, TranscriptDetailsType } from "../../../types/sent/sent.type";
 import internalOptions from "../../../data/sent/transcript.data";
 import { getValueLabel } from "../../../utils/helpers";
 

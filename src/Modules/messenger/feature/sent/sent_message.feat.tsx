@@ -18,7 +18,7 @@ import {
   MatchedUserType,
   TranscriptDetailsType,
   CorrespondenceAttachmentType,
-} from "../../types/sent/sent.type";
+} from "../../types/sent";
 import PrintIcon from "@mui/icons-material/Print";
 import { useReceive } from "../../hooks/receive";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
@@ -50,10 +50,7 @@ const SentDetail = () => {
     if (id && data?.sender) {
       const senderId = data.sender_details?.id || 0;
       const receiverId = data.receiver_internal_details?.id || null;
-
-      // Make sure the receiver and sender aren't the same
       const finalReceiverId = senderId === receiverId ? null : receiverId;
-
       const updateData = {
         id: parseInt(id),
         subject: data.subject || "",
@@ -231,7 +228,7 @@ const SentDetail = () => {
               },
             }}
           >
-            <MessageHeader sender={data} formattedDate={formattedDate} />
+            <MessageHeader sender={data} formattedDate={formattedDate} letterhead={showLetterhead} />
             <Box
               sx={{
                 flex: 1,
@@ -246,7 +243,7 @@ const SentDetail = () => {
                 },
               }}
             >
-              <MessageContent sender={data} allposition={allposition} />
+              <MessageContent sender={data} allposition={allposition || []} />
             </Box>
             {showLetterhead && (
               <Box

@@ -10,17 +10,8 @@ import { FormInput } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import React, { useState, useRef } from "react";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
-import { AttachmentResponseType } from "../../types/sent/sent.type";
-
-interface AttachmentDialogPropsType {
-  open: boolean;
-  onClose: () => void;
-  onAttachmentAdd: (attachmentData: {
-    name: string;
-    file: string;
-    id: number;
-  }) => void;
-}
+import { AttachmentDialogPropsType } from "../../types/sent/attachment.type";
+import { AttachmentResponseType } from "../../types";
 
 const AttachmentDialog: React.FC<AttachmentDialogPropsType> = ({
   open,
@@ -61,6 +52,7 @@ const AttachmentDialog: React.FC<AttachmentDialogPropsType> = ({
               name: `${attachmentName}`,
               file: response.file,
               id: response.id,
+              size: file.size,
             });
           },
         });

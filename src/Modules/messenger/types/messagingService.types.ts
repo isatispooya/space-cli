@@ -53,8 +53,7 @@ export interface ChatDataType {
 }
 
 export interface AttachmentResponseType {
-  id: number;
-  [key: string]: unknown;
+  id: number;  
 }
 
 export interface MessagingServiceType {
