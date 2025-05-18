@@ -3,7 +3,6 @@ import AnalysisSymbolFeat from "../components/symbolsTabs/analysis/analysis_symb
 import { Tabs } from "@/components";
 import SymbolsPricingCom from "../components/symbolsTabs/pricing/symbols_pricing.com";
 import SymbolsIntroCom from "../components/symbolsTabs/intro/symbols_Intro.com";
-import { Calculator } from "../components";
 import { useSymbols } from "../hooks";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
