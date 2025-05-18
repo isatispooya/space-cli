@@ -1,46 +1,46 @@
 import internalOptions from "../../data/sent/transcript.data";
-import { ITranscriptResponseType } from "./sent.type";
+import { ITranscriptResponseType } from "../../hooks/sent/sentForm.types";
 
 export interface TranscriptItemType {
-  position?: number;
-  id?: number;
-  transcript_for?: string;
-  user?: {
+  position: number;
+  id: number;
+  transcript_for: string;
+  user: {
     id: number;
     first_name: string;
     last_name: string;
   };
-  name?: string;
-  company_name?: string;
-  company_detail?: {
+  name: string;
+  company_name: string;
+  company_detail: {
     name: string;
   };
-  security?: boolean;
-  external_text?: string | string[];
+  security: boolean;
+  external_text: string | string[];
 }
 
 export interface ReferenceDetailType {
   id: number;
-  user?: {
+  user: {
     first_name: string;
     last_name: string;
   };
-  position?: string;
-  name?: string;
-  company_name?: string;
-  company_detail?: {
+  position: string;
+  name: string;
+  company_name: string;
+  company_detail: {
     name: string;
   };
-  transcript_for?: string;
+  transcript_for: string;
 }
 
 export interface SenderDataType {
-  reference_details?: ReferenceDetailType[];
+  reference_details: ReferenceDetailType[];
 }
 
 export interface TranscriptDataType {
-  transcript_details?: TranscriptItemType[];
-  sender?: SenderDataType;
+  transcript_details: TranscriptItemType[];
+  sender: SenderDataType;
 }
 
 export interface TranscriptDirectionsType {
@@ -67,8 +67,8 @@ export interface TranscriptPropsType {
   getTranscriptName: (position: number) => string;
   transcriptDirections: TranscriptDirectionsType;
   setTranscriptDirection: (id: number, value: string) => void;
-  data?: TranscriptDataType;
-  is_internal?: boolean;
+  data: TranscriptDataType;
+  is_internal: boolean;
 }
 
 export interface TranscriptSectionPropsType {
@@ -81,9 +81,6 @@ export interface TranscriptSectionPropsType {
   handleAddTranscript: (text?: string) => void;
   handleTranscriptToggle: (id: number) => void;
   setTranscriptDirection: (id: number, direction: string) => void;
-  is_internal?: boolean;
+  is_internal: boolean;
+  transcript: TranscriptItemType[];
 }
-
-
-
-

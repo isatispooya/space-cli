@@ -13,21 +13,21 @@ const PrioritySection: React.FC<PrioritySectionType> = ({
   <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
     <SelectInput
       label="اولویت"
-      value={formData.priority || ""}
+      value={formData.priority}
       onChange={(value) => handleChange("priority", value)}
       options={priorityOptions}
       className="enhanced-select"
     />
     <SelectInput
       label="طبقه بندی"
-      value={formData.confidentiality_level || ""}
+      value={formData.confidentiality_level}
       onChange={(value) => handleChange("confidentiality_level", value)}
       options={departmentOptions}
       className="enhanced-select"
     />
     <SelectInput
       label="نوع نامه"
-      value={formData.kind_of_correspondence || ""}
+      value={formData.kind_of_correspondence}
       onChange={(value) => handleChange("kind_of_correspondence", value)}
       options={letterTypeOptions}
       className="enhanced-select"

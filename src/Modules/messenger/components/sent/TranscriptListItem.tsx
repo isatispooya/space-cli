@@ -25,7 +25,6 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     handleDirectionChange,
     handleTranscriptToggle,
     internalOptions,
-    handleExternalTextUpdate,
   }) => {
     const [visibility, setVisibility] = useState(!item.security);
     const isExternalTranscript = (item.id !== undefined && item.id < 0) || !!item.external_text;
@@ -65,9 +64,6 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
       const newTexts = [...externalTexts];
       newTexts[index] = value;
       setExternalTexts(newTexts);
-      if (handleExternalTextUpdate && item.id !== undefined) {
-        handleExternalTextUpdate(item.id, newTexts);
-      }
     };
 
     const addExternalText = () => {
@@ -78,9 +74,6 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
       if (externalTexts.length > 1) {
         const newTexts = externalTexts.filter((_, i) => i !== index);
         setExternalTexts(newTexts);
-        if (handleExternalTextUpdate && item.id !== undefined) {
-          handleExternalTextUpdate(item.id, newTexts);
-        }
       }
     };
 

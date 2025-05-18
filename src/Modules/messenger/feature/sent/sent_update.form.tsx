@@ -17,11 +17,8 @@ import PublishedMessage from "../../components/sent/PublishedMessage";
 
 import { useSentFormLogic } from "../../hooks/sent/useSentFormLogic";
 import { useFormStateHandler } from "../../hooks/sent/useFormStateHandler";
-
-interface AttachmentType {
-  name: string;
-  id: number;
-}
+import { AttachmentType } from "../../types/sent/attachment.type";
+import { TranscriptItemType } from "../../types/sent/transcript.type";
 
 const SentUpdateForm: React.FC = () => {
   const theme = useTheme();
@@ -89,8 +86,7 @@ const SentUpdateForm: React.FC = () => {
     onSubmit();
   };
 
-  // Adapter function to handle transcript addition
-  const handleTranscriptAddAdapter = (externalText?: string) => {
+  const handleTranscriptAddAdapter = () => {
     if (selectedTranscript) {
       handleAddTranscript(selectedTranscript);
     }
@@ -103,12 +99,6 @@ const SentUpdateForm: React.FC = () => {
       <PublishedMessage onNavigateBack={() => navigate("/messenger/sent")} />
     );
   }
-
-  // تبدیل داده‌ها به فرمت مناسب برای کامپوننت‌ها
-  const senderSectionFormData = {
-    ...formData,
-    receiver_internal: formData.receiver_internal === null ? undefined : formData.receiver_internal
-  };
 
   const attachmentSectionFormData = {
     attachments: formData.attachments?.map(id => id.toString()) || [],
@@ -141,8 +131,15 @@ const SentUpdateForm: React.FC = () => {
             <Grid container spacing={{ xs: 2, sm: 3 }}>
               <Grid item xs={12} md={6}>
                 <SenderSection
-                  formData={senderSectionFormData}
-                  handleChange={(field: string, value: unknown) => handleInputChange(field, value as string | number | boolean)}
+                  formData={{
+                    sender: formData.sender?.toString() || "",
+                    sender_details: data?.sender_details || {},
+                    receiver_internal: formData.receiver_internal?.toString() || "",
+                    receiver_internal_details: data?.receiver_internal_details || {},
+                    receiver_external: formData.receiver_external || "",
+                    subject: formData.subject || ""
+                  }}
+                  handleChange={(field: string, value: string) => handleInputChange(field, value)}
                   senderUserOptions={senderUserOptions}
                   senderUserOptionsOut={senderUserOptionsOut}
                   useInternalReceiver={useInternalReceiver}
@@ -153,8 +150,12 @@ const SentUpdateForm: React.FC = () => {
                 <Grid container spacing={{ xs: 2, sm: 2 }}>
                   <Grid item xs={12} sm={7}>
                     <PrioritySection
-                      formData={formData as unknown as { [key: string]: unknown }}
-                      handleChange={(field: string, value: unknown) => handleInputChange(field, value as string | number | boolean)}
+                      formData={{
+                        priority: formData.priority || "",
+                        confidentiality_level: formData.confidentiality_level || "",
+                        kind_of_correspondence: formData.kind_of_correspondence || ""
+                      }}
+                      handleChange={(field: string, value: string) => handleInputChange(field, value)}
                       priorityOptions={priorityOptions}
                       departmentOptions={departmentOptions}
                       letterTypeOptions={letterTypeOptions}
@@ -164,6 +165,7 @@ const SentUpdateForm: React.FC = () => {
                     <AttachmentSection
                       setOpenFileDialog={setOpenFileDialog}
                       formData={attachmentSectionFormData}
+                      attachments={formData.attachments?.map(id => id.toString()) || []}
                       handleChange={(field: string, value: string[]) => 
                         handleInputChange(field, value)
                       }
@@ -218,7 +220,7 @@ const SentUpdateForm: React.FC = () => {
             <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
             <Transcript
               data={data}
-              transcript={transcriptItems}
+              transcript={transcriptItems as unknown as TranscriptItemType[]}
               selectedTranscript={(selectedTranscript ? [selectedTranscript.toString()] : []) as string[]}
               setSelectedTranscript={(transcripts: string[]) => {
                 if (transcripts.length > 0) {
@@ -233,7 +235,7 @@ const SentUpdateForm: React.FC = () => {
               getTranscriptName={getTranscriptName}
               transcriptDirections={transcriptDirections}
               setTranscriptDirection={setTranscriptDirection}
-              is_internal={formData.is_internal}
+              is_internal={formData.is_internal || false}
             />
           </Grid>
 

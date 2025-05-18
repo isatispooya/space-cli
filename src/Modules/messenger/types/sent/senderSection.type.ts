@@ -1,20 +1,19 @@
 export interface SenderSectionType {
   formData: {
-    sender?: string | number;
+    sender: string;
     sender_details?: {
       user?: {
-        id?: string | number;
+        id?: string;
       };
     };
-    receiver_internal?: string | number;
+    receiver_internal: string;
     receiver_internal_details?: {
-      id?: string | number;
+      id?: string;
     };
-    receiver_external?: string;
-    subject?: string;
-    [key: string]: unknown;
+    receiver_external: string;
+    subject: string;
   };
-  handleChange: (field: string, value: unknown) => void;
+  handleChange: (field: string, value: string) => void;
   senderUserOptions: Array<{ value: string; label: string }>;
   senderUserOptionsOut: Array<{ value: string; label: string }>;
   useInternalReceiver: boolean;

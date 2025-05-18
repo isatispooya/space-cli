@@ -72,7 +72,6 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
   transcriptDirections: {},
   attachmentOptions: [],
 
-  // Simple state setters
   setFormField: (key, value) => 
     set((state) => ({
       formData: { ...state.formData, [key]: value },
@@ -100,10 +99,8 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
   setAttachmentOptions: (options) => 
     set(() => ({ attachmentOptions: options })),
 
-  // Complex actions
   handleFormChange: (name, value) => {
     set((state) => {
-      // Handle attachment dialog
       if (name === "attachments" && Array.isArray(value) && value.includes("add_attachment")) {
         const filteredValue = value.filter((v) => v !== "add_attachment") as string[];
         
@@ -117,7 +114,6 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
         };
       }
 
-      // Handle numeric values
       if (["sender", "receiver_internal"].includes(name) && typeof value === "string") {
         const numValue = value === "" ? 0 : Number(value);
         
@@ -126,7 +122,7 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
             formData: {
               ...state.formData,
               sender: numValue,
-              transcript: state.formData.transcript.map((t) => ({
+              transcript: state.formData.transcript.map((t: TranscriptDataType) => ({
                 ...t,
                 position: numValue,
               })),
@@ -142,7 +138,6 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
         };
       }
 
-      // Handle boolean values
       if (["seal", "signature", "letterhead", "binding", "published", "is_internal"].includes(name)) {
         return {
           formData: {
@@ -152,7 +147,6 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
         };
       }
 
-      // Handle array values
       if (["reference", "receiver", "attachments"].includes(name)) {
         const arrayValue = Array.isArray(value) ? value : [value];
         return {
@@ -165,7 +159,6 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
         };
       }
 
-      // Default handler for string values
       return {
         formData: {
           ...state.formData,
@@ -196,7 +189,6 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
 
   handleAddTranscript: (externalTranscriptText) =>
     set((state) => {
-      // Add transcript from selected items
       if (state.selectedTranscript.length > 0) {
         const newReferences = state.selectedTranscript
           .filter((id) => !state.formData.reference.includes(Number(id)))
@@ -230,9 +222,8 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
           };
         }
       } 
-      // Add external transcript
       else if (externalTranscriptText?.trim()) {
-        const externalId = -Date.now(); // Generate unique negative ID for external transcripts
+        const externalId = -Date.now(); 
 
         const newReferenceData: ReferenceDataType = {
           id: externalId,
@@ -267,10 +258,10 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
   handleTranscriptToggle: (id) =>
     set((state) => {
       const referenceData = state.formData.referenceData || [];
-      const existingItem = referenceData.find((item) => item.id === id);
+      const existingItem = referenceData.find((item: ReferenceDataType) => item.id === id);
 
       const updatedReferenceData = existingItem
-        ? referenceData.map((item) =>
+        ? referenceData.map((item: ReferenceDataType) =>
             item.id === id ? { ...item, enabled: !item.enabled } : item
           )
         : [

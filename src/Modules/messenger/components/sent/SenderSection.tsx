@@ -16,11 +16,7 @@ const SenderSection: React.FC<SenderSectionType> = ({
       <>
         <SelectInput
           label="ارسال کننده"
-          value={
-            (
-              formData.sender || formData.sender_details?.user?.id
-            )?.toString() || ""
-          }
+          value={(formData.sender || formData.sender_details?.user?.id || "")}
           onChange={(value) => handleChange("sender", value)}
           options={senderUserOptions}
           className="enhanced-select"
@@ -28,12 +24,7 @@ const SenderSection: React.FC<SenderSectionType> = ({
 
         <SelectInput
           label="گیرنده داخلی"
-          value={
-            (
-              formData.receiver_internal ||
-              formData.receiver_internal_details?.id
-            )?.toString() || ""
-          }
+          value={(formData.receiver_internal || formData.receiver_internal_details?.id || "")}
           onChange={(value) => handleChange("receiver_internal", value)}
           options={internalUserOptions}
           className="enhanced-select"
@@ -43,18 +34,14 @@ const SenderSection: React.FC<SenderSectionType> = ({
       <>
         <SelectInput
           label="ارسال کننده"
-          value={
-            (
-              formData.sender || formData.sender_details?.user?.id
-            )?.toString() || ""
-          }
+          value={(formData.sender || formData.sender_details?.user?.id || "")}
           onChange={(value) => handleChange("sender", value)}
           options={senderUserOptionsOut}
           className="enhanced-select"
         />
         <FormInput
           label="گیرنده خارجی"
-          value={formData.receiver_external || ""}
+          value={formData.receiver_external}
           onChange={(e) => handleChange("receiver_external", e.target.value)}
           placeholder="گیرنده خارجی"
           className="enhanced-input"
@@ -63,7 +50,7 @@ const SenderSection: React.FC<SenderSectionType> = ({
     )}
     <FormInput
       label="موضوع"
-      value={formData.subject || ""}
+      value={formData.subject}
       onChange={(e) => handleChange("subject", e.target.value)}
       className="enhanced-input"
     />

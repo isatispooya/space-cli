@@ -1,9 +1,9 @@
 import { Box, Grid, Typography, Divider } from "@mui/material";
 import { MessageHeaderPropsType } from "../../../types/sent/sent.type";
-
 import { departmentOptions } from "../../../data/sent/sent.data";
 import { getValueLabel } from "../../../utils/helpers";
 import { server } from "@/api";
+
 
 export const MessageHeader = ({
   sender,
@@ -15,27 +15,26 @@ export const MessageHeader = ({
     <Box sx={{ position: "relative" }}>
       <Grid container>
         <Grid item xs={12}>
-        {showLetterhead && (
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              mb: 2,
-            }}
-          >
-            <Typography
-              variant="h6"
+          {showLetterhead && (
+            <Box
               sx={{
-                fontWeight: "bold",
-                my: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                mb: 2,
               }}
             >
-              بسم تعالی
-            </Typography>
-          </Box>
-                      )}
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  my: 1,
+                }}
+              >
+                بسم تعالی
+              </Typography>
+            </Box>
+          )}
 
           <Box
             sx={{
@@ -47,40 +46,39 @@ export const MessageHeader = ({
               p: 2,
             }}
           >
-                    {showLetterhead && (
-                      <>
-
-            <Box
-              sx={{
-                width: "150px",
-                height: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <img
-                src={server + sender?.sender_details?.company_detail?.logo}
-                alt="logo"
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                  objectFit: "contain",
-                }}
-              />
-            </Box>
-            <Typography
-              sx={{
-                flex: 1,
-                wordBreak: "break-word",
-                overflow: "visible",
-                fontWeight: "500",
-              }}
-            >
-              {sender?.sender_details?.company_detail?.name}
-            </Typography>
-            </>
-              )}
+            {showLetterhead && (
+              <>
+                <Box
+                  sx={{
+                    width: "150px",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img
+                    src={server + sender?.sender_details?.company_detail?.logo}
+                    alt="logo"
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "contain",
+                    }}
+                  />
+                </Box>
+                <Typography
+                  sx={{
+                    flex: 1,
+                    wordBreak: "break-word",
+                    overflow: "visible",
+                    fontWeight: "500",
+                  }}
+                >
+                  {sender?.sender_details?.company_detail?.name}
+                </Typography>
+              </>
+            )}
             <Box
               sx={{
                 display: "flex",
@@ -104,7 +102,10 @@ export const MessageHeader = ({
               <Typography>شماره : {sender?.number}</Typography>
               <Typography>
                 طبقه بندی :{" "}
-                {getValueLabel(sender?.confidentiality_level, departmentOptions)}
+                {getValueLabel(
+                  sender?.confidentiality_level,
+                  departmentOptions
+                )}
               </Typography>
             </Box>
           </Box>
