@@ -17,7 +17,7 @@ const ForgetPassSmsForm: React.FC<{ onVerificationSuccess: () => void }> = ({
   const validationSchema = Yup.object({
     nationalCode: Yup.string()
       .required("کد ملی الزامی است")
-      .matches(/^[0-9]{10}$/, "کد ملی باید 10 رقم باشد"),
+      .matches(/^[0-9]{14}$/, "کد ملی باید 14 رقم باشد"),
   });
 
   const formik = useFormik({
@@ -33,7 +33,8 @@ const ForgetPassSmsForm: React.FC<{ onVerificationSuccess: () => void }> = ({
           onVerificationSuccess();
         },
         onError: (error: AxiosError<unknown>) => {
-          const errorMessage = (error.response?.data as ErrorResponseType)?.error;
+          const errorMessage = (error.response?.data as ErrorResponseType)
+            ?.error;
           toast.error(errorMessage || "خطایی رخ داده است");
         },
       });

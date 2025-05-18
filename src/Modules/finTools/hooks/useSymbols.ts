@@ -1,6 +1,12 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  UseQueryResult,
+  UseMutationResult,
+} from "@tanstack/react-query";
 import { SymbolsServices } from "../services";
 import { SymbolsType } from "../types";
+import { AxiosError } from "axios";
 
 const useSymbols = {
   useGetSymbols: (): UseQueryResult<SymbolsType["symbolRes"]> => {
@@ -46,6 +52,30 @@ const useSymbols = {
           days,
           calculationType
         ),
+    });
+  },
+
+  usePostSymbolCalculator: (): UseMutationResult<
+    SymbolsType["symbolCalculatorRes"],
+    AxiosError,
+    SymbolsType["symbolCalculatorReq"]
+  > => {
+    return useMutation({
+      mutationKey: ["symbol-calculator"],
+      mutationFn: (data: SymbolsType["symbolCalculatorReq"]) =>
+        SymbolsServices.postSymbolCalculator(data),
+    });
+  },
+
+  usePostInvestDocument: (): UseMutationResult<
+    SymbolsType["investDocumentRes"],
+    AxiosError,
+    SymbolsType["investDocumentReq"]
+  > => {
+    return useMutation({
+      mutationKey: ["invest-document"],
+      mutationFn: (data: SymbolsType["investDocumentReq"]) =>
+        SymbolsServices.postInvestDocument(data),
     });
   },
 };

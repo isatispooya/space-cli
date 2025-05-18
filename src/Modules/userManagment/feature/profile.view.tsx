@@ -3,6 +3,8 @@ import { useProfile, useUpdateProfilePicture } from "../hooks";
 import { motion } from "framer-motion";
 import { server } from "../../../api/server";
 import { profileIcon } from "@/assets";
+import { usePosition } from "@/Modules/positions/hooks";
+
 
 const ProfileView: React.FC = () => {
   const { data: profile, refetch } = useProfile();
@@ -10,20 +12,25 @@ const ProfileView: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>(
     profile?.profile_image ?? ""
   );
+  const { data: position } = usePosition.useGet();
+
+  console.log(position);
+
   React.useEffect(() => {
     if (profile?.profile_image) {
       setAvatarUrl(profile.profile_image);
     }
   }, [profile?.profile_image]);
 
-  const handleAvatarChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    type: "avatar" | "signature"
   ) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
       try {
         const formData = new FormData();
-        formData.append("avatar", file);
+        formData.append(type, file);
 
         await updateProfilePicture(formData, {
           onSuccess: () => {
@@ -31,7 +38,7 @@ const ProfileView: React.FC = () => {
           },
         });
       } catch (error) {
-        console.error("خطا در آپلود تصویر:", error);
+        console.error(`خطا در آپلود ${type}:`, error);
       }
     }
   };
@@ -147,7 +154,7 @@ const ProfileView: React.FC = () => {
                   type="file"
                   className="hidden"
                   accept="image/*"
-                  onChange={handleAvatarChange}
+                  onChange={(e) => handleImageChange(e, "avatar")}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -184,6 +191,51 @@ const ProfileView: React.FC = () => {
               </li>
             ))}
           </ul>
+
+          <div className="flex flex-col items-center mt-8">
+            <span className="text-[#ffff] font-bold mb-2">امضای کاربر</span>
+
+            <div className="relative mb-4">
+              <div className="w-48 h-24 rounded-lg overflow-hidden border-2 border-[#5677BC] bg-white flex items-center justify-center shadow">
+                {position && Array.isArray(position) && position[0]?.signature ? (
+                  <img
+                    src={position && Array.isArray(position) && position[0]?.signature ? server + position[0].signature : ''}
+                    alt="امضا"
+                    className="max-h-full max-w-full object-contain"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <span className="text-gray-400 mb-4">
+                    امضایی ثبت نشده است
+                  </span>
+                )}
+              </div>
+              <label className="absolute bottom-2 right-2 bg-[#5677BC] p-2 rounded-full cursor-pointer shadow-lg">
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={(e) => handleImageChange(e, "signature")}
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15.172 7l-6.586 6.586a2 2 0 002.828 2.828L18 10.828M7 7h.01"
+                  />
+                </svg>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>

@@ -3,8 +3,7 @@ import { Card } from "@/components";
 import WaveEffect from "@/ui/wave";
 import * as echarts from "echarts";
 import { useEffect, useRef } from "react";
-import { SymbolsType } from "../types";
-
+import { SymbolsType } from "../../../types";
 
 type EChartsOptionType = echarts.EChartsOption;
 
@@ -25,27 +24,31 @@ const ChartComponent = ({ data, labels, symbols }: ChartPropsType) => {
     const option: EChartsOptionType = {
       animation: true,
       animationDuration: 1500,
-      animationEasing: 'elasticOut',
+      animationEasing: "elasticOut",
       tooltip: {
         trigger: "axis",
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
         borderWidth: 0,
         borderRadius: 8,
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowColor: "rgba(0, 0, 0, 0.1)",
         shadowBlur: 10,
         shadowOffsetY: 5,
         textStyle: {
-          color: '#333',
+          color: "#333",
           fontSize: 12,
         },
         formatter: (params: any) => {
           const dataIndex = params[0].dataIndex;
           return `<div style="padding: 8px 12px;">
-            <div style="font-weight: bold; margin-bottom: 4px;">تاریخ: ${labels[dataIndex]}</div>
-            <div>قیمت: <span style="color: #3B82F6; font-weight: bold;">${data[dataIndex].toLocaleString()} ریال</span></div>
+            <div style="font-weight: bold; margin-bottom: 4px;">تاریخ: ${
+              labels[dataIndex]
+            }</div>
+            <div>قیمت: <span style="color: #3B82F6; font-weight: bold;">${data[
+              dataIndex
+            ].toLocaleString()} ریال</span></div>
           </div>`;
         },
-        extraCssText: 'box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);',
+        extraCssText: "box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);",
       },
       grid: {
         left: "3%",
@@ -64,7 +67,7 @@ const ChartComponent = ({ data, labels, symbols }: ChartPropsType) => {
           formatter: (value: string) => {
             return value.replace("1404-", "").replace("1403-", "");
           },
-          color: '#666',
+          color: "#666",
           fontSize: 11,
           margin: 12,
         },
@@ -73,10 +76,12 @@ const ChartComponent = ({ data, labels, symbols }: ChartPropsType) => {
       yAxis: {
         type: "value",
         axisLine: { show: false },
-        splitLine: { lineStyle: { color: 'rgba(235, 238, 245, 0.8)', type: 'dashed' } },
+        splitLine: {
+          lineStyle: { color: "rgba(235, 238, 245, 0.8)", type: "dashed" },
+        },
         axisLabel: {
           formatter: (value: number) => value.toLocaleString(),
-          color: '#666',
+          color: "#666",
           fontSize: 11,
           margin: 16,
         },
@@ -89,12 +94,12 @@ const ChartComponent = ({ data, labels, symbols }: ChartPropsType) => {
           smooth: true,
           showSymbol: false,
           emphasis: {
-            focus: 'series',
+            focus: "series",
             scale: true,
             itemStyle: {
               shadowBlur: 20,
-              shadowColor: 'rgba(59, 130, 246, 0.5)',
-            }
+              shadowColor: "rgba(59, 130, 246, 0.5)",
+            },
           },
           areaStyle: {
             opacity: 0.5,
@@ -113,18 +118,18 @@ const ChartComponent = ({ data, labels, symbols }: ChartPropsType) => {
           },
           lineStyle: {
             width: 4,
-            cap: 'round',
-            join: 'round',
+            cap: "round",
+            join: "round",
             color: {
-              type: 'linear',
+              type: "linear",
               x: 0,
               y: 0,
               x2: 1,
               y2: 0,
               colorStops: [
-                { offset: 0, color: '#3B82F6' },
-                { offset: 1, color: '#1D4ED8' }
-              ]
+                { offset: 0, color: "#3B82F6" },
+                { offset: 1, color: "#1D4ED8" },
+              ],
             },
             shadowColor: "rgba(59, 130, 246, 0.5)",
             shadowBlur: 15,
@@ -133,7 +138,7 @@ const ChartComponent = ({ data, labels, symbols }: ChartPropsType) => {
             color: "#3B82F6",
             borderWidth: 3,
             borderColor: "#fff",
-            shadowColor: 'rgba(59, 130, 246, 0.5)',
+            shadowColor: "rgba(59, 130, 246, 0.5)",
             shadowBlur: 10,
           },
         },
@@ -162,7 +167,9 @@ const Chart = ({ data, labels, symbols }: ChartPropsType) => (
       content={
         <div className="flex flex-col">
           <div className="px-4 pt-2 pb-1">
-            <h3 className="text-lg font-bold text-gray-800">{symbols?.description || "نمودار قیمت"}</h3>
+            <h3 className="text-lg font-bold text-gray-800">
+              {symbols?.description || "نمودار قیمت"}
+            </h3>
             <p className="text-sm text-gray-500">تغییرات قیمت در دوره زمانی</p>
           </div>
           <ChartComponent data={data} labels={labels} symbols={symbols} />

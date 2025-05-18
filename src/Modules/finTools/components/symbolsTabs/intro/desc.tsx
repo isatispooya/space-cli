@@ -1,21 +1,49 @@
 import { Button, NoContent } from "@/components";
 import { motion } from "framer-motion";
-import { SymbolsType } from "../types";
+import { SymbolsType } from "../../../types";
 import { useNavigate } from "react-router-dom";
 import { server } from "@/api";
 import { FiExternalLink, FiMessageCircle } from "react-icons/fi";
+import { useConsultUser } from "@/Modules/consultation/hooks";
+import { Calculator as CalculatorIcon } from "lucide-react";
 
-const Details = ({ symbol }: { symbol: SymbolsType["symbolRes"][0] | undefined }) => {
+const Details = ({
+  symbol,
+  onSwitchToCalculator,
+}: {
+  symbol: SymbolsType["symbolRes"][0] | undefined;
+  onSwitchToCalculator: () => void;
+}) => {
   const navigate = useNavigate();
+  const { mutate: postSubject } = useConsultUser.usePostSubject();
 
   if (!symbol) {
     return <NoContent label="هیچ صندوقی یافت نشد" />;
   }
 
+  const handleConsultRequest = () => {
+    if (!symbol.id) return;
+
+    postSubject(
+      { consultant_id: 1 },
+      {
+        onSuccess: () => {
+          console.log("درخواست مشاوره با موفقیت ثبت شد");
+          navigate("/consultation/requests");
+        },
+        onError: (err) => {
+          console.error("خطا در ثبت درخواست مشاوره", err);
+        },
+      }
+    );
+  };
+
+  const isFixedIncome = symbol.symbol_detail?.type === "fixincome";
+
   return (
     <motion.div
       key={symbol.id}
-      className="flex-1 flex flex-col items-center justify-startoverflow-hidden p-2  max-w-md mx-auto"
+      className="flex-1 flex flex-col items-center justify-start overflow-hidden p-2 max-w-md mx-auto"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -29,23 +57,18 @@ const Details = ({ symbol }: { symbol: SymbolsType["symbolRes"][0] | undefined }
         <div className="w-24 h-24 rounded-full bg-white shadow-md flex items-center justify-center p-4 relative overflow-hidden">
           <motion.div
             className="absolute inset-0 opacity-20"
-            animate={{
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 3,
-              ease: "easeInOut",
-            }}
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
           />
           <img
-            src={server + symbol?.photo}
+            src={server + symbol.photo}
             alt={symbol.description || "ETF Logo"}
             className="h-16 w-auto object-contain z-10"
           />
         </div>
       </motion.div>
 
+      {/* اطلاعات متنی */}
       <motion.div
         className="text-center"
         initial={{ opacity: 0 }}
@@ -87,8 +110,9 @@ const Details = ({ symbol }: { symbol: SymbolsType["symbolRes"][0] | undefined }
         </motion.p>
       </motion.div>
 
+      {/* دکمه‌ها */}
       <motion.div
-        className="mt-2 grid grid-cols-2 gap-2 w-full"
+        className="mt-2 grid grid-cols-3 gap-2 w-full"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.4 }}
@@ -99,23 +123,30 @@ const Details = ({ symbol }: { symbol: SymbolsType["symbolRes"][0] | undefined }
               window.open(symbol.link, "_blank");
             }
           }}
-          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-md hover:shadow-blue-100 hover:from-blue-600 hover:to-blue-800 transition-all duration-200 flex items-center justify-center gap-1 py-2"
+          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-md hover:shadow-blue-100 hover:from-blue-600 hover:to-blue-800 transition-all duration-200 flex items-center justify-center gap-1 py-1.5 px-3 text-sm"
         >
-          <FiExternalLink className="w-4 h-4" />
+          <FiExternalLink className="w-3.5 h-3.5" />
           <span>خرید</span>
         </Button>
+
         <Button
-          onClick={() => {
-            navigate("/consultation");
-          }}
-          className="border bg-white border-green-500 text-green-600 rounded-lg shadow-sm hover:bg-green-500 hover:text-white hover:shadow-green-100 transition-all duration-200 flex items-center justify-center gap-1 py-2"
+          onClick={handleConsultRequest}
+          className="border bg-white border-green-500 text-green-600 rounded-lg shadow-sm hover:bg-green-500 hover:text-white hover:shadow-green-100 transition-all duration-200 flex items-center justify-center gap-1 py-1.5 px-3 text-sm"
         >
-          <FiMessageCircle className="w-4 h-4" />
+          <FiMessageCircle className="w-3.5 h-3.5" />
           <span>مشاوره</span>
         </Button>
+
+        {isFixedIncome && (
+          <Button
+            onClick={onSwitchToCalculator}
+            className="border bg-white border-blue-500 text-blue-600 rounded-lg shadow-sm hover:bg-blue-500 hover:text-white hover:shadow-blue-100 transition-all duration-200 flex items-center justify-center gap-1 py-1.5 px-3 text-sm"
+          >
+            <CalculatorIcon />
+            <span>ماشین حساب سود</span>
+          </Button>
+        )}
       </motion.div>
-
-
     </motion.div>
   );
 };

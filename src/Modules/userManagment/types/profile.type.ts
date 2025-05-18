@@ -89,4 +89,5 @@ export interface ProfileType {
     user: number;
   }[];
   status_position: StatusPositionType;
+  signature_image?: string | null;
 }

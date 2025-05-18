@@ -57,8 +57,33 @@ export interface SymbolsPricingResType {
   }[];
 }
 
+export interface SymbolCalculatorReqType {
+  symbol: number | null;
+  investment: number | null;
+  date: string | null;
+}
+
+export interface SymbolCalculatorResType {
+  annualized_return: number;
+  compound_return: number;
+  investment: number;
+  start_date: string;
+  symbol: string;
+}
+export interface InvestDocumentReqType {
+  file_csv: File | null;
+}
+export interface InvestDocumentResType {
+  message: string;
+  status: string;
+}
+
 export type SymbolsType = {
   symbolRes: SymbolsGetResType[];
   symbolAnalysisRes: SymbolsAnalysisResType[];
   pricingRes: SymbolsPricingResType;
+  symbolCalculatorReq: SymbolCalculatorReqType;
+  symbolCalculatorRes: SymbolCalculatorResType;
+  investDocumentReq: InvestDocumentReqType;
+  investDocumentRes: InvestDocumentResType;
 };
