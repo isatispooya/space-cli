@@ -3,7 +3,11 @@ import { useSymbols } from "../../../hooks";
 import { Chart, Details } from "../..";
 import { SymbolsType } from "../../../types";
 
-const SymbolsIntroCom = () => {
+interface SymbolsIntroComPropsType {
+  onSwitchToCalculator: () => void;
+}
+
+const SymbolsIntroCom = ({ onSwitchToCalculator }: SymbolsIntroComPropsType) => {
   const { id } = useParams();
   const { data: symbolResponse } = useSymbols.useGetSymbolsById(Number(id));
   const symbol: SymbolsType["symbolRes"][0] | undefined = symbolResponse
@@ -13,6 +17,8 @@ const SymbolsIntroCom = () => {
   const chartData =
     symbol?.history_data?.map((item) => item.closing_price_value) || [];
   const chartLabels = symbol?.history_data?.map((item) => item.date) || [];
+
+  
   return (
     <>
       <div className="w-full flex flex-col md:flex-row items-start justify-center p-6 relative">
@@ -27,7 +33,10 @@ const SymbolsIntroCom = () => {
         </div>
 
         <div className="w-full md:w-1/3 mt-6 md:mt-0 md:ml-6">
-          <Details symbol={symbol} />
+          <Details
+            symbol={symbol}
+            onSwitchToCalculator={onSwitchToCalculator}
+          />
         </div>
       </div>
     </>
