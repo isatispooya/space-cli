@@ -1,9 +1,6 @@
 import { Box, Paper } from "@mui/material";
 import { STYLES } from "../../style";
-
-interface FormContainerPropsType {
-  children: React.ReactNode;
-}
+import { FormContainerPropsType } from "../../types/sent/form.type";
 
 const FormContainer: React.FC<FormContainerPropsType> = ({ children }) => {
   return (

@@ -4,7 +4,7 @@ import TranscriptListItem from "./TranscriptListItem";
 import {
   TranscriptListPropsType,
   ITranscriptResponseType,
-} from "../../types/Transcript.Type";
+} from "../../types/sent/transcript.type";
 
 const TranscriptList: React.FC<TranscriptListPropsType> = ({
   displayTranscript,

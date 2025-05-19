@@ -15,3 +15,10 @@ export interface SenderSectionPropsType extends SectionPropsType {
   senderUserOptionsOut: SelectOptionType[];
   internalUserOptions: SelectOptionType[];
 }
+
+export interface PrioritySectionPropsType extends SectionPropsType {
+  priorityOptions: SelectOptionType[];
+  departmentOptions: SelectOptionType[];
+  letterTypeOptions: SelectOptionType[];
+}
+

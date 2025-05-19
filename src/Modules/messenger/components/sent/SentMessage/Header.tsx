@@ -1,10 +1,6 @@
 import { Box, Grid, Typography, Divider } from "@mui/material";
-import { MessageHeaderPropsType } from "../../../types/sent/sent.type";
-
-import { departmentOptions } from "../../../data/sent/sent.data";
-import { getValueLabel } from "../../../utils/helpers";
+import { MessageHeaderPropsType } from "../../../types/sent/message.type";
 import { server } from "@/api";
-
 export const MessageHeader = ({
   sender,
   formattedDate,

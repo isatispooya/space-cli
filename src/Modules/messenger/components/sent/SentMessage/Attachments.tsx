@@ -1,18 +1,7 @@
 import { Box, Typography, Paper, Button } from "@mui/material";
 import { AttachFile, Download } from "@mui/icons-material";
 import { server } from "@/api";
-
-interface AttachmentDetailType {
-  id: number;
-  name: string;
-  file: string;
-  size: number;
-}
-
-interface AttachmentsPropsType {
-  attachments: AttachmentDetailType[];
-}
-
+import { AttachmentsPropsType } from "../../../types/sent/attachment.type";
 export const MessageAttachments = ({ attachments }: AttachmentsPropsType) => {
   if (!attachments || attachments.length === 0) return null;
 
@@ -22,7 +11,9 @@ export const MessageAttachments = ({ attachments }: AttachmentsPropsType) => {
   };
 
   return (
-    <Box sx={{ mt: 4, border: "1px solid #e0e0e0", p: 2 , borderRadius: "10px"}}>
+    <Box
+      sx={{ mt: 4, border: "1px solid #e0e0e0", p: 2, borderRadius: "10px" }}
+    >
       <Typography
         variant="h6"
         sx={{

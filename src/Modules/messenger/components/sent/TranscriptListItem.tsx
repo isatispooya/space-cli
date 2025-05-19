@@ -15,18 +15,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { SelectInput } from "../../../../components/common/inputs";
-import internalOptions from "../../data/sent/transcript.data";
-import { ITranscriptResponseType } from "../../types/sent/sent.type";
-
-interface TranscriptListItemPropsType {
-  item: ITranscriptResponseType;
-  getTranscriptName: (id: number) => string;
-  transcriptDirections: { [id: number]: string };
-  handleDirectionChange: (id: number, value: string) => void;
-  handleTranscriptToggle: (id: number, newValue?: boolean) => void;
-  internalOptions: typeof internalOptions;
-  handleExternalTextUpdate?: (id: number, text: string | string[]) => void;
-}
+import { TranscriptListItemPropsType } from "../../types/sent/transcript.type";
 
 const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
   ({

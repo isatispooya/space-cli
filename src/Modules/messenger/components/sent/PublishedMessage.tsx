@@ -1,10 +1,7 @@
 import { Box, Alert } from "@mui/material";
 import { ButtonBase } from "../../../../components/common/buttons";
 import FormContainer from "./FormContainer";
-
-interface PublishedMessagePropsType {
-  onNavigateBack: () => void;
-}
+import { PublishedMessagePropsType } from "../../types/sent/message.type";
 
 const PublishedMessage: React.FC<PublishedMessagePropsType> = ({
   onNavigateBack,

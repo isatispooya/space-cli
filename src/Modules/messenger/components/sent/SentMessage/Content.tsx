@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { MessageContentPropsType } from "../../../types/sent/sent.type";
+import { MessageContentPropsType } from "../../../types/sent/message.type";
 import { server } from "@/api";
 
 export const MessageContent = ({
@@ -121,16 +121,9 @@ export const MessageContent = ({
               >
                 مهر و امضا
               </Typography>
-              {showSignature && signatureImageUrl ? (
-                <img
-                  src={`${server}${signatureImageUrl}`}
-                  alt="امضا"
-                  style={{
-                    maxWidth: "120px",
-                    height: "auto",
-                  }}
-                />
-              ) : null}
+              {showSignature && signatureImageUrl
+                ? renderSealAndSignature()
+                : null}
             </Box>
           </Box>
         </Grid>

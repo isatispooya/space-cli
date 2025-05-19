@@ -7,11 +7,8 @@ import { MessageHeader } from "../../components/sent/SentMessage/Header";
 import { MessageContent } from "../../components/sent/SentMessage/Content";
 import { MessageFooter } from "../../components/sent/SentMessage/Footer";
 import { MessageAttachments } from "../../components/sent/SentMessage/Attachments";
-import {
-  MatchedUserType,
-  TranscriptDetailsType,
-  SenderType,
-} from "../../types/sent/sent.type";
+import { MatchedUserType, SenderType } from "../../types/sent/sent.type";
+import { TranscriptDetailsType } from "../../types/sent/transcript.type";
 import { LoadingMessage } from "../../components/LoadingMessage";
 import PrintIcon from "@mui/icons-material/Print";
 import { useReceive } from "../../hooks/receive";

@@ -15,11 +15,12 @@ import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
 import { useLocation } from "react-router-dom";
 import TranscriptList from "./TranscriptList";
+import {} from "../../types/sent/transcript.type";
 import {
+  ITranscriptResponseType,
   TranscriptPropsType,
   ReferenceDetailType,
-} from "../../types/Transcript.Type";
-import { ITranscriptResponseType } from "../../types/sent/sent.type";
+} from "../../types/sent/transcript.type";
 
 const Transcript: React.FC<TranscriptPropsType> = React.memo(
   ({
@@ -75,7 +76,13 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           }
         });
       }
-    }, [data?.transcript_details, transcript]);
+    }, [
+      data?.transcript_details,
+      transcript,
+      setSelectedTranscript,
+      handleAddTranscript,
+      setTranscriptDirection,
+    ]);
 
     const handleAdd = useCallback(() => {
       if (isInternal) {
@@ -131,13 +138,18 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
         }}
       >
         {/* بخش افزودن رونوشت جدید */}
-        <Grid container spacing={2} alignItems="flex-end" sx={{
-          background: '#f5f7fa',
-          borderRadius: 2,
-          p: { xs: 1.5, md: 2 },
-          mb: 2,
-          boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-        }}>
+        <Grid
+          container
+          spacing={2}
+          alignItems="flex-end"
+          sx={{
+            background: "#f5f7fa",
+            borderRadius: 2,
+            p: { xs: 1.5, md: 2 },
+            mb: 2,
+            boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+          }}
+        >
           <Grid item xs={12} sm={4}>
             <MultiSelect
               label="انتخاب گیرندگان رونوشت"
@@ -161,17 +173,19 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
               fullWidth
               sx={{
                 borderRadius: 1.5,
-                boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+                boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
               }}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Box sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100%',
-            }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
               <ButtonBase
                 label="افزودن"
                 onClick={handleAdd}
