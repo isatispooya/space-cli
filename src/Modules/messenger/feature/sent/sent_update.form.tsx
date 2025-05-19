@@ -1,12 +1,11 @@
 import { Grid, Divider, useTheme, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import { TextAreaInput } from "../../../../components/common/inputs";
 import { AttachmentDialog } from "../../components/sent";
 import Transcript from "../../components/sent/sent_transcript";
 import FormSwitches from "../../components/sent/switch";
-import ReceiverTypeButtons from "../../components/sent/ReceiverTypeButtons";
 import SenderSection from "../../components/sent/SenderSection";
 import PrioritySection from "../../components/sent/PrioritySection";
 import AttachmentSection from "../../components/sent/AttachmentSection";
@@ -31,7 +30,6 @@ const SentUpdateForm: React.FC = () => {
     openFileDialog,
     selectedTranscript,
     transcriptDirections,
-    useInternalReceiver,
     handleAttachmentAdd,
     handleAddTranscript,
     handleTranscriptToggle,
@@ -39,7 +37,6 @@ const SentUpdateForm: React.FC = () => {
     setSelectedTranscript,
     setTranscriptDirection,
     handleSubmit: onSubmit,
-    handleReceiverTypeChange,
     senderUserOptions,
     internalUserOptions,
     attachmentOptions,
@@ -101,13 +98,6 @@ const SentUpdateForm: React.FC = () => {
       <form onSubmit={handleFormSubmit}>
         <Grid container spacing={{ xs: 2, sm: 3 }}>
           <Grid item xs={12}>
-            <ReceiverTypeButtons
-              receiverType={useInternalReceiver ? "internal" : "external"}
-              onTypeChange={handleReceiverTypeChange}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
             <Grid container spacing={{ xs: 2, sm: 3 }}>
               <Grid item xs={12} md={6}>
                 <SenderSection
@@ -115,7 +105,6 @@ const SentUpdateForm: React.FC = () => {
                   handleChange={handleInputChange}
                   senderUserOptions={senderUserOptions}
                   senderUserOptionsOut={senderUserOptionsOut}
-                  useInternalReceiver={useInternalReceiver}
                   internalUserOptions={internalUserOptions}
                 />
               </Grid>
@@ -199,7 +188,6 @@ const SentUpdateForm: React.FC = () => {
               getTranscriptName={getTranscriptName}
               transcriptDirections={transcriptDirections}
               setTranscriptDirection={setTranscriptDirection}
-              is_internal={formData.is_internal}
             />
           </Grid>
 

@@ -31,15 +31,13 @@ const SentUpdateFormPage = lazy(() =>
     default: module.SentUpdateFormPage,
   }))
 );
-const MessengerPage = lazy(() =>
-  import("../pages/messenger_main.page")
-);
+
+const MessengerPage = lazy(() => import("../pages/messenger_main.page"));
 const ReceiveRefferalPage = lazy(() =>
   import("..").then((module) => ({
     default: module.ReceiveRefferalPage,
   }))
 );
-
 
 const MessengerRoutes = [
   {
@@ -55,6 +53,10 @@ const MessengerRoutes = [
         element: <SentTablePage />,
       },
       {
+        path: "Outtable",
+        element: <SentTablePage />,
+      },
+      {
         path: "message/:id",
         element: <SentMessagePage />,
       },
@@ -63,11 +65,24 @@ const MessengerRoutes = [
         element: <SentUpdateFormPage />,
       },
       {
-        path: "update-form/:id",
+        path: "Outform",
         element: <SentUpdateFormPage />,
       },
       {
+        path: "update-form/:id",
+        element: <SentUpdateFormPage />,
+      },
+
+      {
         path: "receive-table",
+        element: <ReceiveTablePage />,
+      },
+      {
+        path: "Outreceive-table",
+        element: <ReceiveTablePage />,
+      },
+      {
+        path: "receive-table/:id",
         element: <ReceiveTablePage />,
       },
       {
@@ -75,7 +90,15 @@ const MessengerRoutes = [
         element: <ReceiveMessagePage />,
       },
       {
+        path: "Outreceive-message/:id",
+        element: <ReceiveMessagePage />,
+      },
+      {
         path: "receive-refferal/:id",
+        element: <ReceiveRefferalPage />,
+      },
+      {
+        path: "Outreceive-refferal/:id",
         element: <ReceiveRefferalPage />,
       },
     ],

@@ -9,21 +9,45 @@ const SentPage = () => {
   const toolbarButtons = [
     {
       icon: LuTable,
-      text: "ایجاد نامه",
+      text: "ایجاد نامه داخلی",
       permission: ["allow_any"],
       path: "form",
     },
     {
+      icon: LuTable,
+      text: "ایجاد نامه خارجی",
+      permission: ["allow_any"],
+      path: "Outform",
+    },
+    {
       icon: MdMarkEmailRead,
-      text: "نامه های دریافتی",
+      text: "نامه ها ی دریافتی داخلی",
       permission: ["allow_any"],
       path: "receive-table",
     },
     {
+      icon: MdMarkEmailRead,
+      text: "نامه ها ی دریافتی خارجی",
+      permission: ["allow_any"],
+      path: "Outreceive-table",
+    },
+    {
       icon: VscGitStashApply,
-      text: "نامه های ارسالی",
+      text: "نامه های ارسالی داخلی",
       permission: ["allow_any"],
       path: "table",
+    },
+    {
+      icon: VscGitStashApply,
+      text: "نامه های ارسالی خارجی",
+      permission: ["allow_any"],
+      path: "Outtable",
+    },
+    {
+      icon: VscGitStashApply,
+      text: "پیش نویس ها ",
+      permission: ["allow_any"],
+      path: "draft",
     },
   ];
   return (

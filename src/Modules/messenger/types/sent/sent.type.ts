@@ -1,3 +1,5 @@
+import { SectionPropsType, SelectOptionType } from "./SenderSection.type";
+
 export interface BaseUserType {
   id: number;
   first_name: string;
@@ -75,6 +77,7 @@ export interface APIFormDataType {
   reference: number[];
   transcript: TranscriptAPIDataType[];
   published: boolean;
+  owner: number;
 }
 
 export type FormDataType = {
@@ -101,6 +104,7 @@ export type FormDataType = {
   referenceData?: ReferenceDataType[];
   transcript: TranscriptDataType[];
   published: boolean;
+  owner: number;
 };
 
 export interface AttachmentResponseType {
@@ -225,32 +229,6 @@ export interface MessageContentPropsType {
 export interface MessageFooterPropsType {
   sender: SenderType;
   matchedUsers?: MatchedUserType[];
-}
-
-export interface SelectOptionType {
-  label: string;
-  value: string;
-}
-
-export interface FormOptionsType {
-  priorityOptions: SelectOptionType[];
-  departmentOptions: SelectOptionType[];
-  letterTypeOptions: SelectOptionType[];
-  senderUserOptions: SelectOptionType[];
-  internalUserOptions: SelectOptionType[];
-  attachmentOptions: SelectOptionType[];
-}
-
-export interface SectionPropsType {
-  formData: APIFormDataType;
-  handleChange: (name: string, value: string | boolean | string[]) => void;
-}
-
-export interface SenderSectionPropsType extends SectionPropsType {
-  senderUserOptions: SelectOptionType[];
-  senderUserOptionsOut: SelectOptionType[];
-  useInternalReceiver: boolean;
-  internalUserOptions: SelectOptionType[];
 }
 
 export interface PrioritySectionPropsType extends SectionPropsType {

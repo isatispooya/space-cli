@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import {  useEffect, useMemo, useCallback } from "react";
 import { usePosition } from "@/Modules/positions/hooks";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import { useSentFormStore } from "../../store/sent/sent.store";
@@ -90,9 +90,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     setAttachmentOptions,
   } = useSentFormStore();
 
-  const [useInternalReceiver, setUseInternalReceiver] = useState(
-    formData.is_internal ?? true
-  );
 
   const { data: Position } = usePosition.useGet();
   const { data: PositionAll } = usePosition.useGetAll();
@@ -101,7 +98,6 @@ export const useSentFormLogic = (id: string | undefined) => {
       data: CorrespondenceAttachmentsType;
     };
 
-  // Cast the response to our defined interface
   const { data } = useReceive.useGetById(id || "") as {
     data: ResponseDataType;
   };
@@ -135,7 +131,6 @@ export const useSentFormLogic = (id: string | undefined) => {
       published: false,
       referenceData: [],
     });
-    setUseInternalReceiver(true);
     toast.success("اطلاعات با موفقیت ثبت شد");
   };
 
@@ -290,7 +285,6 @@ export const useSentFormLogic = (id: string | undefined) => {
       };
 
       setFormData(transformedData);
-      setUseInternalReceiver(data.is_internal ?? true);
 
       // Handle transcript directions
       if (Array.isArray(data.transcript_details)) {
@@ -334,13 +328,9 @@ export const useSentFormLogic = (id: string | undefined) => {
         published: false,
         referenceData: [],
       });
-      setUseInternalReceiver(true);
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
 
-  useEffect(() => {
-    setUseInternalReceiver(formData.is_internal ?? true);
-  }, [formData.is_internal]);
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
@@ -386,7 +376,6 @@ export const useSentFormLogic = (id: string | undefined) => {
   };
 
   const handleReceiverTypeChange = (type: "internal" | "external") => {
-    setUseInternalReceiver(type === "internal");
     handleChange("is_internal", type === "internal");
     if (type === "internal") {
       handleChange("receiver_external", "");
@@ -414,7 +403,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     openFileDialog,
     selectedTranscript,
     transcriptDirections: transcriptDirectionsTyped,
-    useInternalReceiver,
     handleChange,
     handleAttachmentAdd,
     handleAddTranscript,
