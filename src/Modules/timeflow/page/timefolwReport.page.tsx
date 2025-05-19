@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useParams } from "react-router-dom";
-import { mali } from "@/assets"; 
+import { mali } from "@/assets";
 import { useTimeflow } from "../hooks";
 import moment from "moment-jalaali";
 import "../styles/timesheet.css";
@@ -30,9 +30,9 @@ const Timesheet = () => {
   const { data: timeflowDetails } = useTimeflow.useGetTimeflowDetails();
 
   const userDetail = Array.isArray(timeflowDetails?.other_logs)
-    ? timeflowDetails?.other_logs.find(
+    ? (timeflowDetails?.other_logs.find(
         (item: any) => (item as TimeflowDetailType).user_id.toString() === id
-      ) as TimeflowDetailType | undefined
+      ) as TimeflowDetailType | undefined)
     : undefined;
 
   const userTimeflowData =
@@ -58,7 +58,6 @@ const Timesheet = () => {
       ]
     : [];
 
- 
   const workSummary = userDetail
     ? {
         month: "اسفند 1403",

@@ -9,7 +9,7 @@ import { StatusPositionType } from "@/Modules/userManagment/types";
 import { PiPlugsConnected } from "react-icons/pi";
 import { TbPlugConnected } from "react-icons/tb";
 
-const UserTimeflowTable = () => {
+const UserTimeflowDaysFeat = () => {
   const { data } = useTimeflow.useGetUserAllTimeflow();
   const navigate = useNavigate();
 
@@ -163,4 +163,4 @@ const UserTimeflowTable = () => {
   );
 };
 
-export default UserTimeflowTable;
+export default UserTimeflowDaysFeat;

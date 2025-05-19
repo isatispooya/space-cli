@@ -32,7 +32,7 @@ interface TimeflowResponseType {
   error: string;
 }
 
-const NewVerifyForm = () => {
+const UserVerifyForm = () => {
   const [time, setTime] = useState<Dayjs | null>(dayjs());
   const [type, setType] = useState<VerifyType>("");
   const { mutate: userTimeflow } = useTimeflow.useUserTimeflow();
@@ -203,4 +203,4 @@ const NewVerifyForm = () => {
   );
 }
 
-export default NewVerifyForm;
+export default UserVerifyForm;

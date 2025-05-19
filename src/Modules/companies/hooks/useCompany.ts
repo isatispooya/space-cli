@@ -5,11 +5,11 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { companiesService } from "../services";
-import { CompanyPostType, CompanyType, CompanyResponseType, CompanyListType } from "../types";
+import { CompanyPostType, CompanyType, CompanyResponseType } from "../types";
 import { AxiosError } from "axios";
 
 const useCompany = {
-  useGet: (): UseQueryResult<CompanyListType[], AxiosError> => {
+  useGet: (): UseQueryResult<CompanyType["getCompanyRes"], AxiosError> => {
     return useQuery({
       queryKey: ["companies"],
       queryFn: companiesService.get,
@@ -26,7 +26,7 @@ const useCompany = {
   },
 
   useUpdate: (): UseMutationResult<
-    CompanyPostType,
+    CompanyType["getCompanyRes"],
     Error,
     { id: number; data: CompanyPostType }
   > => {
@@ -41,21 +41,27 @@ const useCompany = {
       mutationFn: (id: number) => companiesService.delete(id),
     });
   },
-  usePostCompanyRasmio: (): UseMutationResult<CompanyResponseType, Error, FormData> => {
+  usePostCompanyRasmio: (): UseMutationResult<
+    CompanyResponseType,
+    Error,
+    FormData
+  > => {
     return useMutation({
       mutationKey: ["postCompanyRasmio"],
       mutationFn: (data: FormData) => companiesService.postCompanyRasmio(data),
     });
   },
 
-  useGetCompanyRasmio: (id?: number): UseQueryResult<CompanyListType | CompanyType, AxiosError> => {
+  useGetCompanyRasmio: (
+    id?: number
+  ): UseQueryResult<CompanyType["getCompanyRes"], AxiosError> => {
     return useQuery({
       queryKey: id ? ["companyRasmio", id] : ["companyRasmio"],
       queryFn: () => companiesService.getCompanyRasmio(id),
-      select: (data: CompanyListType | CompanyType) => {
-        console.log('دریافت اطلاعات شرکت با موفقیت انجام شد:', data);
+      select: (data: CompanyType["getCompanyRes"]) => {
+        console.log("دریافت اطلاعات شرکت با موفقیت انجام شد:", data);
         return data;
-      }
+      },
     });
   },
 };

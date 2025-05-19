@@ -1,8 +1,8 @@
 import api from "../../../api/api";
-import { CompanyPostType } from "../types";
+import { CompanyPostType, CompanyType } from "../types";
 
 export const companiesService = {
-  get: async () => {
+  get: async () : Promise<CompanyType["getCompanyRes"]> => {
     const response = await api.get("/companies/");
     return response.data;
   },
@@ -16,12 +16,12 @@ export const companiesService = {
     return response.data;
   },
 
-  update: async (id: number, data: CompanyPostType) => {
+  update: async (id: number, data: CompanyPostType) : Promise<CompanyType["getCompanyRes"]> => {
     const response = await api.patch(`/companies/${id}/`, data);
     return response.data;
   },
 
-  delete: async (id: number) => {
+  delete: async (id: number) : Promise<void> => {
     const response = await api.delete(`/companies/${id}/`);
     return response.data;
   },
