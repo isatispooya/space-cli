@@ -27,7 +27,7 @@ const TranscriptList: React.FC<TranscriptListPropsType> = ({
       <List sx={{ p: 0 }}>
         {displayTranscript.map(
           (item: ITranscriptResponseType, index: number) => (
-            <React.Fragment key={item.position || item.id}>
+            <React.Fragment key={item.position || item.id || `external-${index}`}>
               <TranscriptListItem
                 item={item}
                 getTranscriptName={getTranscriptName}

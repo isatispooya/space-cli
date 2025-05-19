@@ -28,12 +28,12 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     handleExternalTextUpdate,
   }) => {
     const [visibility, setVisibility] = useState(!item.security);
-    const isExternalTranscript = item.id < 0 || item.external_text;
+    const isExternalTranscript = item.isExternal || item.external_text || item.id < 0;
     const [externalTexts, setExternalTexts] = useState<string[]>(
-      isExternalTranscript && item.external_text
+      isExternalTranscript && (item.external_text || item.name)
         ? Array.isArray(item.external_text)
           ? item.external_text
-          : [item.external_text]
+          : [item.external_text || item.name || ""]
         : [""]
     );
 

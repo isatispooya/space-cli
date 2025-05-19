@@ -15,7 +15,6 @@ import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
 import { useLocation } from "react-router-dom";
 import TranscriptList from "./TranscriptList";
-import {} from "../../types/sent/transcript.type";
 import {
   ITranscriptResponseType,
   TranscriptPropsType,
@@ -92,7 +91,19 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
         }
       } else {
         if (externalTranscriptText.trim() !== "") {
-          handleAddTranscript(externalTranscriptText);
+          const externalTranscriptItem: ITranscriptResponseType = {
+            id: -Date.now(),
+            name: externalTranscriptText,
+            transcript_for: "notification",
+            security: false,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            read_at: null,
+            position: -Date.now(),
+            correspondence: -1,
+            isExternal: true,
+          };
+          handleAddTranscript(JSON.stringify(externalTranscriptItem));
           setExternalTranscriptText("");
         }
       }
@@ -271,16 +282,56 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Paper>
         )}
 
-        {/* لیست رونوشت‌ها */}
+        {/* لیست رونوشت‌های داخلی و خارجی */}
         {displayTranscript.length > 0 && (
-          <TranscriptList
-            displayTranscript={displayTranscript}
-            getTranscriptName={getTranscriptName}
-            transcriptDirections={transcriptDirections}
-            handleDirectionChange={handleDirectionChange}
-            handleTranscriptToggle={handleTranscriptToggle}
-            internalOptions={internalOptions}
-          />
+          <Paper
+            variant="outlined"
+            sx={{
+              p: 2,
+              borderRadius: 2,
+              bgcolor: "#fff",
+              boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 2px",
+              mb: 2,
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{ mb: 1, fontWeight: "medium", color: "#555" }}
+            >
+              رونوشت‌های اضافه شده:
+            </Typography>
+            <List sx={{ p: 0 }}>
+              {displayTranscript.map(
+                (item: ITranscriptResponseType, index: number) => (
+                  <React.Fragment key={`transcript-${item.id}`}>
+                    <ListItem sx={{ px: 1, py: 1.5 }}>
+                      <Grid container spacing={2} alignItems="center">
+                        <Grid item xs={12} md={8}>
+                          <Typography
+                            sx={{ fontSize: "0.9rem", color: "#1e293b" }}
+                          >
+                            {item.isExternal
+                              ? item.name
+                              : getTranscriptName(item.position)}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                          <Typography
+                            sx={{ fontSize: "0.8rem", color: "#64748b" }}
+                          >
+                            {item.transcript_for || "اطلاع رسانی"}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                    {index < displayTranscript.length - 1 && (
+                      <Divider sx={{ my: 0.5 }} />
+                    )}
+                  </React.Fragment>
+                )
+              )}
+            </List>
+          </Paper>
         )}
 
         {displayTranscript.length === 0 && !hasReferenceData && (

@@ -10,6 +10,8 @@ export interface ITranscriptResponseType {
   position: number;
   correspondence: number;
   external_text?: string;
+  name?: string;
+  isExternal?: boolean;
 }
 export interface TranscriptDetailsType {
   id: number;
