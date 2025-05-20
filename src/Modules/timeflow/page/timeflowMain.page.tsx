@@ -1,6 +1,6 @@
-import { MainLayout } from "../../../layouts";
+import { MainLayout } from "@/layouts";
 import { Outlet } from "react-router-dom";
-import { Toolbar } from "../../../components";
+import { Toolbar } from "@/components";
 import { LuTable } from "react-icons/lu";
 import { VscGitStashApply } from "react-icons/vsc";
 
@@ -24,7 +24,6 @@ const TimeFlowPage = () => {
       permission: ["allow_any"],
       path: "details-table",
     },
-
     {
       icon: LuTable,
       text: "تردد های زیر مجموعه",

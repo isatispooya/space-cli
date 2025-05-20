@@ -81,10 +81,10 @@ const UnderwritingMain = () => {
       path: "table",
     },
     {
+      disabled: true,
       icon: MdOutlineShoppingBag,
       text: "سرمایه گذاری",
       permission: ["unused_precedence_process"],
-      path: "create",
     },
   ];
 

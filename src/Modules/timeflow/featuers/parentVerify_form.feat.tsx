@@ -7,9 +7,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { TimePicker } from "@mui/x-date-pickers";
 import { Paper, Box, Typography, alpha, Card, Chip, Grid } from "@mui/material";
 import { List, Person } from "@mui/icons-material";
-import CollapseComponent from "./Collapse";
+import CollapseComponent from "../components/Collapse";
 import dayjs from "dayjs";
-import ActionButton from "./actionButton";
+import ActionButton from "../components/actionButton";
 
 const typeTranslator = (type: string): string => {
   switch (type) {
@@ -43,7 +43,7 @@ const statusTranslator = (status: string): string => {
   }
 };
 
-const LogList = () => {
+const ParentVerifyForm = () => {
   const [expandedItems, setExpandedItems] = useState<number[]>([]);
   const [selectedTimes, setSelectedTimes] = useState<{
     [id: number]: dayjs.Dayjs;
@@ -340,4 +340,4 @@ const LogList = () => {
   );
 };
 
-export default LogList;
+export default ParentVerifyForm;

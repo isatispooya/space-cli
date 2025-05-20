@@ -3,12 +3,12 @@ import { Dialog } from "../../../components/modals";
 import { useNavigate } from "react-router-dom";
 import { useTimeflow } from "../hooks";
 
-interface ReminderPopupType {
+interface PopupType {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const ReminderPopup: React.FC<ReminderPopupType> = ({ isOpen, onClose }) => {
+const Popup: React.FC<PopupType> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { data: userLogin } = useTimeflow.useGetUsersLogin();
   const { data: timeflowParent } = useTimeflow.useGetTimeflowDetails();
@@ -97,4 +97,4 @@ const ReminderPopup: React.FC<ReminderPopupType> = ({ isOpen, onClose }) => {
   );
 };
 
-export default ReminderPopup;
+export default Popup;

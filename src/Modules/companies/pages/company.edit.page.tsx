@@ -1,9 +1,9 @@
-import { EditCompanyForm } from "../feature";
-
 const CompanyEditPage = () => {
-  return <div>
-    <EditCompanyForm />
-  </div>
-}
+  return (
+    <div>
+      
+    </div>
+  );
+};
 
 export default CompanyEditPage;

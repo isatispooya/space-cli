@@ -21,12 +21,10 @@ const CreateCapitalIncreaseForm = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.flatMap((companyList: CompanyType[]) =>
-          companyList.map((company: CompanyType) => ({
-            label: company.name || "",
-            value: company.id.toString(),
-          }))
-        ) || [],
+        (companies as unknown as CompanyType[])?.map((company: CompanyType) => ({
+          label: company.name || "",
+          value: company.id.toString(),
+        })) || [],
     },
     {
       name: "user",

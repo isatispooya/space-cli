@@ -148,7 +148,7 @@ const CompanyDetails: React.FC = () => {
             {
               icon: Numbers,
               label: "شماره ثبت",
-              value: company.registration_number || "ثبت نشده",
+              value: company.registration_number  || "ثبت نشده",
             },
             {
               icon: Business,

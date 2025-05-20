@@ -8,6 +8,7 @@ import { useUserData } from "../../../users/hooks";
 import { useCompany } from "../../../companies/hooks";
 import { useNavigate } from "react-router-dom";
 import { CompanyType } from "../../../companies/types";
+
 const EditStockTransferForm: React.FC = () => {
   const { mutate } = useStockTransfer.useUpdate();
   const { data: stockTransferData } = useStockTransfer.useGet();
@@ -39,11 +40,11 @@ const EditStockTransferForm: React.FC = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        companies?.flatMap((companyList: CompanyType[]) =>
-          companyList.map((company: CompanyType) => ({
+        (companies as unknown as CompanyType[])?.map(
+          (company: CompanyType) => ({
             label: company.name || "",
             value: company.id.toString(),
-          }))
+          })
         ) || [],
     },
     {
@@ -91,6 +92,7 @@ const EditStockTransferForm: React.FC = () => {
   if (!stockTransfer && !id) {
     navigate("/transferstock/table");
   }
+
   const onSubmit = (values: StockTransferType) => {
     if (stockTransfer?.id) {
       mutate(
@@ -107,6 +109,7 @@ const EditStockTransferForm: React.FC = () => {
       );
     }
   };
+
   return (
     <>
       <Forms
