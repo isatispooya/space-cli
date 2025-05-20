@@ -45,4 +45,19 @@ export interface CompanyResponseType {
 
 export type CompanyType = {
   getCompanyRes: ResType[];
+  id: number;
+  name: string;
+  national_id?: string;
+  title?: string;
+  address?: string;
+  postal_code?: string;
+  persian_registration_date?: string;
+  tel?: string;
+  email?: string;
+  website?: string;
+  capital?: number;
+  registration_number?: string;
+  registration_type_title?: string;
+  registration_unit?: string;
+  general_directorate?: string;
 };

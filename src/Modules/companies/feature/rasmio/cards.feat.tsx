@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useCompany from "../../hooks/useCompany";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useState } from "react";
-import { CompanyType } from "../../types/company.type";
+import { ResType } from "../../types/company.type";
 import {
   CardContainer,
   FlipCardContainer,
@@ -125,7 +125,7 @@ const Cards = () => {
           <div>درحال بارگذاری</div>
         ) : (
           Array.isArray(staticCompanyData) &&
-          staticCompanyData.map((company: CompanyType) => (
+          staticCompanyData.map((company: ResType) => (
             <CardContainer
               key={company.id}
               onClick={() => handleCardClick(company.id)}
@@ -133,11 +133,11 @@ const Cards = () => {
               <img
                 className="w-full rounded-lg"
                 src="https://taxxcelerate.com/wp-content/uploads/2024/06/pexels-photo-269077-269077.jpg"
-                alt={company.title}
+                alt={company.name}
               />
               <div className="flex flex-col flex-grow justify-center gap-2">
-                <CompanyName>{company.title}</CompanyName>
-                <InfoText>{company.registration_type_title}</InfoText>
+                <CompanyName>{company.name}</CompanyName>
+                <InfoText>{company.company_type}</InfoText>
                 <InfoText>{company.address || "ثبت نشده"}</InfoText>
                 <InfoText>{company.description || "ثبت نشده"}</InfoText>
               </div>

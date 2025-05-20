@@ -25,12 +25,10 @@ const CreateShareholdersPost = () => {
       label: "شرکت",
       type: "select" as const,
       options:
-        data?.flatMap((companyList: CompanyType[]) =>
-          companyList.map((company: CompanyType) => ({
-            label: company.name || "",
-            value: company.id.toString(),
-          }))
-        ) || [],
+        (data as unknown as CompanyType[])?.map((company: CompanyType) => ({
+          label: company.name || "",
+          value: company.id.toString(),
+        })) || [],
     },
     {
       name: "user",

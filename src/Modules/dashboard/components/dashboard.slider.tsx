@@ -168,6 +168,7 @@ const DashboardSlider = ({ slides }: DashboardSliderPropsType) => {
             </a>
             <div className="absolute bottom-2 left-0 right-0 z-10 flex justify-center">
               <Button
+                onClick={() => handleShare(slide)}
                 disabled
                 style={{
                   borderRadius: "10px",

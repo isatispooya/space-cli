@@ -71,12 +71,10 @@ const PositionCreate = () => {
       type: "select",
       headerClassName: "col-span-2 sm:col-span-1",
       options:
-        companies?.flatMap((companyList: CompanyType[]) =>
-          companyList.map((company: CompanyType) => ({
-            value: company.id.toString(),
-            label: company.name,
-          }))
-        ) || [],
+        (companies as unknown as CompanyType[])?.map((company: CompanyType) => ({
+          value: company.id.toString(),
+          label: company.name,
+        })) || [],
     },
     {
       name: "user",

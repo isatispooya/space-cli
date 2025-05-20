@@ -70,12 +70,10 @@ const PositionUpdateForm = () => {
       name: "company",
       label: "شرکت",
       type: "select",
-      options: companies.flatMap((companyList: CompanyType[]) =>
-        companyList.map((company: CompanyType) => ({
-          value: company.id.toString(),
-          label: company.name,
-        }))
-      ),
+      options: (companies as unknown as CompanyType[])?.map((company: CompanyType) => ({
+        value: company.id.toString(),
+        label: company.name,
+      })) || [],
     },
     {
       name: "user",
