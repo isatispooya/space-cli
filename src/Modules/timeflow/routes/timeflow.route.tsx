@@ -6,21 +6,9 @@ const TimeFlowMainPage = lazy(() =>
   }))
 );
 
-const VerifyTablePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.VerifyTablePage,
-  }))
-);
-
 const UsersTimeflowsPage = lazy(() =>
   import("..").then((module) => ({
     default: module.UsersTimeflowsPage,
-  }))
-);
-
-const DetailsTablePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.DetailsTablePage,
   }))
 );
 
@@ -36,20 +24,11 @@ const VerifyTimeflowPage = lazy(() =>
   }))
 );
 
-
-
-const TimeflowEditPage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.TimeflowEditPage,
-  }))
-);
-
-const ListPage = lazy(() =>
+const ParentVerifyPage = lazy(() =>
   import("..").then((module) => ({
     default: module.ListPage,
   }))
 );
-
 
 const TimeflowRoutes = [
   {
@@ -62,11 +41,11 @@ const TimeflowRoutes = [
       },
       {
         path: "verify-table",
-        element: <VerifyTablePage />,
+        element: <UserVerifyPage />,
       },
       {
-        path: "details-table",
-        element: <DetailsTablePage />,
+        path: "parent-verify",
+        element: <ParentVerifyPage />,
       },
       {
         path: "verify",

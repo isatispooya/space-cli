@@ -86,7 +86,7 @@ const CompanyTable = () => {
             columns={columns()}
             title="اطلاعات شرکت‌ها"
             showActions={true}
-            // formatExportData={}
+     
           />
         </div>
       </div>
