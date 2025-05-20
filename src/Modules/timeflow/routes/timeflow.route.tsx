@@ -1,4 +1,6 @@
 import { lazy } from "react";
+import UserVerifyPage from "../page/userVerify.page";
+import { ListPage } from "../page";
 
 const TimeFlowMainPage = lazy(() =>
   import("..").then((module) => ({
@@ -51,10 +53,10 @@ const TimeflowRoutes = [
         path: "verify",
         element: <VerifyTimeflowPage />,
       },
-      {
-        path: "edit/:id",
-        element: <TimeflowEditPage />,
-      },
+      // {
+      //   path: "edit/:id",
+      //   element: <TimeflowEditPage />,
+      // },
       {
         path: "list",
         element: <ListPage />,
