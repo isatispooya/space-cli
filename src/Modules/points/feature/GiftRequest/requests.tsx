@@ -14,7 +14,7 @@ const Request = () => {
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
   const { checkPermission } = useUserPermissions();
   const isAdmin = checkPermission(["change_giftuser"]);
-  
+
   const statusMapping = {
     delivered: "تحویل داده شده",
     cancelled: "لغو شده",
@@ -221,16 +221,21 @@ const Request = () => {
         return rowData.user_detail?.account_number || "";
       },
     },
+
     {
-      field: "user_detail",
-      title: "نام و نام خانوادگی",
+      field: "user_detail.first_name",
+      title: "نام",
       headerFilter: true,
       formatter: (cell: CellComponent) => {
-        const userDetail = cell.getValue();
-        if (userDetail && typeof userDetail === "object") {
-          return `${userDetail.first_name} ${userDetail.last_name}`;
-        }
-        return "";
+        return cell.getValue() || "";
+      },
+    },
+    {
+      field: "user_detail.last_name",
+      title: "نام خانوادگی",
+      headerFilter: true,
+      formatter: (cell: CellComponent) => {
+        return cell.getValue() || "";
       },
     },
     {
