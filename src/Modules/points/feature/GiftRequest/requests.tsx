@@ -110,18 +110,22 @@ const Request = () => {
     {
       field: "title",
       title: "عنوان",
+      headerFilter: true,
     },
     {
       field: "description",
       title: "توضیحات",
+      headerFilter: true,
     },
     {
       field: "points",
       title: "سکه",
+      headerFilter: true,
     },
     {
       field: "amount",
       title: "کل دریافتی",
+      headerFilter: true,
       formatter: (cell: CellComponent) => {
         return formatNumber(cell.getValue());
       },
@@ -130,6 +134,7 @@ const Request = () => {
     {
       field: "value",
       title: "ارزش ",
+      headerFilter: true,
       formatter: (cell: CellComponent) => {
         const rowData = cell.getRow().getData();
         return formatNumber(rowData.points * rowData.amount * 10);
@@ -138,6 +143,7 @@ const Request = () => {
     {
       field: "status",
       title: "وضعیت",
+      headerFilter: true,
       formatter: (cell: CellComponent) => {
         const statusValue = cell.getValue();
         return statusMapping[statusValue as keyof typeof statusMapping];
@@ -209,6 +215,7 @@ const Request = () => {
     {
       field: "user_detail.account_number",
       title: "شماره حساب",
+      headerFilter: true,
       formatter: (cell: CellComponent) => {
         const rowData = cell.getRow().getData();
         return rowData.user_detail?.account_number || "";
@@ -217,6 +224,7 @@ const Request = () => {
     {
       field: "user_detail",
       title: "نام و نام خانوادگی",
+      headerFilter: true,
       formatter: (cell: CellComponent) => {
         const userDetail = cell.getValue();
         if (userDetail && typeof userDetail === "object") {
@@ -228,6 +236,7 @@ const Request = () => {
     {
       field: "created_at",
       title: "تاریخ ایجاد",
+      headerFilter: true,
       formatter: (cell: CellComponent) =>
         moment(cell.getValue()).format("jYYYY/jMM/jDD"),
     },
