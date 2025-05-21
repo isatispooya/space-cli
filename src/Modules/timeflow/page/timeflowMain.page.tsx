@@ -12,7 +12,6 @@ const TimeFlowPage = () => {
       permission: ["allow_any"],
       path: "verify",
     },
-
     {
       icon: LuTable,
       text: "لیست تردد",
