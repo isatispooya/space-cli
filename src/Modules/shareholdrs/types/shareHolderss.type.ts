@@ -12,10 +12,10 @@ export interface ShareHoldersNewType {
     mobile: string;
   };
   number_of_shares: number;
+  underwriting: number;
   precedence_count: number;
   used_precedence: number;
   precedence: string;
-
 }
 
 export default ShareHoldersNewType;

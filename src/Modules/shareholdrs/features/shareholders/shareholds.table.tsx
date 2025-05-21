@@ -32,6 +32,7 @@ const ShareholdTable: React.FC = () => {
     company_type: row.company_detail.company_type,
     first_name: row.user_detail.first_name,
     last_name: row.user_detail.last_name,
+    underwriting: row.underwriting,
     uniqueIdentifier: row.user_detail.uniqueIdentifier,
     number_of_shares: row.number_of_shares,
     precedence_count: row.precedence,
@@ -79,7 +80,7 @@ const ShareholdTable: React.FC = () => {
       headerFilter: true,
     },
     {
-      field: "total_successful_underwriting",
+      field: "underwriting",
       title: "پذیره نویسی",
       headerFilter: true,
       topCalc: "sum",
