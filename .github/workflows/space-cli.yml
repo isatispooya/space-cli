@@ -1,8 +1,8 @@
-name: Deploy Frontend (Docker-based)
+name: Deploy to Ubuntu Server
 
 on:
   push:
-    branches: ["frontend-deploy"]
+    branches: ["main"]
 
 jobs:
   deploy:
@@ -10,29 +10,47 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: SSH and Deploy via Docker Compose
+
+      - name: SSH and Deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
+          host: ${{secrets.SERVER_HOST}}
+          username: ${{secrets.SERVER_USER}}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          port: ${{secrets.SSH_PORT}}
           script: |
-            echo "🚀 Starting Docker-based frontend deployment..."
+            echo "Starting deployment..."
 
-            cd /var/www/portfolio
-
-            echo "🧹 Cleaning old frontend source code..."
+            # پاک کردن کامل دایرکتوری قبلی
+            cd /var/www/space/
             rm -rf cli
             mkdir -p cli
+            cd cli
 
-            echo "⬇️ Cloning latest frontend source..."
-            git clone --depth 1 https://github.com/isatispooya/space-cli.git cli || { echo "❌ Git clone failed"; exit 1; }
+            echo "Cloning fresh repository..."
+            git clone --depth 1 https://github.com/isatispooya/space-cli.git . || { echo "Git clone failed"; exit 1; }
 
-            echo "🐳 Rebuilding frontend container (from /var/www/portfolio)..."
-            docker compose build frontend || { echo "❌ Docker build failed"; exit 1; }
+            echo "Installing dependencies..."
+            rm -rf node_modules package-lock.json
+            npm install || { echo "npm install failed"; exit 1; }
 
-            echo "🔁 Restarting frontend service..."
-            docker compose up -d frontend || { echo "❌ Docker up failed"; exit 1; }
+            echo "Installing Rollup..."
+            npm install rollup || { echo "Rollup install failed"; exit 1; }
 
-            echo "✅ Frontend deployment via Docker completed successfully!"
+            echo "Building project..."
+            npm run build || { echo "Build failed"; exit 1; }
+
+            if [ ! -d "dist" ] || [ ! -f "dist/index.html" ]; then
+              echo "Error: dist folder or index.html not found"
+              exit 1
+            fi
+
+            echo "Checking dist directory contents:"
+            ls -la dist/
+
+            echo "Restarting PM2 service..."
+            pm2 delete space-client || echo "No existing PM2 process found"
+            NODE_NO_WARNINGS=1 pm2 start http-server --name space-client -- /var/www/space/cli/dist -p 2084 --cors || { echo "PM2 start failed"; exit 1; }
+            pm2 save || { echo "PM2 save failed"; exit 1; }
+
+            echo "Deployment completed successfully"
