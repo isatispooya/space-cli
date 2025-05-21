@@ -53,10 +53,7 @@ const TimeflowRoutes = [
         path: "verify",
         element: <VerifyTimeflowPage />,
       },
-      // {
-      //   path: "edit/:id",
-      //   element: <TimeflowEditPage />,
-      // },
+
       {
         path: "list",
         element: <ListPage />,

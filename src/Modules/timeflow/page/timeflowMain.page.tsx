@@ -12,17 +12,12 @@ const TimeFlowPage = () => {
       permission: ["allow_any"],
       path: "verify",
     },
-    {
-      icon: LuTable,
-      text: "جزئیات تردد",
-      permission: ["allow_any"],
-      path: "users-timeflows",
-    },
+
     {
       icon: LuTable,
       text: "لیست تردد",
       permission: ["allow_any"],
-      path: "details-table",
+      path: "users-timeflows",
     },
     {
       icon: LuTable,
