@@ -22,8 +22,8 @@ export const columns = (): ColumnDefinition[] => [
   { title: "کد ملی", field: "user_phone", headerFilter: "input" },
   { title: "نوع", field: "type", headerFilter: "input" },
   { title: "توضیحات", field: "description", headerFilter: "input" },
-  { title: "سکه", field: "point_1" },
-  { title: "بذر", field: "point_2" },
+  { title: "سکه", field: "point_1" ,  headerFilter: true, },
+  { title: "بذر", field: "point_2",  headerFilter: true, },
   {
     title: "ثبت کننده",
     field: "by_user_first_name",
