@@ -37,8 +37,11 @@ const Login: React.FC = () => {
       return () => clearInterval(timer);
     }
   }, [announcements]);
+  const filteredData = announcements.filter(
+    (item: { show_in: string }) => item.show_in === "my_isatis"
+  );
 
-  const currentAnnouncement = announcements?.[currentAnnouncementIndex];
+  const currentAnnouncement = filteredData?.[currentAnnouncementIndex];
 
   const handleComponentChange = (
     component: "login" | "signup" | "forgetpass"
