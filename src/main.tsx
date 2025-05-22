@@ -46,6 +46,7 @@ if (rfValue) {
 }
 
 startClarity();
+
 loadWidget();
 
 
