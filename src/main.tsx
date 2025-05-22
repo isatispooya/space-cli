@@ -46,9 +46,7 @@ if (rfValue) {
 }
 
 startClarity();
-
 loadWidget();
-
 
 root.render(
   <React.StrictMode>
