@@ -49,6 +49,7 @@ startClarity();
 
 loadWidget();
 
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
