@@ -11,7 +11,7 @@ import {
 import { CorrespondenceResponseType } from "../types/sent/sent.type";
 import ExelData from "../data/receive/receiveExelData";
 import { RowComponent } from "tabulator-tables";
-import { useLocation } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 
 export const TableFeature = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -26,6 +26,7 @@ export const TableFeature = () => {
   const { data: correspondence, isLoading } =
     useCorrespondenceAttachment.useGetCorrespondence();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const receiveTable = location.pathname === "/letter/receive-table";
   const outreceiveTable = location.pathname === "/letter/Outreceive-table";
@@ -206,7 +207,7 @@ export const TableFeature = () => {
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
-      <div className="flex justify-between mb-4">
+      <div className="flex mb-4">
         <div className="flex items-center">
           <input
             type="text"
@@ -222,7 +223,22 @@ export const TableFeature = () => {
             جستجو
           </button>
         </div>
+        <div className="  mr-4">
+        <div className="flex items-center">
+          <button
+            onClick={() => navigate("/letter/OutformMake")}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+          >
+            ایجاد نامه
+          </button>
+        </div>
       </div>
+      </div>
+
+     
+
+
+     
 
       {isSearching && (
         <div className="w-full text-center py-4 text-gray-500">
@@ -236,7 +252,7 @@ export const TableFeature = () => {
         </div>
       )}
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto"> 
         <TabulatorTable
           data={filteredMappedData}
           columns={columns()}

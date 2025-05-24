@@ -1,9 +1,6 @@
 import { create } from "zustand";
-import {
-  FormDataType,
-  ReferenceDataType,
-  TranscriptDataType,
-} from "../../types/sent/sent.type";
+import { FormDataType, ReferenceDataType } from "../../types/sent/sent.type";
+import { TranscriptDataType } from "../../types";
 
 type FormValueType = string | number | boolean | Array<string | number> | null;
 
@@ -40,6 +37,7 @@ const defaultTranscript: TranscriptDataType = {
 };
 
 const initialFormData: FormDataType = {
+  owner: 0,
   subject: "",
   text: "",
   description: "",
@@ -120,7 +118,7 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
 
       // Handle numeric fields
       if (
-        ["sender", "receiver_internal"].includes(name) &&
+        ["sender", "receiver_internal", "owner"].includes(name) &&
         typeof value === "string"
       ) {
         const numValue = value === "" ? 0 : Number(value);
@@ -133,6 +131,14 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
                 ...t,
                 position: numValue,
               })),
+            },
+          };
+        }
+        if (name === "owner") {
+          return {
+            formData: {
+              ...state.formData,
+              owner: numValue,
             },
           };
         }

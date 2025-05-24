@@ -8,11 +8,12 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   formData,
   handleChange,
   senderUserOptions,
-  senderUserOptionsOut,
   internalUserOptions,
 }) => {
   const location = useLocation();
   const isInternal = location.pathname === "/letter/form";
+  const isOut = location.pathname === "/letter/OutformMake";
+
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
       {isInternal ? (
@@ -40,11 +41,25 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
             options={internalUserOptions}
             className="enhanced-select"
           />
-
+        </>
+      ) : isOut ? (
+        <>
+          <FormInput
+            label="ارسال کننده"
+            value={formData.sender || ""}
+            onChange={(e) => handleChange("sender", e.target.value)}
+            placeholder="ارسال کننده"
+            className="enhanced-input"
+          />
           <SelectInput
-            label="مالک"
-            value={(formData.owner || formData.owner)?.toString() || ""}
-            onChange={(value) => handleChange("owner", value)}
+            label="گیرنده"
+            value={
+              (
+                formData.receiver_internal ||
+                formData.receiver_internal_details?.id
+              )?.toString() || ""
+            }
+            onChange={(value) => handleChange("receiver_internal", value)}
             options={internalUserOptions}
             className="enhanced-select"
           />
@@ -59,7 +74,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
               )?.toString() || ""
             }
             onChange={(value) => handleChange("sender", value)}
-            options={senderUserOptionsOut}
+            options={senderUserOptions}
             className="enhanced-select"
           />
           <FormInput
@@ -69,15 +84,17 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
             placeholder="گیرنده خارجی"
             className="enhanced-input"
           />
-          <SelectInput
-            label="مالک"
-            value={(formData.owner || formData.owner)?.toString() || ""}
-            onChange={(value) => handleChange("owner", value)}
-            options={internalUserOptions}
-            className="enhanced-select"
-          />
         </>
       )}
+
+      <SelectInput
+        label="مالک"
+        value={(formData.owner || formData.owner)?.toString() || ""}
+        onChange={(value) => handleChange("owner", value)}
+        options={internalUserOptions}
+        className="enhanced-select"
+      />
+
       <FormInput
         label="موضوع"
         value={formData.subject || ""}

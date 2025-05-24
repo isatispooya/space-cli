@@ -69,6 +69,7 @@ interface ResponseDataType {
   authority_type?: string;
   authority_correspondence?: number | null;
   published?: boolean;
+  owner?: number;
 }
 
 export const useSentFormLogic = (id: string | undefined) => {
@@ -129,6 +130,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       transcript: [],
       published: false,
       referenceData: [],
+      owner: 0,
     });
     toast.success("اطلاعات با موفقیت ثبت شد");
   };
@@ -326,6 +328,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         transcript: [],
         published: false,
         referenceData: [],
+        owner: 0,
       });
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
