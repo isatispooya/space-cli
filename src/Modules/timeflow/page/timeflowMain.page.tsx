@@ -24,6 +24,13 @@ const TimeFlowPage = () => {
       permission: ["parent_user"],
       path: "list",
     },
+
+    {
+      icon: LuTable,
+      text: "گزارش تردد ها",
+      permission: ["allow_any"],
+      path: "report-user",
+    },
   ];
 
   return (

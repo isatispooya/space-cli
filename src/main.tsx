@@ -5,7 +5,6 @@ import App from "./app";
 import "./index.css";
 import "tw-elements";
 import "./fonts.css";
-
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { prefixer } from "stylis";

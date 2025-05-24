@@ -148,7 +148,7 @@ const CompanyDetails: React.FC = () => {
             {
               icon: Numbers,
               label: "شماره ثبت",
-              value: company.registration_number  || "ثبت نشده",
+              value: company.registration_number || "ثبت نشده",
             },
             {
               icon: Business,
@@ -183,7 +183,9 @@ const CompanyDetails: React.FC = () => {
                   },
                 }}
               >
-                <item.icon sx={{ color: "primary.main", mr: 2, fontSize: 28 }} />
+                <item.icon
+                  sx={{ color: "primary.main", mr: 2, fontSize: 28 }}
+                />
                 <Box>
                   <Typography
                     variant="caption"
@@ -211,7 +213,7 @@ const CompanyDetails: React.FC = () => {
             alignItems: "center",
             color: "#222",
             fontWeight: 600,
-            mb: 2,
+            mb: 3,
             gap: 1.5,
           }}
         >
@@ -219,11 +221,72 @@ const CompanyDetails: React.FC = () => {
           اعضای هیئت مدیره
         </Typography>
 
-        <Typography
-          sx={{ color: "#888", fontStyle: "italic", fontSize: "0.95rem" }}
-        >
-          اطلاعاتی در مورد اعضای هیئت مدیره ثبت نشده است.
-        </Typography>
+        {company.company_members && company.company_members.length > 0 ? (
+          <Grid container spacing={3}>
+            {company.company_members.map((member, _index) => (
+              <Grid item xs={12} md={6} lg={4} key={member.id}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 3,
+                    borderRadius: 3,
+                    bgcolor: "rgba(0, 140, 255, 0.04)",
+                    boxShadow: "0 2px 10px rgba(0,0,0,0.02)",
+                    border: "1px solid rgba(0,0,0,0.05)",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      bgcolor: "rgba(0, 140, 255, 0.07)",
+                      transform: "translateY(-3px)",
+                    },
+                  }}
+                >
+                  <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                    <Box>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontWeight: 600, mb: 0.5 }}
+                      >
+                        {member.person_title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: "primary.main", fontWeight: 500 }}
+                      >
+                        {member.position_title}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+                  >
+                    <Typography variant="body2" sx={{ color: "#666" }}>
+                      <strong>کد ملی:</strong> {member.uniqueIdentifier}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: "#666" }}>
+                      <strong>تاریخ شروع:</strong>{" "}
+                      {new Date(member.start_date).toLocaleDateString("fa-IR")}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: "#666" }}>
+                      <strong>تاریخ پایان:</strong>{" "}
+                      {new Date(member.end_date).toLocaleDateString("fa-IR")}
+                    </Typography>
+                    {member.duration && (
+                      <Typography variant="body2" sx={{ color: "#666" }}>
+                        <strong>مدت زمان:</strong> {member.duration}
+                      </Typography>
+                    )}
+                  </Box>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Typography
+            sx={{ color: "#888", fontStyle: "italic", fontSize: "0.95rem" }}
+          >
+            اطلاعاتی در مورد اعضای هیئت مدیره ثبت نشده است.
+          </Typography>
+        )}
       </Paper>
     </Container>
   );

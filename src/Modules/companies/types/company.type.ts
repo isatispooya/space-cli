@@ -43,6 +43,31 @@ export interface CompanyResponseType {
   };
 }
 
+export interface CompanyMemberType {
+  id: number;
+  uniqueIdentifier: string;
+  position_id: number;
+  start_date: string;
+  end_date: string;
+  person_title: string;
+  position_title: string;
+  picture_url: string | null;
+  duration?: string;
+  first_role?: string;
+  second_role?: string;
+  agent: boolean;
+  birth_certificate: string | null;
+  by_news_id: number;
+  gender: string | null;
+  national_cart: string | null;
+  phone_number: string | null;
+  previous_article: string | null;
+  signature: boolean;
+  signature_document: string | null;
+  tagline: string | null;
+  validation_report: string | null;
+}
+
 export type CompanyType = {
   getCompanyRes: ResType[];
   id: number;
@@ -60,4 +85,13 @@ export type CompanyType = {
   registration_type_title?: string;
   registration_unit?: string;
   general_directorate?: string;
+  company_members?: CompanyMemberType[];
+  economic_code?: string;
+  lat?: number;
+  lng?: number;
+  picture?: string;
+  registration_date?: string;
+  registration_type?: string;
+  registration_type_id?: string;
+  status?: string;
 };
