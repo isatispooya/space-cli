@@ -101,6 +101,7 @@ const MakeForm: React.FC = () => {
             <Grid container spacing={{ xs: 2, sm: 3 }}>
               <Grid item xs={12} md={6}>
                 <SenderSection
+                   isEditMode={isEditMode}
                   formData={formData}
                   handleChange={handleInputChange}
                   senderUserOptions={senderUserOptions}

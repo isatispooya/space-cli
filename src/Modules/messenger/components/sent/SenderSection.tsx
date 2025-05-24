@@ -9,16 +9,17 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   handleChange,
   senderUserOptions,
   internalUserOptions,
+  isEditMode,
 }) => {
   const location = useLocation();
-  const isInternal = location.pathname === "/letter/form";
+  const isInternal = location.pathname === "/letter/form" || !isEditMode;
   const isOut = location.pathname === "/letter/OutformMake";
 
   console.log();
 
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
-      {formData.is_internal || isInternal ? (
+      {formData.is_internal && isInternal ? (
         <>
           <SelectInput
             label="ارسال کننده"

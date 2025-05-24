@@ -21,8 +21,8 @@ const FormHeader: React.FC<FormHeaderPropsType> = ({
       >
         {isEditMode
           ? isInternal
-            ? "ویرایش پیام داخلی"
-            : "ویرایش پیام خارجی"
+            ? "پیش نویس پیام داخلی"
+            : "پیش نویس پیام خارجی"
           : isInternal
           ? "ثبت پیام جدید داخلی"
           : "ثبت پیام جدید خارجی"}
