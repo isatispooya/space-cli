@@ -1,23 +1,23 @@
 import { Grid, Divider, useTheme, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-import { TextAreaInput } from "../../../../components/common/inputs";
-import { AttachmentDialog } from "../../components/sent";
-import Transcript from "../../components/sent/sent_transcript";
-import FormSwitches from "../../components/sent/switch";
-import SenderSection from "../../components/sent/SenderSection";
-import PrioritySection from "../../components/sent/PrioritySection";
-import AttachmentSection from "../../components/sent/AttachmentSection";
-import FormContainer from "../../components/sent/FormContainer";
-import FormHeader from "../../components/sent/FormHeader";
-import FormActions from "../../components/sent/FormActions";
-import PublishedMessage from "../../components/sent/PublishedMessage";
+import { TextAreaInput } from "../../../components/common/inputs";
+import { AttachmentDialog } from "../components/sent";
+import Transcript from "../components/sent/sent_transcript";
+import FormSwitches from "../components/sent/switch";
+import SenderSection from "../components/sent/SenderSection";
+import PrioritySection from "../components/sent/PrioritySection";
+import AttachmentSection from "../components/sent/AttachmentSection";
+import FormContainer from "../components/sent/FormContainer";
+import FormHeader from "../components/sent/FormHeader";
+import FormActions from "../components/sent/FormActions";
+import PublishedMessage from "../components/sent/PublishedMessage";
 
-import { useSentFormLogic } from "../../hooks/sent/useSentFormLogic";
-import { useFormStateHandler } from "../../hooks/sent/useFormStateHandler";
+import { useSentFormLogic } from "../hooks/sent/useSentFormLogic";
+import { useFormStateHandler } from "../hooks/sent/useFormStateHandler";
 
-const SentUpdateForm: React.FC = () => {
+const MakeForm: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { id } = useParams();
@@ -211,4 +211,4 @@ const SentUpdateForm: React.FC = () => {
   );
 };
 
-export default SentUpdateForm;
+export default MakeForm;

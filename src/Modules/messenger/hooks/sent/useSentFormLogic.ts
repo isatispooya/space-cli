@@ -1,25 +1,22 @@
 import React from "react";
-import {  useEffect, useMemo, useCallback } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { usePosition } from "@/Modules/positions/hooks";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import { useSentFormStore } from "../../store/sent/sent.store";
 import toast from "react-hot-toast";
 import { PositionType } from "@/Modules/positions/types";
 import {
-  CorrespondenceAttachmentType,
-  CorrespondenceAttachmentsType,
-  APIFormDataType,
-  ITranscriptResponseType,
-
-} from "../../types/sent/sent.type";
-import {
   priorityOptions,
   departmentOptions,
   letterTypeOptions,
 } from "../../data/sent/sent.data";
 import { useReceive } from "../receive";
-
-
+import {
+  CorrespondenceAttachmentsType,
+  CorrespondenceAttachmentType,
+} from "../../types/sent/attachment.type";
+import { ITranscriptResponseType } from "../../types/sent/transcript.type";
+import { APIFormDataType } from "../../types/sent/sent.type";
 
 interface ReferenceDetailType {
   id: number;
@@ -90,7 +87,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     setAttachmentOptions,
   } = useSentFormStore();
 
-
   const { data: Position } = usePosition.useGet();
   const { data: PositionAll } = usePosition.useGetAll();
   const { data: Attache } =
@@ -112,8 +108,8 @@ export const useSentFormLogic = (id: string | undefined) => {
       description: "",
       attachments: [],
       receiver: [],
-      sender: undefined as unknown as number,
-      receiver_internal: undefined as unknown as number,
+      sender: 0,
+      receiver_internal: 0,
       receiver_external: "",
       is_internal: true,
       postcript: "",
@@ -330,7 +326,6 @@ export const useSentFormLogic = (id: string | undefined) => {
       });
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
-
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {

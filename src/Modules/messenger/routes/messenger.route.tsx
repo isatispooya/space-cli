@@ -26,9 +26,9 @@ const SentMessagePage = lazy(() =>
     default: module.SentMessagePage,
   }))
 );
-const SentUpdateFormPage = lazy(() =>
+const MakeFormPage = lazy(() =>
   import("..").then((module) => ({
-    default: module.SentUpdateFormPage,
+    default: module.MakeFormPage,
   }))
 );
 
@@ -62,15 +62,15 @@ const MessengerRoutes = [
       },
       {
         path: "form",
-        element: <SentUpdateFormPage />,
+        element: <MakeFormPage />,
       },
       {
         path: "Outform",
-        element: <SentUpdateFormPage />,
+        element: <MakeFormPage />,
       },
       {
         path: "update-form/:id",
-        element: <SentUpdateFormPage />,
+        element: <MakeFormPage />,
       },
 
       {
