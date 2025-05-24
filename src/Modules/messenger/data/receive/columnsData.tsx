@@ -22,6 +22,7 @@ const Columns = () => {
   letterTypeOptions.forEach((option) => {
     editorValues[option.value] = option.label;
   });
+  const isDraftRoute = window.location.pathname === "/letter/draft";
 
   const departmentValues: Record<string, string> = {};
   departmentOptions.forEach((option) => {
@@ -47,12 +48,23 @@ const Columns = () => {
           onClick: () =>
             (window.location.href = `/letter/receive-message/${rowData.id}`),
         },
-        {
-          label: "ارجاع",
-          icon: "🔄",
-          onClick: () =>
-            (window.location.href = `/letter/receive-refferal/${rowData.id}`),
-        },
+        ...(isDraftRoute
+          ? [
+              {
+                label: "پیش نویس",
+                icon: "🔄",
+                onClick: () =>
+                  (window.location.href = `/letter/update-form/${rowData.id}`),
+              },
+            ]
+          : [
+              {
+                label: "ارجاع",
+                icon: "🔄",
+                onClick: () =>
+                  (window.location.href = `/letter/receive-refferal/${rowData.id}`),
+              },
+            ]),
       ];
 
       const menuPosition = { x: rect.left, y: rect.bottom };

@@ -14,9 +14,11 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   const isInternal = location.pathname === "/letter/form";
   const isOut = location.pathname === "/letter/OutformMake";
 
+  console.log();
+
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
-      {isInternal ? (
+      {formData.is_internal || isInternal ? (
         <>
           <SelectInput
             label="ارسال کننده"

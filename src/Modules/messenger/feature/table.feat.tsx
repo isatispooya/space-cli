@@ -11,7 +11,7 @@ import {
 import { CorrespondenceResponseType } from "../types/sent/sent.type";
 import ExelData from "../data/receive/receiveExelData";
 import { RowComponent } from "tabulator-tables";
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const TableFeature = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -32,6 +32,7 @@ export const TableFeature = () => {
   const outreceiveTable = location.pathname === "/letter/Outreceive-table";
   const letterTable = location.pathname === "/letter/table";
   const outTable = location.pathname === "/letter/Outtable";
+  const draftTable = location.pathname === "/letter/draft";
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -166,6 +167,8 @@ export const TableFeature = () => {
       return mappedData.filter(
         (item) => item.is_sender && item.is_internal === false
       );
+    } else if (draftTable) {
+      return mappedData.filter((item) => item.sender);
     }
 
     return mappedData;
@@ -224,21 +227,16 @@ export const TableFeature = () => {
           </button>
         </div>
         <div className="  mr-4">
-        <div className="flex items-center">
-          <button
-            onClick={() => navigate("/letter/OutformMake")}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-          >
-            ایجاد نامه
-          </button>
+          <div className="flex items-center">
+            <button
+              onClick={() => navigate("/letter/OutformMake")}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+            >
+              ایجاد نامه
+            </button>
+          </div>
         </div>
       </div>
-      </div>
-
-     
-
-
-     
 
       {isSearching && (
         <div className="w-full text-center py-4 text-gray-500">
@@ -252,7 +250,7 @@ export const TableFeature = () => {
         </div>
       )}
 
-      <div className="overflow-x-auto"> 
+      <div className="overflow-x-auto">
         <TabulatorTable
           data={filteredMappedData}
           columns={columns()}
@@ -265,6 +263,8 @@ export const TableFeature = () => {
               ? "پیام های داخلی ارسالی"
               : outTable
               ? "پیام های خارجی ارسالی"
+              : draftTable
+              ? "پیام های پیش نویس"
               : ""
           }
           showActions={true}
