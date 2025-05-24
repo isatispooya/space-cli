@@ -142,10 +142,8 @@ const MissionCard = ({ missions }: { missions: MissionType[] }) => {
                     <span className="font-medium text-gray-800 ml-2">
                       {item.point_2} بذر
                     </span>
-                    <span className="text-gray-400">|</span>
-                    <span className="text-sm text-gray-600">
-                      دریافتی: {item.point_2 * item.user_attempts}
-                    </span>
+            
+
                   </div>
                 )}
                 {item.point_1 !== 0 && (

@@ -44,10 +44,10 @@ const Request = () => {
         first_name: item.user_detail.first_name,
         last_name: item.user_detail.last_name,
         id: item.user_detail.id,
-        account_number: item.user_detail.account_number || "",
+        sheba_number: item.user_detail.sheba_number || "",
       },
       reason: item.reason,
-      account_number: item.user_detail.account_number || "",
+      sheba_number: item.user_detail.sheba_number || "",
     })) || [];
 
   const handleStatusChange = (id: number, newStatus: string) => {
@@ -213,12 +213,12 @@ const Request = () => {
       },
     },
     {
-      field: "user_detail.account_number",
-      title: "شماره حساب",
+      field: "user_detail.sheba_number",
+      title: "شماره شبا",
       headerFilter: true,
       formatter: (cell: CellComponent) => {
         const rowData = cell.getRow().getData();
-        return rowData.user_detail?.account_number || "";
+        return rowData.user_detail?.sheba_number || "";
       },
     },
 

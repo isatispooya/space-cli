@@ -20,9 +20,11 @@ export interface RequestType {
     last_name: string;
     id: number;
     account_number?: string;
+    sheba_number?: string;
   };
   amount: number;
   reason: string;
   account_number?: string;
+  sheba_number?: string;
   
 }
