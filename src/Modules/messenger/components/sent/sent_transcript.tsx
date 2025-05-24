@@ -13,13 +13,68 @@ import {
 import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
-import { useLocation } from "react-router-dom";
-import TranscriptList from "./TranscriptList";
-import {
-  ITranscriptResponseType,
-  TranscriptPropsType,
-  ReferenceDetailType,
-} from "../../types/sent/transcript.type";
+import TranscriptListItem from "./TranscriptListItem";
+import { ITranscriptResponseType } from "../../types/sent/transcript.type";
+
+interface ReferenceDetailType {
+  id: string;
+  user?: {
+    first_name: string;
+    last_name: string;
+    uniqueIdentifier: string;
+  };
+  name?: string;
+  transcript_for?: string;
+  position?: string;
+  company_name?: string;
+  company_detail?: {
+    name: string;
+  };
+}
+
+interface TranscriptPropsType {
+  transcript: ITranscriptResponseType[];
+  selectedTranscript: string[];
+  setSelectedTranscript: (value: string[]) => void;
+  handleAddTranscript: (text?: string) => void;
+  handleTranscriptToggle: (id: number) => void;
+  internalUserOptions: { label: string; value: string }[];
+  getTranscriptName: (id: number) => string;
+  transcriptDirections: { [id: number]: string };
+  setTranscriptDirection: (id: number, value: string) => void;
+  data?: {
+    transcript_details?: ITranscriptResponseType[];
+    sender?: {
+      reference_details?: ReferenceDetailType[];
+      subject?: string;
+      text?: string;
+      description?: string;
+      is_internal?: boolean;
+      postcript?: string;
+      seal?: boolean;
+      signature?: boolean;
+      letterhead?: boolean;
+      binding?: boolean;
+      confidentiality_level?: string;
+      priority?: string;
+      kind_of_correspondence?: string;
+      authority_type?: string;
+      authority_correspondence?: number | null;
+      published?: boolean;
+      sender_details?: {
+        id: number;
+      };
+      receiver_internal_details?: {
+        id: number;
+      };
+      receiver_external?: string;
+      receiver_external_details?: {
+        name: string;
+      };
+    };
+  };
+  is_internal?: boolean;
+}
 
 const Transcript: React.FC<TranscriptPropsType> = React.memo(
   ({
@@ -33,9 +88,8 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     transcriptDirections,
     setTranscriptDirection,
     data,
+    is_internal = true,
   }) => {
-    const location = useLocation();
-    const isInternal = location.pathname === "/letter/form";
     const handleDirectionChange = useCallback(
       (id: number, value: string) => {
         setTranscriptDirection(id, value);
@@ -48,10 +102,10 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     useEffect(() => {
       if (data?.transcript_details && data.transcript_details.length > 0) {
         const positions = data.transcript_details
-          .map((t: ITranscriptResponseType) => t.position?.toString())
-          .filter((p: string | undefined): p is string => p !== undefined);
+          .map((t) => t.position?.toString())
+          .filter((p): p is string => p !== undefined);
 
-        data.transcript_details.forEach((t: ITranscriptResponseType) => {
+        data.transcript_details.forEach((t) => {
           if (t.position && t.transcript_for) {
             setTranscriptDirection(t.position, t.transcript_for);
           }
@@ -59,15 +113,11 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
 
         setSelectedTranscript(positions);
 
-        positions.forEach((pos: string) => {
+        positions.forEach((pos) => {
           const numPos = Number(pos);
-          if (
-            !transcript.some(
-              (t: ITranscriptResponseType) => t.position === numPos
-            )
-          ) {
+          if (!transcript.some((t) => t.position === numPos)) {
             const detail = data.transcript_details?.find(
-              (t: ITranscriptResponseType) => t.position === numPos
+              (t) => t.position === numPos
             );
             if (detail) {
               handleAddTranscript();
@@ -75,35 +125,17 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           }
         });
       }
-    }, [
-      data?.transcript_details,
-      transcript,
-      setSelectedTranscript,
-      handleAddTranscript,
-      setTranscriptDirection,
-    ]);
+    }, [data?.transcript_details]);
 
     const handleAdd = useCallback(() => {
-      if (isInternal) {
+      if (is_internal) {
         if (selectedTranscript.length > 0) {
           handleAddTranscript();
           setSelectedTranscript([]);
         }
       } else {
         if (externalTranscriptText.trim() !== "") {
-          const externalTranscriptItem: ITranscriptResponseType = {
-            id: -Date.now(),
-            name: externalTranscriptText,
-            transcript_for: "notification",
-            security: false,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            read_at: null,
-            position: -Date.now(),
-            correspondence: -1,
-            isExternal: true,
-          };
-          handleAddTranscript(JSON.stringify(externalTranscriptItem));
+          handleAddTranscript(externalTranscriptText);
           setExternalTranscriptText("");
         }
       }
@@ -112,7 +144,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       handleAddTranscript,
       setSelectedTranscript,
       externalTranscriptText,
-      isInternal,
+      is_internal,
     ]);
 
     const hasReferenceData =
@@ -122,13 +154,9 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     const displayTranscript = [...transcript];
 
     if (data?.transcript_details && data.transcript_details.length > 0) {
-      data.transcript_details.forEach((detail: ITranscriptResponseType) => {
+      data.transcript_details.forEach((detail) => {
         if (detail.position) {
-          if (
-            !displayTranscript.some(
-              (t: ITranscriptResponseType) => t.position === detail.position
-            )
-          ) {
+          if (!displayTranscript.some((t) => t.position === detail.position)) {
             displayTranscript.push(detail);
           }
         }
@@ -149,60 +177,48 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
         }}
       >
         {/* بخش افزودن رونوشت جدید */}
-        <Grid
-          container
-          spacing={2}
-          alignItems="flex-end"
-          sx={{
-            background: "#f5f7fa",
-            borderRadius: 2,
-            p: { xs: 1.5, md: 2 },
-            mb: 2,
-            boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-          }}
-        >
-          <Grid item xs={12} sm={4}>
-            <MultiSelect
-              label="انتخاب گیرندگان رونوشت"
-              selectedValues={selectedTranscript.map(String)}
-              onChange={(value) => {
-                const filteredValues = value.filter((v) => v !== "");
-                setSelectedTranscript(filteredValues);
-              }}
-              options={internalUserOptions}
-              className="rounded-xl shadow-sm"
-            />
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={10}>
+            <div style={{ display: "flex", gap: 10 }}>
+              <MultiSelect
+                label="انتخاب گیرندگان رونوشت"
+                selectedValues={selectedTranscript.map(String)}
+                onChange={(value) => {
+                  const filteredValues = value.filter((v) => v !== "");
+                  setSelectedTranscript(filteredValues);
+                }}
+                options={internalUserOptions}
+              />
+
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                sx={{ width: "100%", marginTop: "25px" }}
+              >
+                <TextField
+                  label="گیرندگان رونوشت خارجی"
+                  value={externalTranscriptText}
+                  onChange={(e) => setExternalTranscriptText(e.target.value)}
+                  placeholder="نام گیرنده رونوشت خارجی را وارد کنید"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  sx={{
+                    borderRadius: 1.5,
+                    boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
+                  }}
+                />
+              </Grid>
+            </div>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              label="گیرندگان رونوشت خارجی"
-              value={externalTranscriptText}
-              onChange={(e) => setExternalTranscriptText(e.target.value)}
-              placeholder="نام گیرنده رونوشت خارجی را وارد کنید"
-              variant="outlined"
-              size="small"
-              fullWidth
-              sx={{
-                borderRadius: 1.5,
-                boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
+          <Grid item xs={2}>
+            <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
               <ButtonBase
                 label="افزودن"
                 onClick={handleAdd}
                 bgColor="#1976d2"
                 hoverColor="#1565c0"
-                className="px-8 py-2 rounded-2xl font-bold text-base shadow-lg"
               />
             </Box>
           </Grid>
@@ -282,7 +298,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Paper>
         )}
 
-        {/* لیست رونوشت‌های داخلی و خارجی */}
+        {/* لیست رونوشت‌ها */}
         {displayTranscript.length > 0 && (
           <Paper
             variant="outlined"
@@ -291,45 +307,24 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
               borderRadius: 2,
               bgcolor: "#fff",
               boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 2px",
-              mb: 2,
             }}
           >
-            <Typography
-              variant="body2"
-              sx={{ mb: 1, fontWeight: "medium", color: "#555" }}
-            >
-              رونوشت‌های اضافه شده:
-            </Typography>
             <List sx={{ p: 0 }}>
-              {displayTranscript.map(
-                (item: ITranscriptResponseType, index: number) => (
-                  <React.Fragment key={`transcript-${item.id}`}>
-                    <ListItem sx={{ px: 1, py: 1.5 }}>
-                      <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12} md={8}>
-                          <Typography
-                            sx={{ fontSize: "0.9rem", color: "#1e293b" }}
-                          >
-                            {item.isExternal
-                              ? item.name
-                              : getTranscriptName(item.position)}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                          <Typography
-                            sx={{ fontSize: "0.8rem", color: "#64748b" }}
-                          >
-                            {item.transcript_for || "اطلاع رسانی"}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </ListItem>
-                    {index < displayTranscript.length - 1 && (
-                      <Divider sx={{ my: 0.5 }} />
-                    )}
-                  </React.Fragment>
-                )
-              )}
+              {displayTranscript.map((item, index) => (
+                <React.Fragment key={item.position || item.id}>
+                  <TranscriptListItem
+                    item={item}
+                    getTranscriptName={getTranscriptName}
+                    transcriptDirections={transcriptDirections}
+                    handleDirectionChange={handleDirectionChange}
+                    handleTranscriptToggle={handleTranscriptToggle}
+                    internalOptions={internalOptions}
+                  />
+                  {index < displayTranscript.length - 1 && (
+                    <Divider sx={{ my: 0.5 }} />
+                  )}
+                </React.Fragment>
+              ))}
             </List>
           </Paper>
         )}
