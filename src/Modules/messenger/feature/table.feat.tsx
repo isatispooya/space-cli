@@ -1,18 +1,19 @@
 import "moment/locale/fa";
 import { LoaderLg, TabulatorTable } from "@/components";
 import { useMemo, useState, useCallback } from "react";
-import columns from "../../data/receive/columnsData";
-import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
-import { chatService } from "../../services";
+import columns from "../data/receive/columnsData";
+import useCorrespondenceAttachment from "../hooks/sent/useCorrespondenceAttachment";
+import { chatService } from "../services";
 import {
   CorrespondenceItemType,
   ReceiveMessageType,
-} from "../../types/receive/ReceiveMessage.type";
-import { CorrespondenceResponseType } from "../../types/sent/sent.type";
-import ExelData from "../../data/receive/receiveExelData";
+} from "../types/receive/ReceiveMessage.type";
+import { CorrespondenceResponseType } from "../types/sent/sent.type";
+import ExelData from "../data/receive/receiveExelData";
 import { RowComponent } from "tabulator-tables";
+import { useLocation } from "react-router-dom";
 
-export const ReceiveTable = () => {
+export const TableFeature = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] =
     useState<CorrespondenceResponseType>({
@@ -24,6 +25,12 @@ export const ReceiveTable = () => {
 
   const { data: correspondence, isLoading } =
     useCorrespondenceAttachment.useGetCorrespondence();
+  const location = useLocation();
+
+  const receiveTable = location.pathname === "/letter/receive-table";
+  const outreceiveTable = location.pathname === "/letter/Outreceive-table";
+  const letterTable = location.pathname === "/letter/table";
+  const outTable = location.pathname === "/letter/Outtable";
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -47,39 +54,47 @@ export const ReceiveTable = () => {
 
   const formatDate = useCallback((dateString: string) => {
     const date = new Date(dateString);
-    const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(date);
-    const month = new Intl.DateTimeFormat("fa", { month: "2-digit" }).format(date);
+    const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(
+      date
+    );
+    const month = new Intl.DateTimeFormat("fa", { month: "2-digit" }).format(
+      date
+    );
     const day = new Intl.DateTimeFormat("fa", { day: "2-digit" }).format(date);
     return `${year}/${month}/${day}`;
   }, []);
 
   const formatConfidentialityLevel = useCallback((level?: string) => {
     switch (level) {
-      case "confidential": return "محرمانه";
-      case "secret": return "سری";
-      case "top_secret": return "فوق سری";
-      default: return "عادی";
+      case "confidential":
+        return "محرمانه";
+      case "secret":
+        return "سری";
+      case "top_secret":
+        return "فوق سری";
+      default:
+        return "عادی";
     }
   }, []);
 
   const createRowData = useCallback(
     (item: CorrespondenceItemType) => {
       const senderName =
-        item.sender_details?.user?.first_name +
-          " " +
-          item.sender_details?.user?.last_name +
-          " " +
-          "-" +
-          item.sender_details?.name || "نامشخص";
+        (item.sender_details?.user?.first_name ?? "") +
+        " " +
+        (item.sender_details?.user?.last_name ?? "") +
+        " " +
+        "-" +
+        (item.sender_details?.name ?? "نامشخص");
 
       const receiverName =
         item.is_internal !== false
-          ? item.receiver_internal_details?.user?.first_name +
-              " " +
-              item.receiver_internal_details?.user?.last_name +
-              " " +
-              "-" +
-              item.receiver_internal_details?.name || "نامشخص"
+          ? (item.receiver_internal_details?.user?.first_name ?? "") +
+            " " +
+            (item.receiver_internal_details?.user?.last_name ?? "") +
+            " " +
+            "-" +
+            (item.receiver_internal_details?.name ?? "نامشخص")
           : item.receiver_external || "نامشخص";
 
       return {
@@ -96,9 +111,14 @@ export const ReceiveTable = () => {
         confidentiality_level: formatConfidentialityLevel(
           item.confidentiality_level
         ),
+        is_internal: item.is_internal,
+        is_sender:
+          correspondence?.sender.some((s) => s.id === item.id) ?? false,
+        is_receiver:
+          correspondence?.receiver.some((r) => r.id === item.id) ?? false,
       };
     },
-    [formatDate, formatConfidentialityLevel]
+    [formatDate, formatConfidentialityLevel, correspondence]
   );
 
   const mappedData = useMemo(() => {
@@ -119,9 +139,36 @@ export const ReceiveTable = () => {
       return searchResults.sender.map(createRowData);
     }
 
-    if (!correspondence?.receiver) return [];
-    return correspondence.receiver.map(createRowData);
+    if (!correspondence) return [];
+    return [
+      ...correspondence.receiver.map(createRowData),
+      ...correspondence.sender.map(createRowData),
+    ];
   }, [correspondence, searchResults, hasSearched, createRowData]);
+
+  const filteredMappedData = useMemo(() => {
+    if (!mappedData) return [];
+
+    if (receiveTable) {
+      return mappedData.filter(
+        (item) => item.is_receiver && item.is_internal === true
+      );
+    } else if (outreceiveTable) {
+      return mappedData.filter(
+        (item) => item.is_receiver && item.is_internal === false
+      );
+    } else if (letterTable) {
+      return mappedData.filter(
+        (item) => item.is_sender && item.is_internal === true
+      );
+    } else if (outTable) {
+      return mappedData.filter(
+        (item) => item.is_sender && item.is_internal === false
+      );
+    }
+
+    return mappedData;
+  }, [mappedData, receiveTable, outreceiveTable, letterTable, outTable]);
 
   const tableOptions = useMemo(
     () => ({
@@ -191,9 +238,19 @@ export const ReceiveTable = () => {
 
       <div className="overflow-x-auto">
         <TabulatorTable
-          data={mappedData}
+          data={filteredMappedData}
           columns={columns()}
-          title="پیام های دریافتی"
+          title={
+            receiveTable
+              ? "پیام های دریافتی"
+              : outreceiveTable
+              ? "پیام های خارجی دریافتی"
+              : letterTable
+              ? "پیام های داخلی ارسالی"
+              : outTable
+              ? "پیام های خارجی ارسالی"
+              : ""
+          }
           showActions={true}
           formatExportData={(item: ReceiveMessageType) => ExelData(item)}
           dateField="send_date"
@@ -207,4 +264,4 @@ export const ReceiveTable = () => {
   );
 };
 
-export default ReceiveTable;
+export default TableFeature;

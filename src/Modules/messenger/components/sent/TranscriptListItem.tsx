@@ -28,7 +28,8 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     handleExternalTextUpdate,
   }) => {
     const [visibility, setVisibility] = useState(!item.security);
-    const isExternalTranscript = item.isExternal || item.external_text || item.id < 0;
+    const isExternalTranscript =
+      item.isExternal || item.external_text || item.id < 0;
     const [externalTexts, setExternalTexts] = useState<string[]>(
       isExternalTranscript && (item.external_text || item.name)
         ? Array.isArray(item.external_text)
@@ -36,6 +37,9 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
           : [item.external_text || item.name || ""]
         : [""]
     );
+
+    const [newExternalText, setNewExternalText] = useState("");
+    const [newSelectedDirection, setNewSelectedDirection] = useState("");
 
     useEffect(() => {
       setVisibility(!item.security);
@@ -69,7 +73,28 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     };
 
     const addExternalText = () => {
-      setExternalTexts([...externalTexts, ""]);
+      const valuesToAdd: string[] = [];
+      const trimmedText = newExternalText.trim();
+      if (trimmedText && !externalTexts.includes(trimmedText)) {
+        valuesToAdd.push(trimmedText);
+      }
+      if (
+        newSelectedDirection &&
+        !externalTexts.includes(newSelectedDirection)
+      ) {
+        valuesToAdd.push(newSelectedDirection);
+      }
+
+      if (valuesToAdd.length > 0) {
+        const updatedTexts = [...externalTexts, ...valuesToAdd];
+        setExternalTexts(updatedTexts);
+        if (handleExternalTextUpdate) {
+          handleExternalTextUpdate(item.id, updatedTexts);
+        }
+      }
+
+      setNewExternalText("");
+      setNewSelectedDirection("");
     };
 
     const removeExternalText = (index: number) => {
@@ -100,6 +125,7 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
                     <span>رونوشت خارجی</span>
                   </Tooltip>
                 </Typography>
+
                 {externalTexts.map((text, index) => (
                   <Box
                     key={index}
@@ -138,17 +164,35 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
                     </IconButton>
                   </Box>
                 ))}
-                <IconButton
-                  size="small"
-                  onClick={addExternalText}
-                  sx={{
-                    mt: 1,
-                    border: "1px dashed #dee2e6",
-                    borderRadius: 1,
-                  }}
-                >
-                  <AddIcon fontSize="small" />
-                </IconButton>
+
+                <Box display="flex" gap={1} mt={2}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    placeholder="افزودن متن جدید"
+                    value={newExternalText}
+                    onChange={(e) => setNewExternalText(e.target.value)}
+                  />
+                  <SelectInput
+                    label=""
+                    options={internalOptions}
+                    value={newSelectedDirection}
+                    onChange={setNewSelectedDirection}
+                  />
+                  <IconButton
+                    size="small"
+                    onClick={addExternalText}
+                    sx={{
+                      border: "1px dashed #dee2e6",
+                      borderRadius: 1,
+                      height: "40px",
+                      width: "40px",
+                      mt: "auto",
+                    }}
+                  >
+                    <AddIcon fontSize="small" />
+                  </IconButton>
+                </Box>
               </Box>
             ) : (
               <Typography

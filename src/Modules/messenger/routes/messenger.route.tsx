@@ -5,9 +5,9 @@ const SentPage = lazy(() =>
     default: module.SentPage,
   }))
 );
-const ReceiveTablePage = lazy(() =>
+const TablePage = lazy(() =>
   import("..").then((module) => ({
-    default: module.ReceiveTablePage,
+    default: module.TablePage,
   }))
 );
 const ReceiveMessagePage = lazy(() =>
@@ -16,11 +16,6 @@ const ReceiveMessagePage = lazy(() =>
   }))
 );
 
-const SentTablePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.SentTablePage,
-  }))
-);
 const SentMessagePage = lazy(() =>
   import("..").then((module) => ({
     default: module.SentMessagePage,
@@ -50,11 +45,11 @@ const MessengerRoutes = [
     children: [
       {
         path: "table",
-        element: <SentTablePage />,
+        element: <TablePage />,
       },
       {
         path: "Outtable",
-        element: <SentTablePage />,
+        element: <TablePage />,
       },
       {
         path: "message/:id",
@@ -75,15 +70,15 @@ const MessengerRoutes = [
 
       {
         path: "receive-table",
-        element: <ReceiveTablePage />,
+        element: <TablePage />,
       },
       {
         path: "Outreceive-table",
-        element: <ReceiveTablePage />,
+        element: <TablePage />,
       },
       {
         path: "receive-table/:id",
-        element: <ReceiveTablePage />,
+        element: <TablePage />,
       },
       {
         path: "receive-message/:id",

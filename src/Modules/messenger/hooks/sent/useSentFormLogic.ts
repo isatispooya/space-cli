@@ -17,6 +17,7 @@ import {
 } from "../../types/sent/attachment.type";
 import { ITranscriptResponseType } from "../../types/sent/transcript.type";
 import { APIFormDataType } from "../../types/sent/sent.type";
+import { useLocation } from "react-router-dom";
 
 interface ReferenceDetailType {
   id: number;
@@ -100,6 +101,8 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const { mutate: updateCorrespondence } =
     useCorrespondenceAttachment.useUpdateCorrespondence();
+  const location = useLocation();
+  const isInternal = location.pathname === "/letter/Outform";
 
   const resetForm = () => {
     setFormData({
@@ -111,7 +114,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       sender: 0,
       receiver_internal: 0,
       receiver_external: "",
-      is_internal: true,
+      is_internal: isInternal ? false : true,
       postcript: "",
       seal: false,
       signature: false,
@@ -243,7 +246,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
           data.receiver_external_details?.name || data.receiver_external || "",
-        is_internal: data.is_internal ?? true,
+        is_internal: isInternal ? data.is_internal ?? false : true,
         postcript: data.postcript || "",
         seal: data.seal ?? false,
         signature: data.signature ?? false,
@@ -308,7 +311,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         sender: undefined as unknown as number,
         receiver_internal: undefined as unknown as number,
         receiver_external: "",
-        is_internal: true,
+        is_internal: isInternal ? false : true,
         postcript: "",
         seal: false,
         signature: false,

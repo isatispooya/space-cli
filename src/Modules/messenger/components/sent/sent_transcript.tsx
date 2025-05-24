@@ -163,6 +163,14 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       });
     }
 
+    if (!is_internal && externalTranscriptText.trim() !== "") {
+      displayTranscript.push({
+        id: -1,
+        position: -1,
+        name: externalTranscriptText.trim(),
+      } as ITranscriptResponseType);
+    }
+
     return (
       <Box
         sx={{
@@ -176,7 +184,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
         }}
       >
-        {/* بخش افزودن رونوشت جدید */}
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={10}>
             <div style={{ display: "flex", gap: 10 }}>
@@ -190,12 +197,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
                 options={internalUserOptions}
               />
 
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                sx={{ width: "100%", marginTop: "25px" }}
-              >
+              <Grid item xs={12} sm={4} sx={{ width: "100%", marginTop: "25px" }}>
                 <TextField
                   label="گیرندگان رونوشت خارجی"
                   value={externalTranscriptText}
@@ -224,7 +226,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Grid>
         </Grid>
 
-        {/* نمایش تعداد رونوشت‌ها */}
         {displayTranscript.length > 0 && (
           <Box sx={{ mt: 1, mb: 1 }}>
             <Typography
@@ -243,7 +244,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Box>
         )}
 
-        {/* نمایش لیست رونوشت‌های دریافتی از دیتا */}
         {hasReferenceData && (
           <Paper
             variant="outlined"
@@ -298,7 +298,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Paper>
         )}
 
-        {/* لیست رونوشت‌ها */}
         {displayTranscript.length > 0 && (
           <Paper
             variant="outlined"
