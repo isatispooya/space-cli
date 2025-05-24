@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { FormInput, SelectInput } from "../../../../components/common/inputs";
-import { SenderSectionPropsType } from "../../types/sent/SenderSection.type";
+import { SenderSectionPropsType } from "../../types/sent/SenderSection.Type";
 import { useLocation } from "react-router-dom";
 
 const SenderSection: React.FC<SenderSectionPropsType> = ({
@@ -9,17 +9,15 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   handleChange,
   senderUserOptions,
   internalUserOptions,
-  isEditMode,
 }) => {
   const location = useLocation();
-  const isInternal = location.pathname === "/letter/form" || !isEditMode;
+  const isInternal =
+    location.pathname === "/letter/form" || formData.is_internal;
   const isOut = location.pathname === "/letter/OutformMake";
-
-  console.log();
 
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
-      {formData.is_internal && isInternal ? (
+      {isInternal ? (
         <>
           <SelectInput
             label="ارسال کننده"
