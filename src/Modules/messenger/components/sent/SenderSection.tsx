@@ -96,7 +96,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
             formData.owner_details?.[0]?.id
           )?.toString() || ""
         }
-        onChange={(value) => handleChange("owner", value)}
+        onChange={(value) => handleChange("owner_details", value)}
         options={internalUserOptions}
         className="enhanced-select"
       />
