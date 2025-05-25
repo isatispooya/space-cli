@@ -77,8 +77,7 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
       setExternalTexts(newTexts);
     };
 
-    const directionValue =
-      transcriptDirections[item.position || item.id] || "";
+    const directionValue = transcriptDirections[item.position || item.id] || "";
 
     return (
       <ListItem sx={{ px: 1, py: 1.5 }}>

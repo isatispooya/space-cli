@@ -101,7 +101,7 @@ const MakeForm: React.FC = () => {
             <Grid container spacing={{ xs: 2, sm: 3 }}>
               <Grid item xs={12} md={6}>
                 <SenderSection
-                   isEditMode={isEditMode}
+                  isEditMode={isEditMode}
                   formData={formData}
                   handleChange={handleInputChange}
                   senderUserOptions={senderUserOptions}
@@ -175,11 +175,7 @@ const MakeForm: React.FC = () => {
           <Grid item xs={12}>
             <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
             <Transcript
-              data={
-                { sender: { sender_details: { id: 0 } } } as {
-                  sender: { sender_details: { id: number } };
-                }
-              }
+              data={formData.transcript as any}
               transcript={transcriptItems}
               selectedTranscript={selectedTranscript}
               setSelectedTranscript={setSelectedTranscript}

@@ -105,7 +105,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           .map((t) => t.position?.toString())
           .filter((p): p is string => p !== undefined);
 
-        data.transcript_details.forEach((t) => {
+        data.transcript_details.forEach((t: ITranscriptResponseType) => {
           if (t.position && t.transcript_for) {
             setTranscriptDirection(t.position, t.transcript_for);
           }
@@ -113,7 +113,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
 
         setSelectedTranscript(positions);
 
-        positions.forEach((pos) => {
+        positions.forEach((pos: string) => {
           const numPos = Number(pos);
           if (!transcript.some((t) => t.position === numPos)) {
             const detail = data.transcript_details?.find(
@@ -151,14 +151,15 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       data?.sender?.reference_details &&
       data.sender.reference_details.length > 0;
 
-    const displayTranscript = [...transcript];
+    const displayTranscript: ITranscriptResponseType[] = [...transcript];
 
     if (data?.transcript_details && data.transcript_details.length > 0) {
-      data.transcript_details.forEach((detail) => {
-        if (detail.position) {
-          if (!displayTranscript.some((t) => t.position === detail.position)) {
-            displayTranscript.push(detail);
-          }
+      data.transcript_details.forEach((detail: ITranscriptResponseType) => {
+        if (
+          detail.position &&
+          !displayTranscript.some((t) => t.position === detail.position)
+        ) {
+          displayTranscript.push(detail);
         }
       });
     }
@@ -197,7 +198,12 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
                 options={internalUserOptions}
               />
 
-              <Grid item xs={12} sm={4} sx={{ width: "100%", marginTop: "25px" }}>
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                sx={{ width: "100%", marginTop: "25px" }}
+              >
                 <TextField
                   label="گیرندگان رونوشت خارجی"
                   value={externalTranscriptText}
@@ -298,7 +304,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Paper>
         )}
 
-        {displayTranscript.length > 0 && (
+        {displayTranscript.length > 0 ? (
           <Paper
             variant="outlined"
             sx={{
@@ -326,15 +332,15 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
               ))}
             </List>
           </Paper>
-        )}
-
-        {displayTranscript.length === 0 && !hasReferenceData && (
-          <Box sx={{ p: 2, textAlign: "center" }}>
-            <Typography variant="body2" color="text.secondary">
-              هیچ گیرنده رونوشتی انتخاب نشده است. از لیست بالا گیرندگان را
-              انتخاب و اضافه کنید.
-            </Typography>
-          </Box>
+        ) : (
+          !hasReferenceData && (
+            <Box sx={{ p: 2, textAlign: "center" }}>
+              <Typography variant="body2" color="text.secondary">
+                هیچ گیرنده رونوشتی انتخاب نشده است. از لیست بالا گیرندگان را
+                انتخاب و اضافه کنید.
+              </Typography>
+            </Box>
+          )
         )}
       </Box>
     );
