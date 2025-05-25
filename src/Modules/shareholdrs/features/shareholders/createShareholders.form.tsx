@@ -61,6 +61,7 @@ const CreateShareholdersPost = () => {
     precedence_count: Yup.number().optional(),
     precedence_used: Yup.number().optional(),
     precedence: Yup.number().optional(),
+    underwriting: Yup.number().optional(),
     name: Yup.string().required("نام الزامی است"),
     number_of_shares: Yup.number().required("تعداد سهام الزامی است"),
     company: Yup.string().required("نام شرکت الزامی است"),

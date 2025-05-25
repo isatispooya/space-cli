@@ -2,6 +2,7 @@ export interface ShareholdersType {
   company?: string;
   company_national_id?: string;
   number_of_shares?: number;
+  underwriting?: number;
   first_name?: string;
   last_name?: string;
   precedence_count?: number;

@@ -26,6 +26,7 @@ const EditShareholdForm: React.FC = () => {
     id: yup.number().required(),
     used_precedence: yup.number().optional(),
     precedence_count: yup.number().optional(),
+    underwriting: yup.number().optional(),
     precedence_used: yup.number().optional(),
     precedence: yup.number().optional(),
     number_of_shares: yup.number().required("تعداد سهام الزامی است"),

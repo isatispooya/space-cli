@@ -290,6 +290,7 @@ const ShareholdTable: React.FC = () => {
   const ExelData = (item: ShareholdersType) => ({
     "نام شرکت": item.company_detail?.name || item.company,
     "تعداد سهام": item.number_of_shares || 0,
+    "پذیره نویسی": item.underwriting || 0,
     نام: item.user_detail?.first_name || item.first_name,
     "نام خانوادگی": item.user_detail?.last_name || item.last_name,
     شماره: item.user_detail?.mobile || item.mobile,

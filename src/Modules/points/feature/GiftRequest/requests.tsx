@@ -13,7 +13,7 @@ const Request = () => {
   const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
   const { checkPermission } = useUserPermissions();
-  
+
   const isAdmin = checkPermission(["change_giftuser"]);
 
   const statusMapping = {
@@ -21,7 +21,7 @@ const Request = () => {
     cancelled: "لغو شده",
     pending: "در حال بررسی",
   };
-
+  
   const rows: RequestType[] =
     giftsUser?.map((item: RequestType) => ({
       id: item.id,
