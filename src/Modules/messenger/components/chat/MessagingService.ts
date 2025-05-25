@@ -1,4 +1,9 @@
-import { ChatType, ProfileDataType, SelectedUserType, ChatDataType } from "../../types";
+import {
+  ChatDataType,
+  ProfileDataType,
+  SelectedUserType,
+} from "../../types/messagingService.types";
+import { ChatType } from "@/Modules/messenger/types/chat.type";
 
 export class MessagingService {
   static createAttachmentMessage(
@@ -8,7 +13,10 @@ export class MessagingService {
     profileData: ProfileDataType
   ): ChatType["SingleMessageType"] {
     return {
-      id: messages.length > 0 ? Math.max(...messages.map((m) => m.id)) + 999 : 999,
+      id:
+        messages.length > 0
+          ? Math.max(...messages.map((m) => m.id)) + 999
+          : 999,
       text: messageText,
       sender: profileData
         ? `${profileData.first_name} ${profileData.last_name}`
@@ -117,37 +125,40 @@ export class MessagingService {
     return formattedMessages;
   }
 
-  private static mapChatDataToMessage = (profileData: ProfileDataType) => (msg: ChatDataType): ChatType["SingleMessageType"] => ({
-    id: msg.id,
-    text: msg.message,
-    sender: `${msg.sender_details.first_name} ${msg.sender_details.last_name}`,
-    timestamp: new Date(msg.created_at).toLocaleTimeString("fa-IR", {
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
-    isCurrentUser: msg.sender_details.id === profileData?.id,
-    createdAt: new Date(msg.created_at).getTime(),
-    attachment: msg.attachment || (msg.attach_details ? msg.attach_details.file : null),
-    attachmentName: msg.attachment
-      ? msg.attachment.split("/").pop()
-      : msg.attach_details
-      ? msg.attach_details.name
-      : null,
-    attachmentType: msg.attachment
-      ? msg.attachment.split(".").pop()?.toLowerCase()
-      : msg.attach_details
-      ? msg.attach_details.name.split(".").pop()?.toLowerCase()
-      : null,
-    attachmentSize: msg.attach_details ? msg.attach_details.size : null,
-    senderDetails: msg.sender_details,
-    receiverDetails: msg.receiver_details,
-    seen: msg.seen || false,
-    isDeleted: msg.is_deleted || false,
-    senderId: msg.sender,
-    receiverId: msg.receiver,
-    attachId: msg.attach ? Number(msg.attach) : null,
-    attachDetails: msg.attach_details,
-    sender_profile_image: msg.sender_details?.profile_image || null,
-    sender_avatar: null,
-  });
-} 
+  private static mapChatDataToMessage =
+    (profileData: ProfileDataType) =>
+    (msg: ChatDataType): ChatType["SingleMessageType"] => ({
+      id: msg.id,
+      text: msg.message,
+      sender: `${msg.sender_details.first_name} ${msg.sender_details.last_name}`,
+      timestamp: new Date(msg.created_at).toLocaleTimeString("fa-IR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      isCurrentUser: msg.sender_details.id === profileData?.id,
+      createdAt: new Date(msg.created_at).getTime(),
+      attachment:
+        msg.attachment || (msg.attach_details ? msg.attach_details.file : null),
+      attachmentName: msg.attachment
+        ? msg.attachment.split("/").pop()
+        : msg.attach_details
+        ? msg.attach_details.name
+        : null,
+      attachmentType: msg.attachment
+        ? msg.attachment.split(".").pop()?.toLowerCase()
+        : msg.attach_details
+        ? msg.attach_details.name.split(".").pop()?.toLowerCase()
+        : null,
+      attachmentSize: msg.attach_details ? msg.attach_details.size : null,
+      senderDetails: msg.sender_details,
+      receiverDetails: msg.receiver_details,
+      seen: msg.seen || false,
+      isDeleted: msg.is_deleted || false,
+      senderId: msg.sender,
+      receiverId: msg.receiver,
+      attachId: msg.attach ? Number(msg.attach) : null,
+      attachDetails: msg.attach_details,
+      sender_profile_image: msg.sender_details?.profile_image || null,
+      sender_avatar: null,
+    });
+}

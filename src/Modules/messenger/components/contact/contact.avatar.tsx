@@ -1,5 +1,5 @@
 import { server } from "@/api/server";
-import { ChatType } from "../../types";
+import { ChatType } from "@/Modules/messenger/types/chat.type";
 import defaultUserImage from "@/assets/pictures/user-286-128.png";
 
 const ContactAvatar = ({ user }: { user: ChatType["UserMessageType"] }) => {

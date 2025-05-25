@@ -1,11 +1,9 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import {
-  MessageFooterPropsType,
-  TranscriptDetailsType,
-  MatchedUserType,
-} from "../../../types/sent/sent.type";
+import { MessageFooterPropsType } from "@/Modules/messenger/types/sent/message.type";
+import { TranscriptDetailsType } from "@/Modules/messenger/types/sent/transcript.type";
 import internalOptions from "../../../data/sent/transcript.data";
 import { getValueLabel } from "../../../utils/helpers";
+import { MatchedUserType } from "@/Modules/messenger/types";
 
 export const MessageFooter = ({
   sender,

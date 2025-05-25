@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { SelectInput } from "../../../../components/common/inputs";
-import { PrioritySectionPropsType } from "../../types/sent/SenderSection.type";
+import { PrioritySectionPropsType } from "../../types/sent/SenderSection.Type";
+
 
 const PrioritySection: React.FC<PrioritySectionPropsType> = ({
   formData,

@@ -39,7 +39,6 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     );
 
     const [newExternalText, setNewExternalText] = useState("");
-    const [newSelectedDirection, setNewSelectedDirection] = useState("");
 
     useEffect(() => {
       setVisibility(!item.security);

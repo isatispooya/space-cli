@@ -1,4 +1,7 @@
-import { SectionPropsType, SelectOptionType } from "./SenderSection.Type";
+import {
+  SectionPropsType,
+  SelectOptionType,
+} from "../../types/sent/SenderSection.Type";
 import { BaseUserType } from "./sent.type";
 
 export interface CorrespondenceAttachmentType {

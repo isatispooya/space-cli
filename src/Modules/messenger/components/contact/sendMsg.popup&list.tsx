@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { FaPen } from "react-icons/fa";
-import { ChatType } from "../../types";
+import { ChatType } from "@/Modules/messenger/types/chat.type";
 import { CloseButton, DynamicList } from "@/components";
 import ContactsList from "./contacts.list";
 import { useState, useEffect, useCallback } from "react";

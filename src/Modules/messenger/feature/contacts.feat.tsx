@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import useChat from "../hooks/useChat";
 import { useProfile } from "@/Modules/userManagment";
 import { server } from "@/api/server";
-import { ChatType } from "../types";
+import { ChatType } from "../types/chat.type";
 import { ContactsCard, SendMsgPopUp } from "../components";
 import { SearchInput } from "@/components";
 

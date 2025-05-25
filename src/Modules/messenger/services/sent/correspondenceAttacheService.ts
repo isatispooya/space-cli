@@ -1,10 +1,10 @@
 import { api } from "@/api";
 import {
-  CorrespondenceAttachmentType,
-  AttachmentResponseType,
   APIFormDataType,
   CorrespondenceResponseType,
 } from "../../types/sent/sent.type";
+import { AttachmentResponseType } from "../../types/sent/attachment.type";
+import { CorrespondenceAttachmentType } from "../../types/sent/attachment.type";
 const correspondenceAttacheService = {
   getAttache: async (): Promise<CorrespondenceAttachmentType[]> => {
     const response = await api.get("/correspondence/attache/");

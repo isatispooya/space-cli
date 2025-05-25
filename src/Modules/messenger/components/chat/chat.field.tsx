@@ -6,17 +6,15 @@ import ChatHeader from "./chat.header";
 import ChatInput from "./chat.inputs";
 import useProfile from "@/Modules/userManagment/hooks/useProfile";
 import {
-  ChatType,
   ProfileDataType,
   SelectedUserType,
   ChatDataType,
-} from "../../types";
+} from "@/Modules/messenger/types/messagingService.types";
 import FileList from "./FileList";
 import MessageContent from "./MessageContent";
 import EmptyState from "./EmptyState";
 import { MessagingService } from "./MessagingService";
-
-
+import ChatType from "../../types/chat.type";
 
 const MessageField: React.FC<ChatType["ChatFormProps"]> = ({
   onSubmit,

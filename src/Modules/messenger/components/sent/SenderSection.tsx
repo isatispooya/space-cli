@@ -90,7 +90,12 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
 
       <SelectInput
         label="مالک"
-        value={(formData.owner_details?.user?.id || formData.owner_details)?.toString() || ""}
+        value={
+          (
+            formData.owner_details?.[0]?.user?.id ||
+            formData.owner_details?.[0]?.id
+          )?.toString() || ""
+        }
         onChange={(value) => handleChange("owner", value)}
         options={internalUserOptions}
         className="enhanced-select"
