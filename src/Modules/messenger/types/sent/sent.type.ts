@@ -1,3 +1,10 @@
+import { CorrespondenceAttachmentType } from "./attachment.type";
+import {
+  TranscriptAPIDataType,
+  TranscriptDataType,
+  TranscriptDetailsType,
+} from "./transcript.type";
+
 export interface BaseUserType {
   id: number;
   first_name: string;
@@ -5,48 +12,10 @@ export interface BaseUserType {
   uniqueIdentifier?: string;
 }
 
-export interface SentMessageType {
-  id: number;
-  title: string;
-  receiver: string;
-  sender: string;
-  send_date: string;
-  status: string;
-  message_type: string;
-}
-
-export interface CorrespondenceAttachmentType {
-  id: number;
-  user: BaseUserType;
-  name: string;
-  file: string;
-  size: number;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface ReferenceDataType {
   id: number;
   enabled: boolean;
   transcript_for: string;
-  external_text?: string;
-}
-
-export interface TranscriptDataType {
-  read_at: string | null;
-  transcript_for: string;
-  security: boolean;
-  position: number;
-  correspondence: number | null;
-  external_text?: string;
-}
-
-export interface TranscriptAPIDataType {
-  read_at: string | null;
-  transcript_for: string;
-  security: boolean;
-  position: number;
-  correspondence: number | null;
   external_text?: string;
 }
 
@@ -75,6 +44,7 @@ export interface APIFormDataType {
   reference: number[];
   transcript: TranscriptAPIDataType[];
   published: boolean;
+  owner_details: { id: number; user?: Record<string, unknown> }[];
 }
 
 export type FormDataType = {
@@ -101,14 +71,8 @@ export type FormDataType = {
   referenceData?: ReferenceDataType[];
   transcript: TranscriptDataType[];
   published: boolean;
+  owner_details: [];
 };
-
-export interface AttachmentResponseType {
-  id: number;
-  name: string;
-  file: string;
-  size: number;
-}
 
 export interface SenderDetailsType {
   user: BaseUserType;
@@ -154,29 +118,6 @@ export interface CorrespondenceResponseType {
   receiver: CorrespondenceItemType[];
 }
 
-export type CorrespondenceAttachmentsType = CorrespondenceAttachmentType[];
-
-export interface TranscriptDetailsType {
-  id: number;
-  read_at: string | null;
-  transcript_for: string;
-  security: boolean;
-  created_at: string;
-  updated_at: string;
-  position: number;
-  correspondence: number;
-}
-
-export interface AttachmentType {
-  id: number;
-  user: BaseUserType;
-  name: string;
-  file: string;
-  size: number;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface PositionType {
   id: number;
   name: string;
@@ -208,70 +149,4 @@ export interface MatchedUserType {
   id: number;
   firstName: string;
   lastName: string;
-}
-
-export interface MessageHeaderPropsType {
-  sender: SenderType;
-  formattedDate: string;
-}
-
-export interface MessageContentPropsType {
-  sender: SenderType;
-  signature?: PositionType[];
-  allposition?: PositionType[];
-  seal?: string;
-}
-
-export interface MessageFooterPropsType {
-  sender: SenderType;
-  matchedUsers?: MatchedUserType[];
-}
-
-export interface SelectOptionType {
-  label: string;
-  value: string;
-}
-
-export interface FormOptionsType {
-  priorityOptions: SelectOptionType[];
-  departmentOptions: SelectOptionType[];
-  letterTypeOptions: SelectOptionType[];
-  senderUserOptions: SelectOptionType[];
-  internalUserOptions: SelectOptionType[];
-  attachmentOptions: SelectOptionType[];
-}
-
-export interface SectionPropsType {
-  formData: APIFormDataType;
-  handleChange: (name: string, value: string | boolean | string[]) => void;
-}
-
-export interface SenderSectionPropsType extends SectionPropsType {
-  senderUserOptions: SelectOptionType[];
-  senderUserOptionsOut: SelectOptionType[];
-  useInternalReceiver: boolean;
-  internalUserOptions: SelectOptionType[];
-}
-
-export interface PrioritySectionPropsType extends SectionPropsType {
-  priorityOptions: SelectOptionType[];
-  departmentOptions: SelectOptionType[];
-  letterTypeOptions: SelectOptionType[];
-}
-
-export interface AttachmentSectionPropsType extends SectionPropsType {
-  setOpenFileDialog: (open: boolean) => void;
-  attachmentOptions: SelectOptionType[];
-}
-
-export interface ITranscriptResponseType {
-  id: number;
-  read_at: string | null;
-  transcript_for: "notification" | "security" | string;
-  security: boolean;
-  created_at: string;
-  updated_at: string;
-  position: number;
-  correspondence: number;
-  external_text?: string;
 }

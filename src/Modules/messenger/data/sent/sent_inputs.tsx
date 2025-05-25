@@ -7,8 +7,6 @@ export const FORM_SWITCHES: FormSwitchType[] = [
   { field: "seal", label: "مهر" },
   { field: "signature", label: "امضا" },
   { field: "letterhead", label: "سربرگ" },
-  { field: "binding", label: "تعهد آور" },
-  { field: "published", label: "انتشار" },
 ];
 
 export type TextAreaFieldType = {

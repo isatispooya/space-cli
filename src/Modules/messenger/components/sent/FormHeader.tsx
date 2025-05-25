@@ -1,15 +1,14 @@
 import { Typography, Alert } from "@mui/material";
 import { STYLES } from "../../style";
-
-interface FormHeaderPropsType {
-  isEditMode: boolean;
-  showPublishWarning: boolean;
-}
+import { useLocation } from "react-router-dom";
+import FormHeaderPropsType from "../../types/sent/FormHeader.type";
 
 const FormHeader: React.FC<FormHeaderPropsType> = ({
   isEditMode,
   showPublishWarning,
 }) => {
+  const location = useLocation();
+  const isInternal = location.pathname === "/letter/form";
   return (
     <>
       <Typography
@@ -20,7 +19,13 @@ const FormHeader: React.FC<FormHeaderPropsType> = ({
           mb: { xs: 2, sm: 3 },
         }}
       >
-        {isEditMode ? "ویرایش پیام" : "ثبت پیام جدید"}
+        {isEditMode
+          ? isInternal
+            ? "پیش نویس پیام داخلی"
+            : "پیش نویس پیام خارجی"
+          : isInternal
+          ? "ثبت پیام جدید داخلی"
+          : "ثبت پیام جدید خارجی"}
       </Typography>
 
       {showPublishWarning && (

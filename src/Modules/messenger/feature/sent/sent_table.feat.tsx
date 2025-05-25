@@ -6,11 +6,11 @@ import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttac
 import { chatService } from "../../services";
 import {
   CorrespondenceItemType,
-  SentMessageType,
   CorrespondenceResponseType,
 } from "../../types/sent/sent.type";
 import columns from "../../data/sent/coulmnData";
 import ExelData from "../../data/sent/sentExelData";
+import { SentMessageType } from "../../types";
 
 export const SentTable = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export const SentTable = () => {
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 
   const handleView = (row: SentMessageType) => {
-    navigate(`/letter/message/${row.id}`);    
+    navigate(`/letter/message/${row.id}`);
   };
   const handleEdit = (id: number) => {
     navigate(`/letter/update-form/${id}`);
@@ -113,9 +113,15 @@ export const SentTable = () => {
         if (item.created_at) {
           const date = new Date(item.created_at);
           if (!isNaN(date.getTime())) {
-            const year = new Intl.DateTimeFormat("fa", { year: "numeric" }).format(date);
-            const month = new Intl.DateTimeFormat("fa", { month: "2-digit" }).format(date);
-            const day = new Intl.DateTimeFormat("fa", { day: "2-digit" }).format(date);
+            const year = new Intl.DateTimeFormat("fa", {
+              year: "numeric",
+            }).format(date);
+            const month = new Intl.DateTimeFormat("fa", {
+              month: "2-digit",
+            }).format(date);
+            const day = new Intl.DateTimeFormat("fa", {
+              day: "2-digit",
+            }).format(date);
             formattedDate = `${year}/${month}/${day}`;
           }
         }

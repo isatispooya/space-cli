@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ChatType } from "../types";
+import { ChatType } from "../types/chat.type";
 
 const initialState: ChatType["ChatStateTypes"] = {
   selectedUserId: null,

@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { MessageContentPropsType } from "../../../types/sent/sent.type";
+import { MessageContentPropsType } from "../../../types/sent/message.type";
 import { server } from "@/api";
 
 export const MessageContent = ({
@@ -15,7 +15,8 @@ export const MessageContent = ({
   );
 
   const signatureImageUrl = matchedPosition?.signature as string | undefined;
-  const sealImageUrl = (sender?.sender_details?.company_detail?.seal || null) as string | null;
+  const sealImageUrl = (sender?.sender_details?.company_detail?.seal ||
+    null) as string | null;
 
   const senderFullName = `${senderUser?.first_name || ""} ${
     senderUser?.last_name || ""
@@ -28,13 +29,21 @@ export const MessageContent = ({
       }`
     : sender?.receiver_external;
 
-  const showSeal = sender?.published && ("seal" in sender ? sender.seal : false);
+  const showSeal =
+    sender?.published && ("seal" in sender ? sender.seal : false);
   const showSignature =
     sender?.published && ("signature" in sender ? sender.signature : false);
 
   const renderSealAndSignature = () => {
     return (
-      <div style={{ display: "flex", flexDirection: "row", gap: "16px", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "16px",
+          alignItems: "center",
+        }}
+      >
         {showSeal && sealImageUrl ? (
           <img
             src={`${server}${sealImageUrl}`}
@@ -92,9 +101,30 @@ export const MessageContent = ({
                 marginBottom: 1,
               }}
             >
-              مهر و امضا
+              {senderFullName}
             </Typography>
-            {renderSealAndSignature()}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "16px",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  alignItems: "center",
+                  fontSize: "0.90rem",
+                  fontWeight: 600,
+                  mb: 1,
+                }}
+              >
+                مهر و امضا
+              </Typography>
+              {showSignature && signatureImageUrl
+                ? renderSealAndSignature()
+                : null}
+            </Box>
           </Box>
         </Grid>
       )}

@@ -373,9 +373,6 @@ const TabulatorTable: React.FC<TablePropsType> = ({
               {showDateFilter && (
                 <div className="flex items-center gap-1.5 mr-1.5 mt-3">
                   <div className="flex flex-col">
-                    <label className="text-xs text-gray-500 mb-0.5">
-                      تاریخ:
-                    </label>
                     <DatePicker
                       value={dateRange}
                       onChange={setDateRange}

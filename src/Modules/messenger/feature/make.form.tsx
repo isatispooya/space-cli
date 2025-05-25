@@ -2,23 +2,22 @@ import { Grid, Divider, useTheme, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { TextAreaInput } from "../../../../components/common/inputs";
-import { AttachmentDialog } from "../../components/sent";
-import Transcript from "../../components/sent/sent_transcript";
-import FormSwitches from "../../components/sent/switch";
-import ReceiverTypeButtons from "../../components/sent/ReceiverTypeButtons";
-import SenderSection from "../../components/sent/SenderSection";
-import PrioritySection from "../../components/sent/PrioritySection";
-import AttachmentSection from "../../components/sent/AttachmentSection";
-import FormContainer from "../../components/sent/FormContainer";
-import FormHeader from "../../components/sent/FormHeader";
-import FormActions from "../../components/sent/FormActions";
-import PublishedMessage from "../../components/sent/PublishedMessage";
+import { TextAreaInput } from "../../../components/common/inputs";
+import { AttachmentDialog } from "../components/sent";
+import Transcript from "../components/sent/sent_transcript";
+import FormSwitches from "../components/sent/switch";
+import SenderSection from "../components/sent/SenderSection";
+import PrioritySection from "../components/sent/PrioritySection";
+import AttachmentSection from "../components/sent/AttachmentSection";
+import FormContainer from "../components/sent/FormContainer";
+import FormHeader from "../components/sent/FormHeader";
+import FormActions from "../components/sent/FormActions";
+import PublishedMessage from "../components/sent/PublishedMessage";
 
-import { useSentFormLogic } from "../../hooks/sent/useSentFormLogic";
-import { useFormStateHandler } from "../../hooks/sent/useFormStateHandler";
+import { useSentFormLogic } from "../hooks/sent/useSentFormLogic";
+import { useFormStateHandler } from "../hooks/sent/useFormStateHandler";
 
-const SentUpdateForm: React.FC = () => {
+const MakeForm: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { id } = useParams();
@@ -31,7 +30,6 @@ const SentUpdateForm: React.FC = () => {
     openFileDialog,
     selectedTranscript,
     transcriptDirections,
-    useInternalReceiver,
     handleAttachmentAdd,
     handleAddTranscript,
     handleTranscriptToggle,
@@ -39,7 +37,6 @@ const SentUpdateForm: React.FC = () => {
     setSelectedTranscript,
     setTranscriptDirection,
     handleSubmit: onSubmit,
-    handleReceiverTypeChange,
     senderUserOptions,
     internalUserOptions,
     attachmentOptions,
@@ -101,21 +98,14 @@ const SentUpdateForm: React.FC = () => {
       <form onSubmit={handleFormSubmit}>
         <Grid container spacing={{ xs: 2, sm: 3 }}>
           <Grid item xs={12}>
-            <ReceiverTypeButtons
-              receiverType={useInternalReceiver ? "internal" : "external"}
-              onTypeChange={handleReceiverTypeChange}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
             <Grid container spacing={{ xs: 2, sm: 3 }}>
               <Grid item xs={12} md={6}>
                 <SenderSection
+                  isEditMode={isEditMode}
                   formData={formData}
                   handleChange={handleInputChange}
                   senderUserOptions={senderUserOptions}
                   senderUserOptionsOut={senderUserOptionsOut}
-                  useInternalReceiver={useInternalReceiver}
                   internalUserOptions={internalUserOptions}
                 />
               </Grid>
@@ -185,11 +175,7 @@ const SentUpdateForm: React.FC = () => {
           <Grid item xs={12}>
             <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
             <Transcript
-              data={
-                { sender: { sender_details: { id: 0 } } } as {
-                  sender: { sender_details: { id: number } };
-                }
-              }
+              data={formData as any}
               transcript={transcriptItems}
               selectedTranscript={selectedTranscript}
               setSelectedTranscript={setSelectedTranscript}
@@ -199,7 +185,6 @@ const SentUpdateForm: React.FC = () => {
               getTranscriptName={getTranscriptName}
               transcriptDirections={transcriptDirections}
               setTranscriptDirection={setTranscriptDirection}
-              is_internal={formData.is_internal}
             />
           </Grid>
 
@@ -223,4 +208,4 @@ const SentUpdateForm: React.FC = () => {
   );
 };
 
-export default SentUpdateForm;
+export default MakeForm;
