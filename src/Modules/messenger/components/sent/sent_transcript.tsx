@@ -126,16 +126,15 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     }, [data?.transcript]);
 
     const handleAdd = useCallback(() => {
+      if (is_internal && selectedTranscript.length === 0) return;
+      if (!is_internal && externalTranscriptText.trim() === "") return;
+
       if (is_internal) {
-        if (selectedTranscript.length > 0) {
-          handleAddTranscript();
-          setSelectedTranscript([]);
-        }
+        handleAddTranscript();
+        setSelectedTranscript([]);
       } else {
-        if (externalTranscriptText.trim() !== "") {
-          handleAddTranscript(externalTranscriptText);
-          setExternalTranscriptText("");
-        }
+        handleAddTranscript(externalTranscriptText.trim());
+        setExternalTranscriptText("");
       }
     }, [
       selectedTranscript,
