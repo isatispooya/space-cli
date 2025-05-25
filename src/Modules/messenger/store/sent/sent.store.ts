@@ -37,7 +37,7 @@ const defaultTranscript: TranscriptDataType = {
 };
 
 const initialFormData: FormDataType = {
-  owner_details: 0,
+  owner_details: [],
   subject: "",
   text: "",
   description: "",
@@ -138,7 +138,7 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
           return {
             formData: {
               ...state.formData,
-              owner_details: numValue,
+              owner_details: [numValue],
             },
           };
         }

@@ -69,7 +69,7 @@ interface ResponseDataType {
   authority_type?: string;
   authority_correspondence?: number | null;
   published?: boolean;
-  owner_details?: number;
+  owner_details?: { id: number; user?: Record<string, unknown> };
 }
 
 export const useSentFormLogic = (id: string | undefined) => {
@@ -130,7 +130,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       transcript: [],
       published: false,
       referenceData: [],
-      owner_details: 0,
+      owner_details: [],
     });
     toast.success("اطلاعات با موفقیت ثبت شد");
   };
@@ -245,6 +245,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         attachments: attachmentIds,
         receiver: Array.isArray(data.receiver) ? data.receiver : [],
         sender: data.sender_details?.id || 0,
+        owner_details: data.owner_details?.id || 0,
         receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
           data.receiver_external_details?.name || data.receiver_external || "",
@@ -285,7 +286,7 @@ export const useSentFormLogic = (id: string | undefined) => {
           : [],
       };
 
-      setFormData(transformedData);
+      setFormData(transformedData as any);
 
       // Handle transcript directions
       if (Array.isArray(data.transcript_details)) {
@@ -328,7 +329,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         transcript: [],
         published: false,
         referenceData: [],
-        owner_details: 0,
+        owner_details: [],
       });
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);

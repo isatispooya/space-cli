@@ -25,11 +25,11 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     handleDirectionChange,
     handleTranscriptToggle,
     internalOptions,
-    handleExternalTextUpdate,
   }) => {
     const [visibility, setVisibility] = useState(!item.security);
     const isExternalTranscript =
       item.isExternal || item.external_text || item.id < 0;
+
     const [externalTexts, setExternalTexts] = useState<string[]>(
       isExternalTranscript && (item.external_text || item.name)
         ? Array.isArray(item.external_text)
@@ -60,190 +60,127 @@ const TranscriptListItem: React.FC<TranscriptListItemPropsType> = React.memo(
     ) => {
       const value = event.target.value === "true";
       setVisibility(value);
-      handleTranscriptToggle(item.id, !value);
+      handleTranscriptToggle(item.position || item.id);
     };
 
-    const handleExternalTextChange = (index: number, value: string) => {
+    const handleAddExternalText = () => {
+      const trimmed = newExternalText.trim();
+      if (trimmed !== "") {
+        setExternalTexts([...externalTexts, trimmed]);
+        setNewExternalText("");
+      }
+    };
+
+    const handleDeleteExternalText = (index: number) => {
       const newTexts = [...externalTexts];
-      newTexts[index] = value;
+      newTexts.splice(index, 1);
       setExternalTexts(newTexts);
-      if (handleExternalTextUpdate) {
-        handleExternalTextUpdate(item.id, newTexts);
-      }
     };
 
-    const addExternalText = () => {
-      const valuesToAdd: string[] = [];
-      const trimmedText = newExternalText.trim();
-      if (trimmedText && !externalTexts.includes(trimmedText)) {
-        valuesToAdd.push(trimmedText);
-      }
-      if (
-        newSelectedDirection &&
-        !externalTexts.includes(newSelectedDirection)
-      ) {
-        valuesToAdd.push(newSelectedDirection);
-      }
-
-      if (valuesToAdd.length > 0) {
-        const updatedTexts = [...externalTexts, ...valuesToAdd];
-        setExternalTexts(updatedTexts);
-        if (handleExternalTextUpdate) {
-          handleExternalTextUpdate(item.id, updatedTexts);
-        }
-      }
-
-      setNewExternalText("");
-      setNewSelectedDirection("");
-    };
-
-    const removeExternalText = (index: number) => {
-      if (externalTexts.length > 1) {
-        const newTexts = externalTexts.filter((_, i) => i !== index);
-        setExternalTexts(newTexts);
-        if (handleExternalTextUpdate) {
-          handleExternalTextUpdate(item.id, newTexts);
-        }
-      }
-    };
+    const directionValue =
+      transcriptDirections[item.position || item.id] || "";
 
     return (
       <ListItem sx={{ px: 1, py: 1.5 }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={4}>
+            <Typography sx={{ fontSize: "0.9rem", color: "#1e293b" }}>
+              {isExternalTranscript
+                ? externalTexts.join("، ")
+                : getTranscriptName(item.position || item.id)}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
             {isExternalTranscript ? (
               <Box>
-                <Typography
-                  sx={{
-                    fontWeight: 500,
-                    color: "#1e293b",
-                    fontSize: "0.9rem",
-                    mb: 1,
-                  }}
-                >
-                  <Tooltip title="رونوشت گیرنده خارجی" placement="top">
-                    <span>رونوشت خارجی</span>
-                  </Tooltip>
-                </Typography>
-
-                {externalTexts.map((text, index) => (
+                {externalTexts.map((text, idx) => (
                   <Box
-                    key={index}
+                    key={idx}
                     sx={{
                       display: "flex",
                       alignItems: "center",
                       mb: 1,
+                      gap: 1,
                     }}
                   >
                     <TextField
-                      fullWidth
-                      size="small"
                       value={text}
-                      onChange={(e) =>
-                        handleExternalTextChange(index, e.target.value)
-                      }
-                      placeholder="متن رونوشت خارجی"
-                      sx={{
-                        backgroundColor: "#f8f9fa",
-                        borderRadius: 1,
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "#dee2e6",
-                            borderStyle: "dashed",
-                          },
-                        },
-                      }}
-                    />
-                    <IconButton
                       size="small"
-                      onClick={() => removeExternalText(index)}
-                      sx={{ ml: 1 }}
-                      disabled={externalTexts.length <= 1}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
+                      variant="outlined"
+                      fullWidth
+                      disabled
+                    />
+                    <Tooltip title="حذف">
+                      <IconButton
+                        onClick={() => handleDeleteExternalText(idx)}
+                        size="small"
+                        color="error"
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
                 ))}
 
-                <Box display="flex" gap={1} mt={2}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    mt: 1,
+                  }}
+                >
                   <TextField
-                    fullWidth
-                    size="small"
-                    placeholder="افزودن متن جدید"
                     value={newExternalText}
                     onChange={(e) => setNewExternalText(e.target.value)}
-                  />
-                  <SelectInput
-                    label=""
-                    options={internalOptions}
-                    value={newSelectedDirection}
-                    onChange={setNewSelectedDirection}
-                  />
-                  <IconButton
+                    placeholder="افزودن گیرنده جدید"
                     size="small"
-                    onClick={addExternalText}
-                    sx={{
-                      border: "1px dashed #dee2e6",
-                      borderRadius: 1,
-                      height: "40px",
-                      width: "40px",
-                      mt: "auto",
-                    }}
-                  >
-                    <AddIcon fontSize="small" />
-                  </IconButton>
+                    variant="outlined"
+                    fullWidth
+                  />
+                  <Tooltip title="افزودن">
+                    <IconButton
+                      onClick={handleAddExternalText}
+                      color="primary"
+                      size="small"
+                    >
+                      <AddIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               </Box>
             ) : (
-              <Typography
-                sx={{ fontWeight: 500, color: "#1e293b", fontSize: "0.9rem" }}
-              >
-                {getTranscriptName(item.position)}
-              </Typography>
+              <SelectInput
+                label="نوع رونوشت"
+                options={internalOptions}
+                value={directionValue}
+                onChange={(val) =>
+                  handleDirectionChange(item.position || item.id, val)
+                }
+              />
             )}
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <SelectInput
-              label="جهت رونوشت"
-              value={
-                transcriptDirections[item.id] ||
-                item.transcript_for ||
-                "notification"
-              }
-              options={internalOptions}
-              onChange={(value) => handleDirectionChange(item.id, value)}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                gap: 1,
-              }}
-            >
-              <FormControl>
-                <RadioGroup
-                  value={visibility ? "true" : "false"}
-                  onChange={handleVisibilityChange}
-                  row
-                >
-                  <FormControlLabel
-                    value="true"
-                    control={<Radio />}
-                    label="نمایش"
-                  />
-                  <FormControlLabel
-                    value="false"
-                    control={<Radio />}
-                    label="مخفی"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
+            <FormControl component="fieldset">
+              <RadioGroup
+                row
+                value={visibility.toString()}
+                onChange={handleVisibilityChange}
+              >
+                <FormControlLabel
+                  value="true"
+                  control={<Radio size="small" />}
+                  label="قابل مشاهده"
+                />
+                <FormControlLabel
+                  value="false"
+                  control={<Radio size="small" />}
+                  label="محرمانه"
+                />
+              </RadioGroup>
+            </FormControl>
           </Grid>
         </Grid>
       </ListItem>
