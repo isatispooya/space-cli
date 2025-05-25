@@ -13,6 +13,7 @@ const Request = () => {
   const { data: giftsUser, refetch } = useGiftsUser.useGetGifts();
   const { mutate: updateGiftsUser } = useGiftsUser.useUpdateGiftsUser();
   const { checkPermission } = useUserPermissions();
+  
   const isAdmin = checkPermission(["change_giftuser"]);
 
   const statusMapping = {
