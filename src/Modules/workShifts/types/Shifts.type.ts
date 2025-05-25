@@ -2,7 +2,7 @@ export interface GetShiftsResType {
   created_at: string;
   id: number;
   name: string;
-  owner: number;
+  owner_details: number;
   updated_at: string;
 }
 

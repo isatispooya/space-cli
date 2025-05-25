@@ -44,7 +44,7 @@ export interface APIFormDataType {
   reference: number[];
   transcript: TranscriptAPIDataType[];
   published: boolean;
-  owner: number;
+  owner_details: number;
 }
 
 export type FormDataType = {
@@ -71,7 +71,7 @@ export type FormDataType = {
   referenceData?: ReferenceDataType[];
   transcript: TranscriptDataType[];
   published: boolean;
-  owner: number;
+  owner_details: number;
 };
 
 export interface SenderDetailsType {
