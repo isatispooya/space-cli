@@ -96,7 +96,7 @@ const Request = () => {
         statusMapping[item.status as keyof typeof statusMapping] ||
         "در حال بررسی",
       علت: item.reason || "",
-      "شماره حساب": item.user_detail.account_number || "",
+      "شماره شبا": item.user_detail.sheba_number || "",
       "نام و نام خانوادگی": `${item.user_detail?.first_name || ""} ${
         item.user_detail?.last_name || ""
       }`,
