@@ -43,7 +43,7 @@ interface TranscriptPropsType {
   transcriptDirections: { [id: number]: string };
   setTranscriptDirection: (id: number, value: string) => void;
   data?: {
-    transcript_details?: ITranscriptResponseType[];
+    transcript?: ITranscriptResponseType[];
     sender?: {
       reference_details?: ReferenceDetailType[];
       subject?: string;
@@ -100,12 +100,12 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     const [externalTranscriptText, setExternalTranscriptText] = useState("");
 
     useEffect(() => {
-      if (data?.transcript_details && data.transcript_details.length > 0) {
-        const positions = data.transcript_details
+      if (data?.transcript && data.transcript.length > 0) {
+        const positions = data.transcript
           .map((t) => t.position?.toString())
           .filter((p): p is string => p !== undefined);
 
-        data.transcript_details.forEach((t: ITranscriptResponseType) => {
+        data.transcript.forEach((t: ITranscriptResponseType) => {
           if (t.position && t.transcript_for) {
             setTranscriptDirection(t.position, t.transcript_for);
           }
@@ -116,16 +116,14 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
         positions.forEach((pos: string) => {
           const numPos = Number(pos);
           if (!transcript.some((t) => t.position === numPos)) {
-            const detail = data.transcript_details?.find(
-              (t) => t.position === numPos
-            );
+            const detail = data.transcript?.find((t) => t.position === numPos);
             if (detail) {
               handleAddTranscript();
             }
           }
         });
       }
-    }, [data?.transcript_details]);
+    }, [data?.transcript]);
 
     const handleAdd = useCallback(() => {
       if (is_internal) {
@@ -153,8 +151,8 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
 
     const displayTranscript: ITranscriptResponseType[] = [...transcript];
 
-    if (data?.transcript_details && data.transcript_details.length > 0) {
-      data.transcript_details.forEach((detail: ITranscriptResponseType) => {
+    if (data?.transcript && data.transcript.length > 0) {
+      data.transcript.forEach((detail: ITranscriptResponseType) => {
         if (
           detail.position &&
           !displayTranscript.some((t) => t.position === detail.position)

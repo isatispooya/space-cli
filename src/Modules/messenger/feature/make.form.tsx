@@ -175,7 +175,7 @@ const MakeForm: React.FC = () => {
           <Grid item xs={12}>
             <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
             <Transcript
-              data={formData.transcript as any}
+              data={formData as any}
               transcript={transcriptItems}
               selectedTranscript={selectedTranscript}
               setSelectedTranscript={setSelectedTranscript}
