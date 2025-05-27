@@ -1,6 +1,6 @@
 import { useProfile } from "@/Modules/userManagment";
 import useChat from "../../hooks/useChat";
-import { ChatType } from "../../types";
+import { ChatType } from "@/Modules/messenger/types/chat.type";
 import UserAvatar from "./contact.avatar";
 
 const ContactsCard = ({

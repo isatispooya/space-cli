@@ -1,9 +1,6 @@
 import { create } from "zustand";
-import {
-  FormDataType,
-  ReferenceDataType,
-  TranscriptDataType,
-} from "../../types/sent/sent.type";
+import { FormDataType, ReferenceDataType } from "../../types/sent/sent.type";
+import { TranscriptDataType, TranscriptDetailsType } from "../../types";
 
 type FormValueType = string | number | boolean | Array<string | number> | null;
 
@@ -40,6 +37,7 @@ const defaultTranscript: TranscriptDataType = {
 };
 
 const initialFormData: FormDataType = {
+  owner: 0,
   subject: "",
   text: "",
   description: "",
@@ -101,8 +99,7 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
     })),
 
   handleChange: (name, value) => {
-    set((state) => {
-      // Handle special cases first
+    set((state: any) => {
       if (name === "attachments") {
         if (Array.isArray(value) && value.includes("add_attachment")) {
           state.setOpenFileDialog(true);
@@ -118,9 +115,8 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
         }
       }
 
-      // Handle numeric fields
       if (
-        ["sender", "receiver_internal"].includes(name) &&
+        ["sender", "receiver_internal", "owner"].includes(name) &&
         typeof value === "string"
       ) {
         const numValue = value === "" ? 0 : Number(value);
@@ -129,10 +125,18 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
             formData: {
               ...state.formData,
               sender: numValue,
-              transcript: state.formData.transcript.map((t) => ({
+              transcript: state.formData.transcript.map((t: TranscriptDetailsType) => ({
                 ...t,
                 position: numValue,
               })),
+            },
+          };
+        }
+        if (name === "owner") {
+          return {
+            formData: {
+              ...state.formData,
+              owner: numValue,
             },
           };
         }
@@ -144,7 +148,6 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
         };
       }
 
-      // Handle boolean fields
       if (
         [
           "seal",
@@ -163,9 +166,7 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
         };
       }
 
-      // Handle array fields
       if (["reference", "receiver", "attachments"].includes(name)) {
-        // If value is already an array, use it
         if (Array.isArray(value)) {
           return {
             formData: {
@@ -174,7 +175,6 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
             },
           };
         }
-        // If value is a single item, create a new array
         return {
           formData: {
             ...state.formData,
@@ -183,7 +183,6 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
         };
       }
 
-      // Default case - handle as is
       return {
         formData: {
           ...state.formData,

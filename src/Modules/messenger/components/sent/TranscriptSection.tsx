@@ -1,20 +1,7 @@
 import React from "react";
 import { Grid, Typography, Divider } from "@mui/material";
 import Transcript from "./sent_transcript";
-import { ITranscriptResponseType } from "../../types/sent/sent.type";
-
-interface TranscriptSectionPropsType {
-  transcriptItems: ITranscriptResponseType[];
-  selectedTranscript: string[];
-  transcriptDirections: { [id: number]: string };
-  internalUserOptions: { label: string; value: string }[];
-  getTranscriptName: (id: number) => string;
-  setSelectedTranscript: (transcripts: string[]) => void;
-  handleAddTranscript: (text?: string) => void;
-  handleTranscriptToggle: (id: number) => void;
-  setTranscriptDirection: (id: number, direction: string) => void;
-  is_internal?: boolean;
-}
+import { TranscriptSectionPropsType } from "../../types/sent/transcript.type";
 
 const TranscriptSection: React.FC<TranscriptSectionPropsType> = ({
   transcriptItems,
@@ -26,7 +13,6 @@ const TranscriptSection: React.FC<TranscriptSectionPropsType> = ({
   handleAddTranscript,
   handleTranscriptToggle,
   setTranscriptDirection,
-  is_internal = true,
 }) => {
   return (
     <Grid item xs={12}>
@@ -52,7 +38,6 @@ const TranscriptSection: React.FC<TranscriptSectionPropsType> = ({
         getTranscriptName={getTranscriptName}
         transcriptDirections={transcriptDirections}
         setTranscriptDirection={setTranscriptDirection}
-        is_internal={is_internal}
       />
     </Grid>
   );

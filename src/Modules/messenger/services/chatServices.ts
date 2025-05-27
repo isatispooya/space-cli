@@ -1,5 +1,5 @@
 import { api } from "../../../api";
-import { ChatType } from "../types";
+import { ChatType } from "../types/chat.type";
 
 const ChatServices = {
   get: async (): Promise<ChatType["MessagesType"][]> => {

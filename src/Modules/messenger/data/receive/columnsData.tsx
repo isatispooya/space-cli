@@ -22,43 +22,80 @@ const Columns = () => {
   letterTypeOptions.forEach((option) => {
     editorValues[option.value] = option.label;
   });
+  const isDraftRoute = window.location.pathname === "/letter/draft";
 
   const departmentValues: Record<string, string> = {};
   departmentOptions.forEach((option) => {
     departmentValues[option.value] = option.label;
   });
-
   const handleCellClick = (e: UIEvent, cell: CellComponent) => {
     e.stopPropagation();
-    if ((e.target as HTMLElement).classList.contains("action-btn")) {
+    const target = e.target as HTMLElement;
+
+    if (target.classList.contains("action-btn")) {
       const existingMenu = document.querySelector(".popup-menu");
       if (existingMenu) {
         existingMenu.remove();
         return;
       }
 
-      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const rect = target.getBoundingClientRect();
       const rowData = cell.getRow().getData();
+      const currentPath = window.location.pathname;
 
       const menuItems = [
         {
           label: "نمایش",
-          icon: "👀",
+          icon: "👁️",
           onClick: () =>
             (window.location.href = `/letter/receive-message/${rowData.id}`),
         },
-        {
-          label: "ارجاع",
-          icon: "🔄",
-          onClick: () =>
-            (window.location.href = `/letter/receive-refferal/${rowData.id}`),
-        },
+        ...(isDraftRoute
+          ? [
+              {
+                label: "پیش نویس",
+                icon: "📝",
+                onClick: () =>
+                  (window.location.href = `/letter/update-form/${rowData.id}`),
+              },
+            ]
+          : [
+              ...(["/letter/table", "/letter/Outtable"].includes(currentPath)
+                ? [
+                    {
+                      label: "ویرایش",
+                      icon: "✏️",
+                      onClick: () =>
+                        (window.location.href = `/letter/update-form/${rowData.id}`),
+                    },
+                  ]
+                : []),
+              {
+                label: "ارجاع",
+                icon: "📤",
+                onClick: () =>
+                  (window.location.href = `/letter/receive-refferal/${rowData.id}`),
+              },
+            ]),
       ];
 
       const menuPosition = { x: rect.left, y: rect.bottom };
       const menuContainer = document.createElement("div");
       menuContainer.className = "popup-menu";
       document.body.appendChild(menuContainer);
+
+      const handleClickOutside = (event: MouseEvent) => {
+        if (!menuContainer.contains(event.target as Node)) {
+          root.unmount();
+          menuContainer.remove();
+          document.removeEventListener("click", handleClickOutside);
+        }
+      };
+
+      // یک وقفه کوتاه برای جلوگیری از اینکه کلیک فعلی منو را ببندد
+      setTimeout(() => {
+        document.addEventListener("click", handleClickOutside);
+      }, 0);
 
       const root = createRoot(menuContainer);
       root.render(
@@ -68,6 +105,7 @@ const Columns = () => {
           onClose={() => {
             root.unmount();
             menuContainer.remove();
+            document.removeEventListener("click", handleClickOutside);
           }}
         />
       );

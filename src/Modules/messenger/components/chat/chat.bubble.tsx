@@ -5,7 +5,7 @@ import {
   CircularProgress,
   IconButton,
 } from "@mui/material";
-import { ChatType } from "../../types";
+import { ChatType } from "@/Modules/messenger/types/chat.type";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import ImageIcon from "@mui/icons-material/Image";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";

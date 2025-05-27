@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import MessageItem from "./chat.bubble";
-import { ChatType } from "../../types";
+import { ChatType } from "@/Modules/messenger/types/chat.type";
 
 interface MessageContentPropsType {
   messages: ChatType["SingleMessageType"][];

@@ -5,9 +5,9 @@ const SentPage = lazy(() =>
     default: module.SentPage,
   }))
 );
-const ReceiveTablePage = lazy(() =>
+const TablePage = lazy(() =>
   import("..").then((module) => ({
-    default: module.ReceiveTablePage,
+    default: module.TablePage,
   }))
 );
 const ReceiveMessagePage = lazy(() =>
@@ -16,30 +16,23 @@ const ReceiveMessagePage = lazy(() =>
   }))
 );
 
-const SentTablePage = lazy(() =>
-  import("..").then((module) => ({
-    default: module.SentTablePage,
-  }))
-);
 const SentMessagePage = lazy(() =>
   import("..").then((module) => ({
     default: module.SentMessagePage,
   }))
 );
-const SentUpdateFormPage = lazy(() =>
+const MakeFormPage = lazy(() =>
   import("..").then((module) => ({
-    default: module.SentUpdateFormPage,
+    default: module.MakeFormPage,
   }))
 );
-const MessengerPage = lazy(() =>
-  import("../pages/messenger_main.page")
-);
+
+const MessengerPage = lazy(() => import("../pages/messenger_main.page"));
 const ReceiveRefferalPage = lazy(() =>
   import("..").then((module) => ({
     default: module.ReceiveRefferalPage,
   }))
 );
-
 
 const MessengerRoutes = [
   {
@@ -52,7 +45,11 @@ const MessengerRoutes = [
     children: [
       {
         path: "table",
-        element: <SentTablePage />,
+        element: <TablePage />,
+      },
+      {
+        path: "Outtable",
+        element: <TablePage />,
       },
       {
         path: "message/:id",
@@ -60,22 +57,51 @@ const MessengerRoutes = [
       },
       {
         path: "form",
-        element: <SentUpdateFormPage />,
+        element: <MakeFormPage />,
+      },
+      {
+        path: "Outform",
+        element: <MakeFormPage />,
+      },
+      {
+        path: "draft",
+        element: <TablePage />,
+      },
+      {
+        path: "OutformMake",
+        element: <MakeFormPage />,
       },
       {
         path: "update-form/:id",
-        element: <SentUpdateFormPage />,
+        element: <MakeFormPage />,
       },
+    
       {
         path: "receive-table",
-        element: <ReceiveTablePage />,
+        element: <TablePage />,
+      },
+      {
+        path: "Outreceive-table",
+        element: <TablePage />,
+      },
+      {
+        path: "receive-table/:id",
+        element: <TablePage />,
       },
       {
         path: "receive-message/:id",
         element: <ReceiveMessagePage />,
       },
       {
+        path: "Outreceive-message/:id",
+        element: <ReceiveMessagePage />,
+      },
+      {
         path: "receive-refferal/:id",
+        element: <ReceiveRefferalPage />,
+      },
+      {
+        path: "Outreceive-refferal/:id",
         element: <ReceiveRefferalPage />,
       },
     ],

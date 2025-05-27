@@ -2,7 +2,7 @@ export interface GetShiftsResType {
   created_at: string;
   id: number;
   name: string;
-  owner: number;
+  owner: { id: number; user?: Record<string, unknown> }[];
   updated_at: string;
 }
 

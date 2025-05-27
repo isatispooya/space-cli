@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, } from "react";
 import {
   Box,
   Typography,
@@ -8,13 +8,13 @@ import {
   Grid,
   Chip,
   Divider,
-  TextField,
+  
 } from "@mui/material";
 import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
 import TranscriptListItem from "./TranscriptListItem";
-import { ITranscriptResponseType } from "../../types/sent/sent.type";
+import { ITranscriptResponseType } from "../../types/sent/transcript.type";
 
 interface ReferenceDetailType {
   id: string;
@@ -43,7 +43,7 @@ interface TranscriptPropsType {
   transcriptDirections: { [id: number]: string };
   setTranscriptDirection: (id: number, value: string) => void;
   data?: {
-    transcript_details?: ITranscriptResponseType[];
+    transcript?: ITranscriptResponseType[];
     sender?: {
       reference_details?: ReferenceDetailType[];
       subject?: string;
@@ -97,68 +97,26 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       [setTranscriptDirection]
     );
 
-    const [externalTranscriptText, setExternalTranscriptText] = useState("");
-
-    useEffect(() => {
-      if (data?.transcript_details && data.transcript_details.length > 0) {
-        const positions = data.transcript_details
-          .map((t) => t.position?.toString())
-          .filter((p): p is string => p !== undefined);
-
-        data.transcript_details.forEach((t) => {
-          if (t.position && t.transcript_for) {
-            setTranscriptDirection(t.position, t.transcript_for);
-          }
-        });
-
-        setSelectedTranscript(positions);
-
-        positions.forEach((pos) => {
-          const numPos = Number(pos);
-          if (!transcript.some((t) => t.position === numPos)) {
-            const detail = data.transcript_details?.find(
-              (t) => t.position === numPos
-            );
-            if (detail) {
-              handleAddTranscript();
-            }
-          }
-        });
-      }
-    }, [data?.transcript_details]);
-
     const handleAdd = useCallback(() => {
-      if (is_internal) {
-        if (selectedTranscript.length > 0) {
-          handleAddTranscript();
-          setSelectedTranscript([]);
-        }
-      } else {
-        if (externalTranscriptText.trim() !== "") {
-          handleAddTranscript(externalTranscriptText);
-          setExternalTranscriptText("");
-        }
+      if (is_internal && selectedTranscript.length > 0) {
+        handleAddTranscript();
+        setSelectedTranscript([]);
       }
-    }, [
-      selectedTranscript,
-      handleAddTranscript,
-      setSelectedTranscript,
-      externalTranscriptText,
-      is_internal,
-    ]);
+    }, [selectedTranscript, handleAddTranscript, setSelectedTranscript, is_internal]);
 
     const hasReferenceData =
       data?.sender?.reference_details &&
       data.sender.reference_details.length > 0;
 
-    const displayTranscript = [...transcript];
+    const displayTranscript: ITranscriptResponseType[] = [...transcript];
 
-    if (data?.transcript_details && data.transcript_details.length > 0) {
-      data.transcript_details.forEach((detail) => {
-        if (detail.position) {
-          if (!displayTranscript.some((t) => t.position === detail.position)) {
-            displayTranscript.push(detail);
-          }
+    if (data?.transcript && data.transcript.length > 0) {
+      data.transcript.forEach((detail: ITranscriptResponseType) => {
+        if (
+          detail.position &&
+          !displayTranscript.some((t) => t.position === detail.position)
+        ) {
+          displayTranscript.push(detail);
         }
       });
     }
@@ -176,10 +134,9 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
         }}
       >
-        {/* بخش افزودن رونوشت جدید */}
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={10}>
-            {is_internal ? (
+            <div style={{ display: "flex", gap: 10 }}>
               <MultiSelect
                 label="انتخاب گیرندگان رونوشت"
                 selectedValues={selectedTranscript.map(String)}
@@ -189,18 +146,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
                 }}
                 options={internalUserOptions}
               />
-            ) : (
-              <TextField
-                fullWidth
-                label="گیرندگان رونوشت خارجی"
-                value={externalTranscriptText}
-                onChange={(e) => setExternalTranscriptText(e.target.value)}
-                placeholder="نام گیرنده رونوشت خارجی را وارد کنید"
-                variant="outlined"
-                size="small"
-                sx={{ mt: 1 }}
-              />
-            )}
+            </div>
           </Grid>
           <Grid item xs={2}>
             <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
@@ -214,7 +160,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Grid>
         </Grid>
 
-        {/* نمایش تعداد رونوشت‌ها */}
         {displayTranscript.length > 0 && (
           <Box sx={{ mt: 1, mb: 1 }}>
             <Typography
@@ -233,7 +178,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Box>
         )}
 
-        {/* نمایش لیست رونوشت‌های دریافتی از دیتا */}
         {hasReferenceData && (
           <Paper
             variant="outlined"
@@ -288,8 +232,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Paper>
         )}
 
-        {/* لیست رونوشت‌ها */}
-        {displayTranscript.length > 0 && (
+        {displayTranscript.length > 0 ? (
           <Paper
             variant="outlined"
             sx={{
@@ -317,15 +260,15 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
               ))}
             </List>
           </Paper>
-        )}
-
-        {displayTranscript.length === 0 && !hasReferenceData && (
-          <Box sx={{ p: 2, textAlign: "center" }}>
-            <Typography variant="body2" color="text.secondary">
-              هیچ گیرنده رونوشتی انتخاب نشده است. از لیست بالا گیرندگان را
-              انتخاب و اضافه کنید.
-            </Typography>
-          </Box>
+        ) : (
+          !hasReferenceData && (
+            <Box sx={{ p: 2, textAlign: "center" }}>
+              <Typography variant="body2" color="text.secondary">
+                هیچ گیرنده رونوشتی انتخاب نشده است. از لیست بالا گیرندگان را
+                انتخاب و اضافه کنید.
+              </Typography>
+            </Box>
+          )
         )}
       </Box>
     );

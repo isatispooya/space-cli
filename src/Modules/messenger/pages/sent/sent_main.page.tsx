@@ -1,29 +1,57 @@
 import { MainLayout } from "../../../../layouts";
 
 import { Toolbar } from "../../../../components";
-import { LuTable } from "react-icons/lu";
-import { VscGitStashApply } from "react-icons/vsc";
-import { MdMarkEmailRead } from "react-icons/md";
 import { Outlet } from "react-router-dom";
+import { MdOutlineCreate } from "react-icons/md";
+import { FiExternalLink } from "react-icons/fi";
+import { AiOutlineInbox } from "react-icons/ai";
+import { BsMailbox } from "react-icons/bs";
+import { LuSendHorizontal } from "react-icons/lu";
+import { RiSendPlaneLine } from "react-icons/ri";
+import { IoDocumentTextOutline } from "react-icons/io5";
 const SentPage = () => {
   const toolbarButtons = [
     {
-      icon: LuTable,
-      text: "ایجاد نامه",
+      icon: MdOutlineCreate,
+      text: "ایجاد نامه داخلی",
       permission: ["allow_any"],
       path: "form",
     },
     {
-      icon: MdMarkEmailRead,
-      text: "نامه های دریافتی",
+      icon: FiExternalLink,
+      text: "ایجاد نامه خارجی",
+      permission: ["allow_any"],
+      path: "Outform",
+    },
+    {
+      icon: AiOutlineInbox,
+      text: "نامه ها ی دریافتی داخلی",
       permission: ["allow_any"],
       path: "receive-table",
     },
     {
-      icon: VscGitStashApply,
-      text: "نامه های ارسالی",
+      icon: BsMailbox,
+      text: "نامه ها ی دریافتی خارجی",
+      permission: ["allow_any"],
+      path: "Outreceive-table",
+    },
+    {
+      icon: LuSendHorizontal,
+      text: "نامه های ارسالی داخلی",
       permission: ["allow_any"],
       path: "table",
+    },
+    {
+      icon: RiSendPlaneLine,
+      text: "نامه های ارسالی خارجی",
+      permission: ["allow_any"],
+      path: "Outtable",
+    },
+    {
+      icon: IoDocumentTextOutline,
+      text: "پیش نویس ها ",
+      permission: ["allow_any"],
+      path: "draft",
     },
   ];
   return (

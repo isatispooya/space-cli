@@ -1,7 +1,7 @@
-import { SentMessageType } from "../../types/sent/sent.type";
+import { SentMessageType } from "../../types/sent/message.type";
 
 const ExelData = (item: SentMessageType) => {
-    return {
+  return {
       عنوان: item.title || "نامشخص",
       گیرنده: item.receiver || "نامشخص",
       تاریخ_ارسال: item.send_date || "نامشخص",

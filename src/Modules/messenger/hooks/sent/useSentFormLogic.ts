@@ -1,77 +1,28 @@
 import React from "react";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { usePosition } from "@/Modules/positions/hooks";
 import useCorrespondenceAttachment from "../../hooks/sent/useCorrespondenceAttachment";
 import { useSentFormStore } from "../../store/sent/sent.store";
 import toast from "react-hot-toast";
 import { PositionType } from "@/Modules/positions/types";
 import {
-  CorrespondenceAttachmentType,
-  CorrespondenceAttachmentsType,
-  APIFormDataType,
-  ITranscriptResponseType,
-
-} from "../../types/sent/sent.type";
-import {
   priorityOptions,
   departmentOptions,
   letterTypeOptions,
 } from "../../data/sent/sent.data";
 import { useReceive } from "../receive";
-
-
-
-interface ReferenceDetailType {
-  id: number;
-  position: number;
-}
-
-interface TranscriptDetailType {
-  read_at: string | null;
-  transcript_for: string;
-  security: boolean;
-  position: number;
-  correspondence: number;
-  user_external?: string;
-}
-
-interface TranscriptDirectionsType {
-  [key: number]: string;
-}
-
-// Define comprehensive interface that covers all the properties used in the component
-interface ResponseDataType {
-  sender_details?: { id: number; user?: Record<string, unknown> };
-  receiver_internal_details?: { id: number };
-  receiver_external_details?: { name: string };
-  receiver_external?: string;
-  attachments_details?: Array<{
-    id: number;
-    name: string;
-    file: string;
-    size: number;
-  }>;
-  attachments?: number[];
-  receiver?: number[];
-  reference_details?: ReferenceDetailType[];
-  reference?: number[];
-  transcript_details?: TranscriptDetailType[];
-  is_internal?: boolean;
-  subject?: string;
-  text?: string;
-  description?: string;
-  postcript?: string;
-  seal?: boolean;
-  signature?: boolean;
-  letterhead?: boolean;
-  binding?: boolean;
-  confidentiality_level?: string;
-  priority?: string;
-  kind_of_correspondence?: string;
-  authority_type?: string;
-  authority_correspondence?: number | null;
-  published?: boolean;
-}
+import {
+  CorrespondenceAttachmentsType,
+  CorrespondenceAttachmentType,
+} from "../../types/sent/attachment.type";
+import { ITranscriptResponseType } from "../../types/sent/transcript.type";
+import { APIFormDataType } from "../../types/sent/sent.type";
+import { useLocation } from "react-router-dom";
+import {
+  ResponseDataType,
+  TranscriptDetailType,
+  TranscriptDirectionsType,
+} from "../../types/logic.type";
 
 export const useSentFormLogic = (id: string | undefined) => {
   const {
@@ -90,10 +41,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     setAttachmentOptions,
   } = useSentFormStore();
 
-  const [useInternalReceiver, setUseInternalReceiver] = useState(
-    formData.is_internal ?? true
-  );
-
   const { data: Position } = usePosition.useGet();
   const { data: PositionAll } = usePosition.useGetAll();
   const { data: Attache } =
@@ -101,13 +48,14 @@ export const useSentFormLogic = (id: string | undefined) => {
       data: CorrespondenceAttachmentsType;
     };
 
-  // Cast the response to our defined interface
   const { data } = useReceive.useGetById(id || "") as {
     data: ResponseDataType;
   };
 
   const { mutate: updateCorrespondence } =
     useCorrespondenceAttachment.useUpdateCorrespondence();
+  const location = useLocation();
+  const isInternal = location.pathname === "/letter/Outform";
 
   const resetForm = () => {
     setFormData({
@@ -116,10 +64,10 @@ export const useSentFormLogic = (id: string | undefined) => {
       description: "",
       attachments: [],
       receiver: [],
-      sender: undefined as unknown as number,
-      receiver_internal: undefined as unknown as number,
+      sender: 0,
+      receiver_internal: 0,
       receiver_external: "",
-      is_internal: true,
+      is_internal: isInternal ? false : true,
       postcript: "",
       seal: false,
       signature: false,
@@ -130,12 +78,11 @@ export const useSentFormLogic = (id: string | undefined) => {
       kind_of_correspondence: "",
       authority_type: "new",
       authority_correspondence: null,
-      reference: [],
       transcript: [],
       published: false,
       referenceData: [],
+      owner: 0,
     });
-    setUseInternalReceiver(true);
     toast.success("اطلاعات با موفقیت ثبت شد");
   };
 
@@ -249,10 +196,11 @@ export const useSentFormLogic = (id: string | undefined) => {
         attachments: attachmentIds,
         receiver: Array.isArray(data.receiver) ? data.receiver : [],
         sender: data.sender_details?.id || 0,
+        owner: data.owner_details?.id || 0,
         receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
           data.receiver_external_details?.name || data.receiver_external || "",
-        is_internal: data.is_internal ?? true,
+        is_internal: isInternal ? data.is_internal ?? false : true,
         postcript: data.postcript || "",
         seal: data.seal ?? false,
         signature: data.signature ?? false,
@@ -263,11 +211,6 @@ export const useSentFormLogic = (id: string | undefined) => {
         kind_of_correspondence: data.kind_of_correspondence || "",
         authority_type: data.authority_type || "new",
         authority_correspondence: data.authority_correspondence || null,
-        reference: Array.isArray(data.reference_details)
-          ? data.reference_details.map((ref: ReferenceDetailType) => ref.id)
-          : Array.isArray(data.reference)
-          ? data.reference
-          : [],
         transcript: Array.isArray(data.transcript_details)
           ? data.transcript_details.map((t: TranscriptDetailType) => ({
               read_at: t.read_at,
@@ -289,14 +232,13 @@ export const useSentFormLogic = (id: string | undefined) => {
           : [],
       };
 
-      setFormData(transformedData);
-      setUseInternalReceiver(data.is_internal ?? true);
+      setFormData(transformedData as any);
 
-      // Handle transcript directions
       if (Array.isArray(data.transcript_details)) {
         const directions = data.transcript_details.reduce(
           (acc: TranscriptDirectionsType, t: TranscriptDetailType) => ({
             ...acc,
+
             [t.position]: t.transcript_for || "notification",
           }),
           {}
@@ -318,7 +260,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         sender: undefined as unknown as number,
         receiver_internal: undefined as unknown as number,
         receiver_external: "",
-        is_internal: true,
+        is_internal: isInternal ? false : true,
         postcript: "",
         seal: false,
         signature: false,
@@ -329,18 +271,13 @@ export const useSentFormLogic = (id: string | undefined) => {
         kind_of_correspondence: "",
         authority_type: "new",
         authority_correspondence: null,
-        reference: [],
         transcript: [],
         published: false,
         referenceData: [],
+        owner: 0,
       });
-      setUseInternalReceiver(true);
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
-
-  useEffect(() => {
-    setUseInternalReceiver(formData.is_internal ?? true);
-  }, [formData.is_internal]);
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
@@ -376,17 +313,17 @@ export const useSentFormLogic = (id: string | undefined) => {
       attachments: restFormData.attachments.map(Number),
       receiver_internal: Number(restFormData.receiver_internal) || null,
       transcript: apiTranscripts,
+      owner: Number(restFormData.owner) || 0,
     };
 
     if (id) {
-      updateCorrespondence({ ...finalData, id: Number(id) });
+      updateCorrespondence({ ...finalData, reference: [], id: Number(id) });
     } else {
       postCorrespondence(finalData);
     }
   };
 
   const handleReceiverTypeChange = (type: "internal" | "external") => {
-    setUseInternalReceiver(type === "internal");
     handleChange("is_internal", type === "internal");
     if (type === "internal") {
       handleChange("receiver_external", "");
@@ -414,7 +351,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     openFileDialog,
     selectedTranscript,
     transcriptDirections: transcriptDirectionsTyped,
-    useInternalReceiver,
     handleChange,
     handleAttachmentAdd,
     handleAddTranscript,

@@ -5,7 +5,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { chatService } from "../services";
-import { ChatType } from "../types";
+import { ChatType } from "../types/chat.type";
 import { AxiosError } from "axios";
 
 const useChat = {

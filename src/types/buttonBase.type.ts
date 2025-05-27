@@ -7,4 +7,5 @@ export type ButtonBasePropsType = {
   bgColor?: string;
   hoverColor?: string;
   icon?: React.ReactNode;
+  className?: string;
 };

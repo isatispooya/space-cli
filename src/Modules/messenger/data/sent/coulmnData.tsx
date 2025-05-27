@@ -1,8 +1,8 @@
 import ActionMenu from "@/components/table/actionMenus";
 import { CellComponent } from "tabulator-tables";
-import { SentMessageType } from "../../types/sent/sent.type";
 import { letterTypeOptions, departmentOptions } from "./sent.data";
 import { createRoot } from "react-dom/client";
+import { SentMessageType } from "../../types";
 
 interface ColumnPropsType {
   handleEdit: (id: number) => void;
