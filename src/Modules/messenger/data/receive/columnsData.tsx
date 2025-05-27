@@ -48,6 +48,14 @@ const Columns = () => {
           onClick: () =>
             (window.location.href = `/letter/receive-message/${rowData.id}`),
         },
+
+        {
+          label: "ویرایش",
+          icon: "🔄",
+          onClick: () =>
+            (window.location.href = `/letter/update-form/${rowData.id}`),
+        },
+
         ...(isDraftRoute
           ? [
               {
