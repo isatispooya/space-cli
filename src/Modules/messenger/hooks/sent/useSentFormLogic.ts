@@ -18,59 +18,11 @@ import {
 import { ITranscriptResponseType } from "../../types/sent/transcript.type";
 import { APIFormDataType } from "../../types/sent/sent.type";
 import { useLocation } from "react-router-dom";
-
-interface ReferenceDetailType {
-  id: number;
-  position: number;
-}
-
-interface TranscriptDetailType {
-  read_at: string | null;
-  transcript_for: string;
-  security: boolean;
-  position: number;
-  correspondence: number;
-  user_external?: string;
-}
-
-interface TranscriptDirectionsType {
-  [key: number]: string;
-}
-
-// Define comprehensive interface that covers all the properties used in the component
-interface ResponseDataType {
-  sender_details?: { id: number; user?: Record<string, unknown> };
-  receiver_internal_details?: { id: number };
-  receiver_external_details?: { name: string };
-  receiver_external?: string;
-  attachments_details?: Array<{
-    id: number;
-    name: string;
-    file: string;
-    size: number;
-  }>;
-  attachments?: number[];
-  receiver?: number[];
-  reference_details?: ReferenceDetailType[];
-  reference?: number[];
-  transcript_details?: TranscriptDetailType[];
-  is_internal?: boolean;
-  subject?: string;
-  text?: string;
-  description?: string;
-  postcript?: string;
-  seal?: boolean;
-  signature?: boolean;
-  letterhead?: boolean;
-  binding?: boolean;
-  confidentiality_level?: string;
-  priority?: string;
-  kind_of_correspondence?: string;
-  authority_type?: string;
-  authority_correspondence?: number | null;
-  published?: boolean;
-  owner_details?: { id: number };
-}
+import {
+  ResponseDataType,
+  TranscriptDetailType,
+  TranscriptDirectionsType,
+} from "../../types/logic.type";
 
 export const useSentFormLogic = (id: string | undefined) => {
   const {
@@ -277,7 +229,8 @@ export const useSentFormLogic = (id: string | undefined) => {
               transcript_for: t.transcript_for || "notification",
               external_text: t.user_external,
             }))
-          : [],      };
+          : [],
+      };
 
       setFormData(transformedData as any);
 
@@ -285,8 +238,8 @@ export const useSentFormLogic = (id: string | undefined) => {
         const directions = data.transcript_details.reduce(
           (acc: TranscriptDirectionsType, t: TranscriptDetailType) => ({
             ...acc,
-            
-[t.position]: t.transcript_for || "notification",
+
+            [t.position]: t.transcript_for || "notification",
           }),
           {}
         );
