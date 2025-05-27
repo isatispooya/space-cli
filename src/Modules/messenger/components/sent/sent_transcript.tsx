@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, } from "react";
 import {
   Box,
   Typography,
@@ -8,7 +8,7 @@ import {
   Grid,
   Chip,
   Divider,
-  TextField,
+  
 } from "@mui/material";
 import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
@@ -97,53 +97,12 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       [setTranscriptDirection]
     );
 
-    const [externalTranscriptText, setExternalTranscriptText] = useState("");
-
-    useEffect(() => {
-      if (data?.transcript && data.transcript.length > 0) {
-        const positions = data.transcript
-          .map((t) => t.position?.toString())
-          .filter((p): p is string => p !== undefined);
-
-        data.transcript.forEach((t: ITranscriptResponseType) => {
-          if (t.position && t.transcript_for) {
-            setTranscriptDirection(t.position, t.transcript_for);
-          }
-        });
-
-        setSelectedTranscript(positions);
-
-        positions.forEach((pos: string) => {
-          const numPos = Number(pos);
-          if (!transcript.some((t) => t.position === numPos)) {
-            const detail = data.transcript?.find((t) => t.position === numPos);
-            if (detail) {
-              handleAddTranscript();
-            }
-          }
-        });
-      }
-    }, [data?.transcript]);
-
     const handleAdd = useCallback(() => {
-      if (is_internal) {
-        if (selectedTranscript.length > 0) {
-          handleAddTranscript();
-          setSelectedTranscript([]);
-        }
-      } else {
-        if (externalTranscriptText.trim() !== "") {
-          handleAddTranscript(externalTranscriptText.trim());
-          setExternalTranscriptText("");
-        }
+      if (is_internal && selectedTranscript.length > 0) {
+        handleAddTranscript();
+        setSelectedTranscript([]);
       }
-    }, [
-      selectedTranscript,
-      handleAddTranscript,
-      setSelectedTranscript,
-      externalTranscriptText,
-      is_internal,
-    ]);
+    }, [selectedTranscript, handleAddTranscript, setSelectedTranscript, is_internal]);
 
     const hasReferenceData =
       data?.sender?.reference_details &&
@@ -160,14 +119,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           displayTranscript.push(detail);
         }
       });
-    }
-
-    if (!is_internal && externalTranscriptText.trim() !== "") {
-      displayTranscript.push({
-        id: -1,
-        position: -1,
-        name: externalTranscriptText.trim(),
-      } as ITranscriptResponseType);
     }
 
     return (
@@ -195,27 +146,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
                 }}
                 options={internalUserOptions}
               />
-
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                sx={{ width: "100%", marginTop: "25px" }}
-              >
-                <TextField
-                  label="گیرندگان رونوشت خارجی"
-                  value={externalTranscriptText}
-                  onChange={(e) => setExternalTranscriptText(e.target.value)}
-                  placeholder="نام گیرنده رونوشت خارجی را وارد کنید"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  sx={{
-                    borderRadius: 1.5,
-                    boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
-                  }}
-                />
-              </Grid>
             </div>
           </Grid>
           <Grid item xs={2}>

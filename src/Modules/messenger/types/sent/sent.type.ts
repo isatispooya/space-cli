@@ -45,7 +45,6 @@ export interface APIFormDataType {
   transcript: TranscriptAPIDataType[];
   published: boolean;
   owner_details: { id: number; user?: Record<string, unknown> }[];
-  owner: { id: number; user?: Record<string, unknown> }[];
 
 }
 
@@ -74,7 +73,6 @@ export type FormDataType = {
   transcript: TranscriptDataType[];
   published: boolean;
   owner_details: [];
-  owner:[];
 };
 
 export interface SenderDetailsType {

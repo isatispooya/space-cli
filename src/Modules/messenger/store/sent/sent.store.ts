@@ -38,7 +38,6 @@ const defaultTranscript: TranscriptDataType = {
 
 const initialFormData: FormDataType = {
   owner_details: [],
-  owner: [],
   subject: "",
   text: "",
   description: "",
