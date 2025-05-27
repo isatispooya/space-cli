@@ -126,7 +126,6 @@ export const useSentFormLogic = (id: string | undefined) => {
       kind_of_correspondence: "",
       authority_type: "new",
       authority_correspondence: null,
-      reference: [],
       transcript: [],
       published: false,
       referenceData: [],
@@ -260,11 +259,6 @@ export const useSentFormLogic = (id: string | undefined) => {
         kind_of_correspondence: data.kind_of_correspondence || "",
         authority_type: data.authority_type || "new",
         authority_correspondence: data.authority_correspondence || null,
-        reference: Array.isArray(data.reference_details)
-          ? data.reference_details.map((ref: ReferenceDetailType) => ref.id)
-          : Array.isArray(data.reference)
-          ? data.reference
-          : [],
         transcript: Array.isArray(data.transcript_details)
           ? data.transcript_details.map((t: TranscriptDetailType) => ({
               read_at: t.read_at,
@@ -283,17 +277,16 @@ export const useSentFormLogic = (id: string | undefined) => {
               transcript_for: t.transcript_for || "notification",
               external_text: t.user_external,
             }))
-          : [],
-      };
+          : [],      };
 
       setFormData(transformedData as any);
 
-      // Handle transcript directions
       if (Array.isArray(data.transcript_details)) {
         const directions = data.transcript_details.reduce(
           (acc: TranscriptDirectionsType, t: TranscriptDetailType) => ({
             ...acc,
-            [t.position]: t.transcript_for || "notification",
+            
+[t.position]: t.transcript_for || "notification",
           }),
           {}
         );
@@ -325,7 +318,6 @@ export const useSentFormLogic = (id: string | undefined) => {
         kind_of_correspondence: "",
         authority_type: "new",
         authority_correspondence: null,
-        reference: [],
         transcript: [],
         published: false,
         referenceData: [],
@@ -372,7 +364,7 @@ export const useSentFormLogic = (id: string | undefined) => {
     };
 
     if (id) {
-      updateCorrespondence({ ...finalData, id: Number(id) });
+      updateCorrespondence({ ...finalData, reference: [], id: Number(id) });
     } else {
       postCorrespondence(finalData);
     }

@@ -26,7 +26,7 @@ const correspondenceAttacheService = {
     data: APIFormDataType & { id: number }
   ): Promise<AttachmentResponseType> => {
     const response = await api.patch(
-      `/correspondence/correspondence/${data.id}/`,
+      `/correspondence/correspondence-update/${data.id}/`,
       data
     );
     return response.data;
