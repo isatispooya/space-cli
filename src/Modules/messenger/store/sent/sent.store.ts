@@ -37,7 +37,7 @@ const defaultTranscript: TranscriptDataType = {
 };
 
 const initialFormData: FormDataType = {
-  owner_details: [],
+  owner: 0,
   subject: "",
   text: "",
   description: "",
@@ -116,7 +116,7 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
       }
 
       if (
-        ["sender", "receiver_internal", "owner_details"].includes(name) &&
+        ["sender", "receiver_internal", "owner"].includes(name) &&
         typeof value === "string"
       ) {
         const numValue = value === "" ? 0 : Number(value);
@@ -132,11 +132,11 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
             },
           };
         }
-        if (name === "owner_details") {
+        if (name === "owner") {
           return {
             formData: {
               ...state.formData,
-              owner_details: [numValue],
+              owner: numValue,
             },
           };
         }

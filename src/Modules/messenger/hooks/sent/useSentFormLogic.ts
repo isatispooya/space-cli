@@ -69,7 +69,7 @@ interface ResponseDataType {
   authority_type?: string;
   authority_correspondence?: number | null;
   published?: boolean;
-  owner_details?: { id: number; user?: Record<string, unknown> };
+  owner_details?: { id: number };
 }
 
 export const useSentFormLogic = (id: string | undefined) => {
@@ -130,7 +130,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       transcript: [],
       published: false,
       referenceData: [],
-      owner_details: [],
+      owner: 0,
     });
     toast.success("اطلاعات با موفقیت ثبت شد");
   };
@@ -245,7 +245,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         attachments: attachmentIds,
         receiver: Array.isArray(data.receiver) ? data.receiver : [],
         sender: data.sender_details?.id || 0,
-        owner_details: data.owner_details?.id || 0,
+        owner: data.owner_details?.id || 0,
         receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
           data.receiver_external_details?.name || data.receiver_external || "",
@@ -329,7 +329,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         transcript: [],
         published: false,
         referenceData: [],
-        owner_details: [],
+        owner: 0,
       });
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
@@ -368,6 +368,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       attachments: restFormData.attachments.map(Number),
       receiver_internal: Number(restFormData.receiver_internal) || null,
       transcript: apiTranscripts,
+      owner: Number(restFormData.owner) || 0,
     };
 
     if (id) {
