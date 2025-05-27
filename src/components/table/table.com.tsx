@@ -330,6 +330,7 @@ const TabulatorTable: React.FC<TablePropsType> = ({
 
   return (
     <>
+
       <TableStyles />
       <div className="w-full bg-white shadow-md rounded-2xl relative p-4 flex flex-col mb-[60px]">
         {showActions && (

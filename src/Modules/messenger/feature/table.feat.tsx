@@ -15,6 +15,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 export const TableFeature = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const currentPath = window.location.pathname;
   const [searchResults, setSearchResults] =
     useState<CorrespondenceResponseType>({
       sender: [],
@@ -208,6 +209,14 @@ export const TableFeature = () => {
     (!searchResults.receiver || searchResults.receiver.length === 0) &&
     (!searchResults.sender || searchResults.sender.length === 0);
 
+  {
+    filteredMappedData.length === 0 && (
+      <div className="w-full text-center py-4 text-gray-500">
+        نتیجه‌ای یافت نشد
+      </div>
+    );
+  }
+
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
       <div className="flex mb-4">
@@ -226,16 +235,19 @@ export const TableFeature = () => {
             جستجو
           </button>
         </div>
-        <div className="  mr-4">
-          <div className="flex items-center">
-            <button
-              onClick={() => navigate("/letter/OutformMake")}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-            >
-              ایجاد نامه
-            </button>
+
+        {currentPath === "/letter/Outreceive-table" && (
+          <div className="  mr-4">
+            <div className="flex items-center">
+              <button
+                onClick={() => navigate("/letter/OutformMake")}
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              >
+                ایجاد نامه
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {isSearching && (
