@@ -24,7 +24,6 @@ const MakeForm: React.FC = () => {
   const navigate = useNavigate();
   const isEditMode = !!id;
   const [isPublished, setIsPublished] = useState(false);
-
   const {
     formData,
     openFileDialog,

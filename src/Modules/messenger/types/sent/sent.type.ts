@@ -1,3 +1,4 @@
+import { TranscriptDetailType } from "../logic.type";
 import { CorrespondenceAttachmentType } from "./attachment.type";
 import {
   TranscriptAPIDataType,
@@ -73,6 +74,7 @@ export type FormDataType = {
   transcript: TranscriptDataType[];
   published: boolean;
   owner: 0;
+  transcript_details: TranscriptDetailType[];
 };
 
 export interface SenderDetailsType {

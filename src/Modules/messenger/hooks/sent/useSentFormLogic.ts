@@ -54,6 +54,7 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const { mutate: updateCorrespondence } =
     useCorrespondenceAttachment.useUpdateCorrespondence();
+
   const location = useLocation();
   const isInternal = location.pathname === "/letter/Outform";
 
@@ -81,8 +82,15 @@ export const useSentFormLogic = (id: string | undefined) => {
       transcript: [],
       published: false,
       referenceData: [],
+      reference: [],
       owner: 0,
+      transcript_details: [],
     });
+
+    Object.keys(transcriptDirections).forEach((key) => {
+      setTranscriptDirection(Number(key), "notification");
+    });
+
     toast.success("اطلاعات با موفقیت ثبت شد");
   };
 

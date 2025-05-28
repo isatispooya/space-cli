@@ -62,6 +62,20 @@ const useCorrespondenceAttachment = {
       },
     });
   },
+
+  
+  usePublishCorrespondence: (): UseMutationResult<
+  AttachmentResponseType,
+  Error,
+  number
+> => {
+  return useMutation({
+    mutationFn: (id: number) =>
+      correspondenceAttacheService.publishCorrespondence(id),
+  });
+},
+
+
   useGetCorrespondence: (): UseQueryResult<CorrespondenceResponseType> => {
     return useQuery({
       queryKey: ["correspondence"],

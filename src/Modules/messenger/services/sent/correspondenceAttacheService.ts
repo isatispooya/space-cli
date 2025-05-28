@@ -31,6 +31,13 @@ const correspondenceAttacheService = {
     );
     return response.data;
   },
+
+  publishCorrespondence: async (id: number): Promise<AttachmentResponseType> => {
+    const response = await api.patch(`/correspondence/correspondence/${id}/`, {});
+    return response.data;
+  },
+  
+
   getCorrespondence: async (): Promise<CorrespondenceResponseType> => {
     const response = await api.get("/correspondence/correspondence/");
 

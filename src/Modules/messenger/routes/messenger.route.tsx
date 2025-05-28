@@ -75,6 +75,10 @@ const MessengerRoutes = [
         path: "update-form/:id",
         element: <MakeFormPage />,
       },
+      {
+        path: "draft-form/:id",
+        element: <MakeFormPage />,
+      },
     
       {
         path: "receive-table",

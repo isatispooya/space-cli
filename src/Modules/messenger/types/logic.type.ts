@@ -10,6 +10,7 @@ export interface TranscriptDetailType {
   position: number;
   correspondence: number;
   user_external?: string;
+  
 }
 
 export interface TranscriptDirectionsType {

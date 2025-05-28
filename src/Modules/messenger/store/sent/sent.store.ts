@@ -61,6 +61,7 @@ const initialFormData: FormDataType = {
   referenceData: [],
   transcript: [defaultTranscript],
   published: false,
+  transcript_details: [],
 };
 
 export const useSentFormStore = create<SentFormStateType>((set) => ({

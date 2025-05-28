@@ -21,6 +21,7 @@ export interface CorrespondenceItemType {
   is_internal: boolean;
   number: string;
   seen?: boolean;
+  published?: boolean;
   confidentiality_level?: string;
   sender_details?: {
     id?: number;

@@ -26,6 +26,8 @@ export const TableFeature = () => {
 
   const { data: correspondence, isLoading } =
     useCorrespondenceAttachment.useGetCorrespondence();
+  const { mutate: publishCorrespondence } =
+    useCorrespondenceAttachment.usePublishCorrespondence();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -119,6 +121,7 @@ export const TableFeature = () => {
           correspondence?.sender.some((s) => s.id === item.id) ?? false,
         is_receiver:
           correspondence?.receiver.some((r) => r.id === item.id) ?? false,
+        published: item.published ?? false,
       };
     },
     [formatDate, formatConfidentialityLevel, correspondence]
@@ -162,18 +165,31 @@ export const TableFeature = () => {
       );
     } else if (letterTable) {
       return mappedData.filter(
-        (item) => item.is_sender && item.is_internal === true
+        (item) =>
+          item.is_sender && item.is_internal === true && item.published === true
       );
     } else if (outTable) {
       return mappedData.filter(
-        (item) => item.is_sender && item.is_internal === false
+        (item) =>
+          item.is_sender &&
+          item.is_internal === false &&
+          item.published === true
       );
     } else if (draftTable) {
-      return mappedData.filter((item) => item.sender);
+      return mappedData.filter(
+        (item) => item.is_sender && item.published === false
+      );
     }
 
     return mappedData;
-  }, [mappedData, receiveTable, outreceiveTable, letterTable, outTable]);
+  }, [
+    mappedData,
+    receiveTable,
+    outreceiveTable,
+    letterTable,
+    outTable,
+    draftTable,
+  ]);
 
   const tableOptions = useMemo(
     () => ({
@@ -208,14 +224,6 @@ export const TableFeature = () => {
     !isSearching &&
     (!searchResults.receiver || searchResults.receiver.length === 0) &&
     (!searchResults.sender || searchResults.sender.length === 0);
-
-  {
-    filteredMappedData.length === 0 && (
-      <div className="w-full text-center py-4 text-gray-500">
-        نتیجه‌ای یافت نشد
-      </div>
-    );
-  }
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
@@ -265,7 +273,7 @@ export const TableFeature = () => {
       <div className="overflow-x-auto">
         <TabulatorTable
           data={filteredMappedData}
-          columns={columns()}
+          columns={columns({ handlePublish: publishCorrespondence })}
           title={
             receiveTable
               ? "پیام های دریافتی"
