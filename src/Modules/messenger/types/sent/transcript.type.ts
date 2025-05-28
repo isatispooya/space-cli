@@ -13,6 +13,68 @@ export interface ITranscriptResponseType {
   name?: string;
   isExternal?: boolean;
 }
+
+export interface ReferenceDetailType {
+  id: string;
+  user?: {
+    first_name: string;
+    last_name: string;
+    uniqueIdentifier: string;
+  };
+  name?: string;
+  transcript_for?: string;
+  position?: string;
+  company_name?: string;
+  company_detail?: {
+    name: string;
+  };
+}
+
+export interface TranscriptPropsType {
+  transcript: ITranscriptResponseType[];
+  selectedTranscript: string[];
+  setSelectedTranscript: (value: string[]) => void;
+  handleAddTranscript: (text?: string) => void;
+  handleTranscriptToggle: (id: number) => void;
+  internalUserOptions: { label: string; value: string }[];
+  getTranscriptName: (id: number) => string;
+  transcriptDirections: { [id: number]: string };
+  setTranscriptDirection: (id: number, value: string) => void;
+  onDeleteTranscript?: (id: number) => void;
+  data?: {
+    transcript?: ITranscriptResponseType[];
+    sender?: {
+      reference_details?: ReferenceDetailType[];
+      subject?: string;
+      text?: string;
+      description?: string;
+      is_internal?: boolean;
+      postcript?: string;
+      seal?: boolean;
+      signature?: boolean;
+      letterhead?: boolean;
+      binding?: boolean;
+      confidentiality_level?: string;
+      priority?: string;
+      kind_of_correspondence?: string;
+      authority_type?: string;
+      authority_correspondence?: number | null;
+      published?: boolean;
+      sender_details?: {
+        id: number;
+      };
+      receiver_internal_details?: {
+        id: number;
+      };
+      receiver_external?: string;
+      receiver_external_details?: {
+        name: string;
+      };
+    };
+  };
+  is_internal?: boolean;
+}
+
 export interface TranscriptDetailsType {
   id: number;
   read_at: string | null;
@@ -42,64 +104,6 @@ export interface TranscriptAPIDataType {
   external_text?: string;
 }
 
-export interface ReferenceDetailType {
-  id: string;
-  user?: {
-    first_name: string;
-    last_name: string;
-    uniqueIdentifier: string;
-  };
-  name?: string;
-  transcript_for?: string;
-  position?: string;
-  company_name?: string;
-  company_detail?: {
-    name: string;
-  };
-}
-
-export interface TranscriptPropsType {
-  transcript: ITranscriptResponseType[];
-  selectedTranscript: string[];
-  setSelectedTranscript: (value: string[]) => void;
-  handleAddTranscript: (text?: string) => void;
-  handleTranscriptToggle: (id: number) => void;
-  internalUserOptions: { label: string; value: string }[];
-  getTranscriptName: (id: number) => string;
-  transcriptDirections: { [id: number]: string };
-  setTranscriptDirection: (id: number, value: string) => void;
-  data?: {
-    transcript_details?: ITranscriptResponseType[];
-    sender?: {
-      reference_details?: ReferenceDetailType[];
-      subject?: string;
-      text?: string;
-      description?: string;
-      postcript?: string;
-      seal?: boolean;
-      signature?: boolean;
-      letterhead?: boolean;
-      binding?: boolean;
-      confidentiality_level?: string;
-      priority?: string;
-      kind_of_correspondence?: string;
-      authority_type?: string;
-      authority_correspondence?: number | null;
-      published?: boolean;
-      sender_details?: {
-        id: number;
-      };
-      receiver_internal_details?: {
-        id: number;
-      };
-      receiver_external?: string;
-      receiver_external_details?: {
-        name: string;
-      };
-    };
-  };
-}
-
 export interface TranscriptListPropsType {
   displayTranscript: ITranscriptResponseType[];
   getTranscriptName: (id: number) => string;
@@ -117,6 +121,7 @@ export interface TranscriptListItemPropsType {
   handleTranscriptToggle: (id: number, newValue?: boolean) => void;
   internalOptions: typeof internalOptions;
   handleExternalTextUpdate?: (id: number, text: string | string[]) => void;
+  onDelete?: (id: number) => void;
 }
 
 export interface TranscriptSectionPropsType {

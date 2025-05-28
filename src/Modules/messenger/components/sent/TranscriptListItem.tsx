@@ -15,7 +15,7 @@ import { TranscriptListItemPropsType } from "../../types/sent/transcript.type";
 
 type ExtendedTranscriptListItemPropsType = TranscriptListItemPropsType & {
   onAddExternalRecipient?: (id: number, newRecipient: string) => void;
-  onDelete?: (id: number) => void;
+  onDelete: (id: number) => void;
 };
 
 const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
@@ -140,7 +140,7 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
               }}
             >
               <IconButton
-                onClick={() => onDelete?.(item.position || item.id)}
+                onClick={() => onDelete(item.position || item.id)}
                 sx={{
                   color: "#ef4444",
                   "&:hover": {

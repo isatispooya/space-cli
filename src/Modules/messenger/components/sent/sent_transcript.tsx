@@ -4,7 +4,6 @@ import {
   Typography,
   Paper,
   List,
-  ListItem,
   Grid,
   Chip,
   Divider,
@@ -14,67 +13,10 @@ import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
 import TranscriptListItem from "./TranscriptListItem";
-import { ITranscriptResponseType } from "../../types/sent/transcript.type";
-
-interface ReferenceDetailType {
-  id: string;
-  user?: {
-    first_name: string;
-    last_name: string;
-    uniqueIdentifier: string;
-  };
-  name?: string;
-  transcript_for?: string;
-  position?: string;
-  company_name?: string;
-  company_detail?: {
-    name: string;
-  };
-}
-
-interface TranscriptPropsType {
-  transcript: ITranscriptResponseType[];
-  selectedTranscript: string[];
-  setSelectedTranscript: (value: string[]) => void;
-  handleAddTranscript: (text?: string) => void;
-  handleTranscriptToggle: (id: number) => void;
-  internalUserOptions: { label: string; value: string }[];
-  getTranscriptName: (id: number) => string;
-  transcriptDirections: { [id: number]: string };
-  setTranscriptDirection: (id: number, value: string) => void;
-  data?: {
-    transcript?: ITranscriptResponseType[];
-    sender?: {
-      reference_details?: ReferenceDetailType[];
-      subject?: string;
-      text?: string;
-      description?: string;
-      is_internal?: boolean;
-      postcript?: string;
-      seal?: boolean;
-      signature?: boolean;
-      letterhead?: boolean;
-      binding?: boolean;
-      confidentiality_level?: string;
-      priority?: string;
-      kind_of_correspondence?: string;
-      authority_type?: string;
-      authority_correspondence?: number | null;
-      published?: boolean;
-      sender_details?: {
-        id: number;
-      };
-      receiver_internal_details?: {
-        id: number;
-      };
-      receiver_external?: string;
-      receiver_external_details?: {
-        name: string;
-      };
-    };
-  };
-  is_internal?: boolean;
-}
+import {
+  ITranscriptResponseType,
+  TranscriptPropsType,
+} from "../../types/sent/transcript.type";
 
 const Transcript: React.FC<TranscriptPropsType> = React.memo(
   ({
@@ -87,14 +29,44 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     getTranscriptName,
     transcriptDirections,
     setTranscriptDirection,
+    onDeleteTranscript,
     data,
     is_internal = true,
   }) => {
+    const [localTranscript, setLocalTranscript] = useState<
+      ITranscriptResponseType[]
+    >([]);
+
+    useEffect(() => {
+      const allTranscripts = [...transcript];
+      if (data?.transcript) {
+        data.transcript.forEach((detail) => {
+          if (!allTranscripts.some((t) => t.position === detail.position)) {
+            allTranscripts.push(detail);
+          }
+        });
+      }
+      setLocalTranscript(allTranscripts);
+    }, [transcript, data?.transcript]);
+
     const handleDirectionChange = useCallback(
       (id: number, value: string) => {
         setTranscriptDirection(id, value);
       },
       [setTranscriptDirection]
+    );
+
+    const handleDeleteTranscript = useCallback(
+      (id: number) => {
+        setLocalTranscript((prev) =>
+          prev.filter((item) => (item.position || item.id) !== id)
+        );
+
+        if (onDeleteTranscript) {
+          onDeleteTranscript(id);
+        }
+      },
+      [onDeleteTranscript]
     );
 
     const [externalTranscriptText, setExternalTranscriptText] = useState("");
@@ -115,7 +87,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
 
         positions.forEach((pos: string) => {
           const numPos = Number(pos);
-          if (!transcript.some((t) => t.position === numPos)) {
+          if (!localTranscript.some((t) => t.position === numPos)) {
             const detail = data.transcript?.find((t) => t.position === numPos);
             if (detail) {
               handleAddTranscript();
@@ -148,28 +120,10 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       externalTranscriptText,
       is_internal,
     ]);
-
-    const hasReferenceData =
-      data?.sender?.reference_details &&
-      data.sender.reference_details.length > 0;
-
-    const displayTranscript: ITranscriptResponseType[] = [...transcript];
-
-    if (data?.transcript && data.transcript.length > 0) {
-      data.transcript.forEach((detail: ITranscriptResponseType) => {
-        if (
-          detail.position &&
-          !displayTranscript.some((t) => t.position === detail.position)
-        ) {
-          displayTranscript.push(detail);
-        }
-      });
-    }
-
-    const internalTranscripts = displayTranscript.filter(
+    const internalTranscripts = localTranscript.filter(
       (t) => !t.isExternal && !t.external_text && t.id >= 0
     );
-    const externalTranscripts = displayTranscript.filter(
+    const externalTranscripts = localTranscript.filter(
       (t) => t.isExternal || t.external_text || t.id < 0
     );
 
@@ -238,7 +192,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Grid>
         </Grid>
 
-        {displayTranscript.length > 0 && (
+        {combinedTranscripts.length > 0 && (
           <Box sx={{ mt: 1, mb: 1 }}>
             <Typography
               variant="body2"
@@ -246,7 +200,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
               sx={{ display: "flex", alignItems: "center", gap: 1 }}
             >
               <Chip
-                label={displayTranscript.length}
+                label={combinedTranscripts.length}
                 size="small"
                 color="primary"
                 sx={{ fontWeight: "bold", height: 22, minWidth: 22 }}
@@ -256,7 +210,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Box>
         )}
 
-        {displayTranscript.length > 0 && (
+        {combinedTranscripts.length > 0 && (
           <Paper
             variant="outlined"
             sx={{
@@ -276,6 +230,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
                     handleDirectionChange={handleDirectionChange}
                     handleTranscriptToggle={handleTranscriptToggle}
                     internalOptions={internalOptions}
+                    onDelete={handleDeleteTranscript}
                   />
                   {index < combinedTranscripts.length - 1 && (
                     <Divider sx={{ my: 0.5 }} />
