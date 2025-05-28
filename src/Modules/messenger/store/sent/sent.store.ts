@@ -59,7 +59,7 @@ const initialFormData: FormDataType = {
   authority_correspondence: null,
   reference: [],
   referenceData: [],
-  transcript: [defaultTranscript],
+  transcript: [],
   published: false,
   transcript_details: [],
 };
@@ -248,10 +248,9 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
             },
           };
         }
-      } else if (
-        externalTranscriptText &&
-        externalTranscriptText.trim() !== ""
-      ) {
+      }
+
+      if (externalTranscriptText && externalTranscriptText.trim() !== "") {
         const externalId = -Date.now();
 
         const newReferenceData: ReferenceDataType = {
@@ -263,7 +262,7 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
 
         const newTranscript = {
           ...defaultTranscript,
-          position: externalId,
+          position: null,
           transcript_for: "notification",
           external_text: externalTranscriptText,
         };

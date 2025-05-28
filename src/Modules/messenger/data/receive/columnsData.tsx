@@ -23,6 +23,11 @@ interface ColumnsProps {
 
 const Columns = ({ handlePublish }: ColumnsProps) => {
   const isDraftRoute = window.location.pathname === "/letter/draft";
+  const pathname = window.location.pathname;
+
+  const isReceiveTableRoute =
+    pathname === "/letter/Outreceive-table" ||
+    pathname === "/letter/receive-table";
 
   const letterTypeLabels = Object.fromEntries(
     letterTypeOptions.map(({ value, label }) => [value, label])
@@ -57,7 +62,7 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
       ...(isDraftRoute
         ? [
             {
-              label: "پیش نویس",
+              label: "ویرایش",
               icon: "📝",
               onClick: () =>
                 (window.location.href = `/letter/draft-form/${rowData.id}`),
@@ -109,16 +114,21 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
   };
 
   return [
-    {
-      field: "seen",
-      hozAlign: "center",
-      width: 80,
-      formatter: (cell: CellFormatterParamsType) => {
-        const { seen } = cell.getRow().getData();
-        const color = seen ? "#33cc33" : "#ff3333";
-        return `<span style="color: ${color}; font-size: 18px;">●</span>`;
-      },
-    },
+    ...(isReceiveTableRoute
+      ? [
+          {
+            field: "seen",
+            hozAlign: "center",
+            width: 80,
+            formatter: (cell: CellFormatterParamsType) => {
+              const { seen } = cell.getRow().getData();
+              const color = seen ? "#33cc33" : "#ff3333";
+              return `<span style="color: ${color}; font-size: 18px;">●</span>`;
+            },
+          },
+        ]
+      : []),
+
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
     {
       title: "شماره نامه",

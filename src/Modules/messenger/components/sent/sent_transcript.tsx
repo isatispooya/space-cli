@@ -1,80 +1,22 @@
-import React, { useCallback, } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   Box,
   Typography,
   Paper,
   List,
-  ListItem,
   Grid,
   Chip,
   Divider,
-  
+  TextField,
 } from "@mui/material";
 import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
 import internalOptions from "../../data/sent/transcript.data";
 import TranscriptListItem from "./TranscriptListItem";
-import { ITranscriptResponseType } from "../../types/sent/transcript.type";
-
-interface ReferenceDetailType {
-  id: string;
-  user?: {
-    first_name: string;
-    last_name: string;
-    uniqueIdentifier: string;
-  };
-  name?: string;
-  transcript_for?: string;
-  position?: string;
-  company_name?: string;
-  company_detail?: {
-    name: string;
-  };
-}
-
-interface TranscriptPropsType {
-  transcript: ITranscriptResponseType[];
-  selectedTranscript: string[];
-  setSelectedTranscript: (value: string[]) => void;
-  handleAddTranscript: (text?: string) => void;
-  handleTranscriptToggle: (id: number) => void;
-  internalUserOptions: { label: string; value: string }[];
-  getTranscriptName: (id: number) => string;
-  transcriptDirections: { [id: number]: string };
-  setTranscriptDirection: (id: number, value: string) => void;
-  data?: {
-    transcript?: ITranscriptResponseType[];
-    sender?: {
-      reference_details?: ReferenceDetailType[];
-      subject?: string;
-      text?: string;
-      description?: string;
-      is_internal?: boolean;
-      postcript?: string;
-      seal?: boolean;
-      signature?: boolean;
-      letterhead?: boolean;
-      binding?: boolean;
-      confidentiality_level?: string;
-      priority?: string;
-      kind_of_correspondence?: string;
-      authority_type?: string;
-      authority_correspondence?: number | null;
-      published?: boolean;
-      sender_details?: {
-        id: number;
-      };
-      receiver_internal_details?: {
-        id: number;
-      };
-      receiver_external?: string;
-      receiver_external_details?: {
-        name: string;
-      };
-    };
-  };
-  is_internal?: boolean;
-}
+import {
+  ITranscriptResponseType,
+  TranscriptPropsType,
+} from "../../types/sent/transcript.type";
 
 const Transcript: React.FC<TranscriptPropsType> = React.memo(
   ({
@@ -87,9 +29,26 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     getTranscriptName,
     transcriptDirections,
     setTranscriptDirection,
+    onDeleteTranscript,
     data,
     is_internal = true,
   }) => {
+    const [localTranscript, setLocalTranscript] = useState<
+      ITranscriptResponseType[]
+    >([]);
+
+    useEffect(() => {
+      const allTranscripts = [...transcript];
+      if (data?.transcript) {
+        data.transcript.forEach((detail) => {
+          if (!allTranscripts.some((t) => t.position === detail.position)) {
+            allTranscripts.push(detail);
+          }
+        });
+      }
+      setLocalTranscript(allTranscripts);
+    }, [transcript, data?.transcript]);
+
     const handleDirectionChange = useCallback(
       (id: number, value: string) => {
         setTranscriptDirection(id, value);
@@ -97,29 +56,81 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       [setTranscriptDirection]
     );
 
+    const handleDeleteTranscript = useCallback(
+      (id: number) => {
+        setLocalTranscript((prev) =>
+          prev.filter((item) => (item.position ?? item.id) !== id)
+        );
+
+        if (onDeleteTranscript) {
+          onDeleteTranscript(id);
+        }
+      },
+      [onDeleteTranscript]
+    );
+
+    const [externalTranscriptText, setExternalTranscriptText] = useState("");
+
+    useEffect(() => {
+      if (data?.transcript && data.transcript.length > 0) {
+        const positions = data.transcript
+          .map((t) => t.position?.toString())
+          .filter((p): p is string => p !== undefined);
+
+        data.transcript.forEach((t: ITranscriptResponseType) => {
+          if (t.position && t.transcript_for) {
+            setTranscriptDirection(t.position, t.transcript_for);
+          }
+        });
+
+        setSelectedTranscript(positions);
+
+        positions.forEach((pos: string) => {
+          const numPos = Number(pos);
+          if (!localTranscript.some((t) => t.position === numPos)) {
+            const detail = data.transcript?.find((t) => t.position === numPos);
+            if (detail) {
+              handleAddTranscript();
+            }
+          }
+        });
+      }
+    }, [data?.transcript]);
+
     const handleAdd = useCallback(() => {
-      if (is_internal && selectedTranscript.length > 0) {
+      if (
+        selectedTranscript.length === 0 &&
+        externalTranscriptText.trim() === ""
+      )
+        return;
+
+      if (selectedTranscript.length > 0) {
         handleAddTranscript();
         setSelectedTranscript([]);
       }
-    }, [selectedTranscript, handleAddTranscript, setSelectedTranscript, is_internal]);
 
-    const hasReferenceData =
-      data?.sender?.reference_details &&
-      data.sender.reference_details.length > 0;
+      if (externalTranscriptText.trim() !== "") {
+        handleAddTranscript(externalTranscriptText.trim());
+        setExternalTranscriptText("");
+      }
+    }, [
+      selectedTranscript,
+      handleAddTranscript,
+      setSelectedTranscript,
+      externalTranscriptText,
+      is_internal,
+    ]);
+    const internalTranscripts = localTranscript.filter(
+      (t) => !t.isExternal && !t.external_text && t.id >= 0
+    );
+    const externalTranscripts = localTranscript.filter(
+      (t) => t.isExternal || t.external_text || t.id < 0
+    );
 
-    const displayTranscript: ITranscriptResponseType[] = [...transcript];
-
-    if (data?.transcript && data.transcript.length > 0) {
-      data.transcript.forEach((detail: ITranscriptResponseType) => {
-        if (
-          detail.position &&
-          !displayTranscript.some((t) => t.position === detail.position)
-        ) {
-          displayTranscript.push(detail);
-        }
-      });
-    }
+    const combinedTranscripts = [
+      ...internalTranscripts,
+      ...externalTranscripts,
+    ];
 
     return (
       <Box
@@ -146,6 +157,27 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
                 }}
                 options={internalUserOptions}
               />
+
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                sx={{ width: "100%", marginTop: "25px" }}
+              >
+                <TextField
+                  label="گیرندگان رونوشت خارجی"
+                  value={externalTranscriptText}
+                  onChange={(e) => setExternalTranscriptText(e.target.value)}
+                  placeholder="نام گیرنده رونوشت خارجی را وارد کنید"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  sx={{
+                    borderRadius: 1.5,
+                    boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
+                  }}
+                />
+              </Grid>
             </div>
           </Grid>
           <Grid item xs={2}>
@@ -160,7 +192,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Grid>
         </Grid>
 
-        {displayTranscript.length > 0 && (
+        {combinedTranscripts.length > 0 && (
           <Box sx={{ mt: 1, mb: 1 }}>
             <Typography
               variant="body2"
@@ -168,7 +200,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
               sx={{ display: "flex", alignItems: "center", gap: 1 }}
             >
               <Chip
-                label={displayTranscript.length}
+                label={combinedTranscripts.length}
                 size="small"
                 color="primary"
                 sx={{ fontWeight: "bold", height: 22, minWidth: 22 }}
@@ -178,61 +210,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           </Box>
         )}
 
-        {hasReferenceData && (
-          <Paper
-            variant="outlined"
-            sx={{
-              p: 2,
-              borderRadius: 2,
-              bgcolor: "#fff",
-              boxShadow: "rgba(0, 0, 0, 0.05) 0px 1px 2px",
-              mb: 2,
-            }}
-          >
-            <Typography
-              variant="body2"
-              sx={{ mb: 1, fontWeight: "medium", color: "#555" }}
-            >
-              رونوشت‌های موجود:
-            </Typography>
-            <List sx={{ p: 0 }}>
-              {data?.sender?.reference_details?.map(
-                (item: ReferenceDetailType, index: number) => (
-                  <React.Fragment key={`ref-${item.id}`}>
-                    <ListItem sx={{ px: 1, py: 1.5 }}>
-                      <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12} md={8}>
-                          <Typography
-                            sx={{ fontSize: "0.9rem", color: "#1e293b" }}
-                          >
-                            {item.user?.first_name} {item.user?.last_name} |{" "}
-                            {item.position || item.name || "بدون پوزیشن"} |{" "}
-                            {item.company_detail?.name ||
-                              item.company_name ||
-                              "-"}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                          <Typography
-                            sx={{ fontSize: "0.8rem", color: "#64748b" }}
-                          >
-                            {item.transcript_for || "اطلاع رسانی"}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </ListItem>
-                    {index <
-                      (data?.sender?.reference_details?.length || 0) - 1 && (
-                      <Divider sx={{ my: 0.5 }} />
-                    )}
-                  </React.Fragment>
-                )
-              )}
-            </List>
-          </Paper>
-        )}
-
-        {displayTranscript.length > 0 ? (
+        {combinedTranscripts.length > 0 && (
           <Paper
             variant="outlined"
             sx={{
@@ -243,8 +221,8 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
             }}
           >
             <List sx={{ p: 0 }}>
-              {displayTranscript.map((item, index) => (
-                <React.Fragment key={item.position || item.id}>
+              {combinedTranscripts.map((item, index) => (
+                <React.Fragment key={item.position ?? item.id}>
                   <TranscriptListItem
                     item={item}
                     getTranscriptName={getTranscriptName}
@@ -252,23 +230,15 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
                     handleDirectionChange={handleDirectionChange}
                     handleTranscriptToggle={handleTranscriptToggle}
                     internalOptions={internalOptions}
+                    onDelete={handleDeleteTranscript}
                   />
-                  {index < displayTranscript.length - 1 && (
+                  {index < combinedTranscripts.length - 1 && (
                     <Divider sx={{ my: 0.5 }} />
                   )}
                 </React.Fragment>
               ))}
             </List>
           </Paper>
-        ) : (
-          !hasReferenceData && (
-            <Box sx={{ p: 2, textAlign: "center" }}>
-              <Typography variant="body2" color="text.secondary">
-                هیچ گیرنده رونوشتی انتخاب نشده است. از لیست بالا گیرندگان را
-                انتخاب و اضافه کنید.
-              </Typography>
-            </Box>
-          )
         )}
       </Box>
     );

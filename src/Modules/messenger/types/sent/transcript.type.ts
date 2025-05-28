@@ -7,39 +7,11 @@ export interface ITranscriptResponseType {
   security: boolean;
   created_at: string;
   updated_at: string;
-  position: number;
+  position: number | null;
   correspondence: number;
   external_text?: string;
   name?: string;
   isExternal?: boolean;
-}
-export interface TranscriptDetailsType {
-  id: number;
-  read_at: string | null;
-  transcript_for: string;
-  security: boolean;
-  created_at: string;
-  updated_at: string;
-  position: number;
-  correspondence: number;
-}
-
-export interface TranscriptDataType {
-  read_at: string | null;
-  transcript_for: string;
-  security: boolean;
-  position: number;
-  correspondence: number | null;
-  external_text?: string;
-}
-
-export interface TranscriptAPIDataType {
-  read_at: string | null;
-  transcript_for: string;
-  security: boolean;
-  position: number;
-  correspondence: number | null;
-  external_text?: string;
 }
 
 export interface ReferenceDetailType {
@@ -68,13 +40,15 @@ export interface TranscriptPropsType {
   getTranscriptName: (id: number) => string;
   transcriptDirections: { [id: number]: string };
   setTranscriptDirection: (id: number, value: string) => void;
+  onDeleteTranscript?: (id: number) => void;
   data?: {
-    transcript_details?: ITranscriptResponseType[];
+    transcript?: ITranscriptResponseType[];
     sender?: {
       reference_details?: ReferenceDetailType[];
       subject?: string;
       text?: string;
       description?: string;
+      is_internal?: boolean;
       postcript?: string;
       seal?: boolean;
       signature?: boolean;
@@ -98,6 +72,36 @@ export interface TranscriptPropsType {
       };
     };
   };
+  is_internal?: boolean;
+}
+
+export interface TranscriptDetailsType {
+  id: number;
+  read_at: string | null;
+  transcript_for: string;
+  security: boolean;
+  created_at: string;
+  updated_at: string;
+  position: number;
+  correspondence: number;
+}
+
+export interface TranscriptDataType {
+  read_at: string | null;
+  transcript_for: string;
+  security: boolean;
+  position: number | null;
+  correspondence: number | null;
+  external_text?: string;
+}
+
+export interface TranscriptAPIDataType {
+  read_at: string | null;
+  transcript_for: string;
+  security: boolean;
+  position: number | null;
+  correspondence: number | null;
+  external_text?: string;
 }
 
 export interface TranscriptListPropsType {
@@ -117,6 +121,7 @@ export interface TranscriptListItemPropsType {
   handleTranscriptToggle: (id: number, newValue?: boolean) => void;
   internalOptions: typeof internalOptions;
   handleExternalTextUpdate?: (id: number, text: string | string[]) => void;
+  onDelete?: (id: number) => void;
 }
 
 export interface TranscriptSectionPropsType {
