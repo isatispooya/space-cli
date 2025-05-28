@@ -47,11 +47,17 @@ export const TableFeature = () => {
     setIsSearching(true);
     try {
       const response = await chatService.search(query);
-      setSearchResults(response as unknown as CorrespondenceResponseType);
-      setHasSearched(true);
+      if (response) {
+        setSearchResults(response as unknown as CorrespondenceResponseType);
+        setHasSearched(true);
+      } else {
+        setSearchResults({ sender: [], receiver: [] });
+        setHasSearched(false);
+      }
     } catch (error) {
       console.error("خطا در جستجو:", error);
       setSearchResults({ sender: [], receiver: [] });
+      setHasSearched(false);
     } finally {
       setIsSearching(false);
     }
@@ -128,28 +134,29 @@ export const TableFeature = () => {
   );
 
   const mappedData = useMemo(() => {
-    if (
-      hasSearched &&
-      searchResults.receiver &&
-      searchResults.receiver.length > 0
-    ) {
-      return searchResults.receiver.map(createRowData);
-    }
-
-    if (
-      hasSearched &&
-      searchResults.sender &&
-      searchResults.sender.length > 0 &&
-      (!searchResults.receiver || searchResults.receiver.length === 0)
-    ) {
-      return searchResults.sender.map(createRowData);
-    }
-
     if (!correspondence) return [];
-    return [
+
+    const allData = [
       ...correspondence.receiver.map(createRowData),
       ...correspondence.sender.map(createRowData),
     ];
+
+    if (hasSearched && searchResults) {
+      const receiverResults = searchResults.receiver || [];
+      const senderResults = searchResults.sender || [];
+
+      if (receiverResults.length > 0) {
+        return receiverResults.map(createRowData);
+      }
+
+      if (senderResults.length > 0) {
+        return senderResults.map(createRowData);
+      }
+
+      return [];
+    }
+
+    return allData;
   }, [correspondence, searchResults, hasSearched, createRowData]);
 
   const filteredMappedData = useMemo(() => {
@@ -227,37 +234,6 @@ export const TableFeature = () => {
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
-      <div className="flex mb-4">
-        <div className="flex items-center">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="جستجو در متن نامه..."
-            className="border border-gray-300 rounded-r-lg px-4 py-2 focus:outline-none"
-          />
-          <button
-            onClick={() => handleSearch(searchTerm)}
-            className="bg-blue-500 text-white px-4 py-2 rounded-l-lg"
-          >
-            جستجو
-          </button>
-        </div>
-
-        {currentPath === "/letter/Outreceive-table" && (
-          <div className="  mr-4">
-            <div className="flex items-center">
-              <button
-                onClick={() => navigate("/letter/OutformMake")}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-              >
-                ایجاد نامه
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
       {isSearching && (
         <div className="w-full text-center py-4 text-gray-500">
           در حال جستجو...
@@ -290,10 +266,16 @@ export const TableFeature = () => {
           showActions={true}
           formatExportData={(item: ReceiveMessageType) => ExelData(item)}
           dateField="send_date"
-          showDateFilter={!hasSearched}
+          showDateFilter={true}
           showSearchFilter={false}
           searchFields={searchFields}
           options={tableOptions}
+          showCreateLetter={currentPath === "/letter/Outreceive-table"}
+          onCreateLetter={() => navigate("/letter/OutformMake")}
+          onSearch={handleSearch}
+          searchTerm={searchTerm}
+          onSearchTermChange={setSearchTerm}
+          isSearching={isSearching}
         />
       </div>
     </div>

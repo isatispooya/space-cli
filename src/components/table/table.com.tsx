@@ -53,6 +53,12 @@ interface TablePropsType {
   showSearchFilter?: boolean;
   searchFields?: string[];
   isChat?: boolean;
+  showCreateLetter?: boolean;
+  onCreateLetter?: () => void;
+  onSearch?: (query: string) => void;
+  searchTerm?: string;
+  onSearchTermChange?: (value: string) => void;
+  isSearching?: boolean;
 }
 
 const defaultTableOptions: Partial<TabulatorOptions> = {
@@ -159,26 +165,20 @@ const TabulatorTable: React.FC<TablePropsType> = ({
   showSearchFilter = false,
   searchFields = [],
   isChat = false,
+  showCreateLetter = false,
+  onCreateLetter,
+  onSearch,
+  searchTerm = "",
+  onSearchTermChange,
+  isSearching = false,
 }) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const tabulator = useRef<any>(null);
   const [dateRange, setDateRange] = useState<DateObject[]>([]);
   const [applyFilter, setApplyFilter] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const dataCache = useRef(data);
   const { useSearchChat } = useChat;
   const searchResult = useSearchChat(isChat ? searchTerm : "");
-
-  const handleSearchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchTerm(e.target.value);
-    },
-    []
-  );
-
-  const handleClearSearch = useCallback(() => {
-    setSearchTerm("");
-  }, []);
 
   const mappedData = useMemo(() => {
     if (!Array.isArray(data)) return [];
@@ -204,9 +204,9 @@ const TabulatorTable: React.FC<TablePropsType> = ({
     if (isChat && searchTerm && searchResult.data) {
       return searchResult.data;
     }
-    
+
     let filtered = mappedData;
-    
+
     if (
       Array.isArray(filtered) &&
       dateField &&
@@ -242,15 +242,15 @@ const TabulatorTable: React.FC<TablePropsType> = ({
 
     return filtered;
   }, [
-    mappedData, 
-    dateRangeInfo, 
-    dateField, 
-    showDateFilter, 
-    applyFilter, 
-    searchTerm, 
-    showSearchFilter, 
-    searchFields, 
-    isChat, 
+    mappedData,
+    dateRangeInfo,
+    dateField,
+    showDateFilter,
+    applyFilter,
+    searchTerm,
+    showSearchFilter,
+    searchFields,
+    isChat,
     searchResult.data,
   ]);
 
@@ -330,90 +330,103 @@ const TabulatorTable: React.FC<TablePropsType> = ({
 
   return (
     <>
-
       <TableStyles />
-      <div className="w-full bg-white shadow-md rounded-2xl relative p-4 flex flex-col mb-[60px]">
+      <div className="w-full bg-white shadow-md rounded-2xl relative p-4 flex flex-col mb-[60px] min-h-[calc(100vh-100px)]">
         {showActions && (
           <div className="mb-4 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 p-3 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-4 flex-wrap">
               <button
                 onClick={downloadExcel}
-                className="bg-gradient-to-r mt-3 from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-3 py-1.5 rounded-lg text-md font-medium flex items-center gap-1.5 transition-all duration-300"
+                className="bg-gradient-to-r mt-3 from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-all duration-300"
               >
-                <i className="fas fa-download text-md"></i>
+                <i className="fas fa-download text-sm"></i>
                 دانلود اکسل
               </button>
-
-              {showSearchFilter && (
-                <div className="flex items-center gap-1.5 mr-1.5 mt-3">
-                  <div className="flex flex-col">
-                    <label className="text-xs text-gray-500 mb-0.5">
-                      جستجو در متن :
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        placeholder="جستجو..."
-                        className="rounded-lg border border-gray-300 text-xs px-3 py-1.5 w-[180px] outline-none focus:border-blue-500 transition-all"
-                      />
-                      {searchTerm && (
-                        <button
-                          onClick={handleClearSearch}
-                          className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                        >
-                          <i className="fas fa-times text-xs"></i>
-                        </button>
-                      )}
-                    </div>
-                  </div>
+              {onSearch && (
+                <div className="flex items-center gap-2 mt-3">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      onSearchTermChange?.(e.target.value);
+                      if (!e.target.value.trim()) {
+                        onSearch("");
+                      }
+                    }}
+                    placeholder="جستجو در متن نامه..."
+                    className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-blue-500 w-[200px]"
+                  />
+                  <button
+                    onClick={() => onSearch(searchTerm)}
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-1.5"
+                  >
+                    <i className="fas fa-search text-sm"></i>
+                    جستجو
+                  </button>
                 </div>
               )}
 
               {showDateFilter && (
-                <div className="flex items-center gap-1.5 mr-1.5 mt-3">
-                  <div className="flex flex-col">
-                    <DatePicker
-                      value={dateRange}
-                      onChange={setDateRange}
-                      range
-                      calendar={persian}
-                      locale={persian_fa}
-                      format="YYYY/MM/DD"
-                      calendarPosition="bottom-right"
-                      inputClass="custom-date-picker text-xs py-1"
-                      placeholder="انتخاب تاریخ"
-                      minDate={new DateObject({ calendar: persian }).subtract(
-                        2,
-                        "years"
-                      )}
-                      maxDate={new DateObject({ calendar: persian }).add(
-                        1,
-                        "year"
-                      )}
-                      dateSeparator=" تا "
-                      style={{ width: "160px" }}
-                    />
-                  </div>
-                  <div className="flex gap-1 items-end mt-4">
+                <div className="flex items-center gap-2 mt-3 z-1000">
+                  <DatePicker
+                    value={dateRange}
+                    onChange={(newDateRange) => {
+                      setDateRange(newDateRange || []);
+                      if (
+                        !newDateRange ||
+                        (Array.isArray(newDateRange) &&
+                          newDateRange.length === 0)
+                      ) {
+                        setApplyFilter(false);
+                      }
+                    }}
+                    range
+                    calendar={persian}
+                    locale={persian_fa}
+                    format="YYYY/MM/DD"
+                    calendarPosition="bottom-right"
+                    inputClass="custom-date-picker text-sm py-1.5"
+                    placeholder="انتخاب تاریخ"
+                    minDate={new DateObject({ calendar: persian }).subtract(
+                      2,
+                      "years"
+                    )}
+                    maxDate={new DateObject({ calendar: persian }).add(
+                      1,
+                      "year"
+                    )}
+                    dateSeparator=" تا "
+                    style={{ width: "200px" }}
+                  />
+                  <div className="flex gap-2">
                     <button
                       onClick={handleApplyFilter}
                       disabled={dateRange.length < 2}
-                      className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-2 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
                     >
+                      <i className="fas fa-check text-sm"></i>
                       اعمال
                     </button>
                     <button
                       onClick={handleClearFilter}
-                      className="bg-gradient-to-r from-gray-300 to-gray-400 hover:from-gray-400 hover:to-gray-500 text-white px-2 py-1.5 rounded-lg text-xs font-medium transition-all duration-300"
+                      className="bg-gradient-to-r from-gray-300 to-gray-400 hover:from-gray-400 hover:to-gray-500 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-1.5"
                     >
+                      <i className="fas fa-times text-sm"></i>
                       حذف
                     </button>
                   </div>
                 </div>
               )}
             </div>
+
+            {showCreateLetter && (
+              <button
+                onClick={onCreateLetter}
+                className="bg-gradient-to-r  from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-all duration-300"
+              >
+                +
+              </button>
+            )}
           </div>
         )}
         <div
@@ -425,11 +438,14 @@ const TabulatorTable: React.FC<TablePropsType> = ({
             در حال جستجو...
           </div>
         )}
-        {isChat && searchTerm && !searchResult.isLoading && searchResult.data?.length === 0 && (
-          <div className="w-full text-center py-4 text-gray-500">
-            نتیجه‌ای یافت نشد
-          </div>
-        )}
+        {isChat &&
+          searchTerm &&
+          !searchResult.isLoading &&
+          searchResult.data?.length === 0 && (
+            <div className="w-full text-center py-4 text-gray-500">
+              نتیجه‌ای یافت نشد
+            </div>
+          )}
       </div>
     </>
   );
