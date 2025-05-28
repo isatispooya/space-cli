@@ -78,6 +78,22 @@ export interface InvestDocumentResType {
   status: string;
 }
 
+export interface BaseReportResType {
+  result: {
+    is_sejam: number;
+    non_deposit_stock_persentage: number;
+    std_age: number;
+    tradable: number;
+    gender: {
+      female: number;
+      male: number;
+      other: number;
+    };
+    age_avg: number;
+    deposit_stock_persentage: number;
+  };
+}
+
 export type SymbolsType = {
   symbolRes: SymbolsGetResType[];
   symbolAnalysisRes: SymbolsAnalysisResType[];
@@ -86,4 +102,5 @@ export type SymbolsType = {
   symbolCalculatorRes: SymbolCalculatorResType;
   investDocumentReq: InvestDocumentReqType;
   investDocumentRes: InvestDocumentResType;
+  baseReportRes: BaseReportResType;
 };
