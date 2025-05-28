@@ -78,6 +78,12 @@ const useSymbols = {
         SymbolsServices.postInvestDocument(data),
     });
   },
+  useGetBaseReport: (symbol: number): UseQueryResult<SymbolsType["baseReportRes"]> => {
+    return useQuery({
+      queryKey: ["base-report", symbol],
+      queryFn: () => SymbolsServices.getBaseReport(symbol),
+    });
+  },
 };
 
 export default useSymbols;

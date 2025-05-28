@@ -21,20 +21,11 @@ const SymbolsPricingCom = () => {
   const { data: symbols } = useSymbols.useGetSymbolsById(Number(id));
   const symbolCode = symbols?.[0]?.symbol;
 
-
-
   const formFields: FormFieldType[] = [
     {
       name: "days",
       type: "text" as const,
       label: "روزها",
-    },
-    {
-      name: "symbol",
-      type: "text" as const,
-      label: "نماد",
-      disabled: true,
-      value: symbolCode,
     },
     {
       name: "desiredProfit",
@@ -52,9 +43,6 @@ const SymbolsPricingCom = () => {
     },
   ];
 
-  
-
-
   const validationSchema = Yup.object().shape({
     desiredProfit: Yup.number().required("لطفا سود مورد انتظار را وارد کنید"),
     symbol: Yup.number().required("لطفا نماد را وارد کنید"),
@@ -62,6 +50,7 @@ const SymbolsPricingCom = () => {
     calculationType: Yup.string().required("لطفا نوع محاسبه را وارد کنید"),
   });
 
+  console.log(symbolCode);
   const initialValues = {
     desiredProfit: 0,
     symbol: symbolCode,

@@ -5,6 +5,7 @@ import {
   SymbolsPricingCom,
   AnalysisSymbolCom,
   InvestDocument,
+  BaseReport,
 } from "../components";
 import { useSymbols } from "../hooks";
 import { useParams } from "react-router-dom";
@@ -42,10 +43,23 @@ const SymbolsFeat = () => {
       content: <SymbolsPricingCom />,
       permission: ["view_all_introduce_symbols"],
     },
+
     {
       id: "calculation",
-      label: "بارگزاری سند سرمایه گذاری",
+      label: "بارگزاری ddn  ",
       content: <InvestDocument />,
+      permission: ["view_all_introduce_symbols"],
+    },
+    {
+      id: "investment",
+      label: "معاملات سرمایه گذاران ",
+      content: <InvestDocument />,
+      permission: ["view_all_introduce_symbols"],
+    },
+    {
+      id: "base_reports",
+      label: "گزارشات پایه",
+      content: <BaseReport />,
       permission: ["view_all_introduce_symbols"],
     },
   ];

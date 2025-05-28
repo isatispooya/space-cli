@@ -2,6 +2,19 @@ import { motion } from "framer-motion";
 import { formatNumber } from "../../../utils";
 import { SymbolsType } from "../../../types";
 
+const formatLargeNumber = (num: number) => {
+  if (num > 1e9) {
+    return (num / 1e9).toFixed(2) + "B";
+  }
+  if (num > 1e6) {
+    return (num / 1e6).toFixed(2) + "M";
+  }
+  if (num > 1e3) {
+    return (num / 1e3).toFixed(2) + "K";
+  }
+  return Math.round(num);
+};
+
 const CalculationResult = ({
   result,
 }: {
@@ -36,7 +49,6 @@ const CalculationResult = ({
       initial="hidden"
       animate="visible"
     >
-      {/* Header */}
       <motion.div
         className="flex items-center justify-between mb-4"
         variants={itemVariants}
@@ -46,8 +58,6 @@ const CalculationResult = ({
           {result.symbol}
         </div>
       </motion.div>
-
-      {/* Results Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <motion.div
           className="bg-white rounded-lg p-3 border border-gray-100"
@@ -78,9 +88,18 @@ const CalculationResult = ({
             {result.compound_return.toFixed(2)}%
           </div>
         </motion.div>
-      </div>
 
-      {/* Summary Bar */}
+        <motion.div
+          className="bg-white rounded-lg p-3 border border-gray-100"
+          variants={itemVariants}
+        >
+          <div className="text-[#5677BC] text-sm mb-1">سود در پایان دوره </div>
+          <div className="text-lg font-medium text-gray-600">
+            {formatLargeNumber(Number(result.annualized_return.toFixed(2)))}{" "}
+            ریال
+          </div>
+        </motion.div>
+      </div>
       <motion.div
         className="mt-4 bg-gray-100 rounded-lg p-3 text-gray-600"
         variants={itemVariants}
@@ -89,7 +108,10 @@ const CalculationResult = ({
         <div className="text-base text-green-700">
           سرمایه‌گذاری شما در {result.symbol} با مبلغ{" "}
           {formatNumber(result.investment)} ریال، بازده مرکب{" "}
-          <span className="font-bold"> {result.compound_return.toFixed(2)}% </span>
+          <span className="font-bold">
+            {" "}
+            {result.compound_return.toFixed(2)}%{" "}
+          </span>
           را به همراه خواهد داشت.
         </div>
       </motion.div>

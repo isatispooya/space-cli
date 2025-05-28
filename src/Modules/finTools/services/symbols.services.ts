@@ -45,6 +45,12 @@ const SymbolsServices = {
     );
     return response.data;
   },
+  getBaseReport: async (symbol: number) => {
+    const response = await api.get(
+      `/stock_affairs/stock-report-base/${symbol}/`
+    );
+    return response.data;
+  },
 };
 
 export default SymbolsServices;
