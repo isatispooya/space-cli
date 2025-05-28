@@ -331,7 +331,7 @@ const TabulatorTable: React.FC<TablePropsType> = ({
   return (
     <>
       <TableStyles />
-      <div className="w-full bg-white shadow-md rounded-2xl relative p-4 flex flex-col mb-[60px] min-h-[calc(100vh-100px)]">
+      <div className="w-full bg-white shadow-md rounded-2xl relative p-4 flex flex-col mb-[60px] min-h-[calc(60vh-60px)]">
         {showActions && (
           <div className="mb-4 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100 p-3 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-4 flex-wrap">
