@@ -10,7 +10,7 @@ import {
 import { useSymbols } from "../hooks";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { CalculationFeat } from ".";
+import { CalculationFeat, TransactionsFeat } from ".";
 
 const SymbolsFeat = () => {
   const { id } = useParams();
@@ -19,7 +19,7 @@ const SymbolsFeat = () => {
 
   const isFixedIncome = data?.[0]?.symbol_detail?.type === "fixincome";
 
-  // Create base tabs that are always shown
+
   const baseTabs = [
     {
       id: "introduction",
@@ -53,7 +53,7 @@ const SymbolsFeat = () => {
     {
       id: "investment",
       label: "معاملات سرمایه گذاران ",
-      content: <InvestDocument />,
+      content: <TransactionsFeat />,
       permission: ["view_all_introduce_symbols"],
     },
     {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useMutation,
   useQuery,
@@ -78,10 +79,18 @@ const useSymbols = {
         SymbolsServices.postInvestDocument(data),
     });
   },
-  useGetBaseReport: (symbol: number): UseQueryResult<SymbolsType["baseReportRes"]> => {
+  useGetBaseReport: (
+    symbol: number
+  ): UseQueryResult<SymbolsType["baseReportRes"]> => {
     return useQuery({
       queryKey: ["base-report", symbol],
       queryFn: () => SymbolsServices.getBaseReport(symbol),
+    });
+  },
+  useGetTransactionsDates: (symbol_id: number): UseQueryResult<any> => {
+    return useQuery({
+      queryKey: ["transactions-dates", symbol_id],
+      queryFn: () => SymbolsServices.getTransactionsDates(symbol_id),
     });
   },
 };

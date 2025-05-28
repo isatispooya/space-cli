@@ -6,6 +6,15 @@ import { server } from "@/api";
 import { FiExternalLink, FiMessageCircle } from "react-icons/fi";
 import { useConsultUser } from "@/Modules/consultation/hooks";
 import { Calculator as CalculatorIcon } from "lucide-react";
+import { useUserPermissions } from "@/Modules/permissions";
+import farasahm from "@/assets/logo/farasahm.png";
+import toast from "react-hot-toast";
+import usePostFaraSahm from "@/Modules/dashboard/hooks/useFarasahm";
+
+interface FaraSahmResponseType {
+  cookie: string;
+  [key: string]: unknown;
+}
 
 const Details = ({
   symbol,
@@ -16,6 +25,10 @@ const Details = ({
 }) => {
   const navigate = useNavigate();
   const { mutate: postSubject } = useConsultUser.usePostSubject();
+  const { checkPermission } = useUserPermissions();
+  const faraSahm = usePostFaraSahm();
+
+  const HasFarasahmPermission = checkPermission(["view_all_introduce_symbols"]);
 
   if (!symbol) {
     return <NoContent label="هیچ صندوقی یافت نشد" />;
@@ -40,6 +53,18 @@ const Details = ({
 
   const isFixedIncome = symbol.symbol_detail?.type === "fixincome";
 
+  const handleFaraSahmClick = () => {
+    faraSahm.mutate(undefined, {
+      onSuccess: (response: FaraSahmResponseType) => {
+        const faraSahmLink = `https://farasahm.fidip.ir/loginspace/${response.cookie}/`;
+        window.open(faraSahmLink, "_blank");
+      },
+      onError: (error: Error) => {
+        toast.error(`خطایی رخ داده است: ${error.message}`);
+        window.location.href = "https://farasahm.fidip.ir/";
+      },
+    });
+  };
   return (
     <motion.div
       key={symbol.id}
@@ -144,6 +169,15 @@ const Details = ({
           >
             <CalculatorIcon />
             <span>ماشین حساب سود</span>
+          </Button>
+        )}
+        {HasFarasahmPermission && (
+          <Button
+            onClick={handleFaraSahmClick}
+            className="border bg-white border-blue-500 text-blue-600 rounded-lg shadow-sm hover:bg-blue-500 hover:text-white hover:shadow-blue-100 transition-all duration-200 flex items-center justify-center gap-1 py-1.5 px-3 text-sm"
+          >
+            <CalculatorIcon />
+            <span>رفتن به فراسهم</span>
           </Button>
         )}
       </motion.div>

@@ -1,7 +1,6 @@
 import { useSymbols } from "../../../hooks";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-
 import { PieChart, Pie, Cell } from "recharts";
 
 const BaseReport = () => {

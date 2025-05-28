@@ -21,6 +21,26 @@ const ChartComponent = ({ data, labels, symbols }: ChartPropsType) => {
     if (!chartRef.current) return;
 
     const chartInstance = echarts.init(chartRef.current);
+
+    if (!data.length) {
+      chartInstance.setOption({
+        graphic: [
+          {
+            type: "text",
+            left: "center",
+            top: "middle",
+            style: {
+              text: "دیتایی موجود نیست",
+              fontSize: 16,
+              fontWeight: "bold",
+              fill: "#666",
+            },
+          },
+        ],
+      });
+      return;
+    }
+
     const option: EChartsOptionType = {
       animation: true,
       animationDuration: 1500,
