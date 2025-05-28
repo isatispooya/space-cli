@@ -176,7 +176,7 @@ const Details = ({
             onClick={handleFaraSahmClick}
             className="border bg-white border-blue-500 text-blue-600 rounded-lg shadow-sm hover:bg-blue-500 hover:text-white hover:shadow-blue-100 transition-all duration-200 flex items-center justify-center gap-1 py-1.5 px-3 text-sm"
           >
-            <CalculatorIcon />
+            <img src={farasahm} alt="farasahm" className="w-4 h-4" />
             <span>رفتن به فراسهم</span>
           </Button>
         )}
