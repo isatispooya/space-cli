@@ -21,8 +21,8 @@ const Request = () => {
     cancelled: "لغو شده",
     pending: "در حال بررسی",
   };
-  
-  const rows: RequestType[] =
+
+  const rows: RequestType[] = (
     giftsUser?.map((item: RequestType) => ({
       id: item.id,
       title: item.gift_detail.display_name,
@@ -49,7 +49,10 @@ const Request = () => {
       },
       reason: item.reason,
       sheba_number: item.user_detail.sheba_number || "",
-    })) || [];
+    })) || []
+  ).sort(
+    (a, b) => moment(b.created_at).valueOf() - moment(a.created_at).valueOf()
+  );
 
   const handleStatusChange = (id: number, newStatus: string) => {
     const updatedData: RequestUpdateType = {
@@ -245,7 +248,27 @@ const Request = () => {
       headerFilter: true,
       formatter: (cell: CellComponent) =>
         moment(cell.getValue()).format("jYYYY/jMM/jDD"),
+      sorter: (a: string, b: string) => {
+        return moment(a).unix() - moment(b).unix();
+      },
+      headerFilterFunc: (headerValue: string, rowValue: string) => {
+        if (!headerValue) return true;
+
+        const inputDate = moment(
+          headerValue,
+          ["jYYYY/jMM/jDD", "jYYYY/jM/jD"],
+          true
+        );
+
+        if (!inputDate.isValid()) return false;
+
+        const rowDate = moment(rowValue).format("jYYYY/jMM/jDD");
+
+        return rowDate === inputDate.format("jYYYY/jMM/jDD");
+      },
+      headerFilterPlaceholder: "جستجو (مثال: 1401/12/01 یا 1401/12/1)",
     },
+
     {
       title: "عملیات",
       formatter: () => {
