@@ -102,7 +102,7 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
                 options={internalOptions}
                 value={directionValue}
                 onChange={(val) =>
-                  handleDirectionChange(item.position || item.id, val)
+                  handleDirectionChange(item.position ?? item.id, val)
                 }
               />
             </Grid>

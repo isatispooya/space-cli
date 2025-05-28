@@ -59,7 +59,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     const handleDeleteTranscript = useCallback(
       (id: number) => {
         setLocalTranscript((prev) =>
-          prev.filter((item) => (item.position || item.id) !== id)
+          prev.filter((item) => (item.position ?? item.id) !== id)
         );
 
         if (onDeleteTranscript) {
@@ -222,7 +222,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           >
             <List sx={{ p: 0 }}>
               {combinedTranscripts.map((item, index) => (
-                <React.Fragment key={item.position || item.id}>
+                <React.Fragment key={item.position ?? item.id}>
                   <TranscriptListItem
                     item={item}
                     getTranscriptName={getTranscriptName}

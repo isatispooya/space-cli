@@ -162,7 +162,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         security: !isVisible,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        position: refNum,
+        position: referenceItem?.external_text ? null : refNum,
         correspondence: Number(id || 0),
       };
 
@@ -305,7 +305,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         const isExternalTranscript = refNum < 0 || referenceItem?.external_text;
 
         return {
-          position: refNum,
+          position: isExternalTranscript ? null : refNum,
           transcript_for: transcriptDirectionsTyped[refNum] || "notification",
           security: !isVisible,
           correspondence: null,
