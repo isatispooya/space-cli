@@ -34,7 +34,7 @@ const CalculationFeat = ({ data }: CalculationFeatPropsType) => {
       title: "نتیجه محاسبات",
       description: "مشاهده نتایج محاسبات سرمایه گذاری",
       status: "default" as const,
-      isLocked: !calculationResult, // Lock step 2 until we have results
+      isLocked: !calculationResult, 
     },
   ];
 

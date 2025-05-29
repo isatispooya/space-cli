@@ -51,6 +51,12 @@ const SymbolsServices = {
     );
     return response.data;
   },
+  getTransactionsDates: async (symbol_id: number) => {
+    const response = await api.get(
+      `/stock_affairs/avaliable-date-deposit-shareholders/${symbol_id}/`
+    );
+    return response.data;
+  },
 };
 
 export default SymbolsServices;

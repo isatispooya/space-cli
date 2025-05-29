@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useSymbols } from "../../../hooks";
 import { Chart, Details } from "../..";
 import { SymbolsType } from "../../../types";
-
 interface SymbolsIntroComPropsType {
   onSwitchToCalculator: () => void;
 }
@@ -17,6 +16,9 @@ const SymbolsIntroCom = ({ onSwitchToCalculator }: SymbolsIntroComPropsType) => 
   const chartData =
     symbol?.history_data?.map((item) => item.closing_price_value) || [];
   const chartLabels = symbol?.history_data?.map((item) => item.date) || [];
+
+
+
 
   
   return (
