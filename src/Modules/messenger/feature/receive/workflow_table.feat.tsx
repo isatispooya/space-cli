@@ -2,28 +2,35 @@ import { TabulatorTable } from "@/components";
 import { ColumnDefinition } from "tabulator-tables";
 import { useReceive } from "../../hooks/receive";
 import { useParams } from "react-router-dom";
+import usePosition from "@/Modules/positions/hooks/usePosition";
+
 
 const WorkflowTable = () => {
   const { id } = useParams();
   const { data } = useReceive.useGetReceiveWorkflow(id as string);
+  const { data: allPositions } = usePosition.useGetAll();
 
   const columns = (): ColumnDefinition[] => [
     {
-      field: "reference_details",
+      field: "from_reference",
       title: "از",
       headerFilter: true,
       formatter: (cell) => {
-        const data = cell.getValue();
-        return `${data.user.first_name} ${data.user.last_name} - ${data.name}`;
+        const positionId = cell.getValue();
+        const position = allPositions?.find(pos => pos.id === positionId);
+        if (!position || !position.user || !position.company_detail) return "-";
+        return ` ${position.user.first_name} ${position.user.last_name}-${position.name}-${position.company_detail.name}`;
       },
     },
     {
-      field: "reference_details",
+      field: "reference",
       title: "به",
       headerFilter: true,
       formatter: (cell) => {
-        const data = cell.getValue();
-        return `${data.user.first_name} ${data.user.last_name} - ${data.name}`;
+        const positionId = cell.getValue();
+        const position = allPositions?.find(pos => pos.id === positionId);
+        if (!position || !position.user || !position.company_detail) return "-";
+        return ` ${position.user.first_name} ${position.user.last_name}-${position.name}-${position.company_detail.name}`;
       },
     },
     {
