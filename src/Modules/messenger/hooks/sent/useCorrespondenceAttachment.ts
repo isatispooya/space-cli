@@ -12,8 +12,6 @@ import {
 import { toast } from "react-hot-toast";
 import { CorrespondenceAttachmentsType } from "../../types/sent/attachment.type";
 import { AttachmentResponseType } from "../../types";
-import { Toast } from "@/components";
-import { Check, X } from "lucide-react";
 
 const useCorrespondenceAttachment = {
   useGetAttache: (): UseQueryResult<CorrespondenceAttachmentsType> => {
