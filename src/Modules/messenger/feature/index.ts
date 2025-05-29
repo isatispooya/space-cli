@@ -4,3 +4,4 @@ export { default as TableFeature } from "./table.feat";
 
 export * from "./sent";
 export * from "./make.form";
+export * from "./receive";
