@@ -121,10 +121,10 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       is_internal,
     ]);
     const internalTranscripts = localTranscript.filter(
-      (t) => !t.isExternal && !t.external_text && t.id >= 0
+      (t) => !t.isExternal && !t.user_external && t.id >= 0
     );
     const externalTranscripts = localTranscript.filter(
-      (t) => t.isExternal || t.external_text || t.id < 0
+      (t) => t.isExternal || t.user_external || t.id < 0
     );
 
     const combinedTranscripts = [

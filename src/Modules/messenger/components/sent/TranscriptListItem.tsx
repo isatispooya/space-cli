@@ -31,12 +31,12 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
     }) => {
       const [visibility, setVisibility] = useState(!item.security);
       const isExternalTranscript =
-        item.isExternal || item.external_text || item.id < 0;
+        item.isExternal || item.user_external || item.id < 0;
       const [externalTexts, setExternalTexts] = useState<string[]>(
-        isExternalTranscript && (item.external_text || item.name)
-          ? Array.isArray(item.external_text)
-            ? item.external_text
-            : [item.external_text || item.name || ""]
+        isExternalTranscript && (item.user_external || item.name)
+          ? Array.isArray(item.user_external)
+            ? item.user_external
+            : [item.user_external || item.name || ""]
           : [""]
       );
 
@@ -45,14 +45,14 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
       }, [item.security]);
 
       useEffect(() => {
-        if (isExternalTranscript && item.external_text) {
+        if (isExternalTranscript && item.user_external) {
           setExternalTexts(
-            Array.isArray(item.external_text)
-              ? item.external_text
-              : [item.external_text]
+            Array.isArray(item.user_external)
+              ? item.user_external
+              : [item.user_external]
           );
         }
-      }, [item.external_text, isExternalTranscript]);
+      }, [item.user_external, isExternalTranscript]);
 
       const handleVisibilityChange = (
         event: React.ChangeEvent<HTMLInputElement>
