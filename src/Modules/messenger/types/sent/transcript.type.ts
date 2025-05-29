@@ -9,7 +9,7 @@ export interface ITranscriptResponseType {
   updated_at: string;
   position: number | null;
   correspondence: number;
-  external_text?: string;
+  user_external?: string;
   name?: string;
   isExternal?: boolean;
 }
@@ -92,7 +92,7 @@ export interface TranscriptDataType {
   security: boolean;
   position: number | null;
   correspondence: number | null;
-  external_text?: string;
+  user_external?: string;
 }
 
 export interface TranscriptAPIDataType {
@@ -101,7 +101,7 @@ export interface TranscriptAPIDataType {
   security: boolean;
   position: number | null;
   correspondence: number | null;
-  external_text?: string;
+  user_external?: string;
 }
 
 export interface TranscriptListPropsType {

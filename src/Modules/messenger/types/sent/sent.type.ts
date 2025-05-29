@@ -17,7 +17,7 @@ export interface ReferenceDataType {
   id: number;
   enabled: boolean;
   transcript_for: string;
-  external_text?: string;
+  user_external?: string;
 }
 
 export interface APIFormDataType {

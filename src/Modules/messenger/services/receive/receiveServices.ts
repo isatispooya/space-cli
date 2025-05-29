@@ -14,6 +14,10 @@ const receiveSer = {
     const response = await api.post("/correspondence/reference/", data);
     return response.data;
   },
+  getReceiveWorkflow: async (id: string) => {
+    const response = await api.get(`/correspondence/reference/${id}/`);
+    return response.data;
+  },
 };
 
 export default receiveSer;

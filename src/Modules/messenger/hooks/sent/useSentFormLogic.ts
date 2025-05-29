@@ -162,14 +162,14 @@ export const useSentFormLogic = (id: string | undefined) => {
         security: !isVisible,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        position: referenceItem?.external_text ? null : refNum,
+        position: referenceItem?.user_external ? null : refNum,
         correspondence: Number(id || 0),
       };
 
-      if (refNum < 0 || referenceItem?.external_text) {
+      if (refNum < 0 || referenceItem?.user_external) {
         return {
           ...baseItem,
-          external_text: referenceItem?.external_text,
+          user_external: referenceItem?.user_external,
         };
       }
 
@@ -226,7 +226,7 @@ export const useSentFormLogic = (id: string | undefined) => {
               security: t.security ?? false,
               position: t.position,
               correspondence: t.correspondence,
-              external_text: t.user_external || undefined,
+              user_external: t.user_external || undefined,
             }))
           : [],
         published: data.published ?? false,
@@ -235,7 +235,7 @@ export const useSentFormLogic = (id: string | undefined) => {
               id: t.position,
               enabled: !t.security,
               transcript_for: t.transcript_for || "notification",
-              external_text: t.user_external,
+              user_external: t.user_external,
             }))
           : [],
       };
@@ -302,7 +302,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         );
         const isVisible = referenceItem?.enabled !== false;
 
-        const isExternalTranscript = refNum < 0 || referenceItem?.external_text;
+        const isExternalTranscript = refNum < 0 || referenceItem?.user_external;
 
         return {
           position: isExternalTranscript ? null : refNum,
@@ -310,8 +310,8 @@ export const useSentFormLogic = (id: string | undefined) => {
           security: !isVisible,
           correspondence: null,
           read_at: new Date().toISOString(),
-          external_text: isExternalTranscript
-            ? referenceItem?.external_text
+          user_external: isExternalTranscript
+            ? referenceItem?.user_external
             : undefined,
         };
       }) || [];

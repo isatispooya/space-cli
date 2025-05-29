@@ -257,14 +257,14 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
           id: externalId,
           enabled: true,
           transcript_for: "notification",
-          external_text: externalTranscriptText,
+          user_external: externalTranscriptText,
         };
 
         const newTranscript = {
           ...defaultTranscript,
           position: null,
           transcript_for: "notification",
-          external_text: externalTranscriptText,
+          user_external: externalTranscriptText,
         };
 
         return {

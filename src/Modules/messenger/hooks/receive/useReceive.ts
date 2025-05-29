@@ -36,6 +36,12 @@ const useReceive = {
       mutationFn: receiveSer.postRefferal,
     });
   },
+  useGetReceiveWorkflow: (id: string): UseQueryResult<any> => {
+    return useQuery({
+      queryKey: ["receiveWorkflow", id],
+      queryFn: () => receiveSer.getReceiveWorkflow(id),
+    });
+  },
 };
 
 export default useReceive;

@@ -34,6 +34,12 @@ const ReceiveRefferalPage = lazy(() =>
   }))
 );
 
+const ReceiveWorkflowPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.ReceiveTablePage,
+  }))
+);
+
 const MessengerRoutes = [
   {
     path: "/messenger",
@@ -79,7 +85,11 @@ const MessengerRoutes = [
         path: "draft-form/:id",
         element: <MakeFormPage />,
       },
-    
+      {
+        path: "receive-workflow/:id",
+        element: <ReceiveWorkflowPage />,
+      },
+
       {
         path: "receive-table",
         element: <TablePage />,
