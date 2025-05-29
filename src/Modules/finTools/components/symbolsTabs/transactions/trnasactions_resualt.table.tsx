@@ -15,7 +15,7 @@ interface StockChangeType {
 }
 
 const TransactionsResult = ({ symbolID }: { symbolID: number }) => {
-  const { dateRange, setDateRange } = symbolsStore();
+  const { dateRange } = symbolsStore();
 
   console.log("Date Range:", dateRange);
   console.log("Symbol ID:", symbolID);

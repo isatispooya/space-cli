@@ -1,4 +1,6 @@
-export interface SymbolsStoreeType {
+import { DateRangeType } from ".";
+
+export interface SymbolsStoreType {
   formValues: {
     desiredProfit: number;
     symbol: number;
@@ -12,6 +14,10 @@ export interface SymbolsStoreeType {
   setCurrentStep: (currentStep: number) => void;
   setIsFormSubmitted: (isFormSubmitted: boolean) => void;
   setIsSimple: (isSimple: boolean) => void;
+  transactionsStep: number;
+  setTransactionsStep: (step: number) => void;
+  calculationResult: unknown;
+  setCalculationResult: (result: unknown) => void;
+  dateRange: DateRangeType;
+  setDateRange: (range: DateRangeType) => void;
 }
-
-export type SymbolsStoreType = SymbolsStoreeType;

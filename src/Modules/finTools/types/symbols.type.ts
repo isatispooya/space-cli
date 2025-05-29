@@ -111,28 +111,7 @@ export interface DateRangeType {
   endId: number | null;
 }
 
-export interface SymbolsStoreType {
-  formValues: {
-    desiredProfit: number;
-    symbol: number;
-    days: number;
-    calculationType: string;
-  };
-  setFormValues: (formValues: SymbolsStoreType["formValues"]) => void;
-  currentStep: number;
-  setCurrentStep: (currentStep: number) => void;
-  isFormSubmitted: boolean;
-  setIsFormSubmitted: (isFormSubmitted: boolean) => void;
-  isSimple: boolean;
-  setIsSimple: (isSimple: boolean) => void;
-  // New types for transactions
-  transactionsStep: number;
-  setTransactionsStep: (step: number) => void;
-  calculationResult: unknown;
-  setCalculationResult: (result: unknown) => void;
-  dateRange: DateRangeType;
-  setDateRange: (range: DateRangeType) => void;
-}
+
 
 export type SymbolsType = {
   symbolRes: SymbolsGetResType[];
