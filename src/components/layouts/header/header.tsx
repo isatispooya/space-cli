@@ -13,7 +13,7 @@ import { TbSeeding } from "react-icons/tb";
 import { LuCoins } from "react-icons/lu";
 import { CiStreamOn } from "react-icons/ci";
 import { useLiveStream } from "../../../Modules/live/hooks";
-
+import { Home } from "lucide-react";
 
 initTWE({ Collapse, Ripple });
 
@@ -21,8 +21,6 @@ const Header = () => {
   const { toggleSidebar } = useSidebarStore();
 
   const { data: liveStream } = useLiveStream.useLiveStream();
-
-
 
   const ShowLiveStream = liveStream?.status;
 
@@ -69,20 +67,20 @@ const Header = () => {
         className="relative shadow-2xl flex w-full items-center justify-between bg-white py-2 text-white lg:flex-wrap lg:justify-start lg:py-4"
         data-twe-navbar-ref
       >
-        <div className="flex w-full flex-wrap items-center justify-between px-3">
+        <div className="flex w-full flex-wrap items-center justify-between px-2 sm:px-3">
           <div className="flex items-center">
-            <div className="max-w-xs h-14 flex items-center">
-              <div className="flex bg- h-full items-center justify-center  ">
+            <div className="h-14 flex items-center">
+              <div className="flex h-full items-center justify-center">
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={toggleSidebar}
-                  className="text-4xl tour-dashboard-menu lg:text-4xl md:text-3xl xs:text-2xl cursor-pointer text-blue-900 hover:text-blue-900 transition-colors duration-200"
+                  className="text-2xl sm:text-3xl lg:text-4xl cursor-pointer text-blue-900 hover:text-blue-900 transition-colors duration-200"
                 >
                   <FiMenu />
                 </motion.div>
               </div>
-              <div className="max-w-xs h-14 flex items-center">
+              <div className="h-14 flex items-center">
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -90,10 +88,9 @@ const Header = () => {
                   className="flex items-center cursor-pointer"
                   onClick={() => navigate("/")}
                 >
-                  
                   <img
                     src={maliTextLogo}
-                    className="w-40 hidden lg:block mr-2"
+                    className="w-32 sm:w-36 lg:w-40 hidden sm:block mr-2"
                     alt="logo text"
                   />
                 </motion.div>
@@ -105,23 +102,34 @@ const Header = () => {
             id="navbarSupportedContentY"
             data-twe-collapse-item
           ></div>
-          <div className="flex items-center justify-start relative xs:mr-1 lg:mx-4">
+          <div className="flex items-center justify-start relative xs:mr-1 lg:mx-4 gap-2 sm:gap-4">
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              <Tooltip title="خانه" placement="bottom" arrow>
+                <Home className="text-blue-900 text-xl sm:text-2xl" />
+              </Tooltip>
+            </motion.div>
+
             {ShowLiveStream && (
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="mr-10  cursor-pointer flex items-center"
+                className="cursor-pointer flex items-center"
                 animate={{ rotate: [0, 10, -10, 0] }}
                 onClick={() => navigate("/stream")}
               >
-                <CiStreamOn className="text-red-500 text-3xl cursor-pointer" />
-                <span className="text-blue-900 text-sm font-bold">
+                <CiStreamOn className="text-red-500 text-2xl sm:text-3xl cursor-pointer" />
+                <span className="text-blue-900 text-xs sm:text-sm font-bold mr-2 hidden sm:inline">
                   {liveStream?.title}
                 </span>
               </motion.div>
             )}
 
-            <div className="mr-5">
+            <div className="relative">
               {showNotifications && (
                 <NotificationComponent ref={notificationRef} />
               )}
@@ -132,10 +140,10 @@ const Header = () => {
                   className="flex items-center text-white mb-1"
                   onClick={() => navigate("/points/privileges")}
                 >
-                  <span className="text-blue-900 text-sm font-bold">
+                  <span className="text-blue-900 text-xs sm:text-sm font-bold">
                     {formatNumber(remainPoints?.point_1)}
                   </span>
-                  <LuCoins className="text-yellow-500 text-[25px] font-bold  ml-2" />
+                  <LuCoins className="text-yellow-500 text-xl sm:text-[25px] font-bold ml-1 sm:ml-2" />
                 </span>
               </Tooltip>
 
@@ -144,10 +152,10 @@ const Header = () => {
                   className="flex items-center text-white"
                   onClick={() => navigate("/points/privileges")}
                 >
-                  <span className="text-blue-900 text-sm font-bold">
+                  <span className="text-blue-900 text-xs sm:text-sm font-bold">
                     {formatNumber(remainPoints?.point_2)}
                   </span>
-                  <TbSeeding className="text-green-500 text-[25px] font-bold ml-2" />
+                  <TbSeeding className="text-green-500 text-xl sm:text-[25px] font-bold ml-1 sm:ml-2" />
                 </span>
               </Tooltip>
             </div>

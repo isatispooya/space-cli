@@ -53,7 +53,7 @@ const SentDetail = () => {
   const receivedData = data as unknown as SenderType;
 
   const userOption = receivedData.transcript_details?.map(
-    (item: TranscriptDetailsType) => item.position.toString()
+    (item: TranscriptDetailsType) => item.position?.toString() || ""
   );
 
   const matchedUsers: MatchedUserType[] =
