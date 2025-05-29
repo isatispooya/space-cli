@@ -19,7 +19,6 @@ const SymbolsFeat = () => {
 
   const isFixedIncome = data?.[0]?.symbol_detail?.type === "fixincome";
 
-
   const baseTabs = [
     {
       id: "introduction",
@@ -30,18 +29,6 @@ const SymbolsFeat = () => {
         />
       ),
       permission: ["allow_any"],
-    },
-    {
-      id: "competitors",
-      label: "تحلیل رقبا",
-      content: <AnalysisSymbolCom />,
-      permission: ["view_all_introduce_symbols"],
-    },
-    {
-      id: "pricing",
-      label: "قیمت‌گذاری",
-      content: <SymbolsPricingCom />,
-      permission: ["view_all_introduce_symbols"],
     },
 
     {
@@ -72,6 +59,18 @@ const SymbolsFeat = () => {
           label: "ماشین حساب سود",
           content: <CalculationFeat data={data} />,
           permission: ["allow_any"],
+        },
+        {
+          id: "competitors",
+          label: "تحلیل رقبا",
+          content: <AnalysisSymbolCom />,
+          permission: ["view_all_introduce_symbols"],
+        },
+        {
+          id: "pricing",
+          label: "قیمت‌گذاری",
+          content: <SymbolsPricingCom />,
+          permission: ["view_all_introduce_symbols"],
         },
       ]
     : baseTabs;

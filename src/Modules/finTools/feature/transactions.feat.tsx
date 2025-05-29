@@ -1,11 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+
 import { TransactionsDate, TransactionsResult } from "../components";
 import { Stepper } from "@/components";
+import { useParams } from "react-router-dom";
+import { useSymbols } from "../hooks";
+import symbolsStore from "../store/symbols.store";
 
 const TransactionsFeat = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [calculationResult] = useState<any | null>(null);
+  const { transactionsStep, setTransactionsStep, calculationResult } =
+    symbolsStore();
+  const { id } = useParams();
+
+  const { data: symbol } = useSymbols.useGetSymbolsById(Number(id));
+  const symbolID = symbol?.[0]?.symbol;
+  const { data: transactionsData } = useSymbols.useGetTransactionsDates(
+    Number(symbolID)
+  );
+
+  const dates = transactionsData?.dates || [];
+
   const steps = [
     {
       title: "تاریخ",
@@ -19,23 +31,24 @@ const TransactionsFeat = () => {
   ];
 
   const renderStepContent = () => {
-    switch (currentStep) {
+    switch (transactionsStep) {
       case 0:
-        return <TransactionsDate />;
+        return <TransactionsDate dates={dates} />;
       case 1:
-        return <TransactionsResult />;
+        return <TransactionsResult symbolID={Number(symbolID)} />;
       default:
         return null;
     }
   };
+
   return (
     <div>
       <Stepper
         steps={steps}
-        currentStep={currentStep}
+        currentStep={transactionsStep}
         onStepClick={(step) => {
           if (step === 0 || (step === 1 && calculationResult)) {
-            setCurrentStep(step);
+            setTransactionsStep(step);
           }
         }}
         size="medium"

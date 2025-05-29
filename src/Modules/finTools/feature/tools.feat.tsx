@@ -4,15 +4,14 @@ import { SymbolsType } from "../types";
 import useSymbols from "../hooks/useSymbols";
 import { FaChartLine } from "react-icons/fa";
 import useConsultingReserveTurnUser from "@/Modules/consultation/hooks/admin/useConsultingReserveTurnUser";
+import { MdSupportAgent } from "react-icons/md";
 type WaveColorType = "blue" | "purple" | "green" | "orange" | "red" | "dark";
-
 
 export const ToolsFeat: React.FC = () => {
   const { data: symbols } = useSymbols.useGetSymbols();
 
   const { data } =
     useConsultingReserveTurnUser.useGetConsultingReserveTurnUser();
-
 
   if (data) {
     console.log(data);
@@ -24,7 +23,7 @@ export const ToolsFeat: React.FC = () => {
   };
 
   const getCardColor = (description: string): WaveColorType => {
-    if (!description) return "purple"; 
+    if (!description) return "purple";
     if (description.includes("درآمد ثابت")) return "green";
     if (description.includes("در سهام")) return "blue";
     return "purple";
@@ -59,17 +58,62 @@ export const ToolsFeat: React.FC = () => {
     }
   };
 
-
+  const staticCards = [
+    {
+      id: "consulting",
+      title: "مشاوره مالی",
+      icon: <MdSupportAgent />,
+      iconColor: "#7e22ce",
+      waveColor: "purple" as WaveColorType,
+      buttonText: "درخواست",
+      buttonLink: "/consultation/request",
+      isExternalLink: false,
+      content: (
+        <div className="flex flex-col">
+          <div className="flex flex-col items-center justify-center h-full">
+            <p className="text-6xl font-bold text-[#7e22ce] font-iranSans mt-12">
+              {data?.length || 0}
+              <span className="text-base text-[#7e22ce] font-iranSans mr-1">
+                عدد
+              </span>
+            </p>
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="min-h-screen w-full p-2 md:p-4">
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 max-w-10xl mx-auto">
+        {staticCards.map((card, index) => (
+          <motion.div
+            key={card.id}
+            initial="hidden"
+            animate="visible"
+            variants={itemVariants}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+            className="h-[26.5vh]"
+          >
+            <DashboardCard
+              title={card.title}
+              icon={card.icon}
+              iconColor={card.iconColor}
+              waveColor={card.waveColor}
+              buttonText={card.buttonText}
+              buttonLink={card.buttonLink}
+              isExternalLink={card.isExternalLink || false}
+              customColors={getButtonColors(card.waveColor)}
+              content={card.content}  
+            />
+          </motion.div>
+        ))}
         {symbols?.map((symbol: SymbolsType["symbolRes"][0], index: number) => {
-          if (!symbol) return null; 
+          if (!symbol) return null;
 
           const waveColor = getCardColor(symbol.description);
-          const lastChange = symbol.last_change ?? 0; 
-          const lastPrice = symbol.last_price ?? 0; 
+          const lastChange = symbol.last_change ?? 0;
+          const lastPrice = symbol.last_price ?? 0;
 
           return (
             <motion.div

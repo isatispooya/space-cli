@@ -57,6 +57,16 @@ const SymbolsServices = {
     );
     return response.data;
   },
+  getTransactions: async (
+    symbol_id: number,
+    fromDate: number,
+    toDate: number
+  ) => {
+    const response = await api.get(
+      `/stock_affairs/trade-in-period-deposit-shareholders/${symbol_id}/${fromDate}/${toDate}/`
+    );
+    return response.data;
+  },
 };
 
 export default SymbolsServices;

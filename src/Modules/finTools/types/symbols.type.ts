@@ -94,6 +94,46 @@ export interface BaseReportResType {
   };
 }
 
+export interface TransactionsDatesResType {
+  dates: {
+    created_at: string | null;
+    date: string | null;
+    id: number | null;
+    is_active: boolean | null;
+    open_market: boolean | null;
+    shamsi_date: string | null;
+    updated_at: string | null;
+  }[];
+}
+
+export interface DateRangeType {
+  startId: number | null;
+  endId: number | null;
+}
+
+export interface SymbolsStoreType {
+  formValues: {
+    desiredProfit: number;
+    symbol: number;
+    days: number;
+    calculationType: string;
+  };
+  setFormValues: (formValues: SymbolsStoreType["formValues"]) => void;
+  currentStep: number;
+  setCurrentStep: (currentStep: number) => void;
+  isFormSubmitted: boolean;
+  setIsFormSubmitted: (isFormSubmitted: boolean) => void;
+  isSimple: boolean;
+  setIsSimple: (isSimple: boolean) => void;
+  // New types for transactions
+  transactionsStep: number;
+  setTransactionsStep: (step: number) => void;
+  calculationResult: unknown;
+  setCalculationResult: (result: unknown) => void;
+  dateRange: DateRangeType;
+  setDateRange: (range: DateRangeType) => void;
+}
+
 export type SymbolsType = {
   symbolRes: SymbolsGetResType[];
   symbolAnalysisRes: SymbolsAnalysisResType[];
@@ -103,4 +143,5 @@ export type SymbolsType = {
   investDocumentReq: InvestDocumentReqType;
   investDocumentRes: InvestDocumentResType;
   baseReportRes: BaseReportResType;
+  transactionsDatesRes: TransactionsDatesResType;
 };

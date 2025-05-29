@@ -16,6 +16,16 @@ const symbolsStore = create<SymbolsStoreType>((set) => ({
   setIsFormSubmitted: (isFormSubmitted: boolean) => set({ isFormSubmitted }),
   isSimple: true,
   setIsSimple: (isSimple: boolean) => set({ isSimple }),
+  transactionsStep: 0,
+  setTransactionsStep: (step: number) => set({ transactionsStep: step }),
+  calculationResult: null,
+  setCalculationResult: (result: unknown) => set({ calculationResult: result }),
+  dateRange: {
+    startId: null,
+    endId: null,
+  },
+  setDateRange: (range: { startId: number | null; endId: number | null }) =>
+    set({ dateRange: range }),
 }));
 
 export default symbolsStore;

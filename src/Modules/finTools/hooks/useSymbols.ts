@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useMutation,
   useQuery,
@@ -87,10 +86,23 @@ const useSymbols = {
       queryFn: () => SymbolsServices.getBaseReport(symbol),
     });
   },
-  useGetTransactionsDates: (symbol_id: number): UseQueryResult<any> => {
+  useGetTransactionsDates: (
+    symbol_id: number
+  ): UseQueryResult<SymbolsType["transactionsDatesRes"]> => {
     return useQuery({
       queryKey: ["transactions-dates", symbol_id],
       queryFn: () => SymbolsServices.getTransactionsDates(symbol_id),
+    });
+  },
+  useGetTransactions: (
+    symbol_id: number,
+    fromDate: number,
+    toDate: number
+  ): UseQueryResult<any> => {
+    return useQuery({
+      queryKey: ["transactions", symbol_id, fromDate, toDate],
+      queryFn: () =>
+        SymbolsServices.getTransactions(symbol_id, fromDate, toDate),
     });
   },
 };
