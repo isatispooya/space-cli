@@ -80,12 +80,14 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
               onClick: () =>
                 (window.location.href = `/letter/receive-refferal/${rowData.id}`),
             },
-            {
-              label: "گردش کار",
-              icon: "📤",
-              onClick: () =>
-                (window.location.href = `/letter/receive-workflow/${rowData.id}`),
-            },
+            ...(rowData.reference ? [
+              {
+                label: "گردش کار",
+                icon: "📤",
+                onClick: () =>
+                  (window.location.href = `/letter/receive-workflow/${rowData.id}`),
+              }
+            ] : []),
           ]),
     ];
 
