@@ -7,7 +7,6 @@ import { FiExternalLink, FiMessageCircle } from "react-icons/fi";
 import { useConsultUser } from "@/Modules/consultation/hooks";
 import { Calculator as CalculatorIcon } from "lucide-react";
 import { useUserPermissions } from "@/Modules/permissions";
-import farasahm from "@/assets/logo/farasahm.png";
 import toast from "react-hot-toast";
 import usePostFaraSahm from "@/Modules/dashboard/hooks/useFarasahm";
 

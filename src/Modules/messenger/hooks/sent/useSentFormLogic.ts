@@ -56,7 +56,7 @@ export const useSentFormLogic = (id: string | undefined) => {
     useCorrespondenceAttachment.useUpdateCorrespondence();
 
   const location = useLocation();
-  const isInternal = location.pathname === "/letter/Outform";
+  const isInternal = location.pathname !== "/letter/Outform";
 
   const resetForm = () => {
     setFormData({
@@ -66,8 +66,9 @@ export const useSentFormLogic = (id: string | undefined) => {
       attachments: [],
       receiver: [],
       sender: 0,
+      sender_external: "",
       receiver_internal: 0,
-      receiver_external: "",
+      receiver_external: null,
       is_internal: isInternal ? false : true,
       postcript: "",
       seal: false,
@@ -148,6 +149,20 @@ export const useSentFormLogic = (id: string | undefined) => {
   >;
 
   const transcriptItems = useMemo<ITranscriptResponseType[]>(() => {
+    if (id && data?.transcript_details) {
+      const currentTimestamp = new Date().toISOString();
+      return data.transcript_details.map((detail) => ({
+        id: detail.position,
+        read_at: detail.read_at,
+        transcript_for: detail.transcript_for || "notification",
+        security: detail.security ?? false,
+        position: detail.position,
+        correspondence: detail.correspondence,
+        user_external: detail.user_external || undefined,
+        created_at: currentTimestamp,
+        updated_at: currentTimestamp,
+      }));
+    }
     return (formData.reference || []).map((ref) => {
       const refNum = Number(ref);
       const referenceItem = formData.referenceData?.find(
@@ -180,6 +195,7 @@ export const useSentFormLogic = (id: string | undefined) => {
     formData.referenceData,
     transcriptDirectionsTyped,
     id,
+    data?.transcript_details,
   ]);
 
   useEffect(() => {
@@ -204,10 +220,13 @@ export const useSentFormLogic = (id: string | undefined) => {
         attachments: attachmentIds,
         receiver: Array.isArray(data.receiver) ? data.receiver : [],
         sender: data.sender_details?.id || 0,
+        sender_external: data.sender_external,
         owner: data.owner_details?.id || 0,
         receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
-          data.receiver_external_details?.name || data.receiver_external || "",
+          data.receiver_external_details?.name ||
+          data.receiver_external ||
+          null,
         is_internal: data.is_internal ?? false,
         postcript: data.postcript || "",
         seal: data.seal ?? false,
@@ -266,8 +285,9 @@ export const useSentFormLogic = (id: string | undefined) => {
         attachments: [],
         receiver: [],
         sender: undefined as unknown as number,
+        sender_external: undefined as unknown as string,
         receiver_internal: undefined as unknown as number,
-        receiver_external: "",
+        receiver_external: null,
         is_internal: isInternal ? false : true,
         postcript: "",
         seal: false,
@@ -294,34 +314,60 @@ export const useSentFormLogic = (id: string | undefined) => {
 
     const { ...restFormData } = formData;
 
+    const existingTranscripts = data?.transcript_details || [];
+
+    const existingTranscriptMap = new Map(
+      existingTranscripts.map((t) => [t.position, t])
+    );
+
     const apiTranscripts =
-      formData.reference?.map((ref) => {
-        const refNum = Number(ref);
-        const referenceItem = formData.referenceData?.find(
-          (item) => item.id === refNum
-        );
-        const isVisible = referenceItem?.enabled !== false;
+      formData.reference
+        ?.map((ref) => {
+          const refNum = Number(ref);
+          const referenceItem = formData.referenceData?.find(
+            (item) => item.id === refNum
+          );
+          const isVisible = referenceItem?.enabled !== false;
+          const isExternalTranscript =
+            refNum < 0 || referenceItem?.user_external;
 
-        const isExternalTranscript = refNum < 0 || referenceItem?.user_external;
+          const existingTranscript = existingTranscriptMap.get(refNum);
 
-        return {
-          position: isExternalTranscript ? null : refNum,
-          transcript_for: transcriptDirectionsTyped[refNum] || "notification",
-          security: !isVisible,
-          correspondence: null,
-          read_at: new Date().toISOString(),
-          user_external: isExternalTranscript
-            ? referenceItem?.user_external
-            : undefined,
-        };
-      }) || [];
+          if (
+            existingTranscript &&
+            existingTranscript.transcript_for ===
+              (transcriptDirectionsTyped[refNum] || "notification") &&
+            existingTranscript.security === !isVisible &&
+            existingTranscript.user_external ===
+              (isExternalTranscript ? referenceItem?.user_external : undefined)
+          ) {
+            return null;
+          }
+
+          // Return new or modified transcript
+          return {
+            position: isExternalTranscript ? null : refNum,
+            transcript_for: transcriptDirectionsTyped[refNum] || "notification",
+            security: !isVisible,
+            correspondence: Number(id || 0),
+            read_at: new Date().toISOString(),
+            user_external: isExternalTranscript
+              ? referenceItem?.user_external
+              : undefined,
+          } as TranscriptDetailType;
+        })
+        .filter((item): item is TranscriptDetailType => item !== null) || [];
 
     const finalData: APIFormDataType = {
       ...restFormData,
       attachments: restFormData.attachments.map(Number),
       receiver_internal: Number(restFormData.receiver_internal) || null,
+      receiver_external: restFormData.receiver_external || null,
       transcript: apiTranscripts,
       owner: Number(restFormData.owner) || 0,
+      is_internal: location.pathname !== "/letter/Outform",
+      sender:
+        location.pathname === "/letter/Outform" ? null : restFormData.sender,
     };
 
     if (id) {
@@ -334,7 +380,7 @@ export const useSentFormLogic = (id: string | undefined) => {
   const handleReceiverTypeChange = (type: "internal" | "external") => {
     handleChange("is_internal", type === "internal");
     if (type === "internal") {
-      handleChange("receiver_external", "");
+      handleChange("receiver_external", null);
     } else {
       handleChange("receiver_internal", "");
     }

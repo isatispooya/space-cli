@@ -84,16 +84,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
         });
 
         setSelectedTranscript(positions);
-
-        positions.forEach((pos: string) => {
-          const numPos = Number(pos);
-          if (!localTranscript.some((t) => t.position === numPos)) {
-            const detail = data.transcript?.find((t) => t.position === numPos);
-            if (detail) {
-              handleAddTranscript();
-            }
-          }
-        });
       }
     }, [data?.transcript]);
 
@@ -150,7 +140,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
             <div style={{ display: "flex", gap: 10 }}>
               <MultiSelect
                 label="انتخاب گیرندگان رونوشت"
-                selectedValues={selectedTranscript.map(String)}
+                selectedValues={[]}
                 onChange={(value) => {
                   const filteredValues = value.filter((v) => v !== "");
                   setSelectedTranscript(filteredValues);

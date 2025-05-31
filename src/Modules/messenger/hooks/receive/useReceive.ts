@@ -7,13 +7,12 @@ import {
 import { receiveSer } from "../../services/receive";
 import { 
  
-  CorrespondenceReceiverType, 
   ReferralReqType 
 } from "../../types/receive/ReceiveMessage.type";
 import { SenderType } from "../../types/sent/sent.type";
 
 const useReceive = {
-  useGet: (): UseQueryResult<CorrespondenceReceiverType> => {
+  useGet: (): UseQueryResult<ReferralReqType> => {
     return useQuery({
       queryKey: ["receive"],
       queryFn: receiveSer.getReceive,

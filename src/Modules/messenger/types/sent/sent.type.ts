@@ -26,9 +26,9 @@ export interface APIFormDataType {
   description: string;
   attachments: number[];
   receiver: number[];
-  sender: number;
+  sender: number | null;
   receiver_internal: number | null;
-  receiver_external: string;
+  receiver_external: string | null;
   receiver_internal_details?: ReceiverInternalDetailsType;
   sender_details?: SenderDetailsType;
   is_internal: boolean;
@@ -46,7 +46,7 @@ export interface APIFormDataType {
   transcript: TranscriptAPIDataType[];
   published: boolean;
   owner: number;
-
+  sender_external: string;
 }
 
 export type FormDataType = {
@@ -55,9 +55,9 @@ export type FormDataType = {
   description: string;
   attachments: number[];
   receiver: number[];
-  sender: number;
+  sender: number | null;
   receiver_internal: number | null;
-  receiver_external: string;
+  receiver_external: string | null;
   is_internal: boolean;
   postcript: string;
   seal: boolean;
@@ -75,9 +75,12 @@ export type FormDataType = {
   published: boolean;
   owner: 0;
   transcript_details: TranscriptDetailType[];
+  sender_external: string;
+
 };
 
 export interface SenderDetailsType {
+  id: number;
   user: BaseUserType;
   name?: string;
   company_detail?: {

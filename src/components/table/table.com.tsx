@@ -170,7 +170,6 @@ const TabulatorTable: React.FC<TablePropsType> = ({
   onSearch,
   searchTerm = "",
   onSearchTermChange,
-  isSearching = false,
 }) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const tabulator = useRef<any>(null);
