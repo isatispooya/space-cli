@@ -11,43 +11,58 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   internalUserOptions,
 }) => {
   const location = useLocation();
-  const showExternalReceiver = !formData.is_internal || location.pathname === "/letter/Outform";
+  console.log('Current path:', location.pathname);
+  console.log('is_internal:', formData.is_internal);
+  const showExternalReceiver =
+    (!formData.is_internal && location.pathname !== "/letter/form") || location.pathname === "/letter/Outform";
+
+  console.log('showExternalReceiver:', showExternalReceiver);
 
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
-      <SelectInput
-        label="ارسال کننده"
-        value={
-          (
-            formData.sender || formData.sender_details?.user?.id
-          )?.toString() || ""
-        }
-        onChange={(value) => handleChange("sender", value)}
-        options={senderUserOptions}
-        className="enhanced-select"
-      />
-      
       {!showExternalReceiver ? (
-        <SelectInput
-          label="گیرنده داخلی"
-          value={
-            (
-              formData.receiver_internal ||
-              formData.receiver_internal_details?.id
-            )?.toString() || ""
-          }
-          onChange={(value) => handleChange("receiver_internal", value)}
-          options={internalUserOptions}
-          className="enhanced-select"
-        />
+        <>
+          <SelectInput
+            label="ارسال کننده"
+            value={
+              (
+                formData.sender || formData.sender_details?.user?.id
+              )?.toString() || ""
+            }
+            onChange={(value) => handleChange("sender", value)}
+            options={senderUserOptions}
+            className="enhanced-select"
+          />
+          <SelectInput
+            label="گیرنده داخلی"
+            value={
+              (
+                formData.receiver_internal ||
+                formData.receiver_internal_details?.id
+              )?.toString() || ""
+            }
+            onChange={(value) => handleChange("receiver_internal", value)}
+            options={internalUserOptions}
+            className="enhanced-select"
+          />
+        </>
       ) : (
-        <FormInput
-          label="گیرنده خارجی"
-          value={formData.receiver_external || ""}
-          onChange={(e) => handleChange("receiver_external", e.target.value)}
-          placeholder="گیرنده خارجی"
-          className="enhanced-input"
-        />
+        <>
+          <FormInput
+            label="ارسال کننده خارجی"
+            value={formData.sender_external || ""}
+            onChange={(e) => handleChange("sender_external", e.target.value)}
+            placeholder="گیرنده خارجی"
+            className="enhanced-input"
+          />
+          <FormInput
+            label="گیرنده خارجی"
+            value={formData.receiver_external || ""}
+            onChange={(e) => handleChange("receiver_external", e.target.value)}
+            placeholder="گیرنده خارجی"
+            className="enhanced-input"
+          />
+        </>
       )}
 
       <SelectInput

@@ -10,7 +10,6 @@ export interface TranscriptDetailType {
   position: number;
   correspondence: number;
   user_external?: string;
-  
 }
 
 export interface TranscriptDirectionsType {
@@ -21,7 +20,7 @@ export interface ResponseDataType {
   sender_details?: { id: number; user?: Record<string, unknown> };
   receiver_internal_details?: { id: number };
   receiver_external_details?: { name: string };
-  receiver_external?: string;
+  receiver_external?: string | null;
   attachments_details?: Array<{
     id: number;
     name: string;
@@ -49,4 +48,5 @@ export interface ResponseDataType {
   authority_correspondence?: number | null;
   published?: boolean;
   owner_details?: { id: number };
+  sender_external?: string;
 }

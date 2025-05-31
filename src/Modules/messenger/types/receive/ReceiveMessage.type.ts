@@ -48,7 +48,16 @@ export interface CorrespondenceItemType {
 }
 
 export interface ReferralReqType {
-  reference: number;
+  from_reference: number;
   correspondence: number;
   instruction_text: string;
+  reference: number | null;
+  sender_details?: {
+    id: number;
+    user?: {
+      id: number;
+      first_name: string;
+      last_name: string;
+    };
+  };
 }
