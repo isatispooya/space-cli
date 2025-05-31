@@ -9,6 +9,7 @@ import { Calculator as CalculatorIcon } from "lucide-react";
 import { useUserPermissions } from "@/Modules/permissions";
 import toast from "react-hot-toast";
 import usePostFaraSahm from "@/Modules/dashboard/hooks/useFarasahm";
+import { farasahm } from "@/assets/logo";
 
 interface FaraSahmResponseType {
   cookie: string;
