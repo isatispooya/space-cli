@@ -19,7 +19,7 @@ const ReferralForm = () => {
     correspondence: Yup.number().required("نامه الزامی است"),
     instruction_text: Yup.string().required("متن ارجاع الزامی است"),
     reference: Yup.number().required("ارجاع الزامی است"),
-  });
+  }) as any;
 
   const formFields: FormFieldType[] = [
     {
@@ -48,14 +48,14 @@ const ReferralForm = () => {
     from_reference: 0,
     correspondence: Number(id) || 0,
     instruction_text: "",
-    reference: Number(referenceData?.sender_details?.id) || null,
+    reference: Number((referenceData as any)?.sender_details?.id) || null,
   };
 
   const handleSubmit = async (values: ReferralReqType) => {
     postRefferal(
       {
         ...values,
-        reference: Number(referenceData?.sender_details?.id) || null,
+        reference: Number((referenceData as any)?.sender_details?.id) || null,
       },
       {
         onSuccess: () => {
