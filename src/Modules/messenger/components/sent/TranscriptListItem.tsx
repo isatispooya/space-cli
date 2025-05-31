@@ -8,8 +8,9 @@ import {
   FormControlLabel,
   FormControl,
   IconButton,
+  Tooltip,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { SelectInput } from "../../../../components/common/inputs";
 import { TranscriptListItemPropsType } from "../../types/sent/transcript.type";
 
@@ -139,17 +140,19 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
                 justifyContent: "center",
               }}
             >
-              <IconButton
-                onClick={() => onDelete(item.position || item.id)}
-                sx={{
-                  color: "#ef4444",
-                  "&:hover": {
-                    backgroundColor: "rgba(239, 68, 68, 0.04)",
-                  },
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
+              <Tooltip title="حذف از لیست">
+                <IconButton
+                  onClick={() => onDelete(item.position || item.id)}
+                  sx={{
+                    color: "#64748b",
+                    "&:hover": {
+                      backgroundColor: "rgba(100, 116, 139, 0.04)",
+                    },
+                  }}
+                >
+                  <VisibilityOffIcon />
+                </IconButton>
+              </Tooltip>
             </Grid>
           </Grid>
         </ListItem>

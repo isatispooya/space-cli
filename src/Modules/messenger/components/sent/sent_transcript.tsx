@@ -140,7 +140,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
             <div style={{ display: "flex", gap: 10 }}>
               <MultiSelect
                 label="انتخاب گیرندگان رونوشت"
-                selectedValues={[]}
+                selectedValues={selectedTranscript}
                 onChange={(value) => {
                   const filteredValues = value.filter((v) => v !== "");
                   setSelectedTranscript(filteredValues);

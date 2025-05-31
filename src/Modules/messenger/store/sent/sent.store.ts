@@ -25,6 +25,7 @@ interface SentFormStateType {
   handleAttachmentAdd: (attachmentData: { name: string; id: number }) => void;
   handleAddTranscript: (externalTranscriptText?: string) => void;
   handleTranscriptToggle: (id: number) => void;
+  handleDeleteTranscript: (id: number) => void;
   resetForm: () => void;
 }
 
@@ -311,6 +312,31 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
           ...state.formData,
           referenceData: updatedReferenceData,
         },
+      };
+    }),
+
+  handleDeleteTranscript: (id) =>
+    set((state) => {
+      const updatedReference = state.formData.reference?.filter((ref) => ref !== id) || [];
+      const updatedReferenceData = state.formData.referenceData?.filter(
+        (ref) => ref.id !== id
+      ) || [];
+      const updatedTranscript = state.formData.transcript?.filter(
+        (t) => t.position !== id
+      ) || [];
+
+      const updatedSelectedTranscript = state.selectedTranscript.filter(
+        (t) => t !== id.toString()
+      );
+
+      return {
+        formData: {
+          ...state.formData,
+          reference: updatedReference,
+          referenceData: updatedReferenceData,
+          transcript: updatedTranscript,
+        },
+        selectedTranscript: updatedSelectedTranscript,
       };
     }),
 
