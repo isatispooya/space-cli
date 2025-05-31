@@ -407,74 +407,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     [PositionAll]
   );
 
-  const handleTranscriptToggle = useCallback(
-    (id: number) => {
-      setFormData((prev) => {
-        const newReferenceData = prev.referenceData?.map((item) =>
-          item.id === id ? { ...item, enabled: !item.enabled } : item
-        ) || [];
-        return { ...prev, referenceData: newReferenceData };
-      });
-    },
-    [setFormData]
-  );
-
-  const handleAddTranscript = useCallback(
-    (externalText?: string) => {
-      if (externalText) {
-        // Handle external transcript
-        const newId = -Date.now(); // Generate a unique negative ID
-        setFormData((prev) => ({
-          ...prev,
-          reference: [...(prev.reference || []), newId.toString()],
-          referenceData: [
-            ...(prev.referenceData || []),
-            {
-              id: newId,
-              enabled: true,
-              transcript_for: "notification",
-              user_external: externalText,
-            },
-          ],
-        }));
-      } else if (selectedTranscript.length > 0) {
-        // Handle internal transcript
-        setFormData((prev) => ({
-          ...prev,
-          reference: [...(prev.reference || []), ...selectedTranscript],
-          referenceData: [
-            ...(prev.referenceData || []),
-            ...selectedTranscript.map((id) => ({
-              id: Number(id),
-              enabled: true,
-              transcript_for: transcriptDirections[Number(id)] || "notification",
-            })),
-          ],
-        }));
-      }
-    },
-    [selectedTranscript, transcriptDirections, setFormData]
-  );
-
-  const onDeleteTranscript = useCallback(
-    (id: number) => {
-      setFormData((prev) => {
-        const newReference = prev.reference?.filter(
-          (ref) => ref !== id.toString()
-        ) || [];
-        const newReferenceData = prev.referenceData?.filter(
-          (item) => item.id !== id
-        ) || [];
-        return {
-          ...prev,
-          reference: newReference,
-          referenceData: newReferenceData,
-        };
-      });
-    },
-    [setFormData]
-  );
-
   return {
     formData,
     openFileDialog,
@@ -500,6 +432,5 @@ export const useSentFormLogic = (id: string | undefined) => {
     departmentOptions,
     letterTypeOptions,
     setFormData,
-    onDeleteTranscript,
   };
 };
