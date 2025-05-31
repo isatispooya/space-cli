@@ -208,7 +208,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
           data.receiver_external_details?.name || data.receiver_external || "",
-        is_internal: isInternal ? data.is_internal ?? false : true,
+        is_internal: data.is_internal ?? false,
         postcript: data.postcript || "",
         seal: data.seal ?? false,
         signature: data.signature ?? false,
