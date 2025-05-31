@@ -12,16 +12,18 @@ const ReferralForm = () => {
 
   const { mutate: postRefferal } = useReceive.usePostRefferal();
   const { data: positions } = usePosition.useGetAll();
+  const { data: referenceData } = useReceive.useGetById(id || "");
 
   const validationSchema = Yup.object().shape({
-    reference: Yup.number().required("ارجاع الزامی است"),
+    from_reference: Yup.number().required("ارجاع الزامی است"),
     correspondence: Yup.number().required("نامه الزامی است"),
     instruction_text: Yup.string().required("متن ارجاع الزامی است"),
-  });
+    reference: Yup.number().required("ارجاع الزامی است"),
+  }) as any;
 
   const formFields: FormFieldType[] = [
     {
-      name: "reference",
+      name: "from_reference",
       label: "ارجاع به",
       type: "select",
       options: positions?.map((position) => ({
@@ -31,8 +33,9 @@ const ReferralForm = () => {
           position.user?.first_name +
           " " +
           position.user?.last_name,
-        value: position.id.toString(),
+        value: position.id,
       })),
+      format: (value: any) => Number(value),
     },
     {
       name: "instruction_text",
@@ -42,28 +45,35 @@ const ReferralForm = () => {
   ];
 
   const initialValues: ReferralReqType = {
-    reference: 0,
+    from_reference: 0,
     correspondence: Number(id) || 0,
     instruction_text: "",
+    reference: Number((referenceData as any)?.sender_details?.id) || null,
   };
 
   const handleSubmit = async (values: ReferralReqType) => {
-    postRefferal(values, {
-      onSuccess: () => {
-        Toast(
-          "ارجاع با موفقیت انجام شد",
-          <Check className="text-green-500" />,
-          "bg-green-500"
-        );
+    postRefferal(
+      {
+        ...values,
+        reference: Number((referenceData as any)?.sender_details?.id) || null,
       },
-      onError: () => {
-        Toast(
-          "ارجاع با مشکل مواجه شد",
-          <X className="text-red-500" />,
-          "bg-red-500"
-        );
-      },
-    });
+      {
+        onSuccess: () => {
+          Toast(
+            "ارجاع با موفقیت انجام شد",
+            <Check className="text-green-500" />,
+            "bg-green-500"
+          );
+        },
+        onError: () => {
+          Toast(
+            "ارجاع با مشکل مواجه شد",
+            <X className="text-red-500" />,
+            "bg-red-500"
+          );
+        },
+      }
+    );
   };
 
   return (

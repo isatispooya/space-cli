@@ -49,7 +49,7 @@ const ParentVerifyForm = () => {
     [id: number]: dayjs.Dayjs;
   }>({});
 
-  const { data, isLoading } = useTimeflow.useGetTimeflowSenior();
+  const { data, isLoading, refetch } = useTimeflow.useGetTimeflowSenior();
   const { mutate } = useTimeflow.useUpdateTimeflowSenior();
 
   const mappedData = Array.isArray(data)
@@ -93,10 +93,17 @@ const ParentVerifyForm = () => {
     const timePart = selectedTime.format("HH:mm:ss");
     const fullDateTime = `${datePart}T${timePart}`;
 
-    mutate({
-      id,
-      data: { status_parent: "approved", time_parent: fullDateTime },
-    });
+    mutate(
+      {
+        id,
+        data: { status_parent: "approved", time_parent: fullDateTime },
+      },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      }
+    );
   };
 
   const handleReject = (
@@ -108,10 +115,17 @@ const ParentVerifyForm = () => {
     const timePart = selectedTime.format("HH:mm:ss");
     const fullDateTime = `${datePart}T${timePart}`;
 
-    mutate({
-      id,
-      data: { status_parent: "rejected", time_parent: fullDateTime },
-    });
+    mutate(
+      {
+        id,
+        data: { status_parent: "rejected", time_parent: fullDateTime },
+      },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      }
+    );
   };
 
   if (data && data.length === 0) {

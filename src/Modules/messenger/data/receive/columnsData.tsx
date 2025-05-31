@@ -80,6 +80,7 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
               onClick: () =>
                 (window.location.href = `/letter/receive-refferal/${rowData.id}`),
             },
+
             {
               label: "گردش کار",
               icon: "📤",

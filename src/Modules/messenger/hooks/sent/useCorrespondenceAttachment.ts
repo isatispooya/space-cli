@@ -9,7 +9,7 @@ import {
   APIFormDataType,
   CorrespondenceResponseType,
 } from "../../types/sent/sent.type";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { CorrespondenceAttachmentsType } from "../../types/sent/attachment.type";
 import { AttachmentResponseType } from "../../types";
 
@@ -63,18 +63,24 @@ const useCorrespondenceAttachment = {
     });
   },
 
-  
   usePublishCorrespondence: (): UseMutationResult<
-  AttachmentResponseType,
-  Error,
-  number
-> => {
-  return useMutation({
-    mutationFn: (id: number) =>
-      correspondenceAttacheService.publishCorrespondence(id),
-  });
-},
-
+    AttachmentResponseType,
+    Error,
+    number
+  > => {
+    return useMutation({
+      mutationFn: (id: number) =>
+        correspondenceAttacheService.publishCorrespondence(id),
+      onSuccess: (response: any) => {
+        toast.success(response.message);
+      },
+      onError: (error: any) => {
+        toast.error(
+          error.response?.data?.message || "اطلاعات با مشکل مواجه شد"
+        );
+      },
+    });
+  },
 
   useGetCorrespondence: (): UseQueryResult<CorrespondenceResponseType> => {
     return useQuery({

@@ -12,6 +12,7 @@ import { CorrespondenceResponseType } from "../types/sent/sent.type";
 import ExelData from "../data/receive/receiveExelData";
 import { RowComponent } from "tabulator-tables";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 export const TableFeature = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -234,6 +235,7 @@ export const TableFeature = () => {
 
   return (
     <div className="w-full bg-white rounded-3xl relative p-8 flex flex-col mb-[100px]">
+      <ToastContainer />
       {isSearching && (
         <div className="w-full text-center py-4 text-gray-500">
           در حال جستجو...

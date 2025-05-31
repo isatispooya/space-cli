@@ -11,14 +11,16 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   internalUserOptions,
 }) => {
   const location = useLocation();
-  const isInternal =
-    location.pathname === "/letter/form" || !formData.is_internal;
-  const isOut = location.pathname === "/letter/OutformMake" || formData.is_internal;
+  console.log('Current path:', location.pathname);
+  console.log('is_internal:', formData.is_internal);
+  const showExternalReceiver =
+    (!formData.is_internal && location.pathname !== "/letter/form") || location.pathname === "/letter/Outform";
 
+  console.log('showExternalReceiver:', showExternalReceiver);
 
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
-      {isInternal ? (
+      {!showExternalReceiver ? (
         <>
           <SelectInput
             label="ارسال کننده"
@@ -44,39 +46,14 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
             className="enhanced-select"
           />
         </>
-      ) : isOut ? (
-        <>
-            <SelectInput
-            label="ارسال کننده"
-            value={
-              (
-                formData.sender || formData.sender_details?.user?.id
-              )?.toString() || ""
-            }
-            onChange={(value) => handleChange("sender", value)}
-            options={senderUserOptions}
-            className="enhanced-select"
-          />
-          <FormInput
-            label="گیرنده خارجی"
-            value={formData.receiver_external || ""}
-            onChange={(e) => handleChange("receiver_external", e.target.value)}
-            placeholder="گیرنده خارجی"
-            className="enhanced-input"
-          />
-        </>
       ) : (
         <>
-          <SelectInput
-            label="ارسال کننده"
-            value={
-              (
-                formData.sender || formData.sender_details?.user?.id
-              )?.toString() || ""
-            }
-            onChange={(value) => handleChange("sender", value)}
-            options={senderUserOptions}
-            className="enhanced-select"
+          <FormInput
+            label="ارسال کننده خارجی"
+            value={formData.sender_external || ""}
+            onChange={(e) => handleChange("sender_external", e.target.value)}
+            placeholder="گیرنده خارجی"
+            className="enhanced-input"
           />
           <FormInput
             label="گیرنده خارجی"
@@ -88,7 +65,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
         </>
       )}
 
-<SelectInput
+      <SelectInput
         label="مالک"
         value={formData.owner?.toString() || ""}
         onChange={(value) => handleChange("owner", value)}
