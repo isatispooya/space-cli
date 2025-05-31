@@ -31,7 +31,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     setTranscriptDirection,
     onDeleteTranscript,
     data,
-    is_internal = true,
+    is_internal ,
   }) => {
     const [localTranscript, setLocalTranscript] = useState<
       ITranscriptResponseType[]

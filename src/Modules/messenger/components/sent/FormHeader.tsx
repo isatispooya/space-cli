@@ -20,7 +20,7 @@ const FormHeader: React.FC<FormHeaderPropsType> = ({
   if (isUpdateForm) {
     title = isInternal ? "ویرایش پیام داخلی" : "ویرایش پیام خارجی";
   } else if (isEditMode) {
-    title = isInternal ? "پیش نویس پیام داخلی" : "پیش نویس پیام خارجی";
+    title = isInternal ? "ویرایش پیام داخلی" : "ویرایش پیام خارجی";
   } else {
     title = isInternal ? "ثبت پیام جدید داخلی" : "ثبت پیام جدید خارجی";
   }
