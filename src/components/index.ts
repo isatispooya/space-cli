@@ -8,3 +8,4 @@ export * from "./view";
 export * from "./list";
 export * from "./cards";
 export * from "./stepper/indexx";
+export * from "./taskbar";
