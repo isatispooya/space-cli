@@ -28,11 +28,13 @@ const useCorrespondenceAttachment = {
     Error,
     AttachmentResponseType
   > => {
-    const { refetch } = useCorrespondenceAttachment.useGetAttache();
+    const { refetch: refetchAttache } = useCorrespondenceAttachment.useGetAttache();
+    const { refetch: refetchCorrespondence } = useCorrespondenceAttachment.useGetCorrespondence();
     return useMutation({
       mutationFn: correspondenceAttacheService.postAttache,
       onSuccess: () => {
-        refetch();
+        refetchAttache();
+        refetchCorrespondence();
         options?.onSuccess?.();
       },
       onError: (error) => {
@@ -44,9 +46,15 @@ const useCorrespondenceAttachment = {
     onSuccess?: () => void;
     onError?: (error: Error) => void;
   }): UseMutationResult<AttachmentResponseType, Error, APIFormDataType> => {
+    const { refetch: refetchAttache } = useCorrespondenceAttachment.useGetAttache();
+    const { refetch: refetchCorrespondence } = useCorrespondenceAttachment.useGetCorrespondence();
     return useMutation({
       mutationFn: correspondenceAttacheService.postCorrespondence,
-      onSuccess: options?.onSuccess,
+      onSuccess: () => {
+        refetchAttache();
+        refetchCorrespondence();
+        options?.onSuccess?.();
+      },
       onError: options?.onError,
     });
   },
@@ -55,9 +63,13 @@ const useCorrespondenceAttachment = {
     Error,
     APIFormDataType & { id: number }
   > => {
+    const { refetch: refetchAttache } = useCorrespondenceAttachment.useGetAttache();
+    const { refetch: refetchCorrespondence } = useCorrespondenceAttachment.useGetCorrespondence();
     return useMutation({
       mutationFn: correspondenceAttacheService.updateCorrespondence,
       onSuccess: () => {
+        refetchAttache();
+        refetchCorrespondence();
         toast.success("اطلاعات با موفقیت ثبت شد");
       },
     });
@@ -68,10 +80,14 @@ const useCorrespondenceAttachment = {
     Error,
     number
   > => {
+    const { refetch: refetchAttache } = useCorrespondenceAttachment.useGetAttache();
+    const { refetch: refetchCorrespondence } = useCorrespondenceAttachment.useGetCorrespondence();
     return useMutation({
       mutationFn: (id: number) =>
         correspondenceAttacheService.publishCorrespondence(id),
       onSuccess: (response: any) => {
+        refetchAttache();
+        refetchCorrespondence();
         toast.success(response.message);
       },
       onError: (error: any) => {

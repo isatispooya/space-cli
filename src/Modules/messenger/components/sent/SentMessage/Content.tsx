@@ -82,6 +82,15 @@ export const MessageContent = ({
           <Typography sx={{ fontSize: "1rem", fontWeight: 600, mb: 1 }}>
             موضوع: {sender?.subject}
           </Typography>
+ 
+        </Box>
+      </Grid>
+
+      <Grid item xs={12}> 
+        <Box sx={{ borderRadius: 2, p: 2.5 }}>
+          <Typography sx={{ fontSize: "1rem", fontWeight: 300, mb: 1 }}>
+            {sender?.text}
+          </Typography>
         </Box>
       </Grid>
 
