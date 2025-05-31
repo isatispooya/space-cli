@@ -2,10 +2,11 @@ import { TabulatorTable, LoaderLg, Taskbar } from "@/components";
 import { useTimeflow } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import moment from "moment-jalaali";
-import { ExcelDataType } from "@/components/taskbar/tools/excel-export";
-import { navigation } from "@/components/taskbar/tools/navigation";
-import { ArrowRight } from "lucide-react";
+import { CornerLeftUp } from "lucide-react";
 import { UsersTimeflowType } from "../types";
+import TaskBarType from "@/components/taskbar/types/taskbar.type";
+import { createCustomTools } from "@/components/taskbar/tools";
+import { useRefresh } from "@/components/taskbar/tools/refresh";
 
 interface TimeflowDataItemType {
   id: number;
@@ -21,14 +22,19 @@ interface TimeflowDataItemType {
 const UserTimeflowReportTable = () => {
   const navigate = useNavigate();
   const { useGetTimeflow } = useTimeflow;
-  const { data: timeflowData, isLoading } = useGetTimeflow();
+  const { data: timeflowData, isLoading, refetch } = useGetTimeflow();
+  const { refresh } = useRefresh({
+    onRefresh: () => {
+      refetch();
+    },
+  });
 
   if (isLoading) {
     return <LoaderLg />;
   }
 
   const mappedData: TimeflowDataItemType[] =
-    timeflowData?.map((item) => ({  
+    timeflowData?.map((item) => ({
       id: item.id,
       date: moment(item.date.time_parent).format("jYYYY/jMM/jDD"),
       time_start: item.time_start,
@@ -48,7 +54,9 @@ const UserTimeflowReportTable = () => {
       original_data: item,
     })) || [];
 
-  const exportData = (data: TimeflowDataItemType[]): ExcelDataType[] => {
+  const exportData = (
+    data: TimeflowDataItemType[]
+  ): TaskBarType["exportData"] => {
     return data.map((item) => ({
       تاریخ: item.date,
       "ساعت شروع": item.time_start,
@@ -67,44 +75,32 @@ const UserTimeflowReportTable = () => {
     { title: "نام کاربر", field: "user_name" },
   ];
 
-  const formattedData: ExcelDataType[] = exportData(mappedData);
+  const formattedData: TaskBarType["exportData"] = exportData(mappedData);
 
-  const handleNavigateToDetail = () => {
-    // You can get the selected row from your table state or selection
-    const selectedRow = mappedData[0]; // This is just an example, replace with actual selection logic
-    if (selectedRow) {
-      navigation.goTo({
-        navigate,
-        path: `/timeflow/${selectedRow.id}`,
-        state: { from: "timeflow-report" },
-        
-      }); 
-    }
-  };
-
-  const customTools = [
+  const customTools = createCustomTools([
     {
-      id: "view-details",
-      icon: <ArrowRight className="w-5 h-5" />,
+      id: "'گرفتن گزارش یک ماهه",
+      icon: <CornerLeftUp className="w-5 h-5" />,
       label: "مشاهده جزئیات",
-      onClick: handleNavigateToDetail,
-      variant: "primary" as const,
+      onClick: () => {
+        navigate(`/timeflow-report/${25}`);
+      },
+      variant: "nav" as const,
       order: 1,
     },
-  ];
+  ]);
 
   return (
     <div className="w-full bg-white shadow-xl rounded-3xl relative p-8 flex flex-col mb-[100px]">
       <div className="mb-4">
         <Taskbar
-          showRefreshButton={false}
-          showExportButton={true}
-          showBackButton={false}
+          items={[]}
           exportData={formattedData}
+          onRefresh={refresh}
           exportOptions={{
-            filename: "گزارش تردد ها",
-            sheetName: "گزارش تردد ها",
-            dataFormatter: (item: ExcelDataType) => item,
+            filename: "گزارش تردد ها.xlsx",
+            sheetName: "گزارش تردد",
+            dataFormatter: (item) => item,
           }}
           customTools={customTools}
         />
