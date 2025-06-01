@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import {  ReactNode } from "react";
 import TaskBarType from "../types/taskbar.type";
 
 
