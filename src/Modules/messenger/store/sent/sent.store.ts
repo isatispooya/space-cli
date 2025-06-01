@@ -26,6 +26,7 @@ interface SentFormStateType {
   handleAddTranscript: (externalTranscriptText?: string) => void;
   handleTranscriptToggle: (id: number) => void;
   handleDeleteTranscript: (id: number) => void;
+  handleDeleteTranscriptFromStore: (id: number) => void;
   resetForm: () => void;
 }
 
@@ -128,10 +129,12 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
             formData: {
               ...state.formData,
               sender: numValue,
-              transcript: state.formData.transcript.map((t: TranscriptDetailsType) => ({
-                ...t,
-                position: numValue,
-              })),
+              transcript: state.formData.transcript.map(
+                (t: TranscriptDetailsType) => ({
+                  ...t,
+                  position: numValue,
+                })
+              ),
             },
           };
         }
@@ -285,6 +288,36 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
       return state;
     }),
 
+  handleDeleteTranscriptFromStore: (id: number) =>
+    set((state) => {
+      const isExternal = id < 0;
+
+      const updatedReference = state.formData.reference.filter(
+        (refId) => refId !== id
+      );
+
+      const updatedReferenceData = (state.formData.referenceData || []).filter(
+        (ref) => ref.id !== id
+      );
+
+      const updatedTranscripts = state.formData.transcript.filter((trans) => {
+        if (isExternal) {
+          return !trans.user_external;
+        } else {
+          return trans.position !== id;
+        }
+      });
+
+      return {
+        formData: {
+          ...state.formData,
+          reference: updatedReference,
+          referenceData: updatedReferenceData,
+          transcript: updatedTranscripts,
+        },
+      };
+    }),
+
   handleTranscriptToggle: (id) =>
     set((state) => {
       const numId = id;
@@ -317,13 +350,12 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
 
   handleDeleteTranscript: (id) =>
     set((state) => {
-      const updatedReference = state.formData.reference?.filter((ref) => ref !== id) || [];
-      const updatedReferenceData = state.formData.referenceData?.filter(
-        (ref) => ref.id !== id
-      ) || [];
-      const updatedTranscript = state.formData.transcript?.filter(
-        (t) => t.position !== id
-      ) || [];
+      const updatedReference =
+        state.formData.reference?.filter((ref) => ref !== id) || [];
+      const updatedReferenceData =
+        state.formData.referenceData?.filter((ref) => ref.id !== id) || [];
+      const updatedTranscript =
+        state.formData.transcript?.filter((t) => t.position !== id) || [];
 
       const updatedSelectedTranscript = state.selectedTranscript.filter(
         (t) => t !== id.toString()

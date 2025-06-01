@@ -103,6 +103,9 @@ export const useSentFormLogic = (id: string | undefined) => {
       },
     });
 
+
+    
+
   const attachmentOptions = useMemo(
     () =>
       Attache?.map((attachment: CorrespondenceAttachmentType) => ({
@@ -306,6 +309,8 @@ export const useSentFormLogic = (id: string | undefined) => {
       });
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
+
+  
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {

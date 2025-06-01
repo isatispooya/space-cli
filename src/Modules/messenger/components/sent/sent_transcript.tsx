@@ -17,6 +17,7 @@ import {
   ITranscriptResponseType,
   TranscriptPropsType,
 } from "../../types/sent/transcript.type";
+import { useSentFormStore } from "../../store/sent/sent.store";
 
 const Transcript: React.FC<TranscriptPropsType> = React.memo(
   ({
@@ -31,11 +32,12 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     setTranscriptDirection,
     onDeleteTranscript,
     data,
-    is_internal ,
   }) => {
     const [localTranscript, setLocalTranscript] = useState<
       ITranscriptResponseType[]
     >([]);
+
+    const { handleDeleteTranscriptFromStore } = useSentFormStore();
 
     useEffect(() => {
       const allTranscripts = [...transcript];
@@ -55,19 +57,29 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       },
       [setTranscriptDirection]
     );
-
     const handleDeleteTranscript = useCallback(
       (id: number) => {
+        const isExternal = id < 0;
+    
         setLocalTranscript((prev) =>
-          prev.filter((item) => (item.position ?? item.id) !== id)
+          prev.filter((item) => {
+            if (isExternal) {
+              return item.id !== id;
+            } else {
+              return item.position !== id;
+            }
+          })
         );
-
+    
+        handleDeleteTranscriptFromStore(id);
+    
         if (onDeleteTranscript) {
           onDeleteTranscript(id);
         }
       },
-      [onDeleteTranscript]
+      [onDeleteTranscript, handleDeleteTranscriptFromStore]
     );
+    
 
     const [externalTranscriptText, setExternalTranscriptText] = useState("");
 
@@ -88,28 +100,20 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     }, [data?.transcript]);
 
     const handleAdd = useCallback(() => {
-      if (
-        selectedTranscript.length === 0 &&
-        externalTranscriptText.trim() === ""
-      )
-        return;
-
       if (selectedTranscript.length > 0) {
         handleAddTranscript();
-        setSelectedTranscript([]);
       }
 
       if (externalTranscriptText.trim() !== "") {
         handleAddTranscript(externalTranscriptText.trim());
-        setExternalTranscriptText("");
       }
     }, [
       selectedTranscript,
       handleAddTranscript,
       setSelectedTranscript,
       externalTranscriptText,
-      is_internal,
     ]);
+
     const internalTranscripts = localTranscript.filter(
       (t) => !t.isExternal && !t.user_external && t.id >= 0
     );
