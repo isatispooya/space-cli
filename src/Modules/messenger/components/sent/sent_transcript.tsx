@@ -73,11 +73,16 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     
         handleDeleteTranscriptFromStore(id);
     
+        const newSelectedTranscript = selectedTranscript.filter(
+          (selectedId) => selectedId !== id.toString()
+        );
+        setSelectedTranscript(newSelectedTranscript);
+    
         if (onDeleteTranscript) {
           onDeleteTranscript(id);
         }
       },
-      [onDeleteTranscript, handleDeleteTranscriptFromStore]
+      [onDeleteTranscript, handleDeleteTranscriptFromStore, setSelectedTranscript, selectedTranscript]
     );
     
 

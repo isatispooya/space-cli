@@ -302,11 +302,15 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
 
       const updatedTranscripts = state.formData.transcript.filter((trans) => {
         if (isExternal) {
-          return !trans.user_external;
+          return trans.id !== id;
         } else {
           return trans.position !== id;
         }
       });
+
+      const updatedTranscriptDetails = (state.formData.transcript_details || []).filter(
+        (detail) => detail.position !== id
+      );
 
       return {
         formData: {
@@ -314,6 +318,7 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
           reference: updatedReference,
           referenceData: updatedReferenceData,
           transcript: updatedTranscripts,
+          transcript_details: updatedTranscriptDetails,
         },
       };
     }),

@@ -87,6 +87,7 @@ export interface TranscriptDetailsType {
 }
 
 export interface TranscriptDataType {
+  id?: number;
   read_at: string | null;
   transcript_for: string;
   security: boolean;

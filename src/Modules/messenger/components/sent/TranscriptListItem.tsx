@@ -67,11 +67,15 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
 
       const directionKey = item.position ?? item.id;
 
-      // مقدار انتخاب‌شده برای رونوشت (حتی برای خارجی‌ها)
       const directionValue =
         transcriptDirections[directionKey] ??
-        item.transcript_for ?? // اگر موجود باشد
+        item.transcript_for ??
         "";
+
+      const handleDelete = () => {
+        const idToDelete = item.position ?? item.id;
+        onDelete(idToDelete);
+      };
 
       return (
         <ListItem sx={{ px: 1, py: 1.5 }}>
@@ -150,7 +154,7 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
             >
               <Tooltip title="حذف از لیست">
                 <IconButton
-                  onClick={() => onDelete(item.position || item.id)}
+                  onClick={handleDelete}
                   sx={{
                     color: "#64748b",
                     "&:hover": {
