@@ -11,12 +11,8 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   internalUserOptions,
 }) => {
   const location = useLocation();
-  console.log('Current path:', location.pathname);
-  console.log('is_internal:', formData.is_internal);
   const showExternalReceiver =
     (!formData.is_internal && location.pathname !== "/letter/form") || location.pathname === "/letter/Outform";
-
-  console.log('showExternalReceiver:', showExternalReceiver);
 
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>

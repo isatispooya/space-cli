@@ -43,7 +43,6 @@ export const SentTable = () => {
       setSearchResults(response as unknown as CorrespondenceResponseType);
       setHasSearched(true);
     } catch (error) {
-      console.error("خطا در جستجو:", error);
       setSearchResults({ sender: [], receiver: [] });
     } finally {
       setIsSearching(false);

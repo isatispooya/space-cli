@@ -56,7 +56,6 @@ export const TableFeature = () => {
         setHasSearched(false);
       }
     } catch (error) {
-      console.error("خطا در جستجو:", error);
       setSearchResults({ sender: [], receiver: [] });
       setHasSearched(false);
     } finally {
