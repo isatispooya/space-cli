@@ -31,8 +31,10 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
       onDelete,
     }) => {
       const [visibility, setVisibility] = useState(!item.security);
+
       const isExternalTranscript =
         item.isExternal || item.user_external || item.id < 0;
+
       const [externalTexts, setExternalTexts] = useState<string[]>(
         isExternalTranscript && (item.user_external || item.name)
           ? Array.isArray(item.user_external)
@@ -62,8 +64,14 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
         setVisibility(value);
         handleTranscriptToggle(item.position || item.id);
       };
+
+      const directionKey = item.position ?? item.id;
+
+      // مقدار انتخاب‌شده برای رونوشت (حتی برای خارجی‌ها)
       const directionValue =
-        transcriptDirections[item.position || item.id] || "";
+        transcriptDirections[directionKey] ??
+        item.transcript_for ?? // اگر موجود باشد
+        "";
 
       return (
         <ListItem sx={{ px: 1, py: 1.5 }}>
@@ -93,20 +101,19 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
                 </>
               )}
             </Grid>
+
             <Grid item xs={12} md={4}>
               <Typography sx={{ fontSize: "0.75rem", color: "#64748b", mb: 2 }}>
                 نوع رونوشت
               </Typography>
-
               <SelectInput
                 label=""
                 options={internalOptions}
                 value={directionValue}
-                onChange={(val) =>
-                  handleDirectionChange(item.position ?? item.id, val)
-                }
+                onChange={(val) => handleDirectionChange(directionKey, val)}
               />
             </Grid>
+
             <Grid item xs={12} md={3}>
               <Typography sx={{ fontSize: "0.75rem", color: "#64748b", mb: 2 }}>
                 وضعیت نمایش در نامه
@@ -130,6 +137,7 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
                 </RadioGroup>
               </FormControl>
             </Grid>
+
             <Grid
               item
               xs={12}

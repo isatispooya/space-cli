@@ -72,6 +72,7 @@ const SentDetail = () => {
 
   const showLetterhead = receivedData.letterhead !== false;
 
+
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: "1200px", margin: "0 auto" }}>
       <Paper
@@ -187,7 +188,7 @@ const SentDetail = () => {
           </Box>
           <Box sx={{ "@media print": { display: "none" } }}>
             <MessageAttachments
-              data={receivedData || []}
+              attachments={receivedData.attachments_details || []}
             />
           </Box>
         </div>

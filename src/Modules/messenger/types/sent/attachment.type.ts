@@ -31,7 +31,7 @@ interface AttachmentDetailType {
 }
 
 export interface AttachmentsPropsType {
-  data: SenderType;
+  attachments: CorrespondenceAttachmentType[];
 }
 
 export interface AttachmentResponseType {
