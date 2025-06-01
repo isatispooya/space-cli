@@ -2,7 +2,7 @@ import {
   SectionPropsType,
   SelectOptionType,
 } from "../../types/sent/SenderSection.Type";
-import { BaseUserType } from "./sent.type";
+import { BaseUserType, SenderType } from "./sent.type";
 
 export interface CorrespondenceAttachmentType {
   id: number;
@@ -31,7 +31,7 @@ interface AttachmentDetailType {
 }
 
 export interface AttachmentsPropsType {
-  attachments: AttachmentDetailType[];
+  data: SenderType;
 }
 
 export interface AttachmentResponseType {

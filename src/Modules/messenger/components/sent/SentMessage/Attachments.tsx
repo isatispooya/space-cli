@@ -2,8 +2,8 @@ import { Box, Typography, Paper, Button } from "@mui/material";
 import { AttachFile, Download } from "@mui/icons-material";
 import { server } from "@/api";
 import { AttachmentsPropsType } from "../../../types/sent/attachment.type";
-export const MessageAttachments = ({ attachments }: AttachmentsPropsType) => {
-  if (!attachments || attachments.length === 0) return null;
+export const MessageAttachments = ({ data }: AttachmentsPropsType) => {
+  if (!data) return null;
 
   const handleDownload = (fileUrl: string) => {
     const fullUrl = `${server}${fileUrl}`;
@@ -35,7 +35,7 @@ export const MessageAttachments = ({ attachments }: AttachmentsPropsType) => {
         پیوست‌های نامه
       </Typography>
       <Box sx={{ display: "grid" }}>
-        {attachments.map((attachment) => (
+        {data.transcript_details.map((attachment: any) => (
           <Paper
             key={attachment.id}
             elevation={0}

@@ -187,7 +187,7 @@ const SentDetail = () => {
           </Box>
           <Box sx={{ "@media print": { display: "none" } }}>
             <MessageAttachments
-              attachments={receivedData.attachments_details || []}
+              data={receivedData || []}
             />
           </Box>
         </div>
