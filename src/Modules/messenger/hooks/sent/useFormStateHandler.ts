@@ -38,7 +38,7 @@ export const useFormStateHandler = () => {
       }
 
       if (typeof value === "string") {
-        handleChange(name, value.trim());
+        handleChange(name, value);
         return;
       }
 

@@ -74,19 +74,22 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
             },
           ]
         : [
-            {
-              label: "ارجاع",
-              icon: "📤",
-              onClick: () =>
-                (window.location.href = `/letter/receive-refferal/${rowData.id}`),
-            },
-
-            {
-              label: "گردش کار",
-              icon: "📤",
-              onClick: () =>
-                (window.location.href = `/letter/receive-workflow/${rowData.id}`),
-            },
+            ...(isReceiveTableRoute
+              ? [
+                  {
+                    label: "ارجاع",
+                    icon: "📤",
+                    onClick: () =>
+                      (window.location.href = `/letter/receive-refferal/${rowData.id}`),
+                  },
+                  {
+                    label: "گردش کار",
+                    icon: "📊",
+                    onClick: () =>
+                      (window.location.href = `/letter/receive-workflow/${rowData.id}`),
+                  },
+                ]
+              : []),
           ]),
     ];
 

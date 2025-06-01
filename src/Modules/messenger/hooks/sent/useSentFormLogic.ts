@@ -320,7 +320,6 @@ export const useSentFormLogic = (id: string | undefined) => {
       existingTranscripts.map((t) => [t.position, t])
     );
 
-    // Only include transcripts that are currently in the list
     const apiTranscripts =
       formData.reference
         ?.filter((ref) => {
