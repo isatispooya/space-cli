@@ -14,9 +14,8 @@ export const MessageContent = ({
     (pos) => pos?.user?.id === senderUser?.id
   );
 
-  const signatureImageUrl = matchedPosition?.signature as string | undefined;
-  const sealImageUrl = (sender?.sender_details?.company_detail?.seal ||
-    null) as string | null;
+  const signatureImageUrl = matchedPosition?.signature;
+  const sealImageUrl = (sender?.sender_details?.company_detail?.seal ||null);
 
   const senderFullName = `${senderUser?.first_name || ""} ${
     senderUser?.last_name || ""
@@ -29,10 +28,8 @@ export const MessageContent = ({
       }`
     : sender?.receiver_external;
 
-  const showSeal =
-    sender?.published && ("seal" in sender ? sender.seal : false);
-  const showSignature =
-    sender?.published && ("signature" in sender ? sender.signature : false);
+  const showSeal =sender?.published && ("seal" in sender ? sender.seal : false);
+  const showSignature =sender?.published && ("signature" in sender ? sender.signature : false);
 
   const renderSealAndSignature = () => {
     return (

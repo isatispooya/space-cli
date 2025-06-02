@@ -1,34 +1,10 @@
 import { create } from "zustand";
-import { FormDataType, ReferenceDataType } from "../../types/sent/sent.type";
+import { 
+  FormDataType, 
+  ReferenceDataType, 
+  SentFormStateType
+} from "../../types/sent/sent.type";
 import { TranscriptDataType, TranscriptDetailsType } from "../../types";
-
-type FormValueType = string | number | boolean | Array<string | number> | null;
-
-interface SelectOptionType {
-  label: string;
-  value: string;
-}
-
-interface SentFormStateType {
-  formData: FormDataType;
-  openFileDialog: boolean;
-  selectedTranscript: string[];
-  transcriptDirections: Record<number, string>;
-  attachmentOptions: SelectOptionType[];
-  setFormData: (data: Partial<FormDataType>) => void;
-  setOpenFileDialog: (isOpen: boolean) => void;
-  setSelectedTranscript: (transcripts: string[]) => void;
-  setTranscriptDirection: (id: number, direction: string) => void;
-  setAttachmentOptions: (options: SelectOptionType[]) => void;
-  handleChange: (name: string, value: FormValueType) => void;
-  handleReceiverTypeChange: (type: string) => void;
-  handleAttachmentAdd: (attachmentData: { name: string; id: number }) => void;
-  handleAddTranscript: (externalTranscriptText?: string) => void;
-  handleTranscriptToggle: (id: number) => void;
-  handleDeleteTranscript: (id: number) => void;
-  handleDeleteTranscriptFromStore: (id: number) => void;
-  resetForm: () => void;
-}
 
 const defaultTranscript: TranscriptDataType = {
   read_at: new Date().toISOString(),

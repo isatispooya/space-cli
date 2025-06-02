@@ -137,3 +137,9 @@ export interface TranscriptSectionPropsType {
   setTranscriptDirection: (id: number, direction: string) => void;
   is_internal?: boolean;
 }
+
+export interface ExtendedTranscriptListItemPropsType
+  extends TranscriptListItemPropsType {
+    onAddExternalRecipient?: (id: number, newRecipient: string) => void;
+    onDelete: (id: number) => void;
+  }

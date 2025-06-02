@@ -12,12 +12,7 @@ import {
 } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { SelectInput } from "../../../../components/common/inputs";
-import { TranscriptListItemPropsType } from "../../types/sent/transcript.type";
-
-type ExtendedTranscriptListItemPropsType = TranscriptListItemPropsType & {
-  onAddExternalRecipient?: (id: number, newRecipient: string) => void;
-  onDelete: (id: number) => void;
-};
+import { ExtendedTranscriptListItemPropsType } from "../../types/sent/transcript.type";
 
 const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
   React.memo(

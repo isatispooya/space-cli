@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { ButtonBase } from "../../../../components/common/buttons";
 import { FormActionsPropsType } from "../../types/sent/form.type";
 
-const FormActions: React.FC<FormActionsPropsType> = ({
+const FormButtons: React.FC<FormActionsPropsType> = ({
   isEditMode,
   showPublishWarning,
   formData,
@@ -35,4 +35,4 @@ const FormActions: React.FC<FormActionsPropsType> = ({
   );
 };
 
-export default FormActions;
+export default FormButtons;

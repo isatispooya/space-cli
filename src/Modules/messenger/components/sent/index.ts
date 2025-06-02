@@ -2,7 +2,7 @@ export { default as AttachmentDialog } from "./AttachmentDialog";
 export { default as SentTranscript } from "./sent_transcript";
 export { default as FormContainer } from "./FormContainer";
 export { default as FormHeader } from "./FormHeader";
-export { default as FormActions } from "./FormActions";
+export { default as FormButtons } from "./FormButtons";
 export { default as SenderSection } from "./SenderSection";
 export { default as PrioritySection } from "./PrioritySection";
 export { default as AttachmentSection } from "./AttachmentSection";

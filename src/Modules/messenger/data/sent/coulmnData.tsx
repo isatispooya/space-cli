@@ -3,11 +3,7 @@ import { CellComponent } from "tabulator-tables";
 import { letterTypeOptions, departmentOptions } from "./sent.data";
 import { createRoot } from "react-dom/client";
 import { SentMessageType } from "../../types";
-
-interface ColumnPropsType {
-  handleEdit: (id: number) => void;
-  handleView: (row: SentMessageType) => void;
-}
+import { ColumnPropsType } from "../../types/sent/sentColumnsData.type";
 
 const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
   const handleCellClick = (e: UIEvent, cell: CellComponent) => {
@@ -130,40 +126,6 @@ const columns = ({ handleEdit, handleView }: ColumnPropsType) => {
       formatter: () => `<button class="action-btn">⋮</button>`,
       cellClick: handleCellClick,
     },
-    // {
-    //   title: "عملیات",
-    //   formatter: () => {
-    //     return '<button class="action-btn">⋮</button>';
-    //   },
-    //   hozAlign: "center",
-    //   headerSort: false,
-    //   width: 60,
-    //   cellClick: function (e: Event, cell: CellComponent) {
-    //     e.stopPropagation();
-    //     const rowData = cell.getRow().getData();
-    //     const element = cell.getElement();
-    //     const rect = element.getBoundingClientRect();
-
-    //     createActionMenu({
-    //       items: [
-    //         {
-    //           label: "ویرایش",
-    //           icon: "⚡",
-    //           onClick: () => handleEdit(rowData.id),
-    //         },
-    //         {
-    //           label: "نمایش",
-    //           icon: "👀",
-    //           onClick: () => handleView(rowData as SentMessageType),
-    //         },
-    //       ],
-    //       position: {
-    //         x: rect.left + window.scrollX,
-    //         y: rect.bottom + window.scrollY,
-    //       },
-    //     });
-    //   },
-    // },
   ];
 };
 

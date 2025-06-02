@@ -11,7 +11,7 @@ import PrioritySection from "../components/sent/PrioritySection";
 import AttachmentSection from "../components/sent/AttachmentSection";
 import FormContainer from "../components/sent/FormContainer";
 import FormHeader from "../components/sent/FormHeader";
-import FormActions from "../components/sent/FormActions";
+import FormActions from "../components/sent/FormButtons";
 import PublishedMessage from "../components/sent/PublishedMessage";
 
 import { useSentFormLogic } from "../hooks/sent/useSentFormLogic";

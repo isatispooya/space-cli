@@ -6,6 +6,7 @@ import {
   TranscriptDetailsType,
 } from "./transcript.type";
 
+// Base Types
 export interface BaseUserType {
   id: number;
   first_name: string;
@@ -13,6 +14,14 @@ export interface BaseUserType {
   uniqueIdentifier?: string;
 }
 
+export type FormValueType = string | number | boolean | Array<string | number> | null;
+
+export interface SelectOptionType {
+  label: string;
+  value: string;
+}
+
+// Reference Types
 export interface ReferenceDataType {
   id: number;
   enabled: boolean;
@@ -20,6 +29,7 @@ export interface ReferenceDataType {
   user_external?: string;
 }
 
+// Form Types
 export interface APIFormDataType {
   subject: string;
   text: string;
@@ -73,12 +83,12 @@ export type FormDataType = {
   referenceData?: ReferenceDataType[];
   transcript: TranscriptDataType[];
   published: boolean;
-  owner: 0;
+  owner: number;
   transcript_details: TranscriptDetailType[];
   sender_external: string;
-
 };
 
+// Details Types
 export interface SenderDetailsType {
   id: number;
   user: BaseUserType;
@@ -104,6 +114,7 @@ export interface ReceiverInternalDetailsType {
   };
 }
 
+// Correspondence Types
 export interface CorrespondenceItemType {
   id: number;
   subject: string;
@@ -124,6 +135,7 @@ export interface CorrespondenceResponseType {
   receiver: CorrespondenceItemType[];
 }
 
+// Position Types
 export interface PositionType {
   id: number;
   name: string;
@@ -155,4 +167,25 @@ export interface MatchedUserType {
   id: number;
   firstName: string;
   lastName: string;
+}
+
+export interface SentFormStateType {
+  formData: FormDataType;
+  openFileDialog: boolean;
+  selectedTranscript: string[];
+  transcriptDirections: Record<number, string>;
+  attachmentOptions: SelectOptionType[];
+  setFormData: (data: Partial<FormDataType>) => void;
+  setOpenFileDialog: (isOpen: boolean) => void;
+  setSelectedTranscript: (transcripts: string[]) => void;
+  setTranscriptDirection: (id: number, direction: string) => void;
+  setAttachmentOptions: (options: SelectOptionType[]) => void;
+  handleChange: (name: string, value: FormValueType) => void;
+  handleReceiverTypeChange: (type: string) => void;
+  handleAttachmentAdd: (attachmentData: { name: string; id: number }) => void;
+  handleAddTranscript: (externalTranscriptText?: string) => void;
+  handleTranscriptToggle: (id: number) => void;
+  handleDeleteTranscript: (id: number) => void;
+  handleDeleteTranscriptFromStore: (id: number) => void;
+  resetForm: () => void;
 }

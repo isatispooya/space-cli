@@ -1,25 +1,11 @@
 import { CellComponent } from "tabulator-tables";
-import { ReceiveMessageType } from "../../types/receive/ReceiveMessage.type";
 import ActionMenu from "@/components/table/actionMenus";
 import {
   departmentOptions,
   letterTypeOptions,
 } from "../../data/sent/sent.data";
 import { createRoot } from "react-dom/client";
-
-interface ExtendedReceiveMessageType extends ReceiveMessageType {
-  seen?: boolean;
-}
-
-interface CellFormatterParamsType {
-  getValue: () => string;
-  getRow: () => { getData: () => ExtendedReceiveMessageType };
-  getElement: () => HTMLElement;
-}
-
-interface ColumnsProps {
-  handlePublish: (id: number) => void;
-}
+import { CellFormatterParamsType, ColumnsProps } from "../../types/receive/ReciveColumsData.type";
 
 const Columns = ({ handlePublish }: ColumnsProps) => {
   const isDraftRoute = window.location.pathname === "/letter/draft";

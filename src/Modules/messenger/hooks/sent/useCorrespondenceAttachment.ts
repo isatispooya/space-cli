@@ -28,8 +28,10 @@ const useCorrespondenceAttachment = {
     Error,
     AttachmentResponseType
   > => {
-    const { refetch: refetchAttache } = useCorrespondenceAttachment.useGetAttache();
-    const { refetch: refetchCorrespondence } = useCorrespondenceAttachment.useGetCorrespondence();
+    const { refetch: refetchAttache } =
+      useCorrespondenceAttachment.useGetAttache();
+    const { refetch: refetchCorrespondence } =
+      useCorrespondenceAttachment.useGetCorrespondence();
     return useMutation({
       mutationFn: correspondenceAttacheService.postAttache,
       onSuccess: () => {
@@ -46,8 +48,10 @@ const useCorrespondenceAttachment = {
     onSuccess?: () => void;
     onError?: (error: Error) => void;
   }): UseMutationResult<AttachmentResponseType, Error, APIFormDataType> => {
-    const { refetch: refetchAttache } = useCorrespondenceAttachment.useGetAttache();
-    const { refetch: refetchCorrespondence } = useCorrespondenceAttachment.useGetCorrespondence();
+    const { refetch: refetchAttache } =
+      useCorrespondenceAttachment.useGetAttache();
+    const { refetch: refetchCorrespondence } =
+      useCorrespondenceAttachment.useGetCorrespondence();
     return useMutation({
       mutationFn: correspondenceAttacheService.postCorrespondence,
       onSuccess: () => {
@@ -63,8 +67,10 @@ const useCorrespondenceAttachment = {
     Error,
     APIFormDataType & { id: number }
   > => {
-    const { refetch: refetchAttache } = useCorrespondenceAttachment.useGetAttache();
-    const { refetch: refetchCorrespondence } = useCorrespondenceAttachment.useGetCorrespondence();
+    const { refetch: refetchAttache } =
+      useCorrespondenceAttachment.useGetAttache();
+    const { refetch: refetchCorrespondence } =
+      useCorrespondenceAttachment.useGetCorrespondence();
     return useMutation({
       mutationFn: correspondenceAttacheService.updateCorrespondence,
       onSuccess: () => {
@@ -80,8 +86,10 @@ const useCorrespondenceAttachment = {
     Error,
     number
   > => {
-    const { refetch: refetchAttache } = useCorrespondenceAttachment.useGetAttache();
-    const { refetch: refetchCorrespondence } = useCorrespondenceAttachment.useGetCorrespondence();
+    const { refetch: refetchAttache } =
+      useCorrespondenceAttachment.useGetAttache();
+    const { refetch: refetchCorrespondence } =
+      useCorrespondenceAttachment.useGetCorrespondence();
     return useMutation({
       mutationFn: (id: number) =>
         correspondenceAttacheService.publishCorrespondence(id),

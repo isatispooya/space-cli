@@ -71,10 +71,8 @@ const correspondenceAttacheService = {
         }
       }
     } else if (Array.isArray(response.data)) {
-      // اگر فقط یک آرایه ساده باشد
       senderData = response.data;
     } else if (typeof response.data === "object" && response.data !== null) {
-      // اگر یک آبجکت ساده باشد
       senderData = [response.data];
     }
 
