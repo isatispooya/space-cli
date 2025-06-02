@@ -14,11 +14,11 @@ A web-based platform to automate financial tasks for offices, built with React, 
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/yourusername/your-repo.git`
-2. Navigate to the project directory: `cd your-repo`
-3. Install dependencies: `npm install` or `yarn install`
-4. Start the development server: `npm run dev` or `yarn dev`
-5. Open your browser and go to `http://localhost:5173` (or the URL shown in the console)
+1. Clone the repository: `https://github.com/isatispooya/space-cli.git`
+2. Navigate to the project directory: `cd space_cli`
+3. Install dependencies: `npm install` 
+4. Start the development server: `npm run dev` 
+5. Open your browser and go to `http://localhost:5173`
 
 ## Usage
 
@@ -38,12 +38,6 @@ To create a production build, run:
 npm run build
 ```
 
-or
-
-```bash
-yarn build
-```
-
 This will generate optimized files in the `dist` directory, which can be deployed to a web server.
 
 ## Contributing
@@ -56,7 +50,3 @@ Contributions are welcome! Please follow these steps:
 4. Push your branch and submit a pull request
 
 For significant changes, please open an issue first to discuss.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
