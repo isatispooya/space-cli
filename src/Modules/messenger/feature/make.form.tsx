@@ -45,6 +45,7 @@ const MakeForm: React.FC = () => {
     departmentOptions,
     letterTypeOptions,
     senderUserOptionsOut,
+    senderSignerOptions,
   } = useSentFormLogic(id);
 
   const { handleInputChange } = useFormStateHandler();
@@ -106,6 +107,7 @@ const MakeForm: React.FC = () => {
                   senderUserOptions={senderUserOptions}
                   senderUserOptionsOut={senderUserOptionsOut}
                   internalUserOptions={internalUserOptions}
+                  senderSignerOptions={senderSignerOptions}
                 />
               </Grid>
               <Grid item xs={12} md={6}>

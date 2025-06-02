@@ -137,6 +137,21 @@ export const useSentFormLogic = (id: string | undefined) => {
     [Position]
   );
 
+
+
+  const senderSignerOptions = useMemo(
+    () =>
+      (Position as PositionType[])
+        ?.filter((position) => position.signature_holder)
+        .map((position) => ({
+          label: `${position.user.first_name} ${position.user.last_name}  | ${
+            position.name
+          } | ${position.company_detail?.name || "بدون سمت"}`,
+          value: position.id.toString(),
+        })) || [],
+    [Position]
+  );
+
   const senderUserOptionsOut = useMemo(
     () =>
       (Position as PositionType[])?.map((position) => ({
@@ -436,5 +451,6 @@ export const useSentFormLogic = (id: string | undefined) => {
     departmentOptions,
     letterTypeOptions,
     setFormData,
+    senderSignerOptions
   };
 };

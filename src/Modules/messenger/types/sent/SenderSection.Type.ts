@@ -14,6 +14,7 @@ export interface SenderSectionPropsType extends SectionPropsType {
   senderUserOptions: SelectOptionType[];
   senderUserOptionsOut: SelectOptionType[];
   internalUserOptions: SelectOptionType[];
+  senderSignerOptions: SelectOptionType[];
   isEditMode: boolean;
 }
 
@@ -22,4 +23,3 @@ export interface PrioritySectionPropsType extends SectionPropsType {
   departmentOptions: SelectOptionType[];
   letterTypeOptions: SelectOptionType[];
 }
-

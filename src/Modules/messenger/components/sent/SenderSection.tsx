@@ -9,11 +9,15 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   handleChange,
   senderUserOptions,
   internalUserOptions,
+  senderSignerOptions,
 }) => {
   const location = useLocation();
   const showExternalReceiver =
     (!formData.is_internal && location.pathname !== "/letter/form") ||
     location.pathname === "/letter/Outform";
+
+  const letterOutformMake =
+    !formData.is_internal && location.pathname === "/letter/Outform";
 
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
@@ -45,20 +49,45 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
         </>
       ) : (
         <>
-          <FormInput
-            label="ارسال کننده خارجی"
-            value={formData.sender_external || ""}
-            onChange={(e) => handleChange("sender_external", e.target.value)}
-            placeholder="گیرنده خارجی"
-            className="enhanced-input"
-          />
-          <FormInput
-            label="گیرنده خارجی"
-            value={formData.receiver_external || ""}
-            onChange={(e) => handleChange("receiver_external", e.target.value)}
-            placeholder="گیرنده خارجی"
-            className="enhanced-input"
-          />
+          {letterOutformMake ? (
+            <>
+              <SelectInput
+                label="ارسال کننده خارجی"
+                value={formData.sender_external || ""}
+                onChange={(value) => handleChange("sender_external", value)}
+                options={senderSignerOptions}
+                className="enhanced-select"
+              />
+              <FormInput
+                label="گیرنده خارجی"
+                value={formData.receiver_external || ""}
+                onChange={(e) =>
+                  handleChange("receiver_external", e.target.value)
+                }
+                placeholder="گیرنده خارجی"
+                className="enhanced-input"
+              />
+            </>
+          ) : (
+            <>
+              <FormInput
+                label="ارسال کننده خارجی"
+                value={formData.sender_external || ""}
+                onChange={(e) =>
+                  handleChange("sender_external", e.target.value)
+                }
+                placeholder="ارسال کننده خارجی"
+                className="enhanced-input"
+              />
+              <SelectInput
+                label=" گیرنده خارجی"
+                value={formData.receiver_external || ""}
+                onChange={(value) => handleChange("receiver_external", value)}
+                options={senderSignerOptions}
+                className="enhanced-select"
+              />
+            </>
+          )}
         </>
       )}
 

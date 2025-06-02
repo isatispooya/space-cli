@@ -8,6 +8,8 @@ import {
   Chip,
   Divider,
   TextField,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import { MultiSelect } from "../../../../components/common/inputs";
 import { ButtonBase } from "../../../../components/common/buttons";
@@ -60,7 +62,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     const handleDeleteTranscript = useCallback(
       (id: number) => {
         const isExternal = id < 0;
-    
+
         setLocalTranscript((prev) =>
           prev.filter((item) => {
             if (isExternal) {
@@ -70,21 +72,25 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
             }
           })
         );
-    
+
         handleDeleteTranscriptFromStore(id);
-    
+
         const newSelectedTranscript = selectedTranscript.filter(
           (selectedId) => selectedId !== id.toString()
         );
         setSelectedTranscript(newSelectedTranscript);
-    
+
         if (onDeleteTranscript) {
           onDeleteTranscript(id);
         }
       },
-      [onDeleteTranscript, handleDeleteTranscriptFromStore, setSelectedTranscript, selectedTranscript]
+      [
+        onDeleteTranscript,
+        handleDeleteTranscriptFromStore,
+        setSelectedTranscript,
+        selectedTranscript,
+      ]
     );
-    
 
     const [externalTranscriptText, setExternalTranscriptText] = useState("");
 
@@ -104,20 +110,9 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
       }
     }, [data?.transcript]);
 
-    const handleAdd = useCallback(() => {
-      if (selectedTranscript.length > 0) {
-        handleAddTranscript();
-      }
-
-      if (externalTranscriptText.trim() !== "") {
-        handleAddTranscript(externalTranscriptText.trim());
-      }
-    }, [
-      selectedTranscript,
-      handleAddTranscript,
-      setSelectedTranscript,
-      externalTranscriptText,
-    ]);
+    const [recipientType, setRecipientType] = useState<"internal" | "external">(
+      "internal"
+    );
 
     const internalTranscripts = localTranscript.filter(
       (t) => !t.isExternal && !t.user_external && t.id >= 0
@@ -125,11 +120,6 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
     const externalTranscripts = localTranscript.filter(
       (t) => t.isExternal || t.user_external || t.id < 0
     );
-
-    const combinedTranscripts = [
-      ...internalTranscripts,
-      ...externalTranscripts,
-    ];
 
     return (
       <Box
@@ -144,54 +134,91 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
           boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
         }}
       >
+        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={recipientType === "external"}
+                onChange={() =>
+                  setRecipientType(
+                    recipientType === "internal" ? "external" : "internal"
+                  )
+                }
+                color="primary"
+              />
+            }
+            label={
+              recipientType === "internal" ? "گیرندگان داخلی" : "گیرندگان خارجی"
+            }
+            labelPlacement="start"
+            sx={{ mr: 2 }}
+          />
+        </Box>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={10}>
             <div style={{ display: "flex", gap: 10 }}>
-              <MultiSelect
-                label="انتخاب گیرندگان رونوشت"
-                selectedValues={selectedTranscript}
-                onChange={(value) => {
-                  const filteredValues = value.filter((v) => v !== "");
-                  setSelectedTranscript(filteredValues);
-                }}
-                options={internalUserOptions}
-              />
-
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                sx={{ width: "100%", marginTop: "25px" }}
-              >
-                <TextField
-                  label="گیرندگان رونوشت خارجی"
-                  value={externalTranscriptText}
-                  onChange={(e) => setExternalTranscriptText(e.target.value)}
-                  placeholder="نام گیرنده رونوشت خارجی را وارد کنید"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  sx={{
-                    borderRadius: 1.5,
-                    boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
+              {recipientType === "internal" && (
+                <MultiSelect
+                  label="انتخاب گیرندگان رونوشت"
+                  selectedValues={selectedTranscript}
+                  onChange={(value) => {
+                    const filteredValues = value.filter((v) => v !== "");
+                    setSelectedTranscript(filteredValues);
                   }}
+                  options={internalUserOptions}
                 />
-              </Grid>
+              )}
+              {recipientType === "external" && (
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  sx={{ width: "100%", marginTop: "25px" }}
+                >
+                  <TextField
+                    label="گیرندگان رونوشت خارجی"
+                    value={externalTranscriptText}
+                    onChange={(e) => setExternalTranscriptText(e.target.value)}
+                    placeholder="نام گیرنده رونوشت خارجی را وارد کنید"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    sx={{
+                      borderRadius: 1.5,
+                      boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
+                    }}
+                  />
+                </Grid>
+              )}
             </div>
           </Grid>
           <Grid item xs={2}>
             <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
               <ButtonBase
                 label="افزودن"
-                onClick={handleAdd}
+                onClick={() => {
+                  if (
+                    recipientType === "internal" &&
+                    selectedTranscript.length > 0
+                  ) {
+                    handleAddTranscript();
+                  }
+                  if (
+                    recipientType === "external" &&
+                    externalTranscriptText.trim() !== ""
+                  ) {
+                    handleAddTranscript(externalTranscriptText.trim());
+                  }
+                }}
                 bgColor="#1976d2"
                 hoverColor="#1565c0"
               />
             </Box>
           </Grid>
         </Grid>
-
-        {combinedTranscripts.length > 0 && (
+        {(recipientType === "internal"
+          ? internalTranscripts.length
+          : externalTranscripts.length) > 0 && (
           <Box sx={{ mt: 1, mb: 1 }}>
             <Typography
               variant="body2"
@@ -199,7 +226,11 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
               sx={{ display: "flex", alignItems: "center", gap: 1 }}
             >
               <Chip
-                label={combinedTranscripts.length}
+                label={
+                  recipientType === "internal"
+                    ? internalTranscripts.length
+                    : externalTranscripts.length
+                }
                 size="small"
                 color="primary"
                 sx={{ fontWeight: "bold", height: 22, minWidth: 22 }}
@@ -208,8 +239,9 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
             </Typography>
           </Box>
         )}
-
-        {combinedTranscripts.length > 0 && (
+        {(recipientType === "internal"
+          ? internalTranscripts.length
+          : externalTranscripts.length) > 0 && (
           <Paper
             variant="outlined"
             sx={{
@@ -220,7 +252,10 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
             }}
           >
             <List sx={{ p: 0 }}>
-              {combinedTranscripts.map((item, index) => (
+              {(recipientType === "internal"
+                ? internalTranscripts
+                : externalTranscripts
+              ).map((item, index, arr) => (
                 <React.Fragment key={item.position ?? item.id}>
                   <TranscriptListItem
                     item={item}
@@ -231,9 +266,7 @@ const Transcript: React.FC<TranscriptPropsType> = React.memo(
                     internalOptions={internalOptions}
                     onDelete={handleDeleteTranscript}
                   />
-                  {index < combinedTranscripts.length - 1 && (
-                    <Divider sx={{ my: 0.5 }} />
-                  )}
+                  {index < arr.length - 1 && <Divider sx={{ my: 0.5 }} />}
                 </React.Fragment>
               ))}
             </List>

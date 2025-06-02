@@ -48,4 +48,5 @@ export interface PositionType {
     id: number | string;
     name: string;
   };
+  signature_holder?: boolean;
 }
