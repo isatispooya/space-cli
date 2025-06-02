@@ -12,7 +12,8 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
 }) => {
   const location = useLocation();
   const showExternalReceiver =
-    (!formData.is_internal && location.pathname !== "/letter/form") || location.pathname === "/letter/Outform";
+    (!formData.is_internal && location.pathname !== "/letter/form") ||
+    location.pathname === "/letter/Outform";
 
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
@@ -62,7 +63,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
       )}
 
       <SelectInput
-        label="مالک"
+        label="تایید کننده"
         value={formData.owner?.toString() || ""}
         onChange={(value) => handleChange("owner", value)}
         options={internalUserOptions}
