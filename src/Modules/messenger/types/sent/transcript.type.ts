@@ -125,6 +125,7 @@ export interface TranscriptListItemPropsType {
   onDelete?: (id: number) => void;
 }
 
+
 export interface TranscriptSectionPropsType {
   transcriptItems: ITranscriptResponseType[];
   selectedTranscript: string[];
