@@ -10,7 +10,7 @@ interface ToolbarButtonType {
   permission: string[];
   path?: string;
   onClick?: () => void;
-  disabled?: boolean; // اضافه شده
+  disabled?: boolean; 
 }
 
 interface ToolbarPropsType {

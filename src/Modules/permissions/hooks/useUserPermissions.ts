@@ -17,7 +17,6 @@ const useUserPermissions = () => {
       return false;
     }
 
-    // اطمینان از آرایه بودن
     const permissionArray = Array.isArray(permission)
       ? permission
       : [permission];
