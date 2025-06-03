@@ -5,12 +5,15 @@ import {
   letterTypeOptions,
 } from "../../data/sent/sent.data";
 import { createRoot } from "react-dom/client";
-import { CellFormatterParamsType, ColumnsProps } from "../../types/receive/ReciveColumsData.type";
+import {
+  CellFormatterParamsType,
+  ColumnsProps,
+} from "../../types/receive/ReciveColumsData.type";
 
-const Columns = ({ handlePublish }: ColumnsProps) => {
-  const isDraftRoute = window.location.pathname === "/letter/draft";
+const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
   const pathname = window.location.pathname;
 
+  const isDraftRoute = pathname === "/letter/draft";
   const isReceiveTableRoute =
     pathname === "/letter/Outreceive-table" ||
     pathname === "/letter/receive-table";
@@ -74,6 +77,11 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
                     onClick: () =>
                       (window.location.href = `/letter/receive-workflow/${rowData.id}`),
                   },
+                  {
+                    label: "بایگانی",
+                    icon: "📦",
+                    onClick: () => setArchiveModalOpen(true),
+                  },
                 ]
               : []),
           ]),
@@ -114,6 +122,7 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
       ? [
           {
             field: "seen",
+            title: "",
             hozAlign: "center",
             width: 80,
             formatter: (cell: CellFormatterParamsType) => {
@@ -167,6 +176,7 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
         departmentLabels[cell.getValue()] || cell.getValue(),
     },
     { title: "تاریخ ارسال", field: "send_date", hozAlign: "center" },
+    { title: "تاریخ مشاهده", field: "read_at", hozAlign: "center" },
     {
       field: "عملیات",
       title: "عملیات",

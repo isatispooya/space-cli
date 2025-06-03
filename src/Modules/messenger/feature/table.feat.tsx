@@ -13,6 +13,7 @@ import ExelData from "../data/receive/receiveExelData";
 import { RowComponent } from "tabulator-tables";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import ArchiveModal from "../components/modal/archiveModal";
 
 export const TableFeature = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -37,6 +38,7 @@ export const TableFeature = () => {
   const letterTable = location.pathname === "/letter/table";
   const outTable = location.pathname === "/letter/Outtable";
   const draftTable = location.pathname === "/letter/draft";
+  const [archiveModalOpen, setArchiveModalOpen] = useState(false);
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -115,6 +117,7 @@ export const TableFeature = () => {
         sender: senderName,
         receiver: receiverName,
         send_date: formatDate(item.created_at),
+        read_at: item.read_at ? formatDate(item.read_at) : "",
         kind_of_correspondence:
           item.priority === "urgent" ? "اعلامیه" : "درخواست",
         status: "",
@@ -250,7 +253,10 @@ export const TableFeature = () => {
       <div className="overflow-x-auto">
         <TabulatorTable
           data={filteredMappedData}
-          columns={columns({ handlePublish: publishCorrespondence })}
+          columns={columns({
+            handlePublish: publishCorrespondence,
+            setArchiveModalOpen: setArchiveModalOpen,
+          })}
           title={
             receiveTable
               ? "پیام های دریافتی"
@@ -268,7 +274,7 @@ export const TableFeature = () => {
           formatExportData={(item: ReceiveMessageType) => ExelData(item)}
           dateField="send_date"
           showDateFilter={true}
-          showSearchFilter={false}
+          showSearchFilter={true}
           searchFields={searchFields}
           options={tableOptions}
           showCreateLetter={currentPath === "/letter/Outreceive-table"}
@@ -277,6 +283,10 @@ export const TableFeature = () => {
           searchTerm={searchTerm}
           onSearchTermChange={setSearchTerm}
           isSearching={isSearching}
+        />
+        <ArchiveModal
+          open={archiveModalOpen}
+          onClose={() => setArchiveModalOpen(false)}
         />
       </div>
     </div>

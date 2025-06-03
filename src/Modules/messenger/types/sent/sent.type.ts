@@ -14,7 +14,12 @@ export interface BaseUserType {
   uniqueIdentifier?: string;
 }
 
-export type FormValueType = string | number | boolean | Array<string | number> | null;
+export type FormValueType =
+  | string
+  | number
+  | boolean
+  | Array<string | number>
+  | null;
 
 export interface SelectOptionType {
   label: string;
@@ -123,6 +128,7 @@ export interface CorrespondenceItemType {
   receiver_external: string;
   is_internal: boolean;
   created_at: string;
+  read_at: string;
   priority: string;
   number: string;
   name: string;
@@ -146,6 +152,7 @@ export interface PositionType {
 
 export interface SenderType {
   created_at: string;
+  read_at: string;
   attachments_details?: CorrespondenceAttachmentType[];
   number: string;
   confidentiality_level?: string;
