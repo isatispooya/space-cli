@@ -19,15 +19,15 @@ interface CellFormatterParamsType {
 
 interface ColumnsProps {
   handlePublish: (id: number) => void;
+  setArchiveModalOpen: (value: boolean) => void;
 }
 
-const Columns = ({ handlePublish }: ColumnsProps) => {
-  const isDraftRoute = window.location.pathname === "/letter/draft";
+const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
   const pathname = window.location.pathname;
 
+  const isDraftRoute = pathname === "/letter/draft";
   const isReceiveTableRoute =
-    pathname === "/letter/Outreceive-table" ||
-    pathname === "/letter/receive-table";
+    pathname === "/letter/Outreceive-table" || pathname === "/letter/receive-table";
 
   const letterTypeLabels = Object.fromEntries(
     letterTypeOptions.map(({ value, label }) => [value, label])
@@ -88,6 +88,11 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
                     onClick: () =>
                       (window.location.href = `/letter/receive-workflow/${rowData.id}`),
                   },
+                  {
+                    label: "بایگانی",
+                    icon: "📦",
+                    onClick: () => setArchiveModalOpen(true),
+                  },
                 ]
               : []),
           ]),
@@ -128,6 +133,7 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
       ? [
           {
             field: "seen",
+            title: "",
             hozAlign: "center",
             width: 80,
             formatter: (cell: CellFormatterParamsType) => {
@@ -140,24 +146,9 @@ const Columns = ({ handlePublish }: ColumnsProps) => {
       : []),
 
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
-    {
-      title: "شماره نامه",
-      field: "number",
-      headerFilter: true,
-      hozAlign: "center",
-    },
-    {
-      title: "ارسال کننده",
-      field: "sender",
-      headerFilter: true,
-      hozAlign: "center",
-    },
-    {
-      title: "گیرنده",
-      field: "receiver",
-      headerFilter: true,
-      hozAlign: "center",
-    },
+    { title: "شماره نامه", field: "number", headerFilter: true, hozAlign: "center" },
+    { title: "ارسال کننده", field: "sender", headerFilter: true, hozAlign: "center" },
+    { title: "گیرنده", field: "receiver", headerFilter: true, hozAlign: "center" },
     {
       title: "نوع نامه",
       field: "kind_of_correspondence",
