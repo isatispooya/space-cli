@@ -1,19 +1,68 @@
 import { TextAreaInput } from "@/components";
 import { Modal, Box, Typography, Button, Stack } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import useReceive from "../../hooks/receive/useReceive";
+import {
+  ArchiveCreateReqType,
+  ArchiveModalProps,
+} from "../../types/receive/archive";
+import { ArchiveReqType } from "../../types/receive/archive";
 
 const ArchiveModal = ({
   open,
   onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) => {
+  existingDescription = "",
+  targetId,
+  correspondence,
+  correspondenceRefetch,
+}: ArchiveModalProps) => {
+  const { mutate: postArchive } = useReceive.usePostArchive();
+  const { mutate: deleteArchive } = useReceive.useDeleteArchive();
+
   const [description, setDescription] = useState("");
 
+  const receiverArray = correspondence?.receiver as
+    | ArchiveReqType[]
+    | undefined;
+
+  const receiverItem = receiverArray?.find((item) => item.id === targetId);
+
+  useEffect(() => {
+    if (open) {
+      const newText =
+        existingDescription || receiverItem?.archive_details?.text || "";
+      setDescription(newText);
+    }
+  }, [open, existingDescription, correspondence, receiverItem]);
+
   const handleConfirm = () => {
-    console.log(description);
+    if (!targetId) return;
+
+    const payload: ArchiveCreateReqType = {
+      correspondence: targetId,
+      text: description,
+    };
+
+    postArchive(payload as any);
+
+    onClose();
+    correspondenceRefetch();
   };
+
+  const handleDelete = () => {
+    const archiveId = receiverItem?.archive_details?.id;
+    if (!archiveId) {
+      console.warn("آیتمی برای حذف پیدا نشد.");
+      return;
+    }
+    deleteArchive({ id: archiveId });
+    onClose();
+    correspondenceRefetch();
+  };
+
+  if (!correspondence || !receiverItem) return null;
+
+  const isAlreadyArchived = !!receiverItem.archive_details;
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -31,7 +80,9 @@ const ArchiveModal = ({
         }}
       >
         <Typography variant="body2" mb={2} textAlign="center">
-          آیا می‌خواهید این نامه را بایگانی کنید؟
+          {isAlreadyArchived
+            ? "این نامه قبلاً بایگانی شده است. آیا می‌خواهید آن را حذف کنید؟"
+            : "آیا می‌خواهید این نامه را بایگانی کنید؟"}
         </Typography>
 
         <TextAreaInput
@@ -42,10 +93,14 @@ const ArchiveModal = ({
         />
 
         <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
-          <Button variant="contained" color="primary" onClick={handleConfirm}>
-            بایگانی
+          <Button
+            variant={isAlreadyArchived ? "outlined" : "contained"}
+            color={isAlreadyArchived ? "error" : "primary"}
+            onClick={isAlreadyArchived ? handleDelete : handleConfirm}
+          >
+            {isAlreadyArchived ? "حذف" : "بایگانی"}
           </Button>
-          <Button variant="outlined" color="error" onClick={onClose}>
+          <Button variant="text" onClick={onClose}>
             انصراف
           </Button>
         </Stack>

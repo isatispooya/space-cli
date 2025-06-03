@@ -7,6 +7,7 @@ export interface ReceiveMessageType {
   read_at: string;
   status: string;
   message_type: string;
+  
 }
 
 export interface CorrespondenceReceiverType {

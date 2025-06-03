@@ -26,7 +26,7 @@ export const TableFeature = () => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 
-  const { data: correspondence, isLoading } =
+  const { data: correspondence, isLoading ,refetch:correspondenceRefetch } =
     useCorrespondenceAttachment.useGetCorrespondence();
   const { mutate: publishCorrespondence } =
     useCorrespondenceAttachment.usePublishCorrespondence();
@@ -38,7 +38,10 @@ export const TableFeature = () => {
   const letterTable = location.pathname === "/letter/table";
   const outTable = location.pathname === "/letter/Outtable";
   const draftTable = location.pathname === "/letter/draft";
-  const [archiveModalOpen, setArchiveModalOpen] = useState(false);
+  const [archiveModalState, setArchiveModalOpen] = useState<any>({
+    open: false,
+    id: null,
+  });
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -285,8 +288,12 @@ export const TableFeature = () => {
           isSearching={isSearching}
         />
         <ArchiveModal
-          open={archiveModalOpen}
-          onClose={() => setArchiveModalOpen(false)}
+          open={archiveModalState.open}
+          onClose={() => setArchiveModalOpen({ open: false, id: null })}
+          targetId={archiveModalState.id}
+          correspondence={correspondence as any}
+          correspondenceRefetch={correspondenceRefetch}
+
         />
       </div>
     </div>

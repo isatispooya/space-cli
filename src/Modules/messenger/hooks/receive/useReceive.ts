@@ -5,11 +5,9 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { receiveSer } from "../../services/receive";
-import { 
- 
-  ReferralReqType 
-} from "../../types/receive/ReceiveMessage.type";
+import { ReferralReqType } from "../../types/receive/ReceiveMessage.type";
 import { SenderType } from "../../types/sent/sent.type";
+import { ArchiveReqType } from "../../types/receive/archive";
 
 const useReceive = {
   useGet: (): UseQueryResult<ReferralReqType> => {
@@ -18,8 +16,7 @@ const useReceive = {
       queryFn: receiveSer.getReceive,
     });
   },
-
-  useGetById: (id: string): UseQueryResult<{sender: SenderType}> => {
+  useGetById: (id: string): UseQueryResult<{ sender: SenderType }> => {
     return useQuery({
       queryKey: ["receiveById", id],
       queryFn: () => receiveSer.getReceiveById(id),
@@ -41,6 +38,23 @@ const useReceive = {
       queryFn: () => receiveSer.getReceiveWorkflow(id),
     });
   },
+  usePostArchive: (): UseMutationResult<
+    ArchiveReqType,
+    Error,
+    ArchiveReqType
+  > => {
+    return useMutation({
+      mutationKey: ["receivePostArchive"],
+      mutationFn: (data: ArchiveReqType) => receiveSer.postArchive(data),
+    });
+  },
+  useDeleteArchive: () => {
+    return useMutation({
+      mutationKey: ["receiveDeleteArchive"],
+      mutationFn: ({ id }: { id: string }) => receiveSer.deleteArchive(id),
+    });
+  }
+  
 };
 
 export default useReceive;

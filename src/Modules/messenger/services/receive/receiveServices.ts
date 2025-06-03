@@ -1,5 +1,6 @@
 import { api } from "@/api";
 import { ReferralReqType } from "../../types/receive/ReceiveMessage.type";
+import { ArchiveReqType } from "../../types/receive/archive";
 
 const receiveSer = {
   getReceive: async () => {
@@ -16,6 +17,21 @@ const receiveSer = {
   },
   getReceiveWorkflow: async (id: string) => {
     const response = await api.get(`/correspondence/reference/${id}/`);
+    return response.data;
+  },
+  postArchive: async (data: ArchiveReqType) => {
+    const response = await api.post(
+      `/correspondence/archive/correspondence/`,
+      data
+
+    );
+    
+    return response.data;
+  },
+  deleteArchive: async (id: string) => {
+    const response = await api.delete(
+      `/correspondence/archive/correspondence/${id}/`
+    );
     return response.data;
   },
 };
