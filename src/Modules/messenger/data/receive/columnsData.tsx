@@ -5,14 +5,18 @@ import {
   letterTypeOptions,
 } from "../../data/sent/sent.data";
 import { createRoot } from "react-dom/client";
-import { CellFormatterParamsType, ColumnsProps } from "../../types/receive/ReciveColumsData.type";
+import {
+  CellFormatterParamsType,
+  ColumnsProps,
+} from "../../types/receive/ReciveColumsData.type";
 
 const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
   const pathname = window.location.pathname;
 
   const isDraftRoute = pathname === "/letter/draft";
   const isReceiveTableRoute =
-    pathname === "/letter/Outreceive-table" || pathname === "/letter/receive-table";
+    pathname === "/letter/Outreceive-table" ||
+    pathname === "/letter/receive-table";
 
   const letterTypeLabels = Object.fromEntries(
     letterTypeOptions.map(({ value, label }) => [value, label])
@@ -131,9 +135,24 @@ const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
       : []),
 
     { title: "عنوان", field: "title", headerFilter: true, hozAlign: "center" },
-    { title: "شماره نامه", field: "number", headerFilter: true, hozAlign: "center" },
-    { title: "ارسال کننده", field: "sender", headerFilter: true, hozAlign: "center" },
-    { title: "گیرنده", field: "receiver", headerFilter: true, hozAlign: "center" },
+    {
+      title: "شماره نامه",
+      field: "number",
+      headerFilter: true,
+      hozAlign: "center",
+    },
+    {
+      title: "ارسال کننده",
+      field: "sender",
+      headerFilter: true,
+      hozAlign: "center",
+    },
+    {
+      title: "گیرنده",
+      field: "receiver",
+      headerFilter: true,
+      hozAlign: "center",
+    },
     {
       title: "نوع نامه",
       field: "kind_of_correspondence",
@@ -157,6 +176,7 @@ const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
         departmentLabels[cell.getValue()] || cell.getValue(),
     },
     { title: "تاریخ ارسال", field: "send_date", hozAlign: "center" },
+    { title: "تاریخ مشاهده", field: "read_at", hozAlign: "center" },
     {
       field: "عملیات",
       title: "عملیات",

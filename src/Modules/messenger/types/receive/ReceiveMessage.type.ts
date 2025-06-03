@@ -4,6 +4,7 @@ export interface ReceiveMessageType {
   receiver: string;
   sender: string;
   send_date: string;
+  read_at: string;
   status: string;
   message_type: string;
 }
@@ -17,6 +18,7 @@ export interface CorrespondenceItemType {
   id: number;
   subject: string;
   created_at: string;
+  read_at: string;
   priority: string;
   is_internal: boolean;
   number: string;

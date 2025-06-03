@@ -39,7 +39,6 @@ export const TableFeature = () => {
   const outTable = location.pathname === "/letter/Outtable";
   const draftTable = location.pathname === "/letter/draft";
   const [archiveModalOpen, setArchiveModalOpen] = useState(false);
-  
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -118,6 +117,7 @@ export const TableFeature = () => {
         sender: senderName,
         receiver: receiverName,
         send_date: formatDate(item.created_at),
+        read_at: item.read_at ? formatDate(item.read_at) : "",
         kind_of_correspondence:
           item.priority === "urgent" ? "اعلامیه" : "درخواست",
         status: "",
@@ -274,7 +274,7 @@ export const TableFeature = () => {
           formatExportData={(item: ReceiveMessageType) => ExelData(item)}
           dateField="send_date"
           showDateFilter={true}
-          showSearchFilter={false}
+          showSearchFilter={true}
           searchFields={searchFields}
           options={tableOptions}
           showCreateLetter={currentPath === "/letter/Outreceive-table"}
@@ -286,7 +286,7 @@ export const TableFeature = () => {
         />
         <ArchiveModal
           open={archiveModalOpen}
-          onClose={() => setArchiveModalOpen(false)}      
+          onClose={() => setArchiveModalOpen(false)}
         />
       </div>
     </div>
