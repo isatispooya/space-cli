@@ -80,8 +80,11 @@ const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
                   {
                     label: "بایگانی",
                     icon: "📦",
-                    onClick: () => setArchiveModalOpen(true),
+                    onClick: () =>
+                      setArchiveModalOpen({ open: true, id: rowData.id  } as any),
+
                   },
+                  
                 ]
               : []),
           ]),
