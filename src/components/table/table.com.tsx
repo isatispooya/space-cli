@@ -258,11 +258,11 @@ const TabulatorTable: React.FC<TablePropsType> = ({
       if (!tabulator.current) return;
       const tableData = tabulator.current.getData("active") || [];
       if (!tableData.length) return;
-
+  
       const formattedData = formatExportData
-        ? tableData.map((item: any) => formatExportData(item))
+        ? formatExportData(tableData)
         : tableData;
-
+  
       const workbook = XLSX.utils.book_new();
       const worksheet = XLSX.utils.json_to_sheet(formattedData);
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");

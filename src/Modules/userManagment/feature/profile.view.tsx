@@ -16,7 +16,6 @@ const ProfileView: React.FC = () => {
   const { checkPermission } = useUserPermissions();
   const permission = checkPermission(["position"]);
 
-  console.log(position);
 
   React.useEffect(() => {
     if (profile?.profile_image) {

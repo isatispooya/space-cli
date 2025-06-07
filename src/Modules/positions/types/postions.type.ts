@@ -37,6 +37,7 @@ export interface PositionType {
   description: string;
   user: UserType;
   start_date: string;
+  executive_position: boolean;
   end_date: string;
   created_at?: string;
   sender: string;

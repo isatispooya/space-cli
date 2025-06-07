@@ -21,6 +21,8 @@ const validationSchema = Yup.object().shape({
   end_date: Yup.string().required("تاریخ پایان الزامی است"),
   type_of_employment: Yup.string().required("نوع استخدام الزامی است"),
   user: Yup.number().required("کاربر الزامی است"),
+  signature_holder: Yup.boolean().required("حق امضا الزامی است"),
+  executive_position: Yup.boolean().required("مقام اجرایی الزامی است"),
 });
 
 const typeOfEmploymentTranslations: Record<string, string> = {
@@ -70,10 +72,25 @@ const PositionUpdateForm = () => {
       name: "company",
       label: "شرکت",
       type: "select",
-      options: (companies as unknown as CompanyType[])?.map((company: CompanyType) => ({
-        value: company.id.toString(),
-        label: company.name,
-      })) || [],
+      options:
+        (companies as unknown as CompanyType[])?.map(
+          (company: CompanyType) => ({
+            value: company.id.toString(),
+            label: company.name,
+          })
+        ) || [],
+    },
+    {
+      name: "start_date",
+      label: "تاریخ شروع",
+      type: "date",
+      format: (value: string) => moment(value).format("jYYYY/jMM/jDD"),
+    },
+ 
+    {
+      name: "signature_holder",
+      label: "حق امضا",
+      type: "checkbox",
     },
     {
       name: "user",
@@ -86,12 +103,13 @@ const PositionUpdateForm = () => {
         },
       ],
     },
+
     {
-      name: "start_date",
-      label: "تاریخ شروع",
-      type: "date",
-      format: (value: string) => moment(value).format("jYYYY/jMM/jDD"),
+      name: "executive_position",
+      label: "مقام اجرایی",
+      type: "checkbox",
     },
+ 
     {
       name: "end_date",
       label: "تاریخ پایان",
@@ -123,6 +141,7 @@ const PositionUpdateForm = () => {
         })
       ),
     },
+
   ];
 
   const initialValues: PositionPostType = {
@@ -130,6 +149,8 @@ const PositionUpdateForm = () => {
     company: Number(specificUser?.company_detail?.id) || 0,
     user: Number(userId) || 0,
     parent: specificUser?.parent?.id || 0,
+    signature_holder: specificUser?.signature_holder || false,
+    executive_position: specificUser?.executive_position || false,
     type_of_employment: specificUser?.type_of_employment || "",
     description: specificUser?.description || "",
     start_date: specificUser?.start_date
