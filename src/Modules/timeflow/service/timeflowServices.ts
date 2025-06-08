@@ -61,8 +61,14 @@ const timeflowServices = {
     const response = await api.patch(`/timeflow/user-login-log/${id}/`, data);
     return response.data;
   },
-  getTimeFlowReport: async (id: number) => {
-    const response = await api.get(`/timeflow/user-login-log-report/${id}/`);
+  getTimeFlowReport: async (id: number, month?: number, year?: number) => {
+    const params = new URLSearchParams();
+    if (month !== undefined) params.append("month", month.toString());
+    if (year !== undefined) params.append("year", year.toString());
+
+    const response = await api.get(
+      `/timeflow/user-login-log-report/${id}/?${params.toString()}`
+    );
     return response.data;
   },
 };
