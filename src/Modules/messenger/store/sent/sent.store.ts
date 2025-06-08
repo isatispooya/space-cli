@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { 
-  FormDataType, 
-  ReferenceDataType, 
-  SentFormStateType
+import {
+  FormDataType,
+  ReferenceDataType,
+  SentFormStateType,
 } from "../../types/sent/sent.type";
 import { TranscriptDataType, TranscriptDetailsType } from "../../types";
 
@@ -31,7 +31,7 @@ const initialFormData: FormDataType = {
   signature: false,
   letterhead: false,
   binding: false,
-  confidentiality_level: "",
+  confidentiality_level: "normal",
   priority: "",
   kind_of_correspondence: "",
   authority_type: "new",
@@ -284,9 +284,9 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
         }
       });
 
-      const updatedTranscriptDetails = (state.formData.transcript_details || []).filter(
-        (detail) => detail.position !== id
-      );
+      const updatedTranscriptDetails = (
+        state.formData.transcript_details || []
+      ).filter((detail) => detail.position !== id);
 
       return {
         formData: {
