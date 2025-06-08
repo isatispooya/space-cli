@@ -74,6 +74,11 @@ const WorkflowTable = () => {
   const columns = useMemo<ColumnDefinition[]>(
     () => [
       {
+        title: "شناسه",
+        field: "id",
+        hozAlign: "center",
+      },
+      {
         title: "شماره نامه",
         field: "correspondence_details.number",
         hozAlign: "center",

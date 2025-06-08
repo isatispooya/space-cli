@@ -1,15 +1,24 @@
 import { MainLayout } from "../../../../layouts";
-
 import { Toolbar } from "../../../../components";
-import { Outlet } from "react-router-dom";
+import { BsMailbox } from "react-icons/bs";
+
+import { Outlet, useLocation } from "react-router-dom";
+import { RiSendPlaneLine } from "react-icons/ri";
+import { LuSendHorizontal } from "react-icons/lu";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { AiOutlineInbox } from "react-icons/ai";
 import { MdOutlineCreate } from "react-icons/md";
 import { FiExternalLink } from "react-icons/fi";
-import { AiOutlineInbox } from "react-icons/ai";
-import { BsMailbox } from "react-icons/bs";
-import { LuSendHorizontal } from "react-icons/lu";
-import { RiSendPlaneLine } from "react-icons/ri";
-import { IoDocumentTextOutline } from "react-icons/io5";
-const SentPage = () => {
+
+const ReceivePage = () => {
+  const location = useLocation();
+  const path = location.pathname;
+
+  const table = path === "/letter/receive-table";
+  const workflow = path.startsWith("/letter/receive-workflow/");
+  const RefferalTable = path.startsWith("/letter/refferal-table/");
+  const RefferalForm = path.startsWith("/letter/receive-refferal/");
+
   const toolbarButtons = [
     {
       icon: MdOutlineCreate,
@@ -54,15 +63,22 @@ const SentPage = () => {
       path: "draft",
     },
   ];
+
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col">
         <div className="bg-white p-3">
           <h1 className="text-2xl font-bold text-center text-indigo-600 mb-1">
-            نامه ها
+            {RefferalForm && "ارجاع ها"}
+            {RefferalTable && "لیست ارجاعات"}
+            {workflow && "گردش کار ها"}
+            {table && "نامه ها دریافتی داخلی"}
           </h1>
           <p className="text-gray-600 text-center text-sm">
-            مدیریت و پیگیری نامه های کاربران
+            {RefferalForm && "مدیریت و پیگیری ارجاع های کاربران"}
+            {RefferalTable && "مدیریت و پیگیری ارجاع های کاربران"}
+            {workflow && "مدیریت و پیگیری گردش کار های کاربران"}
+            {table && "مدیریت و پیگیری  نامه ها کاربران"}
           </p>
         </div>
         <div className="flex-grow flex flex-col">
@@ -78,4 +94,4 @@ const SentPage = () => {
   );
 };
 
-export default SentPage;
+export default ReceivePage;
