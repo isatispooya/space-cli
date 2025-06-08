@@ -66,12 +66,6 @@ const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
             ...(isReceiveTableRoute
               ? [
                   {
-                    label: "ارجاع",
-                    icon: "📤",
-                    onClick: () =>
-                      (window.location.href = `/letter/receive-refferal/${rowData.id}`),
-                  },
-                  {
                     label: "گردش کار",
                     icon: "📊",
                     onClick: () =>
@@ -81,10 +75,11 @@ const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
                     label: "بایگانی",
                     icon: "📦",
                     onClick: () =>
-                      setArchiveModalOpen({ open: true, id: rowData.id  } as any),
-
+                      setArchiveModalOpen({
+                        open: true,
+                        id: rowData.id,
+                      } as any),
                   },
-                  
                 ]
               : []),
           ]),

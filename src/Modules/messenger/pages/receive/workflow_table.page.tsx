@@ -1,7 +1,7 @@
 import { WorkflowTable } from "../../feature";
 
-const ReceiveTablePage = () => {
+const WorkflowTablePage = () => {
   return <WorkflowTable />;
 };
 
-export default ReceiveTablePage;
+export default WorkflowTablePage;

@@ -258,11 +258,11 @@ const TabulatorTable: React.FC<TablePropsType> = ({
       if (!tabulator.current) return;
       const tableData = tabulator.current.getData("active") || [];
       if (!tableData.length) return;
-  
+
       const formattedData = formatExportData
         ? formatExportData(tableData)
         : tableData;
-  
+
       const workbook = XLSX.utils.book_new();
       const worksheet = XLSX.utils.json_to_sheet(formattedData);
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -322,10 +322,6 @@ const TabulatorTable: React.FC<TablePropsType> = ({
     paginationSize,
     options,
   ]);
-
-  if (!Array.isArray(data)) {
-    return <div>داده‌های نامعتبر</div>;
-  }
 
   return (
     <>

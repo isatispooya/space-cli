@@ -34,9 +34,14 @@ const ReceiveRefferalPage = lazy(() =>
   }))
 );
 
-const ReceiveWorkflowPage = lazy(() =>
+const WorkflowTablePage = lazy(() =>
   import("..").then((module) => ({
-    default: module.ReceiveTablePage,
+    default: module.WorkflowTablePage,
+  }))
+);
+const RefferalTablePage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.RefferalTablePage,
   }))
 );
 
@@ -87,7 +92,11 @@ const MessengerRoutes = [
       },
       {
         path: "receive-workflow/:id",
-        element: <ReceiveWorkflowPage />,
+        element: <WorkflowTablePage />,
+      },
+      {
+        path: "refferal-table/:id",
+        element: <RefferalTablePage />,
       },
 
       {

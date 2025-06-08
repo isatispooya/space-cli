@@ -4,22 +4,25 @@ import * as Yup from "yup";
 import { ReferralReqType } from "../../types/receive/ReceiveMessage.type";
 import { useReceive } from "../../hooks/receive";
 import { usePosition } from "@/Modules/positions";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Check, X } from "lucide-react";
 
 const ReferralForm = () => {
   const { id } = useParams();
-
   const { mutate: postRefferal } = useReceive.usePostRefferal();
   const { data: positions } = usePosition.useGetAll();
-  const { data: referenceData } = useReceive.useGetById(id || "");
-
-  const validationSchema = Yup.object().shape({
+  const { data } = useReceive.useGetReceiveWorkflow();
+  const navigate = useNavigate();
+  const correspondenceId = data?.map((item: any) => item.correspondence);
+  const referenceId = data?.map(
+    (item: any) => item.correspondence_details.sender_details.id
+  );
+  const validationSchema = Yup.object({
     from_reference: Yup.number().required("ارجاع الزامی است"),
     correspondence: Yup.number().required("نامه الزامی است"),
     instruction_text: Yup.string().required("متن ارجاع الزامی است"),
     reference: Yup.number().required("ارجاع الزامی است"),
-  }) as any;
+  });
 
   const formFields: FormFieldType[] = [
     {
@@ -27,12 +30,9 @@ const ReferralForm = () => {
       label: "ارجاع به",
       type: "select",
       options: positions?.map((position) => ({
-        label:
-          position.name +
-          " - " +
-          position.user?.first_name +
-          " " +
-          position.user?.last_name,
+        label: `${position.name} - ${position.user?.first_name || ""} ${
+          position.user?.last_name || ""
+        }`,
         value: position.id,
       })),
       format: (value: any) => Number(value),
@@ -46,41 +46,38 @@ const ReferralForm = () => {
 
   const initialValues: ReferralReqType = {
     from_reference: 0,
-    correspondence: Number(id) || 0,
+    correspondence: Number(correspondenceId) || 0,
     instruction_text: "",
-    reference: Number((referenceData as any)?.sender_details?.id) || null,
+    reference: Number(referenceId) || 0,
+    status_reference: "doing",
+    workflow: Number(id) || 0,
   };
 
   const handleSubmit = async (values: ReferralReqType) => {
-    postRefferal(
-      {
-        ...values,
-        reference: Number((referenceData as any)?.sender_details?.id) || null,
+    postRefferal(values, {
+      onSuccess: () => {
+        Toast(
+          "ارجاع با موفقیت انجام شد",
+          <Check className="text-green-500" />,
+          "bg-green-500"
+        );
+        navigate("/letter/refferal-table/" + id);
       },
-      {
-        onSuccess: () => {
-          Toast(
-            "ارجاع با موفقیت انجام شد",
-            <Check className="text-green-500" />,
-            "bg-green-500"
-          );
-        },
-        onError: () => {
-          Toast(
-            "ارجاع با مشکل مواجه شد",
-            <X className="text-red-500" />,
-            "bg-red-500"
-          );
-        },
-      }
-    );
+      onError: () => {
+        Toast(
+          "ارجاع با مشکل مواجه شد",
+          <X className="text-red-500" />,
+          "bg-red-500"
+        );
+      },
+    });
   };
 
   return (
     <Forms
       formFields={formFields}
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={validationSchema as any}
       onSubmit={handleSubmit}
       title="ارجاع نامه"
       submitButtonText={{
