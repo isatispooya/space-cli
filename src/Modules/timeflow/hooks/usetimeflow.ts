@@ -121,10 +121,10 @@ const useTimeflow = {
       },
     });
   },
-  useGetTimeFlowReport: (id: number) => {
+  useGetTimeFlowReport: (id: number, month?: number, year?: number) => {
     return useQuery({
-      queryKey: ["time-flow-report"],
-      queryFn: () => timeflowServices.getTimeFlowReport(id),
+      queryKey: ["time-flow-report", id, month, year],
+      queryFn: () => timeflowServices.getTimeFlowReport(id, month, year),
     });
   },
 };
