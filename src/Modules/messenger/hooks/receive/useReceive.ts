@@ -8,6 +8,7 @@ import { receiveSer } from "../../services/receive";
 import { ReferralReqType } from "../../types/receive/ReceiveMessage.type";
 import { SenderType } from "../../types/sent/sent.type";
 import { ArchiveReqType } from "../../types/receive/archive";
+import { toast } from "react-toastify";
 
 const useReceive = {
   useGet: (): UseQueryResult<ReferralReqType> => {
@@ -22,6 +23,7 @@ const useReceive = {
       queryFn: () => receiveSer.getReceiveById(id),
     });
   },
+
   usePostRefferal: (): UseMutationResult<
     ReferralReqType,
     Error,
@@ -32,12 +34,7 @@ const useReceive = {
       mutationFn: receiveSer.postRefferal,
     });
   },
-  useGetReceiveWorkflow: (id: string): UseQueryResult<any> => {
-    return useQuery({
-      queryKey: ["receiveWorkflow", id],
-      queryFn: () => receiveSer.getReceiveWorkflow(id),
-    });
-  },
+
   usePostArchive: (): UseMutationResult<
     ArchiveReqType,
     Error,
@@ -53,8 +50,34 @@ const useReceive = {
       mutationKey: ["receiveDeleteArchive"],
       mutationFn: ({ id }: { id: string }) => receiveSer.deleteArchive(id),
     });
-  }
-  
+  },
+
+  useGetReceiveWorkflow: (): UseQueryResult<any> => {
+    return useQuery({
+      queryKey: ["receiveWorkflow"],
+      queryFn: () => receiveSer.getReceiveWorkflow(),
+    });
+  },
+
+  usePostReceiveWorkflow: () => {
+    return useMutation({
+      mutationKey: ["receivePostWorkflow"],
+      mutationFn: (data: any) => receiveSer.postReceiveWorkflow(data),
+      onSuccess: () => {
+        toast.success("ارسال شد");
+      },
+      onError: () => {
+        toast.error("خطا در ارسال");
+      },
+    });
+  },
+
+  useGetReference: (id: string): UseQueryResult<any> => {
+    return useQuery({
+      queryKey: ["receiveReference"],
+      queryFn: () => receiveSer.getReference(id),
+    });
+  },
 };
 
 export default useReceive;

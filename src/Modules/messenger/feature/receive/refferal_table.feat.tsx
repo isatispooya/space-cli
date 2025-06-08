@@ -1,75 +1,17 @@
 import { TabulatorTable } from "@/components";
-import { CellComponent, ColumnDefinition } from "tabulator-tables";
+import { ColumnDefinition } from "tabulator-tables";
 import { useReceive } from "../../hooks/receive";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import usePosition from "@/Modules/positions/hooks/usePosition";
-import { ActionMenu } from "@/components/table/tableaction";
-import { createRoot } from "react-dom/client";
 
-const WorkflowTable = () => {
+const RefferalTable = () => {
   const { id } = useParams();
-  const { data } = useReceive.useGetReceiveWorkflow();
+  const { data } = useReceive.useGetReference(id as string);
   const { data: allPositions } = usePosition.useGetAll();
-  const { mutate: postReceiveWorkflow } = useReceive.usePostReceiveWorkflow();
+  const navigate = useNavigate();
 
   const onCreateLetter = () => {
-    postReceiveWorkflow({
-      correspondence: id,
-    });
-  };
-
-  const handleCellClick = (e: UIEvent, cell: CellComponent) => {
-    e.stopPropagation();
-    const target = e.target as HTMLElement;
-
-    if (!target.classList.contains("action-btn")) return;
-
-    const existingMenu = document.querySelector(".popup-menu");
-    if (existingMenu) {
-      existingMenu.remove();
-      return;
-    }
-
-    const rect = target.getBoundingClientRect();
-    const rowData = cell.getRow().getData();
-
-    const menuItems = [
-      {
-        label: "ارجاع",
-        icon: "�",
-        onClick: () =>
-          (window.location.href = `/letter/refferal-table/${rowData.id}`),
-      },
-    ];
-
-    const menuContainer = document.createElement("div");
-    menuContainer.className = "popup-menu";
-    document.body.appendChild(menuContainer);
-
-    const root = createRoot(menuContainer);
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!menuContainer.contains(event.target as Node)) {
-        root.unmount();
-        menuContainer.remove();
-        document.removeEventListener("click", handleClickOutside);
-      }
-    };
-
-    setTimeout(() => {
-      document.addEventListener("click", handleClickOutside);
-    }, 0);
-
-    root.render(
-      <ActionMenu
-        items={menuItems}
-        position={{ x: rect.left, y: rect.bottom }}
-        onClose={() => {
-          root.unmount();
-          menuContainer.remove();
-          document.removeEventListener("click", handleClickOutside);
-        }}
-      />
-    );
+    navigate(`/letter/receive-refferal/${id}`);
   };
 
   const columns = (): ColumnDefinition[] => [
@@ -121,15 +63,6 @@ const WorkflowTable = () => {
         console.log("Status changed:", cell.getValue());
       },
     },
-    {
-      field: "عملیات",
-      title: "عملیات",
-      headerSort: false,
-      hozAlign: "center" as const,
-      headerHozAlign: "center" as const,
-      formatter: () => `<button class="action-btn">⋮</button>`,
-      cellClick: handleCellClick,
-    },
   ];
 
   return (
@@ -150,4 +83,4 @@ const WorkflowTable = () => {
   );
 };
 
-export default WorkflowTable;
+export default RefferalTable;
