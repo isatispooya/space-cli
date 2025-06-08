@@ -121,6 +121,12 @@ const useTimeflow = {
       },
     });
   },
+  useGetTimeFlowReport: () => {
+    return useQuery({
+      queryKey: ["time-flow-report"],
+      queryFn: () => timeflowServices.getTimeFlowReport(),
+    });
+  },
 };
 
 export default useTimeflow;
