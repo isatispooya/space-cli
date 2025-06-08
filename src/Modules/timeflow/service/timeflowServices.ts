@@ -19,7 +19,10 @@ const timeflowServices = {
     return response.data;
   },
   updateTimeflowSenior: async (id: number, data: TimeflowVerifyReqType) => {
-    const response = await api.patch(`/timeflow/parent-position-users/${id}/`, data);
+    const response = await api.patch(
+      `/timeflow/parent-position-users/${id}/`,
+      data
+    );
     return response.data;
   },
 
@@ -45,8 +48,7 @@ const timeflowServices = {
     return response.data;
   },
 
-  getTimeflowDetails: async ():
-  Promise<UserLoginType> => {
+  getTimeflowDetails: async (): Promise<UserLoginType> => {
     const response = await api.get(`/timeflow/parent-position-users/`);
     return response.data;
   },
@@ -57,6 +59,10 @@ const timeflowServices = {
   },
   patchTimeflowEdit: async (id: number, data: TimeflowEditType) => {
     const response = await api.patch(`/timeflow/user-login-log/${id}/`, data);
+    return response.data;
+  },
+  getTimeFlowReport: async (id: number) => {
+    const response = await api.get(`/timeflow/user-login-log-report/${id}/`);
     return response.data;
   },
 };
