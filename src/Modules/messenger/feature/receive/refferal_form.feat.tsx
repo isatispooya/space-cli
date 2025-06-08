@@ -13,13 +13,13 @@ const ReferralForm = () => {
   const { data: positions } = usePosition.useGetAll();
   const { data } = useReceive.useGetReceiveWorkflow();
   const navigate = useNavigate();
-  const correspondenceId = data?.map((item: any) => item.correspondence);
-  const referenceId = data?.map(
-    (item: any) => item.correspondence_details.sender_details.id
-  );
+
+  const dataById = data?.find((item: any) => item.id === Number(id));
+
+  const referenceId = dataById?.correspondence_details.sender_details.id;
+
   const validationSchema = Yup.object({
     from_reference: Yup.number().required("ارجاع الزامی است"),
-    correspondence: Yup.number().required("نامه الزامی است"),
     instruction_text: Yup.string().required("متن ارجاع الزامی است"),
     reference: Yup.number().required("ارجاع الزامی است"),
   });
@@ -46,7 +46,6 @@ const ReferralForm = () => {
 
   const initialValues: ReferralReqType = {
     from_reference: 0,
-    correspondence: Number(correspondenceId) || 0,
     instruction_text: "",
     reference: Number(referenceId) || 0,
     status_reference: "doing",

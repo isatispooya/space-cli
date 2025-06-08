@@ -8,6 +8,7 @@ const RefferalTable = () => {
   const { id } = useParams();
   const { data } = useReceive.useGetReference(id as string);
   const { data: allPositions } = usePosition.useGetAll();
+  const { mutate: patchReference } = useReceive.usePatchReference();
   const navigate = useNavigate();
 
   const onCreateLetter = () => {
@@ -46,6 +47,12 @@ const RefferalTable = () => {
       field: "status_reference",
       title: "وضعیت",
       headerFilter: true,
+      headerFilterParams: {
+        values: {
+          doing: "در حال انجام",
+          done: "انجام شده",
+        },
+      },
       editor: "list",
       editorParams: {
         values: {
@@ -60,7 +67,12 @@ const RefferalTable = () => {
         return status;
       },
       cellEdited: (cell) => {
-        console.log("Status changed:", cell.getValue());
+        patchReference({
+          id: cell.getRow().getData().id,
+          data: {
+            status_reference: cell.getValue(),
+          },
+        });
       },
     },
   ];

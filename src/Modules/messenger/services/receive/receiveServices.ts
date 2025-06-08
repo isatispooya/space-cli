@@ -9,10 +9,8 @@ const receiveSer = {
   },
   getReceiveById: async (id: string) => {
     const response = await api.get(`/correspondence/correspondence/${id}/`);
-    return response.data;    
+    return response.data;
   },
-
-
 
   postRefferal: async (data: ReferralReqType) => {
     const response = await api.post("/correspondence/reference/", data);
@@ -46,6 +44,10 @@ const receiveSer = {
 
   getReference: async (id: string) => {
     const response = await api.get(`/correspondence/reference/${id}/`);
+    return response.data;
+  },
+  patchReference: async (id: string, data: any) => {
+    const response = await api.patch(`/correspondence/reference/${id}/`, data);
     return response.data;
   },
 };

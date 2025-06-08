@@ -2,6 +2,7 @@ import {
   useMutation,
   UseMutationResult,
   useQuery,
+  useQueryClient,
   UseQueryResult,
 } from "@tanstack/react-query";
 import { receiveSer } from "../../services/receive";
@@ -60,11 +61,14 @@ const useReceive = {
   },
 
   usePostReceiveWorkflow: () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
       mutationKey: ["receivePostWorkflow"],
       mutationFn: (data: any) => receiveSer.postReceiveWorkflow(data),
       onSuccess: () => {
         toast.success("ارسال شد");
+        queryClient.invalidateQueries({ queryKey: ["receiveWorkflow"] });
       },
       onError: () => {
         toast.error("خطا در ارسال");
@@ -76,6 +80,23 @@ const useReceive = {
     return useQuery({
       queryKey: ["receiveReference"],
       queryFn: () => receiveSer.getReference(id),
+    });
+  },
+
+  usePatchReference: () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationKey: ["receivePatchReference"],
+      mutationFn: ({ id, data }: { id: string; data: any }) =>
+        receiveSer.patchReference(id, data),
+      onSuccess: () => {
+        toast.success("ویرایش شد");
+        queryClient.invalidateQueries({ queryKey: ["receiveReference"] });
+      },
+      onError: () => {
+        toast.error("خطا در ویرایش");
+      },
     });
   },
 };

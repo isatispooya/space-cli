@@ -51,7 +51,6 @@ export interface CorrespondenceItemType {
 
 export interface ReferralReqType {
   from_reference: number;
-  correspondence: number;
   instruction_text: string;
   reference: number | null;
   status_reference: string;

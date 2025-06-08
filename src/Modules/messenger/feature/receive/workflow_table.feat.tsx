@@ -2,15 +2,15 @@ import { TabulatorTable } from "@/components";
 import { CellComponent, ColumnDefinition } from "tabulator-tables";
 import { useReceive } from "../../hooks/receive";
 import { useParams } from "react-router-dom";
-import usePosition from "@/Modules/positions/hooks/usePosition";
 import { ActionMenu } from "@/components/table/tableaction";
 import { createRoot } from "react-dom/client";
+import { useMemo } from "react";
 
 const WorkflowTable = () => {
   const { id } = useParams();
   const { data } = useReceive.useGetReceiveWorkflow();
-  const { data: allPositions } = usePosition.useGetAll();
   const { mutate: postReceiveWorkflow } = useReceive.usePostReceiveWorkflow();
+  console.log(data);
 
   const onCreateLetter = () => {
     postReceiveWorkflow({
@@ -32,11 +32,10 @@ const WorkflowTable = () => {
 
     const rect = target.getBoundingClientRect();
     const rowData = cell.getRow().getData();
-
     const menuItems = [
       {
         label: "ارجاع",
-        icon: "�",
+        icon: "🔗",
         onClick: () =>
           (window.location.href = `/letter/refferal-table/${rowData.id}`),
       },
@@ -72,65 +71,52 @@ const WorkflowTable = () => {
     );
   };
 
-  const columns = (): ColumnDefinition[] => [
-    {
-      field: "from_reference",
-      title: "از",
-      headerFilter: true,
-      formatter: (cell) => {
-        const positionId = cell.getValue();
-        const position = allPositions?.find((pos) => pos.id === positionId);
-        if (!position || !position.user || !position.company_detail) return "-";
-        return ` ${position.user.first_name} ${position.user.last_name}-${position.name}-${position.company_detail.name}`;
+  const columns = useMemo<ColumnDefinition[]>(
+    () => [
+      {
+        title: "شماره نامه",
+        field: "correspondence_details.number",
+        hozAlign: "center",
       },
-    },
-    {
-      field: "reference",
-      title: "به",
-      headerFilter: true,
-      formatter: (cell) => {
-        const positionId = cell.getValue();
-        const position = allPositions?.find((pos) => pos.id === positionId);
-        if (!position || !position.user || !position.company_detail) return "-";
-        return ` ${position.user.first_name} ${position.user.last_name}-${position.name}-${position.company_detail.name}`;
+      {
+        title: "موضوع",
+        field: "correspondence_details.subject",
+        hozAlign: "center",
       },
-    },
-    {
-      field: "instruction_text",
-      title: "دستور",
-      headerFilter: true,
-    },
-    {
-      field: "status_reference",
-      title: "وضعیت",
-      headerFilter: true,
-      editor: "list",
-      editorParams: {
-        values: {
-          doing: "در حال انجام",
-          done: "انجام شده",
+      {
+        title: "فرستنده",
+        field: "correspondence_details.sender_details.user.first_name",
+        hozAlign: "center",
+        formatter: (cell) => {
+          const user =
+            cell.getData().correspondence_details.sender_details?.user;
+          return user ? `${user.first_name} ${user.last_name}` : "-";
         },
       },
-      formatter: (cell) => {
-        const status = cell.getValue();
-        if (status === "doing") return "در حال انجام";
-        if (status === "done") return "انجام شده";
-        return status;
+      {
+        title: "گیرنده",
+        field:
+          "correspondence_details.receiver_internal_details.user.first_name",
+        hozAlign: "center",
+        formatter: (cell) => {
+          const user =
+            cell.getData().correspondence_details.receiver_internal_details
+              ?.user;
+          return user ? `${user.first_name} ${user.last_name}` : "-";
+        },
       },
-      cellEdited: (cell) => {
-        console.log("Status changed:", cell.getValue());
+      {
+        field: "عملیات",
+        title: "عملیات",
+        headerSort: false,
+        hozAlign: "center" as const,
+        headerHozAlign: "center" as const,
+        formatter: () => `<button class="action-btn">⋮</button>`,
+        cellClick: handleCellClick,
       },
-    },
-    {
-      field: "عملیات",
-      title: "عملیات",
-      headerSort: false,
-      hozAlign: "center" as const,
-      headerHozAlign: "center" as const,
-      formatter: () => `<button class="action-btn">⋮</button>`,
-      cellClick: handleCellClick,
-    },
-  ];
+    ],
+    []
+  );
 
   return (
     <>
@@ -138,7 +124,7 @@ const WorkflowTable = () => {
         <div className="overflow-x-auto">
           <TabulatorTable
             data={data}
-            columns={columns()}
+            columns={columns}
             title="اطلاعات شرکت‌ها"
             showActions={true}
             showCreateLetter={true}
