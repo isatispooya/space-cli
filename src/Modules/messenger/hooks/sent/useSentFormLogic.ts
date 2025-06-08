@@ -136,7 +136,7 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const senderSignerOptions = useMemo(
     () =>
-      (Position as PositionType[])
+      (PositionAll as PositionType[])
         ?.filter((position) => position.signature_holder)
         .map((position) => ({
           label: `${position.user.first_name} ${position.user.last_name}  | ${

@@ -11,6 +11,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   internalUserOptions,
   senderSignerOptions,
 }) => {
+
   const location = useLocation();
   const showExternalReceiver =
     (!formData.is_internal && location.pathname !== "/letter/form") ||
@@ -95,7 +96,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
         label="تایید کننده"
         value={formData.owner?.toString() || ""}
         onChange={(value) => handleChange("owner", value)}
-        options={internalUserOptions}
+        options={senderSignerOptions}
         className="enhanced-select"
       />
 
