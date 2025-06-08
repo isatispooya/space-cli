@@ -10,6 +10,18 @@ import {
   TimeflowRecordType,
 } from "../types";
 import { LoaderLg } from "@/components";
+import { useParams } from "react-router-dom";
+
+interface TimeflowReportSummaryType {
+  user_id: number;
+  type: string;
+  worked_hours: number;
+  user_detail: UserDetailType;
+}
+
+interface TimeflowReportDataType {
+  summary: TimeflowReportSummaryType[];
+}
 
 const getTableSizeClass = (recordCount: number): string => {
   if (recordCount < 10) return "record-size-xs";
@@ -44,29 +56,34 @@ const getPersonalInfo = (
   ];
 };
 
-const getWorkSummary = (): WorkSummaryType => ({
-  month: moment().format("MMMM YYYY"),
-  dutyHours: "0 ساعت",
-  workedHours: "0 ساعت",
-  missionHours: "0 ساعت",
-  leaveHours: "0 ساعت",
-  absenceHours: "0 ساعت",
-});
+const getWorkSummary = (
+  timeflowReportData: TimeflowReportDataType | undefined
+): WorkSummaryType => {
+  const workedHours = timeflowReportData?.summary?.[0]?.worked_hours || 0;
+  return {
+    month: moment().format("MMMM YYYY"),
+    dutyHours: "0 ساعت",
+    workedHours: `${workedHours} ساعت`,
+    missionHours: "0 ساعت",
+    leaveHours: "0 ساعت",
+    absenceHours: "0 ساعت",
+  };
+};
 
 const Timesheet = () => {
-  const {
-    data: timeflowData,
-    isLoading,
-    refetch,
-  } = useTimeflow.useGetTimeflow();
+  const { data: timeflowData, isLoading } = useTimeflow.useGetTimeflow();
 
-  const { data: timeflowReportData } = useTimeflow.useGetTimeFlowReport();
+  const { id } = useParams();
 
-  console.log(timeflowReportData, "1223343435");
+  const { data: timeflowReportData } = useTimeflow.useGetTimeFlowReport(
+    Number(id)
+  );
+
+  console.log(timeflowReportData, "timeflowReportData");
 
   const userDetail = timeflowData?.[0]?.user_detail;
   const personalInfo = getPersonalInfo(userDetail);
-  const workSummary = getWorkSummary();
+  const workSummary = getWorkSummary(timeflowReportData);
   const formattedTimeflowData = formatTimeflowData(timeflowData || []);
   const tableSizeClass = getTableSizeClass(formattedTimeflowData.length);
 

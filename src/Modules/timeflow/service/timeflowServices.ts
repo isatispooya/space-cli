@@ -61,8 +61,8 @@ const timeflowServices = {
     const response = await api.patch(`/timeflow/user-login-log/${id}/`, data);
     return response.data;
   },
-  getTimeFlowReport: async () => {
-    const response = await api.get("/timeflow/user-login-log-report/");
+  getTimeFlowReport: async (id: number) => {
+    const response = await api.get(`/timeflow/user-login-log-report/${id}/`);
     return response.data;
   },
 };

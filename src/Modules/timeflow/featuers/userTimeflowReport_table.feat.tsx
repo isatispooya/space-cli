@@ -29,6 +29,9 @@ const UserTimeflowReportTable = () => {
     },
   });
 
+
+  const USER_ID = timeflowData?.[0]?.user_id;
+
   if (isLoading) {
     return <LoaderLg />;
   }
@@ -83,7 +86,7 @@ const UserTimeflowReportTable = () => {
       icon: <CornerLeftUp className="w-5 h-5" />,
       label: "مشاهده جزئیات",
       onClick: () => {
-        navigate(`/timeflow-report/${25}`);
+        navigate(`/timeflow-report/${USER_ID}`);
       },
       variant: "nav" as const,
       order: 1,
