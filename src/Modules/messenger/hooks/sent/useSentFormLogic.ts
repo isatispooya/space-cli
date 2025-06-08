@@ -75,9 +75,9 @@ export const useSentFormLogic = (id: string | undefined) => {
       signature: false,
       letterhead: false,
       binding: false,
-      confidentiality_level: "",
-      priority: "",
-      kind_of_correspondence: "",
+      confidentiality_level: "normal",
+      priority: "normal",
+      kind_of_correspondence: "request",
       authority_type: "new",
       authority_correspondence: null,
       transcript: [],
@@ -136,7 +136,7 @@ export const useSentFormLogic = (id: string | undefined) => {
 
   const senderSignerOptions = useMemo(
     () =>
-      (Position as PositionType[])
+      (PositionAll as PositionType[])
         ?.filter((position) => position.signature_holder)
         .map((position) => ({
           label: `${position.user.first_name} ${position.user.last_name}  | ${
@@ -246,9 +246,9 @@ export const useSentFormLogic = (id: string | undefined) => {
         signature: data.signature ?? false,
         letterhead: data.letterhead ?? false,
         binding: data.binding ?? false,
-        confidentiality_level: data.confidentiality_level || "",
-        priority: data.priority || "",
-        kind_of_correspondence: data.kind_of_correspondence || "",
+        confidentiality_level: data.confidentiality_level || "normal",
+        priority: data.priority || "normal",
+        kind_of_correspondence: data.kind_of_correspondence || "request",
         authority_type: data.authority_type || "new",
         authority_correspondence: data.authority_correspondence || null,
         transcript: Array.isArray(data.transcript_details)
@@ -307,9 +307,9 @@ export const useSentFormLogic = (id: string | undefined) => {
         signature: false,
         letterhead: false,
         binding: false,
-        confidentiality_level: "",
-        priority: "",
-        kind_of_correspondence: "",
+        confidentiality_level: "normal",
+        priority: "normal",
+        kind_of_correspondence: "request",
         authority_type: "new",
         authority_correspondence: null,
         transcript: [],
