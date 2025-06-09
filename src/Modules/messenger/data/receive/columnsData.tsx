@@ -75,10 +75,11 @@ const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
                     label: "بایگانی",
                     icon: "📦",
                     onClick: () =>
-                      setArchiveModalOpen({ open: true, id: rowData.id  } as any),
-
+                      setArchiveModalOpen({
+                        open: true,
+                        id: rowData.id,
+                      } as any),
                   },
-                  
                 ]
               : []),
           ]),
@@ -144,6 +145,7 @@ const Columns = ({ handlePublish, setArchiveModalOpen }: ColumnsProps) => {
       headerFilter: true,
       hozAlign: "center",
     },
+
     {
       title: "گیرنده",
       field: "receiver",

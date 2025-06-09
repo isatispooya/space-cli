@@ -108,7 +108,6 @@ export const SentTable = () => {
 
     return correspondence.sender.map((item: CorrespondenceItemType) => {
       let formattedDate = "نامشخص";
-      let formattedReadDate = "نامشخص";
       try {
         if (item.created_at) {
           const date = new Date(item.created_at);
@@ -123,21 +122,6 @@ export const SentTable = () => {
               day: "2-digit",
             }).format(date);
             formattedDate = `${year}/${month}/${day}`;
-          }
-        }
-        if (item.read_at) {
-          const date = new Date(item.read_at);
-          if (!isNaN(date.getTime())) {
-            const year = new Intl.DateTimeFormat("fa", {
-              year: "numeric",
-            }).format(date);
-            const month = new Intl.DateTimeFormat("fa", {
-              month: "2-digit",
-            }).format(date);
-            const day = new Intl.DateTimeFormat("fa", {
-              day: "2-digit",
-            }).format(date);
-            formattedReadDate = `${year}/${month}/${day}`;
           }
         }
       } catch (error) {
