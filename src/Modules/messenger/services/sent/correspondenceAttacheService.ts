@@ -5,7 +5,7 @@ import {
 } from "../../types/sent/sent.type";
 import { AttachmentResponseType } from "../../types/sent/attachment.type";
 import { CorrespondenceAttachmentType } from "../../types/sent/attachment.type";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const handleSuccess = (message: string) => {
   toast.success(message || "عملیات با موفقیت انجام شد");

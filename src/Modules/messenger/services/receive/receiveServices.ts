@@ -1,7 +1,7 @@
 import { api } from "@/api";
 import { ReferralReqType } from "../../types/receive/ReceiveMessage.type";
 import { ArchiveReqType } from "../../types/receive/archive";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const handleSuccess = (message: string) => {
   toast.success(message || "عملیات با موفقیت انجام شد");
