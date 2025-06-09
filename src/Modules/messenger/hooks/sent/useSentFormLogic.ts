@@ -157,7 +157,7 @@ export const useSentFormLogic = (id: string | undefined) => {
           } | ${position.company_detail?.name || "بدون سمت"}`,
           value: position.user.id.toString(),
         })) || [],
-    [Position]
+    [PositionAll]
   );
 
   const senderUserOptionsOut = useMemo(

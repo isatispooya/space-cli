@@ -12,11 +12,12 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   senderSignerOptions,
   ownerSignerOptions,
 }) => {
-
   const location = useLocation();
+
   const showExternalReceiver =
     (!formData.is_internal && location.pathname !== "/letter/form") ||
     location.pathname === "/letter/Outform";
+  console.log("formData", ownerSignerOptions);
 
   const letterOutformMake =
     !formData.is_internal && location.pathname === "/letter/Outform";
@@ -85,7 +86,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
                 label=" گیرنده خارجی"
                 value={formData.receiver_external || ""}
                 onChange={(value) => handleChange("receiver_external", value)}
-                options={ownerSignerOptions}
+                options={senderSignerOptions}
                 className="enhanced-select"
               />
             </>
@@ -97,7 +98,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
         label="تایید کننده"
         value={formData.owner?.toString() || ""}
         onChange={(value) => handleChange("owner", value)}
-        options={senderSignerOptions}
+        options={ownerSignerOptions}
         className="enhanced-select"
       />
 
