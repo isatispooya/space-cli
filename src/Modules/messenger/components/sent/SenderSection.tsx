@@ -10,6 +10,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   senderUserOptions,
   internalUserOptions,
   senderSignerOptions,
+  ownerSignerOptions,
 }) => {
 
   const location = useLocation();
@@ -84,7 +85,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
                 label=" گیرنده خارجی"
                 value={formData.receiver_external || ""}
                 onChange={(value) => handleChange("receiver_external", value)}
-                options={senderSignerOptions}
+                options={ownerSignerOptions}
                 className="enhanced-select"
               />
             </>

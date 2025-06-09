@@ -15,6 +15,7 @@ export interface SenderSectionPropsType extends SectionPropsType {
   senderUserOptionsOut: SelectOptionType[];
   internalUserOptions: SelectOptionType[];
   senderSignerOptions: SelectOptionType[];
+  ownerSignerOptions: SelectOptionType[];
   isEditMode: boolean;
 }
 
