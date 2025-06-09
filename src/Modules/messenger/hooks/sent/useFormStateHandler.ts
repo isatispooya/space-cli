@@ -9,7 +9,7 @@ export const useFormStateHandler = () => {
   const handleInputChange = useCallback(
     (name: string, value: InputValueType) => {
       if (
-        ["sender", "receiver_internal"].includes(name) &&
+        ["sender", "receiver_internal", "owner"].includes(name) &&
         typeof value === "string"
       ) {
         handleChange(name, value === "" ? 0 : Number(value));
@@ -30,7 +30,7 @@ export const useFormStateHandler = () => {
         return;
       }
 
-      if (["reference", "receiver", "attachments"].includes(name)) {
+      if (["reference", "receiver", "attachments", "owner"].includes(name)) {
         const arrayValue = !Array.isArray(value) ? [value] : value;
         const numericArray = arrayValue.map((v) => Number(v));
         handleChange(name, numericArray);

@@ -60,7 +60,7 @@ export interface APIFormDataType {
   reference: number[];
   transcript: TranscriptAPIDataType[];
   published: boolean;
-  owner: number;
+  owner: number | null;
   sender_external: string;
 }
 
@@ -88,7 +88,7 @@ export type FormDataType = {
   referenceData?: ReferenceDataType[];
   transcript: TranscriptDataType[];
   published: boolean;
-  owner: number;
+  owner: number | null;
   transcript_details: TranscriptDetailType[];
   sender_external: string;
 };

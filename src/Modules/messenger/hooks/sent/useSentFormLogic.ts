@@ -144,7 +144,7 @@ export const useSentFormLogic = (id: string | undefined) => {
           } | ${position.company_detail?.name || "بدون سمت"}`,
           value: position.id.toString(),
         })) || [],
-    [Position]
+    [PositionAll]
   );
 
   const ownerSignerOptions = useMemo(
@@ -328,7 +328,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         transcript: [],
         published: false,
         referenceData: [],
-        owner: 0,
+        owner: undefined as unknown as number,
       });
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
@@ -396,7 +396,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       receiver_internal: Number(restFormData.receiver_internal) || null,
       receiver_external: restFormData.receiver_external || null,
       transcript: apiTranscripts,
-      owner: Number(restFormData.owner) || 0,
+      owner: Number(restFormData.owner) || null,
       is_internal: location.pathname !== "/letter/Outform",
       sender:
         location.pathname === "/letter/Outform" ? null : restFormData.sender,

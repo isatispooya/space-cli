@@ -7,7 +7,7 @@ export interface SelectOptionType {
 
 export interface SectionPropsType {
   formData: APIFormDataType;
-  handleChange: (name: string, value: string | boolean | string[]) => void;
+  handleChange: (name: string, value: string | boolean | string[] | number) => void;
 }
 
 export interface SenderSectionPropsType extends SectionPropsType {
