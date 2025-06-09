@@ -1,3 +1,5 @@
+import { PositionType } from "@/Modules/positions/types";
+
 export interface ReferenceDetailType {
   id: number;
   position: number;
@@ -48,5 +50,6 @@ export interface ResponseDataType {
   authority_correspondence?: number | null;
   published?: boolean;
   owner?: { id: number };
+  owner_details?: PositionType;
   sender_external?: string;
 }

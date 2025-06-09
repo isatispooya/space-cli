@@ -85,6 +85,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       referenceData: [],
       reference: [],
       owner: 0,
+      owner_details: undefined as unknown as PositionType,
       transcript_details: [],
     });
 
@@ -249,6 +250,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         sender: data.sender_details?.id || 0,
         sender_external: data.sender_external,
         owner: data.owner?.id || 0,
+        owner_details: data.owner_details || null,
         receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
           data.receiver_external_details?.name ||
@@ -330,6 +332,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         published: false,
         referenceData: [],
         owner: undefined as unknown as number,
+        owner_details: undefined as unknown as PositionType,
       });
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
@@ -398,6 +401,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       receiver_external: restFormData.receiver_external || null,
       transcript: apiTranscripts,
       owner: Number(restFormData.owner) || null,
+      owner_details: restFormData.owner_details || null,
       is_internal: location.pathname !== "/letter/Outform",
       sender:
         location.pathname === "/letter/Outform" ? null : restFormData.sender,

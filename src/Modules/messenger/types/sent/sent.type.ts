@@ -61,6 +61,7 @@ export interface APIFormDataType {
   transcript: TranscriptAPIDataType[];
   published: boolean;
   owner: number | null;
+  owner_details: PositionType | null;
   sender_external: string;
 }
 
@@ -89,6 +90,7 @@ export type FormDataType = {
   transcript: TranscriptDataType[];
   published: boolean;
   owner: number | null;
+  owner_details: PositionType | null;
   transcript_details: TranscriptDetailType[];
   sender_external: string;
 };

@@ -24,6 +24,11 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   const uniqueSenderSignerOptions = removeDuplicates(senderSignerOptions);
   const uniqueOwnerSignerOptions = removeDuplicates(ownerSignerOptions);
 
+
+  console.log(formData);
+  
+  
+
   const showExternalReceiver =
     (!formData.is_internal && location.pathname !== "/letter/form") ||
     location.pathname === "/letter/Outform";
@@ -98,6 +103,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
                 options={uniqueSenderSignerOptions}
                 className="enhanced-select"
               />
+
             </>
           )}
         </>
@@ -105,7 +111,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
 
       <SelectInput
         label="تایید کننده"
-        value={formData.owner?.toString() || ""}
+        value={formData.owner_details?.id?.toString() || ""}
         onChange={(value) => handleChange("owner", value)}
         options={uniqueOwnerSignerOptions}
         className="enhanced-select"
