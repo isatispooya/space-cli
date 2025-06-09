@@ -336,7 +336,6 @@ export const useSentFormLogic = (id: string | undefined) => {
       });
     }
   }, [setFormData, data, id, setTranscriptDirection, setAttachmentOptions]);
-
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) {
       e.preventDefault();
@@ -403,8 +402,11 @@ export const useSentFormLogic = (id: string | undefined) => {
       owner: Number(restFormData.owner) || null,
       owner_details: restFormData.owner_details || null,
       is_internal: location.pathname !== "/letter/Outform",
-      sender:
-        location.pathname === "/letter/Outform" ? null : restFormData.sender,
+      sender: location.pathname === "/letter/OutformMake" ? null : restFormData.sender,
+      sender_external:
+        location.pathname === "/letter/OutformMake"
+          ? restFormData.sender_external
+          : null,
     };
 
     if (id) {

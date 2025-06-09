@@ -40,7 +40,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
     location.pathname === "/letter/Outform";
 
   const letterOutformMake =
-    !formData.is_internal && location.pathname === "/letter/Outform";
+    !formData.is_internal && location.pathname === "/letter/OutformMake";
 
   return (
     <Box display="flex" flexDirection="column" gap={{ xs: 1, sm: 2 }}>
@@ -74,29 +74,36 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
         <>
           {letterOutformMake ? (
             <>
-              <SelectInput
-                label="ارسال کننده خارجی"
+              <FormInput
+                label=" ارسال کننده خارجی"
                 value={formData.sender_external || ""}
-                onChange={(value) => handleChange("sender_external", value)}
+                onChange={(e) =>
+                  handleChange("sender_external", e.target.value)
+                }
+                placeholder="ارسال کننده"
+                className="enhanced-input"
+              />
+              <SelectInput
+                label="گیرنده"
+                value={
+                  (formData.sender || formData.receiver_internal)?.toString() ||
+                  ""
+                }
+                onChange={(value) => handleChange("receiver_internal", value)}
                 options={uniqueSenderSignerOptions}
                 className="enhanced-select"
-              />
-              <FormInput
-                label="گیرنده خارجی"
-                value={formData.receiver_external || ""}
-                onChange={(e) =>
-                  handleChange("receiver_external", e.target.value)
-                }
-                placeholder="گیرنده خارجی"
-                className="enhanced-input"
               />
             </>
           ) : (
             <>
               <SelectInput
                 label="ارسال کننده خارجی"
-                value={formData.sender_external || ""}
-                onChange={(value) => handleChange("sender_external", value)}
+                value={
+                  (
+                    formData.sender || formData.sender_details?.user?.id
+                  )?.toString() || ""
+                }
+                onChange={(value) => handleChange("sender", value)}
                 options={uniqueSenderSignerOptions}
                 className="enhanced-select"
               />
