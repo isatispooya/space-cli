@@ -5,38 +5,73 @@ import {
 } from "../../types/sent/sent.type";
 import { AttachmentResponseType } from "../../types/sent/attachment.type";
 import { CorrespondenceAttachmentType } from "../../types/sent/attachment.type";
+import { toast } from "react-toastify";
+
+const handleSuccess = (message: string) => {
+  toast.success(message || "عملیات با موفقیت انجام شد");
+};
+const handleError = (error: any) => {
+  const msg = error?.response?.data?.error || "خطایی رخ داده است";
+  toast.error(msg);
+  throw error;
+};
 const correspondenceAttacheService = {
   getAttache: async (): Promise<CorrespondenceAttachmentType[]> => {
     const response = await api.get("/correspondence/attache/");
     return response.data;
   },
+
   postAttache: async (
     data: AttachmentResponseType
   ): Promise<AttachmentResponseType> => {
-    const response = await api.post("/correspondence/attache/", data);
-    return response.data;
+    try {
+      const response = await api.post("/correspondence/attache/", data);
+      handleSuccess("فایل با موفقیت ارسال شد");
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      return {} as AttachmentResponseType;
+    }
   },
+
   postCorrespondence: async (
     data: APIFormDataType
   ): Promise<AttachmentResponseType> => {
     const response = await api.post("/correspondence/correspondence/", data);
     return response.data;
   },
+
   updateCorrespondence: async (
     data: APIFormDataType & { id: number }
   ): Promise<AttachmentResponseType> => {
-    const response = await api.patch(
-      `/correspondence/correspondence-update/${data.id}/`,
-      data
-    );
-    return response.data;
+    try {
+      const response = await api.patch(
+        `/correspondence/correspondence-update/${data.id}/`,
+        data
+      );
+      handleSuccess("نامه با موفقیت ویرایش شد");
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      return {} as AttachmentResponseType;
+    }
   },
 
-  publishCorrespondence: async (id: number): Promise<AttachmentResponseType> => {
-    const response = await api.patch(`/correspondence/correspondence/${id}/`, {});
-    return response.data;
+  publishCorrespondence: async (
+    id: number
+  ): Promise<AttachmentResponseType> => {
+    try {
+      const response = await api.patch(
+        `/correspondence/correspondence/${id}/`,
+        {}
+      );
+      handleSuccess("نامه با موفقیت منتشر شد");
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      return {} as AttachmentResponseType;
+    }
   },
-  
 
   getCorrespondence: async (): Promise<CorrespondenceResponseType> => {
     const response = await api.get("/correspondence/correspondence/");

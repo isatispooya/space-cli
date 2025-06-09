@@ -247,7 +247,7 @@ export const useSentFormLogic = (id: string | undefined) => {
         receiver: Array.isArray(data.receiver) ? data.receiver : [],
         sender: data.sender_details?.id || 0,
         sender_external: data.sender_external,
-        owner: data.owner_details?.id || 0,
+        owner: data.owner?.id || 0,
         receiver_internal: data.receiver_internal_details?.id || null,
         receiver_external:
           data.receiver_external_details?.name ||

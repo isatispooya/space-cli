@@ -1,5 +1,17 @@
+import { toast } from "react-toastify";
 import { api } from "../../../api";
 import { ChatType } from "../types/chat.type";
+
+const handleSuccess = (message: string) => {
+  toast.success(message || "عملیات با موفقیت انجام شد");
+};
+
+const handleError = (error: any) => {
+  const msg = error?.response?.data?.error;
+  ("خطایی رخ داده است");
+  toast.error(msg);
+  throw error;
+};
 
 const ChatServices = {
   get: async (): Promise<ChatType["MessagesType"][]> => {
@@ -7,7 +19,9 @@ const ChatServices = {
     return response.data;
   },
   search: async (query: string): Promise<ChatType["MessagesType"][]> => {
-    const response = await api.get(`/correspondence/correspondence/?query=${query}`);
+    const response = await api.get(
+      `/correspondence/correspondence/?query=${query}`
+    );
     return response.data;
   },
   getById: async (id: number) => {
@@ -20,40 +34,52 @@ const ChatServices = {
     return response.data;
   },
   post: async (data: ChatType["postMessegeType"]) => {
-    const response = await api.post("/correspondence/chat/", data);
-    return response.data;
+    try {
+      const response = await api.post("/correspondence/chat/", data);
+      handleSuccess("پیام با موفقیت ارسال شد");
+      return response.data;
+    } catch (error) {
+      handleError(error);
+    }
   },
 
   postAttachment: async (data: FormData) => {
     try {
-      // اگر data از نوع FormData نیست، یک خطا پرتاب کنید
       if (!(data instanceof FormData)) {
         throw new Error("داده باید از نوع FormData باشد");
       }
-
-      // ارسال درخواست با FormData
       const response = await api.post("/correspondence/attache/", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-
+      handleSuccess("فایل با موفقیت ارسال شد");
       return response.data;
     } catch (error) {
-      console.error("خطا در ارسال فایل:", error);
-      throw error;
+      handleError(error);
     }
   },
+
   patch: async (id: number, data: ChatType["postMessegeType"]) => {
-    const response = await api.patch(`/correspondence/chat/${id}/`, data);
-    return response.data;
+    try {
+      const response = await api.patch(`/correspondence/chat/${id}/`, data);
+      handleSuccess("پیام با موفقیت ویرایش شد");
+      return response.data;
+    } catch (error) {
+      handleError(error);
+    }
   },
+
   patchSeen: async (sender_id: number, data: ChatType["postSeenType"]) => {
-    const response = await api.patch(
-      `/correspondence/seen-chat/${sender_id}/`,
-      data
-    );
-    return response.data;
+    try {
+      const response = await api.patch(
+        `/correspondence/seen-chat/${sender_id}/`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      console.log("error", error);
+    }
   },
 };
 

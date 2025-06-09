@@ -47,6 +47,6 @@ export interface ResponseDataType {
   authority_type?: string;
   authority_correspondence?: number | null;
   published?: boolean;
-  owner_details?: { id: number };
+  owner?: { id: number };
   sender_external?: string;
 }
