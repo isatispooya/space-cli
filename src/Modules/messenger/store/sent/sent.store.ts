@@ -16,15 +16,16 @@ const defaultTranscript: TranscriptDataType = {
 
 const initialFormData: FormDataType = {
   owner: 0,
+  owner_details: null,
   subject: "",
   text: "",
   description: "",
   attachments: [],
   receiver_internal: 0,
-  receiver_external: null,
+  receiver_external: "",
   receiver: [],
   sender: 0,
-  sender_external: "",
+  sender_external: null ,
   is_internal: true,
   postcript: "",
   seal: false,

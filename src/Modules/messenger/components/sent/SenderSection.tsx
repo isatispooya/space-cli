@@ -1,12 +1,15 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { FormInput, SelectInput } from "../../../../components/common/inputs";
-import { SelectOptionType, SenderSectionPropsType } from "../../types/sent/SenderSection.Type";
-import { useLocation } from "react-router-dom";
+import {
+  SelectOptionType,
+  SenderSectionPropsType,
+} from "../../types/sent/SenderSection.Type";
+import { useLocation, useParams } from "react-router-dom";
 import _ from "lodash";
 
 const removeDuplicates = (options: SelectOptionType[]) => {
-  return _.uniqBy(options, "value"); 
+  return _.uniqBy(options, "value");
 };
 
 const SenderSection: React.FC<SenderSectionPropsType> = ({
@@ -23,11 +26,14 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
   const uniqueInternalUserOptions = removeDuplicates(internalUserOptions);
   const uniqueSenderSignerOptions = removeDuplicates(senderSignerOptions);
   const uniqueOwnerSignerOptions = removeDuplicates(ownerSignerOptions);
+  const id = useParams();
 
+  const selectedValue =
+    id != null && formData.owner_details?.id != null
+      ? formData.owner_details.id.toString()
+      : formData.owner?.toString() ?? "";
 
   console.log(formData);
-  
-  
 
   const showExternalReceiver =
     (!formData.is_internal && location.pathname !== "/letter/form") ||
@@ -87,23 +93,23 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
             </>
           ) : (
             <>
-              <FormInput
+              <SelectInput
                 label="ارسال کننده خارجی"
                 value={formData.sender_external || ""}
-                onChange={(e) =>
-                  handleChange("sender_external", e.target.value)
-                }
-                placeholder="ارسال کننده خارجی"
-                className="enhanced-input"
-              />
-              <SelectInput
-                label=" گیرنده خارجی"
-                value={formData.receiver_external || ""}
-                onChange={(value) => handleChange("receiver_external", value)}
+                onChange={(value) => handleChange("sender_external", value)}
                 options={uniqueSenderSignerOptions}
                 className="enhanced-select"
               />
 
+              <FormInput
+                label="گیرنده خارجی"
+                value={formData.receiver_external || ""}
+                onChange={(e) =>
+                  handleChange("receiver_external", e.target.value)
+                }
+                placeholder="گیرنده خارجی"
+                className="enhanced-input"
+              />
             </>
           )}
         </>
@@ -111,7 +117,7 @@ const SenderSection: React.FC<SenderSectionPropsType> = ({
 
       <SelectInput
         label="تایید کننده"
-        value={formData.owner_details?.id?.toString() || ""}
+        value={selectedValue}
         onChange={(value) => handleChange("owner", value)}
         options={uniqueOwnerSignerOptions}
         className="enhanced-select"

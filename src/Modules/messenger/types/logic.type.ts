@@ -22,7 +22,7 @@ export interface ResponseDataType {
   sender_details?: { id: number; user?: Record<string, unknown> };
   receiver_internal_details?: { id: number };
   receiver_external_details?: { name: string };
-  receiver_external?: string | null;
+  receiver_external?: string ;
   attachments_details?: Array<{
     id: number;
     name: string;
@@ -51,5 +51,5 @@ export interface ResponseDataType {
   published?: boolean;
   owner?: { id: number };
   owner_details?: PositionType;
-  sender_external?: string;
+  sender_external?: string | null;
 }

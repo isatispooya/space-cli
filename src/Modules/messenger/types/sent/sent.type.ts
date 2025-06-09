@@ -43,7 +43,7 @@ export interface APIFormDataType {
   receiver: number[];
   sender: number | null;
   receiver_internal: number | null;
-  receiver_external: string | null;
+  receiver_external: string ;
   receiver_internal_details?: ReceiverInternalDetailsType;
   sender_details?: SenderDetailsType;
   is_internal: boolean;
@@ -62,7 +62,7 @@ export interface APIFormDataType {
   published: boolean;
   owner: number | null;
   owner_details: PositionType | null;
-  sender_external: string;
+  sender_external: string | null;
 }
 
 export type FormDataType = {
@@ -73,7 +73,7 @@ export type FormDataType = {
   receiver: number[];
   sender: number | null;
   receiver_internal: number | null;
-  receiver_external: string | null;
+  receiver_external: string ;
   is_internal: boolean;
   postcript: string;
   seal: boolean;
@@ -92,7 +92,7 @@ export type FormDataType = {
   owner: number | null;
   owner_details: PositionType | null;
   transcript_details: TranscriptDetailType[];
-  sender_external: string;
+  sender_external: string | null;
 };
 
 // Details Types
