@@ -210,6 +210,7 @@ export const useSentFormLogic = (id: string | undefined) => {
       if (refNum < 0 || referenceItem?.user_external) {
         return {
           ...baseItem,
+          id: refNum,
           user_external: referenceItem?.user_external,
         };
       }

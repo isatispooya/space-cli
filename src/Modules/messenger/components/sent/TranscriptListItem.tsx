@@ -63,12 +63,10 @@ const TranscriptListItem: React.FC<ExtendedTranscriptListItemPropsType> =
       const directionKey = item.position ?? item.id;
 
       const directionValue =
-        transcriptDirections[directionKey] ??
-        item.transcript_for ??
-        "";
+        transcriptDirections[directionKey] ?? item.transcript_for ?? "";
 
       const handleDelete = () => {
-        const idToDelete = item.position ?? item.id;
+        const idToDelete = isExternalTranscript ? item.id : (item.position ?? item.id);
         onDelete(idToDelete);
       };
 

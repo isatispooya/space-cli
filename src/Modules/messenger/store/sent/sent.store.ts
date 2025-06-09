@@ -243,6 +243,7 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
 
         const newTranscript = {
           ...defaultTranscript,
+          id: externalId,
           position: null,
           transcript_for: "notification",
           user_external: externalTranscriptText,
@@ -331,12 +332,19 @@ export const useSentFormStore = create<SentFormStateType>((set) => ({
 
   handleDeleteTranscript: (id) =>
     set((state) => {
+      const isExternal = id < 0;
       const updatedReference =
         state.formData.reference?.filter((ref) => ref !== id) || [];
       const updatedReferenceData =
         state.formData.referenceData?.filter((ref) => ref.id !== id) || [];
       const updatedTranscript =
-        state.formData.transcript?.filter((t) => t.position !== id) || [];
+        state.formData.transcript?.filter((t) => {
+          if (isExternal) {
+            return t.id !== id;
+          } else {
+            return t.position !== id;
+          }
+        }) || [];
 
       const updatedSelectedTranscript = state.selectedTranscript.filter(
         (t) => t !== id.toString()
