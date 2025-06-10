@@ -88,9 +88,8 @@ const Request = () => {
   const handleView = (id: number) => {
     window.open(`/users/view/${id}`, "_blank");
   };
-
-  const ExelData = (item: RequestType) => {
-    return {
+  const ExelData = (items: RequestType[]) => {
+    return items.map((item) => ({
       عنوان: item.title || "",
       توضیحات: item.description || "",
       سکه: item.points || 0,
@@ -100,14 +99,14 @@ const Request = () => {
         statusMapping[item.status as keyof typeof statusMapping] ||
         "در حال بررسی",
       علت: item.reason || "",
-      "شماره شبا": item.user_detail.sheba_number || "",
-      "نام و نام خانوادگی": `${item.user_detail?.first_name || ""} ${
-        item.user_detail?.last_name || ""
+      "شماره شبا": item.user_detail?.sheba_number ?? "",
+      "نام و نام خانوادگی": `${item.user_detail?.first_name ?? ""} ${
+        item.user_detail?.last_name ?? ""
       }`,
       "تاریخ ایجاد": item.created_at
         ? moment(item.created_at).format("jYYYY/jMM/jDD")
         : "",
-    };
+    }));
   };
 
   const columns = () => [
@@ -341,7 +340,7 @@ const Request = () => {
           columns={[...columns()]}
           title="درخواست ها"
           showActions={true}
-          formatExportData={ExelData}
+          formatExportData={(data) => ExelData(data)}
         />
       </div>
     </div>
