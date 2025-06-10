@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { api } from "../../../api";
 import {
   SeniorVerifyType,
@@ -63,8 +63,8 @@ const timeflowServices = {
   },
   getTimeFlowReport: async (id: number, month?: number, year?: number) => {
     const params = new URLSearchParams();
-    if (month !== undefined) params.append("month", month.toString());
     if (year !== undefined) params.append("year", year.toString());
+    if (month !== undefined) params.append("month", month.toString());
 
     const response = await api.get(
       `/timeflow/user-login-log-report/${id}/?${params.toString()}`
