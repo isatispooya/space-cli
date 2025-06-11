@@ -133,7 +133,6 @@ const Request = () => {
         return formatNumber(cell.getValue());
       },
     },
-
     {
       field: "value",
       title: "ارزش ",
@@ -224,7 +223,6 @@ const Request = () => {
         return rowData.user_detail?.sheba_number || "";
       },
     },
-
     {
       field: "user_detail.first_name",
       title: "نام",
@@ -267,7 +265,6 @@ const Request = () => {
       },
       headerFilterPlaceholder: "جستجو (مثال: 1401/12/01 یا 1401/12/1)",
     },
-
     {
       title: "عملیات",
       formatter: () => {

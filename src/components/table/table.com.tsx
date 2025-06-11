@@ -14,6 +14,7 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import useChat from "../../Modules/messenger/hooks/useChat";
+import toast from "react-hot-toast";
 
 interface MenuItemType {
   label: string;
@@ -255,25 +256,82 @@ const TabulatorTable: React.FC<TablePropsType> = ({
 
   const downloadExcel = useCallback(() => {
     try {
-      if (!tabulator.current) return;
-      const tableData = tabulator.current.getData("active") || [];
-      if (!tableData.length) return;
+      if (!tabulator.current) {
+        toast.error("جدول در دسترس نیست");
+        return;
+      }
 
-      const formattedData = formatExportData
-        ? formatExportData(tableData)
-        : tableData;
+      // دریافت داده‌های خام از جدول
+      const tableData = tabulator.current.getData("active");
+      console.log("داده‌های خام جدول:", tableData);
 
-      const workbook = XLSX.utils.book_new();
-      const worksheet = XLSX.utils.json_to_sheet(formattedData);
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(
-        workbook,
-        PersianDateUtils.createExcelFilename("اطلاعات_کاربران")
-      );
+      if (!tableData || !Array.isArray(tableData) || tableData.length === 0) {
+        toast.error("داده‌ای برای دانلود وجود ندارد");
+        return;
+      }
+
+      let formattedData;
+      try {
+        // بررسی وجود تابع formatExportData
+        if (typeof formatExportData !== "function") {
+          // اگر تابع formatExportData وجود نداشت، از ستون‌های جدول استفاده می‌کنیم
+          formattedData = tableData.map((item) => {
+            const row: Record<string, any> = {};
+            columns.forEach((col) => {
+              if (col.field) {
+                const value = item[col.field];
+                row[col.title || col.field] = value !== undefined ? value : "";
+              }
+            });
+            return row;
+          });
+        } else {
+          // اگر تابع formatExportData وجود داشت، کل آرایه را به آن پاس می‌دهیم
+          formattedData = formatExportData(tableData);
+
+          // اطمینان از آرایه بودن نتیجه
+          if (!Array.isArray(formattedData)) {
+            console.error("نتیجه formatExportData آرایه نیست:", formattedData);
+            toast.error("خطا در فرمت داده‌ها");
+            return;
+          }
+        }
+
+        if (!formattedData || formattedData.length === 0) {
+          toast.error("داده‌های تبدیل شده خالی هستند");
+          return;
+        }
+
+        console.log("داده‌های نهایی برای اکسل:", formattedData);
+
+        // ایجاد فایل اکسل
+        const workbook = XLSX.utils.book_new();
+
+        // تنظیم هدرها و داده‌ها
+        const worksheet = XLSX.utils.json_to_sheet(formattedData, {
+          header: Object.keys(formattedData[0]),
+          skipHeader: false,
+        });
+
+        // تنظیم عرض ستون‌ها
+        const wscols = Object.keys(formattedData[0]).map(() => ({ wch: 20 }));
+        worksheet["!cols"] = wscols;
+
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(
+          workbook,
+          PersianDateUtils.createExcelFilename("اطلاعات_کاربران")
+        );
+        toast.success("فایل اکسل با موفقیت دانلود شد");
+      } catch (error) {
+        console.error("خطا در ایجاد فایل اکسل:", error);
+        toast.error("خطا در ایجاد فایل اکسل");
+      }
     } catch (error) {
       console.error("خطا در دانلود اکسل:", error);
+      toast.error("خطا در دانلود فایل اکسل");
     }
-  }, [formatExportData]);
+  }, [formatExportData, columns]);
 
   const handleApplyFilter = useCallback(() => {
     if (dateRange.length >= 2) {
