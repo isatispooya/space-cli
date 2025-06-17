@@ -127,104 +127,169 @@ const ShareholdTable: React.FC = () => {
     const printContent = `
       <html>
         <head>
-          <title>چاپ اطلاعات سهامدار</title>
+          <title>گواهی سهام</title>
           <style>
-            @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
-            body {
-              font-family: 'Vazirmatn', Arial, sans-serif;
+            @page {
+              size: A4;
+              margin: 0;
+            }
+  
+            html, body {
+              margin: 0;
+              padding: 0;
+              width: 210mm;
+              height: 297mm;
+              font-family: "Tahoma", "Arial", sans-serif;
               direction: rtl;
-              padding: 40px;
-              background-color: #f9fafb;
-              color: #1f2937;
+              background: #f9fafb;
+              color: #111827;
             }
-            .container {
-              max-width: 800px;
-              margin: 0 auto;
+  
+            .certificate {
+              width: 100%;
+              height: 100%;
               background: white;
-              padding: 30px;
-              border-radius: 12px;
-              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              box-sizing: border-box;
+              display: flex;
+              flex-direction: column;
             }
-            h1 {
-              text-align: center;
-              color: #1e40af;
+  
+            .header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              background-color: #1e3a8a;
+              color: white;
+              padding: 20px 30px;
+            }
+  
+            .header .company-name {
               font-size: 24px;
-              margin-bottom: 30px;
-              border-bottom: 2px solid #dbeafe;
-              padding-bottom: 10px;
+              font-weight: bold;
             }
-            table {
+  
+            .logo {
+              height: 60px;
+            }
+  
+            .content {
+              flex-grow: 1;
+              padding: 30px;
+              font-size: 18px;
+              line-height: 1.8;
+            }
+  
+            .info-table {
               width: 100%;
               border-collapse: collapse;
+              margin-top: 20px;
               font-size: 16px;
             }
-            th, td {
-              padding: 12px 16px;
+  
+            .info-table th, .info-table td {
+              padding: 12px;
+              border: 1px solid #d1d5db;
               text-align: right;
-              border-bottom: 1px solid #e5e7eb;
             }
-            th {
-              background-color: #eff6ff;
-              color: #1e40af;
-              font-weight: 700;
+  
+            .info-table th {
+              background-color: #e0e7ff;
+              color: #1e3a8a;
+              font-weight: bold;
               width: 30%;
             }
-            td {
-              background-color: #ffffff;
-              color: #374151;
+  
+            .info-table tr:nth-child(even) td {
+              background-color: #f9fafb;
             }
-            tr:last-child th, tr:last-child td {
-              border-bottom: none;
-            }
+  
             .footer {
-              text-align: center;
-              margin-top: 20px;
-              font-size: 12px;
-              color: #6b7280;
+              border-top: 1px solid #d1d5db;
+              padding: 20px 30px;
+              display: flex;
+              justify-content: space-between;
+              font-size: 15px;
+              color: #4b5563;
             }
+  
+            .signature {
+              text-align: center;
+            }
+  
             @media print {
-              body { background-color: white; }
-              .container { box-shadow: none; border: 1px solid #e5e7eb; }
+              html, body {
+                width: 210mm;
+                height: 297mm;
+                background: white;
+                overflow: hidden;
+              }
+  
+              .certificate {
+                background: white;
+                box-shadow: none;
+              }
             }
           </style>
         </head>
         <body>
-          <div class="container">
-            <h1>اطلاعات سهامدار</h1>
-            <table>
-              <tr><th>شرکت</th><td>${
-                rowData.company || rowData.company_detail?.name || "-"
-              }</td></tr>
-              <tr><th>تعداد سهام</th><td>${
-                rowData.number_of_shares || "0"
-              }</td></tr>
-              <tr><th>نام</th><td>${
-                rowData.first_name || rowData.user_detail?.first_name || "-"
-              }</td></tr>
-              <tr><th>نام خانوادگی</th><td>${
-                rowData.last_name || rowData.user_detail?.last_name || "-"
-              }</td></tr>
-              <tr><th>کدملی</th><td>${
-                rowData.uniqueIdentifier ||
-                rowData.user_detail?.uniqueIdentifier ||
-                "-"
-              }</td></tr>
-              <tr><th>شماره موبایل</th><td>${
-                rowData.mobile || rowData.user_detail?.mobile || "-"
-              }</td></tr>
-              <tr><th>حق تقدم</th><td>${
-                rowData.precedence_count || rowData.precedence || "0"
-              }</td></tr>
-              <tr><th>حق تقدم استفاده شده</th><td>${
-                rowData.precedence_used !== undefined
-                  ? rowData.precedence_used
-                  : rowData.used_precedence !== undefined
-                  ? rowData.used_precedence
-                  : "0"
-              }</td></tr>
-            </table>
+          <div class="certificate">
+            <div class="header">
+              <div class="company-name">
+                ${
+                  rowData.company ||
+                  rowData.company_detail?.name ||
+                  "شرکت بدون نام"
+                }
+              </div>
+              <img src="logo.png" class="logo" alt="لوگو" />
+            </div>
+  
+            <div class="content">
+              گواهی می‌شود که سهامدار محترم با مشخصات زیر در شرکت ثبت شده است:
+  
+              <table class="info-table">
+                <tr><th>نام</th><td>${
+                  rowData.first_name || rowData.user_detail?.first_name || "-"
+                }</td></tr>
+                <tr><th>نام خانوادگی</th><td>${
+                  rowData.last_name || rowData.user_detail?.last_name || "-"
+                }</td></tr>
+                <tr><th>کد ملی</th><td>${
+                  rowData.uniqueIdentifier ||
+                  rowData.user_detail?.uniqueIdentifier ||
+                  "-"
+                }</td></tr>
+                <tr><th>شماره موبایل</th><td>${
+                  rowData.mobile || rowData.user_detail?.mobile || "-"
+                }</td></tr>
+                <tr><th>تعداد سهام</th><td>${
+                  rowData.number_of_shares || "0"
+                }</td></tr>
+                <tr><th>حق تقدم</th><td>${
+                  rowData.precedence_count || rowData.precedence || "0"
+                }</td></tr>
+                <tr><th>حق تقدم استفاده‌شده</th><td>${
+                  rowData.precedence_used !== undefined
+                    ? rowData.precedence_used
+                    : rowData.used_precedence !== undefined
+                    ? rowData.used_precedence
+                    : "0"
+                }</td></tr>
+              </table>
+  
+              <br />
+              این گواهی به عنوان سند رسمی مالکیت سهام صادر شده است.
+            </div>
+  
             <div class="footer">
-              چاپ شده در تاریخ: ${moment().locale("fa").format("jYYYY/jMM/jDD")}
+              <div class="signature">
+                تاریخ چاپ:<br>
+                ${moment().locale("fa").format("jYYYY/jMM/jDD")}
+              </div>
+              <div class="signature">
+                مهر و امضای شرکت<br>
+                ..................................
+              </div>
             </div>
           </div>
         </body>
