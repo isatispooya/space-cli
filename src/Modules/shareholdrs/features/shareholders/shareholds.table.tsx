@@ -145,8 +145,10 @@ const ShareholdTable: React.FC = () => {
       uniqueIdentifier: "",
       total_shares: 0,
     };
-    const monghasem =
-      ((rowData.number_of_shares / companyInfo.total_shares) * 100).toFixed(3);
+    const monghasem = (
+      (rowData.number_of_shares / companyInfo.total_shares) *
+      100
+    ).toFixed(3);
 
     const printContent = `
     <html>
@@ -280,8 +282,8 @@ const ShareholdTable: React.FC = () => {
             companyInfo.year_of_establishment + " " || "-"
           }</div>
            <div class="subheader">تاریخ تاسیس: ${
-            companyInfo.national_id + " " || "-"
-          }</div>
+             companyInfo.national_id + " " || "-"
+           }</div>
           </div>
           <div class="content">سرمايه ثبت شده ${
             companyInfo.total_shares * 1000
@@ -290,7 +292,7 @@ const ShareholdTable: React.FC = () => {
     } سهم يک هزارريالى كه صدرصد آن پرداخت شده ميباشد</div>
 <div class="content">
   دارنده این ورقه شرکت/آقای/خانم ${rowData.user_detail.first_name || "-"} ${
-      rowData.user_detail.last_name + " "|| "-"
+      rowData.user_detail.last_name + " " || "-"
     }با شناسه ملی/  کد ملی  ${
       rowData.user_detail.uniqueIdentifier || "-"
     } مالک تعداد ${formatNumber(
