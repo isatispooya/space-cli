@@ -146,7 +146,7 @@ const ShareholdTable: React.FC = () => {
       total_shares: 0,
     };
     const monghasem =
-      (companyInfo.total_shares * companyInfo.total_shares) / 100;
+      ((rowData.number_of_shares / companyInfo.total_shares) * 100).toFixed(3);
 
     const printContent = `
     <html>
