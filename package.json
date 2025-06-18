@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview --port 2084 --host",
-    "start": "vite preview",
+  "preview": "vite preview --port 2084 --host",
+  "start": "vite preview --host --port 2084",
     "forward": "vite --host"
   },
   "dependencies": {
