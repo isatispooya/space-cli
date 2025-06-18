@@ -7,7 +7,12 @@ import { CellComponent, ColumnDefinition, Formatter } from "tabulator-tables";
 import TabulatorTable from "../../../../components/table/table.com";
 import { createRoot } from "react-dom/client";
 import { ActionMenu } from "../../../../components/table/tableaction";
-import ShareHoldersNewTypes from "../../types/shareHolderss.type";
+import ShareHoldersNewTypes, {
+  ShareHoldersNewType,
+} from "../../types/shareHolderss.type";
+import { useCompany } from "@/Modules/companies";
+import { numberToPersianWords } from "@/utils/numberToWords";
+import { companyTypes } from "../../data";
 
 const formatNumber = (value: number | string | null | undefined): string => {
   if (value === null || value === undefined || value === "") return "0";
@@ -25,6 +30,9 @@ const calcFormatter: Formatter = (cell: CellComponent) => {
 
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, isPending } = useShareholders.useGet();
+  const { data: companyData } = useCompany.useGet();
+
+  console.log(companyData);
 
   const mappedData = shareholders?.map((row: ShareHoldersNewTypes) => ({
     ...row,
@@ -123,178 +131,159 @@ const ShareholdTable: React.FC = () => {
     },
   ];
 
-  const handlePrint = (rowData: ShareholdersType) => {
+  const handlePrint = (rowData: ShareHoldersNewType) => {
+    const companyInfo = companyData?.find(
+      (company) => company.id === rowData.company_detail.id
+    ) || {
+      name: "شرکت بدون نام",
+      registration_number: "-",
+      year_of_establishment: "-",
+      logo: "",
+      company_type: "",
+    };
+
     const printContent = `
-      <html>
-        <head>
-          <title>گواهی سهام</title>
-          <style>
-            @page {
-              size: A4;
-              margin: 0;
-            }
+    <html>
+      <head>
+        <title>گواهی سهام</title>
+        <style>
+          @page {
+            size: A4;
+            margin: 0;
+          }
+          html, body {
+            margin: 0;
+            padding: 0;
+            width: 210mm;
+            height: 297mm;
+            font-family: "Tahoma", "Arial", sans-serif;
+            direction: rtl;
+            background: #f9fafb;
+            color: #111827;
+          }
   
+          .certificate {
+            width: 100%;
+            height: 100%;
+            background: white;
+            box-sizing: border-box;
+            border: 10px solid #00008B;
+            border-radius: 20px;
+            position: relative;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.8;
+          }
+  
+          .certificate::before, .certificate::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #00008B;
+          }
+          .certificate::before {
+            top: -15px;
+            left: -15px;
+          }
+          .certificate::after {
+            bottom: -15px;
+            right: -15px;
+          }
+  
+          .header {
+            font-size: 32px;
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 20px;
+          }
+  
+          .subheader {
+            font-size: 16px;
+            color: #8B4513;
+            margin-bottom: 10px;
+          }
+  
+          .content {
+            text-align: right;
+            padding: 30px;
+          }
+  
+          .logo {
+            display: block;
+            margin: 20px auto;
+            height: 80px;
+          }
+  
+          .footer {
+            border-top: 1px solid #d1d5db;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+            color: #4b5563;
+            text-align: center;
+          }
+  
+          .signature {
+            margin-top: 20px;
+          }
+  
+          @media print {
             html, body {
-              margin: 0;
-              padding: 0;
               width: 210mm;
               height: 297mm;
-              font-family: "Tahoma", "Arial", sans-serif;
-              direction: rtl;
-              background: #f9fafb;
-              color: #111827;
-            }
-  
-            .certificate {
-              width: 100%;
-              height: 100%;
               background: white;
-              box-sizing: border-box;
-              display: flex;
-              flex-direction: column;
+              overflow: hidden;
             }
-  
-            .header {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              background-color: #1e3a8a;
-              color: white;
-              padding: 20px 30px;
+            .certificate {
+              background: white;
+              box-shadow: none;
             }
-  
-            .header .company-name {
-              font-size: 24px;
-              font-weight: bold;
-            }
-  
-            .logo {
-              height: 60px;
-            }
-  
-            .content {
-              flex-grow: 1;
-              padding: 30px;
-              font-size: 18px;
-              line-height: 1.8;
-            }
-  
-            .info-table {
-              width: 100%;
-              border-collapse: collapse;
-              margin-top: 20px;
-              font-size: 16px;
-            }
-  
-            .info-table th, .info-table td {
-              padding: 12px;
-              border: 1px solid #d1d5db;
-              text-align: right;
-            }
-  
-            .info-table th {
-              background-color: #e0e7ff;
-              color: #1e3a8a;
-              font-weight: bold;
-              width: 30%;
-            }
-  
-            .info-table tr:nth-child(even) td {
-              background-color: #f9fafb;
-            }
-  
-            .footer {
-              border-top: 1px solid #d1d5db;
-              padding: 20px 30px;
-              display: flex;
-              justify-content: space-between;
-              font-size: 15px;
-              color: #4b5563;
-            }
-  
-            .signature {
-              text-align: center;
-            }
-  
-            @media print {
-              html, body {
-                width: 210mm;
-                height: 297mm;
-                background: white;
-                overflow: hidden;
-              }
-  
-              .certificate {
-                background: white;
-                box-shadow: none;
-              }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="certificate">
-            <div class="header">
-              <div class="company-name">
-                ${
-                  rowData.company ||
-                  rowData.company_detail?.name ||
-                  "شرکت بدون نام"
-                }
-              </div>
-              <img src="logo.png" class="logo" alt="لوگو" />
-            </div>
-  
-            <div class="content">
-              گواهی می‌شود که سهامدار محترم با مشخصات زیر در شرکت ثبت شده است:
-  
-              <table class="info-table">
-                <tr><th>نام</th><td>${
-                  rowData.first_name || rowData.user_detail?.first_name || "-"
-                }</td></tr>
-                <tr><th>نام خانوادگی</th><td>${
-                  rowData.last_name || rowData.user_detail?.last_name || "-"
-                }</td></tr>
-                <tr><th>کد ملی</th><td>${
-                  rowData.uniqueIdentifier ||
-                  rowData.user_detail?.uniqueIdentifier ||
-                  "-"
-                }</td></tr>
-                <tr><th>شماره موبایل</th><td>${
-                  rowData.mobile || rowData.user_detail?.mobile || "-"
-                }</td></tr>
-                <tr><th>تعداد سهام</th><td>${
-                  rowData.number_of_shares || "0"
-                }</td></tr>
-                <tr><th>حق تقدم</th><td>${
-                  rowData.precedence_count || rowData.precedence || "0"
-                }</td></tr>
-                <tr><th>حق تقدم استفاده‌شده</th><td>${
-                  rowData.precedence_used !== undefined
-                    ? rowData.precedence_used
-                    : rowData.used_precedence !== undefined
-                    ? rowData.used_precedence
-                    : "0"
-                }</td></tr>
-              </table>
-  
-              <br />
-              این گواهی به عنوان سند رسمی مالکیت سهام صادر شده است.
-            </div>
-  
-            <div class="footer">
-              <div class="signature">
-                تاریخ چاپ:<br>
-                ${moment().locale("fa").format("jYYYY/jMM/jDD")}
-              </div>
-              <div class="signature">
-                مهر و امضای شرکت<br>
-                ..................................
-              </div>
-            </div>
+          }
+        </style>
+      </head>
+      <body>
+        <div class="certificate">
+          <div class="header">${companyInfo.name} (${
+      companyTypes.find((type) => type.value === companyInfo.company_type)
+        ?.label || "نوع شرکت نامشخص"
+    })</div>
+          <div class="subheader">شماره ثبت: ${
+            companyInfo.registration_number || "-"
+          }</div>
+          <div class="subheader">تاریخ تاسیس: ${
+            companyInfo.year_of_establishment || "-"
+          }</div>
+          <div class="content">سرمايه ثبت شده .......... ريال منقسم به ...... سهم يک هزارريالى كه ......... آن پرداخت شده ميباشد</div>
+<div class="content">
+  دارنده این ورقه آقای/خانم ${rowData.user_detail.first_name || "-"} ${
+      rowData.user_detail.last_name || "-"
+    } فرزند ${rowData.father_name || "محمد"} با کد ملی ${
+      rowData.user_detail.uniqueIdentifier || "-"
+    } مالک تعداد ${formatNumber(
+      rowData.number_of_shares || "۰"
+    )} سهم (${numberToPersianWords(
+      rowData.number_of_shares || 0
+    )} سهم یک هزار ریالی) در شرکت ${
+      companyInfo.name
+    } است که در شرکت ثبت گردیده است. تاریخ صدور: ${moment()
+      .locale("fa")
+      .format("jYYYY/jMM/jDD")}
+</div>
+
+          <div class="content">مالك سهام داراى حقوق مشخصه در اساسنامه شركت ميباشد.</div>
+          <div class="footer">
+            <div class="signature">امضا مدیرعامل</div>
+            <div class="signature">امضا رئیس هیئت مدیره</div>
+            <div class="signature">مهر شرکت</div>
           </div>
-        </body>
-      </html>
-    `;
+        </div>
+      </body>
+    </html>
+  `;
 
     const printWindow = window.open("", "_blank");
     if (printWindow) {
@@ -320,7 +309,7 @@ const ShareholdTable: React.FC = () => {
         {
           icon: "fas fa-print",
           label: "چاپ",
-          onClick: () => handlePrint(rowData as ShareholdersType),
+          onClick: () => handlePrint(rowData as ShareHoldersNewType),
           color: "#DC2626",
         },
       ];

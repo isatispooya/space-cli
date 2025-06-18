@@ -54,6 +54,7 @@ export interface CompanyMemberType {
   picture_url: string | null;
   duration?: string;
   first_role?: string;
+  company_type?: string;
   second_role?: string;
   agent: boolean;
   birth_certificate: string | null;
@@ -74,6 +75,7 @@ export type CompanyType = {
   name: string;
   national_id?: string;
   title?: string;
+  company_type?: string;
   address?: string;
   postal_code?: string;
   persian_registration_date?: string;
@@ -82,6 +84,7 @@ export type CompanyType = {
   website?: string;
   capital?: number;
   registration_number?: string;
+
   registration_type_title?: string;
   registration_unit?: string;
   general_directorate?: string;
