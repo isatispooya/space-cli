@@ -142,7 +142,11 @@ const ShareholdTable: React.FC = () => {
       year_of_establishment: "-",
       logo: "",
       company_type: "",
+      uniqueIdentifier: "",
+      total_shares: 0,
     };
+    const monghasem =
+      (companyInfo.total_shares * companyInfo.total_shares) / 100;
 
     const printContent = `
     <html>
@@ -233,18 +237,32 @@ const ShareholdTable: React.FC = () => {
             margin-top: 20px;
           }
   
-          @media print {
-            html, body {
-              width: 210mm;
-              height: 297mm;
-              background: white;
-              overflow: hidden;
-            }
-            .certificate {
-              background: white;
-              box-shadow: none;
-            }
-          }
+         @media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    background: white !important;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  .certificate {
+    background: white !important;
+    border: 10px solid #00008B !important;
+    box-shadow: none !important;
+    border-radius: 20px !important;
+    page-break-inside: avoid;
+  }
+}
+
+           .h {
+  display: flex;
+  gap: 20px; /* فاصله دلخواه بین آیتم‌ها */
+}
+
         </style>
       </head>
       <body>
@@ -253,25 +271,42 @@ const ShareholdTable: React.FC = () => {
       companyTypes.find((type) => type.value === companyInfo.company_type)
         ?.label || "نوع شرکت نامشخص"
     })</div>
+    <div class="h">
           <div class="subheader">شماره ثبت: ${
-            companyInfo.registration_number || "-"
+            companyInfo.registration_number + " " || "-"
           }</div>
+          
           <div class="subheader">تاریخ تاسیس: ${
-            companyInfo.year_of_establishment || "-"
+            companyInfo.year_of_establishment + " " || "-"
           }</div>
-          <div class="content">سرمايه ثبت شده .......... ريال منقسم به ...... سهم يک هزارريالى كه ......... آن پرداخت شده ميباشد</div>
+           <div class="subheader">تاریخ تاسیس: ${
+            companyInfo.national_id + " " || "-"
+          }</div>
+          </div>
+          <div class="content">سرمايه ثبت شده ${
+            companyInfo.total_shares * 1000
+          } ريال منقسم به ${
+      companyInfo.total_shares
+    } سهم يک هزارريالى كه صدرصد آن پرداخت شده ميباشد</div>
 <div class="content">
-  دارنده این ورقه آقای/خانم ${rowData.user_detail.first_name || "-"} ${
-      rowData.user_detail.last_name || "-"
-    } فرزند ${rowData.father_name || "محمد"} با کد ملی ${
+  دارنده این ورقه شرکت/آقای/خانم ${rowData.user_detail.first_name || "-"} ${
+      rowData.user_detail.last_name + " "|| "-"
+    }با شناسه ملی/  کد ملی  ${
       rowData.user_detail.uniqueIdentifier || "-"
     } مالک تعداد ${formatNumber(
       rowData.number_of_shares || "۰"
     )} سهم (${numberToPersianWords(
       rowData.number_of_shares || 0
-    )} سهم یک هزار ریالی) در شرکت ${
-      companyInfo.name
-    } است که در شرکت ثبت گردیده است. تاریخ صدور: ${moment()
+    )} سهم یک هزار ریالی) 
+    از تعداد }${
+      companyInfo.total_shares
+    } سهم (معادل ${monghasem} درصد کل شرکت)  
+    در شرکت ${companyInfo.name} ${
+      companyTypes.find((type) => type.value === companyInfo.company_type)
+        ?.label || "نوع شرکت نامشخص"
+    }
+    
+    دارا می باشد که در شرکت ثبت گردیده است. تاریخ صدور: ${moment()
       .locale("fa")
       .format("jYYYY/jMM/jDD")}
 </div>

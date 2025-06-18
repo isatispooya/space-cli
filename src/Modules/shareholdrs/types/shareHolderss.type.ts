@@ -19,6 +19,7 @@ export interface ShareHoldersNewType {
   father_name: string;
   used_precedence: number;
   precedence: string;
+  
 }
 
 export default ShareHoldersNewType;

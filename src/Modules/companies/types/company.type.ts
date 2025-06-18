@@ -27,7 +27,7 @@ export interface ResType {
   seal: string | "" | null;
   signature: string | "" | null;
   telegram_link: null;
-  total_shares: number | null;
+  total_shares: number | 0;
   twitter_link: null;
   type_of_activity: string | null;
   video_site: null;
@@ -84,7 +84,7 @@ export type CompanyType = {
   website?: string;
   capital?: number;
   registration_number?: string;
-
+  total_shares?:number
   registration_type_title?: string;
   registration_unit?: string;
   general_directorate?: string;
