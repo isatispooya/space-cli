@@ -16,6 +16,12 @@ const ShareholdersFormPage = lazy(() =>
     default: module.ShareholdersFormPage,
   }))
 );
+
+const GardashHesabPage = lazy(() =>
+  import("..").then((module) => ({
+    default: module.GardashHesabPage,
+  }))
+);
 const ShareholdersUpdatePage = lazy(() =>
   import("..").then((module) => ({
     default: module.ShareholdersUpdatePage,
@@ -38,6 +44,10 @@ const ShareholdersRoutes = [
       {
         path: "update/:id",
         element: <ShareholdersUpdatePage />,
+      },
+      {
+        path: "gardeshHesab",
+        element: <GardashHesabPage />,
       },
     ],
   },

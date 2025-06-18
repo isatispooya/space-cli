@@ -13,6 +13,7 @@ import ShareHoldersNewTypes, {
 import { useCompany } from "@/Modules/companies";
 import { numberToPersianWords } from "@/utils/numberToWords";
 import { companyTypes } from "../../data";
+import { useNavigate } from "react-router-dom";
 
 const formatNumber = (value: number | string | null | undefined): string => {
   if (value === null || value === undefined || value === "") return "0";
@@ -31,6 +32,7 @@ const calcFormatter: Formatter = (cell: CellComponent) => {
 const ShareholdTable: React.FC = () => {
   const { data: shareholders, isPending } = useShareholders.useGet();
   const { data: companyData } = useCompany.useGet();
+  const navigate = useNavigate();
 
   console.log(companyData);
 
@@ -293,6 +295,10 @@ const ShareholdTable: React.FC = () => {
     }
   };
 
+  const handleNavigate = () => {
+    navigate("/shareholders/gardeshHesab");
+  };
+
   const handleCellClick = (e: UIEvent, cell: CellComponent) => {
     e.stopPropagation();
     if ((e.target as HTMLElement).classList.contains("action-btn")) {
@@ -310,6 +316,12 @@ const ShareholdTable: React.FC = () => {
           icon: "fas fa-print",
           label: "چاپ",
           onClick: () => handlePrint(rowData as ShareHoldersNewType),
+          color: "#DC2626",
+        },
+        {
+          icon: "fas fa-print",
+          label: "گردش سهام",
+          onClick: () => handleNavigate(),
           color: "#DC2626",
         },
       ];
