@@ -3,7 +3,6 @@ import TabulatorTable from "../../../../components/table/table.com";
 const Gardeshhesab = () => {
   const columns = [
     { title: "ردیف", field: "row", headerFilter: false, width: 80 },
-
     { title: "نوع تراکنش", field: "type", headerFilter: true },
     { title: "تعداد سهام اولیه", field: "initialShares", headerFilter: true },
     { title: "شرح", field: "description", headerFilter: true },
